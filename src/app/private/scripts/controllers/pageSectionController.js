@@ -9,13 +9,14 @@ angular.module('playerApp')
       section.pageTypeUrls = { resource: 'Resource',
         course: 'Course' }
       section.playContent = function (item) {
+        $rootScope.contentType = item.contentType
         $rootScope.search.searchKeyword = ''
         var params = { content: item,
           contentName: item.name,
           contentId: item.identifier }
         $state.go('Player', params)
-        section.generateInteractEvent('library', 'library-read', item.identifier)
-        section.generateStartEvent(item.identifier)
+        section.generateInteractEvent(item.contentType, 'library', 'library-read', item.identifier)
+        section.generateStartEvent(item.contentType, item.identifier)
       }
 
       section.openCourseView = function (course) {
@@ -38,7 +39,8 @@ angular.module('playerApp')
           courseName: course.courseName || course.name }
         sessionService.setSessionData('COURSE_PARAMS', params)
         $state.go('Toc', params)
-        section.generateInteractEvent($scope.type, $scope.type + '-read', courseId)
+        section.generateInteractEvent(courseType, $scope.type, $scope.type + '-read', courseId)
+        section.generateStartEvent(courseType, courseId)
       }
 
       section.sections = function () {
@@ -131,22 +133,16 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of Course, Library.
              */
-      section.generateInteractEvent = function (edataId, pageId, courseId) {
+      section.generateInteractEvent = function (objType, edataId, pageId, courseId) {
         var contextData = {
           env: $scope.type,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
-        var objRollup = ''
-        if (courseId !== '') {
-          objRollup = [courseId]
-        }
-
         var objectData = {
           id: courseId,
-          type: edataId,
-          ver: $rootScope.version,
-          rollup: telemetryService.getRollUpData(objRollup)
+          type: objType,
+          ver: $rootScope.version
         }
 
         var data = {
@@ -171,8 +167,7 @@ angular.module('playerApp')
         var objectData = {
           id: '',
           type: itemType,
-          ver: $rootScope.version,
-          rollup: ''
+          ver: $rootScope.version
         }
 
         var data = {
@@ -185,17 +180,16 @@ angular.module('playerApp')
       }
 
       // telemetry start event data
-      section.generateStartEvent = function (id) {
+      section.generateStartEvent = function (objType, id) {
         var contextData = {
           env: 'library',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = [id]
+
         var objectData = {
           id: id,
-          type: 'library',
-          ver: $rootScope.version,
-          rollup: telemetryService.getRollUpData(objRollup)
+          type: objType,
+          ver: $rootScope.version
         }
         var data = {
           edata: telemetryService.startEventData('library', 'library-read', 'play'),

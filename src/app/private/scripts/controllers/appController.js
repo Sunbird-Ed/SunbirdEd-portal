@@ -16,7 +16,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
     telemetryService.setConfigData('env', 'home')
-    telemetryService.setConfigData('message', 'User read')
+    telemetryService.setConfigData('message', 'Content read')
     /**
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
@@ -119,7 +119,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $scope.setRootOrgInfo(profileData)
     }
 
-    /* $scope.getTelemetryConfigData = function () {
+    $scope.getTelemetryConfigData = function () {
       org.sunbird.portal.sid = $rootScope.sessionId
       org.sunbird.portal.uid = $rootScope.userId
 
@@ -133,9 +133,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         })
         .finally(function () {
           org.sunbird.portal.init()
-          portalTelemetryService.init()
+          // portalTelemetryService.init()
         })
-    } */
+    }
 
     $scope.setRootOrgInfo = function (profileData) {
       if (profileData.rootOrg) {
@@ -242,9 +242,10 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             callback(null, $scope.concepts)
           }
         }
-      }).catch(function (err) {
-        callback(err, null)
       })
+        .catch(function (err) {
+          callback(err, null)
+        })
     }
     if (!$rootScope.concepts) {
       $scope.concepts = []
@@ -285,7 +286,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         rollup: telemetryService.getRollUpData($rootScope.organisationIds)
       }
       var objectData = {
-        id: $rootScope.userId,
+        id: '',
         type: objType,
         ver: '1.0'
       }

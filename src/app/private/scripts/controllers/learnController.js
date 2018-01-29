@@ -29,6 +29,7 @@ angular.module('playerApp')
         $rootScope.isPlayerOpen = true
         $state.go('Toc', params)
         learn.generateInteractEvent('course', 'course-read', course.courseId)
+        learn.generateStartEvent(courseType, course.courseId)
       }
 
       learn.courses = function () {
@@ -40,6 +41,7 @@ angular.module('playerApp')
           if (successResponse && successResponse.responseCode === 'OK') {
             learn[api].loader.showLoader = false
             $rootScope.enrolledCourses = successResponse.result.courses
+            $rootScope.version = successResponse.ver
             $rootScope.enrolledCourseIds = $rootScope
               .arrObjsToObject($rootScope.enrolledCourses, 'courseId')
             learn.enrolledCourses = $rootScope.enrolledCourses
@@ -72,16 +74,10 @@ angular.module('playerApp')
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
-        var objRollup = ''
-        if (courseId !== '') {
-          objRollup = [courseId]
-        }
-
         var objectData = {
           id: courseId,
           type: edataId,
-          ver: '0.1',
-          rollup: telemetryService.getRollUpData(objRollup)
+          ver: $rootScope.version
         }
 
         var data = {
@@ -91,5 +87,28 @@ angular.module('playerApp')
           tags: $rootScope.organisationIds
         }
         telemetryService.interact(data)
+      }
+
+      // telemetry start event data
+      learn.generateStartEvent = function (objType, id) {
+        var contextData = {
+          env: 'library',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objectData = {
+          id: id,
+          type: objType,
+          ver: $rootScope.version
+        }
+        var data = {
+          edata: telemetryService.startEventData('library', 'library-read', 'play'),
+          contentId: id,
+          contentVer: $rootScope.version,
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.start(data)
       }
     }])

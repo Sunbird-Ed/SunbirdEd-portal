@@ -111,16 +111,10 @@ angular.module('playerApp')
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
-        var objRollup = ''
-        if (itemId !== '') {
-          objRollup = [itemId]
-        }
-
         var objectData = {
           id: itemId,
           type: edataId,
-          ver: '0.1',
-          rollup: telemetryService.getRollUpData(objRollup)
+          ver: '0.1'
         }
 
         var data = {

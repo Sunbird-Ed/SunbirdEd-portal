@@ -30,8 +30,6 @@ angular.module('playerApp')
               } else {
                 toc.courseHierarchy = res.result.content
               }
-              /* -----------telemetry start event------------ */
-              toc.generateStartEvent()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0019)
               $state.go('Home')
@@ -419,7 +417,7 @@ angular.module('playerApp')
       /* ---telemetry-interact-event-- */
       toc.generateInteractEvent = function (itemId, itemType, edataId, pageId, objRollup) {
         var contextData = {
-          env: 'home',
+          env: 'course',
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 

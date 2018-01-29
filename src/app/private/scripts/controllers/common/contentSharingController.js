@@ -28,7 +28,6 @@ angular.module('playerApp')
 
       contentShare.initializeModal = function () {
         contentShare.showContentShareModal = true
-        console.log('scope--', $scope)
         contentShare.generateInteractEvent('share-course', 'course-read', contentShare.id)
         $timeout(function () {
           $('#contentShareModal').modal({
@@ -68,16 +67,11 @@ angular.module('playerApp')
           env: $scope.type,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var objRollup = ''
-        if (itemId !== '') {
-          objRollup = [itemId]
-        }
 
         var objectData = {
           id: itemId,
           type: itemType,
-          ver: '0.1',
-          rollup: telemetryService.getRollUpData(objRollup)
+          ver: '0.1'
         }
 
         var items = [telemetryService.getItemData(itemId, itemType, '0.1')]
@@ -101,16 +95,10 @@ angular.module('playerApp')
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
 
-        var objRollup = ''
-        if (itemId !== '') {
-          objRollup = [itemId]
-        }
-
         var objectData = {
           id: itemId,
-          type: edataId,
-          ver: '0.1',
-          rollup: telemetryService.getRollUpData(objRollup)
+          type: contentShare.type,
+          ver: '0.1'
         }
 
         var data = {
