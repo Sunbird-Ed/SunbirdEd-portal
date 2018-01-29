@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('searchService', ['restfulContentService', 'config', '$q', 'restfulLearnerService',
-    function (restfulContentService, config, $q, restfulLearnerService) {
+  .service('searchService', ['restfulContentService', 'config', '$q', 'restfulLearnerService', '$rootScope',
+    function (restfulContentService, config, $q, restfulLearnerService, $rootScope) {
       /**
      * @class searchService
      * @desc Service to manage different type of search.
@@ -158,5 +158,14 @@ angular.module('playerApp')
             return res.result.response
           }
         })
+      }
+
+      this.getChannel = function (channel) {
+        channel = channel || $rootScope.rootOrgId
+        return restfulContentService.get(config.URL.CHANNEL.READ + '/' + channel)
+      }
+
+      this.getFramework = function (id) {
+        return restfulContentService.get(config.URL.FRAMEWORK.READ + '/' + id)
       }
     }])

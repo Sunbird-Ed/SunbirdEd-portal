@@ -88,6 +88,12 @@
                 "GET": "badges/list",
                 "ASSIGN": "user/badges/add"
 
+            },
+            "CHANNEL": {
+                "READ":"channel/v1/read"
+            },
+            "FRAMEWORK": {
+                "READ":"framework/v1/read"
             }
         },
         "FILTER": {

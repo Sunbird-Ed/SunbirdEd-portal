@@ -32,7 +32,7 @@ angular.module('playerApp')
           this.clientName = downloadReportDataSource
           break
         default:
-          this.clientName = courseConsumptionDataSource
+          this.clientName = { error: 'Invalid argument. Data source not found' }
         }
 
         return this.clientName
