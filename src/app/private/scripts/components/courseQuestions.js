@@ -6,56 +6,73 @@ angular.module('playerApp').component('courseQuestions', {
     $timeout, courseQuestionsAdapter) {
     $scope.successMessage = true
     $scope.date = new Date()
-
-    courseQuestionsAdapter.getQuestions().then(function (data) {
-      // console.log("data", data)
-      $scope.threads = data.threads
-    }, function (err) {
-      console.log('err', err)
-    })
-
-    $scope.widget = 'list-thread'
+    $scope.loadQuestions = function () {
+      $scope.loading = true
+      $scope.widget = ''
+      courseQuestionsAdapter.getQuestions().then(function (data) {
+        $scope.loading = false
+        $scope.widget = 'list-thread'
+        $scope.thread = null
+        $scope.threads = data.result.threads
+      }, function (err) {
+        $scope.loading = false
+        console.log('err', err)
+      })
+    }
+    $scope.loadQuestions()
     $scope.changeWidget = function (widgetName) {
       $scope.widget = widgetName
     }
 
-    $scope.gotoThread = function (title, reply, description) {
-      $scope.threadTitle = title
-      $scope.threadReply = reply
-      $scope.threadDesc = description
+    $scope.gotoThread = function (id) {
       $scope.changeWidget('reply-thread')
+      $scope.loadThread(id)
+    }
+
+    $scope.loadThread = function (threadId) {
+      $scope.loading = true
+      $scope.widget = ''
+      courseQuestionsAdapter.getQuestionById(threadId).then(function (data) {
+        $scope.loading = false
+        $scope.widget = 'reply-thread'
+        console.log('data', data)
+        $scope.thread = data.result.thread
+      }, function (err) {
+        $scope.loading = false
+        console.log('err', err)
+      })
     }
 
     $scope.formSubmit = function (isValid) {
       var obj = {
-        id: 123123,
-        title: $scope.threadTitle,
-        desc: $scope.threadDesc,
-        replies: []
+        'title': $scope.threadTitle,
+        'description': $scope.threadDesc
       }
-      console.log('obj', obj)
+      $scope.loading = true
       courseQuestionsAdapter.composeThread(obj).then(function (result) {
-        console.log('gotilla', result)
+        $scope.loading = false
+        $scope.loadQuestions()
       }, function (err) {
         console.log('eeee', err)
       })
-      $scope.changeWidget('list-thread')
     }
 
     $scope.submitAnswer = function () {
-      var answer = $scope.replyAnswer
-      for (var i = 0; i < $scope.threadReply.length; i++) {
-        var topic = $scope.threadReply[i].topic_id
-        console.log(topic)
+      $scope.reply = {
+        'description': $scope.replyAnswer
       }
-
-      $scope.threadReply.push({
-        id: 33333, topic_id: $scope.topic, post_id: 634567, description: answer, created_date: $scope.date
+      $scope.loading = true
+      courseQuestionsAdapter.replyThread($scope.thread.id, $scope.reply).then(function (result) {
+        $scope.loading = false
+        $scope.successMessage = false
+    			$timeout(function () {
+    				$scope.successMessage = true
+    			}, 3000)
+        $scope.loadQuestions()
+      }, function (err) {
+        $scope.loading = false
+        console.log('eeee', err)
       })
-      $scope.successMessage = false
-      $timeout(function () {
-        $scope.successMessage = true
-      }, 3000)
     }
   }]
 })

@@ -1,0 +1,20 @@
+{
+    "entities": [
+    {	
+    	"name": "cyclist_name",
+        "fields":
+        {
+            "id":
+            {
+                "type": "uuid",
+                "default":
+                {
+                    "$db_function": "uuid()"
+                }
+            },
+            "firstname": "text",
+            "lastname": "text"
+        },
+        "key": ["id"]
+    }]
+}
