@@ -11,3 +11,4 @@ dist/**
 node_modules/**
 coverage/**
 docs/**
+test/testData/testData.js
