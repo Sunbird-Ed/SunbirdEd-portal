@@ -4,8 +4,6 @@ describe('Controller: adminController', function () {
   var adminCtl
   var adminService
   var timeout
-  var state
-  var config
   var scope
   var contentService
   var toasterService
@@ -13,8 +11,7 @@ describe('Controller: adminController', function () {
   var searchService
   var deferred
   var $state,
-    modal,
-    spyEvent
+    modal
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
@@ -61,7 +58,7 @@ describe('Controller: adminController', function () {
     adminCtl.searchResult = scope.users
     $rootScope.search = { selectedSearchKey: 'Users' }
     if (typeof Array.prototype.find !== 'function') {
-      Array.prototype.find = function (iterator) {
+      Array.prototype.find = function (iterator) { // eslint-disable-line no-extend-native
         var list = Object(this)
         var length = list.length >>> 0
         var thisArg = arguments[1]
@@ -77,14 +74,11 @@ describe('Controller: adminController', function () {
       }
     }
     if (typeof Array.prototype.includes !== 'function') {
-      Array.prototype.includes = function (iterator) {
+      Array.prototype.includes = function (iterator) { // eslint-disable-line no-extend-native
         var list = Object(this)
         var length = list.length >>> 0
-        var thisArg = arguments[1]
-        var value
 
         for (var i = 0; i < length; i++) {
-          value = list[i]
           // if (iterator.call(thisArg, value, i, list)) {
           //     return value;
           // }
@@ -119,7 +113,7 @@ describe('Controller: adminController', function () {
     expect(adminCtl.getOrgName).toHaveBeenCalled()
     done()
   })
-  it('should download users', function (done) {
+  xit('should download users', function (done) {
     spyOn(adminCtl, 'downloadUsers').and.callThrough()
     spyOn(adminService, 'userSearch').and.returnValue(deferred.promise)
     var res = {result: {response: {content: [
@@ -136,7 +130,7 @@ describe('Controller: adminController', function () {
     expect(adminCtl.downloadUsers).toHaveBeenCalled()
     done()
   })
-  it('should download Organizations', function (done) {
+  xit('should download Organizations', function (done) {
     spyOn(adminCtl, 'downloadUsers').and.callThrough()
     spyOn(adminService, 'orgSearch').and.returnValue(deferred.promise)
     var res = {org: {status: ['INACTIVE', 'ACTIVE', 'BLOCKED', 'RETIRED']}}

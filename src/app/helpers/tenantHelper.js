@@ -4,6 +4,7 @@ const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
+const _ = require('lodash')
 
 module.exports = {
   getInfo: function (req, res) {
@@ -21,7 +22,7 @@ module.exports = {
       async.parallel({
         logo: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'logo.png'), function (err, stat) {
-            if (err) {
+            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
               fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'logo.png'), function (err, stat) {
                 if (err) {}
                 callback(null, stat)
@@ -33,7 +34,7 @@ module.exports = {
         },
         poster: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'poster.png'), function (err, stat) {
-            if (err) {
+            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
               fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'poster.png'), function (err, stat) {
                 if (err) {}
                 callback(null, stat)
@@ -45,7 +46,7 @@ module.exports = {
         },
         favicon: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'), function (err, stat) {
-            if (err) {
+            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
               fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'favicon.ico'),
                 function (err, stat) {
                   if (err) {}
@@ -58,7 +59,7 @@ module.exports = {
         },
         appLogo: function (callback) {
           fs.stat(path.join(__dirname, '../tenant', tenantId, 'appLogo.png'), function (err, stat) {
-            if (err) {
+            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
               fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'appLogo.png'),
                 function (err, stat) {
                   if (err) {}

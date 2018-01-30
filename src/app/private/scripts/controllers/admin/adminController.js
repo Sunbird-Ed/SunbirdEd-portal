@@ -75,7 +75,8 @@ angular.module('playerApp')
                 user.organisations.forEach(function (userOrg) {
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
                   // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
-                  if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 || _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
+                  if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 ||
+                   _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
                     user.isEditableProfile = true
                   }
                   var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -168,8 +169,9 @@ angular.module('playerApp')
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
           var organizations = JSON.parse(orgNullReplacedToEmpty)
           alasql('SELECT orgName AS orgName,orgType AS orgType,' +
-                        'noOfMembers AS noOfMembers,channel AS channel, ' +
-                        'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?', [organizations])
+          'noOfMembers AS noOfMembers,channel AS channel, ' +
+          'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
+          [organizations])
         }
       }
 
@@ -234,7 +236,7 @@ angular.module('playerApp')
             toasterService.error($rootScope.messages.fmsg.m0051)
           }
             }).catch(function(err) { // eslint-disable-line
-          profile.isError = true
+          // profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -301,7 +303,7 @@ angular.module('playerApp')
             toasterService.error(res.params.errmsg)
             admin.disableAsignButton = false
           }
-        }).catch(function (err) {
+        }).catch(function () {
           admin.disableAsignButton = false
           toasterService.error('Some thing went wrong. please try again later..')
         })

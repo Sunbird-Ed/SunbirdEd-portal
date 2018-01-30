@@ -35,7 +35,9 @@ angular.module('playerApp')
             'Collection',
             'TextBook',
             'LessonPlan',
-            'Resource'
+            'Resource',
+            'Story',
+            'Worksheet'
           ]
         }
         return restfulContentService.post(config.URL.CONTENT.SEARCH, req)
