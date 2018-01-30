@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('playerApp').service('courseQuestionsAdapter', ['$rootScope', '$http',
-  'httpAdapter', '$q',
-  function ($rootScope, $http, httpAdapter, $q) {
+  'httpAdapter', '$q', 'toasterService',
+  function ($rootScope, $http, httpAdapter, $q, toasterService) {
     this.getQuestions = function () {
       var data = ''
       return handleHttpRequest('/discussions/v1/list', data, 'GET',
@@ -31,8 +31,18 @@ angular.module('playerApp').service('courseQuestionsAdapter', ['$rootScope', '$h
       var deferred = $q.defer()
       var response = httpAdapter.httpCall(url, data, type)
       response.then(function (res) {
-        deferred.resolve(res)
+        if (res && res.responseCode === 'OK') {
+          deferred.resolve(res)
+        } else {
+          toasterService.error(errMsg)
+          deferred.reject(res)
+        }
       }, function (err) {
+        if (type === 'POST') {
+          toasterService.error('Error while submitting, please try again later')
+        } else if (type === 'GET') {
+          toasterService.error('Error while fetching, please try again later')
+        }
         deferred.reject(err)
       })
       return deferred.promise
