@@ -274,7 +274,7 @@ angular.module('playerApp')
             // move target focus to player
 
             // generate telemetry interact event//
-            toc.objRollup = [toc.courseId, contentId]
+            toc.objRollup = [contentId]
 
             toc.scrollToPlayer()
             toc.updateBreadCrumbs()
@@ -332,6 +332,7 @@ angular.module('playerApp')
             if ($location.hash().indexOf('tocPlayer') < 0) {
               var lastReadContentId = $stateParams.lastReadContentId || toc.courseContents[0].identifier
               toc.openContent(lastReadContentId)
+              toc.objRollup = [lastReadContentId]
             } else {
               var currentHash = $location.hash().toString().split('/')
               toc.openContent(currentHash[1])
@@ -342,8 +343,6 @@ angular.module('playerApp')
             sessionService.setSessionData('COURSE_PARAMS', params)
             $state.go('Toc', params)
           }
-          // generate telemetry interact event//
-          toc.objRollup = [toc.courseId]
         }
       }
 
@@ -381,64 +380,9 @@ angular.module('playerApp')
       // Restore default values onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
 
-      // telemetry start event data
-      toc.generateStartEvent = function () {
-        var contextData = {
-          env: 'course',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-        var objRollup = [toc.courseId]
-        var objectData = {
-          id: toc.courseId,
-          type: 'course',
-          ver: toc.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-        var data = {
-          edata: telemetryService.startEventData('course', 'course-read', 'play'),
-          contentId: toc.courseId,
-          contentVer: toc.version,
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.start(data)
-      }
-
-      /* --telemetry-end-event-- */
-      toc.generateEndEvent = function (itemId, itemType, pageId) {
-        var data = {
-          edata: telemetryService.endEventData(itemType, 'play', pageId),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.end(data)
-      }
-
       /* ---telemetry-interact-event-- */
-      toc.generateInteractEvent = function (itemId, itemType, edataId, pageId, objRollup) {
-        var contextData = {
-          env: 'course',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: itemId,
-          type: itemType,
-          ver: toc.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId, ''),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
+      toc.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+        telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
       }
-
-      /* window.addEventListener('unload', function() {
-
-      }) */
     }
   ])

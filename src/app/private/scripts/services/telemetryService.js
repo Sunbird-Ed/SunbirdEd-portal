@@ -154,7 +154,7 @@ angular.module('playerApp')
          * perams: {duration}
          */
     this.startEventData = function (type, pageid, mode, duration) {
-      const startEventData = {
+      var startEventData = {
         type: type,
         mode: mode,
         duration: duration,
@@ -173,7 +173,7 @@ angular.module('playerApp')
          * @param {array} summery
          */
     this.endEventData = function (type, pageid, mode, duration, summery) {
-      const endEventData = {
+      var endEventData = {
         type: type,
         mode: mode,
         duration: duration,
@@ -192,7 +192,7 @@ angular.module('playerApp')
          * @param {object} visits
          */
     this.impressionEventData = function (type, subtype, pageid, uri, visits) {
-      const impressionEventData = {
+      var impressionEventData = {
         type: type,
         subtype: subtype,
         pageid: pageid,
@@ -211,7 +211,7 @@ angular.module('playerApp')
          * @param {object} target
          */
     this.interactEventData = function (type, subtype, id, pageid, target) {
-      const interactEventData = {
+      var interactEventData = {
         type: type,
         subtype: subtype,
         id: id,
@@ -230,7 +230,7 @@ angular.module('playerApp')
          * @param {object} params
          */
     this.logEventData = function (type, level, message, pageid, params) {
-      const logEventData = {
+      var logEventData = {
         type: type,
         level: level,
         message: message,
@@ -249,7 +249,7 @@ angular.module('playerApp')
          * @param {object} errObject
          */
     this.errorEventData = function (err, errtype, stacktrace, pageid) {
-      const errorEventData = {
+      var errorEventData = {
         err: err,
         errtype: errtype,
         stacktrace: stacktrace,
@@ -260,7 +260,7 @@ angular.module('playerApp')
 
     /* for share item */
     this.getItemData = function (itemId, itemType, itemVer) {
-      const itemData = {
+      var itemData = {
         id: itemId,
         type: itemType,
         ver: itemVer
@@ -277,7 +277,7 @@ angular.module('playerApp')
          * @param {object} to
          */
     this.shareEventData = function (type, items, dir) {
-      const shareEventData = {
+      var shareEventData = {
         type: type,
         items: items,
         dir: dir
@@ -291,7 +291,7 @@ angular.module('playerApp')
          */
     this.getContextData = function (data) {
       data = data || {}
-      let contentObj = {}
+      var contentObj = {}
       contentObj.channel = data.channel || this.config.channel
       contentObj.pdata = this.config.pdata
       contentObj.env = data.env || this.config.env
@@ -307,11 +307,13 @@ angular.module('playerApp')
          */
     this.getObjectData = function (data) {
       data = data || {}
-      let object = {}
+      var object = {}
       object.id = data.id
       object.type = data.type
       object.ver = data.ver
-      object.rollup = data.rollup
+      if (data.rollup && Object.keys(data.rollup).length > 0) {
+        object.rollup = data.rollup
+      }
       return JSON.parse(JSON.stringify(object))
     }
 
@@ -321,11 +323,11 @@ angular.module('playerApp')
          * return rollup object
          */
     this.getRollUpData = function (data) {
-      let rollUp = {}
-      let i = 1
+      var rollUp = {}
+      var i = 1
       data = data || []
 
-      data.forEach(element => {
+      data.forEach(function (element) {
         rollUp['l' + i] = element
         i += 1
       })
@@ -346,5 +348,117 @@ angular.module('playerApp')
       } else {
         return this.config[key]
       }
+    }
+
+    this.interactTelemetryData = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+      var contextData = {
+        env: env,
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+      var objectData = {
+        id: objId,
+        type: objType,
+        ver: objVer,
+        rollup: this.getRollUpData(objRollup)
+      }
+
+      var data = {
+        edata: this.interactEventData('CLICK', '', edataId, pageId),
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+
+      this.interact(data)
+    }
+
+    this.impressionTelemetryData = function (env, objId, objType, objVer, subtype, pageId,
+      uri, objRollup) {
+      var contextData = {
+        env: env,
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+
+      var objectData = {
+        id: objId,
+        type: objType,
+        ver: objVer,
+        rollup: this.getRollUpData(objRollup)
+      }
+
+      var data = {
+        edata: this.impressionEventData('view', subtype, pageId, uri),
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      this.impression(data)
+    }
+
+    this.startTelemetryData = function (env, objId, objType, objVer, startContentType,
+      pageId, mode) {
+      var contextData = {
+        env: 'library',
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+
+      var objectData = {
+        id: objId,
+        type: objType,
+        ver: $rootScope.version
+      }
+      var data = {
+        edata: this.startEventData(startContentType, pageId, mode),
+        contentId: objId,
+        contentVer: $rootScope.version,
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      this.start(data)
+    }
+
+    this.shareTelemetryData = function (env, objId, objType, objVer) {
+      var contextData = {
+        env: env,
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+
+      var objectData = {
+        id: objId,
+        type: objType,
+        ver: objVer
+      }
+
+      var items = [this.getItemData(objId, objType, objVer)]
+
+      var data = {
+        edata: this.shareEventData('Link', items, 'Out'),
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      this.share(data)
+    }
+
+    this.errorTelemetryData = function (env, objType, objVer, errCode, errType,
+      stacktrace, pageId) {
+      var contextData = {
+        env: env,
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+      var objectData = {
+        id: $rootScope.userId,
+        type: objType,
+        ver: objVer
+      }
+
+      var data = {
+        edata: this.errorEventData(errCode, errType, stacktrace, pageId),
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      this.error(data)
     }
   }])

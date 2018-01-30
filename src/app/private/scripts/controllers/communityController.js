@@ -6,21 +6,9 @@ angular.module('playerApp')
     commCtrl.showDetail = false
 
     /**
-             * This function call to generate telemetry
+             * This service call to generate telemetry
              * on click of groups.
              */
-    commCtrl.generateImpressionEvent = function () {
-      var contextData = {
-        env: 'groups',
-        rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-      }
-      var data = {
-        edata: telemetryService.impressionEventData('view', 'scroll', 'groups-read', '/community', ''),
-        context: telemetryService.getContextData(contextData),
-        tags: $rootScope.organisationIds
-      }
-      telemetryService.impression(data)
-    }
-
-    commCtrl.generateImpressionEvent()
+    telemetryService.impressionTelemetryData('community', '', 'community', '1.0',
+      'scroll', 'group-read', '/community')
   }])

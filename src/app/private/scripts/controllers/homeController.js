@@ -84,24 +84,7 @@ angular.module('playerApp')
       }
 
       /* ---telemetry-interact-event-- */
-      homeCtrl.generateInteractEvent = function (itemId, itemType, edataId, pageId) {
-        var contextData = {
-          env: 'home',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: itemId,
-          type: itemType,
-          ver: '0.1'
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
+      homeCtrl.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+        telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
       }
     }])

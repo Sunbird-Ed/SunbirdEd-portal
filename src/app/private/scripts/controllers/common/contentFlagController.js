@@ -40,7 +40,8 @@ angular.module('playerApp')
 
       contentFlag.initializeModal = function () {
         contentFlag.showContentFlagModal = true
-        contentFlag.generateInteractEvent('course-flag', 'course-read', $scope.contentid)
+        telemetryService.interactTelemetryData($scope.type, $scope.contentid, $scope.type,
+          $rootScope.version, $scope.type + '-flag', $scope.type + '-read')
         $timeout(function () {
           $('#contentFlagModal').modal({
             onShow: function () {
@@ -99,31 +100,6 @@ angular.module('playerApp')
         } else {
           $state.go($scope.redirect)
         }
-      }
-
-      /**
-             * This function call to generate telemetry
-             * on click of share icon.
-             */
-      contentFlag.generateInteractEvent = function (edataId, pageId, itemId) {
-        var contextData = {
-          env: $scope.type,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: itemId,
-          type: edataId,
-          ver: '0.1'
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
       }
     }
   ])

@@ -280,45 +280,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     }
 
     // telemetry interact event
-    $rootScope.generateInteractEvent = function (id, pageId, env, objType) {
-      var contextData = {
-        env: env,
-        rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-      }
-      var objectData = {
-        id: '',
-        type: objType,
-        ver: '1.0'
-      }
-
-      var data = {
-        edata: telemetryService.interactEventData('CLICK', '', id, pageId),
-        context: telemetryService.getContextData(contextData),
-        object: telemetryService.getObjectData(objectData),
-        tags: $rootScope.organisationIds
-      }
-      telemetryService.interact(data)
-    }
-
-    // telemetry ERROR event
-    $rootScope.generateErrorEvent = function (errCode, errType, stacktrace, pageId, env) {
-      var contextData = {
-        env: env,
-        rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-      }
-      var objectData = {
-        id: $rootScope.userId,
-        type: 'user',
-        ver: '1.0'
-      }
-
-      var data = {
-        edata: telemetryService.errorEventData(errCode, errType, stacktrace, pageId),
-        context: telemetryService.getContextData(contextData),
-        object: telemetryService.getObjectData(objectData),
-        tags: $rootScope.organisationIds
-      }
-      telemetryService.error(data)
+    $rootScope.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+      telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
     }
 
     $scope.getBadges()

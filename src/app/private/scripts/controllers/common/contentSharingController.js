@@ -28,7 +28,8 @@ angular.module('playerApp')
 
       contentShare.initializeModal = function () {
         contentShare.showContentShareModal = true
-        contentShare.generateInteractEvent('share-course', 'course-read', contentShare.id)
+        telemetryService.interactTelemetryData($scope.type, contentShare.id, contentShare.type, $rootScope.version,
+          $scope.type + '-read', 'share-' + $scope.type)
         $timeout(function () {
           $('#contentShareModal').modal({
             onHide: function () {
@@ -41,7 +42,8 @@ angular.module('playerApp')
             contentShare.copyLink()
           })
         }, 1000)
-        contentShare.generateShareEvent(contentShare.id, contentShare.type)
+        telemetryService.shareTelemetryData($scope.type, contentShare.id, contentShare.type,
+          $rootScope.version)
       }
 
       contentShare.close = function () {
@@ -59,54 +61,5 @@ angular.module('playerApp')
             position: 'top center',
             color: '#4183c4'
           })
-      }
-
-      // telemetry event  for SHARE event
-      contentShare.generateShareEvent = function (itemId, itemType) {
-        var contextData = {
-          env: $scope.type,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: itemId,
-          type: itemType,
-          ver: '0.1'
-        }
-
-        var items = [telemetryService.getItemData(itemId, itemType, '0.1')]
-
-        var data = {
-          edata: telemetryService.shareEventData('Link', items, 'Out'),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.share(data)
-      }
-
-      /**
-             * This function call to generate telemetry
-             * on click of share icon.
-             */
-      contentShare.generateInteractEvent = function (edataId, pageId, itemId) {
-        var contextData = {
-          env: $scope.type,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: itemId,
-          type: contentShare.type,
-          ver: '0.1'
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
       }
     }])

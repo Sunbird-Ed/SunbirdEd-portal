@@ -57,7 +57,8 @@
             }
 
             /* -----------telemetry start event------------ */
-            cpvm.getTelemetryStartEvent()
+            telemetryService.startTelemetryData('library', $state.params.Id, 'library',
+              cpvm.version, 'collection', 'library-read', 'play')
           } else {
             cpvm.showError($rootScope.messages.emsg.m0004)
           }
@@ -177,30 +178,6 @@
         }
       }
 
-      cpvm.generateStartEvent = function () {
-        var contextData = {
-          env: 'collection',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objRollup = [$state.params.Id]
-        var objectData = {
-          id: $state.params.Id,
-          type: 'collection',
-          ver: cpvm.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-
-        var data = {
-          edata: telemetryService.startEventData('collection', 'Library', 'play'),
-          contentId: $state.params.Id,
-          contentVer: cpvm.version,
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.start(data)
-      }
       cpvm.loadData()
     }])
 }())

@@ -28,8 +28,10 @@ angular.module('playerApp')
         sessionService.setSessionData('COURSE_PARAMS', params)
         $rootScope.isPlayerOpen = true
         $state.go('Toc', params)
-        learn.generateInteractEvent('course', 'course-read', course.courseId)
-        learn.generateStartEvent(courseType, course.courseId)
+        telemetryService.interactTelemetryData('course', course.courseId, 'course',
+          $rootScope.version, 'course-read', 'course')
+        telemetryService.startTelemetryData('course', course.courseId, 'course',
+          $rootScope.version, 'course', 'course-read', 'play')
       }
 
       learn.courses = function () {
@@ -62,53 +64,5 @@ angular.module('playerApp')
         learn.enrolledCourses = $rootScope.enrolledCourses
       } else {
         learn.courses()
-      }
-
-      /**
-             * This function call to generate telemetry
-             * on click of Enroll Course.
-             */
-      learn.generateInteractEvent = function (edataId, pageId, courseId) {
-        var contextData = {
-          env: 'course',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: courseId,
-          type: edataId,
-          ver: $rootScope.version
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
-      }
-
-      // telemetry start event data
-      learn.generateStartEvent = function (objType, id) {
-        var contextData = {
-          env: 'library',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objectData = {
-          id: id,
-          type: objType,
-          ver: $rootScope.version
-        }
-        var data = {
-          edata: telemetryService.startEventData('library', 'library-read', 'play'),
-          contentId: id,
-          contentVer: $rootScope.version,
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.start(data)
       }
     }])
