@@ -164,8 +164,62 @@ class ThreadController {
 	replyThread(requestObj) {
 		return this.__postThread()(requestObj)
 	}
+	/**
+	 * create thread
+	 *
+	 * @return  {[type]} return transformed data
+	 */
+	likePost(requestObj) {
+		return this.__likePost()(requestObj)
+	}
 
+	/*
+	 *create thread flow
+	 *
+	 */
+	__likePost(requestObj) {
 
+		return async ((requestObj) => {
+			try {
+
+				let authUserToken = await (this.__getToken(requestObj))
+			//	console.log("likeData", authUserToken);
+				// validate request
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
+				if (userProfile) {
+					return new Promise((resolve, reject) => {
+						let likeData = {
+							userName: userProfile.userName,
+							id: requestObj.params.id,
+							actionTypeId: 2
+						}
+
+						this.threadService.likePost(likeData).then((threadResponse) => {
+							resolve({
+								id: threadResponse
+							})
+						}, function(error) {
+							reject({
+								error: error
+							})
+						})
+					})
+				} else {
+					return {
+						message: 'Unauthorized User',
+						status: HttpStatus.UNAUTHORIZED
+					}
+				}
+			} catch (error) {
+
+				return {
+					message: 'Error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}
+			}
+		})
+	}
 
 	/*
 	 *create thread flow
@@ -205,6 +259,7 @@ class ThreadController {
 					}
 				}
 			} catch (error) {
+				
 				return {
 					message: 'Error',
 					status: HttpStatus.INTERNAL_SERVER_ERROR
