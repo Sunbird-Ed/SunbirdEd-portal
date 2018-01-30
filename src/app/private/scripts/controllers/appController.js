@@ -69,6 +69,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $rootScope.avatar = profileData.avatar
       $rootScope.firstName = profileData.firstName
       $rootScope.lastName = profileData.lastName
+      $rootScope.userName = profileData.userName
       var userRoles = profileData.roles
       $rootScope.organisations = profileData.organisations
       $rootScope.profileCompleteness = profileData.completeness
