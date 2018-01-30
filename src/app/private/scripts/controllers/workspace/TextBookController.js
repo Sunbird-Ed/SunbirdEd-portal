@@ -18,7 +18,7 @@ angular.module('playerApp')
               var categoryMasterList = _.cloneDeep(res.result.framework.categories)
               _.forEach(categoryMasterList, function (category) {
                 textbook.categoryListofFramework[category.index] = category.terms || []
-                var categoryName = 'category_' + category.index
+                var categoryName = 'category' + category.index
                 textbook[categoryName] = category
                 textbook.categoryModelList[category.index] = category.code
               })
@@ -92,6 +92,7 @@ angular.module('playerApp')
         requestBody.mimeType = textbook.mimeType
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
+        requestBody.frameworkId = textbook.frameworkId
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }
@@ -127,10 +128,10 @@ angular.module('playerApp')
         return associations
       }
       textbook.updatedDependentCategory = function (categoryIndex, categoryVal) {
-        var category_1 = []
-        var category_2 = []
-        var category_3 = []
-        var category_4 = []
+        var category1 = []
+        var category2 = []
+        var category3 = []
+        var category4 = []
         var categoryList = textbook.categoryListofFramework[categoryIndex]
         var associations = textbook.getAssociations(categoryVal, categoryList)
         if (associations.length > 0) {
@@ -138,56 +139,56 @@ angular.module('playerApp')
             var catendex = _.findKey(textbook.categoryModelList, function (val, key) {
               return val === data.category
             })
-            var categoryName = 'category_' + catendex
+            var categoryName = 'category' + catendex
             switch (catendex) {
-              case '1':
-                $('.textbookmeta-category-1').dropdown('restore defaults')
-                category_1 = _.concat(data, category_1)
-                textbook[categoryName].terms = _.uniqWith(category_1, _.isEqual)
-                break
-              case '2':
-                $('.textbookmeta-category-2').dropdown('restore defaults')
-                category_2 = _.concat(data, category_2)
-                textbook[categoryName].terms = _.uniqWith(category_2, _.isEqual)
-                break
-              case '3':
-                $('.textbookmeta-category-3').dropdown('restore defaults')
-                category_3 = _.concat(data, category_3)
-                textbook[categoryName].terms = _.uniqWith(category_3, _.isEqual)
-                break
-              case '4':
-                $('.textbookmeta-category-4').dropdown('restore defaults')
-                category_4 = _.concat(data, category_4)
-                textbook[categoryName].terms = _.uniqWith(category_4, _.isEqual)
-                break
+            case '1':
+              $('.textbookmeta-category-1').dropdown('restore defaults')
+              category1 = _.concat(data, category1)
+              textbook[categoryName].terms = _.uniqWith(category1, _.isEqual)
+              break
+            case '2':
+              $('.textbookmeta-category-2').dropdown('restore defaults')
+              category2 = _.concat(data, category2)
+              textbook[categoryName].terms = _.uniqWith(category2, _.isEqual)
+              break
+            case '3':
+              $('.textbookmeta-category-3').dropdown('restore defaults')
+              category3 = _.concat(data, category3)
+              textbook[categoryName].terms = _.uniqWith(category3, _.isEqual)
+              break
+            case '4':
+              $('.textbookmeta-category-4').dropdown('restore defaults')
+              category4 = _.concat(data, category4)
+              textbook[categoryName].terms = _.uniqWith(category4, _.isEqual)
+              break
             }
           })
         } else {
           switch (categoryIndex) {
-            case '1':
-              setTimeout(function () {
-                $('.textbookmeta-category-2').dropdown('restore defaults')
-                $('.textbookmeta-category-3').dropdown('restore defaults')
-                $('.textbookmeta-category-4').dropdown('restore defaults')
-              }, 0)
-              textbook['category_2'] = textbook.getTemsByindex(2)
-              textbook['category_3'] = textbook.getTemsByindex(3)
-              textbook['category_4'] = textbook.getTemsByindex(4)
-              break
-            case '2':
-              setTimeout(function () {
-                $('.textbookmeta-category-3').dropdown('restore defaults')
-                $('.textbookmeta-category-4').dropdown('restore defaults')
-              }, 0)
-              textbook['category_3'] = textbook.getTemsByindex(3)
-              textbook['category_4'] = textbook.getTemsByindex(4)
-              break
-            case '3':
-              setTimeout(function () {
-                $('.textbookmeta-category-4').dropdown('restore defaults')
-              }, 0)
-              textbook['category_4'] = textbook.getTemsByindex(4)
-              break
+          case '1':
+            setTimeout(function () {
+              $('.textbookmeta-category-2').dropdown('restore defaults')
+              $('.textbookmeta-category-3').dropdown('restore defaults')
+              $('.textbookmeta-category-4').dropdown('restore defaults')
+            }, 0)
+            textbook['category2'] = textbook.getTemsByindex(2)
+            textbook['category3'] = textbook.getTemsByindex(3)
+            textbook['category4'] = textbook.getTemsByindex(4)
+            break
+          case '2':
+            setTimeout(function () {
+              $('.textbookmeta-category-3').dropdown('restore defaults')
+              $('.textbookmeta-category-4').dropdown('restore defaults')
+            }, 0)
+            textbook['category3'] = textbook.getTemsByindex(3)
+            textbook['category4'] = textbook.getTemsByindex(4)
+            break
+          case '3':
+            setTimeout(function () {
+              $('.textbookmeta-category-4').dropdown('restore defaults')
+            }, 0)
+            textbook['category4'] = textbook.getTemsByindex(4)
+            break
           }
         }
       }

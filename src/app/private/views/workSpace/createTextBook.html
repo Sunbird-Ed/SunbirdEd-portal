@@ -26,33 +26,33 @@
                         </div>
                         <div class="three fields">
                             <div class="field">
-                                <label for="category_1">{{textbook.category_1.name}}</label>
-                                <select id="textbookmeta-category-1" class="ui search dropdown placeholder-padding textbookmeta-category-1" ng-model="textbook.data[textbook.category_1.code]" ng-change="textbook.updatedDependentCategory('1', textbook.data[textbook.category_1.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_1.name})">
+                                <label for="category1">{{textbook.category1.name}}</label>
+                                <select id="textbookmeta-category-1" class="ui search dropdown placeholder-padding textbookmeta-category-1" ng-model="textbook.data[textbook.category1.code]" ng-change="textbook.updatedDependentCategory('1', textbook.data[textbook.category1.code]); generateTelemetry({type: 'change', subtype: 'select', target: category1.name})">
                                     <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category_1.terms">{{category.name}}</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category1.terms">{{category.name}}</option>
                                 </select>
                             </div>
                             <div class="field">
-                                <label for="category_2">{{textbook.category_2.name}}</label>
-                                <select id="textbookmeta-category-2" class="ui search dropdown textbookmeta-category-2" ng-model="textbook.data[textbook.category_2.code]" multiple="" ng-change="textbook.updatedDependentCategory('2', textbook.data[textbook.category_2.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_2.name})">
+                                <label for="category2">{{textbook.category2.name}}</label>
+                                <select id="textbookmeta-category-2" class="ui search dropdown textbookmeta-category-2" ng-model="textbook.data[textbook.category2.code]" multiple="" ng-change="textbook.updatedDependentCategory('2', textbook.data[textbook.category2.code]); generateTelemetry({type: 'change', subtype: 'select', target: category2.name})">
                                     <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category_2.terms">{{category.name}}</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category2.terms">{{category.name}}</option>
                                 </select>
                             </div>
                             <div class="field">
-                                <label for="category_3">{{textbook.category_3.name}}</label>
-                                <select id="textbookmeta-category-3" class="ui search dropdown placeholder-padding textbookmeta-category-3" ng-model="textbook.data[textbook.category_3.code]" ng-change="textbook.updatedDependentCategory('3', textbook.data[textbook.category_3.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_3.name})">
+                                <label for="category3">{{textbook.category3.name}}</label>
+                                <select id="textbookmeta-category-3" class="ui search dropdown placeholder-padding textbookmeta-category-3" ng-model="textbook.data[textbook.category3.code]" ng-change="textbook.updatedDependentCategory('3', textbook.data[textbook.category3.code]); generateTelemetry({type: 'change', subtype: 'select', target: category3.name})">
                                     <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category_3.terms">{{category.name}}</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category3.terms">{{category.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="three fields">
                             <div class="field">
-                                <label for="category_4">{{textbook.category_4.name}}</label>
-                                <select id="textbookmeta-category-4" class="ui search dropdown placeholder-padding textbookmeta-category-4" ng-model="textbook.data[textbook.category_4.code]" ng-change="textbook.updatedDependentCategory('4', textbook.data[textbook.category_4.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_4.name})">
+                                <label for="category4">{{textbook.category4.name}}</label>
+                                <select id="textbookmeta-category-4" class="ui search dropdown placeholder-padding textbookmeta-category-4" ng-model="textbook.data[textbook.category4.code]" ng-change="textbook.updatedDependentCategory('4', textbook.data[textbook.category4.code]); generateTelemetry({type: 'change', subtype: 'select', target: category4.name})">
                                     <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category_4.terms">{{category.name}}</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category4.terms">{{category.name}}</option>
                                 </select>
                             </div>
                             <div class="field">
