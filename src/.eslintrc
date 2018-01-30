@@ -12,7 +12,8 @@
         "qq": true,
         "testData": true,
         "EkTelemetry": true,
-        "inject": true
+        "inject": true,
+        "setFixtures": true
     },
     "rules": {
         "indent": ["error", 2],
