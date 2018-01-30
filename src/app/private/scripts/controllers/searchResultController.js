@@ -281,7 +281,9 @@ angular.module('playerApp').controller('SearchResultController', [
             'Collection',
             'TextBook',
             'LessonPlan',
-            'Resource'
+            'Resource',
+            'Story',
+            'Worksheet'
           ]
         }
         $scope.search.searchFn = searchService.contentSearch(req)

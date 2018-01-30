@@ -127,6 +127,14 @@
                   {
                     "key": "Resource",
                     "value": "Resource"
+                  },
+                  {
+                    "key": "Story",
+                    "value": "Story"
+                  },
+                  {
+                    "key": "Worksheet",
+                    "value": "Worksheet"
                   }
                 ],
                 "resourceType": [
