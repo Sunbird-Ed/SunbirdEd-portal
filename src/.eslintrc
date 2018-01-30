@@ -11,7 +11,8 @@
         "org": true,
         "qq": true,
         "testData": true,
-        "EkTelemetry": true
+        "EkTelemetry": true,
+        "inject": true
     },
     "rules": {
         "indent": ["error", 2],
