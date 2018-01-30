@@ -129,8 +129,6 @@ class ThreadService {
           formData.topic_id = threadData.topic_id
           formData.title = undefined
           isReply = true
-        } else {
-          formData.category = 33
         }
 
         let options = {
@@ -211,7 +209,8 @@ class ThreadService {
           id: res.id,
           title: res.title,
           description: description,
-          replies: posts
+          replies: posts,
+          created_at:res.created_at
         }
         resolve(threadData)
       })
