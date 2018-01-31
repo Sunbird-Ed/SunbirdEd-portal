@@ -327,10 +327,12 @@ angular.module('playerApp')
       var i = 1
       data = data || []
 
-      data.forEach(function (element) {
-        rollUp['l' + i] = element
-        i += 1
-      })
+      if (data.constructor === Array) {
+        data.forEach(function (element) {
+          rollUp['l' + i] = element
+          i += 1
+        })
+      }
       return rollUp
     }
 

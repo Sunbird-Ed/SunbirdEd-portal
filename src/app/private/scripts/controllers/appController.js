@@ -286,4 +286,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
 
     $scope.getBadges()
     $scope.getOrgTypes()
+
+    $window.onbeforeunload = function () {
+      document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }))
+    }
   }])
