@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', 'configService', 'permissionsService', '$timeout', 'telemetryService',
+    '$rootScope', '$scope', '$state', '$timeout', 'toasterService', 'PaginationService',
+    'workSpaceUtilsService', 'configService', 'permissionsService', 'telemetryService',
     function (contentService, searchService, config, $rootScope, $scope, $state, $timeout,
       toasterService, PaginationService, workSpaceUtilsService, configService, permissionsService, telemetryService) {
       var upForReviewContent = this
