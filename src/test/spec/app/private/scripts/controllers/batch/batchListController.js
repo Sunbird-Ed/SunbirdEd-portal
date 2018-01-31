@@ -11,29 +11,25 @@ describe('Controller:BatchListController', function () {
     })
   }))
 
-  var batchService,
-    userService,
-    PaginationService,
-    scope,
-    rootScope,
-    batch,
-    $q,
-    deferred,
-    timeout,
-    createContoller,
-    batchTestData = testData.batch
+  var batchService
+  var scope
+  var rootScope
+  var batch
+  var deferred
+  var createContoller
+  var batchTestData = testData.batch
+  var permissionsService
 
-    // Initialize the controller and a mock scope
+  // Initialize the controller and a mock scope
   beforeEach(inject(function ($rootScope, _$controller_, _batchService_, _userService_,
-    _PaginationService_, _$q_, _$timeout_) {
+    _PaginationService_, _$q_, _$timeout_, _permissionsService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    PaginationService = _PaginationService_
-    userService = _userService_
     batchService = _batchService_
-    $q = _$q_
-    timeout = _$timeout_
+    permissionsService = _permissionsService_
     deferred = _$q_.defer()
+    spyOn(permissionsService, 'getRoleOrgMap').and.returnValue({COURSE_MENTOR: ['ORG_001']})
+
     createContoller = function () {
       return new _$controller_('BatchListController', {
         $rootScope: rootScope,
@@ -48,6 +44,7 @@ describe('Controller:BatchListController', function () {
     deferred.resolve(batchTestData.batchlist)
     spyOn(batchService, 'getUserList').and.returnValue(deferred.promise)
     deferred.resolve(batchTestData.userData)
+
     spyOn(batch, 'listBatches').and.callThrough()
     batch.listBatches()
     scope.$apply()

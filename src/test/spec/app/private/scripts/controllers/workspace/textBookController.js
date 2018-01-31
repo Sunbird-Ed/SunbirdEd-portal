@@ -10,17 +10,20 @@ describe('Controller: TextBookController', function () {
   // load the controller's module
   beforeEach(module('playerApp'))
 
-  var contentService,
-    scope,
-    rootScope,
-    textBookController,
-    $q,
-    deferred,
-    timeout,
-    failedResponce = testData.createContent.failedResponce,
-    successResponce = testData.createContent.successResponce
+  var contentService
+  var searchService
+  var scope
+  var rootScope
+  var textBookController
+  var deferred
+  var timeout
+  var stateParams = { rootOrgId: 'ORG_001', frameworkId: 'NCF' }
+  var failedResponce = testData.createContent.failedResponce
+  var successResponce = testData.createContent.successResponce
+  var frameworkSuccessResponce = testData.frameworkApi.successResponce
+  var frameworkFailedResponce = testData.frameworkApi.failedResponce
 
-  beforeEach(inject(function ($rootScope, $controller) {
+  beforeEach(inject(function ($rootScope, $controller) { // eslint-disable-line no-undef
     $controller('AppCtrl', {
       $rootScope: $rootScope,
       $scope: $rootScope.$new()
@@ -28,23 +31,24 @@ describe('Controller: TextBookController', function () {
   }))
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, _contentService_, _$q_, _$timeout_) {
+  beforeEach(inject(function ($rootScope, $controller, _searchService_, _contentService_, _$q_, _$timeout_) { // eslint-disable-line no-undef
     rootScope = $rootScope
     scope = $rootScope.$new()
     contentService = _contentService_
-    $q = _$q_
+    searchService = _searchService_
     timeout = _$timeout_
     deferred = _$q_.defer()
 
     textBookController = $controller('TextBookController', {
       $rootScope: rootScope,
       $scope: scope,
-      contentService: contentService
+      contentService: contentService,
+      searchService: searchService
     })
   }))
 
   it('Initialize model', function () {
-    	spyOn(textBookController, 'initializeModal').and.callThrough()
+    spyOn(textBookController, 'initializeModal').and.callThrough()
     textBookController.initializeModal()
     expect(textBookController.showCreateTextBookModal).toBe(true)
     timeout.flush(10)
@@ -54,7 +58,7 @@ describe('Controller: TextBookController', function () {
     it('create service ', function () {
       var contentData = {
         content: {
-                	name: 'test textBook'
+          name: 'test textBook'
         }
       }
       spyOn(contentService, 'create').and.callThrough()
@@ -101,6 +105,48 @@ describe('Controller: TextBookController', function () {
       textBookController.saveMetaData(contentData)
       timeout.flush(2000)
       scope.$apply()
+    })
+
+    it('Should called channel api service', function () {
+      spyOn(searchService, 'getChannel').and.callThrough()
+      searchService.getChannel(stateParams.rootOrgId)
+      expect(searchService.getChannel).toBeDefined()
+    })
+
+    it('Should not call channel api service', function () {
+      stateParams.rootOrgId = ''
+      spyOn(searchService, 'getChannel').and.callThrough()
+      searchService.getChannel(stateParams.rootOrgId)
+      expect(searchService.getChannel).toBeDefined()
+    })
+
+    it('Should called framework api service', function () {
+      spyOn(searchService, 'getFramework').and.callThrough()
+      searchService.getFramework(stateParams.frameworkId)
+      expect(searchService.getFramework).toBeDefined()
+    })
+
+    it('Should not call framework api service', function () {
+      stateParams.frameworkId = ''
+      spyOn(searchService, 'getFramework').and.callThrough()
+      searchService.getFramework(stateParams.frameworkId)
+      expect(searchService.getChannel).toBeDefined()
+    })
+
+    it('Should get framework api service', function () {
+      spyOn(searchService, 'getFramework').and.returnValue(deferred.promise)
+      deferred.resolve(frameworkSuccessResponce)
+      scope.$apply()
+      var response = searchService.getFramework().$$state.value
+      expect(response.result).not.toBe(undefined)
+    })
+
+    it('Should not get framework api service', function () {
+      spyOn(searchService, 'getFramework').and.returnValue(deferred.promise)
+      deferred.resolve(frameworkFailedResponce)
+      scope.$apply()
+      var response = searchService.getFramework().$$state.value
+      expect(response.result).not.toBe(undefined)
     })
   })
 })
