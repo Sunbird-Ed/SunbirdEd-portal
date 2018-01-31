@@ -61,7 +61,7 @@ angular.module('playerApp')
             mode: 'Edit',
             contentStatus: 'draft',
             rules: {
-              levels: 3,
+              levels: 7,
               objectTypes: collectionEditor.getTreeNodes(data.type)
             },
             defaultTemplate: {}
@@ -155,7 +155,9 @@ angular.module('playerApp')
             childrenTypes: [
               'CourseUnit',
               'Collection',
-              'Resource'
+              'Resource',
+              'Story',
+              'Worksheet'
             ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
@@ -194,6 +196,28 @@ angular.module('playerApp')
             ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
           })
           return editorConfig
         case 'Collection':
@@ -204,7 +228,9 @@ angular.module('playerApp')
             editable: true,
             childrenTypes: [
               'Collection',
-              'Resource'
+              'Resource',
+              'Story',
+              'Worksheet'
             ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
@@ -230,6 +256,28 @@ angular.module('playerApp')
             ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
           })
           return editorConfig
         case 'LessonPlan':
@@ -241,7 +289,9 @@ angular.module('playerApp')
             childrenTypes: [
               'LessonPlanUnit',
               'Collection',
-              'Resource'
+              'Resource',
+              'Story',
+              'Worksheet'
             ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
@@ -280,6 +330,28 @@ angular.module('playerApp')
             ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
           })
           return editorConfig
         default:
@@ -291,7 +363,9 @@ angular.module('playerApp')
             childrenTypes: [
               'TextBookUnit',
               'Collection',
-              'Resource'
+              'Resource',
+              'Story',
+              'Worksheet'
             ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
@@ -323,6 +397,28 @@ angular.module('playerApp')
           {
             type: 'Resource',
             label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
             isRoot: false,
             editable: false,
             childrenTypes: [
