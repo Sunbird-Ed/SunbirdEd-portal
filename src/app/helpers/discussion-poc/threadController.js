@@ -334,11 +334,15 @@ class ThreadController {
 	__getThreads() {
 		return async ((requestObj) => {
 			try {
+				let authUserToken = await (this.__getToken(requestObj))
+				// validate request
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
 				// validate request
 				let userId = await (this.__getLoggedinUserId()(requestObj))
 				if (userId) {
 					return new Promise((resolve, reject) => {
-						this.threadService.getRecentThreads().then((threadResponse) => {
+						this.threadService.getRecentThreads(userProfile.userName).then((threadResponse) => {
 							resolve({
 								threads: threadResponse
 							})
@@ -370,11 +374,15 @@ class ThreadController {
 	__getThreadById() {
 		return async ((requestObj) => {
 			try {
+				let authUserToken = await (this.__getToken(requestObj))
+				// validate request
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
 				// validate request
 				let userId = await (this.__getLoggedinUserId()(requestObj))
 				if (userId) {
 					return new Promise((resolve, reject) => {
-						this.threadService.getThreadById(requestObj.params.id).then((threadResponse) => {
+						this.threadService.getThreadById(requestObj.params.id,userProfile.userName).then((threadResponse) => {
 							resolve({
 								thread: threadResponse
 							})
