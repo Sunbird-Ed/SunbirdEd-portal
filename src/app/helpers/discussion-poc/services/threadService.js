@@ -279,14 +279,16 @@ class ThreadService {
 				let res = JSON.parse(data.body)
 
 				let posts = res.post_stream.posts
-				let description = posts[0].cooked
+				let description = posts[0]
 				posts.splice(0, 1)
 				let threadData = {
 					id: res.id,
 					title: res.title,
-					description: description,
+					description: description.cooked,
 					replies: posts,
-					created_at: res.created_at
+					created_at: res.created_at,
+					created_by: res.details.created_by.username,
+					desId: description.id
 				}
 				resolve(threadData)
 			})
