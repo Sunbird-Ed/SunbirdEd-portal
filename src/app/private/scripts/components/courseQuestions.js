@@ -2,16 +2,16 @@
 
 angular.module('playerApp').component('courseQuestions', {
   templateUrl: 'views/course/courseQuestions.html',
-  controller: ['$scope', '$rootScope', '$timeout', 'courseQuestionsAdapter', function ($scope, $rootScope,
-    $timeout, courseQuestionsAdapter) {
-    console.log('username',$rootScope.userName)
+  controller: ['$scope', '$rootScope', '$timeout', 'courseQuestionsAdapter','$stateParams', function ($scope, $rootScope,
+    $timeout, courseQuestionsAdapter,$stateParams) {
+    console.log('username', $rootScope.userName)
     $scope.userName = $rootScope.userName
     $scope.successMessage = true
     $scope.date = new Date()
     $scope.loadQuestions = function () {
       $scope.loading = true
       $scope.widget = ''
-      courseQuestionsAdapter.getQuestions().then(function (data) {
+      courseQuestionsAdapter.getQuestions($stateParams.courseId).then(function (data) {
         $scope.loading = false
         $scope.widget = 'list-thread'
         $scope.thread = null
@@ -29,13 +29,41 @@ angular.module('playerApp').component('courseQuestions', {
     $scope.gotoThread = function (id) {
       $scope.changeWidget('reply-thread')
       $scope.loadThread(id)
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+
+$scope.loadReplyActions = function(replies){
+  $scope.replyActions = {};
+  _.forEach(replies,function(reply){
+var actions = _.filter(reply.actions_summary,function(action){
+  return action.can_act == true
+})
+$scope.replyActions[reply.id] = _.map(actions,'id')
+  })
+
+}
+
+$scope.showAction = function(replyId,actionTypeId){
+  return $scope.replyActions[replyId].indexOf(actionTypeId) >= 0
+}
+
+    $scope.actions = function (replyId,actionTypeId) {
+      courseQuestionsAdapter.actions(replyId,actionTypeId).then(function (result) {
+        if(result.response){
+          $scope.voteToggle = true;
+        }
+        console.log('data', result)
+      }, function (err) {
+        console.log('error while voting', err)
+      })
     }
 
-    $scope.upVote = function (replyId) {
-      console.log('inside upVote', replyId)
-      courseQuestionsAdapter.upVote(replyId).then(function (result) {
+    $scope.undoActions = function (actionId) {
+      courseQuestionsAdapter.undoActions(actionId).then(function (result) {
+        if(result.actionTypeId){
+          $scope.voteToggle = true;
+        }
         console.log('data', result)
-      }, function(err) {
+      }, function (err) {
         console.log('error while voting', err)
       })
     }
@@ -47,6 +75,7 @@ angular.module('playerApp').component('courseQuestions', {
         $scope.loading = false
         $scope.widget = 'reply-thread'
         console.log('data', data)
+        $scope.loadReplyActions(data.result.thread.replies)
         $scope.thread = data.result.thread
       }, function (err) {
         $scope.loading = false
@@ -56,6 +85,7 @@ angular.module('playerApp').component('courseQuestions', {
 
     $scope.formSubmit = function (isValid) {
       var obj = {
+        'contextId': $stateParams.courseId,
         'title': $scope.threadTitle,
         'description': $scope.threadDesc
       }
@@ -70,15 +100,16 @@ angular.module('playerApp').component('courseQuestions', {
 
     $scope.submitAnswer = function () {
       $scope.reply = {
+        'contextId': $stateParams.courseId,
         'description': $scope.replyAnswer
       }
       $scope.loading = true
       courseQuestionsAdapter.replyThread($scope.thread.id, $scope.reply).then(function (result) {
         $scope.loading = false
         $scope.successMessage = false
-    			$timeout(function () {
-    				$scope.successMessage = true
-    			}, 3000)
+        $timeout(function () {
+          $scope.successMessage = true
+        }, 3000)
         $scope.loadQuestions()
       }, function (err) {
         $scope.loading = false
