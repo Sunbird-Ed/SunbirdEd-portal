@@ -44,12 +44,18 @@ class ThreadService {
 			getOne: '/t/',
 			postThread: '/posts',
 			users: '/users',
-			likePost: '/post_actions'
+			postActions: '/post_actions'
 		}
 
 		this.apiAuth = {
 			apiKey: '3afbd4429b6a98e9a3d5b73d29fb7ce5e1e440a88a9bfd7deaf7fa2ff845ba3c',
 			apiUserName: 'loganathan'
+		}
+		this.actionTypes = {
+			'spam': 8,
+			'inappropriate': 4,
+			'offtopic': 3,
+			'other': 7
 		}
 	}
 
@@ -114,6 +120,63 @@ class ThreadService {
 		})
 	}
 
+
+	/*
+	 *create discourse topic
+	 *
+	 */
+	flagPost(flagData) {
+
+		return new Promise((resolve, reject) => {
+			this.createUserIfNotExists(flagData.userName).then((success) => {
+
+
+				let formData = {
+					api_key: this.apiAuth.apiKey,
+					api_username: flagData.userName,
+					id: flagData.id,
+					post_action_type_id: this.actionTypes[flagData.actionType],
+					message: flagData.messsage
+				}
+				let options = {
+					method: 'POST',
+					uri: this.discourseEndPoint + this.discourseUris.postActions,
+					form: formData
+				}
+				this.httpService.call(options).then((data) => {
+					let res = JSON.parse(data.body)
+					if (res.id) {
+						resolve(res.id)
+					} else {
+
+						reject(new AppError({
+							message: 'Discourse error',
+							status: HttpStatus.INTERNAL_SERVER_ERROR
+						}))
+					}
+				}, (error) => {
+						console.log("error ",error)
+					reject(new AppError({
+						message: 'Discourse error',
+						status: HttpStatus.INTERNAL_SERVER_ERROR
+					}))
+				})
+			}, (error) => {
+				console.log("error ",error)
+				reject(new AppError({
+					message: 'Discourse user creation error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}))
+			}).catch((error) => {
+				reject(new AppError({
+					message: 'Discourse user error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}))
+			})
+		})
+	}
+
+
 	/*
 	 *create discourse topic
 	 *
@@ -132,7 +195,7 @@ class ThreadService {
 				}
 				let options = {
 					method: 'POST',
-					uri: this.discourseEndPoint + this.discourseUris.likePost,
+					uri: this.discourseEndPoint + this.discourseUris.postActions,
 					form: formData
 				}
 				this.httpService.call(options).then((data) => {
