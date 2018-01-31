@@ -14,8 +14,7 @@ const API_IDS = {
   listthreads: 'list-threads',
   replythread: 'reply-thread',
   getthreadbyid: 'get-thread-by-id',
-  likepost:'like-post',
-  flagpost:'flag-post'
+  actions:'actions'
 }
 
 let threadController = new ThreadController({
@@ -104,7 +103,7 @@ function sendErrorResponse (res, id, message, httpCode = HttpStatus.BAD_REQUEST)
 }
 
 module.exports = function (keycloak) {
-  router.get('/list/', (requestObj, responseObj, next) => {
+  router.get('/list/:contextId', (requestObj, responseObj, next) => {
     threadController.getThreads(requestObj)
       .then((data) => {
         sendSuccessResponse(responseObj, API_IDS.listthreads, data, HttpStatus.OK)
@@ -140,24 +139,16 @@ module.exports = function (keycloak) {
         sendErrorResponse(responseObj, API_IDS.replythread, err.message, err.status)
       })
   })
-  router.post('/thread/likepost/:id', (requestObj, responseObj, next) => {
-    threadController.likePost(requestObj)
+  router.post('/thread/actions/:id', (requestObj, responseObj, next) => {
+    threadController.postActions(requestObj)
       .then((data) => {
-        sendSuccessResponse(responseObj, API_IDS.likepost, data, HttpStatus.OK)
+        sendSuccessResponse(responseObj, API_IDS.actions, data, HttpStatus.OK)
       })
       .catch((err) => {
-        sendErrorResponse(responseObj, API_IDS.likepost, err.message, err.status)
+        sendErrorResponse(responseObj, API_IDS.actions, err.message, err.status)
       })
   })
-  router.post('/thread/flag/:id', (requestObj, responseObj, next) => {
-    threadController.flagPost(requestObj)
-      .then((data) => {
-        sendSuccessResponse(responseObj, API_IDS.flagpost, data, HttpStatus.OK)
-      })
-      .catch((err) => {
-        sendErrorResponse(responseObj, API_IDS.flagpost, err.message, err.status)
-      })
-  })
+
   return router
 }
 // module.exports = router

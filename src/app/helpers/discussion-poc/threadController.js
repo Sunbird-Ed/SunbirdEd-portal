@@ -153,6 +153,7 @@ class ThreadController {
 	 * @return  {[type]} return transformed data
 	 */
 	createThread(requestObj) {
+		requestObj.topic = true;
 		return this.__postThread()(requestObj)
 	}
 
@@ -169,92 +170,35 @@ class ThreadController {
 	 *
 	 * @return  {[type]} return transformed data
 	 */
-	likePost(requestObj) {
-		return this.__likePost()(requestObj)
+	postActions(requestObj) {
+		return this.__postActions()(requestObj)
 	}
-	/**
-	 * create thread
-	 *
-	 * @return  {[type]} return transformed data
-	 */
-	flagPost(requestObj) {
-		return this.__flagPost()(requestObj)
-	}
+
+
+
 
 
 	/*
 	 *create thread flow
 	 *
 	 */
-	__flagPost(requestObj) {
-
+	__postActions(requestObj) {
 		return async ((requestObj) => {
 			try {
 
 				let authUserToken = await (this.__getToken(requestObj))
-			//	console.log("likeData", authUserToken);
-				// validate request
+
 				let userProfile = await (this.__getUserProfile(authUserToken))
 
 				if (userProfile) {
 					return new Promise((resolve, reject) => {
-						let flagData = {
+						let actionData = {
 							userName: userProfile.userName,
 							id: requestObj.params.id,
-							actionType: requestObj.body.actionType,
-							message:requestObj.body.message
+							actionTypeId: requestObj.body.actionTypeId
 						}
 
-						this.threadService.flagPost(flagData).then((threadResponse) => {
-							resolve({
-								id: threadResponse
-							})
-						}, function(error) {
-							reject({
-								error: error
-							})
-						})
-					})
-				} else {
-					return {
-						message: 'Unauthorized User',
-						status: HttpStatus.UNAUTHORIZED
-					}
-				}
-			} catch (error) {
-
-				return {
-					message: 'Error',
-					status: HttpStatus.INTERNAL_SERVER_ERROR
-				}
-			}
-		})
-	}
-
-
-	/*
-	 *create thread flow
-	 *
-	 */
-	__likePost(requestObj) {
-
-		return async ((requestObj) => {
-			try {
-
-				let authUserToken = await (this.__getToken(requestObj))
-			//	console.log("likeData", authUserToken);
-				// validate request
-				let userProfile = await (this.__getUserProfile(authUserToken))
-
-				if (userProfile) {
-					return new Promise((resolve, reject) => {
-						let likeData = {
-							userName: userProfile.userName,
-							id: requestObj.params.id,
-							actionTypeId: 2
-						}
-
-						this.threadService.likePost(likeData).then((threadResponse) => {
+						this.threadService.postActions(actionData).then((threadResponse) => {
 							resolve({
 								id: threadResponse
 							})
@@ -296,11 +240,14 @@ class ThreadController {
 						let threadData = {
 							userName: userProfile.userName,
 							title: requestObj.body.title,
-							description: requestObj.body.description
+							description: requestObj.body.description,
+							contextId : requestObj.body.contextId
 						}
+
 						if (requestObj.params.id) {
 							threadData.topic_id = requestObj.params.id
 						}
+
 						this.threadService.postThread(threadData).then((threadResponse) => {
 							resolve({
 								id: threadResponse
@@ -342,7 +289,7 @@ class ThreadController {
 				let userId = await (this.__getLoggedinUserId()(requestObj))
 				if (userId) {
 					return new Promise((resolve, reject) => {
-						this.threadService.getRecentThreads(userProfile.userName).then((threadResponse) => {
+						this.threadService.getRecentThreads(userProfile.userName,requestObj.params.contextId).then((threadResponse) => {
 							resolve({
 								threads: threadResponse
 							})
