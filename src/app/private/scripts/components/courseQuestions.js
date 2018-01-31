@@ -4,6 +4,8 @@ angular.module('playerApp').component('courseQuestions', {
   templateUrl: 'views/course/courseQuestions.html',
   controller: ['$scope', '$rootScope', '$timeout', 'courseQuestionsAdapter', function ($scope, $rootScope,
     $timeout, courseQuestionsAdapter) {
+    console.log('username',$rootScope.userName)
+    $scope.userName = $rootScope.userName
     $scope.successMessage = true
     $scope.date = new Date()
     $scope.loadQuestions = function () {
@@ -27,6 +29,15 @@ angular.module('playerApp').component('courseQuestions', {
     $scope.gotoThread = function (id) {
       $scope.changeWidget('reply-thread')
       $scope.loadThread(id)
+    }
+
+    $scope.upVote = function (replyId) {
+      console.log('inside upVote', replyId)
+      courseQuestionsAdapter.upVote(replyId).then(function (result) {
+        console.log('data', result)
+      }, function(err) {
+        console.log('error while voting', err)
+      })
     }
 
     $scope.loadThread = function (threadId) {

@@ -87,6 +87,7 @@
 				<div class="metadata">
 					<i class="large user icon"></i>
 					<div class="date">{{reply.created_at | date : longdate}}</div>
+					<div ng-if="$parent.userName!= reply.username" class="cursor-pointer" ng-click="upVote(reply.id)"><i class="large thumbs up icon"></i></div>
 				</div>
 				<div class="text" ng-bind-html="reply.cooked">
 				</div>
