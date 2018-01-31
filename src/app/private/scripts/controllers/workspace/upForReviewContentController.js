@@ -95,53 +95,17 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of review content.
              */
-      upForReviewContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
-        var contextData = {
-          env: env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
 
-        var objRollup = ''
-        if (contentId !== '') {
-          objRollup = [contentId]
-        }
-
-        var objectData = {
-          id: contentId,
-          type: edataId,
-          ver: upForReviewContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
+      upForReviewContent.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+        telemetryService.interactTelemetryData('workspace', $rootScope.userId, 'workspace',
+          upForReviewContent.version, 'workspace-content-upforreview', 'upforreview')
       }
 
       // telemetry impression event//
-      upForReviewContent.generateImpressionEvent = function (type, subtype, pageId, url) {
-        var contextData = {
-          env: 'workspace',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-        var objRollup = [$rootScope.userId]
-        var objectData = {
-          id: $rootScope.userId,
-          type: 'uploadedContent',
-          ver: upForReviewContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-        var data = {
-          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.impression(data)
+      upForReviewContent.generateImpressionEvent = function (env, objId, objType, objVer, subtype, pageId,
+      uri, objRollup) {
+        telemetryService.impressionTelemetryData('workspace', $rootScope.userId, 'workspace',
+          upForReviewContent.version, 'scroll','workspace-content-upforreview', 'upforreview')
       }
     }
   ])
