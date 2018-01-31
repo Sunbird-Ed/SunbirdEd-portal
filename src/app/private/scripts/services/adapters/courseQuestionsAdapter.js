@@ -3,9 +3,9 @@
 angular.module('playerApp').service('courseQuestionsAdapter', ['$rootScope', '$http',
   'httpAdapter', '$q', 'toasterService',
   function ($rootScope, $http, httpAdapter, $q, toasterService) {
-    this.getQuestions = function () {
+    this.getQuestions = function (contextId) {
       var data = ''
-      return handleHttpRequest('/discussions/v1/list', data, 'GET',
+      return handleHttpRequest('/discussions/v1/list/'+ contextId, data, 'GET',
         'Error while loading questions, please try again later')
     }
     this.getQuestionById = function (threadId) {
@@ -27,10 +27,18 @@ angular.module('playerApp').service('courseQuestionsAdapter', ['$rootScope', '$h
         'Error while posting your reply, please try again later')
     }
 
-    this.upVote = function (replyId) {
+    this.actions = function (replyId,actionTypeId) {
+      var data = {
+        'actionTypeId':actionTypeId
+      }
+      return handleHttpRequest('/discussions/v1/thread/actions/' + replyId, data, 'POST',
+        'Error while up voting, please try again')
+    }
+
+    this.undoActions = function (actionTypeId) {
       var data = {}
-      return handleHttpRequest('/discussions/v1/thread/likepost/'+replyId,data,'POST',
-        'Error while voting, please try again')
+      return handleHttpRequest('/discussions/v1/thread/undoActions/' + actionTypeId, data, 'POST',
+        'Error while down voting, please try again')
     }
 
     function handleHttpRequest (url, data, type, errMsg) {

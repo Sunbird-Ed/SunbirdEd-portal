@@ -3671,3 +3671,6 @@ html {
     position: absolute;
     margin-top: 5px;
 }
+.custom-vote-icon:hover {
+  color: #009fda;
+}
