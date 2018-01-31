@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', 'permissionsService', 'telemetryService',
-    function (contentService, searchService, config, $rootScope, $scope, $state,
-      toasterService, PaginationService, workSpaceUtilsService, permissionsService, telemetryService) {
+    'workSpaceUtilsService', 'configService', 'permissionsService', '$timeout', 'telemetryService',
+    function (contentService, searchService, config, $rootScope, $scope, $state, $timeout,
+      toasterService, PaginationService, workSpaceUtilsService, configService, permissionsService, telemetryService) {
       var upForReviewContent = this
       upForReviewContent.filterDropDown = configService.getWorkspaceUpforReviewdrpdwn()
       upForReviewContent.userId = $rootScope.userId
@@ -252,11 +252,12 @@ angular.module('playerApp')
 
       // telemetry impression event//
       upForReviewContent.generateImpressionEvent = function (env, objId, objType, objVer, subtype, pageId,
-      uri, objRollup) {
+        uri, objRollup) {
         telemetryService.impressionTelemetryData('workspace', $rootScope.userId, 'workspace',
-          upForReviewContent.version, 'scroll','workspace-content-upforreview', 'upforreview')
+          upForReviewContent.version, 'scroll', 'workspace-content-upforreview', 'upforreview',
+          'workspace/content/upForReview')
       }
-      
+
       upForReviewContent.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
         var ct = _.filter(contentTypes, function (contentType) {
           return contentType.key === selectedContentType

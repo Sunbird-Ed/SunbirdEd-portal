@@ -112,8 +112,9 @@ angular.module('playerApp')
                 }
               })
 
+              telemetryService.impressionTelemetryData(env, successResponse.identifier, itemType,
+                $rootScope.version, 'scroll', itemType + '-read', itemType, url)
               section.loader.showLoader = false
-              section.generateImressionEvent(itemType, itemType + '-read', url, env)
               if (section.page.length === 0) {
                 section.error = showErrorMessage(true,
                   $rootScope.messages.stmsg.m0006,
