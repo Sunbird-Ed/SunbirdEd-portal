@@ -5,8 +5,8 @@
 		</div>
 		<div class="text-align-right">
 			<a class="cursor-pointer" ng-click="changeWidget('create-thread')">
-                <i class="large add circle icon"></i>
-            </a>
+				<i class="large add circle icon"></i>
+			</a>
 		</div>
 	</div>
 	<div class="ui section divider"></div>
@@ -14,16 +14,24 @@
 		<div class="item" ng-repeat="thread in threads">
 			<div class="content">
 				<a ng-click="gotoThread(thread.id)" class="header quesHeading">{{thread.title}}</a>
+				<div class="ui comments">
+					<div class="right floated column comment">
+						<div class="metadata">
+							<div class="right aligned column date">{{thread.created_at | date : longdate}}&nbsp;</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		<div class="content description" ng-if="threads.length == 0">No Questions added</div>
 	</div>
 </div>
 <div ng-if="widget=='create-thread' && !loading" class="ui segment">
 	<div class="ui top padded grid">
 		<div class="text-align-left">
 			<a class="cursor-pointer" ng-click="changeWidget('list-thread')">
-                <i class="large arrow left icon"></i>
-            </a>
+				<i class="large arrow left icon"></i>
+			</a>
 		</div>
 		<div class="cardsHeading">
 			Post a question
@@ -71,25 +79,82 @@
 	<div class="ui top padded grid">
 		<div class="text-align-left">
 			<a class="cursor-pointer go-back-arrow" ng-click="loadQuestions()">
-                <i class="large arrow left icon"></i>
-            </a>
+				<i class="large arrow left icon"></i>
+			</a>
 		</div>
 		<div class="cardsHeading">
 			{{thread.title}}
 		</div>
 		<div class="content description" ng-bind-html="thread.description">
 		</div>
+		<div class="ui comments">
+			<div class="comment">
+				<div class="content">
+					<div class="metadata">
+						<span>{{thread.created_by}} | </span>
+						<div title="like" ng-if="$parent.userName!= reply.username" class="cursor-pointer" ng-click="upVote(thread.id)">
+							<i class="custom-vote-icon thumbs up icon"></i>
+						</div>
+						<div title="dislike" ng-if="$parent.userName!= reply.username" class="cursor-pointer" ng-click="downVote(thread.id)">
+							<i class="custom-vote-icon thumbs down icon"></i>
+						</div>
+						<div class="text-align-right">
+						<div class="date">{{thread.created_at | date : longdate}}</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="ui divider"></div>
 	<div class="ui comments">
-		<div class="comment">
-			<div class="content" ng-repeat="reply in thread.replies">
+		<div class="comment" ng-repeat="reply in thread.replies">
+			<div class="content" >
 				<div class="metadata">
-					<i class="large user icon"></i>
-					<div class="date">{{reply.created_at | date : longdate}}</div>
+					<i class="user icon"></i>
+					<span>{{reply.username}} | </span>
+					<div title="like" ng-if="showAction(reply.id,2) == 'can_act'"  class="cursor-pointer" ng-click="actions(reply.id,2)">
+						<i class="custom-vote-icon thumbs up icon"></i>
+					</div>
+					<div title="undo like" ng-if="showAction(reply.id,2) == 'acted'"  class="cursor-pointer" ng-click="undoActions(reply.id,2)">
+						<i class="custom-vote-icon thumbs up blue icon"></i>
+					</div>
+					<div title="dislike" ng-if="showAction(reply.id,5) == 'can_act'" class="cursor-pointer" ng-click="actions(reply.id,5)">
+						<i class="custom-vote-icon thumbs down icon"></i>
+					</div>
+<<<<<<< HEAD
+						 <div class="flag cursor-pointer" ng-click="flagAnswer(reply.id)" title="Flas as spam"><i class="flag icon"></i></div>	 
+=======
+
+					<div title="undo dislike" ng-if="showAction(reply.id,5) == 'acted'" class="cursor-pointer" ng-click="undoActions(reply.id,5)">
+						<i class="custom-vote-icon thumbs down blue icon"></i>
+					</div>
+					<div title="flag as spam" ng-if="showAction(reply.id,8) == 'can_act'" class="cursor-pointer" ng-click="actions(reply.id,8)">
+						<i class="custom-vote-icon flag icon"></i>
+					</div>
+
+					<div title="undo spam" ng-if="showAction(reply.id,8) == 'acted'" class="cursor-pointer" ng-click="undoActions(reply.id,8)">
+						<i class="custom-vote-icon flag blue icon"></i>
+					</div>
+					<div title="Mark as Right Answer" ng-if="$parent.userName!= thread.created_by && !reply.accepted_answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,false)">
+						<i class="custom-vote-icon checkmark icon"></i>
+					</div>
+					<div title="Undo Marked" ng-if="$parent.userName!= thread.created_by && reply.accepted_answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,true)">
+						<i class="custom-vote-icon checkmark blue icon"></i>
+					</div>
+
+>>>>>>> 25d7a08b26451db5cfdb9553c32c97bf21d021dc
+					<div class="text-align-right">
+						<div class="date">{{reply.created_at | date : longdate}}</div>
+					</div>
+
 				</div>
 				<div class="text" ng-bind-html="reply.cooked">
 				</div>
+				<div class="actions">            
+	                 <a class="markCorrect" ng-click="markCorrect(reply.user_id)" title="Mark as correct answer" ng-if="reply.user_id == '5001'" ng-hide="selectedAnswer">Mark as correct answer </a> <i ng-if="selectedAnswer" ng-click="unMarkCorrect(reply.user_id)" class="check circle outline icon ui green"></i>	      
+	          </div>
+				
 			</div>
 		</div>
 
@@ -113,8 +178,8 @@
 			</div>
 			<div class="text-align-right">
 				<button type="submit" class="ui primary submit labeled icon button" ng-disabled="answerForm.$invalid">
-          <i class="icon edit"></i> Add Answer
-        </button>
+					<i class="icon edit"></i> Add Answer
+				</button>
 			</div>
 		</form>
 	</div>
