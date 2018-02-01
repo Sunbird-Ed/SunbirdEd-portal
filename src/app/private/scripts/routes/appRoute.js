@@ -1,5 +1,4 @@
 'use strict'
-
 angular.module('playerApp')
   .config(function ($stateProvider, $urlRouterProvider, $qProvider) {
     $qProvider.errorOnUnhandledRejections(false) // To handle error rejection
@@ -22,16 +21,24 @@ angular.module('playerApp')
             controller: 'HomeController as homeCtrl'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.homeActive = 'active'
-          portalTelemetryService.fireImpressions({
+          var contextData = {
             env: 'home',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_Home',
-            id: '',
-            name: '',
-            url: '/private/index#!/home'
-          })
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objectData = {
+            id: $rootScope.userId,
+            type: 'home',
+            ver: '1.0'
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'home', '/home'),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
           routeHelperService.loadRouteConfig('Home', null)
         },
         onExit: function ($rootScope) {
@@ -46,15 +53,7 @@ angular.module('playerApp')
             controller: 'userContentCtrl as userContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_UserContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content'
-          })
+        onEnter: function () {
         }
       })
       .state('Courses', {
@@ -65,20 +64,12 @@ angular.module('playerApp')
             controller: 'LearnCtrl as learn'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.isLearnPage = true
           $rootScope.courseActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'course',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_Courses',
-            id: '',
-            name: '',
-            url: '/private/index#!/learn'
-          })
           routeHelperService.loadRouteConfig('Courses')
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
           $rootScope.courseActive = ''
           $rootScope.isLearnPage = false
         },
@@ -93,19 +84,10 @@ angular.module('playerApp')
             templateUrl: '/views/resource/resource.html'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, routeHelperService) {
           $rootScope.isResourcesPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Resources')
-          // filters section -- ends
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_Resources',
-            id: '',
-            name: '',
-            url: '/private/index#!/resources'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.isResourcesPage = false
@@ -123,17 +105,9 @@ angular.module('playerApp')
             controller: 'NoteListCtrl as noteList'
           }
         },
-        onEnter: function ($stateParams, $rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.isNotePage = true
           $rootScope.courseActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'notes',
-            type: 'detail',
-            pageid: org.sunbird.portal.appid + '_CourseNote',
-            id: '',
-            name: '',
-            url: '/private/index#!/course/note/' + $stateParams.courseId
-          })
           routeHelperService.loadRouteConfig('CourseNote', $stateParams)
         },
         onExit: function ($rootScope) {
@@ -149,18 +123,10 @@ angular.module('playerApp')
             controller: 'NoteListCtrl as noteList'
           }
         },
-        onEnter: function ($rootScope, $stateParams, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, $stateParams, routeHelperService) {
           $rootScope.isNotePage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('ContentNote', $stateParams)
-          portalTelemetryService.fireImpressions({
-            env: 'notes',
-            type: 'detail',
-            pageid: org.sunbird.portal.appid + '_ContentNote',
-            id: $stateParams.contentId,
-            name: $stateParams.contentName,
-            url: '/private/index#!/resource/note/' + $stateParams.contentId + '/' + $stateParams.contentName
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -175,18 +141,10 @@ angular.module('playerApp')
             controller: 'NoteListCtrl as noteList'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, $stateParams, routeHelperService) {
           routeHelperService.loadRouteConfig('CourseContentNote', $stateParams)
           $rootScope.isNotePage = true
           $rootScope.courseActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'notes',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_CourseContentNote',
-            id: $stateParams.contentId,
-            name: '',
-            url: '/private/index#!/note/' + $stateParams.courseId + '/' + $stateParams.contentId
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -201,24 +159,33 @@ angular.module('playerApp')
             controller: 'courseScheduleCtrl as toc'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, $stateParams, routeHelperService) {
           $rootScope.isTocPage = true
           $rootScope.courseActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'course',
-            type: 'detail',
-            pageid: org.sunbird.portal.appid + '_Toc',
-            id: '',
-            name: '',
-            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView
-          })
           routeHelperService.loadRouteConfig('Toc', $stateParams)
         },
-        onExit: function ($rootScope, dataService) {
+        onExit: function ($rootScope, dataService, telemetryService) {
           $rootScope.isTocPage = false
           $rootScope.courseActive = ''
           dataService.setData('contentStateInit', false)
           dataService.setData('isTrackingEnabled', false)
+          var contextData = {
+            env: 'course',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+
+          var objectData = {
+            id: $rootScope.courseId,
+            type: 'course',
+            ver: '1.0'
+          }
+          var data = {
+            edata: telemetryService.endEventData('course', 'play', 'course-read'),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.end(data)
         }
       })
       .state('Community', {
@@ -229,15 +196,7 @@ angular.module('playerApp')
             controller: 'CommunityController as commCtrl'
           }
         },
-        onEnter: function (portalTelemetryService, routeHelperService) {
-          portalTelemetryService.fireImpressions({
-            env: 'community',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_Community',
-            id: '',
-            name: '',
-            url: '/private/index#!/community'
-          })
+        onEnter: function (telemetryService, routeHelperService, $rootScope) {
           routeHelperService.loadRouteConfig('Community')
         }
       })
@@ -249,17 +208,9 @@ angular.module('playerApp')
             controller: 'ProfileController as profileCtrl'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('Profile')
-          portalTelemetryService.fireImpressions({
-            env: 'profile',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_Profile',
-            id: '',
-            name: '',
-            url: '/private/index#!/profile'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -278,22 +229,32 @@ angular.module('playerApp')
           contentId: null,
           contentName: null
         },
-        onEnter: function ($rootScope, $stateParams, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, $stateParams, routeHelperService) {
           $rootScope.isPlayerPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Player', $stateParams)
-          portalTelemetryService.fireImpressions({
-            env: 'player',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_Player',
-            id: $stateParams.contentId,
-            name: $stateParams.contentName,
-            url: '/private/index#!/content/' + $stateParams.contentId + '/' + $stateParams.contentName
-          })
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
           $rootScope.resourcesActive = ''
+          var contextData = {
+            env: 'library',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objRollup = [$rootScope.courseId]
+          var objectData = {
+            id: $rootScope.courseId,
+            type: $rootScope.contentType,
+            ver: '1.0',
+            rollup: telemetryService.getRollUpData(objRollup)
+          }
+          var data = {
+            edata: telemetryService.endEventData('lirary', 'play', 'library-read'),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.end(data)
         }
       })
       .state('Search', {
@@ -311,7 +272,7 @@ angular.module('playerApp')
           sort: null,
           autoSuggestSearch: null
         },
-        onEnter: function ($rootScope, portalTelemetryService, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, $stateParams, routeHelperService) {
           $rootScope.isSearchResultsPage = true
           routeHelperService.loadRouteConfig('Search', $stateParams)
           if ($stateParams.type === 'Courses') {
@@ -325,15 +286,18 @@ angular.module('playerApp')
           } else {
             $rootScope.homeActive = 'active'
           }
-          portalTelemetryService.fireImpressions({
-            env: 'course',
-            type: 'search',
-            pageid: org.sunbird.portal.appid + '_SearchCourse',
-            id: '',
-            name: '',
-            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' +
-            $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
-          })
+          var contextData = {
+            env: 'search',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var pageId = $stateParams.type.toLowerCase() + '-search'
+          var uri = '/search/' + $stateParams.type
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.courseActive = $rootScope.resourcesActive = ''
@@ -350,23 +314,45 @@ angular.module('playerApp')
             controller: 'courseScheduleCtrl as toc'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, $stateParams,
+          routeHelperService, telemetryService) {
           routeHelperService.loadRouteConfig('TocPlayer', $stateParams)
           $rootScope.isTocPage = true
           $rootScope.courseActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'player',
-            type: 'detail',
-            pageid: org.sunbird.portal.appid + '_TocPlayer',
-            id: '',
-            name: '',
-            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' +
+          var url = '/private/index#!/course/' + $stateParams.courseId + '/' +
+          $stateParams.lectureView + '/' +
             $stateParams.contentId + '/' + $stateParams.contentIndex
-          })
+          var contextData = {
+            env: 'course',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'course-read', url),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
-        onExit: function ($rootScope, dataService) {
+        onExit: function ($rootScope, dataService, telemetryService) {
           $rootScope.isTocPage = false
           $rootScope.courseActive = ''
+          var contextData = {
+            env: 'course',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+
+          var objectData = {
+            id: $rootScope.courseId,
+            type: 'course',
+            ver: '1.0'
+          }
+          var data = {
+            edata: telemetryService.endEventData('course', 'play', 'course-read'),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.end(data)
           dataService.setData('isTrackingEnabled', false)
         }
       })
@@ -383,17 +369,19 @@ angular.module('playerApp')
             }
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('WorkSpace')
-          portalTelemetryService.fireImpressions({
+          var contextData = {
             env: 'workspace',
-            type: 'default',
-            pageid: org.sunbird.portal.appid + '_WorkSpace',
-            id: '',
-            name: '',
-            url: '/private/index#!/workspace'
-          })
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace', '/workspace'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -406,15 +394,7 @@ angular.module('playerApp')
             templateUrl: 'views/workSpace/createContent.html'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.ContentCreation',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/create'
-          })
+        onEnter: function () {
         }
       })
       .state('WorkSpace.DraftContent', {
@@ -425,15 +405,17 @@ angular.module('playerApp')
             controller: 'DraftContentController as draftContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.DraftContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/draft'
-          })
+        onEnter: function ($rootScope, telemetryService) {
+          var contextData = {
+            env: 'workspace',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         }
       })
       .state('WorkSpace.ReviewContent', {
@@ -444,15 +426,7 @@ angular.module('playerApp')
             controller: 'ReviewContentController as reviewContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.ReviewContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/review'
-          })
+        onEnter: function () {
         }
       })
       .state('WorkSpace.PublishedContent', {
@@ -463,15 +437,7 @@ angular.module('playerApp')
             controller: 'PublishedContentController as publishedContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.PublishedContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/published'
-          })
+        onEnter: function () {
         }
       })
       .state('WorkSpace.AllUploadedContent', {
@@ -482,15 +448,7 @@ angular.module('playerApp')
             controller: 'AllUploadedContentController as allUploadedContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.AllUploadedContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/uploaded'
-          })
+        onEnter: function () {
         }
       })
       .state('WorkSpace.UpForReviewContent', {
@@ -501,15 +459,7 @@ angular.module('playerApp')
             controller: 'UpForReviewContentController as upForReviewContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.UpForReviewContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/upForReview'
-          })
+        onEnter: function () {
         }
       })
       .state('WorkSpace.FlaggedContent', {
@@ -520,15 +470,7 @@ angular.module('playerApp')
             controller: 'FlaggedContentController as flaggedContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.FlaggedContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/flagged'
-          })
+        onEnter: function () {
         }
       })
       .state('CreateLesson', {
@@ -539,16 +481,8 @@ angular.module('playerApp')
             controller: 'ContentLessonController as contentLesson'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateLesson',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/lesson'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -566,16 +500,8 @@ angular.module('playerApp')
           contentId: null,
           state: null
         },
-        onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
+        onEnter: function ($state, $rootScope, $stateParams) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_ContentEditor',
-            id: $stateParams.contentId,
-            name: '',
-            url: '/private/index#!/content/editor/' + $stateParams.contentId
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -589,16 +515,8 @@ angular.module('playerApp')
             controller: 'TextBookController as textbook'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope, telemetryService) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'textbook',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateTextbook',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/textbook'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -612,16 +530,8 @@ angular.module('playerApp')
             controller: 'CollectionController as collection'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'collection',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateCollection',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/collection'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -635,16 +545,8 @@ angular.module('playerApp')
             controller: 'CourseController as course'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'course',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateCourse',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/course'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -664,16 +566,8 @@ angular.module('playerApp')
           state: null,
           frameworkId: null
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'collectioneditor',
-            type: 'edit',
-            pageid: org.sunbird.portal.appid + '_CollectionEditor',
-            id: '',
-            name: '',
-            url: '/private/index#!/collection/editor/'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -691,16 +585,8 @@ angular.module('playerApp')
           contentId: null,
           backState: null
         },
-        onEnter: function ($state, $rootScope, portalTelemetryService, $stateParams) {
+        onEnter: function ($state, $rootScope, $stateParams) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'preview',
-            pageid: org.sunbird.portal.appid + '_PreviewContent',
-            id: $stateParams.contentId,
-            name: '',
-            url: '/private/index#!/preview/content/' + $stateParams.contentId + '/' + $stateParams.backState
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -719,7 +605,7 @@ angular.module('playerApp')
           name: null,
           backState: null
         },
-        onEnter: function ($stateParams, $rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService) {
           if ($stateParams.backState === 'Profile') {
             $rootScope.profileActive = 'active'
           } else {
@@ -727,14 +613,6 @@ angular.module('playerApp')
           }
           $rootScope.isPlayerPage = true
           routeHelperService.loadRouteConfig('PreviewCollection', $stateParams)
-          portalTelemetryService.fireImpressions({
-            env: 'collection',
-            type: 'preview',
-            pageid: org.sunbird.portal.appid + '_PreviewCollection',
-            id: $stateParams.Id,
-            name: '',
-            url: '/private/index#!/preview/collection/' + $stateParams.Id + '/' + $stateParams.name
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.resourcesActive = ''
@@ -787,16 +665,18 @@ angular.module('playerApp')
         params: {
           coursecreatedby: null
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope, telemetryService) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateBatch',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/batch'
-          })
+          var contextData = {
+            env: 'workspace',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-read', 'batches'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -812,16 +692,18 @@ angular.module('playerApp')
         params: {
           coursecreatedby: null
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope, telemetryService) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_UpdateBatch',
-            id: '',
-            name: '',
-            url: '/private/index#!/update/batch'
-          })
+          var contextData = {
+            env: 'workspace',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-edit', '/update/batch/'),
+            context: telemetryService.getContextData(contextData),
+            tags: $rootScope.organisationIds
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -835,16 +717,8 @@ angular.module('playerApp')
             controller: 'LessonPlanController as lessonPlan'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'lessonPlan',
-            type: 'creation',
-            pageid: org.sunbird.portal.appid + '_CreateLessonPlan',
-            id: '',
-            name: '',
-            url: '/private/index#!/create/lessonPlan'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -862,16 +736,8 @@ angular.module('playerApp')
           contentId: null,
           state: null
         },
-        onEnter: function ($rootScope, portalTelemetryService) {
+        onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
-          portalTelemetryService.fireImpressions({
-            env: 'genericeditor',
-            type: 'edit',
-            pageid: org.sunbird.portal.appid + '_GenericEditor',
-            id: '',
-            name: '',
-            url: '/private/index#!/generic/editor/'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -937,15 +803,7 @@ angular.module('playerApp')
             controller: 'LimitedPublishedContentController as limitedPublishedContent'
           }
         },
-        onEnter: function (portalTelemetryService) {
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_WorkSpace.LimitedPublishedContent',
-            id: '',
-            name: '',
-            url: '/private/index#!/content/limited/published'
-          })
+        onEnter: function () {
         }
       })
   })
