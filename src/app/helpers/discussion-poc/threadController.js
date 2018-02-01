@@ -173,9 +173,60 @@ class ThreadController {
 	postActions(requestObj) {
 		return this.__postActions()(requestObj)
 	}
+	/**
+	 * create thread
+	 *
+	 * @return  {[type]} return transformed data
+	 */
+	markAsSolution(requestObj) {
+		return this.__markAsSolution()(requestObj)
+	}
 
 
+	/*
+	 *create thread flow
+	 *
+	 */
+	__markAsSolution(requestObj) {
+		return async ((requestObj) => {
+			try {
 
+				let authUserToken = await (this.__getToken(requestObj))
+
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
+				if (userProfile) {
+					return new Promise((resolve, reject) => {
+						let answerData = {
+							userName: userProfile.userName,
+							id: requestObj.body.id
+						}
+
+						this.threadService.markAsSolution(answerData).then((threadResponse) => {
+							resolve({
+								status: threadResponse
+							})
+						}, function(error) {
+							reject({
+								error: error
+							})
+						})
+					})
+				} else {
+					return {
+						message: 'Unauthorized User',
+						status: HttpStatus.UNAUTHORIZED
+					}
+				}
+			} catch (error) {
+
+				return {
+					message: 'Error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}
+			}
+		})
+	}
 
 
 	/*
@@ -195,7 +246,8 @@ class ThreadController {
 						let actionData = {
 							userName: userProfile.userName,
 							id: requestObj.params.id,
-							actionTypeId: requestObj.body.actionTypeId
+							actionTypeId: requestObj.body.actionTypeId,
+							undo:requestObj.body.undo
 						}
 
 						this.threadService.postActions(actionData).then((threadResponse) => {

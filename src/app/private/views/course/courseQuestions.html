@@ -16,6 +16,7 @@
 				<a ng-click="gotoThread(thread.id)" class="header quesHeading">{{thread.title}}</a>
 			</div>
 		</div>
+		<div class="content description" ng-if="threads.length == 0">No Questions added</div>
 	</div>
 </div>
 <div ng-if="widget=='create-thread' && !loading" class="ui segment">
@@ -83,7 +84,7 @@
 			<div class="comment">
 				<div class="content">
 					<div class="metadata">
-						<span>vaish | </span>
+						<span>{{thread.created_by}} | </span>
 						<div title="like" ng-if="$parent.userName!= reply.username" class="cursor-pointer" ng-click="upVote(thread.id)">
 							<i class="custom-vote-icon thumbs up icon"></i>
 						</div>
@@ -105,12 +106,33 @@
 				<div class="metadata">
 					<i class="user icon"></i>
 					<span>{{reply.username}} | </span>
-					<div title="like" ng-if="showAction(reply.id,2)" class="cursor-pointer" ng-click="actions(reply.id,2)">
+					<div title="like" ng-if="showAction(reply.id,2) == 'can_act'"  class="cursor-pointer" ng-click="actions(reply.id,2)">
 						<i class="custom-vote-icon thumbs up icon"></i>
 					</div>
-					<div title="dislike" ng-if="$parent.userName!= reply.username" class="cursor-pointer" ng-click="undoActions(reply.id,2)">
+					<div title="undo like" ng-if="showAction(reply.id,2) == 'acted'"  class="cursor-pointer" ng-click="undoActions(reply.id,2)">
+						<i class="custom-vote-icon thumbs up blue icon"></i>
+					</div>
+					<div title="dislike" ng-if="showAction(reply.id,5) == 'can_act'" class="cursor-pointer" ng-click="actions(reply.id,5)">
 						<i class="custom-vote-icon thumbs down icon"></i>
 					</div>
+
+					<div title="undo dislike" ng-if="showAction(reply.id,5) == 'acted'" class="cursor-pointer" ng-click="undoActions(reply.id,5)">
+						<i class="custom-vote-icon thumbs down blue icon"></i>
+					</div>
+					<div title="flag as spam" ng-if="showAction(reply.id,8) == 'can_act'" class="cursor-pointer" ng-click="actions(reply.id,8)">
+						<i class="custom-vote-icon flag icon"></i>
+					</div>
+
+					<div title="undo spam" ng-if="showAction(reply.id,8) == 'acted'" class="cursor-pointer" ng-click="undoActions(reply.id,8)">
+						<i class="custom-vote-icon flag blue icon"></i>
+					</div>
+					<div title="Mark as Right Answer" ng-if="$parent.userName!= thread.created_by && !reply.accepted_answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,false)">
+						<i class="custom-vote-icon checkmark icon"></i>
+					</div>
+					<div title="Undo Marked" ng-if="$parent.userName!= thread.created_by && reply.accepted_answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,true)">
+						<i class="custom-vote-icon checkmark blue icon"></i>
+					</div>
+
 					<div class="text-align-right">
 						<div class="date">{{reply.created_at | date : longdate}}</div>
 					</div>
