@@ -48,7 +48,8 @@ angular.module('playerApp')
 
       textbook.initializeModal = function () {
         textbook.showCreateTextBookModal = true
-        textbook.generateImpressionEvent('view', '', 'workspace-create-textbook', '/create/textbook')
+        telemetryService.impressionTelemetryData('workspace', '', 'textbook', '1.0', 'scroll',
+          'workspace-create-textbook', '/create/textbook')
         $timeout(function () {
           $('#textbookmeta-category-1').dropdown('set selected', textbook[textbook.categoryModelList[1]])
           $('#textbookmeta-category-2').dropdown('set selected', textbook[textbook.categoryModelList[2]])
@@ -78,8 +79,8 @@ angular.module('playerApp')
             textbook.showCreateTextBookModal = false
             textbook.loader.showLoader = false
             textbook.hideCreateTextBookModal()
-            textbook.generateInteractEvent('create-textbook', 'workspace-create-textbook',
-              res.result.content_id, 'workspace')
+            telemetryService.interactTelemetryData('workspace', res.result.content_id, 'create-textbook',
+              textbook.version, 'create-textbook', 'workspace-create-textbook')
             textbook.initEKStepCE(res.result.content_id)
           } else {
             textbook.loader.showLoader = false
@@ -198,48 +199,6 @@ angular.module('playerApp')
         }
       }
 
-      // telemetry impression event//
-      textbook.generateImpressionEvent = function (type, subtype, pageId, url) {
-        var contextData = {
-          env: 'workspace',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-        var objRollup = ['textBook', $rootScope.userId]
-        var objectData = {
-          id: $rootScope.userId,
-          type: 'textBook',
-          ver: textbook.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-        var data = {
-          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.impression(data)
-      }
-
-      // telemetry interact event
-      textbook.generateInteractEvent = function (edataId, pageId, contentId, env) {
-        var contextData = {
-          env: env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-        var objectData = {
-          id: contentId,
-          type: edataId,
-          ver: textbook.version
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
-        
       textbook.getTemsByindex = function (index) {
         var masterList = _.cloneDeep(textbook.frameworkData)
         var category = _.find(masterList, function (o) {

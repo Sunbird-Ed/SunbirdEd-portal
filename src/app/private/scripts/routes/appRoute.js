@@ -28,9 +28,15 @@ angular.module('playerApp')
             env: 'home',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
+          var objectData = {
+            id: $rootScope.userId,
+            type: 'home',
+            ver: '1.0'
+          }
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', 'home', '/home'),
             context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
           }
           telemetryService.impression(data)
