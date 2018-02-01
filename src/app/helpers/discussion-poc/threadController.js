@@ -153,6 +153,7 @@ class ThreadController {
 	 * @return  {[type]} return transformed data
 	 */
 	createThread(requestObj) {
+		requestObj.topic = true;
 		return this.__postThread()(requestObj)
 	}
 
@@ -164,8 +165,116 @@ class ThreadController {
 	replyThread(requestObj) {
 		return this.__postThread()(requestObj)
 	}
+	/**
+	 * create thread
+	 *
+	 * @return  {[type]} return transformed data
+	 */
+	postActions(requestObj) {
+		return this.__postActions()(requestObj)
+	}
+	/**
+	 * create thread
+	 *
+	 * @return  {[type]} return transformed data
+	 */
+	markAsSolution(requestObj) {
+		return this.__markAsSolution()(requestObj)
+	}
 
 
+	/*
+	 *create thread flow
+	 *
+	 */
+	__markAsSolution(requestObj) {
+		return async ((requestObj) => {
+			try {
+
+				let authUserToken = await (this.__getToken(requestObj))
+
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
+				if (userProfile) {
+					return new Promise((resolve, reject) => {
+						let answerData = {
+							userName: userProfile.userName,
+							id: requestObj.body.id
+						}
+
+						this.threadService.markAsSolution(answerData).then((threadResponse) => {
+							resolve({
+								status: threadResponse
+							})
+						}, function(error) {
+							reject({
+								error: error
+							})
+						})
+					})
+				} else {
+					return {
+						message: 'Unauthorized User',
+						status: HttpStatus.UNAUTHORIZED
+					}
+				}
+			} catch (error) {
+
+				return {
+					message: 'Error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}
+			}
+		})
+	}
+
+
+	/*
+	 *create thread flow
+	 *
+	 */
+	__postActions(requestObj) {
+		return async ((requestObj) => {
+			try {
+
+				let authUserToken = await (this.__getToken(requestObj))
+
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
+				if (userProfile) {
+					return new Promise((resolve, reject) => {
+						let actionData = {
+							userName: userProfile.userName,
+							id: requestObj.params.id,
+							actionTypeId: requestObj.body.actionTypeId,
+							undo:requestObj.body.undo
+						}
+
+						this.threadService.postActions(actionData).then((threadResponse) => {
+							resolve({
+								id: threadResponse
+							})
+						}, function(error) {
+							reject({
+								error: error
+							})
+						})
+					})
+				} else {
+					return {
+						message: 'Unauthorized User',
+						status: HttpStatus.UNAUTHORIZED
+					}
+				}
+			} catch (error) {
+
+				return {
+					message: 'Error',
+					status: HttpStatus.INTERNAL_SERVER_ERROR
+				}
+			}
+		})
+	}
 
 	/*
 	 *create thread flow
@@ -183,11 +292,14 @@ class ThreadController {
 						let threadData = {
 							userName: userProfile.userName,
 							title: requestObj.body.title,
-							description: requestObj.body.description
+							description: requestObj.body.description,
+							contextId : requestObj.body.contextId
 						}
+
 						if (requestObj.params.id) {
 							threadData.topic_id = requestObj.params.id
 						}
+
 						this.threadService.postThread(threadData).then((threadResponse) => {
 							resolve({
 								id: threadResponse
@@ -205,6 +317,7 @@ class ThreadController {
 					}
 				}
 			} catch (error) {
+
 				return {
 					message: 'Error',
 					status: HttpStatus.INTERNAL_SERVER_ERROR
@@ -220,11 +333,15 @@ class ThreadController {
 	__getThreads() {
 		return async ((requestObj) => {
 			try {
+				let authUserToken = await (this.__getToken(requestObj))
+				// validate request
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
 				// validate request
 				let userId = await (this.__getLoggedinUserId()(requestObj))
 				if (userId) {
 					return new Promise((resolve, reject) => {
-						this.threadService.getRecentThreads().then((threadResponse) => {
+						this.threadService.getRecentThreads(userProfile.userName,requestObj.params.contextId).then((threadResponse) => {
 							resolve({
 								threads: threadResponse
 							})
@@ -256,11 +373,15 @@ class ThreadController {
 	__getThreadById() {
 		return async ((requestObj) => {
 			try {
+				let authUserToken = await (this.__getToken(requestObj))
+				// validate request
+				let userProfile = await (this.__getUserProfile(authUserToken))
+
 				// validate request
 				let userId = await (this.__getLoggedinUserId()(requestObj))
 				if (userId) {
 					return new Promise((resolve, reject) => {
-						this.threadService.getThreadById(requestObj.params.id).then((threadResponse) => {
+						this.threadService.getThreadById(requestObj.params.id,userProfile.userName).then((threadResponse) => {
 							resolve({
 								thread: threadResponse
 							})

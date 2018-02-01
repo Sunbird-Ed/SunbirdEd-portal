@@ -13,7 +13,9 @@ const API_IDS = {
   createthread: 'create-thread',
   listthreads: 'list-threads',
   replythread: 'reply-thread',
-  getthreadbyid: 'get-thread-by-id'
+  getthreadbyid: 'get-thread-by-id',
+  actions:'actions',
+  markassolution:'markassolution'
 }
 
 let threadController = new ThreadController({
@@ -102,7 +104,7 @@ function sendErrorResponse (res, id, message, httpCode = HttpStatus.BAD_REQUEST)
 }
 
 module.exports = function (keycloak) {
-  router.get('/list/', (requestObj, responseObj, next) => {
+  router.get('/list/:contextId', (requestObj, responseObj, next) => {
     threadController.getThreads(requestObj)
       .then((data) => {
         sendSuccessResponse(responseObj, API_IDS.listthreads, data, HttpStatus.OK)
@@ -136,6 +138,24 @@ module.exports = function (keycloak) {
       })
       .catch((err) => {
         sendErrorResponse(responseObj, API_IDS.replythread, err.message, err.status)
+      })
+  })
+  router.post('/thread/actions/:id', (requestObj, responseObj, next) => {
+    threadController.postActions(requestObj)
+      .then((data) => {
+        sendSuccessResponse(responseObj, API_IDS.actions, data, HttpStatus.OK)
+      })
+      .catch((err) => {
+        sendErrorResponse(responseObj, API_IDS.actions, err.message, err.status)
+      })
+  })
+  router.post('/thread/replies/marksolution', (requestObj, responseObj, next) => {
+    threadController.markAsSolution(requestObj)
+      .then((data) => {
+        sendSuccessResponse(responseObj, API_IDS.markassolution, data, HttpStatus.OK)
+      })
+      .catch((err) => {
+        sendErrorResponse(responseObj, API_IDS.markassolution, err.message, err.status)
       })
   })
   return router
