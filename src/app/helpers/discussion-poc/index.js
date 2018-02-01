@@ -14,7 +14,8 @@ const API_IDS = {
   listthreads: 'list-threads',
   replythread: 'reply-thread',
   getthreadbyid: 'get-thread-by-id',
-  actions:'actions'
+  actions:'actions',
+  markassolution:'markassolution'
 }
 
 let threadController = new ThreadController({
@@ -148,7 +149,15 @@ module.exports = function (keycloak) {
         sendErrorResponse(responseObj, API_IDS.actions, err.message, err.status)
       })
   })
-
+  router.post('/thread/replies/marksolution', (requestObj, responseObj, next) => {
+    threadController.markAsSolution(requestObj)
+      .then((data) => {
+        sendSuccessResponse(responseObj, API_IDS.markassolution, data, HttpStatus.OK)
+      })
+      .catch((err) => {
+        sendErrorResponse(responseObj, API_IDS.markassolution, err.message, err.status)
+      })
+  })
   return router
 }
 // module.exports = router
