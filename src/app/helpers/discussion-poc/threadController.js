@@ -199,7 +199,8 @@ class ThreadController {
 					return new Promise((resolve, reject) => {
 						let answerData = {
 							userName: userProfile.userName,
-							id: requestObj.body.id
+							id: requestObj.body.id,
+							undo:requestObj.body.undo
 						}
 
 						this.threadService.markAsSolution(answerData).then((threadResponse) => {
