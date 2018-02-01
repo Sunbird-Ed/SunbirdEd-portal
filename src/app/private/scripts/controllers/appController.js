@@ -5,7 +5,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
   'portalTelemetryService', 'messages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state', '$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, portalTelemetryService, messages, frmelmnts,
+    $location, $timeout, messages, frmelmnts,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state, $window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
@@ -130,7 +130,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         })
         .finally(function () {
           org.sunbird.portal.init()
-          portalTelemetryService.init()
+          // portalTelemetryService.init()
         })
     }
 
