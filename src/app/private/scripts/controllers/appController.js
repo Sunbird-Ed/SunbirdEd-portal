@@ -1,12 +1,11 @@
 'use strict'
 
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
-  'userService', '$q', 'config', '$location', '$timeout',
-  'portalTelemetryService', 'messages', 'frmelmnts', 'sessionService',
+  'userService', '$q', 'config', '$location', '$timeout', 'messages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state', '$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, messages, frmelmnts,
-    sessionService, learnService, $http, searchService, toasterService, adminService, $state, $window) {
+    $location, $timeout, messages, frmelmnts, sessionService, learnService, $http,
+    searchService, toasterService, adminService, $state, $window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''

@@ -1,9 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll',
-    'toasterService', function (playerTelemetryUtilsService, $state, $scope, contentService,
+  .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', function ($state, $scope, contentService,
       $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
@@ -84,9 +83,9 @@ angular.module('playerApp')
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
         })
-        window.onbeforeunload = function (e) { // eslint-disable-line
+        /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
-        }
+        } */
       }
 
       function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
@@ -155,7 +154,7 @@ angular.module('playerApp')
         }
 
         $scope.visibility = false
-        playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
+        // playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         if (document.getElementById('contentPlayer')) {
           document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
