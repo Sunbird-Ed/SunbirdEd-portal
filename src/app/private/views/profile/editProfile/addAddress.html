@@ -4,13 +4,13 @@
         <label for="address" class="required">{{$root.frmelmnts.lbl.seladdresstype}}</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='permanent' ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.permanentAddressType" type="radio" id="addressTypePermanent" name="addressType" value='permanent' ng-checked="profileCtrl.ischekedPermanent" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.permanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.currentAddressType" type="radio" id= "addressTypeCurrent" name="addressType" value='current' ng-checked="profileCtrl.ischekedCurrent" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.current}}</label>
             </div>
         </div>

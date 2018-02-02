@@ -9,10 +9,16 @@ angular.module('playerApp')
      */
 
     var addressFields = [
-      { fieldName: 'addressType', type: 'checked', prompt: $rootScope.messages.stmsg.m0062 },
-      { fieldName: 'addLine1', type: 'empty', prompt: $rootScope.messages.stmsg.m0063 },
-      { fieldName: 'city', type: 'empty', prompt: $rootScope.messages.stmsg.m0064 },
-      { fieldName: 'pinCode', type: 'regExp[^[0-9]*$]', prompt: $rootScope.messages.stmsg.m0065 }
+      { fieldName: 'addressType', type: 'checked', prompt: $rootScope.messages.stmsg.m0096 },
+      { fieldName: 'addLine1', type: 'regExp[^[0-9A-Za-z\\s]{1,50}$]', prompt: $rootScope.messages.stmsg.m0063 },
+      { fieldName: 'addLine2',
+        optional: true,
+        type: 'regExp[^[0-9A-Za-z\\s]{1,50}$]',
+        prompt: $rootScope.messages.stmsg.m0100 },
+      { fieldName: 'city', type: 'regExp[^[A-z]{1,35}$]', prompt: $rootScope.messages.stmsg.m0097 },
+      { fieldName: 'state', optional: true, type: 'regExp[^[A-z]{1,35}$]', prompt: $rootScope.messages.stmsg.m0098 },
+      { fieldName: 'country', optional: true, type: 'regExp[^[A-z]{1,35}$]', prompt: $rootScope.messages.stmsg.m0099 },
+      { fieldName: 'pinCode', optional: true, type: 'regExp[^[0-9]{6}$]', prompt: $rootScope.messages.stmsg.m0065 }
     ]
     var educationFields = [
       { fieldName: 'degree', type: 'empty', prompt: $rootScope.messages.stmsg.m0062 },

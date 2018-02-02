@@ -40,7 +40,11 @@ angular.module('playerApp')
       profile.quantityOfContent = 4
       profile.badges = []
       profile.isViewMore = true
-
+      profile.isAddAddress = true
+      profile.currentAddressType = false
+      profile.permanentAddressType = false
+      profile.ischekedCurrent = true
+      profile.ischekedPermanent = false
       var today = new Date()
 
       var orgIds = []
@@ -83,6 +87,33 @@ angular.module('playerApp')
           var profileData = angular.copy(userProfile.result.response)
 
           profile.user = profileData
+          if (profile.user.address.length > 0) {
+            if (profile.user.address.length >= 2) {
+              profile.isAddAddress = false
+            } else if (profile.user.address[0].addType) {
+              profile.isAddAddress = true
+              if (profile.user.address[0].addType === 'current') {
+                profile.currentAddressType = true
+                profile.ischekedCurrent = false
+                profile.ischekedPermanent = true
+              } else if (profile.user.address[0].addType === 'permanent') {
+                profile.permanentAddressType = true
+                profile.ischekedCurrent = true
+                profile.ischekedPermanent = false
+              } else {
+                profile.currentAddressType = false
+                profile.permanentAddressType = false
+                profile.ischekedCurrent = true
+                profile.ischekedPermanent = false
+              }
+            }
+          } else {
+            profile.currentAddressType = false
+            profile.permanentAddressType = false
+            profile.ischekedCurrent = true
+            profile.ischekedPermanent = false
+          }
+
           // temp mock data
           profile.user.profileVisibility = profileData.profileVisibility
           profile.fullName = profileData.firstName + ' ' + profileData.lastName
@@ -150,6 +181,7 @@ angular.module('playerApp')
           profile.loader.showLoader = false
           profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0005)
+          console.log('error')
         }
       }
       // fetch profile
@@ -213,8 +245,8 @@ angular.module('playerApp')
         var formData = new FormData()
         var reader = new FileReader()
         if (files[0] &&
-                    files[0].name.match(/.(jpg|jpeg|png)$/i) &&
-                    files[0].size < 4000000) {
+          files[0].name.match(/.(jpg|jpeg|png)$/i) &&
+          files[0].size < 4000000) {
           formData.append('file', files[0])
           reader.readAsDataURL(files[0])
           profile.icon = formData
@@ -309,6 +341,7 @@ angular.module('playerApp')
       profile.addAddress = function (newAddress) {
         var isValid = formValidation.validate('#addressForm')
         if (isValid === true) {
+          console.log('newAddress', newAddress)
           profile.address.push(newAddress)
           var req = { address: profile.address }
           profile.updateUserInfo(
@@ -337,6 +370,17 @@ angular.module('playerApp')
 
       profile.deleteAddress = function (address) {
         address.isDeleted = true
+
+        console.log('address', address)
+        if (address.addType === 'current') {
+          profile.ischekedCurrent = false
+          profile.currentAddressType = false
+          profile.ischekedPermanent = true
+        }
+        if (address.addType === 'permanent') {
+          profile.ischekedPermanent = false
+          profile.permanentAddressType = false
+        }
         var req = { address: [address] }
         // req.userId = $rootScope.userId;
         profile.updateUserInfo(
@@ -509,7 +553,7 @@ angular.module('playerApp')
       $timeout(function () {
         $('.ui.radio.checkbox')
           .checkbox('attach events', '.toggle.button').checkbox({
-            onChange: function () {}
+            onChange: function () { }
           })
       }, 1000)
 
@@ -752,7 +796,7 @@ angular.module('playerApp')
               })
             },
 
-            onHide: function () {}
+            onHide: function () { }
           }).modal('show')
         }, 50)
         $('#addSkillModal').modal('refresh')
