@@ -52,10 +52,11 @@
                     <div class="header announcementCard-header">
                         <span class="header cardsHeading ng-binding"> Summary </span>
                     </div>
-                    <div class="description">
+                    <div class="description" ng-init="publicProfile.readMore = false">
                         <p ng-if="!publicProfile.readMore">
-                            {{publicProfile.user.profileSummary| limitTo: 120 }} &nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" ng-if="publicProfile.summary.length > 120 && publicProfile.readMore === false" ng-click="publicProfile.readMore = true;"> ... Read More</span>
+                            {{publicProfile.user.profileSummary | limitTo: 120 }} &nbsp;
+                            <span class="ui cardsKnowMore mouse-pointer" 
+                            ng-if="publicProfile.user.profileSummary.length > 120 && publicProfile.readMore === false" ng-click="publicProfile.readMore = !publicProfile.readMore;"> ... Read More</span>
                         </p>
                         <p ng-if="publicProfile.readMore"> {{publicProfile.user.profileSummary}}&nbsp;
                             <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">Read Less ...</span>

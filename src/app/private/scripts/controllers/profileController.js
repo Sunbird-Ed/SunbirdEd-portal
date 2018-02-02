@@ -341,7 +341,6 @@ angular.module('playerApp')
       profile.addAddress = function (newAddress) {
         var isValid = formValidation.validate('#addressForm')
         if (isValid === true) {
-          console.log('newAddress', newAddress)
           profile.address.push(newAddress)
           var req = { address: profile.address }
           profile.updateUserInfo(
@@ -370,8 +369,6 @@ angular.module('playerApp')
 
       profile.deleteAddress = function (address) {
         address.isDeleted = true
-
-        console.log('address', address)
         if (address.addType === 'current') {
           profile.ischekedCurrent = false
           profile.currentAddressType = false
