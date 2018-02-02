@@ -139,9 +139,7 @@ angular.module('playerApp')
           identifier: dashboardData.orgId,
           timePeriod: dashboardData.timePeriod
         }, dataset).then(function (data) {
-          var str = $rootScope.messages.stmsg.m0095
-          dashboardData.downloadReportText = str.replace('{acknowledgementId}',
-            data.requestId).replace(/(\(.*\))/g, '')
+          dashboardData.downloadReportText = $rootScope.messages.stmsg.m0095
           $('#downloadReportModal').modal({
             closable: true,
             observeChanges: true
