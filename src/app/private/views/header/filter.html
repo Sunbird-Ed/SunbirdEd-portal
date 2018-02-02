@@ -195,7 +195,7 @@
                     </div>
 
                     <div class="one wide column">
-                        <div class="field" ng-if="$root.search.selectedSearchKey !== 'Users'&& $root.search.selectedSearchKey !== 'Organisations'">
+                        <div class="field" ng-if="$root.search.selectedSearchKey === 'Library' || $root.search.selectedSearchKey === 'Courses'">
                             <div class="content dropdown-content">
                                 <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.sort}}&nbsp;</span>
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
