@@ -1,4 +1,19 @@
-<div ng-if="widget=='list-thread' && !loading" class="ui segment padding-right-5">
+<style>
+.ui.dimmer .quesHeading, .left-class, .content.padding-top-20{
+  text-align: left;
+}
+.content.padding-top-20{
+  padding-bottom: 10px;
+}
+</style>
+<div class="dimmable"> 
+<img class="ui medium wireframe active inverted image dimmer" src="https://semantic-ui.com/images/wireframe/media-paragraph.png">
+ 
+  <div class="ui active inverted dimmer">
+    
+<div ng-if="widget=='list-thread'" class="ui segment padding-right-5">
+
+  
 	<div class="ui top padded grid">
 		<div class="cardsHeading discussionHeading">
 			Questions
@@ -10,6 +25,7 @@
 		</div>
 	</div>
 	<div class="ui section divider"></div>
+	<div ng-click="loadQuestions()" class="cursor-pointer" style="text-align: center">{{message}}</div><br/>
 	<div class="ui relaxed divided list questionList">
 		<div class="item" ng-repeat="thread in threads">
 			<div class="content">
@@ -26,7 +42,10 @@
 		<div class="content description" ng-if="threads.length == 0">No Questions added</div>
 	</div>
 </div>
-<div ng-if="widget=='create-thread' && !loading" class="ui segment">
+</div>
+
+ <div class="ui active inverted dimmer">
+<div ng-if="widget=='create-thread'" class="ui segment">
 	<div class="ui top padded grid">
 		<div class="text-align-left">
 			<a class="cursor-pointer" ng-click="changeWidget('list-thread')">
@@ -41,7 +60,7 @@
 	<form name="createQuestion" class="ui form" ng-submit="formSubmit(createQuestion.$valid)" ng-init="$parent.threadTitle='';$parent.threadDesc=''">
 		<div class="ui form">
 			<div class="field">
-				<label>Title</label>
+				<label class="left-class">Title</label>
 				<input autocomplete="off" type="text" name="title" ng-model="$parent.threadTitle" required/>
 				<div class="field padding-top-10" ng-show="createQuestion.title.$touched && createQuestion.title.$invalid">
 					<div class="ui negative message">
@@ -52,8 +71,8 @@
 				</div>
 			</div>
 			<div class="field">
-				<label>Description</label>
-				<textarea autocomplete="off" name="desc" ng-model="$parent.threadDesc" required></textarea>
+				<label class="left-class">Description</label>
+				<textarea autocomplete="off" name="desc" ng-model="$parent.threadDesc" ></textarea>
 				<div class="field padding-top-10" ng-show="createQuestion.desc.$touched && createQuestion.desc.$invalid">
 					<div class="ui negative message">
 						<div class="header">
@@ -71,14 +90,17 @@
 		</div>
 	</form>
 </div>
-<div ng-if="loading" class="ui segment">
+</div>
+
+ <div class="ui active inverted dimmer">
+<!-- <div ng-if="loading" class="ui segment">
 	Loading ....<br>
 	<div class="ui active centered inline loader"></div>
-</div>
-<div ng-if="!loading && widget=='reply-thread' && thread" class="ui segment">
+</div> -->
+<div ng-if=" widget=='reply-thread' && thread" class="ui segment">
 	<div class="ui top padded grid">
 		<div class="text-align-left">
-			<a class="cursor-pointer go-back-arrow" ng-click="loadQuestions()">
+			<a class="cursor-pointer go-back-arrow" ng-click="changeWidget('list-thread')">
 				<i class="large arrow left icon"></i>
 			</a>
 		</div>
@@ -139,17 +161,13 @@
 					</span>
 					<span ng-if="$parent.userName === thread.created_by">
 						<span title="Mark as Right Answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,false)">
-							<i class="custom-vote-icon checkmark icon"></i>
+							<i class="custom-vote-icon checkmark icon"></i> Mark as correct answer
 						</span>
 						<span title="Undo Marked" ng-if="$parent.userName!= thread.created_by && reply.accepted_answer"  class="cursor-pointer" ng-click="markAsCorrect(reply.id,true)">
-							<i class="custom-vote-icon checkmark blue icon"></i>
+							<i class="custom-vote-icon check circle outline icon ui green"></i>
 						</span>
 					</span>
-				</div>
-				<div class="actions">            
-	                 <a class="markCorrect" ng-click="markCorrect(reply.user_id)" title="Mark as correct answer" ng-if="reply.user_id == '5001'" ng-hide="selectedAnswer">Mark as correct answer </a> <i ng-if="selectedAnswer" ng-click="unMarkCorrect(reply.user_id)" class="check circle outline icon ui green"></i>	      
-	          </div>
-				
+				</div>		
 			</div>
 		</div>
 
@@ -163,7 +181,7 @@
 			</div>
 			<div class="field">
 				<textarea autocomplete="off" name="replyAnswer" ng-model="$parent.replyAnswer" required></textarea>
-				<div class="padding-top-10" ng-show="answerForm.replyAnswer.$touched && answerForm.replyAnswer.$invalid">
+				<div class="padding-top-10" ng-show="">
 					<div class="ui negative message">
 						<div class="header">
 							This is a required field.
@@ -178,4 +196,6 @@
 			</div>
 		</form>
 	</div>
+</div>
+</div>
 </div>
