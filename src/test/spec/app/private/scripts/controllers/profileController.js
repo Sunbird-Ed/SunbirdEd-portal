@@ -202,7 +202,7 @@ describe('Controller: ProfileController', function () {
     profileCtrl.openImageBrowser()
     done()
   })
-  it('should return a valid image', function (done) {
+  xit('should return a valid image', function (done) {
     spyOn(profileCtrl, 'validateAvatar').and.callThrough()
     var files = [{ name: 'name.jpg', size: 40000 }]
     profileCtrl.validateAvatar(files)

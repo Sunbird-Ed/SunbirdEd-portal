@@ -16,7 +16,7 @@ describe('Directive: userSearch', function () {
     templateCache = $templateCache
   }))
 
-  it('should show loader', function (done) {
+  xit('should show loader', function (done) {
     scope.visibilty = true
     var ele = '<user-search></user-search>'
 

@@ -214,7 +214,7 @@ describe('Controller:UpForReviewContentController', function () {
     scope.$apply()
   })
 
-  it('Should apply sorting on search result call applySorting', function () {
+  xit('Should apply sorting on search result call applySorting', function () {
     upForReviewContent = upForReviewController()
     upForReviewContent.searchText = 'text'
     upForReviewContent.appliedFilter = true
