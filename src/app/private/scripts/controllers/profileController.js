@@ -122,12 +122,7 @@ angular.module('playerApp')
           profile.formateDate(profileData.jobProfile)
           profile.formateDate(profileData.address)
           profile.formateDate(profileData.education)
-          // if (profileData.education.length) {
-          //   profileData.education.forEach(function (education) {
-          //     education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing
-          //     education.percentage = education.percentage === 0 ? '' : education.percentage
-          //   })
-          // }
+
           if (profile.isAvatarUpdate) {
             $rootScope.avatar = profileData.avatar
           }
