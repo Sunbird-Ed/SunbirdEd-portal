@@ -12,6 +12,6 @@ node_modules/**
 coverage/**
 docs/**
 test/testData/testData.js
-test/spec/app/private/scripts/directives/admin/profileController.js
+test/spec/app/private/scripts/controllers/profileController.js
 test/spec/app/private/scripts/directives/admin/bulkUpload.js
 test/spec/app/private/scripts/directives/admin/searchedUser.js
