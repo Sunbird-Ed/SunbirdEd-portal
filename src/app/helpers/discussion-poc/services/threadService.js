@@ -45,8 +45,7 @@ class ThreadService {
       postThread: '/posts',
       users: '/users',
       postActions: '/post_actions',
-			acceptAsSolution: '/solution/accept',
-      unAcceptAsSolution: '/solution/unaccept',
+			acceptAsSolution: '/solution/accept'
     }
 
     this.apiAuth = {
@@ -198,9 +197,6 @@ class ThreadService {
         method: 'POST',
         uri: this.discourseEndPoint + this.discourseUris.acceptAsSolution,
         form: formData
-      }
-      if(actionData.undo){
-        options.uri = this.discourseEndPoint + this.discourseUris.unAcceptAsSolution
       }
       this.httpService.call(options).then((data) => {
         let res = JSON.parse(data.body)
