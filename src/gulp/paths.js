@@ -33,6 +33,7 @@ var paths = {
       'app/thirdparty/bower_components/angular/angular.min.js',
       'app/thirdparty/libs/eventbus.min.js',
       'app/thirdparty/libs/md5.js',
+      'app/thirdparty/libs/telemetry.min.js',
       'app/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'app/thirdparty/semantic/semantic.min.js',
       'app/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
