@@ -135,6 +135,10 @@
                   {
                     "key": "Worksheet",
                     "value": "Worksheet"
+                  },
+                  {
+                    "key": "Game",
+                    "value": "Game"
                   }
                 ],
                 "resourceType": [

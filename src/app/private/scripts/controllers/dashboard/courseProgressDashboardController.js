@@ -175,9 +175,7 @@ angular.module('playerApp')
           identifier: courseDashboard.batchIdentifier,
           timePeriod: courseDashboard.timePeriod
         }, 'COURSE_PROGRESS').then(function (data) {
-          var str = $rootScope.messages.stmsg.m0095
-          courseDashboard.downloadReportText = str.replace('{acknowledgementId}',
-            data.requestId).replace(/(\(.*\))/g, '')
+          courseDashboard.downloadReportText = $rootScope.messages.stmsg.m0095
           $('#downloadReportModal').modal({
             closable: true,
             observeChanges: true

@@ -90,7 +90,7 @@ describe('Controller:UpForReviewContentController', function () {
     timeout = _$timeout_
     permissionsService = _permissionsService_
     deferred = _$q_.defer()
-    spyOn(permissionsService, 'getRoleOrgMap').and.returnValue({CONTENT_REVIEWER: ['ORG_001']})
+    spyOn(permissionsService, 'getRoleOrgMap').and.returnValue({'CONTENT_REVIEWER': ['ORG_001']})
     upForReviewController = function () {
       return new _$controller_('UpForReviewContentController', {
         $rootScope: rootScope,
