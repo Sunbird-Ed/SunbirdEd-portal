@@ -284,6 +284,20 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
     }
 
+    // telemetry start event
+    $rootScope.generateStartEvent = function (env, objId, objType, objVer, startContentType,
+    pageId, mode) {
+      telemetryService.startTelemetryData(env, objId, objType, objVer, startContentType,
+    pageId, mode)
+    }
+
+    // telemetry end event
+    $rootScope.generateEndEvent = function (env, objId, objType, objVer, startContentType,
+    pageId, mode) {
+      telemetryService.endTelemetryData(env, objId, objType, objVer, startContentType,
+    pageId, mode)
+    }
+
     $scope.getBadges()
     $scope.getOrgTypes()
 

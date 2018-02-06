@@ -172,13 +172,13 @@ angular.module('playerApp')
          * @param {number} duration
          * @param {array} summery
          */
-    this.endEventData = function (type, pageid, mode, duration, summery) {
+    this.endEventData = function (type, pageid, mode, duration, summary) {
       var endEventData = {
         type: type,
         mode: mode,
         duration: duration,
         pageid: pageid,
-        summary: summery
+        summary: summary
       }
       return JSON.parse(JSON.stringify(endEventData))
     }
@@ -400,14 +400,14 @@ angular.module('playerApp')
     this.startTelemetryData = function (env, objId, objType, objVer, startContentType,
       pageId, mode) {
       var contextData = {
-        env: 'library',
+        env: env,
         rollup: this.getRollUpData($rootScope.organisationIds)
       }
 
       var objectData = {
         id: objId,
         type: objType,
-        ver: $rootScope.version
+        ver: objVer
       }
       var data = {
         edata: this.startEventData(startContentType, pageId, mode),
@@ -418,6 +418,29 @@ angular.module('playerApp')
         tags: $rootScope.organisationIds
       }
       this.start(data)
+    }
+
+    this.endTelemetryData = function (env, objId, objType, objVer, endContentType,
+      pageId, mode) {
+      var contextData = {
+        env: env,
+        rollup: this.getRollUpData($rootScope.organisationIds)
+      }
+
+      var objectData = {
+        id: objId,
+        type: objType,
+        ver: objVer
+      }
+      var data = {
+        edata: this.endEventData(endContentType, pageId, mode),
+        contentId: objId,
+        contentVer: $rootScope.version,
+        context: this.getContextData(contextData),
+        object: this.getObjectData(objectData),
+        tags: $rootScope.organisationIds
+      }
+      this.end(data)
     }
 
     this.shareTelemetryData = function (env, objId, objType, objVer) {

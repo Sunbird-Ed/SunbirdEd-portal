@@ -1,9 +1,9 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'portalTelemetryService',
+  'announcementAdapter','telemetryService',
   function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
-    AnnouncementModel, announcementAdapter, portalTelemetryService) {
+    AnnouncementModel, announcementAdapter,telemetryService) {
     var composeAnn = this
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
@@ -208,14 +208,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         .then(function (apiResponse) {
           composeAnn.hideSendBtn = false
           composeAnn.hideModel('createAnnouncementModal')
-          portalTelemetryService.fireAnnouncementImpressions({
-            env: 'community.announcements',
-            type: 'view',
-            pageid: 'announcement_form_complete',
-            id: '',
-            name: '',
-            url: url
-          }, $rootScope.userIdHashTag)
           if (composeAnn.editAction) {
             $('#announcementResendModal').modal({
               closable: false
@@ -226,6 +218,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             }).modal('show')
           }
           $rootScope.userIdHashTag = null
+          telemetryService.endTelemetryData('announcement','','announcement','1.0','announcement',
+        'announcement-create','')
           $state.go('announcementOutbox')
         }, function (err) {
           composeAnn.isMetaModified = true
@@ -372,9 +366,13 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       if (composeAnn.stepNumber === 1 && composeAnn.announcement === null) {
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
+          telemetryService.startTelemetryData('announcement',$stateParams.announcementId,'announcement','1.0','announcement',
+        'announcement-create','')
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
           composeAnn.announcement.hideDate = true
+          telemetryService.startTelemetryData('announcement','','announcement','1.0','announcement',
+        'announcement-create','')
         }
       }
       if (composeAnn.stepNumber === 1) {
