@@ -101,6 +101,9 @@ angular.module('playerApp')
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
         requestBody.frameworkId = textbook.frameworkId
+        if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
+          delete requestBody['gradeLevel']
+        }
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }
