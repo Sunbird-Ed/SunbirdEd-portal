@@ -286,16 +286,16 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
 
     // telemetry start event
     $rootScope.generateStartEvent = function (env, objId, objType, objVer, startContentType,
-    pageId, mode) {
+      pageId, mode) {
       telemetryService.startTelemetryData(env, objId, objType, objVer, startContentType,
-    pageId, mode)
+        pageId, mode)
     }
 
     // telemetry end event
     $rootScope.generateEndEvent = function (env, objId, objType, objVer, startContentType,
-    pageId, mode) {
+      pageId, mode) {
       telemetryService.endTelemetryData(env, objId, objType, objVer, startContentType,
-    pageId, mode)
+        pageId, mode)
     }
 
     $scope.getBadges()
