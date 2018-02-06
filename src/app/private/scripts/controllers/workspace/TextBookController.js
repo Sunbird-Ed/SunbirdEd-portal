@@ -9,31 +9,35 @@ angular.module('playerApp')
       textbook.categoryModelList = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
-      textbook.getChannel = function () {
-        searchService.getChannel().then(function (res) {
-          if (res.responseCode === 'OK') {
+      searchService.getChannel().then(function (res) {
+        if (res.responseCode === 'OK') {
+          textbook.frameworkId = null
+          if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
             textbook.frameworkId = res.result.channel.frameworks[0].identifier
-            searchService.getFramework(textbook.frameworkId).then(function (res) {
-              if (res.responseCode === 'OK') {
-                textbook.frameworkData = res.result.framework.categories
-                var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-                _.forEach(categoryMasterList, function (category) {
-                  textbook.categoryListofFramework[category.index] = category.terms || []
-                  var categoryName = 'category' + category.index
-                  textbook[categoryName] = category
-                  textbook.categoryModelList[category.index] = category.code
-                })
-              }
-            }).catch(function (error) {
-              console.log('error is ......', error)
-              toasterService.error($rootScope.messages.fmsg.m0008)
-            })
+          } else {
+            textbook.frameworkId = _.find(res.result.channel.suggested_frameworks, function (framework) {
+              return framework.identifier === res.result.channel.defaultFramework
+            }).identifier
           }
-        }).catch(function (error) {
-          console.log('error is ......', error)
-          toasterService.error($rootScope.messages.fmsg.m0008)
-        })
-      }
+
+          searchService.getFramework(textbook.frameworkId).then(function (res) {
+            if (res.responseCode === 'OK') {
+              textbook.frameworkData = res.result.framework.categories
+              var categoryMasterList = _.cloneDeep(res.result.framework.categories)
+              _.forEach(categoryMasterList, function (category) {
+                textbook.categoryListofFramework[category.index] = category.terms || []
+                var categoryName = 'category' + category.index
+                textbook[categoryName] = category
+                textbook.categoryModelList[category.index] = category.code
+              })
+            }
+          }).catch(function (error) {
+            console.log('error is ......', error)
+          })
+        }
+      }).catch(function (error) {
+        console.log('error is ......', error)
+      })
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false

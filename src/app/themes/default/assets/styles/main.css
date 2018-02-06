@@ -2571,6 +2571,9 @@ i.trash.outline.icon.trashIcon-fontSize {
   padding-top: 3px;
   margin-right: 15px;
 }
+i.edit.icon.editIcon-fontSize {
+  font-size: 1.5em;
+}
 .batchCardDropDown {
   float: right;
   font-size: 13px !important;
