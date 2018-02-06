@@ -3,9 +3,9 @@
 
 describe('Directive: userSearch', function () {
   beforeEach(module('playerApp'))
-  var element
+  var element // eslint-disable-line no-unused-vars
   var compile
-  var templateCache
+  var templateCache // eslint-disable-line no-unused-vars
   var scope
   var fileName = 'views/search/userSearch.html'
 
@@ -16,7 +16,7 @@ describe('Directive: userSearch', function () {
     templateCache = $templateCache
   }))
 
-  xit('should show loader', function (done) {
+  it('should show loader', function (done) {
     scope.visibilty = true
     var ele = '<user-search></user-search>'
 

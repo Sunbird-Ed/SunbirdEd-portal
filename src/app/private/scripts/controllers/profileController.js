@@ -370,7 +370,7 @@ angular.module('playerApp')
           profile.ischekedPermanent = true
         }
         if (address.addType === 'permanent') {
-          profile.ischekedPermanent = false
+          profile.ischekedPermanent = true
           profile.permanentAddressType = false
         }
         var req = { address: [address] }

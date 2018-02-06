@@ -44,9 +44,9 @@ describe('Controller: ProfileController', function () {
     contentService = _contentService_
     userService = _userService_
     searchService = _searchService_
-    learnService = _learnService_,
-    adminService = _adminService_,
-    workSpaceUtilsService = _workSpaceUtilsService_,
+    learnService = _learnService_
+    adminService = _adminService_
+    workSpaceUtilsService = _workSpaceUtilsService_
     formValidation = _formValidation_
     deferred = _$q_.defer()
     $q = _$q_
@@ -69,11 +69,10 @@ describe('Controller: ProfileController', function () {
 
     })
     if (typeof Array.prototype.includes !== 'function') {
-      Array.prototype.includes = function (iterator) {
+      Array.prototype.includes = function (iterator) { // eslint-disable-line no-extend-native
         var list = Object(this)
         var length = list.length >>> 0
-        var thisArg = arguments[1]
-        var value
+        var value // eslint-disable-line no-unused-vars
 
         for (var i = 0; i < length; i++) {
           value = list[i]
@@ -83,8 +82,8 @@ describe('Controller: ProfileController', function () {
       }
     }
     if (typeof Array.prototype.find !== 'function') {
-      Array.prototype.find = function (iterator) {
-        var list = Object(this)
+      Array.prototype.find = function (iterator) { // eslint-disable-line no-extend-native
+        var list = Object(this) // eslint-disable-line no-trailing-spaces
         var length = list.length >>> 0
         var thisArg = arguments[1]
         var value
@@ -202,7 +201,7 @@ describe('Controller: ProfileController', function () {
     profileCtrl.openImageBrowser()
     done()
   })
-  xit('should return a valid image', function (done) {
+  it('should return a valid image', function (done) {
     spyOn(profileCtrl, 'validateAvatar').and.callThrough()
     var files = [{ name: 'name.jpg', size: 40000 }]
     profileCtrl.validateAvatar(files)
@@ -214,7 +213,7 @@ describe('Controller: ProfileController', function () {
     var files = [{ name: 'name.txt', size: 8000000 }]
     profileCtrl.validateAvatar(files)
     expect(profileCtrl.icon).toBeUndefined()
-    expect(function () { parser.parse(raw) }).toThrow('')
+    expect(function () { parser.parse(raw) }).toThrow('') // eslint-disable-line no-undef
     expect(toasterService.warning).toHaveBeenCalled()
 
     done()
@@ -227,7 +226,6 @@ describe('Controller: ProfileController', function () {
     spyOn(profileCtrl, 'validateAvatar').and.returnValue(deferred1.promise)
     spyOn(contentService, 'uploadMedia').and.returnValue(deferred2.promise)
     profileCtrl.updateAvatar()
-    profileCtrl.validateAvatar(files)
     deferred1.resolve(true)
     scope.$apply()
     contentService.uploadMedia()
@@ -235,6 +233,7 @@ describe('Controller: ProfileController', function () {
     deferred2.resolve(updateRes)
     scope.$apply()
     var files = [{ name: 'name.jpg', size: 400000 }]
+    profileCtrl.validateAvatar(files)
 
     expect(contentService.uploadMedia).toHaveBeenCalled()
 
@@ -613,7 +612,8 @@ describe('Controller: ProfileController', function () {
 
   it('should get user Badges', function (done) {
     spyOn(profileCtrl, 'getUserBadges').and.callThrough()
-    spyOn(adminService, 'getBadgesList').and.returnValue([{ badgeTypeId: 123, name: 'test' }, { badgeTypeId: 222, name: 'test' }])
+    spyOn(adminService, 'getBadgesList').and.returnValue([{ badgeTypeId: 123, name: 'test' },
+      { badgeTypeId: 222, name: 'test' }])
     profileCtrl.user = { badges: [{ id: 123, name: 'test' }, { id: 222, name: 'test' }] }
     profileCtrl.getUserBadges()
     adminService.getBadgesList()

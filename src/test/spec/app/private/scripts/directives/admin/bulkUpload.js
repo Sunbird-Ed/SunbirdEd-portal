@@ -3,7 +3,9 @@
 
 describe('Directive: bulkUpload', function () {
   beforeEach(module('playerApp'))
+  var element // eslint-disable-line no-unused-vars
   var compile
+  var templateCache // eslint-disable-line no-unused-vars
   var scope
   var fileName = 'views/admin/uploadFile.html'
 
@@ -14,7 +16,7 @@ describe('Directive: bulkUpload', function () {
     templateCache = $templateCache
   }))
 
-  xit('should show loader', function (done) {
+  it('should show loader', function (done) {
     scope.visibilty = true
     var ele = '<bulk-upload ></bulk-upload>'
 

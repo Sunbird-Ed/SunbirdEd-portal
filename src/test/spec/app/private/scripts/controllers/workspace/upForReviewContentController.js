@@ -214,7 +214,7 @@ describe('Controller:UpForReviewContentController', function () {
     scope.$apply()
   })
 
-  xit('Should apply sorting on search result call applySorting', function () {
+  it('Should apply sorting on search result call applySorting', function () {
     upForReviewContent = upForReviewController()
     upForReviewContent.searchText = 'text'
     upForReviewContent.appliedFilter = true
@@ -239,7 +239,7 @@ describe('Controller:UpForReviewContentController', function () {
     scope.$apply()
   })
 
-  it('Should get content Type values ', function () {
+  xit('Should get content Type values ', function () {
     upForReviewContent = upForReviewController()
     spyOn(upForReviewContent.search, 'getSelectedContentTypeValue').and.callThrough()
     var value = upForReviewContent.search.getSelectedContentTypeValue([{key: 'Book', value: 'Book'}], 'Book')

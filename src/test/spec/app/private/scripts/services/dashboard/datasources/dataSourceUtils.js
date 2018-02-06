@@ -20,7 +20,7 @@ describe('Service: dataSourceUtils', function () {
     deferred = _$q_.defer()
   }))
 
-  xdescribe('Test data source utils', function () {
+  describe('Test data source utils', function () {
     it('should return zero seconds', function () {
       var numericRes = {'value': 12}
       spyOn(dataSourceUtils, 'secondsToMin').and.callThrough()
