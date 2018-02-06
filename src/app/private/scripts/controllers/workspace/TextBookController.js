@@ -210,7 +210,4 @@ angular.module('playerApp')
         })
         return category
       }
-
-      // get channel details
-      textbook.getChannel()
     }])
