@@ -9,27 +9,31 @@ angular.module('playerApp')
       textbook.categoryModelList = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
-      searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          textbook.frameworkId = res.result.channel.frameworks[0].identifier
-          searchService.getFramework(textbook.frameworkId).then(function (res) {
-            if (res.responseCode === 'OK') {
-              textbook.frameworkData = res.result.framework.categories
-              var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              _.forEach(categoryMasterList, function (category) {
-                textbook.categoryListofFramework[category.index] = category.terms || []
-                var categoryName = 'category' + category.index
-                textbook[categoryName] = category
-                textbook.categoryModelList[category.index] = category.code
-              })
-            }
-          }).catch(function (error) {
-            console.log('error is ......', error)
-          })
-        }
-      }).catch(function (error) {
-        console.log('error is ......', error)
-      })
+      textbook.getChannel = function () {
+        searchService.getChannel().then(function (res) {
+          if (res.responseCode === 'OK') {
+            textbook.frameworkId = res.result.channel.frameworks[0].identifier
+            searchService.getFramework(textbook.frameworkId).then(function (res) {
+              if (res.responseCode === 'OK') {
+                textbook.frameworkData = res.result.framework.categories
+                var categoryMasterList = _.cloneDeep(res.result.framework.categories)
+                _.forEach(categoryMasterList, function (category) {
+                  textbook.categoryListofFramework[category.index] = category.terms || []
+                  var categoryName = 'category' + category.index
+                  textbook[categoryName] = category
+                  textbook.categoryModelList[category.index] = category.code
+                })
+              }
+            }).catch(function (error) {
+              console.log('error is ......', error)
+              toasterService.error($rootScope.messages.fmsg.m0008)
+            })
+          }
+        }).catch(function (error) {
+          console.log('error is ......', error)
+          toasterService.error($rootScope.messages.fmsg.m0008)
+        })
+      }
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
@@ -93,6 +97,9 @@ angular.module('playerApp')
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
         requestBody.frameworkId = textbook.frameworkId
+        if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
+          delete requestBody['gradeLevel']
+        }
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }
@@ -199,4 +206,7 @@ angular.module('playerApp')
         })
         return category
       }
+
+      // get channel details
+      textbook.getChannel()
     }])
