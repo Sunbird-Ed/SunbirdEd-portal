@@ -115,9 +115,7 @@ angular.module('playerApp')
               .GetPager(allUploadedContent.totalCount - requestData.length,
                 allUploadedContent.pageNumber, allUploadedContent.pageLimit)
             if (allUploadedContent.allUploadedContentData.length === 0) {
-              allUploadedContent.error = showErrorMessage(true,
-                $rootScope.messages.stmsg.m0024,
-                $rootScope.messages.stmsg.m0008)
+              allUploadedContent.getAllUploadedContent(allUploadedContent.pager.currentPage)
             }
           } else {
             allUploadedContent.loader.showLoader = false

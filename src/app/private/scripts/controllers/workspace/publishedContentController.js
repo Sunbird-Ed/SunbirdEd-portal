@@ -110,9 +110,7 @@ angular.module('playerApp')
                             requestData.length,
             publishedContent.pageNumber, publishedContent.pageLimit)
             if (publishedContent.publishedContentData.length === 0) {
-              publishedContent.error = showErrorMessage(true,
-                $rootScope.messages.stmsg.m0022,
-                $rootScope.messages.stmsg.m0008)
+              publishedContent.getPublishedContent(publishedContent.pager.currentPage)
             }
           } else {
             publishedContent.loader.showLoader = false
