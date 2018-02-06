@@ -35,7 +35,7 @@ angular.module('playerApp')
           request: {
             filters: {
               status: batch.status.toString(),
-              createdFor: permissionsService.getRoleOrgMap()['COURSE_MENTOR'],
+              createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR'],
               createdBy: batch.userId
             },
             sort_by: { createdDate: 'desc' },

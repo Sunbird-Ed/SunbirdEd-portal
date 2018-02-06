@@ -32,7 +32,7 @@ angular.module('playerApp')
         var request = {
           filters: {
             status: flaggedContent.contentStatus,
-            createdFor: permissionsService.getRoleOrgMap()['FLAG_REVIEWER'],
+            createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['FLAG_REVIEWER'],
             objectType: 'Content',
             contentType: config.contributeContentType,
             createdBy: {'!=': flaggedContent.userId}
