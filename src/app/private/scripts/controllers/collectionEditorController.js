@@ -40,7 +40,7 @@ angular.module('playerApp')
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
           channel: org.sunbird.portal.channel,
           frameworkId: collectionEditor.frameworkId,
-          env: data.type
+          env: data.type.toLowerCase()
         }
 
         window.config = {
