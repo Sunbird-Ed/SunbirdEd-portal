@@ -7,6 +7,7 @@ angular.module('playerApp')
       permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
+      collectionEditor.frameworkId = $stateParams.frameworkId
       collectionEditor.openCollectionEditor = function (data) {
         $('#collectionEditor').iziModal({
           title: '',
@@ -37,7 +38,9 @@ angular.module('playerApp')
             ver: '1.0'
           },
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-          channel: org.sunbird.portal.channel
+          channel: org.sunbird.portal.channel,
+          frameworkId: collectionEditor.frameworkId,
+          env: data.type.toLowerCase()
         }
 
         window.config = {
@@ -58,7 +61,7 @@ angular.module('playerApp')
             mode: 'Edit',
             contentStatus: 'draft',
             rules: {
-              levels: 3,
+              levels: 7,
               objectTypes: collectionEditor.getTreeNodes(data.type)
             },
             defaultTemplate: {}
@@ -71,7 +74,8 @@ angular.module('playerApp')
               type: 'plugin'
             }],
             showEndPage: false
-          }
+          },
+          editorType: data.type
         }
 
         window.config.editorConfig.publishMode = false
@@ -148,47 +152,70 @@ angular.module('playerApp')
             label: 'Course',
             isRoot: true,
             editable: true,
-            childrenTypes: ['CourseUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'CourseUnit',
             label: 'Course Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['CourseUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Story',
             label: 'Story',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Worksheet',
             label: 'Worksheet',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
@@ -199,31 +226,56 @@ angular.module('playerApp')
             label: 'Collection',
             isRoot: true,
             editable: true,
-            childrenTypes: ['Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
+
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Story',
             label: 'Story',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Worksheet',
             label: 'Worksheet',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
@@ -234,47 +286,70 @@ angular.module('playerApp')
             label: 'LessonPlan',
             isRoot: true,
             editable: true,
-            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'LessonPlanUnit',
             label: 'LessonPlan Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['LessonPlanUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Story',
             label: 'Story',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Worksheet',
             label: 'Worksheet',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })
@@ -285,47 +360,70 @@ angular.module('playerApp')
             label: 'Textbook',
             isRoot: true,
             editable: true,
-            childrenTypes: ['TextBookUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-book'
-          }, {
+          },
+          {
             type: 'TextBookUnit',
             label: 'Textbook Unit',
             isRoot: false,
             editable: true,
-            childrenTypes: ['TextBookUnit', 'Collection', 'Resource', 'Story', 'Worksheet'],
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource'
+            ],
             addType: 'Editor',
             iconClass: 'fa fa-folder-o'
-          }, {
+          },
+          {
             type: 'Collection',
             label: 'Collection',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Resource',
             label: 'Resource',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Story',
             label: 'Story',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
-          }, {
+          },
+          {
             type: 'Worksheet',
             label: 'Worksheet',
             isRoot: false,
             editable: false,
-            childrenTypes: [],
+            childrenTypes: [
+
+            ],
             addType: 'Browser',
             iconClass: 'fa fa-file-o'
           })

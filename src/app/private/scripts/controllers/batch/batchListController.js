@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
-    'userService', 'PaginationService', function ($rootScope, toasterService, batchService,
-      $state, userService, PaginationService) {
+    'userService', 'PaginationService', 'permissionsService', function ($rootScope, toasterService, batchService,
+      $state, userService, PaginationService, permissionsService) {
       var batch = this
       batch.userId = $rootScope.userId
       batch.list = []
@@ -35,7 +35,7 @@ angular.module('playerApp')
           request: {
             filters: {
               status: batch.status.toString(),
-              createdFor: $rootScope.organisationIds,
+              createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR'],
               createdBy: batch.userId
             },
             sort_by: { createdDate: 'desc' },

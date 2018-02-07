@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('batchService', ['httpServiceJava', 'config', function (httpServiceJava, config) {
+  .service('batchService', ['restfulLearnerService', 'config', function (restfulLearnerService, config) {
     /**
      * @class batchService
      * @desc Service to manage batches.
@@ -25,7 +25,7 @@ angular.module('playerApp')
              * @instance
              */
     this.create = function (req) {
-      return httpServiceJava.post(config.URL.BATCH.CREATE, req)
+      return restfulLearnerService.post(config.URL.BATCH.CREATE, req)
     }
     /**
              * @method update
@@ -46,7 +46,7 @@ angular.module('playerApp')
              */
 
     this.update = function (req) {
-      return httpServiceJava.patch(config.URL.BATCH.UPDATE, req)
+      return restfulLearnerService.patch(config.URL.BATCH.UPDATE, req)
     }
     /**
              * @method addUsers
@@ -60,11 +60,11 @@ angular.module('playerApp')
              */
 
     this.addUsers = function (req, batchId) {
-      return httpServiceJava.post(config.URL.BATCH.ADD_USERS + '/' + batchId, req)
+      return restfulLearnerService.post(config.URL.BATCH.ADD_USERS + '/' + batchId, req)
     }
 
     this.removeUsers = function (req) {
-      return httpServiceJava.remove(config.URL.BATCH.DELETE + '/' + req.batchId, req)
+      return restfulLearnerService.remove(config.URL.BATCH.DELETE + '/' + req.batchId, req)
     }
     /**
              * @method getBatchDetails
@@ -77,7 +77,7 @@ angular.module('playerApp')
              */
 
     this.getBatchDetails = function (req) {
-      return httpServiceJava.get(config.URL.BATCH.GET_DETAILS + '/' + req.batchId, req)
+      return restfulLearnerService.get(config.URL.BATCH.GET_DETAILS + '/' + req.batchId, req)
     }
     /**
              * @method getAllBatches
@@ -93,7 +93,7 @@ angular.module('playerApp')
              */
 
     this.getAllBatchs = function (req) {
-      return httpServiceJava.post(config.URL.BATCH.GET_BATCHS, req)
+      return restfulLearnerService.post(config.URL.BATCH.GET_BATCHS, req)
     }
     /**
              * @method getAllBatches
@@ -110,7 +110,7 @@ angular.module('playerApp')
              */
 
     this.getUserList = function (req) {
-      return httpServiceJava.post(config.URL.ADMIN.USER_SEARCH, req)
+      return restfulLearnerService.post(config.URL.ADMIN.USER_SEARCH, req)
     }
     /**
              * @method setBatchData

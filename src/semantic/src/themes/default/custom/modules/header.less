@@ -5,45 +5,15 @@
 // Style guide: Modules.Header
 
 
-
-.header-container {
-    margin-left: 1px !important;
-    border-bottom: 5px solid @blue !important;
-}
-
-.header-user-icon {
-    margin-right: 0px !important;
-}
-
-.content-card-meta { 
-    background: rgba(0, 0, 0, 0.5) !important;
-    color: @white !important;
-    padding: 5px !important;
-}
-
 // Ui Menu
 //
 // .ui.menu - override css values of menu insemantic ui, it is added to the div tag as a class.
 //
 // Style guide: Modules.Header.UiMenu
 
-.ui.menu {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    margin: 0 0 !important;
-    margin-right: 0px;
-    margin-bottom: 1rem;
-    margin-left: 0px;
-    font-family: HelveticaNeueLTStd-Lt, Helvetica, Arial, sans-serif;
-    background: @white -webkit-linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
-    background: @white linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05));
-    font-weight: 400;
-    border: 1px solid rgba(0, 0, 0, 0.13);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.13);
-    border-radius: .2307em;
-    min-height: 3em;
-    justify-content: center !important;
+.ui.menu {    
+    font-family: 'sunbirdregularfont';  
+    color:@primary-textColor; 
 }
 
 // circularIconPadding
@@ -53,26 +23,25 @@
 // Style guide: Modules.Header.HumanIconPadding
 
 .padding-top-circular-human-icon {
-    padding-top: 0.9rem !important;
+    padding-top: 0.9rem;
     z-index:88;
 }
 
 .alarm-icon-header {
-    padding-top: 1.5rem !important;
-    margin: auto !important;
+    padding-top: 1.5rem;
 }
 
-.header-search-filters-divider {
-    margin-top: 0px !important;
+.ui.divider.header-search-filters-divider {
+    margin-top: 0px;
     border-color: transparent;
-    border-width: 0px !important;
+    border-width: 0px;
 }
 
 .header-filter-container {
     background-color: @white;
 }
 
-// loggedInUserIcon
+// .ui.circular.image.logged-in-user
 //
 // logged-in-user - added width, height, margin to user icon. it is added to the div tag as a class.
 //
@@ -80,24 +49,24 @@
 
 /*loged in user icon*/
 
-.logged-in-user {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 2px !important;
-    border-radius: 50% !important;
-    -webkit-border-radius: 50% !important;
-    -moz-border-radius: 50% !important;
-    -ms-border-radius: 50% !important;
-    -o-border-radius: 50% !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
+.ui.circular.image.logged-in-user {
+    width: 30px;
+    height: 30px;
+    margin-top: 2px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .beforelogin.ui.secondary.pointing.menu{
-        border-bottom: 0;
+    border-bottom: 0;
 }
 .header-user-container {
-    float: right !important;
+    float: right;
 }
 
 .padding-top-header-large-icons {
@@ -105,14 +74,19 @@
 }
 
 .padding-top-1rem {
-    padding-top:1rem !important;     
+    padding-top:1rem;     
 }
 
 .ui.secondary.pointing.menu .active.item{
-    border-color:@blue !important;
+    border-color:@primary-color;
+    color:@primary-textColor;
+    font-family: 'sunbirdmediumfont';
 }
-.ui.secondary.pointing.menu{
-    background: @websiteBody-color !important;
+
+.ui.secondary.pointing.menu {
+    background: @secondary-color;
+    margin: 0rem;
+    justify-content: center;
 }
 
 .breadcrumppadding.ui.breadcrumb, .breadcrumppadding.ui.breadcrumb:last-child, .breadcrumppadding.ui.breadcrumb:first-child{
@@ -120,19 +94,14 @@
     line-height:1.5;
 }
 
-
 .ui.breadcrumb .divider {
-    color: @light-skyblue !important;
+    color: @primary-color;
 }
 
-.headerSearchDropdown:hover{
-    background: #f9fafb !important;
-}
-
-.headerDropdownProfile {
-    cursor:text !important;
-    background: none !important;
-    font-weight: bold !important;
+.ui.dropdown .menu>.item.headerDropdownProfile {
+    cursor:text;
+    background: none;
+    font-weight: bold;
 }
 
 .searchfilterinput .ng-empty+.icon.search,

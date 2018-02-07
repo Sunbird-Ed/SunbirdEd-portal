@@ -108,7 +108,7 @@ angular.module('playerApp')
                             requestData.length,
             lpContent.pageNumber, lpContent.pageLimit)
             if (lpContent.limitedpublishedContentData.length === 0) {
-              lpContent.error = showErrorMessage(true, $rootScope.messages.stmsg.m0024, $rootScope.messages.stmsg.m0008)
+              lpContent.getlimitedpublishedContent(lpContent.pager.currentPage)
             }
           } else {
             lpContent.loader.showLoader = false

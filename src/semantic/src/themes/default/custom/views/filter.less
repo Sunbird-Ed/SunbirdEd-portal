@@ -55,7 +55,7 @@
 }
 
 .searchdropdown.ui.basic.button{
-        box-shadow: 0 0 0 1px rgba(51, 51, 51,.33) inset;
+    box-shadow: 0 0 0 1px rgba(51, 51, 51,.33) inset;
 } 
 .filter-sel-text {
     position: static; 
@@ -63,7 +63,7 @@
     max-width: 100%; 
     margin: .55238095em 0 .45238095em .64285714em;
     line-height: 1.21428571em;
-    color:#c7c7c7;
+    color: @filter-placeholderTxt;
 }
 
 .dropdown-items.ui.selection.dropdown .menu>.item {
@@ -82,11 +82,9 @@
     text-align: left;
     border-top: none;
     line-height: 1em;
-    color: #212121;
     padding: 1em 1.5em!important;
     font-size: 1rem;
     text-transform: none;
-    font-weight: 400;
     box-shadow: none;
     -webkit-touch-callout: none;
 }
@@ -96,13 +94,16 @@
 }
 
 .conceptSelector.ui.form .treepicker-parent input{
-    color:#c7c7c7;
+    color:@filter-placeholderTxt;
     font-family: Roboto;
     font-size: 13px;
 }
 
-.profileLocationFilter input{
-    color:#908e90;
-    font-family: Roboto;
+.ui.input input.filterLocationInput {
+    padding-top: 12px;
+    border: 0;
+    border-bottom: 1px solid @form-element-border;
+    border-radius: 0;
+    color:@secondary-textColor;
     font-size: 13px;
 }

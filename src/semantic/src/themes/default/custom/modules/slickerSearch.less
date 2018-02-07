@@ -13,30 +13,33 @@
 //
 // Style guide: Modules.Slider.SlickPrevNextButton
 
+.slick-prev {
+  left: -15px;  
+}
+
 .slick-prev, .slick-next {
-    right: -10px !important;
+    right: -10px;
     top: 40% !important;
-    border-top-left-radius: 2px !important;
-    border-bottom-left-radius: 2px !important;
-    position: absolute !important;
-    font-size: 24px !important;
-    z-index: 3 !important;
-    transition: .3s !important;
-    height: 40px !important;
-    width: 40px !important;
-    padding: 10px 10px !important;
-    border-radius: 50% !important;
-    background: rgba(255,255,255, 1) !important;
-    box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.3) !important;
-    top: 80px;
-    opacity: 1;  
-    line-height: 0;    
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    position: absolute;
+    font-size: 24px;
+    z-index: 3;
+    transition: .3s;
+    height: 40px;
+    width: 40px;
+    padding: 10px 10px;
+    border-radius: 50%;
+    background: @white;
+    box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    line-height: 0;
     display: block;
     margin-top: -10px;
     cursor: pointer;
-    color: rgb(122, 122, 126); 
+    color: transparent;
     border: none;
-    outline: none;  
+    outline: none;
 }
 
 
@@ -47,13 +50,13 @@
 // Style guide: Modules.Slider.slickPreviousButton
 
 .slick-prev:before {
-    left: -20px !important;
-    content: url(/common/images/Backword.png) !important;
+    left: -20px;
+    content: url(/common/images/Backword.png);
     font-family: 'slick';
     font-size: 20px;
     line-height: 1;
-    opacity: 1 !important;
-    color: @blue-dark !important;
+    opacity: 1;
+    color: @primary-color;
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
 }
@@ -66,12 +69,12 @@
 // Style guide: Modules.Slider.SlickNextButton
 
 .slick-next:before {
-    content: url(/common/images/Forward.png) !important;
+    content: url(/common/images/Forward.png);
     font-family: 'slick';
     font-size: 20px;
     line-height: 1;
-    opacity: 1 !important;
-    color: @blue-dark !important;
+    opacity: 1 ;
+    color: @primary-color;
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
 }
@@ -83,10 +86,14 @@
 
 /*slick slider margin bottom removed*/
 .slick-slider {
-    margin-bottom: 0px !important;
+    margin-bottom: 0px;
 }
 
 /*align the cards in left in slicker slider*/
 .slick-track {    
-    margin-left: initial !important;
+    margin-left: initial;
+}
+
+.slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
+     background: @white;
 }

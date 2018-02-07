@@ -98,6 +98,12 @@
               "READ" : "/announcement/v1/read",
               "RECEIVED":"/announcement/v1/received",
               "CANCEL":"/announcement/v1/cancel"
+            },
+            "CHANNEL": {
+                "READ":"channel/v1/read"
+            },
+            "FRAMEWORK": {
+                "READ":"framework/v1/read"
             }
         },
         "FILTER": {
@@ -121,6 +127,18 @@
                   {
                     "key": "Resource",
                     "value": "Resource"
+                  },
+                  {
+                    "key": "Story",
+                    "value": "Story"
+                  },
+                  {
+                    "key": "Worksheet",
+                    "value": "Worksheet"
+                  },
+                  {
+                    "key": "Game",
+                    "value": "Game"
                   }
                 ],
                 "resourceType": [

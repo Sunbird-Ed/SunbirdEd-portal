@@ -32,7 +32,7 @@
                 <i class="close icon "></i>
                 <p>You already have a current job, please change that to not a current job</p>
             </div>
-            <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience) " ;>{{$root.frmelmnts.btn.save}}</button>
+            <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui primary button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience) " ;>{{$root.frmelmnts.btn.save}}</button>
         </div>
         <div class="add-experience-form " ng-if="profileCtrl.isNewExperience ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>

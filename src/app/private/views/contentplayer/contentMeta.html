@@ -52,7 +52,7 @@
                     </div>
                     <div class="ui middle aligned list margin-top-0">
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.author">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.author}}</div>
                             </div>
                             <div class="content">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.language.toString()}}</div>
                             </div>
                             <div class="content">
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
                             </div>
                             <div class="content ">
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.subject}}</div>
                             </div>
                             <div class="content">
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
                             </div>
                             <div class="content">
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
                             </div>
                             <div class="content">
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts.length > 0">
-                            <div class="right floated content contentdetail">
+                            <div class="right floated content contentMetaDetail">
                                 <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
                             </div>
                             <div class="content">

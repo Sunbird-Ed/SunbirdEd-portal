@@ -1,0 +1,49 @@
+<span id="dashoardFiltersHolder" ng-hide="courseDashboard.myBatches.length === 0">
+    <div class="ui grid">
+        <div class="five wide column float-ContentLeft" ng-show="courseDashboard.myBatches.length === 1">
+            <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
+            <span class="dashBoardSectionHeading">{{courseDashboard.courseName}}</span>
+        </div>
+
+        <div class="one wide column" ng-hide="courseDashboard.myBatches.length <= '1'">
+            <span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
+        </div>
+        <div class="four wide column float-ContentLeft" ng-hide="courseDashboard.myBatches.length <= '1'">
+            <div class="ui fluid search selection dropdown" id="myBatchesListFilter">
+                <input type="hidden" name="course">
+                <i class="dropdown icon"></i>
+                <div class="default text" id="selectCourse">{{$root.frmelmnts.intxt.t0003}}</div>
+                <div class="menu">
+                    <div class="item" ng-repeat="course in courseDashboard.myBatches" title="{{course.name}}" ng-click="courseDashboard.onAfterBatchChange(course.id)" data-value="{{course.id}}" ng-init="$last && courseDashboard.initDropdwon()">{{course.name}}</div>
+                </div>
+            </div>
+        </div>
+        <!-- Blank six wide column-->
+        <div class="six wide column padding-top-20 ng-scope"></div>
+        <div class="one wide column padding-top-20 padding-right-5" ng-if="!courseDashboard.showLoader">
+            <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
+                <i class="ui remove icon CloseButtonFont" ng-click="toc.showCourseDashboard = false;courseDashboard.resetDropdown();"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ui grid margin-top-10" ng-hide="courseDashboard.isMultipleCourses">
+        <div class="six wide column">
+            <div class="ui text menu float-ContentLeft padding-top-10">
+                <span class="dashBoardMenuItem cursor-pointer active" ng-class="{active:courseDashboard.timePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange('7d')">{{$root.frmelmnts.lbl.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="dashBoardMenuItem cursor-pointer" ng-class="{active:courseDashboard.timePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange('14d')">{{$root.frmelmnts.lbl.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="dashBoardMenuItem cursor-pointer" ng-class="{active:courseDashboard.timePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange('5w')">{{$root.frmelmnts.lbl.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="dashBoardMenuItem cursor-pointer" ng-class="{active:courseDashboard.timePeriod === 'fromBegining'}" ng-click="courseDashboard.onAfterFilterChange('fromBegining')">{{$root.frmelmnts.lbl.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="two wide column"></div>
+        <!-- Course admin filter-->
+        <div class="four wide column">
+            <div class="ui category search float-ContentRight">
+                <div class="ui icon input">
+                    <input class="search-course-data ng-pristine ng-valid ng-empty ng-touched" type="text" placeholder="{{$root.frmelmnts.intxt.t0004}}" ng-model="courseDashboard.searchUser" autocomplete="off">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>

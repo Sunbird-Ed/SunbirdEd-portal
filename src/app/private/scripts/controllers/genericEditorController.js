@@ -39,7 +39,8 @@ angular.module('playerApp')
             ver: '1.0'
           },
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-          channel: org.sunbird.portal.channel
+          channel: org.sunbird.portal.channel,
+          env: 'genericeditor'
         }
 
         window.config = {

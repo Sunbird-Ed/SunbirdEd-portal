@@ -14,7 +14,6 @@ angular.module('playerApp').controller('SearchResultController', [
   'adminService',
   'permissionsService',
   'PaginationService',
-  'configService',
   function (
     $scope,
     $rootScope,
@@ -28,8 +27,7 @@ angular.module('playerApp').controller('SearchResultController', [
     sessionService,
     adminService,
     permissionsService,
-    PaginationService,
-    configService
+    PaginationService
   ) {
     $scope.search = {}
     $rootScope.search = {}
@@ -37,16 +35,15 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.filters = {}
     $rootScope.search.typingTimer = -1 // timer identifier
     $rootScope.search.doneTypingInterval = 1000
-    $rootScope.search.filterSearchdrpdwn = configService.getFilterSearchdrpdwn()
-    $rootScope.search.languages = $rootScope.search.filterSearchdrpdwn.languages
-    $rootScope.search.contentTypes = $rootScope.search.filterSearchdrpdwn.contentTypes
-    $rootScope.search.subjects = $rootScope.search.filterSearchdrpdwn.subjects
-    $rootScope.search.grades = $rootScope.search.filterSearchdrpdwn.grades
-    $rootScope.search.boards = $rootScope.search.filterSearchdrpdwn.boards
-    $scope.search.searchTypeKeys = $rootScope.search.filterSearchdrpdwn.searchTypeKeys
-    $rootScope.search.sortingOptions = $rootScope.search.filterSearchdrpdwn.sortingOptions
+    $rootScope.search.languages = config.FILTER.RESOURCES.languages
+    $rootScope.search.contentTypes = config.FILTER.RESOURCES.contentTypes
+    $rootScope.search.subjects = config.FILTER.RESOURCES.subjects
+    $rootScope.search.grades = config.DROPDOWN.COMMON.grades
+    $rootScope.search.boards = config.FILTER.RESOURCES.boards
+    $scope.search.searchTypeKeys = config.searchTypeKeys
+    $rootScope.search.sortingOptions = config.sortingOptions
     $rootScope.search.sortBy = { createdOn: 'asc' }
-    $scope.search.searchSelectionKeys = $rootScope.search.filterSearchdrpdwn.searchSelectionKeys
+    $scope.search.searchSelectionKeys = config.searchSelectionKeys
     $rootScope.search.sortIcon = true
     $rootScope.search.selectedLanguage = []
     $rootScope.search.selectedContentType = []
@@ -144,8 +141,8 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedSearchKey = $rootScope.searchKey || searchParams.type
       $rootScope.search.searchKeyword = $rootScope.search.searchKeyword ||
                 searchParams.query
-      $rootScope.search.filters = JSON.parse(window.atob(searchParams.filters || window.btoa('{}')))
-      $rootScope.search.sortBy = JSON.parse(window.atob(searchParams.sort || window.btoa('{}')))
+      $rootScope.search.filters = JSON.parse(atob(searchParams.filters || btoa('{}')))
+      $rootScope.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')))
       $rootScope.search.selectedLanguage = $rootScope.search.filters.language || []
       $rootScope.search.selectedContentType = $rootScope.search.filters.contentType || []
       $rootScope.search.selectedBoard = $rootScope.search.filters.board || []
@@ -222,7 +219,7 @@ angular.module('playerApp').controller('SearchResultController', [
       if (!$event || $event.charCode === 13) {
         $scope.search.autoSuggest = false
         if ((!$rootScope.search.searchKeyword || $rootScope.search.searchKeyword === '') &&
-          ($rootScope.isLearnPage || $rootScope.isResourcesPage) && !$event) {
+            ($rootScope.isLearnPage || $rootScope.isResourcesPage) && !$event) {
           $rootScope.$broadcast('initPageSearch', {})
         } else if ($rootScope.isSearchPage) {
           if ($rootScope.isSearchResultsPage && $rootScope.search.searchKeyword ===
@@ -237,8 +234,8 @@ angular.module('playerApp').controller('SearchResultController', [
             var searchParams = {
               type: $rootScope.search.selectedSearchKey,
               query: $rootScope.search.searchKeyword,
-              filters: window.btoa(JSON.stringify($rootScope.search.filters)),
-              sort: window.btoa(JSON.stringify($rootScope.search.sortBy)),
+              filters: btoa(JSON.stringify($rootScope.search.filters)),
+              sort: btoa(JSON.stringify($rootScope.search.sortBy)),
               autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
             }
             $state.go('Search', searchParams, { reload: true })
@@ -279,17 +276,36 @@ angular.module('playerApp').controller('SearchResultController', [
         $scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
-        $scope.search.searchFn = searchService.contentSearch(angular.copy(req))
+        var librarySearchReq = JSON.parse(JSON.stringify(req))
+        if (!req.filters.contentType || (_.isArray(req.filters.contentType) && req.filters.contentType.length === 0)) {
+          librarySearchReq.filters.contentType = [
+            'Collection',
+            'TextBook',
+            'LessonPlan',
+            'Resource',
+            'Story',
+            'Worksheet',
+            'Game'
+          ]
+        }
+        $scope.search.searchFn = searchService.contentSearch(librarySearchReq)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'All') {
-        $scope.search.searchFn = searchService.search(angular.copy(req))
+        var allSearchReq = JSON.parse(JSON.stringify(req))
+        allSearchReq.filters.contentType = [
+          'Collection',
+          'TextBook',
+          'LessonPlan',
+          'Resource',
+          'Course'
+        ]
+        $scope.search.searchFn = searchService.search(allSearchReq)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else if ($rootScope.search.selectedSearchKey === 'Users') {
         var emailValidator = /\S+@\S+\.\S+/
         var isEmail = emailValidator.test(req.query)
-        var OrgId = $rootScope.userOrganizationId
         if (isEmail === true) {
           req.filters.email = req.query
         }
@@ -311,11 +327,6 @@ angular.module('playerApp').controller('SearchResultController', [
 
         if (isSystemAdmin === false) {
           req.filters.rootOrgId = $rootScope.rootOrgId
-        }
-
-        /* filter by organisation */
-        if (OrgId !== '') {
-          req.filters['organisations.organisationId'] = OrgId
         }
 
         $scope.search.searchFn = adminService.userSearch({ request: req })

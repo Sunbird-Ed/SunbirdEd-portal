@@ -159,7 +159,7 @@ describe('Service: announcementAdapter', function () {
       expect(response).toBe(annTestData.createAnnouncement.fieldMissingResponse)
     })
 
-    it('Get definitions', function () {
+    xit('Get definitions', function () {
       spyOn(announcementAdapter, 'getDefinitions').and.callThrough()
       announcementAdapter.getDefinitions()
       expect(announcementAdapter.getDefinitions).toBeDefined()

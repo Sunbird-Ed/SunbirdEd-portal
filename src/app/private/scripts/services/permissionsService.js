@@ -1,13 +1,14 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('permissionsService', ['httpServiceJava', 'config', '$rootScope',
-    function (httpServiceJava, config, $rootScope) {
+  .service('permissionsService', ['restfulLearnerService', 'config', '$rootScope',
+    function (restfulLearnerService, config, $rootScope) {
       /**
      * @class permissionsService
      * @desc Service to manages permissions for user.
      * @memberOf Services
      */
+      var self = this
       var rolesAndPermissions = []
       var currentUserRoleMap = {}
       var currentUserRoles = []
@@ -121,7 +122,7 @@ angular.module('playerApp')
              * @instance
              */
       this.getPermissionsData = function () {
-        return httpServiceJava.get(config.URL.ROLES.READ)
+        return restfulLearnerService.get(config.URL.ROLES.READ)
       }
       /**
              * @method allRoles
@@ -163,10 +164,30 @@ angular.module('playerApp')
              */
       this.getCurrentUserProfile = function () {
         var url = config.URL.USER.GET_PROFILE + '/' + $rootScope.userId
-        return httpServiceJava.get(url)
+        return restfulLearnerService.get(url)
       }
 
       this.getMainRoles = function () {
         return mainRoles
+      }
+
+      this.setRoleOrgMap = function (profile) {
+        var roles = []
+        _.forEach(profile.organisations, function (org) {
+          roles = roles.concat(org.roles)
+        })
+        roles = _.uniq(roles)
+        this.roleOrgMap = {}
+        _.forEach(roles, function (role) {
+          _.forEach(profile.organisations, function (org) {
+            self.roleOrgMap[role] = self.roleOrgMap[role] || []
+            if (_.indexOf(org.roles, role) > -1) {}
+            self.roleOrgMap[role].push(org.organisationId)
+          })
+        })
+      }
+
+      this.getRoleOrgMap = function () {
+        return this.roleOrgMap
       }
     }])

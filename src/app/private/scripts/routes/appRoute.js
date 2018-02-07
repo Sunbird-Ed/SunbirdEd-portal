@@ -331,7 +331,8 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_SearchCourse',
             id: '',
             name: '',
-            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' + $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
+            url: '/private/index#!/' + $stateParams.type + '/search/' + $stateParams.query + '/' +
+            $stateParams.filters + '/' + $stateParams.sort + '/' + $stateParams.autoSuggestSearch
           })
         },
         onExit: function ($rootScope) {
@@ -359,7 +360,8 @@ angular.module('playerApp')
             pageid: org.sunbird.portal.appid + '_TocPlayer',
             id: '',
             name: '',
-            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' + $stateParams.contentId + '/' + $stateParams.contentIndex
+            url: '/private/index#!/course/' + $stateParams.courseId + '/' + $stateParams.lectureView + '/' +
+            $stateParams.contentId + '/' + $stateParams.contentIndex
           })
         },
         onExit: function ($rootScope, dataService) {
@@ -649,7 +651,7 @@ angular.module('playerApp')
         }
       })
       .state('CollectionEditor', {
-        url: '/collection/editor/:contentId/:type/:state',
+        url: '/collection/editor/:contentId/:type/:state/:frameworkId',
         views: {
           mainView: {
             templateUrl: 'views/common/collectionEditor.html',
@@ -659,7 +661,8 @@ angular.module('playerApp')
         params: {
           contentId: null,
           type: null,
-          state: null
+          state: null,
+          frameworkId: null
         },
         onEnter: function ($rootScope, portalTelemetryService) {
           $rootScope.profileActive = 'active'
@@ -899,16 +902,18 @@ angular.module('playerApp')
         views: {
           mainView: {
             templateUrl: '/views/dashboard/course/courseConsumptionDashboard.html',
-            controller: 'courseCreatorDashboardCtrl as courseDashboard'
+            controller: 'courseConsumptionDashboardCtrl as courseDashboard'
           }
         },
         onEnter: function ($stateParams, $rootScope, routeHelperService) {
           $rootScope.profileActive = 'active'
           $rootScope.isPlayerPage = false
+          $rootScope.myActivityMenuActive = 'active selected'
           routeHelperService.loadRouteConfig('MyActivity', null)
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
+          $rootScope.myActivityMenuActive = ''
         }
       })
       .state('Setup', {
