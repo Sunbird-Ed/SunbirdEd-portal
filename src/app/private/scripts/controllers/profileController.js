@@ -40,7 +40,11 @@ angular.module('playerApp')
       profile.quantityOfContent = 4
       profile.badges = []
       profile.isViewMore = true
-
+      profile.isAddAddress = true
+      profile.currentAddressType = false
+      profile.permanentAddressType = false
+      profile.ischekedCurrent = true
+      profile.ischekedPermanent = false
       var today = new Date()
 
       var orgIds = []
@@ -83,6 +87,32 @@ angular.module('playerApp')
           var profileData = angular.copy(userProfile.result.response)
 
           profile.user = profileData
+          if (profile.user.address.length > 0) {
+            if (profile.user.address.length >= 2) {
+              profile.isAddAddress = false
+            } else if (profile.user.address[0].addType) {
+              profile.isAddAddress = true
+              if (profile.user.address[0].addType === 'current') {
+                profile.currentAddressType = true
+                profile.ischekedCurrent = false
+                profile.ischekedPermanent = true
+              } else if (profile.user.address[0].addType === 'permanent') {
+                profile.permanentAddressType = true
+                profile.ischekedCurrent = true
+                profile.ischekedPermanent = false
+              } else {
+                profile.currentAddressType = false
+                profile.permanentAddressType = false
+                profile.ischekedCurrent = true
+                profile.ischekedPermanent = false
+              }
+            }
+          } else {
+            profile.currentAddressType = false
+            profile.permanentAddressType = false
+            profile.ischekedCurrent = true
+            profile.ischekedPermanent = false
+          }
           // temp mock data
           profile.user.profileVisibility = profileData.profileVisibility
           profile.fullName = profileData.firstName + ' ' + profileData.lastName
@@ -337,6 +367,15 @@ angular.module('playerApp')
 
       profile.deleteAddress = function (address) {
         address.isDeleted = true
+        if (address.addType === 'current') {
+          profile.ischekedCurrent = false
+          profile.currentAddressType = false
+          profile.ischekedPermanent = true
+        }
+        if (address.addType === 'permanent') {
+          profile.ischekedPermanent = true
+          profile.permanentAddressType = false
+        }
         var req = { address: [address] }
         // req.userId = $rootScope.userId;
         profile.updateUserInfo(
