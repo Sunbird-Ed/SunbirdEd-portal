@@ -41,6 +41,9 @@
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.firstName}}</th>
                                 <th>{{$root.frmelmnts.lbl.lastName}}</th>
+                                <th>{{$root.frmelmnts.lbl.userID}}</th> 
+                                <th>{{$root.frmelmnts.lbl.rootOrg}}</th> 
+                                <th>{{$root.frmelmnts.lbl.regOrg}}</th>
                                 <th>{{$root.frmelmnts.lbl.countryCode}}</th>
                                 <th>{{$root.frmelmnts.lbl.phone}}</th>
                                 <th>{{$root.frmelmnts.lbl.email}}</th>
@@ -62,6 +65,9 @@
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.firstName || "empty"}}</td>
                                 <td>{{ row.lastName || "empty"}}</td>
+                                <td>{{ row.userId || ""}}</td> 
+                                <td>{{ row.rootOrgId || ""}}</td> 
+                                <td>{{ row.regOrgId || ""}}</td>
                                 <td>{{ row.countryCode || ""}}</td>
                                 <td>{{ row.phone || "empty"}}</td>
                                 <td>{{ row.email || "empty"}}</td>
