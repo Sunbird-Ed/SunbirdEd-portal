@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('BatchUpdateController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
-    'config', 'batchService', '$filter', 'toasterService', function ($rootScope, $timeout, $state, $scope,
-      $stateParams, config, batchService, $filter, toasterService) {
+    'config', 'batchService', '$filter', 'toasterService', 'userService',
+    function ($rootScope, $timeout, $state, $scope,
+      $stateParams, config, batchService, $filter, toasterService, userService) {
       var batchUpdate = this
       batchUpdate.userList = []
       batchUpdate.menterList = []
@@ -126,14 +127,7 @@ angular.module('playerApp')
         $('#updateBatch').find('.search').val('')
       }
       batchUpdate.getUserList = function () {
-        var request = {
-          request: {
-            filters: {
-              'organisations.organisationId': $rootScope.organisationIds
-            }
-          }
-        }
-        batchService.getUserList(request).then(function (response) {
+        userService.searchUsers($rootScope.rootOrgId).then(function (response) {
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
               if (userData.identifier !== $rootScope.userId) {
