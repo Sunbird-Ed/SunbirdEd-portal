@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('pageSectionCtrl', ['pageSectionService', '$scope',
     '$state', 'config', 'sessionService', '$rootScope', 'toasterService', 'telemetryService',
-    function (pageSectionService, $scope,
-      $state, config, sessionService, $rootScope, toasterService, telemetryService) {
+    function (pageSectionService, $scope, $state, config, sessionService, $rootScope,
+      toasterService, telemetryService) {
       var section = this
       section.pageTypeUrls = { resource: 'Resource',
         course: 'Course' }
@@ -16,7 +16,7 @@ angular.module('playerApp')
           contentId: item.identifier }
         $state.go('Player', params)
         telemetryService.interactTelemetryData($scope.type, item.identifier, item.contentType,
-          $rootScope.version, $scope.type + '-read', $scope.type)
+          $rootScope.version, $scope.type, $scope.type + '-read')
         telemetryService.startTelemetryData($scope.type, item.identifier, item.contentType,
           $rootScope.version, item.contentType, $scope.type + '-read', 'play')
       }
@@ -42,7 +42,7 @@ angular.module('playerApp')
         sessionService.setSessionData('COURSE_PARAMS', params)
         $state.go('Toc', params)
         telemetryService.interactTelemetryData($scope.type, courseId, courseType, $rootScope.version,
-          $scope.type + '-read', $scope.type)
+          $scope.type, $scope.type + '-read')
         telemetryService.startTelemetryData($scope.type, courseId, courseType,
           $rootScope.version, courseType, $scope.type + '-read', 'play')
       }
@@ -68,9 +68,9 @@ angular.module('playerApp')
         pageSectionService.getPageData(config.URL.PAGE_PREFIX, request)
           .then(function (successResponse) {
             // telemetry INTERACT event
-            var itemType = $scope.type
-            var url = '/learn'
-            var env = 'course'
+            var itemType = $scope.type // eslint-disable-line no-unused-vars
+            var url = '/learn' // eslint-disable-line no-unused-vars
+            var env = 'course' // eslint-disable-line no-unused-vars
             telemetryService.setConfigData('env', 'course')
             telemetryService.setConfigData('message', 'Content read')
             if ($scope.type === 'resource') {
@@ -112,8 +112,8 @@ angular.module('playerApp')
                 }
               })
 
-              telemetryService.impressionTelemetryData(env, successResponse.identifier, itemType,
-                $rootScope.version, 'scroll', itemType + '-read', itemType, url)
+              /* telemetryService.impressionTelemetryData(env, successResponse.identifier, itemType,
+                $rootScope.version, 'scroll', itemType + '-read', url, '',$scope.inviewLogs) */
               section.loader.showLoader = false
               if (section.page.length === 0) {
                 section.error = showErrorMessage(true,
@@ -157,4 +157,21 @@ angular.module('playerApp')
       $scope.$on('$destroy', function () {
         initSearchHandler()
       })
+
+      // telemetry visit spec
+      var inviewLogs = []
+      $rootScope.lineInView = function (index, inview, item) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        // console.log(item);
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'course'
+          })
+        }
+        console.log('----------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
+      }
     }])

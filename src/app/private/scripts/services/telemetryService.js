@@ -31,6 +31,7 @@ angular.module('playerApp')
     }
     this.context = []
     this.configData = {}
+    this.visitData = []
 
     this.setConfig = function () {
       this.config.pdata.id = org.sunbird.portal.appid || 'org.sunbird'
@@ -196,8 +197,10 @@ angular.module('playerApp')
         type: type,
         subtype: subtype,
         pageid: pageid,
-        uri: uri,
-        visits: visits
+        uri: uri
+      }
+      if (visits) {
+        impressionEventData.visits = visits
       }
       return JSON.parse(JSON.stringify(impressionEventData))
     }
@@ -375,7 +378,7 @@ angular.module('playerApp')
     }
 
     this.impressionTelemetryData = function (env, objId, objType, objVer, subtype, pageId,
-      uri, objRollup) {
+      uri, objRollup, visit) {
       var contextData = {
         env: env,
         rollup: this.getRollUpData($rootScope.organisationIds)
@@ -389,7 +392,7 @@ angular.module('playerApp')
       }
 
       var data = {
-        edata: this.impressionEventData('view', subtype, pageId, uri),
+        edata: this.impressionEventData('view', subtype, pageId, uri, visit),
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
         tags: $rootScope.organisationIds
@@ -485,5 +488,13 @@ angular.module('playerApp')
         tags: $rootScope.organisationIds
       }
       this.error(data)
+    }
+
+    this.setVisitData = function (data) {
+      this.visitData = data
+    }
+
+    this.getVisitData = function () {
+      return this.visitData
     }
   }])

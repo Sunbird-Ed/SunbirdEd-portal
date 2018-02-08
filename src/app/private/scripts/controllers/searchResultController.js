@@ -59,6 +59,7 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.selectedOrgType = []
     $rootScope.search.pageLimit = 20
     $rootScope.search.pager = {}
+    $rootScope.inviewLogs = []
     // search select dropdown changes
     $rootScope.$watch('searchKey', function () {
       $timeout(function () {
@@ -242,6 +243,7 @@ angular.module('playerApp').controller('SearchResultController', [
             }
             $rootScope.searchTelemetryId = 'search-' + $rootScope.search.selectedSearchKey.toLowerCase()
             $rootScope.searchTelemetryPageid = $rootScope.search.selectedSearchKey.toLowerCase() + '-search'
+            $rootScope.inviewLogs = []
             $state.go('Search', searchParams, { reload: true })
           }
         }
@@ -506,5 +508,22 @@ angular.module('playerApp').controller('SearchResultController', [
         return contentType.key === selectedContentType
       })
       return ct ? ct[0].value : ''
+    }
+
+    // telemetry visit spec
+    $rootScope.lineInView = function (index, inview, item, objType) {
+      console.log('itemmsss', item)
+      var obj = _.filter($rootScope.inviewLogs, function (o) {
+        return o.objid === item.identifier
+      })
+      // console.log(item);
+      if (inview === true && obj.length === 0) {
+        $rootScope.inviewLogs.push({
+          objid: item.identifier,
+          objtype: objType
+        })
+      }
+      console.log('----------', $rootScope.inviewLogs)
+      telemetryService.setVisitData($rootScope.inviewLogs)
     }
   }])

@@ -79,6 +79,8 @@ angular.module('playerApp')
           routeHelperService.loadRouteConfig('Courses')
         },
         onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('course', '', 'course',
+            $rootScope.version, 'scroll', 'course-read', '/learn', '', telemetryService.getVisitData())
           $rootScope.courseActive = ''
           $rootScope.isLearnPage = false
         },
@@ -93,19 +95,10 @@ angular.module('playerApp')
             templateUrl: '/views/resource/resource.html'
           }
         },
-        onEnter: function ($rootScope, portalTelemetryService, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.isResourcesPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Resources')
-          // filters section -- ends
-          portalTelemetryService.fireImpressions({
-            env: 'content',
-            type: 'list',
-            pageid: org.sunbird.portal.appid + '_Resources',
-            id: '',
-            name: '',
-            url: '/private/index#!/resources'
-          })
         },
         onExit: function ($rootScope) {
           $rootScope.isResourcesPage = false
@@ -336,20 +329,23 @@ angular.module('playerApp')
           } else {
             $rootScope.homeActive = 'active'
           }
-          var contextData = {
+
+          /* var contextData = {
             env: 'search',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
-          var pageId = $stateParams.type.toLowerCase() + '-search'
-          var uri = '/search/' + $stateParams.type
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
             context: telemetryService.getContextData(contextData),
             tags: $rootScope.organisationIds
           }
-          telemetryService.impression(data)
+          telemetryService.impression(data) */
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService, $stateParams) {
+          var pageId = $stateParams.type.toLowerCase() + '-search'
+          var uri = '/search/' + $stateParams.type
+          telemetryService.impressionTelemetryData('search', '', 'search',
+            '1.0', 'scroll', pageId, uri, '', telemetryService.getVisitData())
           $rootScope.courseActive = $rootScope.resourcesActive = ''
           $rootScope.isSearchResultsPage = false
           $rootScope.homeActive = ''

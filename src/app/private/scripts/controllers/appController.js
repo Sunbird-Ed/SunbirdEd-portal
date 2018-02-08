@@ -154,7 +154,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             }
             document.head.appendChild(link)
           }
-        }).catch(function () {
+        }).catch(function (err) {
+          console.log('app controller', err)
           toasterService.error($rootScope.messages.fmsg.m0057)
         })
       }
@@ -174,7 +175,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           } else {
             // error handler
           }
-        }).catch(function () {
+        }).catch(function (error) {
+          console.log('err', error)
           // error handler
         })
       }

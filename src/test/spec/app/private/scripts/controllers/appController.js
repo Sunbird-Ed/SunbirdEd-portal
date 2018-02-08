@@ -66,6 +66,7 @@ describe('App controller', function () {
       pageid: 'course'
     }
   }
+
   // spyOn(Array.prototype, 'find').and.callThrough()
 
   beforeEach(inject(function ($rootScope, _$stateParams_, _contentService_, _$timeout_, _$q_,
@@ -201,6 +202,26 @@ describe('App controller', function () {
     rootScope.generateInteractEvent('course', 'do_212345541699534848166', 'course', '1.0', 'course-read', 'course')
     scope.$apply()
     var response = telemetryService.interactTelemetryData().$$state.value
+    expect(response).toBe(telemetrySpec)
+  })
+
+  it('Should return telemetry start event spec', function () {
+    spyOn(telemetryService, 'startTelemetryData').and.returnValue(deferred.promise)
+    deferred.resolve(telemetrySpec)
+    spyOn(rootScope, 'generateStartEvent').and.callThrough()
+    rootScope.generateStartEvent('course', 'do_21234554169953484567', 'course', '1.0', 'course-read', 'course')
+    scope.$apply()
+    var response = telemetryService.startTelemetryData().$$state.value
+    expect(response).toBe(telemetrySpec)
+  })
+
+  it('Should return telemetry end event spec', function () {
+    spyOn(telemetryService, 'endTelemetryData').and.returnValue(deferred.promise)
+    deferred.resolve(telemetrySpec)
+    spyOn(rootScope, 'generateEndEvent').and.callThrough()
+    rootScope.generateEndEvent('course', 'do_21234554169953484567', 'course', '1.0', 'course-read', 'course')
+    scope.$apply()
+    var response = telemetryService.endTelemetryData().$$state.value
     expect(response).toBe(telemetrySpec)
   })
 })
