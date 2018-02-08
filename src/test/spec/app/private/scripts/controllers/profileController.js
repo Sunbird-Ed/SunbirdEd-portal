@@ -303,8 +303,8 @@ describe('Controller: ProfileController', function () {
     done()
   })
   it('should show add a new address link ', function (done) {
-    spyOn(profileCtrl, 'getProfile').and.callThrough()
     spyOn(profileCtrl, 'processProfileData').and.callThrough()
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
     profileCtrl.address = []
     scope.$apply()
     expect(profileCtrl.isAddAddress).toBe(true)
@@ -313,13 +313,15 @@ describe('Controller: ProfileController', function () {
 
   it('should not show add a new address link ', function (done) {
     spyOn(profileCtrl, 'processProfileData').and.callThrough()
-    profileCtrl.processProfileData(userProfile)
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+    profileCtrl.showAddAddress(userProfile.result.response.address)
     expect(profileCtrl.isAddAddress).toBe(false)
     done()
   })
   it('should Permanent radio button  checked by default', function (done) {
     spyOn(profileCtrl, 'processProfileData').and.callThrough()
-    profileCtrl.processProfileData(isPermanentChecked)
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+    profileCtrl.showAddAddress(isPermanentChecked.result.response.address)
     expect(profileCtrl.ischekedCurrent).toBe(false)
     done()
   })

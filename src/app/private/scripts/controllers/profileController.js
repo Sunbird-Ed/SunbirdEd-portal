@@ -42,6 +42,8 @@ angular.module('playerApp')
       profile.isViewMore = true
       profile.isAddAddress = true
       profile.ischekedCurrent = true
+      profile.disabledCurrent = false
+      profile.disabledPermanent = false
 
       var today = new Date()
 
@@ -83,26 +85,8 @@ angular.module('playerApp')
         profile.loader.showLoader = false
         if (userProfile && userProfile.responseCode === 'OK') {
           var profileData = angular.copy(userProfile.result.response)
-
           profile.user = profileData
-          if (profile.user.address.length > 0) {
-            if (profile.user.address.length >= 2) {
-              profile.isAddAddress = false
-            } else if (profile.user.address[0].addType) {
-              profile.isAddAddress = true
-              if (profile.user.address[0].addType === 'current') {
-                profile.ischekedCurrent = false
-              } else if (profile.user.address[0].addType === 'permanent') {
-                profile.ischekedCurrent = true
-              } else {
-                profile.ischekedCurrent = true
-              }
-            } else {
-              profile.ischekedCurrent = true
-            }
-          } else {
-            profile.ischekedCurrent = true
-          }
+          profile.showAddAddress(profile.user.address)
           // temp mock data
           profile.user.profileVisibility = profileData.profileVisibility
           profile.fullName = profileData.firstName + ' ' + profileData.lastName
@@ -327,7 +311,6 @@ angular.module('playerApp')
 
       // CURD address
       profile.addAddress = function (newAddress) {
-        console.log('newAddress', newAddress)
         var isValid = formValidation.validate('#addressForm')
         if (isValid === true) {
           profile.address.push(newAddress)
@@ -815,6 +798,25 @@ angular.module('playerApp')
 
       profile.setLimit = function (lim) {
         profile.limit = (lim <= 0) ? profile.userSkills.length : lim
+      }
+      profile.showAddAddress = function (data) {
+        if (data && data.length < 2) {
+          profile.isAddAddress = true
+          var address = data.filter(function (e) {
+            return e.addType === 'current'
+          })
+          if (address.length === 0) {
+            profile.ischekedCurrent = true
+            profile.disabledPermanent = true
+            profile.disabledCurrent = false
+          } else {
+            profile.ischekedCurrent = false
+            profile.disabledCurrent = true
+            profile.disabledPermanent = false
+          }
+        } else {
+          profile.isAddAddress = false
+        }
       }
     }
   ])
