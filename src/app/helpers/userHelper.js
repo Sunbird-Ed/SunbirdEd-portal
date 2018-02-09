@@ -34,11 +34,13 @@ module.exports = {
     request(options, function (error, response, body) {
       if (callback) {
         if (error) {
-          callback(error, false)
+          console.log('Update login time failed due to', error)
+          callback(null, true)
+          console.log('Update login time failed due to', body.params.err)
         } else if (body && body.params && body.params.err) {
-          callback(body, false)
+          callback(null, true)
         } else {
-          callback(body, true)
+          callback(null, body)
         }
       }
     })
