@@ -35,7 +35,7 @@ angular.module('playerApp')
           request: {
             filters: {
               status: batch.status.toString(),
-              createdFor: permissionsService.getRoleOrgMap()['COURSE_MENTOR'],
+              createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR'],
               createdBy: batch.userId
             },
             sort_by: { createdDate: 'desc' },
@@ -80,6 +80,8 @@ angular.module('playerApp')
               batch.error = showErrorMessage(true,
                 $rootScope.messages.stmsg.m0020,
                 $rootScope.messages.stmsg.m0008)
+            } else {
+              batch.error = {}
             }
           } else {
             toasterService.error($rootScope.messages.fmsg.m0004)
