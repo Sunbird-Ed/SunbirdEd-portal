@@ -43,7 +43,7 @@ angular.module('playerApp')
           if (successResponse && successResponse.responseCode === 'OK') {
             learn[api].loader.showLoader = false
             $rootScope.enrolledCourses = successResponse.result.courses
-            $rootScope.version = successResponse.ver
+            // successResponse.ver
             $rootScope.enrolledCourseIds = $rootScope
               .arrObjsToObject($rootScope.enrolledCourses, 'courseId')
             learn.enrolledCourses = $rootScope.enrolledCourses

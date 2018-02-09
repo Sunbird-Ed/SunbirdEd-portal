@@ -58,8 +58,8 @@ angular.module('playerApp')
           if (apiResponse && apiResponse.responseCode === 'OK') {
             if (apiResponse.result.content && apiResponse.result.content.length > 0) {
               courseDashboard.myCoursesList = apiResponse.result.content
-              $rootScope.version = apiResponse.ver
               courseDashboard.buildMyCoursesDropdown()
+              courseDashboard.version = apiResponse.ver
             } else {
               spinner(false)
             }
@@ -69,8 +69,8 @@ angular.module('playerApp')
         }).catch(function (apiResponse) {
           courseDashboard.showErrors()
         })
-        courseDashboard.generateImressionEvent('dasboard', 'profile-course-creator-dashboard',
-          '/course-creator-dashboard', 'profile')
+        courseDashboard.generateImpressionEvent('dasboard', 'profile-course-creator-dashboard',
+          '/course-creator-dashboard', 'profile', courseDashboard.version)
       }
 
       courseDashboard.buildMyCoursesDropdown = function () {
@@ -116,7 +116,7 @@ angular.module('playerApp')
              * This function call to generate Imression
              * telemetry event
              */
-      courseDashboard.generateImressionEvent = function (itemType, pageId, uri, env) {
+      courseDashboard.generateImpressionEvent = function (itemType, pageId, uri, env, objVer) {
         var contextData = {
           env: env,
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
@@ -125,7 +125,7 @@ angular.module('playerApp')
         var objectData = {
           id: '',
           type: itemType,
-          ver: $rootScope.version
+          ver: objVer
         }
 
         var data = {
