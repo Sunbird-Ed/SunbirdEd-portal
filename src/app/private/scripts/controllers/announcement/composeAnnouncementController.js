@@ -1,9 +1,9 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'portalTelemetryService',
+  'announcementAdapter',
   function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
-    AnnouncementModel, announcementAdapter, portalTelemetryService) {
+    AnnouncementModel, announcementAdapter) {
     var composeAnn = this
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
@@ -194,7 +194,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          * @memberOf Controllers.composeAnnouncementCtrl
          */
     composeAnn.saveAnnouncement = function () {
-      var url = ''
+      var url = '' // eslint-disable-line no-unused-vars
       if (composeAnn.editAction) {
         url = '/private/index#!/announcement/resend/' + $stateParams.announcementId +
                     '/4'
@@ -208,14 +208,6 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         .then(function (apiResponse) {
           composeAnn.hideSendBtn = false
           composeAnn.hideModel('createAnnouncementModal')
-          portalTelemetryService.fireAnnouncementImpressions({
-            env: 'community.announcements',
-            type: 'view',
-            pageid: 'announcement_form_complete',
-            id: '',
-            name: '',
-            url: url
-          }, $rootScope.userIdHashTag)
           if (composeAnn.editAction) {
             $('#announcementResendModal').modal({
               closable: false
