@@ -127,7 +127,15 @@ angular.module('playerApp')
         $('#updateBatch').find('.search').val('')
       }
       batchUpdate.getUserList = function () {
-        userService.searchUsers($rootScope.rootOrgId).then(function (response) {
+        var request = {
+          request: {
+            filters: {
+              'organisations.organisationId': $rootScope.organisationIds
+            }
+          }
+        }
+
+        batchService.getUserList(request).then(function (response) {
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
               if (userData.identifier !== $rootScope.userId) {

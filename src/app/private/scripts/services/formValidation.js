@@ -37,7 +37,7 @@ angular.module('playerApp')
         prompt: $rootScope.messages.stmsg.m0066
       },
       { fieldName: 'phone',
-        type: 'regExp[(^(\\+91[\\-\\s]?)?[0]?(91)?[789]\\d{9}$)|([*]{6,9}[0-9]{4})]',
+        type: 'regExp[^\\d{10}$]',
         prompt: $rootScope.messages.stmsg.m0067
       },
       { fieldName: 'email',
