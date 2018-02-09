@@ -100,7 +100,9 @@ angular.module('playerApp')
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Resources')
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('library', '', 'library',
+            $rootScope.version, 'scroll', 'library-read', '/resources', '', telemetryService.getVisitData())
           $rootScope.isResourcesPage = false
           $rootScope.resourcesActive = ''
         },
@@ -367,7 +369,7 @@ angular.module('playerApp')
           $rootScope.courseActive = 'active'
           var url = '/private/index#!/course/' + $stateParams.courseId + '/' +
           $stateParams.lectureView + '/' +
-            $stateParams.contentId + '/' + $stateParams.contentIndex
+          $stateParams.contentId + '/' + $stateParams.contentIndex
           var contextData = {
             env: 'course',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
@@ -460,16 +462,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($rootScope, telemetryService) {
-          var contextData = {
-            env: 'workspace',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
-            context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'draft',
+            '1.0', 'scroll', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.ReviewContent', {

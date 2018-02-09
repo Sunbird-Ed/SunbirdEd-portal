@@ -512,7 +512,6 @@ angular.module('playerApp').controller('SearchResultController', [
 
     // telemetry visit spec
     $rootScope.lineInView = function (index, inview, item, objType) {
-      console.log('itemmsss', item)
       var obj = _.filter($rootScope.inviewLogs, function (o) {
         return o.objid === item.identifier
       })
@@ -520,7 +519,8 @@ angular.module('playerApp').controller('SearchResultController', [
       if (inview === true && obj.length === 0) {
         $rootScope.inviewLogs.push({
           objid: item.identifier,
-          objtype: objType
+          objtype: objType,
+          index: index
         })
       }
       console.log('----------', $rootScope.inviewLogs)

@@ -65,4 +65,23 @@ angular.module('playerApp')
       } else {
         learn.courses()
       }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      $rootScope.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        console.log('index', index)
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'course',
+            section: section,
+            index: index
+          })
+        }
+        console.log('----------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
+      }
     }])

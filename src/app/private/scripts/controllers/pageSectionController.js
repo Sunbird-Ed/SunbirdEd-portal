@@ -160,15 +160,16 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      $rootScope.lineInView = function (index, inview, item) {
+      $rootScope.lineInView = function (index, inview, item, section) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        // console.log(item);
         if (inview === true && obj.length === 0) {
           inviewLogs.push({
             objid: item.identifier,
-            objtype: item.contentType || 'course'
+            objtype: item.contentType || 'course',
+            section: section,
+            index: index
           })
         }
         console.log('----------', inviewLogs)
