@@ -8,7 +8,7 @@
         </h5>
     </div>
     <div class="ui stackable four column grid dynamic-section-card ">
-        <div class="column " ng-repeat="item in $root.search.searchResult.course track by $index " ng-init="$last && search.loadRating() ">
+    <div class="column " ng-repeat="item in $root.search.searchResult.course track by $index " in-view="$root.lineInView($index, $inview, item, item.contentType)" in-view-options="{ throttle: 1000 }" ng-init="$last && search.loadRating() ">
 
             <div class="slider link " ng-include=" 'views/common/ratingCard.html' " ng-click="$root.search.openCourseView(item,($root.enrolledCourseIds[item.courseId])?'ENROLLED_COURSE':'OTHER_COURSE')">
 

@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', 'searchService', 'configService', function (contentService, $timeout,
-      $state, config, $rootScope, toasterService, searchService, configService) {
+    '$rootScope', 'toasterService', 'searchService', 'configService', 'telemetryService',
+    function (contentService, $timeout, $state, config, $rootScope, toasterService,
+      searchService, configService, telemetryService) {
       var textbook = this
       textbook.categoryListofFramework = {}
       textbook.categoryModelList = {}
@@ -11,6 +12,7 @@ angular.module('playerApp')
 
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
+          textbook.version = res.ver
           textbook.frameworkId = null
           if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
             textbook.frameworkId = res.result.channel.frameworks[0].identifier
@@ -19,7 +21,6 @@ angular.module('playerApp')
               return framework.identifier === res.result.channel.defaultFramework
             }).identifier
           }
-
           searchService.getFramework(textbook.frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
               textbook.frameworkData = res.result.framework.categories
@@ -54,6 +55,8 @@ angular.module('playerApp')
 
       textbook.initializeModal = function () {
         textbook.showCreateTextBookModal = true
+        telemetryService.impressionTelemetryData('workspace', '', 'textbook', '1.0', 'scroll',
+          'workspace-create-textbook', '/create/textbook')
         $timeout(function () {
           $('#textbookmeta-category-1').dropdown('set selected', textbook[textbook.categoryModelList[1]])
           $('#textbookmeta-category-2').dropdown('set selected', textbook[textbook.categoryModelList[2]])
@@ -83,6 +86,8 @@ angular.module('playerApp')
             textbook.showCreateTextBookModal = false
             textbook.loader.showLoader = false
             textbook.hideCreateTextBookModal()
+            telemetryService.interactTelemetryData('workspace', res.result.content_id, 'create-textbook',
+              textbook.version, 'create-textbook', 'workspace-create-textbook')
             textbook.initEKStepCE(res.result.content_id)
           } else {
             textbook.loader.showLoader = false
@@ -203,6 +208,7 @@ angular.module('playerApp')
           }
         }
       }
+
       textbook.getTemsByindex = function (index) {
         var masterList = _.cloneDeep(textbook.frameworkData)
         var category = _.find(masterList, function (o) {

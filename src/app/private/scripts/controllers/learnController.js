@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('LearnCtrl', ['learnService', '$scope', '$state', '$rootScope',
-    'sessionService', 'toasterService', function (learnService, $scope, $state, $rootScope,
-      sessionService, toasterService) {
+    'sessionService', 'toasterService', 'telemetryService', function (learnService, $scope, $state, $rootScope,
+      sessionService, toasterService, telemetryService) {
       var learn = this
       var uid = $rootScope.userId
       //   $rootScope.searchResult = [];
@@ -20,8 +20,7 @@ angular.module('playerApp')
           courseId: course.courseId || course.identifier,
           lectureView: showLectureView,
           progress: course.progress,
-          total:
-                $rootScope.enrolledCourseIds[course.courseId].leafNodesCount,
+          total: $rootScope.enrolledCourseIds[course.courseId].leafNodesCount,
           courseName: course.courseName || course.name,
           lastReadContentId: course.lastReadContentId
         }
@@ -29,6 +28,10 @@ angular.module('playerApp')
         sessionService.setSessionData('COURSE_PARAMS', params)
         $rootScope.isPlayerOpen = true
         $state.go('Toc', params)
+        telemetryService.interactTelemetryData('course', course.courseId, 'course',
+          $rootScope.version, 'course-read', 'course')
+        telemetryService.startTelemetryData('course', course.courseId, 'course',
+          $rootScope.version, 'course', 'course-read', 'play')
       }
 
       learn.courses = function () {
@@ -40,6 +43,7 @@ angular.module('playerApp')
           if (successResponse && successResponse.responseCode === 'OK') {
             learn[api].loader.showLoader = false
             $rootScope.enrolledCourses = successResponse.result.courses
+            // successResponse.ver
             $rootScope.enrolledCourseIds = $rootScope
               .arrObjsToObject($rootScope.enrolledCourses, 'courseId')
             learn.enrolledCourses = $rootScope.enrolledCourses
@@ -60,5 +64,24 @@ angular.module('playerApp')
         learn.enrolledCourses = $rootScope.enrolledCourses
       } else {
         learn.courses()
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      $rootScope.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        console.log('index', index)
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'course',
+            section: section,
+            index: index
+          })
+        }
+        console.log('----------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }])

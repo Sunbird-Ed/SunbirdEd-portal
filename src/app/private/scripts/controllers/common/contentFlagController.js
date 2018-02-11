@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', '$scope',
+    '$rootScope', 'toasterService', '$scope', 'telemetryService',
     function (contentService, $timeout, $state,
-      config, $rootScope, toasterService, $scope) {
+      config, $rootScope, toasterService, $scope, telemetryService) {
       var contentFlag = this
       contentFlag.showContentFlagModal = false
       contentFlag.userId = $rootScope.userId
@@ -40,6 +40,8 @@ angular.module('playerApp')
 
       contentFlag.initializeModal = function () {
         contentFlag.showContentFlagModal = true
+        telemetryService.interactTelemetryData($scope.type, $scope.contentid, $scope.type,
+          $rootScope.version, $scope.type + '-flag', $scope.type + '-read')
         $timeout(function () {
           $('#contentFlagModal').modal({
             onShow: function () {

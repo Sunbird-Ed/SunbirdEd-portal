@@ -18,10 +18,11 @@ angular.module('playerApp')
     'adminService',
     'workSpaceUtilsService',
     'configService',
-    '$q', '$anchorScroll',
+    '$q', '$anchorScroll', 'telemetryService',
     function ($scope, $rootScope, contentService, userService,
       toasterService, config, $timeout, $filter, uuid4, formValidation, searchService,
-      $state, learnService, adminService, workSpaceUtilsService, configService, $q, $anchorScroll) {
+      $state, learnService, adminService, workSpaceUtilsService, configService, $q,
+      $anchorScroll, telemetryService) {
       var profile = this
       profile.defaultLimit = 4
       profile.limit = profile.defaultLimit
@@ -166,6 +167,8 @@ angular.module('playerApp')
           profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0005)
         })
+        telemetryService.impressionTelemetryData('profile', profile.userId, 'user', '1.0',
+          'scroll', 'profile-read', '/profile')
       }
 
       // update user profile
@@ -216,6 +219,8 @@ angular.module('playerApp')
         var deferred = $q.defer()
         var formData = new FormData()
         var reader = new FileReader()
+        var err = config.ERROR.PROFILE_IMAGE_UPLOAD.err
+        var errType = config.ERROR.PROFILE_IMAGE_UPLOAD.errorType
         if (files[0] &&
                     files[0].name.match(/.(jpg|jpeg|png)$/i) &&
                     files[0].size < 4000000) {
@@ -227,6 +232,8 @@ angular.module('playerApp')
           return deferred.promise
         }
         toasterService.warning($rootScope.messages.imsg.m0005)
+        telemetryService.errorTelemetryData('profile', profile.userId, 'profile-image', '1.0',
+          err, errType, $rootScope.messages.imsg.m0005, 'profile-read')
         throw new Error('')
       }
 

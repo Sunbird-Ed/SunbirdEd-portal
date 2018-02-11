@@ -1,8 +1,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('contentSharingController', ['$timeout', '$state', '$rootScope', '$scope', 'workSpaceUtilsService',
-    function ($timeout, $state, $rootScope, $scope, workSpaceUtilsService) {
+  .controller('contentSharingController', ['$timeout', '$state', '$rootScope', '$scope',
+    'workSpaceUtilsService', 'telemetryService',
+    function ($timeout, $state, $rootScope, $scope, workSpaceUtilsService, telemetryService) {
       var contentShare = this
       contentShare.showContentShareModal = false
       contentShare.id = $scope.id
@@ -27,6 +28,8 @@ angular.module('playerApp')
 
       contentShare.initializeModal = function () {
         contentShare.showContentShareModal = true
+        telemetryService.interactTelemetryData($scope.type, contentShare.id, contentShare.type, $rootScope.version,
+          $scope.type + '-read', 'share-' + $scope.type)
         $timeout(function () {
           $('#contentShareModal').modal({
             onHide: function () {
@@ -39,6 +42,8 @@ angular.module('playerApp')
             contentShare.copyLink()
           })
         }, 1000)
+        telemetryService.shareTelemetryData($scope.type, contentShare.id, contentShare.type,
+          $rootScope.version)
       }
 
       contentShare.close = function () {

@@ -84,9 +84,9 @@ angular.module('playerApp')
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
         })
-        window.onbeforeunload = function (e) { // eslint-disable-line
+        /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
-        }
+        } */
       }
 
       function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
