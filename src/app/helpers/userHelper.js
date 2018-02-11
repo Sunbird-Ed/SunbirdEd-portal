@@ -34,11 +34,13 @@ module.exports = {
     request(options, function (error, response, body) {
       if (callback) {
         if (error) {
-          callback(error, false)
+          callback(null, false)
+          console.log(error)
         } else if (body && body.params && body.params.err) {
-          callback(body, false)
+          console.log(body)
+          callback(null, false)
         } else {
-          callback(body, true)
+          callback(null, true)
         }
       }
     })
