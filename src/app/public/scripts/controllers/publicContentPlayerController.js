@@ -1,11 +1,10 @@
 'use strict'
 
 angular.module('loginApp')
-  .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    '$timeout', '$stateParams', '$rootScope', 'config', 'contentService',
-    'toasterService', '$location', '$anchorScroll',
-    function (playerTelemetryUtilsService, $state, $scope,
-      $timeout, $stateParams, $rootScope, config, contentService, toasterService, $location, $anchorScroll) {
+  .controller('contentPlayerCtrl', ['$state', '$scope', '$timeout', '$stateParams', '$rootScope',
+    'config', 'contentService', 'toasterService', '$location', '$anchorScroll',
+    function ($state, $scope, $timeout, $stateParams, $rootScope, config, contentService,
+      toasterService, $location, $anchorScroll) {
       $scope.isHeader = $scope.isheader
       $scope.isClose = $scope.isclose
       $scope.showModalInLectureView = true
