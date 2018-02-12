@@ -311,7 +311,7 @@ angular.module('playerApp')
           }
         },
 
-      onEnter: function ($rootScope, $stateParams,routeHelperService, telemetryService) {
+        onEnter: function ($rootScope, $stateParams, routeHelperService, telemetryService) {
           routeHelperService.loadRouteConfig('TocPlayer', $stateParams)
           $rootScope.isTocPage = true
           $rootScope.courseActive = 'active'
