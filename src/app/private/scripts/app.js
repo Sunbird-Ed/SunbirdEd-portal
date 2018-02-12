@@ -15,5 +15,6 @@ angular.module('playerApp', [
   'ngSanitize',
   'ui.router.state.events',
   'uuid4',
-  'chart.js'
+  'chart.js',
+  'angular-inview'
 ])

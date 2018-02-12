@@ -70,6 +70,8 @@ angular.module('playerApp')
           routeHelperService.loadRouteConfig('Courses')
         },
         onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('course', '', 'course',
+            $rootScope.version, 'scroll', 'course-read', '/learn', '', telemetryService.getVisitData())
           $rootScope.courseActive = ''
           $rootScope.isLearnPage = false
         },
@@ -84,12 +86,14 @@ angular.module('playerApp')
             templateUrl: '/views/resource/resource.html'
           }
         },
-        onEnter: function ($rootScope, routeHelperService) {
+        onEnter: function ($rootScope, telemetryService, routeHelperService) {
           $rootScope.isResourcesPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Resources')
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('library', '', 'library',
+            $rootScope.version, 'scroll', 'library-read', '/resources', '', telemetryService.getVisitData())
           $rootScope.isResourcesPage = false
           $rootScope.resourcesActive = ''
         },
@@ -286,20 +290,12 @@ angular.module('playerApp')
           } else {
             $rootScope.homeActive = 'active'
           }
-          var contextData = {
-            env: 'search',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
+        },
+        onExit: function ($rootScope, telemetryService, $stateParams) {
           var pageId = $stateParams.type.toLowerCase() + '-search'
           var uri = '/search/' + $stateParams.type
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
-            context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
-        },
-        onExit: function ($rootScope) {
+          telemetryService.impressionTelemetryData('search', '', 'search',
+            '1.0', 'scroll', pageId, uri, '', telemetryService.getVisitData())
           $rootScope.courseActive = $rootScope.resourcesActive = ''
           $rootScope.isSearchResultsPage = false
           $rootScope.homeActive = ''
@@ -314,14 +310,12 @@ angular.module('playerApp')
             controller: 'courseScheduleCtrl as toc'
           }
         },
-        onEnter: function ($rootScope, $stateParams,
-          routeHelperService, telemetryService) {
+
+      onEnter: function ($rootScope, $stateParams,routeHelperService, telemetryService) {
           routeHelperService.loadRouteConfig('TocPlayer', $stateParams)
           $rootScope.isTocPage = true
           $rootScope.courseActive = 'active'
-          var url = '/private/index#!/course/' + $stateParams.courseId + '/' +
-          $stateParams.lectureView + '/' +
-            $stateParams.contentId + '/' + $stateParams.contentIndex
+          var url = '/private/index#!/course/' + $stateParams.courseId
           var contextData = {
             env: 'course',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
@@ -416,6 +410,10 @@ angular.module('playerApp')
             tags: $rootScope.organisationIds
           }
           telemetryService.impression(data)
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'draft',
+            '1.0', 'scroll', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.ReviewContent', {

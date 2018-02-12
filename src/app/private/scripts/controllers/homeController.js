@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('HomeController', ['$state', 'learnService', '$rootScope',
-    'sessionService', 'toasterService',
+    'sessionService', 'toasterService', 'telemetryService',
     function ($state, learnService, $rootScope,
-      sessionService, toasterService) {
+      sessionService, toasterService, telemetryService) {
       var homeCtrl = this
 
       homeCtrl.loadCarousel = function () {
@@ -81,5 +81,10 @@ angular.module('playerApp')
           lastReadContentId: course.lastReadContentId }
         sessionService.setSessionData('COURSE_PARAMS', params)
         $state.go('Toc', params)
+      }
+
+      /* ---telemetry-interact-event-- */
+      homeCtrl.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+        telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
       }
     }])

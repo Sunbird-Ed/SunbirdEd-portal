@@ -140,4 +140,45 @@ angular.module('playerApp')
         var str = userId + (new Date().getTime()) + generateRandomNumber(5)
         return md5(str)
       }
+
+      this.searchUsers = function (rootOrgId) {
+        var orgIds = []
+        return this.searchOrgs(rootOrgId).then(function (response) {
+          orgIds = _.map(response.result.response.content, function (org) {
+            return _.get(org, 'identifier')
+          })
+          orgIds.push(rootOrgId)
+          orgIds = _.uniq(orgIds)
+          var req = {
+            request: {
+              filters: {
+                'organisations.organisationId': orgIds
+              }
+            }
+          }
+          return restfulLearnerService.post(config.URL.ADMIN.USER_SEARCH, req)
+        }).catch(function (err) {
+          console.log(err)
+          orgIds.push(rootOrgId)
+          var req = {
+            request: {
+              filters: {
+                'organisations.organisationId': orgIds
+              }
+            }
+          }
+          return restfulLearnerService.post(config.URL.ADMIN.USER_SEARCH, req)
+        })
+      }
+
+      this.searchOrgs = function (rootOrgId) {
+        var req = {
+          'request': {
+            'filters': {
+              'rootOrgId': rootOrgId
+            }
+          }
+        }
+        return restfulLearnerService.post(config.URL.ADMIN.ORG_SEARCH, req)
+      }
     }])
