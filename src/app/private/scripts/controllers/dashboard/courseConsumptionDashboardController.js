@@ -3,7 +3,8 @@
 angular.module('playerApp')
   .controller('courseConsumptionDashboardCtrl', ['$rootScope', '$scope',
     '$state', '$stateParams', 'toasterService', 'searchService', 'QueryService', 'Visualizer',
-    function ($rootScope, $scope, $state, $stateParams, toasterService, searchService, QueryService, Visualizer) {
+    'telemetryService', function ($rootScope, $scope, $state, $stateParams, toasterService,
+      searchService, QueryService, Visualizer, telemetryService) {
       // Initialize variables
       var courseDashboard = this
       courseDashboard.chartHeight = 110
@@ -58,6 +59,7 @@ angular.module('playerApp')
             if (apiResponse.result.content && apiResponse.result.content.length > 0) {
               courseDashboard.myCoursesList = apiResponse.result.content
               courseDashboard.buildMyCoursesDropdown()
+              courseDashboard.version = apiResponse.ver
             } else {
               spinner(false)
             }
@@ -67,6 +69,8 @@ angular.module('playerApp')
         }).catch(function (apiResponse) {
           courseDashboard.showErrors()
         })
+        courseDashboard.generateImpressionEvent('dasboard', 'profile-course-creator-dashboard',
+          '/course-creator-dashboard', 'profile', courseDashboard.version)
       }
 
       courseDashboard.buildMyCoursesDropdown = function () {
@@ -106,6 +110,31 @@ angular.module('playerApp')
 
       courseDashboard.initDropdwon = function () {
         $('#myCoursesListFilter').dropdown()
+      }
+
+      /**
+             * This function call to generate Imression
+             * telemetry event
+             */
+      courseDashboard.generateImpressionEvent = function (itemType, pageId, uri, env, objVer) {
+        var contextData = {
+          env: env,
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+
+        var objectData = {
+          id: '',
+          type: itemType,
+          ver: objVer
+        }
+
+        var data = {
+          edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
+          context: telemetryService.getContextData(contextData),
+          object: telemetryService.getObjectData(objectData),
+          tags: $rootScope.organisationIds
+        }
+        telemetryService.impression(data)
       }
     }
   ])

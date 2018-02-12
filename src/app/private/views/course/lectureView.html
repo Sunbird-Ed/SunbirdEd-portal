@@ -13,7 +13,7 @@
         <i ng-if='item.children && item.children.length > 0' class="plus icon down-arrow-accordion"></i>
     </div>
     <div ng-if="item.mimeType != 'application/vnd.ekstep.content-collection'" class="courseAccordianHeading title title-padding-left accordian-left-text" ng-class="{'cursor-pointerText':(toc.playContent == false && item.mimeType !== 'application/vnd.ekstep.content-collection')}"
-        ng-click="toc.openContent(item.identifier)">
+        ng-click="toc.openContent(item.identifier);toc.generateInteractEvent('course',toc.courseId, 'course','1.0','resume-course', 'course-read', toc.objRollup)">
         <img ng-src="{{toc.getContentIcon(item.mimeType,toc.contentStatusList[item.identifier])}}">
         <img class="tocCourseStructureImg"> {{item.name}}
     </div>

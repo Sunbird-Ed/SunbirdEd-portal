@@ -1,16 +1,16 @@
 <form class="ui form  addressForm" id="addressForm">
     <div class="ui dividing header margin-top-15 "></div>
-    <div apply-script class="inline  fields" ng-init="profileCtrl.newAddress.addType='current'">
+    <div apply-script class="inline  fields" ng-init="profileCtrl.newAddress.addType = profileCtrl.ischekedCurrent === true ? 'current' : 'permanent' ">
         <label for="address" class="required">{{$root.frmelmnts.lbl.seladdresstype}}</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='permanent' ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.disabledPermanent" type="radio" id="addressTypePermanent" name="addressType" value='permanent' ng-checked="!profileCtrl.ischekedCurrent" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.permanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='current' ng-checked="true" ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.disabledCurrent " type="radio" id= "addressTypeCurrent" name="addressType" value='current' ng-checked="profileCtrl.ischekedCurrent" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.current}}</label>
             </div>
         </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.addressline2}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newAddress.addressLine2">
+            <input type="text" name="addLine2" ng-model="profileCtrl.newAddress.addressLine2">
         </div>
     </div>
     <div class="two fields">

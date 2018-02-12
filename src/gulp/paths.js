@@ -31,8 +31,10 @@ var paths = {
     testRequire: [
       'app/thirdparty/bower_components/jquery/dist/jquery.min.js',
       'app/thirdparty/bower_components/angular/angular.min.js',
+      'app/thirdparty/libs/angular-inview.js',
       'app/thirdparty/libs/eventbus.min.js',
       'app/thirdparty/libs/md5.js',
+      'app/thirdparty/libs/telemetry.min.js',
       'app/thirdparty/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'app/thirdparty/semantic/semantic.min.js',
       'app/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
@@ -133,6 +135,7 @@ var paths = {
     'dist/thirdparty/bower_components/jquery/dist/jquery.min.js',
     'dist/thirdparty/bower_components/jquery-ui/jquery-ui.min.js',
     'dist/thirdparty/bower_components/angular/angular.min.js',
+    'dist/thirdparty/libs/angular-inview.js',
     'dist/thirdparty/bower_components/angular-cookies/angular-cookies.min.js',
     'dist/thirdparty/bower_components/angular-route/angular-route.min.js',
     'dist/thirdparty/bower_components/semantic-ui-calendar/dist/calendar.min.js',
