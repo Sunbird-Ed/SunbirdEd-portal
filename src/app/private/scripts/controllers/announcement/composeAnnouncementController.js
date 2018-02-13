@@ -1,9 +1,8 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'telemetryService',
-  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
-    AnnouncementModel, announcementAdapter, telemetryService) {
+  'announcementAdapter', 'telemetryService', function ($rootScope, $scope, $state, $stateParams,
+    $timeout, config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, telemetryService) {
     var composeAnn = this
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
