@@ -1,6 +1,6 @@
 import {FrameworkAPI} from '../../../src/framework/frameworkAPI'
 
-const Inject = FrameworkAPI.getDecorator('Inject')
+const { Inject }= FrameworkAPI.getDecorators(['Inject'])
 
 class PluginRoutes {
 

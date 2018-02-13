@@ -29,7 +29,7 @@ class ElasticsearchStore implements DataProviderInterface {
 	//TODO: authentication layer can be added when getConnection
 	public static getConnection(pluginId: string) {
 		let newConnection = new ElasticsearchStore({ pluginId });
-		newConnection.sessionObject = elasticsearch.Client(ElasticsearchConfig.get());
+		newConnection.sessionObject = new elasticsearch.Client(ElasticsearchConfig.get());
 		return newConnection;
 	}
 

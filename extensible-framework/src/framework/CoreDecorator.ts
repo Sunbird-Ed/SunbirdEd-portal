@@ -9,6 +9,9 @@ function Plugin(manifest: Object) {
         return constructor.apply(this, args);
         }
         c.prototype = constructor.prototype;
+        c.prototype.getManifest = function() {
+            return this._manifest;
+        }
         c.prototype._manifest = manifest;
         return new c();
     }
@@ -90,5 +93,5 @@ function Inject(...keys: string[]) {
     };
 }
 
-export {Plugin, Injector, Inject}
+export {Plugin, Injector, Inject }
 

@@ -1,0 +1,17 @@
+{
+    "cassandra": {
+        "contactPoint": "127.0.0.1",
+        "port": 9042
+    },
+    "elasticsearch": {
+        "host": "localhost:9200"
+    },
+    "plugins": [{
+        "id": "org.sunbird.profile",
+        "ver": "1.0",
+        "scope": "service"
+    }],
+    "nodeApp": {
+        "port": 4000
+    }
+}

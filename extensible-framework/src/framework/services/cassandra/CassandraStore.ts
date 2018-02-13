@@ -22,7 +22,7 @@ export class CassandraStore implements DataProviderInterface {
 	}
 
 	//TODO: authentication layer can be added when getConnection
-	public static getConnection(pluginId: string) {
+	private static getConnection(pluginId: string) {
 		let newConnection = new CassandraStore({ pluginId });
 		newConnection.sessionObject = expressCassandra.createClient(CassandraConfig.get({ keyspace: newConnection.keyspaceName }));
 		return newConnection;

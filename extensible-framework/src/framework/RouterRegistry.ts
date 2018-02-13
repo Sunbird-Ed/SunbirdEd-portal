@@ -10,7 +10,7 @@ interface RoutesInterface {
 	method: string;
 	URL: string;
 	handler: HandlerInterface;
-	dependentHandlers?: HandlerInterface[];
+	dependentHandlers?: Array<HandlerInterface>;
 }
 
 export class RouterRegisty implements RouteProviderInterface {
@@ -30,14 +30,14 @@ export class RouterRegisty implements RouteProviderInterface {
 	}
 
 
-	public registerRoute(routeDetails: {pluginId: string, routes: RoutesInterface[]}): undefined  {
+	public register(routeDetails: {pluginId: string, routes: RoutesInterface[]}): undefined  {
 		let middlewareRoutes = new this.expressRouter();
 		if (!routeDetails.pluginId) return;
 		_.forEach(routeDetails.routes, (route) => {
 			if (!route.dependentHandlers || _.isEmpty(route.dependentHandlers)) route.dependentHandlers = [];
 			switch (route.method) {
 				case "GET":
-					middlewareRoutes.get(route.URL, route.handler);		
+					middlewareRoutes.get(route.URL, route.dependentHandlers ,route.handler);		
 					break;
 				case "POST":
 					middlewareRoutes.post(route.URL, route.dependentHandlers, route.handler);		
@@ -47,6 +47,9 @@ export class RouterRegisty implements RouteProviderInterface {
 					break;
 				case "DELETE":
 					middlewareRoutes.delete(route.URL, route.dependentHandlers, route.handler);		
+					break;
+				case "ALL":
+					middlewareRoutes.all(route.URL, route.dependentHandlers, route.handler);		
 					break;
 			}
 		})

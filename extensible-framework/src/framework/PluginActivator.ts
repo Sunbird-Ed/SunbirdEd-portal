@@ -1,5 +1,4 @@
 import {Registry, PluginStatusEnum } from './interfaces/RegistryInterface';
-import * as _ from 'lodash';
 import {pluginRegistry} from './pluginRegistry'
 
 export class PluginActivator {
