@@ -68,7 +68,7 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      $rootScope.lineInView = function (index, inview, item, section) {
+      learn.lineInView = function (index, inview, item, section) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })

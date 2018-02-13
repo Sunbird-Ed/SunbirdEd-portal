@@ -29,6 +29,24 @@ angular.module('playerApp')
       'runningEnv': 'client',
       'tags': []
     }
+
+    this.ProfileLockConfig = {
+      phone: 'phn-number-lock',
+      email: 'email-lock',
+      gender: 'gender-lock',
+      dob: 'birthdate-lock',
+      location: 'current-location-lock',
+      grade: 'grade-lock',
+      language: 'known-language-lock',
+      subject: 'subject-experties-lock',
+      webPages: 'social-media-link-lock',
+      address: 'address-lock',
+      profileSummary: 'profile-summary-lock',
+      education: 'education-lock',
+      jobProfile: 'job-profile-lock',
+      skills: 'skills-lock'
+    }
+
     this.context = []
     this.configData = {}
     this.visitData = []

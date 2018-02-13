@@ -54,7 +54,10 @@ angular.module('playerApp')
           orgIds.push(org.organisationId)
         }
       })
-
+      // Telemetry interact event
+      profile.generateInteractEvent = function (objType, pageId, objVer) {
+        telemetryService.interactTelemetryData('profile', $rootScope.userId, objType, objVer, objType, pageId)
+      }
       // Get user profile
       // formate date
       profile.formateDate = function (userDetails) {

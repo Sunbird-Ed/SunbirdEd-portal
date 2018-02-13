@@ -10,7 +10,8 @@
                     </span>
                     <div class="ui active homePage">
                         <div class="regular slider padding-top-10">
-                            <div ng-repeat="item in $root.toDoList track by $index" ng-init="$last && $root.loadProgress()"  add-slick>
+                        <div ng-repeat="item in $root.toDoList track by $index" in-view="homeCtrl.lineInView($index, $inview, item, 'ToDo')" in-view-options="{ throttle: 1000 }" ng-init="$last && $root.loadProgress()"  add-slick
+                        id="{{$index}}">
                                 <div ng-if="item.type && item.type == 'profile'" ng-click="openProfileView()"  ng-include=" 'views/common/profileCard.html'"></div>
                                 <div ng-if="!item.type || item.type != 'profile'" ng-click="homeCtrl.openCourseView(item, 'ENROLLED_COURSE')" ng-include=" 'views/common/actionCard.html'"></div>
                             </div>

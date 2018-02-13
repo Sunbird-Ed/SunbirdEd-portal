@@ -164,7 +164,8 @@ angular.module('playerApp')
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        if (inview === true && obj.length === 0) {
+        var visiblity = angular.element('#' + item.identifier).attr('aria-hidden')
+        if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
             objid: item.identifier,
             objtype: item.contentType || 'course',

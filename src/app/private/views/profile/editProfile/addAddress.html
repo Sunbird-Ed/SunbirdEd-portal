@@ -21,7 +21,7 @@
             <label>{{$root.frmelmnts.lbl.addressline1}}</label>
             <input type="text" name="addLine1" ng-model="profileCtrl.newAddress.addressLine1">
         </div>
-        <div class="  field">
+        <div class="field">
             <label>{{$root.frmelmnts.lbl.addressline2}}</label>
             <input type="text" name="addLine2" ng-model="profileCtrl.newAddress.addressLine2">
         </div>
@@ -31,7 +31,7 @@
             <label>{{$root.frmelmnts.lbl.city}}</label>
             <input type="text" name="city" ng-model="profileCtrl.newAddress.city">
         </div>
-        <div class="  field">
+        <div class="field">
             <label>{{$root.frmelmnts.lbl.state}}</label>
             <input type="text" name="state" ng-model="profileCtrl.newAddress.state">
         </div>
@@ -41,13 +41,13 @@
             <label>{{$root.frmelmnts.lbl.country}}</label>
             <input type="text" name="country" ng-model="profileCtrl.newAddress.country">
         </div>
-        <div class="  field">
+        <div class="field">
             <label>{{$root.frmelmnts.lbl.pincode}}</label>
             <input type="text" name="pinCode" ng-model="profileCtrl.newAddress.zipCode">
         </div>
     </div>
     <div class="ui error message">
     </div>
-    <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress) ;">{{$root.frmelmnts.btn.save}}</button>
+    <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress); profileCtrl.generateInteractEvent('profile-address', 'profile-read', '1.0')">{{$root.frmelmnts.btn.save}}</button>
 
 </form>
