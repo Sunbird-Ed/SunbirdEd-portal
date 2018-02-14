@@ -1,6 +1,6 @@
 import * as elasticsearch from 'elasticsearch'
 import {ElasticsearchConfig} from './ElasticsearchConfig'
-import {DataProviderInterface} from '../../interfaces/DataProviderInterface'
+import {DataProviderInterface} from '../DataProviderInterface'
 import * as _ from 'lodash';
 import * as bodybuilder from 'bodybuilder';
 			

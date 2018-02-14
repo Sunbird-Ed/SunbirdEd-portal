@@ -1,5 +1,5 @@
-import { PluginLifeCycleEvents }from './interfaces/PluginLifeCycleEventsInterface';
-import { envVariables } from './config/environmentVariables'
+import { PluginLifeCycleEvents } from './interfaces'
+import {envVariables} from './config'
 
 type plugin = { _manifest: any }
 

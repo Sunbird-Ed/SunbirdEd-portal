@@ -1,4 +1,4 @@
-import {Registry, PluginStatusEnum } from '../interfaces/RegistryInterface';
+import {Registry, PluginStatusEnum } from './RegistryInterface';
 import * as _ from 'lodash';
 import {ManifestInterface} from '../interfaces/ManifestInterface';
 import {ElasticsearchStore} from '../database/elasticsearch/ElasticsearchStore'

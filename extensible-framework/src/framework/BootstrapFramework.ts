@@ -1,19 +1,15 @@
-import  {Plugin, Injector, Inject} from './CoreDecorator'
-import {pluginManager} from './managers/PluginManager'
-import {CassandraConfig} from './database/cassandra/CassandraConfig'
-import {ElasticsearchConfig} from './database/elasticsearch/ElasticsearchConfig'
-import {CassandraStore} from './database/cassandra/CassandraStore'
-import {ElasticsearchStore} from './database/elasticsearch/ElasticsearchStore'
-import * as FrameworkConfig from './config/index.json'
+import {Plugin, Injector, Inject, expressApp}
+	 from './index';
 
-import {expressApp} from '../MiddlewareApp';
-import {routerRegistry as RouterRegistry} from './managers/RouterRegistry'
-import {TokenAuthenticator} from './services/requestAuthenticator'
+import {RouterRegistry, pluginManager, pluginRegistry} from './managers';
+import {ElasticsearchStore,ElasticsearchConfig,CassandraStore,CassandraConfig } from './database'
+import {TokenAuthenticator} from './services';
+import {frameworkConfig} from './config';
 
 export default class BootstrapFramework {
 	private static config: object;
 	
-	public static initialize(config: FrameworkConfig) {
+	public static initialize(config: frameworkConfig) {
 		this.config = config;
 		this.injectGlobalService();
 		this.configureServices();

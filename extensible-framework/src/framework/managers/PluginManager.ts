@@ -1,14 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as _ from 'lodash'
-import { pluginRegistry } from './PluginRegistry'
-import { Registry, PluginStatusEnum } from '../interfaces/RegistryInterface'
-import { cassandraStoreValidator } from '../database/cassandra/CassandraStoreValidator'
 import * as nodeEval from 'node-eval'
-import Global from '../../../global-config'
 import * as ts from 'typescript'
 import * as FolderStructureDefinition from './PluginFolderStructureDefinition.json'
 import * as shell from 'shelljs'
+import Global from '../../../global-config';
+import {RouterRegistry, pluginRegistry} from './index'
+import {PluginStatusEnum} from './RegistryInterface'
 
 interface PluginInfo {
 	id: string;

@@ -1,7 +1,7 @@
 import BootstrapFramework from './src/framework/BootstrapFramework'
-import * as FrameworkConfig from './src/framework/config/index.json'
+import {frameworkConfig} from './src/framework/config'
 
-BootstrapFramework.initialize(FrameworkConfig);
+BootstrapFramework.initialize(frameworkConfig);
 
 
  
