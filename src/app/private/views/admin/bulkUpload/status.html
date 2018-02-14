@@ -37,7 +37,7 @@
                     <h5 ng-if="status === 'success'">{{$root.frmelmnts.lbl.successres}}</h5>
                     <h5 ng-if="status === 'failure'">{{$root.frmelmnts.lbl.failres}}</h5>
                     <table class="ui celled padded table">
-                        <thead>
+                        <thead ng-if="admin.bulkUploadStatus[status][0].userName">
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.firstName}}</th>
                                 <th>{{$root.frmelmnts.lbl.lastName}}</th>
@@ -61,7 +61,24 @@
                                 <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <thead ng-if="admin.bulkUploadStatus[status][0].orgName">
+                            <tr>
+                                <th>{{$root.frmelmnts.lbl.orgId}}</th>
+                                <th>{{$root.frmelmnts.lbl.orgName}}</th>
+                                <th>{{$root.frmelmnts.lbl.isRootOrg}}</th>
+                                <th>{{$root.frmelmnts.lbl.channel}}</th> 
+                                <th>{{$root.frmelmnts.lbl.externalId}}</th> 
+                                <th>{{$root.frmelmnts.lbl.provider}}</th>
+                                <th>{{$root.frmelmnts.lbl.description}}</th>
+                                <th>{{$root.frmelmnts.lbl.homeUrl }}</th>
+                                <th>{{$root.frmelmnts.lbl.orgCode }}</th>
+                                <th>{{$root.frmelmnts.lbl.orgType}}</th>
+                                <th>{{$root.frmelmnts.lbl.preferredLanguage}}</th>
+                                <th>{{$root.frmelmnts.lbl.theme}}</th>
+                                <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-if="admin.bulkUploadStatus[status][0].userName">
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.firstName || "empty"}}</td>
                                 <td>{{ row.lastName || "empty"}}</td>
@@ -82,6 +99,22 @@
                                 <td>{{ row.dob || "empty"}}</td>
                                 <td>{{ row.language || "empty"}}</td>
                                 <td>{{ row.subject || "empty"}}</td>
+                                <td ng-if="status === 'failure'">{{ row.err_msg || "empty"}}</td>
+                        </tbody>
+                        <tbody ng-if="admin.bulkUploadStatus[status][0].orgName">
+                            <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
+                                <td>{{ row.id || "empty"}}</td>
+                                <td>{{ row.orgName || "empty"}}</td>
+                                <td>{{ row.isRootOrg || "empty"}}</td>
+                                <td>{{ row.channel || ""}}</td> 
+                                <td>{{ row.externalId || ""}}</td> 
+                                <td>{{ row.provider || ""}}</td>
+                                <td>{{ row.description || ""}}</td>
+                                <td>{{ row.homeUrl || "empty"}}</td>
+                                <td>{{ row.orgCode || "empty"}}</td>
+                                <td>{{ row.orgType || "empty"}}</td>
+                                <td>{{ row.preferredLanguage || "empty"}}</td>
+                                <td>{{ row.theme || "empty"}}</td>
                                 <td ng-if="status === 'failure'">{{ row.err_msg || "empty"}}</td>
                         </tbody>
                     </table>
