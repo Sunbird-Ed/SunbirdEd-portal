@@ -93,7 +93,7 @@ angular.module('playerApp')
       var inviewLogs = []
       homeCtrl.lineInView = function (index, inview, item, section) {
         var obj = _.filter(inviewLogs, function (o) {
-          return o.objid === item.courseId
+          return o.objid === (item.courseId || $rootScope.userId)
         })
         if (inview === true && obj.length === 0) {
           inviewLogs.push({
