@@ -1,7 +1,7 @@
-import { FrameworkAPI, envVariables } from '../../../src/framework/frameworkAPI';
+import framework from '../../../src/framework/frameworkAPI';
 import { PluginRoutes } from './profileRouter';
 
-const routerRegistry = FrameworkAPI.getService('RouterRegistry');
+const routerRegistry = framework.getService('RouterRegistry');
 
 routerRegistry.register({
 	pluginId: "org.sunbird.profile",

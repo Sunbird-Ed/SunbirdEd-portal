@@ -1,4 +1,4 @@
-import { envVariables } from '../environmentVariables';
+import { envVariables } from '../../config/environmentVariables';
 import { ApiInterceptor } from './APIInterceptor';
 
 export class TokenAuthenticator {

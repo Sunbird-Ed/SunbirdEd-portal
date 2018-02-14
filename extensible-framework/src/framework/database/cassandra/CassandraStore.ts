@@ -2,7 +2,7 @@ import * as expressCassandra from 'express-cassandra'
 import * as _ from 'lodash';
 import {cassandraStoreValidator} from './CassandraStoreValidator'
 import {CassandraConfig} from './CassandraConfig'
-import {DataProviderInterface} from '../DataProviderInterface'
+import {DataProviderInterface} from '../../interfaces/DataProviderInterface'
 
 export class CassandraStore implements DataProviderInterface {
 

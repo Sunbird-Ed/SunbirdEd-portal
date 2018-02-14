@@ -75,7 +75,6 @@ class ElasticsearchStore implements DataProviderInterface {
 	}
 
 	public find(query: { DSL: object}, callback = (...args: any[]) => {}) {
-		console.log(query.DSL)
 		this.sessionObject.search({
 		  index: this.indexName,
 		  body: query.DSL

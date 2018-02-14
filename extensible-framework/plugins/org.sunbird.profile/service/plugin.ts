@@ -1,7 +1,7 @@
-import { FrameworkAPI, PluginLifeCycleEvents } from '../../../src/framework/frameworkAPI'
+import framework from '../../../src/framework/frameworkAPI'
 
-const { Plugin, Inject, DataStore } = FrameworkAPI.getDecorators(['Plugin', 'Inject', 'DataStore']);
-const ApiInterceptor = FrameworkAPI.getService('ApiInterceptor');
+const { Plugin, Inject, DataStore } = framework.getDecorators(['Plugin', 'Inject', 'DataStore']);
+const ApiInterceptor = framework.getService('ApiInterceptor');
 
 @Plugin({
 	"name": "sunbird profile",

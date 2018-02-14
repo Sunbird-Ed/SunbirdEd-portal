@@ -1,7 +1,7 @@
-import { FrameworkAPI, envVariables } from '../../../src/framework/frameworkAPI';
-const appId = envVariables.APPID
+import framework from '../../../src/framework/frameworkAPI';
+const appId = framework.GLOBAL_CONSTANT.APPID
 const md5 = require('js-md5')
-const sunbirdApiAuthToken = envVariables.PORTAL_API_AUTH_TOKEN
+const sunbirdApiAuthToken = framework.GLOBAL_CONSTANT.PORTAL_API_AUTH_TOKEN
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 

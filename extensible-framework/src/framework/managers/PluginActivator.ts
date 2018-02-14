@@ -1,4 +1,4 @@
-import {Registry, PluginStatusEnum } from './interfaces/RegistryInterface';
+import {Registry, PluginStatusEnum } from '../interfaces/RegistryInterface';
 import {pluginRegistry} from './pluginRegistry'
 
 export class PluginActivator {

@@ -1,11 +1,11 @@
 import { PluginLifeCycleEvents }from './interfaces/PluginLifeCycleEventsInterface';
-import { envVariables } from './environmentVariables'
+import { envVariables } from './config/environmentVariables'
 
 type plugin = { _manifest: any }
 
 class FrameworkAPI {
 	private static globalObject = global.ext_framework;
-	
+	public static GLOBAL_CONSTANT = envVariables;
 	
 	public static getDecorators(names: Array<string>) {
 		const decoratorObject: { [index:string]: any } = {};
@@ -37,6 +37,9 @@ class FrameworkAPI {
 				return FrameworkAPI.globalObject.services.RouterRegistry;
 		}
 	} 
+
+	
 }
 
-export { PluginLifeCycleEvents, FrameworkAPI, envVariables }
+const framework = FrameworkAPI;
+export default framework;

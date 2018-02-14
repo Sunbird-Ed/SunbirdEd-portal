@@ -1,4 +1,4 @@
-import { FrameworkAPI, envVariables } from '../../../src/framework/frameworkAPI'
+import framework from '../../../src/framework/frameworkAPI'
 import * as _ from 'lodash';
 import * as proxy from 'express-http-proxy';
 import { decorateRequestHeaders } from './proxyUtils'
@@ -6,21 +6,21 @@ import * as nodeURL from 'url';
 import * as dateFormat from 'dateformat';
 import * as uuidv1 from 'uuid/v1';
 
-const ReqAuth = FrameworkAPI.getService('RequestAuthenticator');
+const ReqAuth = framework.getService('RequestAuthenticator');
 
 export class PluginRoutes {
 
     static proxyToLearnerService() {
-        return proxy(envVariables.LEARNER_URL, {
+        return proxy(framework.GLOBAL_CONSTANT.LEARNER_URL, {
             limit: '30mb',
             proxyReqOptDecorator: decorateRequestHeaders(),
             proxyReqPathResolver: function (req) {
                 let urlParam = req.params['0']
                 let query = nodeURL.parse(req.url).query
                 if (query) {
-                    return nodeURL.parse(envVariables.LEARNER_URL + urlParam + '?' + query).path
+                    return nodeURL.parse(framework.GLOBAL_CONSTANT.LEARNER_URL + urlParam + '?' + query).path
                 } else {
-                    return nodeURL.parse(envVariables.LEARNER_URL + urlParam).path
+                    return nodeURL.parse(framework.GLOBAL_CONSTANT.LEARNER_URL + urlParam).path
                 }
             }
         })

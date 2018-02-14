@@ -1,4 +1,4 @@
-import {expressApp} from '../MiddlewareApp';
+import {expressApp} from '../../MiddlewareApp';
 import * as express from 'express'
 import * as _ from 'lodash';
 
