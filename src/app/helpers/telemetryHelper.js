@@ -138,7 +138,7 @@ module.exports = {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
 
     let object = {}
-    let params = {}
+    let params = []
     if (req.options) {
       params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     }
