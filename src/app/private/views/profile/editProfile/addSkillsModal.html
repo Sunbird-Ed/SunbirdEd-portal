@@ -16,7 +16,7 @@
             <span class="padded chip margin-top--5" ng-repeat="selectedSkill in profileCtrl.selectedSkills">
                 <a class="ui label margin-top--5">
                     {{selectedSkill}}
-                    <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill); profileCtrl.generateInteractEvent('profile-delete-skills', 'profile-read','1.0')"></i>
+                    <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill); profileCtrl.generateInteractEvent('removeSkills')"></i>
                 </a>
             </span>
         </div>
@@ -34,10 +34,10 @@
         </div>
     </div>
     <div class="actions margin-top-40">
-        <button class="ui cancel primary basic left floated x" ng-click="profileCtrl.generateInteractEvent('profile-skills-cancel', 'profile-read','1.0')">
+        <button class="ui cancel primary basic left floated x" ng-click="profileCtrl.generateInteractEvent('cancelSkills')">
             {{$root.frmelmnts.btn.cancel}}
         </button>
-        <button class="ui approve primary button" ng-click="profileCtrl.addSkills(); profileCtrl.generateInteractEvent('profile-skills', 'profile-read','1.0')">
+        <button class="ui approve primary button" ng-click="profileCtrl.addSkills(); profileCtrl.generateInteractEvent('skills')">
             {{$root.frmelmnts.btn.finish}}
         </button>
     </div>

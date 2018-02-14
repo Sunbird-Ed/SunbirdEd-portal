@@ -165,9 +165,9 @@
         cpvm.showPlayer = true
       }
       cpvm.closePlayer = function (contentType) {
+        telemetryService.endTelemetryData($stateParams.backState, $state.params.Id, contentType,
+          cpvm.version, 'collection', 'content-read', 'play')
         if ($stateParams.backState === 'Profile') {
-          telemetryService.endTelemetryData($stateParams.backState, $state.params.Id, contentType,
-            cpvm.version, 'collection', 'content-read', 'play')
           $state.go($stateParams.backState)
           return
         }
@@ -177,8 +177,6 @@
           }, 0)
         } else {
           $state.go('Resources')
-          telemetryService.endTelemetryData($stateParams.backState, $state.params.Id, contentType,
-            cpvm.version, 'collection', 'content-read', 'play')
         }
       }
 

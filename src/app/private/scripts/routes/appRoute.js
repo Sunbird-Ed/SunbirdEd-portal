@@ -386,20 +386,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($rootScope, telemetryService) {
-          var contextData = {
-            env: 'workspace',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
-            context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
         },
         onExit: function ($rootScope, telemetryService) {
           telemetryService.impressionTelemetryData('workspace', '', 'draft',
-            '1.0', 'scroll', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
+            '1.0', 'pageexit', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.ReviewContent', {

@@ -38,7 +38,7 @@
                         </div>
                         <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
                             <div class="iniformationcontent content">
-                                <a ng-click="profileCtrl.updateAction(field); profileCtrl.generateInteractEvent(field, 'profile-read','1.0')">
+                                <a ng-click="profileCtrl.updateAction(field); profileCtrl.generateInteractEvent(field)">
                                     <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.frmelmnts.lbl[field] || field}}</h5>
                                 </a>
                             </div>

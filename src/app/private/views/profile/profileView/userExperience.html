@@ -2,9 +2,9 @@
     <div class="header announcementCard-header">
         <span class="header cardsHeading"> {{$root.frmelmnts.lbl.experience}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'jobProfile'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ; profileCtrl.generateInteractEvent('profile-edit-experience', 'profile-read', '1.0')">{{$root.frmelmnts.btn.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={}; profileCtrl.generateInteractEvent('profile-add-experience', 'profile-read', '1.0')">{{$root.frmelmnts.btn.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience(); profileCtrl.generateInteractEvent('profile-close-experience', 'profile-read', '1.0')">{{$root.frmelmnts.btn.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm && profileCtrl.user.jobProfile.length" ng-click="profileCtrl.experienceForm=true ;profileCtrl.isNewExperience=false ; profileCtrl.generateInteractEvent('editExperience')">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.experienceForm  " ng-click="profileCtrl.experienceForm=true ; profileCtrl.isNewExperience=true ;profileCtrl.newExperience={}; profileCtrl.generateInteractEvent('addExperience')">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.experienceForm" ng-click="profileCtrl.cancelEditExperience(); profileCtrl.generateInteractEvent('closeExperience')">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
         <div class="item " ng-repeat="experience in profileCtrl.user.jobProfile">
@@ -20,7 +20,7 @@
             </div>
             <div class="right-floated ">
                 <div class="metadata ">
-                    <a ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience); profileCtrl.generateInteractEvent('profile-delete-experience', 'profile-read', '1.0')"> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                    <a ng-click="experience.isDeleted=true;profileCtrl.deleteExperience(experience); profileCtrl.generateInteractEvent('deleteExperience')"> <i class="trash outline icon trashIcon-fontSize "></i></a>
                 </div>
             </div>
         </div>

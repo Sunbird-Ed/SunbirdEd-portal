@@ -2,7 +2,7 @@
     <div class="header announcementCard-header ">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'skills'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal(); profileCtrl.generateInteractEvent('profile-add-skills', 'profile-read','1.0')">
+        <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal(); profileCtrl.generateInteractEvent('addSkills')">
             {{$root.frmelmnts.btn.add}}
         </a>
     </div>

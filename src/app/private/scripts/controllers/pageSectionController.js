@@ -107,7 +107,7 @@ angular.module('playerApp')
                   } else {
                     Array.prototype.push.apply(
                       section.page[key - 1].contents,
-                      pageData[key][index].contents)
+                      pageData[key][index].contents, section.page[key - 1].id)
                   }
                 }
               })
@@ -160,11 +160,11 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      $rootScope.lineInView = function (index, inview, item, section) {
+      $rootScope.lineInView = function (index, inview, item, section, pageSectionId) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        var visiblity = angular.element('#' + item.identifier).attr('aria-hidden')
+        var visiblity = angular.element('#' + pageSectionId + '_' + item.identifier).attr('aria-hidden')
         if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
             objid: item.identifier,
