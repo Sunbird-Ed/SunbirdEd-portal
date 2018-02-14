@@ -253,6 +253,9 @@ app.all('*', function (req, res) {
  */
 keycloak.authenticated = function (request) {
   async.series({
+    getPermissionData: function (callback) {
+      permissionsHelper.getPermissions(request, callback)
+    },
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
     },
@@ -289,7 +292,6 @@ resourcesBundlesHelper.buildResources(function (err, result) {
     portal.server = app.listen(port, function () {
       console.log('completed resource bundles' + '\r\n' + 'starting  server...')
       console.log('app running on port ' + port)
-      permissionsHelper.getPermissions()
     })
   }
 })

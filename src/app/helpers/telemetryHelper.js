@@ -10,6 +10,9 @@ const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
+const fs = require('fs')
+const path = require('path')
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
 module.exports = {
   getUserSpec: function (req) {
@@ -51,6 +54,138 @@ module.exports = {
     dims = dims ? _.concat(dims, channel) : channel
     telemetry.end({
       edata: edata,
+      actor: actor,
+      tags: dims
+    })
+  },
+  logSSOStartEvent: function (req) {
+    console.log('logSSOStartEvent')
+    req.session.orgs = _.compact(req.session.orgs)
+    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    var dims = _.clone(req.session.orgs)
+    dims = dims ? _.concat(dims, channel) : channel
+
+    const edata = telemetry.startEventData('sso')
+    edata.uaspec = this.getUserSpec(req)
+    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: {id: 'sso', type: 'sso'} })
+    context.sid = req.sessionID
+    // const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    telemetry.start({
+      edata: edata,
+      context: context,
+      actor: 'actor',
+      tags: dims
+    })
+  },
+  logSSOEndEvent: function (req) {
+    console.log('logSSOEndEvent')
+    const edata = telemetry.endEventData('sso')
+    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    var dims = _.clone(req.session.orgs)
+    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    dims = dims ? _.concat(dims, channel) : channel
+    telemetry.end({
+      edata: edata,
+      actor: actor,
+      tags: dims
+    })
+  },
+  getParamsData: function (options, statusCode, resp, uri) {
+    const apiConfig = telemtryEventConfig.URL[uri]
+
+    return [
+      {'rid': resp.id},
+      {'title': apiConfig && apiConfig.title},
+      {'category': apiConfig && apiConfig.category},
+      {'url': apiConfig && apiConfig.url},
+      {'size': resp.toString().length},
+      {'duration': Date.now() - new Date(options.headers.ts)},
+      {'status': statusCode},
+      {'protocol': 'https'},
+      {'method': options.method},
+      {'req': options.body}
+    ]
+  },
+  logAPICallEvent: function (req) {
+    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
+
+    let object = {}
+    const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
+    const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
+    if (req.id && req.type) {
+      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+    }
+
+    req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
+    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
+    var dims = _.clone(req.reqObj.session.orgs)
+    dims = dims ? _.concat(dims, channel) : channel
+    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+    if (req && req.reqObj && req.reqObj.sessionID) {
+      context.sid = req.reqObj.sessionID
+    }
+    const actor = telemetry.getActorData(req.userId, 'user')
+    console.log('logAPICallEvent')
+    telemetry.log({
+      edata: edata,
+      context: context,
+      object: object,
+      actor: actor,
+      tags: dims
+    })
+  },
+  logAPIAccessEvent: function (req) {
+    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
+
+    let object = {}
+    let params = {}
+    if (req.options) {
+      params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
+    }
+    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, params)
+    if (req.id && req.type) {
+      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+    }
+
+    var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) || md5('sunbird')
+    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+    if (req && req.reqObj && req.reqObj.sessionID) {
+      context.sid = req.reqObj.sessionID
+    }
+    const actor = telemetry.getActorData(req.userId, req.type)
+    console.log('logAPIAccessEvent')
+    telemetry.log({
+      edata: edata,
+      context: context,
+      object: object,
+      actor: actor
+    })
+  },
+  logAPIErrorEvent: function (req) {
+    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
+
+    let object = {}
+    const err = (req.resp && req.resp.params && req.resp.params.err) || 'API_CALL_ERROR'
+    const errCode = (req.resp && req.resp.responseCode) || 'SERVER_ERROR'
+    const edata = telemetry.errorEventData(err, errCode, req.resp)
+    if (req.id && req.type) {
+      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+    }
+
+    req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
+    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
+    var dims = _.clone(req.reqObj.session.orgs)
+    dims = dims ? _.concat(dims, channel) : channel
+    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+    if (req && req.reqObj && req.reqObj.sessionID) {
+      context.sid = req.reqObj.sessionID
+    }
+    const actor = telemetry.getActorData(req.userId, 'user')
+    console.log('logAPIErrorEvent')
+    telemetry.log({
+      edata: edata,
+      context: context,
+      object: object,
       actor: actor,
       tags: dims
     })
