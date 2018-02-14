@@ -1,0 +1,39 @@
+<div class="ui grid padding-topBottom-10 courseStructureHeader">
+  <div class="one wide column"></div>
+  <div class=" ten wide column">
+    <div class="ui grid">
+      <div class="eight wide column">
+        <div class="profileheader ui link items">
+          <div class="ui grid">
+            <div class="two wide column padding-top-none">
+              <div><app-user-avtar [avator]="avator">
+                
+              </app-user-avtar></div>
+            </div>
+            <div class="ten wide column profile-header-text padding-top-none">
+              <div class="content padding-top-10">
+                <div class="sectionHeading header">{{userProfile.firstName}} &nbsp;{{userProfile.lastName}}</div>
+                <div class="meta profileViewSubHeader padding-bottom-10">
+
+                </div>
+                <div class="meta">
+                  <div class="ui label">Username: {{userProfile.userName}}
+                  </div>
+
+                  <div class="ui label profile-headerLabelCard"> Last login time: {{userProfile.lastLoginTime | date:'medium'}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="ui grid">
+      <div class="two wide column padding-top-none">
+        <div class="profileImageSizeText">Max upload size 4MB</div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
