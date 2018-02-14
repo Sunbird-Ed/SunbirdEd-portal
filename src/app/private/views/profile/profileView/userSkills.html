@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="profileCtrl.userSkills.length > profileCtrl.defaultLimit ">
-    <div class="active item addSkillMoreBtn">
+    <div class="active item addSkillMoreBtn cursor-pointer">
         <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=false" ng-if="profileCtrl.userSkills.length > profileCtrl.limit && profileCtrl.isViewMore">            
             <span>
                 {{$root.frmelmnts.btn.viewmore}} <i class="chevron down icon"></i>
