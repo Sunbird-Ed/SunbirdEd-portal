@@ -28,6 +28,7 @@ angular.module('playerApp')
             title: $rootScope.messages.stmsg.m0060,
             missingFields: $rootScope.profileMissingFields,
             value: $rootScope.profileCompleteness,
+            userId: $rootScope.userId,
             type: 'profile'
           }]
         }
@@ -86,5 +87,24 @@ angular.module('playerApp')
       /* ---telemetry-interact-event-- */
       homeCtrl.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
         telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      homeCtrl.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === (item.courseId || $rootScope.userId)
+        })
+        var visiblity = angular.element('#' + index).attr('aria-hidden')
+        if (inview === true && obj.length === 0 && visiblity === 'false') {
+          inviewLogs.push({
+            objid: item.courseId || $rootScope.userId,
+            objtype: 'home',
+            section: section,
+            index: index
+          })
+        }
+        console.log('----------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }])

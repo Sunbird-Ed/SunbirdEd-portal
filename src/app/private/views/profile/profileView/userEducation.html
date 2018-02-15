@@ -2,9 +2,9 @@
     <div class="header announcementCard-header">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.education}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'education'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false ">{{$root.frmelmnts.btn.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={} ">{{$root.frmelmnts.btn.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.educationForm" ng-click="profileCtrl.educationForm=false;profileCtrl.user.education=profileCtrl.getProfileObject(profileCtrl.education)">{{$root.frmelmnts.btn.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm && profileCtrl.education.length" ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=false; profileCtrl.generateInteractEvent('editEducation')">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.educationForm " ng-click="profileCtrl.educationForm=true ;profileCtrl.isNewEducation=true ;profileCtrl.newEducation={}; profileCtrl.generateInteractEvent('addEducation')">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.educationForm" ng-click="profileCtrl.educationForm=false;profileCtrl.user.education=profileCtrl.getProfileObject(profileCtrl.education); profileCtrl.generateInteractEvent('closeEducation')">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.educationForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="education in profileCtrl.education">
@@ -29,7 +29,7 @@
             </div>
             <div class="right-floated ">
                 <div class="metadata">
-                    <a ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <a ng-click="education.isDeleted=true;profileCtrl.deleteEducation(profileCtrl.education); profileCtrl.generateInteractEvent('deleteEducation')"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                     <!--<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span>-->
                 </div>
             </div>

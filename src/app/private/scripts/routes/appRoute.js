@@ -21,27 +21,13 @@ angular.module('playerApp')
             controller: 'HomeController as homeCtrl'
           }
         },
-        onEnter: function ($rootScope, telemetryService, routeHelperService) {
+        onEnter: function ($rootScope, routeHelperService) {
           $rootScope.homeActive = 'active'
-          var contextData = {
-            env: 'home',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var objectData = {
-            id: $rootScope.userId,
-            type: 'home',
-            ver: '1.0'
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'home', '/home'),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
           routeHelperService.loadRouteConfig('Home', null)
         },
-        onExit: function ($rootScope) {
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('home', '', 'home',
+            '1.0', 'pageexit', 'home', '/home', '', telemetryService.getVisitData())
           $rootScope.homeActive = ''
         }
       })
@@ -71,7 +57,7 @@ angular.module('playerApp')
         },
         onExit: function ($rootScope, telemetryService) {
           telemetryService.impressionTelemetryData('course', '', 'course',
-            $rootScope.version, 'scroll', 'course-read', '/learn', '', telemetryService.getVisitData())
+            $rootScope.version, 'pageexit', 'course-read', '/learn', '', telemetryService.getVisitData())
           $rootScope.courseActive = ''
           $rootScope.isLearnPage = false
         },
@@ -93,7 +79,7 @@ angular.module('playerApp')
         },
         onExit: function ($rootScope, telemetryService) {
           telemetryService.impressionTelemetryData('library', '', 'library',
-            $rootScope.version, 'scroll', 'library-read', '/resources', '', telemetryService.getVisitData())
+            $rootScope.version, 'pageexit', 'library-read', '/resources', '', telemetryService.getVisitData())
           $rootScope.isResourcesPage = false
           $rootScope.resourcesActive = ''
         },
@@ -295,7 +281,7 @@ angular.module('playerApp')
           var pageId = $stateParams.type.toLowerCase() + '-search'
           var uri = '/search/' + $stateParams.type
           telemetryService.impressionTelemetryData('search', '', 'search',
-            '1.0', 'scroll', pageId, uri, '', telemetryService.getVisitData())
+            '1.0', 'pageexit', pageId, uri, '', telemetryService.getVisitData())
           $rootScope.courseActive = $rootScope.resourcesActive = ''
           $rootScope.isSearchResultsPage = false
           $rootScope.homeActive = ''
@@ -400,20 +386,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($rootScope, telemetryService) {
-          var contextData = {
-            env: 'workspace',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-draft', '/content/draft'),
-            context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
-          }
-          telemetryService.impression(data)
         },
         onExit: function ($rootScope, telemetryService) {
           telemetryService.impressionTelemetryData('workspace', '', 'draft',
-            '1.0', 'scroll', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
+            '1.0', 'pageexit', 'workspace-content-draft', '/content/draft', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.ReviewContent', {
