@@ -95,7 +95,8 @@ angular.module('playerApp')
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === (item.courseId || $rootScope.userId)
         })
-        if (inview === true && obj.length === 0) {
+        var visiblity = angular.element('#' + index).attr('aria-hidden')
+        if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
             objid: item.courseId || $rootScope.userId,
             objtype: 'home',

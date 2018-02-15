@@ -10,6 +10,7 @@ angular.module('playerApp')
       $scope.contentPlayer = {
         isContentPlayerEnabled: false
       }
+
       learn.openCourseView = function (course, courseType) {
         $rootScope.search.searchKeyword = ''
         var showLectureView = 'no'
@@ -68,12 +69,12 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      learn.lineInView = function (index, inview, item, section) {
+      learn.lineInView = function (index, inview, item, section, pageSectionId) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        console.log('index', index)
-        if (inview === true && obj.length === 0) {
+        var visiblity = angular.element('#' + pageSectionId + '_' + item.identifier).attr('aria-hidden')
+        if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
             objid: item.identifier,
             objtype: item.contentType || 'course',
@@ -82,6 +83,11 @@ angular.module('playerApp')
           })
         }
         console.log('----------', inviewLogs)
+        $rootScope.$broadcast('mycoursesVisit', inviewLogs)
         telemetryService.setVisitData(inviewLogs)
       }
+
+      $rootScope.$on('mycoursesVisit', function (e, visitData) {
+        $rootScope.visitData = visitData
+      })
     }])
