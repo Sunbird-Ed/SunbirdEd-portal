@@ -21,7 +21,7 @@ angular.module('playerApp')
       'authtoken': undefined,
       'uid': $rootScope.userId,
       'sid': $rootScope.sessionId,
-      'batchsize': 1 || config.TELEMETRY.MAX_BATCH_SIZE,
+      'batchsize': 10 || config.TELEMETRY.MAX_BATCH_SIZE,
       'host': '',
       'endpoint': config.TELEMETRY.SYNC,
       'apislug': config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX,

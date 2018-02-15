@@ -3,7 +3,7 @@
         <div ng-init="allUploadedContent.getAllUploadedContent();contentModelSetBackLink();">
             <div ng-if="!allUploadedContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="allUploadedContent.allUploadedContentData.length > 0">
-                    <div class="card" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index" ng-init="$last && allUploadedContent.initTocPopup()">
+                    <div class="card" ng-repeat="item in allUploadedContent.allUploadedContentData track by $index" ng-init="$last && allUploadedContent.initTocPopup()" in-view="allUploadedContent.lineInView($index, $inview, item, 'AllUploads')" in-view-options="{ throttle: 1000 }">
                         <div class="image imageInCardsResponsive " ng-click="allUploadedContent.openContentEditor(item)">
                             <div class="ui fluid image mouse-pointer">
                                 <span class="ui black right ribbon label">{{item.contentType}}</span>
@@ -12,9 +12,9 @@
                             <div class="cardImageText center aligned mouse-pointer">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;
-                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15" 
-                                    data-content="{{item.name}}" data-position="top center"> 
-                                    </i> 
+                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15"
+                                    data-content="{{item.name}}" data-position="top center">
+                                    </i>
                                 </span>
                             </div>
                         </div>
