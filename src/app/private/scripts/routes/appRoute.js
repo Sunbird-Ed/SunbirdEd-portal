@@ -327,7 +327,7 @@ angular.module('playerApp')
             ver: '1.0'
           }
           var data = {
-            edata: telemetryService.endEventData('course','course-read','play'),
+            edata: telemetryService.endEventData('course', 'course-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
