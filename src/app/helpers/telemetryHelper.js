@@ -1,4 +1,5 @@
 const request = require('request')
+const jwt = require('jsonwebtoken')
 const parser = require('ua-parser-js')
 const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
@@ -59,28 +60,30 @@ module.exports = {
     })
   },
   logSSOStartEvent: function (req) {
-    console.log('logSSOStartEvent')
     req.session.orgs = _.compact(req.session.orgs)
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     var dims = _.clone(req.session.orgs)
     dims = dims ? _.concat(dims, channel) : channel
+    const payload = jwt.decode(req.query['token'])
 
     const edata = telemetry.startEventData('sso')
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: {id: 'sso', type: 'sso'} })
     context.sid = req.sessionID
-    // const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    const actor = telemetry.getActorData(payload.sub, 'user')
+    console.log('logSSOStartEvent')
     telemetry.start({
       edata: edata,
       context: context,
-      actor: 'actor',
+      actor: actor,
       tags: dims
     })
   },
   logSSOEndEvent: function (req) {
     console.log('logSSOEndEvent')
+    const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
-    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    const actor = telemetry.getActorData(payload.sub, 'user')
     var dims = _.clone(req.session.orgs)
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     dims = dims ? _.concat(dims, channel) : channel
@@ -124,6 +127,31 @@ module.exports = {
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
+    const actor = telemetry.getActorData(req.userId, 'user')
+    console.log('logAPICallEvent')
+    telemetry.log({
+      edata: edata,
+      context: context,
+      object: object,
+      actor: actor,
+      tags: dims
+    })
+  },
+  logGrantLogEvent: function (req) {
+    const message = req.success ? 'Verified keyclock grant' : 'Keyclock grant failed'
+    const error = req.success ? 'INFO' : 'ERROR'
+
+    const edata = telemetry.logEventData('keyclock_grant', error, message)
+
+    req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
+    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
+    var dims = _.clone(req.reqObj.session.orgs)
+    dims = dims ? _.concat(dims, channel) : channel
+    const context = telemetry.getContextData({ channel: channel, env: 'sso' })
+    if (req && req.reqObj && req.reqObj.sessionID) {
+      context.sid = req.reqObj.sessionID
+    }
+    const object = telemetry.getObjectData({id: req.userId, type: 'user'})
     const actor = telemetry.getActorData(req.userId, 'user')
     console.log('logAPICallEvent')
     telemetry.log({

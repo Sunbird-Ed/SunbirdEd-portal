@@ -51,10 +51,10 @@ module.exports = {
   handleRequest: function (req, res) {
     let self = this
     async.series({
-      // logSSOStartEvent: function(callback) {
-      //   console.log("req", req)
-      //   callback()
-      // },
+      logSSOStartEvent: function (callback) {
+        telemetryHelper.logSSOStartEvent(req)
+        callback()
+      },
       verifySignature: function (callback) {
         console.log('echoAPI : ' + echoAPI)
         var options = {
@@ -72,7 +72,7 @@ module.exports = {
             statusCode: response.statusCode,
             resp: body,
             uri: 'test',
-            userId: req.headers['x-consumer-userid']}
+            userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
           telemetryHelper.logAPICallEvent(telemetryData)
           self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
           if (error) {
@@ -109,10 +109,7 @@ module.exports = {
         // check user exist
         self.checkUserExists(req, self.payload, function (err, status) {
           self.errorMsg = 'Failed to create/authenticate user. Please try again with valid user data'
-          if (err) {
-            console.log('get user profile API error', err)
-            callback(err, null)
-          } else if (status) {
+          if (!err) {
             self.errorMsg = undefined
             console.log('user already exists')
             callback(null, status)
@@ -153,18 +150,26 @@ module.exports = {
               callback(err, null)
               return
             };
+            telemetryHelper.logGrantLogEvent({
+              reqObj: req,
+              userId: userName,
+              success: grant})
             self.errorMsg = undefined
             callback(null, grant)
           },
           function (err) {
-            console.log('grant failed', err)
+            telemetryHelper.logGrantLogEvent({
+              reqObj: req,
+              userId: userName,
+              err: err})
+            console.log('grant failed', err, userName)
             callback(err, null)
           })
       }
     },
     function (err, results) {
       if (err) {
-        // telemetryHelper.logSSOEndEvent(req);
+        telemetryHelper.logSSOEndEvent(req)
         console.log('err', err)
         res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
       } else {
@@ -205,15 +210,12 @@ module.exports = {
         id: loginId,
         userId: loginId}
       telemetryHelper.logAPICallEvent(telemetryData)
-      console.log('check user exists', JSON.stringify(body))
-      if (body.responseCode === 'RESOURCE_NOT_FOUND') {
-        telemetryHelper.logAPIErrorEvent(telemetryData)
-        callback(null, false)
-      } else if (body.responseCode === 'OK') {
+      console.log('check user exists', JSON.stringify(body), response.statusCode)
+      if (body.responseCode === 'OK') {
         callback(null, true)
-      } else if (error || response.statusCode !== 200) {
+      } else {
         telemetryHelper.logAPIErrorEvent(telemetryData)
-        var err = error || body
+        var err = error || body || true
         callback(err, false)
       }
     })
