@@ -2,7 +2,7 @@
     <div class="header announcementCard-header ">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'skills'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal()">
+        <a class="addeditprofile cursor-pointer" ng-click="profileCtrl.openAddSkillModal(); profileCtrl.generateInteractEvent('addSkills')">
             {{$root.frmelmnts.btn.add}}
         </a>
     </div>
@@ -19,13 +19,13 @@
     </div>
 </div>
 <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="profileCtrl.userSkills.length > profileCtrl.defaultLimit ">
-    <div class="active item addSkillMoreBtn">
-        <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=false" ng-if="profileCtrl.userSkills.length > profileCtrl.limit && profileCtrl.isViewMore">            
+    <div class="active item addSkillMoreBtn cursor-pointer">
+        <a ng-click="profileCtrl.setLimit(profileCtrl.resetLimit);profileCtrl.isViewMore=false" ng-if="profileCtrl.userSkills.length > profileCtrl.limit && profileCtrl.isViewMore">
             <span>
                 {{$root.frmelmnts.btn.viewmore}} <i class="chevron down icon"></i>
             </span>
         </a>
-        <a ng-click="profileCtrl.setLimit(profileCtrl.defaultLimit);profileCtrl.isViewMore=true" ng-if="!profileCtrl.isViewMore">            
+        <a ng-click="profileCtrl.setLimit(profileCtrl.defaultLimit);profileCtrl.isViewMore=true" ng-if="!profileCtrl.isViewMore">
             <span>
                 {{$root.frmelmnts.btn.viewless}} <i class="chevron up icon"></i>
             </span>

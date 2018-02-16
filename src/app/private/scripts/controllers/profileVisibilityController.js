@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('profileVisibilityController',
-    ['$timeout', '$rootScope', '$scope', 'toasterService', 'userService',
-      function ($timeout, $rootScope, $scope, toasterService, userService) {
+    ['$timeout', '$rootScope', '$scope', 'toasterService', 'userService', 'telemetryService',
+      function ($timeout, $rootScope, $scope, toasterService, userService, telemetryService) {
         var profVisCtrl = this
         profVisCtrl.options = [{
           text: 'Hide this from everyone',
@@ -76,5 +76,11 @@ angular.module('playerApp')
               cb(response, null)
             }
           })
+        }
+
+        // Telemetry interact event
+        profVisCtrl.generateInteractEvent = function (pageId, objVer) {
+          var edataId = telemetryService.ProfileLockConfig[$scope.field]
+          telemetryService.interactTelemetryData('profile', $rootScope.userId, $scope.field, objVer, edataId, pageId)
         }
       }])

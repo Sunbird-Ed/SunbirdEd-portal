@@ -29,6 +29,60 @@ angular.module('playerApp')
       'runningEnv': 'client',
       'tags': []
     }
+
+    this.ProfileLockConfig = {
+      phone: 'phn-number-lock',
+      email: 'email-lock',
+      gender: 'gender-lock',
+      dob: 'birthdate-lock',
+      location: 'current-location-lock',
+      grade: 'grade-lock',
+      language: 'known-language-lock',
+      subject: 'subject-experties-lock',
+      webPages: 'social-media-link-lock',
+      address: 'address-lock',
+      profileSummary: 'profile-summary-lock',
+      education: 'education-lock',
+      jobProfile: 'job-profile-lock',
+      skills: 'skills-lock'
+    }
+
+    this.ProfileSectionConfig = {
+      profileSummary: 'profile-update-summary',
+      editSummary: 'profile-edit-summary',
+      closeSummary: 'profile-close-summary',
+      addExperience: 'profile-update-experience',
+      editExperience: 'profile-edit-experience',
+      closeExperience: 'profile-close-experience',
+      experience: 'add-experience',
+      deleteExperience: 'profile-delete-experience',
+      address: 'add-address',
+      editAddress: 'profile-edit-address',
+      addAddress: 'profile-add-address',
+      deleteAddress: 'profile-delete-address',
+      closeAddress: 'profile-close-address',
+      addEducation: 'profile-update-education',
+      editEducation: 'profile-edit-education',
+      education: 'add-education',
+      deleteEducation: 'profile-delete-education',
+      closeEducation: 'profile-close-education',
+      skills: 'add-skills',
+      removeSkills: 'profile-delete-skills',
+      cancelSkills: 'profile-cancel-skills',
+      addSkills: 'profile-add-skills',
+      basicInfo: 'profile-additional-info',
+      editBasicInfo: 'edit-additional-info',
+      closeBasicInfo: 'close-additional-info',
+      phone: 'add-phone-number',
+      gender: 'add-gender',
+      dob: 'add-dateof-birth',
+      grade: 'add-grade',
+      language: 'add-known-language',
+      subject: 'add-subject-experties',
+      webPages: 'add-social-media-link',
+      location: 'add-current-location'
+    }
+
     this.context = []
     this.configData = {}
     this.visitData = []

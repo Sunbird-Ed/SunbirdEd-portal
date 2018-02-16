@@ -38,7 +38,7 @@
                         </div>
                         <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
                             <div class="iniformationcontent content">
-                                <a ng-click="profileCtrl.updateAction(field)">
+                                <a ng-click="profileCtrl.updateAction(field); profileCtrl.generateInteractEvent(field)">
                                     <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.frmelmnts.lbl[field] || field}}</h5>
                                 </a>
                             </div>
@@ -63,7 +63,7 @@
                         <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.frmelmnts.lbl.contents}}</span>
                     </div>
                     <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
-                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item); $root.generateInteractEvent('profile',item.identifier,item.contentType,'1.0','contribution-list','profile-read')">
                             <img class="ui avatar image " ng-src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>

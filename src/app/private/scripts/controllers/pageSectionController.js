@@ -107,7 +107,7 @@ angular.module('playerApp')
                   } else {
                     Array.prototype.push.apply(
                       section.page[key - 1].contents,
-                      pageData[key][index].contents)
+                      pageData[key][index].contents, section.page[key - 1].id)
                   }
                 }
               })
@@ -160,17 +160,23 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      $rootScope.lineInView = function (index, inview, item, section) {
+      $rootScope.lineInView = function (index, inview, item, section, pageSectionId) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        if (inview === true && obj.length === 0) {
+        console.log('@@@@--------@@@', $rootScope.visitData)
+        var visiblity = angular.element('#' + pageSectionId + '_' + item.identifier).attr('aria-hidden')
+        if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
             objid: item.identifier,
             objtype: item.contentType || 'course',
             section: section,
             index: index
           })
+        }
+        if ($rootScope.visitData !== undefined && item.contentType === 'Course') {
+          // inviewLogs.concat($rootScope.visitData)
+          inviewLogs = _.union(inviewLogs, $rootScope.visitData)
         }
         console.log('----------', inviewLogs)
         telemetryService.setVisitData(inviewLogs)

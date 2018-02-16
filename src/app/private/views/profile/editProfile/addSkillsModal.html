@@ -5,7 +5,7 @@
                 <span class="ui header">{{$root.frmelmnts.lbl.addSkills}}</span>
             </div>
             <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
+                <h5 class="ui basic icon circular button deny" ng-click="profileCtrl.generateInteractEvent('profile-cancel-skills', 'profile-read','1.0')">
                     <i class="ui remove icon"></i>
                 </h5>
             </div>
@@ -16,7 +16,7 @@
             <span class="padded chip margin-top--5" ng-repeat="selectedSkill in profileCtrl.selectedSkills">
                 <a class="ui label margin-top--5">
                     {{selectedSkill}}
-                    <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill)"></i>
+                    <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill); profileCtrl.generateInteractEvent('removeSkills')"></i>
                 </a>
             </span>
         </div>
@@ -32,14 +32,12 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     <div class="actions margin-top-40">
-        <button class="ui cancel primary basic left floated button">
+        <button class="ui cancel primary basic left floated x" ng-click="profileCtrl.generateInteractEvent('cancelSkills')">
             {{$root.frmelmnts.btn.cancel}}
         </button>
-        <button class="ui approve primary button" ng-click="profileCtrl.addSkills()">
+        <button class="ui approve primary button" ng-click="profileCtrl.addSkills(); profileCtrl.generateInteractEvent('skills')">
             {{$root.frmelmnts.btn.finish}}
         </button>
     </div>
