@@ -239,7 +239,7 @@ angular.module('playerApp')
             rollup: telemetryService.getRollUpData(objRollup)
           }
           var data = {
-            edata: telemetryService.endEventData('lirary', 'play', 'library-read'),
+            edata: telemetryService.endEventData('lirary', 'library-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
