@@ -170,7 +170,7 @@ angular.module('playerApp')
             ver: '1.0'
           }
           var data = {
-            edata: telemetryService.endEventData('course', 'play', 'course-read'),
+            edata: telemetryService.endEventData('course', 'course-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
@@ -239,7 +239,7 @@ angular.module('playerApp')
             rollup: telemetryService.getRollUpData(objRollup)
           }
           var data = {
-            edata: telemetryService.endEventData('lirary', 'play', 'library-read'),
+            edata: telemetryService.endEventData('lirary', 'library-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
@@ -327,7 +327,7 @@ angular.module('playerApp')
             ver: '1.0'
           }
           var data = {
-            edata: telemetryService.endEventData('course', 'play', 'course-read'),
+            edata: telemetryService.endEventData('course', 'course-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
             tags: $rootScope.organisationIds
@@ -401,6 +401,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'reviewContent',
+            '1.0', 'pageexit', 'workspace-content-inreview', '/content/review', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.PublishedContent', {
@@ -412,6 +416,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'publishedContent',
+            '1.0', 'pageexit', 'workspace-content-published', '/content/published', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.AllUploadedContent', {
@@ -423,6 +431,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'uploadedContent',
+            '1.0', 'pageexit', 'workspace-content-upload', '/content/uploaded', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.UpForReviewContent', {
@@ -434,6 +446,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'upForReviewContent', '1.0', 'pageexit',
+            'workspace-content-upforreview', '/content/upForReview', '', telemetryService.getVisitData())
         }
       })
       .state('WorkSpace.FlaggedContent', {
@@ -445,6 +461,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'flaggedContent',
+            '1.0', 'pageexit', 'workspace-flagged-content', '/content/flagged', '', telemetryService.getVisitData())
         }
       })
       .state('CreateLesson', {
@@ -627,6 +647,10 @@ angular.module('playerApp')
             templateUrl: 'views/batch/batchList.html',
             controller: 'BatchListController as batch'
           }
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'courseBatches',
+            '1.0', 'pageexit', 'workspace-course-batces', '/batches', '', telemetryService.getVisitData())
         }
       }).state('CreateBatch', {
         url: '/create/batch/:courseId',
@@ -778,6 +802,10 @@ angular.module('playerApp')
           }
         },
         onEnter: function () {
+        },
+        onExit: function ($rootScope, telemetryService) {
+          telemetryService.impressionTelemetryData('workspace', '', 'unlistedContent', '1.0', 'pageexit',
+            'workspace-content-unlisted', '/content/limited/publish', '', telemetryService.getVisitData())
         }
       })
   })

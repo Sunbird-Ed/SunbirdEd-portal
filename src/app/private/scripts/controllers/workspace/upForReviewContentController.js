@@ -5,7 +5,8 @@ angular.module('playerApp')
     '$rootScope', '$scope', '$state', '$timeout', 'toasterService', 'PaginationService',
     'workSpaceUtilsService', 'configService', 'permissionsService', 'telemetryService',
     function (contentService, searchService, config, $rootScope, $scope, $state, $timeout,
-      toasterService, PaginationService, workSpaceUtilsService, configService, permissionsService, telemetryService) {
+      toasterService, PaginationService, workSpaceUtilsService, configService, permissionsService,
+      telemetryService) {
       var upForReviewContent = this
       upForReviewContent.filterDropDown = configService.getWorkspaceUpforReviewdrpdwn()
       upForReviewContent.userId = $rootScope.userId
@@ -216,8 +217,8 @@ angular.module('playerApp')
             upForReviewContent.error.showError = false
             toasterService.error($rootScope.messages.fmsg.m0021)
           }
-          upForReviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upforreview',
-            '/content/upForReview')
+          /* upForReviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upforreview',
+            '/content/upForReview') */
         }).catch(function () {
           upForReviewContent.loader.showLoader = false
           upForReviewContent.error.showError = false
@@ -245,17 +246,9 @@ angular.module('playerApp')
              * on click of review content.
              */
 
-      upForReviewContent.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
-        telemetryService.interactTelemetryData('workspace', $rootScope.userId, 'workspace',
-          upForReviewContent.version, 'workspace-content-upforreview', 'upforreview')
-      }
-
-      // telemetry impression event//
-      upForReviewContent.generateImpressionEvent = function (env, objId, objType, objVer, subtype, pageId,
-        uri, objRollup) {
-        telemetryService.impressionTelemetryData('workspace', $rootScope.userId, 'workspace',
-          upForReviewContent.version, 'scroll', 'workspace-content-upforreview', 'upforreview',
-          'workspace/content/upForReview')
+      upForReviewContent.generateInteractEvent = function (objType, objId) {
+        telemetryService.interactTelemetryData('workspace', objId, objType,
+          upForReviewContent.version, objType, 'workspace-content-upforreview')
       }
 
       upForReviewContent.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
@@ -286,6 +279,24 @@ angular.module('playerApp')
 
       upForReviewContent.hideFilter = function () {
         upForReviewContent.hideFilterPopup = false
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      upForReviewContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

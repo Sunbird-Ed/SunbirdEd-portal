@@ -224,4 +224,11 @@ describe('App controller', function () {
     var response = telemetryService.endTelemetryData().$$state.value
     expect(response).toBe(telemetrySpec)
   })
+
+  it('should call on before window unload', function () {
+    spyOn(window, 'onbeforeunload').and.callThrough()
+    window.onbeforeunload()
+    scope.$apply()
+    expect(window.onbeforeunload).toBeDefined()
+  })
 })

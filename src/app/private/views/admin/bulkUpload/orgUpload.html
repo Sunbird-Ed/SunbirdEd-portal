@@ -5,7 +5,7 @@
                 <span class="ui header">{{$root.frmelmnts.instn.t0015}}</span>
             </div>
             <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
+                <h5 class="ui basic icon circular button deny" ng-click="$root.generateInteractEvent('profile','','closeUploadOrgs','1.0','closeUploadOrgs','profile-upload-orgs')">
                     <i class="ui remove icon"></i>
                 </h5>
             </div>
@@ -57,12 +57,12 @@
     <div class="actions">
         <div class="ui grid">
             <div class="four wide column">
-                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations')">{{$root.frmelmnts.btn.smplcsv}}</button>
+                <button class="ui  left floated button" ng-click="admin.downloadSample('organizations'); $root.generateInteractEvent('profile','','downloadSampleCSV','1.0','downloadSampleCSV','profile-upload-orgs')">{{$root.frmelmnts.btn.smplcsv}}</button>
             </div>
             <div class="four wide column">
             </div>
             <div class="four wide column">
-                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations');">{{$root.frmelmnts.btn.uploadorgscsv}}</button>
+                <button ng-disabled="admin.bulkOrgProcessId" class="ui primary right floated button" ng-click="admin.openImageBrowser('organizations'); $root.generateInteractEvent('profile','','uploadOrgsCsv','1.0','uploadOrgsCsv','profile-upload-orgs')">{{$root.frmelmnts.btn.uploadorgscsv}}</button>
                 <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" onchange="angular.element(this).scope().validateFile(this.files, 'organizations');" required="" />
             </div>
         </div>

@@ -69,7 +69,7 @@ angular.module('playerApp')
             allUploadedContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0014)
           }
-          allUploadedContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upload', '/content/uploaded')
+          /* allUploadedContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upload', '/content/uploaded') */
         }).catch(function () {
           allUploadedContent.error.showError = false
           allUploadedContent.loader.showLoader = false
@@ -146,52 +146,25 @@ angular.module('playerApp')
              * on click of alluploded content.
              */
       allUploadedContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
-        var contextData = {
-          env: env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objRollup = ''
-        if (contentId !== '') {
-          objRollup = [contentId]
-        }
-
-        var objectData = {
-          id: contentId,
-          type: edataId,
-          ver: allUploadedContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
+        telemetryService.interactTelemetryData(env, contentId, edataId, allUploadedContent.version, edataId, pageId)
       }
 
-      // telemetry impression event//
-      allUploadedContent.generateImpressionEvent = function (type, subtype, pageId, url) {
-        var contextData = {
-          env: 'workspace',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+      // telemetry visit spec
+      var inviewLogs = []
+      allUploadedContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
         }
-        var objRollup = [$rootScope.userId]
-        var objectData = {
-          id: $rootScope.userId,
-          type: 'uploadedContent',
-          ver: allUploadedContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-        var data = {
-          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.impression(data)
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

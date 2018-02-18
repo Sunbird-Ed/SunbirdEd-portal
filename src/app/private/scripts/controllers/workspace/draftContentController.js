@@ -70,7 +70,6 @@ angular.module('playerApp')
                 $rootScope.messages.stmsg.m0012,
                 $rootScope.messages.stmsg.m0008)
             }
-            console.log(res.result.content)
             /* telemetryService.impressionTelemetryData('workspace', '', 'draftContent',
             res.ver, 'scroll', 'workspace-content-draft', '/content/draft', '') */
           } else {
@@ -146,7 +145,7 @@ angular.module('playerApp')
 
       // telemetry visit spec
       var inviewLogs = []
-      $rootScope.lineInView = function (index, inview, item, section) {
+      draftContent.lineInView = function (index, inview, item, section) {
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
