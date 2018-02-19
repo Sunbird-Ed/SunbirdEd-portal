@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('BatchListController', ['$rootScope', 'toasterService', 'batchService', '$state',
-    'userService', 'PaginationService', 'permissionsService', function ($rootScope, toasterService, batchService,
-      $state, userService, PaginationService, permissionsService) {
+    'userService', 'PaginationService', 'permissionsService', 'telemetryService',
+    function ($rootScope, toasterService, batchService, $state, userService, PaginationService,
+      permissionsService, telemetryService) {
       var batch = this
       batch.userId = $rootScope.userId
       batch.list = []
@@ -103,6 +104,30 @@ angular.module('playerApp')
           return
         }
         batch.listBatches(page)
+      }
+
+      // telemetry intaract event
+      batch.generateInteractEvent = function (edataId, batchId) {
+        telemetryService.interactTelemetryData('workspace', batchId, edataId, '1.0',
+          edataId, 'workspace-course-batches')
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      batch.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: 'batch',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

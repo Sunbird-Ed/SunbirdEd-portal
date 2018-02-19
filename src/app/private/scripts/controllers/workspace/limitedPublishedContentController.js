@@ -62,8 +62,8 @@ angular.module('playerApp')
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0064)
           }
-          lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
-            '/content/limited/publish')
+          /* lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
+            '/content/limited/publish') */
         }).catch(function () {
           lpContent.error.showError = false
           lpContent.loader.showLoader = false
@@ -139,53 +139,27 @@ angular.module('playerApp')
              * This function call to generate telemetry
              * on click of review content.
              */
-      lpContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
-        var contextData = {
-          env: env,
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
-
-        var objRollup = ''
-        if (contentId !== '') {
-          objRollup = [contentId]
-        }
-
-        var objectData = {
-          id: contentId,
-          type: edataId,
-          ver: lpContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-
-        var data = {
-          edata: telemetryService.interactEventData('CLICK', '', edataId, pageId),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.interact(data)
+      lpContent.generateInteractEvent = function (objtype, contentId) {
+        telemetryService.interactTelemetryData('workspace', contentId, objtype, '1.0',
+          'unlistedContent', 'workspace-unlisted-content')
       }
 
-      // telemetry impression event//
-      lpContent.generateImpressionEvent = function (type, subtype, pageId, url) {
-        var contextData = {
-          env: 'workspace',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+      // telemetry visit spec
+      var inviewLogs = []
+      lpContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
         }
-        var objRollup = [$rootScope.userId]
-        var objectData = {
-          id: $rootScope.userId,
-          type: 'unlistedContent',
-          ver: lpContent.version,
-          rollup: telemetryService.getRollUpData(objRollup)
-        }
-        var data = {
-          edata: telemetryService.impressionEventData(type, subtype, pageId, url),
-          context: telemetryService.getContextData(contextData),
-          object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
-        }
-        telemetryService.impression(data)
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

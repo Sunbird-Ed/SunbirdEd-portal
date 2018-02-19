@@ -7,7 +7,7 @@ angular.module('playerApp')
       permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
-      collectionEditor.framework = $stateParams.frameworkId
+      collectionEditor.framework = $stateParams.framework
       collectionEditor.openCollectionEditor = function (data) {
         $('#collectionEditor').iziModal({
           title: '',

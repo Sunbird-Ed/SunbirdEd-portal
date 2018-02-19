@@ -10,35 +10,37 @@ angular.module('playerApp')
       textbook.categoryModelList = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
-      searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          textbook.version = res.ver
-          textbook.frameworkId = null
-          if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
-            textbook.frameworkId = res.result.channel.frameworks[0].identifier
-          } else {
-            textbook.frameworkId = _.find(res.result.channel.suggested_frameworks, function (framework) {
-              return framework.identifier === res.result.channel.defaultFramework
-            }).identifier
-          }
-          searchService.getFramework(textbook.frameworkId).then(function (res) {
-            if (res.responseCode === 'OK') {
-              textbook.frameworkData = res.result.framework.categories
-              var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              _.forEach(categoryMasterList, function (category) {
-                textbook.categoryListofFramework[category.index] = category.terms || []
-                var categoryName = 'category' + category.index
-                textbook[categoryName] = category
-                textbook.categoryModelList[category.index] = category.code
-              })
+      textbook.getChannel = function () {
+        searchService.getChannel().then(function (res) {
+          if (res.responseCode === 'OK') {
+            textbook.version = res.ver
+            textbook.framework = null
+            if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
+              textbook.framework = res.result.channel.frameworks[0].identifier
+            } else {
+              textbook.framework = _.find(res.result.channel.suggested_frameworks, function (framework) {
+                return framework.identifier === res.result.channel.defaultFramework
+              }).identifier
             }
-          }).catch(function (error) {
-            console.log('error is ......', error)
-          })
-        }
-      }).catch(function (error) {
-        console.log('error is ......', error)
-      })
+            searchService.getFramework(textbook.framework).then(function (res) {
+              if (res.responseCode === 'OK') {
+                textbook.frameworkData = res.result.framework.categories
+                var categoryMasterList = _.cloneDeep(res.result.framework.categories)
+                _.forEach(categoryMasterList, function (category) {
+                  textbook.categoryListofFramework[category.index] = category.terms || []
+                  var categoryName = 'category' + category.index
+                  textbook[categoryName] = category
+                  textbook.categoryModelList[category.index] = category.code
+                })
+              }
+            }).catch(function (error) {
+              console.log('error is ......', error)
+            })
+          }
+        }).catch(function (error) {
+          console.log('error is ......', error)
+        })
+      }
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
@@ -105,7 +107,7 @@ angular.module('playerApp')
         requestBody.mimeType = textbook.mimeType
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
-        requestBody.frameworkId = textbook.frameworkId
+        requestBody.framework = textbook.framework
         if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
           delete requestBody['gradeLevel']
         }
@@ -119,7 +121,7 @@ angular.module('playerApp')
       }
 
       textbook.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'TextBook', state: '', frameworkId: textbook.frameworkId }
+        var params = { contentId: contentId, type: 'TextBook', state: '', framework: textbook.framework }
         $state.go('CollectionEditor', params)
       }
       textbook.getAssociations = function (selectedCategory, categoryList) {
@@ -216,4 +218,5 @@ angular.module('playerApp')
         })
         return category
       }
+      textbook.getChannel()
     }])

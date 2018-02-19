@@ -314,15 +314,4 @@ describe('Controller:UpForReviewContentController', function () {
     var response = telemetryService.interactTelemetryData().$$state.value
     expect(response).toBe(telemetrySpec)
   })
-
-  it('Should return telemetry impression event spec', function () {
-    upForReviewContent = upForReviewController()
-    spyOn(telemetryService, 'impressionTelemetryData').and.returnValue(deferred.promise)
-    deferred.resolve(telemetrySpec)
-    spyOn(upForReviewContent, 'generateImpressionEvent').and.callThrough()
-    upForReviewContent.generateImpressionEvent('home', 'course', 'course-read', 'course')
-    scope.$apply()
-    var response = telemetryService.impressionTelemetryData().$$state.value
-    expect(response).toBe(telemetrySpec)
-  })
 })
