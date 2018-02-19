@@ -1,6 +1,6 @@
+const md5 = require('js-md5')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const appId = envHelper.APPID
-const md5 = require('js-md5')
 const sunbirdApiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
@@ -9,7 +9,7 @@ const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
     if (srcReq.session) {
       var userId = srcReq.session.userId
-      var channel = md5(srcReq.session.rootOrgId || 'sunbird')
+      var channel = srcReq.session.rootOrghashTagId || md5('sunbird')
       if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }

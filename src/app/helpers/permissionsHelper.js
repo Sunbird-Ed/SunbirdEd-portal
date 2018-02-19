@@ -5,7 +5,7 @@ const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
 const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
-const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKE
+const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
@@ -40,20 +40,19 @@ let PERMISSIONS_HELPER = {
     'type/update': ['SYSTEM_ADMINISTRATION']
   },
 
-  getPermissions: function () {
+  getPermissions: function (reqObj) {
     var options = {
       method: 'GET',
-      url: learnerURL + 'role/read',
+      url: learnerURL + 'data/v1/role/read',
       headers: {
         'x-device-id': 'middleware',
         'x-msgid': uuidv1(),
-        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
-        accept: 'application/json'
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
-
     request(options, function (error, response, body) {
       if (!error && body) {
         body = JSON.parse(body)
@@ -85,14 +84,12 @@ let PERMISSIONS_HELPER = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,
       headers: {
-        'x-authenticated-userid': userId,
-        'x-device-id': 'middleware',
         'x-msgid': uuidv1(),
-        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'x-consumer-id': 'X-Consumer-ID',
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
-        accept: 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
 
@@ -125,6 +122,7 @@ let PERMISSIONS_HELPER = {
         }
       }
       reqObj.session.save()
+
       callback(error, body)
     })
   },

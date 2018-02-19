@@ -288,7 +288,6 @@ resourcesBundlesHelper.buildResources(function (err, result) {
     portal.server = app.listen(port, function () {
       console.log('completed resource bundles' + '\r\n' + 'starting  server...')
       console.log('app running on port ' + port)
-      permissionsHelper.getPermissions()
     })
   }
 })

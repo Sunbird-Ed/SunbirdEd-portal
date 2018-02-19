@@ -15,7 +15,7 @@ module.exports = {
     var ua = parser(req.headers['user-agent'])
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    var channel = req.session.rootOrghashTagId
     var dims = _.clone(req.session.orgs)
     dims = _.concat(dims, channel)
     var event = {
