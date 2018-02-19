@@ -547,7 +547,7 @@ angular.module('playerApp')
         }
       })
       .state('CollectionEditor', {
-        url: '/collection/editor/:contentId/:type/:state/:frameworkId',
+        url: '/collection/editor/:contentId/:type/:state/:framework',
         views: {
           mainView: {
             templateUrl: 'views/common/collectionEditor.html',
@@ -558,7 +558,7 @@ angular.module('playerApp')
           contentId: null,
           type: null,
           state: null,
-          frameworkId: null
+          framework: null
         },
         onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'
