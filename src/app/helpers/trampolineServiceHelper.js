@@ -238,6 +238,7 @@ module.exports = {
 // Method called after successful authentication and it will log the telemetry
 // for CP_SESSION_START
 keycloak.authenticated = function (request) {
+  permissionsHelper.getPermissions(request)
   async.series({
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
