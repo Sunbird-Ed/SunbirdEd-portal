@@ -79,7 +79,7 @@ telemetrySyncManager.prototype.sync = function (callback) {
     var self = this
     const options = this.getHttpOption()
 
-    console.log('Sync', JSON.stringify(options.body))
+    console.log('Sync')
 
     request(options, function (err, res, body) {
       if (body && body.params && body.params.status === 'successful') {

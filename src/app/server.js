@@ -302,7 +302,7 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: {id: appId, ver: telemtryEventConfig.version},
+  pdata: {id: appId, ver: telemtryEventConfig.pdata.ver},
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
   endpoint: telemtryEventConfig.endpoint,

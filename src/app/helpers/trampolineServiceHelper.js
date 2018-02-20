@@ -52,6 +52,7 @@ module.exports = {
     let self = this
     async.series({
       logSSOStartEvent: function (callback) {
+        console.log('SSO start event')
         telemetryHelper.logSSOStartEvent(req)
         callback()
       },
@@ -168,8 +169,9 @@ module.exports = {
       }
     },
     function (err, results) {
+      telemetryHelper.logSSOEndEvent(req)
+      console.log('logSSOEndEvent')
       if (err) {
-        telemetryHelper.logSSOEndEvent(req)
         console.log('err', err)
         res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
       } else {
@@ -210,7 +212,7 @@ module.exports = {
         id: loginId,
         userId: loginId}
       telemetryHelper.logAPICallEvent(telemetryData)
-      console.log('check user exists', JSON.stringify(body), response.statusCode)
+      console.log('check user exists', response.statusCode)
       if (body.responseCode === 'OK') {
         callback(null, true)
       } else {
@@ -258,7 +260,6 @@ module.exports = {
         id: options.headers['x-consumer-id'],
         userId: options.headers['x-consumer-id']}
       telemetryHelper.logAPICallEvent(telemetryData)
-      console.log('create user', body)
       if (error || response.statusCode !== 200) {
         telemetryHelper.logAPIErrorEvent(telemetryData)
         var err = error || body

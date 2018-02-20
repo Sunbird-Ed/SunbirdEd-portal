@@ -16,6 +16,9 @@ const path = require('path')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
 module.exports = {
+  /**
+   * This function helps to get user spec
+   */
   getUserSpec: function (req) {
     var ua = parser(req.headers['user-agent'])
     return {
@@ -27,6 +30,9 @@ module.exports = {
     }
   },
 
+  /**
+   * this function helps to generate session start event
+   */
   logSessionStart: function (req, callback) {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
@@ -47,10 +53,14 @@ module.exports = {
     })
     return callback()
   },
+
+  /**
+   * this function helps to generate session end event
+   */
   logSessionEnd: function (req) {
     const edata = telemetry.endEventData('session')
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
-    var dims = _.clone(req.session.orgs)
+    var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     dims = dims ? _.concat(dims, channel) : channel
     telemetry.end({
@@ -59,6 +69,10 @@ module.exports = {
       tags: dims
     })
   },
+
+  /**
+   * This function helps to generate SSO start event
+   */
   logSSOStartEvent: function (req) {
     req.session.orgs = _.compact(req.session.orgs)
     var channel = req.session.rootOrghashTagId || md5('sunbird')
@@ -79,6 +93,10 @@ module.exports = {
       tags: dims
     })
   },
+
+  /**
+   * This function helps to generate SSO end event
+   */
   logSSOEndEvent: function (req) {
     console.log('logSSOEndEvent')
     const payload = jwt.decode(req.query['token'])
@@ -93,6 +111,10 @@ module.exports = {
       tags: dims
     })
   },
+
+  /**
+   * This function helps to get params data for log event
+   */
   getParamsData: function (options, statusCode, resp, uri) {
     const apiConfig = telemtryEventConfig.URL[uri]
 
@@ -109,6 +131,10 @@ module.exports = {
       {'req': options.body}
     ]
   },
+
+  /**
+   * This function helps to generate the api call event
+   */
   logAPICallEvent: function (req) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
 
@@ -137,6 +163,10 @@ module.exports = {
       tags: dims
     })
   },
+
+  /**
+   * This function helps to generate keyclock grant log event
+   */
   logGrantLogEvent: function (req) {
     const message = req.success ? 'Verified keyclock grant' : 'Keyclock grant failed'
     const error = req.success ? 'INFO' : 'ERROR'
@@ -162,6 +192,10 @@ module.exports = {
       tags: dims
     })
   },
+
+  /**
+   * This function helps to log API access event
+   */
   logAPIAccessEvent: function (req) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
 
@@ -175,7 +209,8 @@ module.exports = {
       object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
     }
 
-    var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) || md5('sunbird')
+    var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
+     req.channel || md5('sunbird')
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
@@ -189,6 +224,10 @@ module.exports = {
       actor: actor
     })
   },
+
+  /**
+   * This function helps to log api error event
+   */
   logAPIErrorEvent: function (req) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
 

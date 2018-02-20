@@ -103,7 +103,8 @@ let PERMISSIONS_HELPER = {
         'x-consumer-id': 'X-Consumer-ID',
         'content-type': 'application/json',
         accept: 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
 

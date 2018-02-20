@@ -97,7 +97,9 @@ module.exports = {
       resp: result,
       uri: 'tenant/info',
       type: type,
-      userId: userId}
+      userId: userId,
+      channel: envHelper.DEFAUULT_TENANT
+    }
     telemetryHelper.logAPIAccessEvent(telemetryData)
     res.status(200)
     res.send({

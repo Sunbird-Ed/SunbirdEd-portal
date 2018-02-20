@@ -220,7 +220,8 @@ telemetryService.prototype.getContextData = function (data) {
  */
 telemetryService.prototype.getActorData = function (userId, type) {
   if (!userId || !type) {
-    return 'Required params are missing'
+    console.log("Required params are missing for actor")
+    return;
   }
   return {
     id: userId,
@@ -236,7 +237,8 @@ telemetryService.prototype.getActorData = function (userId, type) {
  */
 telemetryService.prototype.pData = function (id, version, pid) {
   if (!id || !version) {
-    return 'Required params are missing'
+    console.log("Required params are missing for p data")
+    return
   }
   const pData = {
     id: id,
@@ -253,7 +255,8 @@ telemetryService.prototype.pData = function (id, version, pid) {
 telemetryService.prototype.getObjectData = function (data) {
   let obj = {}
   if (data && (!data.id || !data.type)) {
-    return 'Required params are missing'
+    console.log("Required params are missing for object data")
+    return
   }
   obj.id = data.id
   obj.type = data.type
