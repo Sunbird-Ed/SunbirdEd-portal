@@ -254,7 +254,8 @@ app.all('*', function (req, res) {
 keycloak.authenticated = function (request) {
   async.series({
     getPermissionData: function (callback) {
-      permissionsHelper.getPermissions(request, callback)
+      permissionsHelper.getPermissions(request)
+      callback()
     },
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
