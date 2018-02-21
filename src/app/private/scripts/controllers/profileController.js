@@ -45,6 +45,7 @@ angular.module('playerApp')
       profile.ischekedCurrent = true
       profile.disabledCurrent = false
       profile.disabledPermanent = false
+      profile.isSameAddressTypeExist = false
 
       var today = new Date()
 
@@ -910,6 +911,13 @@ angular.module('playerApp')
           }
         }
         return filedKey
+      }
+      profile.checkAddress = function (value) {
+        if (profile.address.length > 1 && profile.address[0].addType === profile.address[1].addType) {
+          profile.isSameAddressTypeExist = true
+        } else {
+          profile.isSameAddressTypeExist = false
+        }
       }
     }
   ])
