@@ -4,58 +4,58 @@ const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const envHelper = require('./environmentVariablesHelper.js')
-const appId = envHelper.APPID
 const contentURL = envHelper.CONTENT_URL
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
+const Telemetry = require('sb_telemetry_util')
+const telemetry = new Telemetry()
 
 module.exports = {
-  logSessionStart: function (req, callback) {
+  getUserSpec: function (req) {
     var ua = parser(req.headers['user-agent'])
+    return {
+      'agent': ua['browser']['name'],
+      'ver': ua['browser']['version'],
+      'system': ua['os']['name'],
+      'platform': ua['engine']['name'],
+      'raw': ua['ua']
+    }
+  },
+
+  logSessionStart: function (req, callback) {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
     var channel = req.session.rootOrghashTagId
     var dims = _.clone(req.session.orgs)
-    dims = _.concat(dims, channel)
-    var event = {
-      'ver': '2.1',
-      'uid': req.kauth.grant.access_token.content.sub,
-      'did': '',
-      'edata': {
-        'eks': {
-          'authprovider': 'keycloak',
-          'uaspec': {
-            'agent': ua['browser']['name'],
-            'ver': ua['browser']['version'],
-            'system': ua['os']['name'],
-            'platform': ua['engine']['name'],
-            'raw': ua['ua']
-          }
-        }
-      },
-      'context': {
-        'sid': req.sessionID
-      },
-      'eid': 'CP_SESSION_START',
-      'channel': channel,
-      'cdata': [{
-        'id': '',
-        'type': ''
-      }],
-      'etags': {
-        'app': [],
-        'partner': [],
-        'dims': dims
-      },
-      'pdata': { 'id': appId, 'ver': '1.0' },
-      'ets': new Date().getTime()
-    }
-    event.mid = 'SB:' + md5(JSON.stringify(event))
-    this.sendTelemetry(req, [event], function (err, status) {
-      callback(err, status)
+    dims = dims ? _.concat(dims, channel) : channel
+
+    const edata = telemetry.startEventData('session')
+    edata.uaspec = this.getUserSpec(req)
+    const context = telemetry.getContextData({ channel: channel, env: 'user' })
+    context.sid = req.sessionID
+    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    telemetry.start({
+      edata: edata,
+      context: context,
+      actor: actor,
+      tags: dims
+    })
+    return callback()
+  },
+  logSessionEnd: function (req) {
+    const edata = telemetry.endEventData('session')
+    const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    var dims = _.clone(req.session.orgs)
+    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    dims = dims ? _.concat(dims, channel) : channel
+    telemetry.end({
+      edata: edata,
+      actor: actor,
+      tags: dims
     })
   },
+
   logSessionEvents: function (req, res) {
     if (req.body && req.body.event) {
       req.session['sessionEvents'] = req.session['sessionEvents'] || []

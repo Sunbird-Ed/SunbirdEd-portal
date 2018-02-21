@@ -33,6 +33,9 @@ const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
+const Telemetry = require('sb_telemetry_util')
+const telemetry = new Telemetry()
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -267,16 +270,14 @@ keycloak.authenticated = function (request) {
 }
 
 keycloak.deauthenticated = function (request) {
+  console.log('de authenticated')
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
-      if (err) {} // nothing to do
-      // remove session data
-      delete request.session.sessionEvents
-    })
+    telemetryHelper.logSessionEnd(request)
+    delete request.session.sessionEvents
   }
 }
 
@@ -295,3 +296,33 @@ resourcesBundlesHelper.buildResources(function (err, result) {
 exports.close = function () {
   portal.server.close()
 }
+
+// Telemetry initialization
+const telemetryConfig = {
+  pdata: {id: appId, ver: telemtryEventConfig.version},
+  method: 'POST',
+  batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
+  endpoint: telemtryEventConfig.endpoint,
+  host: contentURL,
+  authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+}
+
+telemetry.init(telemetryConfig)
+
+// Handle Telemetry data on server close
+function exitHandler (options, err) {
+  console.log('Exit', options, err)
+  telemetry.syncOnExit(function (err, res) {
+    if (err) {
+      process.exit()
+    } else {
+      process.exit()
+    }
+  })
+}
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler)
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler)
