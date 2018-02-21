@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
+const learnerServiceBaseUrl = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '30mb'
 
 module.exports = function (app) {
@@ -54,6 +55,15 @@ module.exports = function (app) {
         return bodyContent
       }
     }))
+
+  app.use('/action/data/v1/page/assemble', proxy(learnerServiceBaseUrl, {
+    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('action/', '/')
+      return require('url').parse(learnerServiceBaseUrl + originalUrl).path
+    }
+  }))
 
   app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
     preserveHostHdr: true,
