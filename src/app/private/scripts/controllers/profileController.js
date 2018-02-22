@@ -46,7 +46,7 @@ angular.module('playerApp')
       profile.disabledCurrent = false
       profile.disabledPermanent = false
       profile.isSameAddressTypeExist = false
-
+      profile.fieldsToBeValidate = []
       var today = new Date()
 
       var orgIds = []
@@ -288,7 +288,7 @@ angular.module('playerApp')
         return []
       }
       profile.EditBasicProfile = function () {
-        var fieldsToBeValidate = profile.getFieldsToValidate('#basicInfoForm')
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('#basicInfoForm')
         var isValid
         var dob = $('#editDob').calendar('get date')
         var basicInfo = {
@@ -301,8 +301,8 @@ angular.module('playerApp')
           grade: profile.user.grade,
           location: profile.user.location
         }
-        if (fieldsToBeValidate.length > 0) {
-          isValid = formValidation.validate('#basicInfoForm', fieldsToBeValidate)
+        if (profile.fieldsToBeValidate.length) {
+          isValid = formValidation.validate('#basicInfoForm', profile.fieldsToBeValidate)
           if (isValid === true) {
             if (profile.user.phone !== profile.basicProfile.phone) {
               basicInfo.phone = profile.user.phone
@@ -336,14 +336,14 @@ angular.module('playerApp')
       }
       // CURD address
       profile.addAddress = function (newAddress) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('#addressForm')
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('#addressForm')
         var isValid
         var req
         if (!newAddress.addressLine1 || !newAddress.city) {
           toasterService.error($rootScope.messages.fmsg.m0076)
         } else {
-          if (fieldsToBeValidate.length > 0) {
-            isValid = formValidation.validate('#addressForm', fieldsToBeValidate)
+          if (profile.fieldsToBeValidate.length) {
+            isValid = formValidation.validate('#addressForm', profile.fieldsToBeValidate)
             if (isValid === true) {
               profile.address.push(newAddress)
               req = { address: profile.address }
@@ -367,8 +367,8 @@ angular.module('playerApp')
       }
 
       profile.editAddress = function (address) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('#addressForm')
-        var isValid = formValidation.validate('.addressForm', fieldsToBeValidate)
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('#addressForm')
+        var isValid = formValidation.validate('.addressForm', profile.fieldsToBeValidate)
         if (isValid === true || !isValid.includes(false)) {
           var req = { address: address }
           profile.updateUserInfo(
@@ -399,15 +399,15 @@ angular.module('playerApp')
 
       // CURD education
       profile.addEducation = function (edu) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('.educationForm')
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('.educationForm')
         var newEducation = angular.copy(edu)
         var isValid
         var req
         if (!edu.degree || !edu.name) {
           toasterService.error($rootScope.messages.fmsg.m0076)
         } else {
-          if (fieldsToBeValidate.length > 0) {
-            isValid = formValidation.validate('.educationForm', fieldsToBeValidate)
+          if (profile.fieldsToBeValidate.length) {
+            isValid = formValidation.validate('.educationForm', profile.fieldsToBeValidate)
             if (isValid === true) {
               newEducation.percentage = newEducation.percentage
                 ? parseFloat(newEducation.percentage)
@@ -443,8 +443,8 @@ angular.module('playerApp')
       }
 
       profile.editEducation = function (education) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('.educationForm')
-        var isValid = formValidation.validate('.educationForm', fieldsToBeValidate)
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('.educationForm')
+        var isValid = formValidation.validate('.educationForm', profile.fieldsToBeValidate)
         if (isValid === true || !isValid.includes(false)) {
           education.forEach(function (edu) {
             edu.percentage = edu.percentage ? parseFloat(edu.percentage) : 0
@@ -478,14 +478,14 @@ angular.module('playerApp')
 
       // edit experience
       profile.addExperience = function (newExperience) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('.jobProfileForm')
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('.jobProfileForm')
         var isValid
         var req
         if (!newExperience.jobName || !newExperience.orgName) {
           toasterService.error($rootScope.messages.fmsg.m0076)
         } else {
-          if (fieldsToBeValidate.length > 0) {
-            isValid = formValidation.validate('.jobProfileForm', fieldsToBeValidate)
+          if (profile.fieldsToBeValidate.length) {
+            isValid = formValidation.validate('.jobProfileForm', profile.fieldsToBeValidate)
             if (isValid === true) {
               var startDate = $('#rangestartAdd').calendar('get date')
               var endDate = $('#rangeendAdd').calendar('get date')
@@ -521,8 +521,8 @@ angular.module('playerApp')
       }
 
       profile.editExperience = function (experiences) {
-        var fieldsToBeValidate = profile.getFieldsToValidate('.jobProfileForm')
-        var isValid = formValidation.validate('.jobProfileForm', fieldsToBeValidate)
+        profile.fieldsToBeValidate = profile.getFieldsToValidate('.jobProfileForm')
+        var isValid = formValidation.validate('.jobProfileForm', profile.fieldsToBeValidate)
         if (isValid === true || !isValid.includes(false)) {
           if (experiences.length) {
             experiences.forEach(function (element, index) {

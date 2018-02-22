@@ -242,6 +242,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should edit basic profile', function (done) {
     spyOn(profileCtrl, 'EditBasicProfile').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'webLink').and.callThrough()
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
@@ -255,6 +256,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should edit user phone number ', function (done) {
     spyOn(profileCtrl, 'EditBasicProfile').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'webLink').and.callThrough()
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
@@ -267,6 +269,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should edit social media links  phone number ', function (done) {
     spyOn(profileCtrl, 'EditBasicProfile').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'webLink').and.callThrough()
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
@@ -280,25 +283,25 @@ describe('Controller: ProfileController', function () {
   })
   it('should not update basic info ', function (done) {
     spyOn(profileCtrl, 'EditBasicProfile').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'webLink').and.callThrough()
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-
+    profileCtrl.user = {firstName: ''}
     profileCtrl.EditBasicProfile()
     scope.$apply()
-
     expect(profileCtrl.updateUserInfo).not.toHaveBeenCalled()
     done()
   })
   it('should add a new address info ', function (done) {
     spyOn(profileCtrl, 'addAddress').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var address = {}
+    var address = {addressLine1: 'test', city: 'test'}
     profileCtrl.address = []
     profileCtrl.addAddress(address)
     scope.$apply()
-
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
     done()
   })
@@ -372,9 +375,10 @@ describe('Controller: ProfileController', function () {
   // education
   it('should add a new education info ', function (done) {
     spyOn(profileCtrl, 'addEducation').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var education = {}
+    var education = {degree: 'test', name: 'test'}
     profileCtrl.education = []
     profileCtrl.addEducation(education)
     scope.$apply()
@@ -431,9 +435,10 @@ describe('Controller: ProfileController', function () {
   // experience
   it('should add a new experience info ', function (done) {
     spyOn(profileCtrl, 'addExperience').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(true)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var experience = {}
+    var experience = {jobName: 'test', orgName: 'test'}
     profileCtrl.experience = []
     profileCtrl.addExperience(experience)
     scope.$apply()
