@@ -5,7 +5,8 @@ const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
 const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
-const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKE
+const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
+const telemetryHelper = require('./telemetryHelper')
 
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
@@ -40,26 +41,33 @@ let PERMISSIONS_HELPER = {
     'type/update': ['SYSTEM_ADMINISTRATION']
   },
 
-  getPermissions: function () {
+  getPermissions: function (reqObj) {
     var options = {
       method: 'GET',
-      url: learnerURL + 'role/read',
+      url: learnerURL + 'data/v1/role/read',
       headers: {
         'x-device-id': 'middleware',
         'x-msgid': uuidv1(),
-        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'x-consumer-id': '7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8',
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
-        accept: 'application/json'
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
+    const telemetryData = {reqObj: reqObj,
+      options: options,
+      uri: 'data/v1/role/read',
+      userId: reqObj.kauth.grant.access_token.content.sub}
+    telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      if (!error && body) {
+      telemetryData.statusCode = response.statusCode
+      if (!error && body && body.responseCode === 'OK') {
         body = JSON.parse(body)
-        if (body.responseCode === 'OK') {
-          module.exports.setRoleUrls(body.result)
-        }
+        module.exports.setRoleUrls(body.result)
+      } else {
+        telemetryData.resp = body
+        telemetryHelper.logAPIErrorEvent(telemetryData)
       }
     })
   },
@@ -85,24 +93,31 @@ let PERMISSIONS_HELPER = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,
       headers: {
-        'x-authenticated-userid': userId,
-        'x-device-id': 'middleware',
         'x-msgid': uuidv1(),
-        ts: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-        'x-consumer-id': 'X-Consumer-ID',
+        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
-        accept: 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
+    const telemetryData = {reqObj: reqObj,
+      options: options,
+      uri: 'user/v1/read',
+      type: 'user',
+      id: userId,
+      userId: userId}
+    telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
+      telemetryData.statusCode = response.statusCode
       reqObj.session.roles = []
       reqObj.session.orgs = []
+
       if (!error && body) {
         try {
-          body = JSON.parse(body)
           if (body.responseCode === 'OK') {
+            body = JSON.parse(body)
             reqObj.session.userId = body.result.response.identifier
             reqObj.session.roles = body.result.response.roles
             if (body.result.response.organisations) {
@@ -121,10 +136,13 @@ let PERMISSIONS_HELPER = {
             }
           }
         } catch (e) {
+          telemetryData.resp = body
+          telemetryHelper.logAPIErrorEvent(telemetryData)
           console.log(e)
         }
       }
       reqObj.session.save()
+
       callback(error, body)
     })
   },

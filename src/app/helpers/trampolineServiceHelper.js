@@ -51,6 +51,11 @@ module.exports = {
   handleRequest: function (req, res) {
     let self = this
     async.series({
+      logSSOStartEvent: function (callback) {
+        console.log('SSO start event')
+        telemetryHelper.logSSOStartEvent(req)
+        callback()
+      },
       verifySignature: function (callback) {
         console.log('echoAPI : ' + echoAPI)
         var options = {
@@ -62,9 +67,19 @@ module.exports = {
             authorization: 'Bearer ' + req.query['token']
           }
         }
+
+        const telemetryData = {reqObj: req,
+          options: options,
+          uri: 'test',
+          userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
+        telemetryHelper.logAPICallEvent(telemetryData)
+
         request(options, function (error, response, body) {
+          telemetryData.statusCode = response.statusCode
           self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
           if (error) {
+            telemetryData.resp = body
+            telemetryHelper.logAPIErrorEvent(telemetryData)
             console.log('echo API error', error)
             callback(error, response)
           } else if (body === '/test') {
@@ -72,6 +87,8 @@ module.exports = {
             console.log('echo API succesful')
             callback(null, response)
           } else {
+            telemetryData.resp = body
+            telemetryHelper.logAPIErrorEvent(telemetryData)
             console.log('echo returned invalid response', body)
             callback(body, response)
           }
@@ -94,12 +111,9 @@ module.exports = {
       },
       verifyUser: function (callback) {
         // check user exist
-        self.checkUserExists(self.payload, function (err, status) {
+        self.checkUserExists(req, self.payload, function (err, status) {
           self.errorMsg = 'Failed to create/authenticate user. Please try again with valid user data'
-          if (err) {
-            console.log('get user profile API error', err)
-            callback(err, null)
-          } else if (status) {
+          if (!err) {
             self.errorMsg = undefined
             console.log('user already exists')
             callback(null, status)
@@ -107,7 +121,7 @@ module.exports = {
             // create User
             console.log('create User Flag', createUserFlag, 'type of', typeof createUserFlag)
             if (createUserFlag === 'true') {
-              self.createUser(self.payload, function (error, status) {
+              self.createUser(req, self.payload, function (error, status) {
                 if (error) {
                   console.log('create user failed', error)
                   callback(error, null)
@@ -140,16 +154,26 @@ module.exports = {
               callback(err, null)
               return
             };
+            telemetryHelper.logGrantLogEvent({
+              reqObj: req,
+              userId: userName,
+              success: grant})
             self.errorMsg = undefined
             callback(null, grant)
           },
           function (err) {
-            console.log('grant failed', err)
+            telemetryHelper.logGrantLogEvent({
+              reqObj: req,
+              userId: userName,
+              err: err})
+            console.log('grant failed', err, userName)
             callback(err, null)
           })
       }
     },
     function (err, results) {
+      telemetryHelper.logSSOEndEvent(req)
+      console.log('logSSOEndEvent')
       if (err) {
         console.log('err', err)
         res.redirect((req.get('X-Forwarded-Protocol') || req.protocol) + '://' + req.get('host') + '?error=' + Buffer.from(self.errorMsg).toString('base64'))
@@ -163,7 +187,7 @@ module.exports = {
       }
     })
   },
-  checkUserExists: function (payload, callback) {
+  checkUserExists: function (req, payload, callback) {
     var loginId = payload['sub'] + (payload['iss'] ? '@' + payload['iss'] : '')
     var options = {
       method: 'POST',
@@ -181,19 +205,28 @@ module.exports = {
       json: true
     }
 
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'user/v1/profile/read',
+      type: 'user',
+      id: loginId,
+      userId: loginId}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
-      console.log('check user exists', JSON.stringify(body))
-      if (body.responseCode === 'RESOURCE_NOT_FOUND') {
-        callback(null, false)
-      } else if (body.responseCode === 'OK') {
+      telemetryData.statusCode = response.statusCode
+      console.log('check user exists', response.statusCode)
+      if (body.responseCode === 'OK') {
         callback(null, true)
-      } else if (error || response.statusCode !== 200) {
-        var err = error || body
+      } else {
+        telemetryData.resp = body
+        telemetryHelper.logAPIErrorEvent(telemetryData)
+        var err = error || body || true
         callback(err, false)
       }
     })
   },
-  createUser: function (payload, callback) {
+  createUser: function (req, payload, callback) {
     var options = {
       method: 'POST',
       url: learnerURL + 'user/v1/create',
@@ -221,14 +254,26 @@ module.exports = {
       },
       json: true
     }
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'user/v1/create',
+      type: 'user',
+      id: options.headers['x-consumer-id'],
+      userId: options.headers['x-consumer-id']}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
-      console.log('create user', body)
+      telemetryData.statusCode = response.statusCode
       if (error || response.statusCode !== 200) {
+        telemetryData.resp = body
+        telemetryHelper.logAPIErrorEvent(telemetryData)
         var err = error || body
         callback(err, null)
       } else if (body.responseCode === 'OK') {
         callback(null, true)
       } else {
+        telemetryData.resp = body
+        telemetryHelper.logAPIErrorEvent(telemetryData)
         callback(body.params.err, null)
       }
     })
@@ -238,6 +283,7 @@ module.exports = {
 // Method called after successful authentication and it will log the telemetry
 // for CP_SESSION_START
 keycloak.authenticated = function (request) {
+  permissionsHelper.getPermissions(request)
   async.series({
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
@@ -260,10 +306,7 @@ keycloak.deauthenticated = function (request) {
   delete request.session['rootOrgId']
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
-      if (err) {} // nothing to do on error
-      // remove session data
-      delete request.session.sessionEvents
-    })
+    telemetryHelper.logSessionEnd(request)
+    delete request.session.sessionEvents
   }
 }

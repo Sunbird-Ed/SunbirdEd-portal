@@ -234,6 +234,7 @@ angular.module('playerApp')
             }
             admin.bulkUploadStatus.failure = res.result.response[0].failureResult
             admin.bulkUploadStatus.processId = res.result.response[0].processId
+            admin.bulkUploadStatus.objectType = res.result.response[0].objectType
             toasterService.success($rootScope.messages.smsg.m0032)
           } else {
             toasterService.error($rootScope.messages.fmsg.m0051)

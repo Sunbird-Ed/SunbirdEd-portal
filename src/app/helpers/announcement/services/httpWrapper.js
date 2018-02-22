@@ -26,7 +26,9 @@ class HttpWrapper {
 
         webService(options, (error, response, body) => {
           if (error || response.statusCode >= 400) {
-            reject(new AppError({message: 'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}))
+            const msg = response && response.params ? response.params.errmsg : 'Internal Server Error'
+            const statusCode = response.statusCode ? response.statusCode : HttpStatus.INTERNAL_SERVER_ERROR
+            reject(new AppError({message: msg, status: statusCode}))
           } else {
             resolve({ response, body })
           }
