@@ -33,6 +33,9 @@ const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
+const Telemetry = require('sb_telemetry_util')
+const telemetry = new Telemetry()
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -121,6 +124,9 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
+// Generate telemetry fot public service
+app.all('/public/service/*', telemetryHelper.generateTelemetryForProxy)
+
 app.all('/public/service/v1/learner/*', proxy(learnerURL, {
   proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
   proxyReqPathResolver: function (req) {
@@ -141,6 +147,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
     }
   }
 }))
+
+// Generate telemetry fot public service
+app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
 
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
@@ -250,6 +259,10 @@ app.all('*', function (req, res) {
  */
 keycloak.authenticated = function (request) {
   async.series({
+    getPermissionData: function (callback) {
+      permissionsHelper.getPermissions(request)
+      callback()
+    },
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
     },
@@ -272,11 +285,8 @@ keycloak.deauthenticated = function (request) {
   delete request.session['orgs']
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
-      if (err) {} // nothing to do
-      // remove session data
-      delete request.session.sessionEvents
-    })
+    telemetryHelper.logSessionEnd(request)
+    delete request.session.sessionEvents
   }
 }
 
@@ -295,3 +305,33 @@ resourcesBundlesHelper.buildResources(function (err, result) {
 exports.close = function () {
   portal.server.close()
 }
+
+// Telemetry initialization
+const telemetryConfig = {
+  pdata: {id: appId, ver: telemtryEventConfig.pdata.ver},
+  method: 'POST',
+  batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
+  endpoint: telemtryEventConfig.endpoint,
+  host: contentURL,
+  authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+}
+
+telemetry.init(telemetryConfig)
+
+// Handle Telemetry data on server close
+function exitHandler (options, err) {
+  console.log('Exit', options, err)
+  telemetry.syncOnExit(function (err, res) {
+    if (err) {
+      process.exit()
+    } else {
+      process.exit()
+    }
+  })
+}
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler)
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler)
