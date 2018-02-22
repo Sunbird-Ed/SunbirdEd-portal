@@ -44,6 +44,7 @@ module.exports = {
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
+    context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
     telemetry.start({
       edata: edata,
@@ -84,6 +85,7 @@ module.exports = {
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: { id: 'sso', type: 'sso' } })
     context.sid = req.sessionID
+    context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(payload.sub, 'user')
     console.log('logSSOStartEvent')
     telemetry.start({
@@ -157,6 +159,7 @@ module.exports = {
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
+    context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.userId, 'user')
     console.log('logAPICallEvent')
     telemetry.log({
@@ -185,6 +188,7 @@ module.exports = {
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
+    context.rollup = telemetry.getRollUpData(dims)
     const object = telemetry.getObjectData({ id: req.userId, type: 'user' })
     const actor = telemetry.getActorData(req.userId, 'user')
     console.log('logAPICallEvent')
@@ -215,17 +219,22 @@ module.exports = {
 
     var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
       req.channel || md5('sunbird')
+
+    var dims = _.clone(req.reqObj.session.orgs) || []
+    dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
+    context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.userId, req.type)
     console.log('logAPIAccessEvent')
     telemetry.log({
       edata: edata,
       context: context,
       object: object,
-      actor: actor
+      actor: actor,
+      tags: dims
     })
   },
 
@@ -251,6 +260,7 @@ module.exports = {
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
+    context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.userId, 'user')
     console.log('logAPIErrorEvent')
     telemetry.log({
@@ -348,15 +358,20 @@ module.exports = {
     const edata = telemetry.logEventData('api_access', 'INFO', '', params)
 
     var channel = (req.session && req.session.rootOrghashTagId) || md5('sunbird')
+    var dims = _.clone(req.session.orgs)
+    dims = dims ? _.concat(dims, channel) : channel
+
     const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
     if (req.session && req.session.sessionID) {
       context.sid = req.session.sessionID
     }
+    context.rollup = telemetry.getRollUpData(dims)
     console.log('generateTelemetryForProxy')
     telemetry.log({
       edata: edata,
       context: context,
-      actor: module.exports.getTelemetryActorData(req)
+      actor: module.exports.getTelemetryActorData(req),
+      tags: dims
     })
     next()
   }

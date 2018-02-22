@@ -9,7 +9,7 @@
   "default_did": "sunbird-portal",
   "env": "portal-backend",
   "URL": {
-    "role/read": {
+    "data/v1/role/read": {
       "title": "Read role",
       "category": "readrole",
       "url": "data/v1/role/read",

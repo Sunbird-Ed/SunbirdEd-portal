@@ -56,7 +56,7 @@ let PERMISSIONS_HELPER = {
     }
     const telemetryData = {reqObj: reqObj,
       options: options,
-      uri: 'role/read',
+      uri: 'data/v1/role/read',
       userId: reqObj.kauth.grant.access_token.content.sub}
     telemetryHelper.logAPICallEvent(telemetryData)
 

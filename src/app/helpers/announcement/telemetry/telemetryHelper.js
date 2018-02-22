@@ -14,10 +14,12 @@ module.exports = {
    */
   getTelemetryContextData: function (req) {
     const url = req.route.path
+    const tags = this.getTags(req)
     var context = {
       channel: req.session && req.session.rootOrghashTagId,
       env: telemtryEventConfig[url] && telemtryEventConfig[url].env,
-      sid: req.sessionID
+      sid: req.sessionID,
+      rollup: telemetry.getRollUpData(tags)
     }
     return context
   },
