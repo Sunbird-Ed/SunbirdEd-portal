@@ -61,9 +61,9 @@ let PERMISSIONS_HELPER = {
     telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      body = JSON.parse(body)
       telemetryData.statusCode = response.statusCode
       if (!error && body && body.responseCode === 'OK') {
+        body = JSON.parse(body)
         module.exports.setRoleUrls(body.result)
       } else {
         telemetryData.resp = body
@@ -113,11 +113,11 @@ let PERMISSIONS_HELPER = {
       telemetryData.statusCode = response.statusCode
       reqObj.session.roles = []
       reqObj.session.orgs = []
-      body = JSON.parse(body)
 
       if (!error && body) {
         try {
           if (body.responseCode === 'OK') {
+            body = JSON.parse(body)
             reqObj.session.userId = body.result.response.identifier
             reqObj.session.roles = body.result.response.roles
             if (body.result.response.organisations) {
