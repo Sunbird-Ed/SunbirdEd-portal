@@ -330,6 +330,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should not validate new address values ', function (done) {
     spyOn(profileCtrl, 'addAddress').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
     var address = []
@@ -388,6 +389,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should not validate new education values ', function (done) {
     spyOn(profileCtrl, 'addEducation').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
     var education = {}
@@ -448,6 +450,7 @@ describe('Controller: ProfileController', function () {
   })
   it('should not validate new experience values ', function (done) {
     spyOn(profileCtrl, 'addExperience').and.callThrough()
+    spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
     var experience = {}
