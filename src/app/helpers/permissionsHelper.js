@@ -54,18 +54,19 @@ let PERMISSIONS_HELPER = {
         'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
+    const telemetryData = {reqObj: reqObj,
+      options: options,
+      uri: 'role/read',
+      userId: reqObj.kauth.grant.access_token.content.sub}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
       body = JSON.parse(body)
-      const telemetryData = {reqObj: reqObj,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'role/read',
-        userId: reqObj.kauth.grant.access_token.content.sub}
-      telemetryHelper.logAPICallEvent(telemetryData)
+      telemetryData.statusCode = response.statusCode
       if (!error && body && body.responseCode === 'OK') {
         module.exports.setRoleUrls(body.result)
       } else {
+        telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
       }
     })
@@ -100,20 +101,19 @@ let PERMISSIONS_HELPER = {
         'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
       }
     }
+    const telemetryData = {reqObj: reqObj,
+      options: options,
+      uri: 'user/v1/read',
+      type: 'user',
+      id: userId,
+      userId: userId}
+    telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
+      telemetryData.statusCode = response.statusCode
       reqObj.session.roles = []
       reqObj.session.orgs = []
       body = JSON.parse(body)
-      const telemetryData = {reqObj: reqObj,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'user/v1/read',
-        type: 'user',
-        id: userId,
-        userId: userId}
-      telemetryHelper.logAPICallEvent(telemetryData)
 
       if (!error && body) {
         try {
@@ -136,6 +136,7 @@ let PERMISSIONS_HELPER = {
             }
           }
         } catch (e) {
+          telemetryData.resp = body
           telemetryHelper.logAPIErrorEvent(telemetryData)
           console.log(e)
         }

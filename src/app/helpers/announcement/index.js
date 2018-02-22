@@ -189,7 +189,6 @@ function storeTelemetryData(req, res, next) {
         startTime: new Date(),
         method: req.method
     }
-    console.log("req", rspObj)
     const telemetryData = {
         params: telemetry.getParamsDataForLogEvent(rspObj),
         context: telemetry.getTelemetryContextData(req),

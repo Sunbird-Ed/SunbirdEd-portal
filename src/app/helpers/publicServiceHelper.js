@@ -24,20 +24,21 @@ module.exports = {
       },
       json: true
     }
+    // Add telemetry log event
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'org/v1/search',
+      userId: 'Public'}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
-      // Add telemetry log event
-      const telemetryData = {reqObj: req,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'org/v1/search',
-        userId: 'Public'}
-      telemetryHelper.logAPICallEvent(telemetryData)
+      telemetryData.statusCode = response.statusCode
       if (!error && body && body.responseCode === 'OK') {
         body.result.response.content = _.map(body.result.response.content,
           _.partial(_.pick, _, ['orgName', 'contactDetail', 'slug']))
       } else {
         console.log('err', body)
+        telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
         if (response && response.statusCode) {
           res.status(response.statusCode)

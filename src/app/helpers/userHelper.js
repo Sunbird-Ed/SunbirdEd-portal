@@ -32,24 +32,25 @@ module.exports = {
       body: data,
       json: true
     }
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'user/v1/update/logintime',
+      type: 'user',
+      id: data.request.userId,
+      userId: data.request.userId}
+    telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      const telemetryData = {reqObj: req,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'user/v1/update/logintime',
-        type: 'user',
-        id: data.request.userId,
-        userId: data.request.userId}
-      telemetryHelper.logAPICallEvent(telemetryData)
+      telemetryData.statusCode = response.statusCode
       if (callback) {
         if (error) {
+          telemetryData.resp = body
           telemetryHelper.logAPIErrorEvent(telemetryData)
           console.log('Update login time failed due to', error)
           callback(null, true)
           console.log('Update login time failed due to', body.params.err)
         } else if (body && body.params && body.params.err) {
+          telemetryData.resp = body
           telemetryHelper.logAPIErrorEvent(telemetryData)
           callback(null, true)
         } else {

@@ -67,16 +67,18 @@ module.exports = {
             authorization: 'Bearer ' + req.query['token']
           }
         }
+
+        const telemetryData = {reqObj: req,
+          options: options,
+          uri: 'test',
+          userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
+        telemetryHelper.logAPICallEvent(telemetryData)
+
         request(options, function (error, response, body) {
-          const telemetryData = {reqObj: req,
-            options: options,
-            statusCode: response.statusCode,
-            resp: body,
-            uri: 'test',
-            userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
-          telemetryHelper.logAPICallEvent(telemetryData)
+          telemetryData.statusCode = response.statusCode
           self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
           if (error) {
+            telemetryData.resp = body
             telemetryHelper.logAPIErrorEvent(telemetryData)
             console.log('echo API error', error)
             callback(error, response)
@@ -85,6 +87,7 @@ module.exports = {
             console.log('echo API succesful')
             callback(null, response)
           } else {
+            telemetryData.resp = body
             telemetryHelper.logAPIErrorEvent(telemetryData)
             console.log('echo returned invalid response', body)
             callback(body, response)
@@ -202,20 +205,21 @@ module.exports = {
       json: true
     }
 
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'user/v1/profile/read',
+      type: 'user',
+      id: loginId,
+      userId: loginId}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
-      const telemetryData = {reqObj: req,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'user/v1/profile/read',
-        type: 'user',
-        id: loginId,
-        userId: loginId}
-      telemetryHelper.logAPICallEvent(telemetryData)
+      telemetryData.statusCode = response.statusCode
       console.log('check user exists', response.statusCode)
       if (body.responseCode === 'OK') {
         callback(null, true)
       } else {
+        telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
         var err = error || body || true
         callback(err, false)
@@ -250,23 +254,25 @@ module.exports = {
       },
       json: true
     }
+    const telemetryData = {reqObj: req,
+      options: options,
+      uri: 'user/v1/create',
+      type: 'user',
+      id: options.headers['x-consumer-id'],
+      userId: options.headers['x-consumer-id']}
+    telemetryHelper.logAPICallEvent(telemetryData)
+
     request(options, function (error, response, body) {
-      const telemetryData = {reqObj: req,
-        options: options,
-        statusCode: response.statusCode,
-        resp: body,
-        uri: 'user/v1/create',
-        type: 'user',
-        id: options.headers['x-consumer-id'],
-        userId: options.headers['x-consumer-id']}
-      telemetryHelper.logAPICallEvent(telemetryData)
+      telemetryData.statusCode = response.statusCode
       if (error || response.statusCode !== 200) {
+        telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
         var err = error || body
         callback(err, null)
       } else if (body.responseCode === 'OK') {
         callback(null, true)
       } else {
+        telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
         callback(body.params.err, null)
       }

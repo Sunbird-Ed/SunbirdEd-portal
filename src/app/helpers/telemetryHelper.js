@@ -117,19 +117,23 @@ module.exports = {
    */
   getParamsData: function (options, statusCode, resp, uri) {
     const apiConfig = telemtryEventConfig.URL[uri]
-
-    return [
-      { 'rid': resp.id },
+    let params = [
       { 'title': apiConfig && apiConfig.title },
       { 'category': apiConfig && apiConfig.category },
       { 'url': apiConfig && apiConfig.url },
-      { 'size': resp.toString().length },
       { 'duration': Date.now() - new Date(options.headers.ts) },
       { 'status': statusCode },
       { 'protocol': 'https' },
       { 'method': options.method },
       { 'req': options.body }
     ]
+    if (resp) {
+      params.push(
+        { rid: resp.id },
+        { size: resp.toString().length }
+      )
+    }
+    return params
   },
 
   /**

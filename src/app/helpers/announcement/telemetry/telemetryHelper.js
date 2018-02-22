@@ -111,7 +111,6 @@ module.exports = {
     if (!data) {
       return []
     }
-    console.log('req.path', data.path)
     const url = data.path && data.path.split('/:')[0]
     const params = [
       { 'ts': data.startTime },
