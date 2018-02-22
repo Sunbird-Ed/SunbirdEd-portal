@@ -82,7 +82,7 @@ module.exports = {
 
     const edata = telemetry.startEventData('sso')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: {id: 'sso', type: 'sso'} })
+    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: { id: 'sso', type: 'sso' } })
     context.sid = req.sessionID
     const actor = telemetry.getActorData(payload.sub, 'user')
     console.log('logSSOStartEvent')
@@ -119,16 +119,16 @@ module.exports = {
     const apiConfig = telemtryEventConfig.URL[uri]
 
     return [
-      {'rid': resp.id},
-      {'title': apiConfig && apiConfig.title},
-      {'category': apiConfig && apiConfig.category},
-      {'url': apiConfig && apiConfig.url},
-      {'size': resp.toString().length},
-      {'duration': Date.now() - new Date(options.headers.ts)},
-      {'status': statusCode},
-      {'protocol': 'https'},
-      {'method': options.method},
-      {'req': options.body}
+      { 'rid': resp.id },
+      { 'title': apiConfig && apiConfig.title },
+      { 'category': apiConfig && apiConfig.category },
+      { 'url': apiConfig && apiConfig.url },
+      { 'size': resp.toString().length },
+      { 'duration': Date.now() - new Date(options.headers.ts) },
+      { 'status': statusCode },
+      { 'protocol': 'https' },
+      { 'method': options.method },
+      { 'req': options.body }
     ]
   },
 
@@ -142,7 +142,7 @@ module.exports = {
     const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
     if (req.id && req.type) {
-      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+      object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
@@ -181,7 +181,7 @@ module.exports = {
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
     }
-    const object = telemetry.getObjectData({id: req.userId, type: 'user'})
+    const object = telemetry.getObjectData({ id: req.userId, type: 'user' })
     const actor = telemetry.getActorData(req.userId, 'user')
     console.log('logAPICallEvent')
     telemetry.log({
@@ -206,11 +206,11 @@ module.exports = {
     }
     const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, params)
     if (req.id && req.type) {
-      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+      object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
 
     var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
-     req.channel || md5('sunbird')
+      req.channel || md5('sunbird')
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
       context.sid = req.reqObj.sessionID
@@ -236,7 +236,7 @@ module.exports = {
     const errCode = (req.resp && req.resp.responseCode) || 'SERVER_ERROR'
     const edata = telemetry.errorEventData(err, errCode, req.resp)
     if (req.id && req.type) {
-      object = telemetry.getObjectData({id: req.id, type: req.type, ver: req.version, rollup: req.rollup})
+      object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
@@ -274,11 +274,11 @@ module.exports = {
   prepareTelemetryRequestBody: function (req, eventsData) {
     var data = {
       'id': 'ekstep.telemetry',
-      'ver': '2.1',
+      'ver': '3.0',
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
       'params': {
         'requesterId': req.kauth.grant.access_token.content.sub,
-        'did': 'portal',
+        'did': telemtryEventConfig.default_did,
         'key': '13405d54-85b4-341b-da2f-eb6b9e546fff',
         'msgid': uuidv1()
       },
@@ -314,5 +314,46 @@ module.exports = {
         }
       }
     })
+  },
+
+  /**
+   * This function helps to get actor data for telemetry
+   */
+  getTelemetryActorData: function (req) {
+    var actor = {}
+    if (req.session && req.session.userId) {
+      actor.id = req.session && req.session.userId
+      actor.type = 'user'
+    } else {
+      actor.id = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
+      actor.type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
+    }
+    return actor
+  },
+
+  /**
+   * This function helps to generate telemetry for proxy api's
+   */
+  generateTelemetryForProxy: function (req, res, next) {
+    let params = [
+      { 'url': req.originalUrl },
+      { 'protocol': 'https' },
+      { 'method': req.method },
+      { 'req': req.body }
+    ]
+    const edata = telemetry.logEventData('api_access', 'INFO', '', params)
+
+    var channel = (req.session && req.session.rootOrghashTagId) || md5('sunbird')
+    const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
+    if (req.session && req.session.sessionID) {
+      context.sid = req.session.sessionID
+    }
+    console.log('generateTelemetryForProxy')
+    telemetry.log({
+      edata: edata,
+      context: context,
+      actor: module.exports.getTelemetryActorData(req)
+    })
+    next()
   }
 }

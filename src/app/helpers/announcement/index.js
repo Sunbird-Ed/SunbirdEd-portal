@@ -67,7 +67,7 @@ function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) 
     let responseCode = getErrorCode(httpCode)
 
     res.status(httpCode)
-    res.send({
+    const resp = {
         'id': API_ID_BASE + '.' + id,
         'ver': API_VERSION,
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
@@ -80,9 +80,10 @@ function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) 
         },
         'responseCode': responseCode,
         'result': {}
-    })
+    }
+    res.send(resp)
     //Flush telemetry event
-    telemetry.generateErrorEvent(res.reqID, httpCode, responseCode, message)
+    telemetry.generateErrorEvent(res.reqID, responseCode, message, resp)
     //Delete telemetry data for that reqID
     telemetry.deleteTelemetryData(res.reqID)
     res.end()

@@ -124,6 +124,9 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
+// Generate telemetry fot public service
+app.all('/public/service/*', telemetryHelper.generateTelemetryForProxy)
+
 app.all('/public/service/v1/learner/*', proxy(learnerURL, {
   proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
   proxyReqPathResolver: function (req) {
@@ -144,6 +147,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
     }
   }
 }))
+
+// Generate telemetry fot public service
+app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
 
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
@@ -274,7 +280,6 @@ keycloak.authenticated = function (request) {
 }
 
 keycloak.deauthenticated = function (request) {
-  console.log('de authenticated')
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']

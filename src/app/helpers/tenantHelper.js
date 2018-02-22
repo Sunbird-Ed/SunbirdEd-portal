@@ -7,6 +7,7 @@ const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+const successResponseStatusCode = 200
 
 module.exports = {
   getInfo: function (req, res) {
@@ -93,7 +94,7 @@ module.exports = {
     const type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
 
     const telemetryData = {reqObj: req,
-      statusCode: 200,
+      statusCode: successResponseStatusCode,
       resp: result,
       uri: 'tenant/info',
       type: type,
@@ -101,7 +102,7 @@ module.exports = {
       channel: envHelper.DEFAUULT_TENANT
     }
     telemetryHelper.logAPIAccessEvent(telemetryData)
-    res.status(200)
+    res.status(successResponseStatusCode)
     res.send({
       'id': id,
       'ver': '1.0',

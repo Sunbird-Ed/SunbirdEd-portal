@@ -156,7 +156,7 @@ module.exports = {
     const message = telemetryData.message || 'Calling learner service api'
     const level = 'api_call'
     const edata = telemetry.logEventData('INFO', level, message, params)
-    console.log('generateApiCallLogEvent: ', url, reqID)
+    console.log('generateApiCallLogEvent: ')
     telemetry.log({
       edata: edata,
       context: telemetryData && telemetryData.context && telemetry.getContextData(telemetryData.context),
@@ -178,7 +178,7 @@ module.exports = {
     const message = (telemetryData.edata && telemetryData.edata.message) || ''
     const level = 'api_access'
     const edata = telemetry.logEventData('INFO', level, message, telemetryData.params)
-    console.log('generateApiAccessLogEvent: ', telemetryData.params)
+    console.log('generateApiAccessLogEvent: ')
     telemetry.log({
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
@@ -199,7 +199,7 @@ module.exports = {
     const telemetryData = this.getTelemetryData(reqID)
     const trace = JSON.stringify(stacktrace)
     const edata = telemetry.errorEventData(errCode, responseCode, trace)
-    console.log('generateErrorEvent: ', JSON.stringify(stacktrace))
+    console.log('generateErrorEvent: ')
     telemetry.error({
       edata: edata,
       context: telemetryData && telemetry.getContextData(telemetryData.context),

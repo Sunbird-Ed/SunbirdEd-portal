@@ -5,6 +5,7 @@ const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const reqDataLimitOfContentUpload = '30mb'
+const telemetryHelper = require('../helpers/telemetryHelper')
 
 module.exports = function (app) {
   const proxyReqPathResolverMethod = function (req) {
@@ -40,6 +41,9 @@ module.exports = function (app) {
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
+
+  // Log telemetry for action api's
+  app.all('/action/*', telemetryHelper.generateTelemetryForProxy)
 
   app.use('/action/content/v3/unlisted/publish/:contentId', permissionsHelper.checkPermission(),
     bodyParser.json(), proxy(contentProxyUrl, {

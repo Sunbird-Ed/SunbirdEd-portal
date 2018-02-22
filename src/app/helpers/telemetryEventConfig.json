@@ -6,6 +6,7 @@
   },
   "default_username": "public",
   "default_userid": "public",
+  "default_did": "sunbird-portal",
   "env": "portal-backend",
   "URL": {
     "role/read": {
