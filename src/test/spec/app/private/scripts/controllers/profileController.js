@@ -333,7 +333,7 @@ describe('Controller: ProfileController', function () {
     spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var address = []
+    var address = {addressLine1: '', city: ''}
     profileCtrl.addAddress(address)
     scope.$apply()
     expect(profileCtrl.updateUserInfo).not.toHaveBeenCalled()
@@ -392,7 +392,7 @@ describe('Controller: ProfileController', function () {
     spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var education = {}
+    var education = {degree: '', name: ''}
     profileCtrl.education = []
     profileCtrl.addEducation(education)
     scope.$apply()
@@ -453,7 +453,7 @@ describe('Controller: ProfileController', function () {
     spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
     spyOn(formValidation, 'validate').and.returnValue(false)
     spyOn(profileCtrl, 'updateUserInfo').and.callThrough()
-    var experience = {}
+    var experience = {jobName: '', orgName: ''}
     profileCtrl.education = []
     profileCtrl.addExperience(experience)
     scope.$apply()
