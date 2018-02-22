@@ -300,6 +300,10 @@ app.all('/:tenantName', function (req, res) {
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
 
+// Resource bundles apis
+
+app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 // redirect to home if nothing found
 app.all('*', function (req, res) {
   res.redirect('/')
