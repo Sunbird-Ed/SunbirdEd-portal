@@ -37,7 +37,7 @@ module.exports = {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
     var channel = req.session.rootOrghashTagId
-    var dims = _.clone(req.session.orgs)
+    var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 
     const edata = telemetry.startEventData('session')
@@ -77,7 +77,7 @@ module.exports = {
   logSSOStartEvent: function (req) {
     req.session.orgs = _.compact(req.session.orgs)
     var channel = req.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.session.orgs)
+    var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const payload = jwt.decode(req.query['token'])
 
@@ -104,7 +104,7 @@ module.exports = {
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
     const actor = telemetry.getActorData(payload.sub, 'user')
-    var dims = _.clone(req.session.orgs)
+    var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     dims = dims ? _.concat(dims, channel) : channel
     telemetry.end({
@@ -153,7 +153,7 @@ module.exports = {
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.reqObj.session.orgs)
+    var dims = _.clone(req.reqObj.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
@@ -182,7 +182,7 @@ module.exports = {
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.reqObj.session.orgs)
+    var dims = _.clone(req.reqObj.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: 'sso' })
     if (req && req.reqObj && req.reqObj.sessionID) {
@@ -220,7 +220,7 @@ module.exports = {
     var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
       req.channel || md5('sunbird')
 
-    var dims = _.clone(req.reqObj.session.orgs) || []
+    var dims = _.clone(req.reqObj.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
@@ -254,7 +254,7 @@ module.exports = {
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.reqObj.session.orgs)
+    var dims = _.clone(req.reqObj.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
     if (req && req.reqObj && req.reqObj.sessionID) {
@@ -358,7 +358,7 @@ module.exports = {
     const edata = telemetry.logEventData('api_access', 'INFO', '', params)
 
     var channel = (req.session && req.session.rootOrghashTagId) || md5('sunbird')
-    var dims = _.clone(req.session.orgs)
+    var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 
     const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
