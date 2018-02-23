@@ -790,7 +790,6 @@ angular.module('playerApp')
       profile.getSkills()
 
       profile.openAddSkillModal = function () {
-        $('#addSkill').attr('maxlength', 10)
         $timeout(function () {
           $('#addSkillModal').modal({
             onShow: function () {
@@ -804,7 +803,6 @@ angular.module('playerApp')
                 output += '" <strong>' + search + '</strong> "'
                 return output
               }
-
               $('#addSkill').dropdown({
                 allowAdditions: true,
                 // action: 'select',
