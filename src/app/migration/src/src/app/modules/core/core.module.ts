@@ -1,7 +1,11 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfigService , UserService , LearnerService , ResourceService , PermissionService} from './services';
+import {
+  ConfigService, UserService, LearnerService,
+  ResourceService, PermissionService, AnnouncementService,
+  BadgesService, ContentService
+} from './services';
 
 @NgModule({
   imports: [
@@ -9,15 +13,11 @@ import { ConfigService , UserService , LearnerService , ResourceService , Permis
   ],
   declarations: [],
   exports: [],
-  providers: [ConfigService , LearnerService , ResourceService, UserService , PermissionService]
+  providers: [
+    ConfigService, LearnerService, ResourceService, UserService,
+    PermissionService, AnnouncementService, BadgesService, ContentService ]
 })
 export class CoreModule {
-  static forRoot() {
-    return {
-      ngModule: CoreModule,
-      providers: [ConfigService , LearnerService , ResourceService, UserService , PermissionService]
-    };
-  }
 }
 
 
