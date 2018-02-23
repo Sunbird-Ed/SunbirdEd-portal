@@ -95,6 +95,9 @@ var buildBundle = function (item) {
           json[item.name] = data
           fs.writeFileSync(item.dest + lang + '.json', JSON.stringify(json))
         } catch (e) {
+          if (!fs.existsSync(item.dest)) {
+            fs.mkdirSync(item.dest)
+          }
           fs.writeFileSync(item.dest + lang + '.json', JSON.stringify({[item.name]: data}))
         }
       })
