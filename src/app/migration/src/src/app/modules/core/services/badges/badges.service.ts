@@ -1,6 +1,7 @@
 import { ConfigService } from './../config/config.service';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
+// tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+// tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
 // import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
