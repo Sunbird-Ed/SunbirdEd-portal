@@ -9,7 +9,7 @@
             <label>{{$root.frmelmnts.lbl.yop}}</label>
             <!-- <input type="text" name="yearop" ng-model="profileCtrl.newEducation.yearOfPassing"> -->
             <div class="field" ng-init="profileCtrl.setPassingYears()">
-                <select id="passingYears" apply-script class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.newEducation.yearOfPassing" ng-value="option.value" ng-options="years for years in ::profileCtrl.yearOfPassing">
+                <select name="yearop" id="passingYears" apply-script class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.newEducation.yearOfPassing" ng-value="option.value" ng-options="years for years in ::profileCtrl.yearOfPassing">
                 </select>
             </div>
         </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.grade}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newEducation.grade">
+            <input type="text" name="grade" ng-model="profileCtrl.newEducation.grade">
         </div>
     </div>
     <div class="two fields">
@@ -31,7 +31,7 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.board}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newEducation.boardOrUniversity">
+            <input type="text" name="board" ng-model="profileCtrl.newEducation.boardOrUniversity">
         </div>
     </div>
     <div class="ui error message">
