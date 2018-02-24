@@ -23,6 +23,9 @@ angular.module('playerApp')
         { name: 'Upcoming', value: 0 }
       ]
       batch.showEnroll = true
+      batch.searchUserMap = {}
+      batch.userSearchTime = 0
+
       batch.showCreateBatchModal = function () {
         batch.getUserList()
         $timeout(function () {
@@ -216,9 +219,34 @@ angular.module('playerApp')
         $state.go('updateBatch', { batchId: batchData.identifier, coursecreatedby: coursecreatedby })
       }
 
-      batch.getUserList = function () {
+      $timeout(function () {
+        $('#users input.search').on('keyup', function (e) {
+          batch.getUserListWithQuery(this.value)
+        })
+        $('#mentors input.search').on('keyup', function (e) {
+          batch.getUserListWithQuery(this.value)
+        })
+      }, 1000)
+
+      batch.getUserListWithQuery = function (query) {
+        if (batch.userSearchTime) {
+          clearTimeout(batch.userSearchTime)
+        }
+        batch.userSearchTime = setTimeout(function () {
+          var users = batch.searchUserMap[query]
+          if (users) {
+            batch.userList = users.user
+            batch.menterList = users.mentor
+          } else {
+            batch.getUserList(query)
+          }
+        }, 1000)
+      }
+
+      batch.getUserList = function (query) {
         var request = {
           request: {
+            query: query,
             filters: {
               'organisations.organisationId': $rootScope.organisationIds
             }
@@ -241,6 +269,12 @@ angular.module('playerApp')
                 batch.userList.push(user)
               }
             })
+            batch.userList = _.uniqBy(batch.userList, 'id')
+            batch.menterList = _.uniqBy(batch.menterList, 'id')
+            batch.searchUserMap[query || ''] = {
+              mentor: _.clone(batch.menterList),
+              user: _.clone(batch.userList)
+            }
           } else {
             toasterService.error($rootScope.messages.fmsg.m0056)
           }
