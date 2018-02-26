@@ -32,6 +32,7 @@ angular.module('playerApp')
           $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true })
           $('.ui.calendar').calendar({ refresh: true })
           $('#createBatchModal').modal({
+            closable: false,
             onShow: function () {
               var today = new Date()
               $('.ui.calendar#rangestartAdd').calendar({
