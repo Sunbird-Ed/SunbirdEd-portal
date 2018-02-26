@@ -52,6 +52,7 @@
   font-family: 'sunbirdregularfont';
   font-size: 1em;
   color: #7c7b7b;
+  overflow-wrap: break-word;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont';
