@@ -1,4 +1,4 @@
-import { ServerResponse } from './../../interfaces/ServerResponse';
+import { ServerResponse } from './../../interfaces/serverResponse';
 import { RequestParam , HttpOptions } from './../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
