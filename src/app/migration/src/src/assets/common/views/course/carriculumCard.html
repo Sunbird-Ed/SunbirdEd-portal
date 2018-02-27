@@ -1,0 +1,53 @@
+<div class="rightSideSectionCards ui card">
+    <div class="content">
+        <div class="header">Curriculum</div>
+        <div class="description">
+            <div class="ui list">
+                <div class="item" ng-repeat="(mimeType,count) in toc.contentCountByType">
+                    <div ng-if="mimeType=='application/pdf'">
+                        <div class="content curriculum-content">
+                            <i class="file pdf outline icon"></i>
+                            <span> {{count}}&nbsp;Pdf contents</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType.indexOf('video')!=-1">
+                        <div class="content curriculum-content">
+                            <i class="file video outline icon"></i>
+                            <span> {{count}}&nbsp;Videos</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType.indexOf('image')!=-1">
+                        <div class="content curriculum-content">
+                            <i class="file image outline icon"></i>
+                            <span> {{count}}&nbsp;Image Contents</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/vnd.ekstep.html-archive'">
+                        <div class="content curriculum-content">
+                            <i class="html5 icon"></i>
+                            <span> {{count}}&nbsp;Html Archives</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/vnd.ekstep.ecml-archive'">
+                        <div class="content curriculum-content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{count}}&nbsp;Ecml Archives</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/epub'">
+                        <div class="content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{count}}&nbsp;Epub Archives</span>
+                        </div>
+                    </div>
+                    <div ng-if="mimeType=='application/vnd.ekstep.h5p-archive'">
+                        <div class="content">
+                            <i class="file archive outline icon"></i>
+                            <span> {{count}}&nbsp;H5p Archives</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
