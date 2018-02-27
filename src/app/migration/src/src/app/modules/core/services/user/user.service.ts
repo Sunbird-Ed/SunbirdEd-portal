@@ -1,3 +1,4 @@
+import { ServerResponse } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
@@ -6,16 +7,50 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+/**
+ * Service to fetch user details from server
+ *
+ */
 @Injectable()
 export class UserService {
+  /**
+   * Contains user id
+   */
   public _userid: string;
+  /**
+   * Contains user profile.
+   */
   private userProfile: any = {};
+  /**
+   * BehaviorSubject Containing user profile.
+   */
   private _userData$ = new BehaviorSubject<any>(undefined);
+  /**
+   * Read only observable Containing user profile.
+   */
   public readonly userData$: Observable<any> = this._userData$.asObservable();
-  constructor(public config: ConfigService, public learner: LearnerService) {
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+  /**
+   * reference of lerner service.
+   */
+  public learner: LearnerService;
+  /**
+   * constructor
+   * @param {ConfigService} config ConfigService reference
+   * @param {LearnerService} learner LearnerService reference
+   */
+  constructor(config: ConfigService, learner: LearnerService) {
+    this.config = config;
+    this.learner = learner;
     this.getUserProfile();
   }
-  get userid() {
+  /**
+   * get method to fetch userid.
+   */
+  get userid(): string {
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._userid = this._userid === '<%=userId%>' ? 'userId' : this._userid;
@@ -24,32 +59,27 @@ export class UserService {
     }
     return this._userid;
   }
-  public getProperty(property) {
-    if (this[property]) {
-      return { ...this[property] };
-    } else {
-      return null;
-    }
-  }
-
-  public getUserProfile() {
+  /**
+   * method to fetch user profile from server.
+   */
+  public getUserProfile(): void {
     const option = {
       url: this.config.urlConFig.URLS.USER.GET_PROFILE + this.userid,
       param: this.config.urlConFig.params.userReadParam
     };
     this.learner.get(option).subscribe(
-      data => {
+      (data: ServerResponse) => {
         this.setUserProfile(data);
       },
-      err => {
+      (err: ServerResponse) => {
         this._userData$.next({ err: err, userProfile: { ...this.userProfile } });
-        console.log('error in getting profile', err);
       }
     );
   }
-
-  private setUserProfile(res) {
-    if (res && res.responseCode === 'OK') {
+  /**
+   * method to set user profile to behavior subject.
+   */
+  private setUserProfile(res: ServerResponse) {
       const profileData = res.result.response;
       const orgRoleMap = {};
       let organisationIds = [];
@@ -80,31 +110,6 @@ export class UserService {
       this.userProfile.orgRoleMap = orgRoleMap;
       this.userProfile.organisationIds = organisationIds;
       // this.userProfile.organisationNames = organisationNames;
-      this.processProfileData();
       this._userData$.next({ err: null, userProfile: { ...this.userProfile } });
-      // this.updateProfileImage();
-    } else {
-      // toasterService.error($rootScope.messages.fmsg.m0005)
-      this._userData$.next({ err: res.responseCode, userProfile: { ...this.userProfile } });
-    }
   }
-
-  formateDate(userDetails) {
-    if (userDetails.length) {
-      userDetails.forEach(function (element) {
-        if (element.updatedDate) {
-          element.updatedDate = new Date(element.updatedDate);
-        }
-      }, this);
-    }
-  }
-  processProfileData() {
-    const profileData: any = this.userProfile;
-    this.userProfile.fullName = profileData.firstName + ' ' + profileData.lastName;
-    this.userProfile.dob = profileData.dob ? new Date(profileData.dob) : profileData.dob;
-    this.formateDate(this.userProfile.jobProfile);
-    this.formateDate(this.userProfile.address);
-    this.formateDate(this.userProfile.education);
-  }
-
 }

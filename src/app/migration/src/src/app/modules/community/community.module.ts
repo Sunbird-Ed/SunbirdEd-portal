@@ -1,7 +1,6 @@
 import { CommunityListComponent } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreModule } from '@core';
 
 import { CommunityRoutingModule } from './community-routing.module';
 
@@ -9,7 +8,6 @@ import { CommunityRoutingModule } from './community-routing.module';
   imports: [
     CommonModule,
     CommunityRoutingModule,
-    CoreModule
   ],
   declarations: [CommunityListComponent]
 })

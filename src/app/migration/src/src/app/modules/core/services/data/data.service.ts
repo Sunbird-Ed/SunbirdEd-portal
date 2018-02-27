@@ -1,4 +1,5 @@
-
+import { ServerResponse } from './../../interfaces/ServerResponse';
+import { RequestParam , HttpOptions } from './../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -6,32 +7,45 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
-// import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 
-interface RequestParam {
-  url: string;
-  param?: object;
-  header?: object;
-  data?: object;
-}
-
+/**
+ * Service to provide base CRUD methods to make api request.
+ *
+ */
 @Injectable()
 export class DataService {
-  headers: object;
+  /**
+   * Contains rootOrg Id
+   */
   rootOrgId = '';
+  /**
+   * Contains base Url for api end points
+   */
   baseUrl: string;
-  constructor(public http: HttpClient) {
+  /**
+   * angular HttpClient
+   */
+  http: HttpClient;
+  /**
+   * Constructor
+   * @param {HttpClient} http HttpClient reference
+   */
+  constructor(http: HttpClient) {
+    this.http = http;
   }
 
-  get(requestParam: RequestParam) {
-    const httpOptions = {
-      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
-      params: (<any>requestParam.param)
+  /**
+   * for making get api calls
+   *
+   * @param requestParam interface
+   */
+  get(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-    .flatMap((data: any) => {
+    .flatMap((data: ServerResponse) => {
       if (data.responseCode !== 'OK') {
         return Observable.throw(data);
       }
@@ -39,13 +53,19 @@ export class DataService {
     });
   }
 
-  post(requestParam: RequestParam) {
-    const httpOptions = {
+  /**
+   * for making post api calls
+   *
+   * @param {RequestParam} requestParam interface
+   *
+   */
+  post(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
       headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
       params: (<any>requestParam.param)
     };
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions)
-    .flatMap((data: any) => {
+    .flatMap((data: ServerResponse) => {
       if (data.responseCode !== 'OK') {
         return Observable.throw(data);
       }
@@ -53,15 +73,37 @@ export class DataService {
     });
   }
 
-  patch(requestParam: RequestParam) {
-    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data);
+  /**
+   * for making patch api calls
+   *
+   * @param {RequestParam} requestParam interface
+   *
+   */
+  patch(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
+      params: (<any>requestParam.param)
+    };
+    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions);
   }
 
-  delete(requestParam: RequestParam) {
-    const option = { headers: this.getHeader(), body: requestParam.data };
-    return this.http.delete(this.baseUrl + requestParam.url, option);
+  /**
+   * for making delete api calls
+   * @param {RequestParam} requestParam interface
+   */
+  delete(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
+      params: (<any>requestParam.param),
+      body: requestParam.data
+    };
+    return this.http.delete(this.baseUrl + requestParam.url, httpOptions);
   }
-  private getHeader() {
+
+  /**
+   * for preparing headers
+   */
+  private getHeader(): HttpOptions['headers'] {
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

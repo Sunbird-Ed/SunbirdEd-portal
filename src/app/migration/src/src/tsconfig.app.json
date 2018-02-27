@@ -4,11 +4,14 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "paths": {
-      "@core": [
+      "@sunbird/core": [
           "app/modules/core"
       ],
-      "@community": [
+      "@sunbird/community": [
         "app/modules/community"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
       ]
     },
     "module": "es2015",

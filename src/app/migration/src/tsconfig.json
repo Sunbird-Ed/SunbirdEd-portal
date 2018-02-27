@@ -4,11 +4,14 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@core": [
+      "@sunbird/core": [
         "src/app/modules/core"
       ],
-      "@community": [
+      "@sunbird/community": [
         "src/app/modules/community"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
       ]
     },
     "sourceMap": true,

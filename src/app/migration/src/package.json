@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "ng lint",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json"
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s"
   },
   "engines": {
     "node": ">=8.9"
@@ -43,7 +43,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
-    "compodoc": "0.0.41",
+    "@compodoc/compodoc": "^1.0.5",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",

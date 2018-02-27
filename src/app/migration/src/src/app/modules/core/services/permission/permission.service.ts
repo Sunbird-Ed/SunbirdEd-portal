@@ -3,58 +3,115 @@ import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
-import { HttpParams } from '@angular/common/http/src/params';
-import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
-import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ServerResponse } from './../../interfaces';
 
+/**
+ * Service to fetch permission and validate user permission
+ *
+ */
 @Injectable()
 export class PermissionService {
+  /**
+   * all roles with actions, including sub roles.
+   */
   private rolesAndPermissions: any[] = [];
+  /**
+   * main roles with action
+   */
   private mainRoles: any[] = [];
-  public permissionAvailable = false;
-  private currentRoleActions: any[] = [];
+  /**
+   * all user role action
+   */
+  private userRoleActions: any[] = [];
+  /**
+   * all user role
+   */
   private userRoles: any[] = [];
+  /**
+   * flag to store permission availability
+   */
+  permissionAvailable = false;
+  /**
+   * BehaviorSubject with permission status.
+   * 1.Undefined if the role not fetched from the server.
+   * 2.Success if roles are fetched from server.
+   * 3.error if server error while fetching roles.
+   */
   public permissionAvailable$ = new BehaviorSubject<string>(undefined);
-
-  constructor(public config: ConfigService, public http: HttpClient, public learner: LearnerService, public userService: UserService) {
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+    /**
+   * reference of HttpClient service.
+   */
+  public http: HttpClient;
+  /**
+   * reference of LearnerService service.
+   */
+  public learner: LearnerService;
+  /**
+   * reference of UserService service.
+   */
+  public userService: UserService;
+  /**
+   * constructor
+   * @param {ConfigService} config ConfigService reference
+   * @param {HttpClient} http HttpClient reference
+   * @param {LearnerService} learner LearnerService reference
+   * @param {UserService} userService UserService reference
+   */
+  constructor(config: ConfigService, http: HttpClient, learner: LearnerService, userService: UserService) {
+    this.config = config;
+    this.http = http;
+    this.learner = learner;
+    this.userService = userService;
     this.getPermissionsData();
   }
-  private getPermissionsData() {
+  /**
+   * method to fetch organization permission and roles.
+   */
+  private getPermissionsData(): void {
     const option = {
       url: this.config.urlConFig.URLS.ROLES.READ
     };
     this.learner.get(option).subscribe(
-      data => {
+      (data: ServerResponse) => {
         this.setRolesAndPermissions(data);
-        console.log(data);
       },
-      err => {
-        console.log('error in getting permission', err);
+      (err: ServerResponse) => {
+
       }
     );
   }
-  private setRolesAndPermissions(data) {
+  /**
+   * method to process roles and actions
+   * @param {ServerResponse} data ConfigService reference
+   */
+  private setRolesAndPermissions(data: ServerResponse): void {
     const rolePermissions = _.cloneDeep(data.result.roles);
     _.forEach(rolePermissions, (r, p) => {
       const mainRole = { role: r.id, actions: [], roleName: r.name };
-      this.mainRoles.push(mainRole);
       _.forEach(r.actionGroups, (ag) => {
         const subRole = { role: ag.id, actions: ag.actions, roleName: ag.name };
         mainRole.actions = _.concat(mainRole.actions, ag.actions);
         this.rolesAndPermissions.push(subRole);
       });
+      this.mainRoles.push(mainRole);
       this.rolesAndPermissions.push(mainRole);
     });
     this.rolesAndPermissions = _.uniqBy(this.rolesAndPermissions, 'role');
     this.setCurrentRoleActions();
   }
-
-  private setCurrentRoleActions() {
+  /**
+   * method to process logged in user roles and actions
+   * @param {ServerResponse} data ConfigService reference
+   */
+  private setCurrentRoleActions(): void {
     this.userService.userData$.subscribe( user => {
         if (user) {
           if (!user.err) {
@@ -62,12 +119,12 @@ export class PermissionService {
             _.forEach(this.userRoles,  (r) => {
               const roleActions = _.filter(this.rolesAndPermissions, { role: r });
               if (_.isArray(roleActions) && roleActions.length > 0) {
-                this.currentRoleActions = _.concat(this.currentRoleActions,
+                this.userRoleActions = _.concat(this.userRoleActions,
                   _.map(roleActions[0].actions, 'id'));
               }
             });
-            this.permissionAvailable = true;
             this.permissionAvailable$.next('success');
+            this.permissionAvailable = true;
           } else if (user.err) {
             this.permissionAvailable$.next('error');
           }
@@ -77,15 +134,19 @@ export class PermissionService {
       }
     );
   }
-
-  public checkRolesPermissions(data, flag) {
+  /**
+   * method to validate permission
+   * @param {string[]}  roles roles to validate.
+   * @param {boolean} flag  flag. True if roles must be needed.
+   */
+  public checkRolesPermissions(roles, flag): boolean {
     if (this.userRoles && this.userRoles.length > 0) {
-      if (!this.checkActionsPermissions(data, flag)) {
-        if (_.isArray(data)) {
-          if ((_.intersection(data, this.userRoles).length === 0) && !flag) {
+      if (!this.checkActionsPermissions(roles, flag)) {
+        if (_.isArray(roles)) {
+          if ((_.intersection(roles, this.userRoles).length === 0) && !flag) {
             return true;
           }
-          return ((_.intersection(data, this.userRoles).length > 0) && flag);
+          return ((_.intersection(roles, this.userRoles).length > 0) && flag);
         }
       } else {
         return true;
@@ -93,13 +154,17 @@ export class PermissionService {
     }
     return false;
   }
-
-  checkActionsPermissions(data, flag) {
-    if (_.isArray(data)) {
-      if ((_.intersection(data, this.currentRoleActions).length === 0) && !flag) {
+  /**
+   * method to role action.
+   * @param {string[]}  roles roles to validate.
+   * @param {boolean} flag  flag. True if roles must be needed.
+   */
+  checkActionsPermissions(roles, flag) {
+    if (_.isArray(roles)) {
+      if ((_.intersection(roles, this.userRoleActions).length === 0) && !flag) {
         return false;
       }
-      return ((_.intersection(data, this.currentRoleActions).length > 0) && flag);
+      return ((_.intersection(roles, this.userRoleActions).length > 0) && flag);
     }
     return false;
   }
