@@ -2,20 +2,33 @@
 
 angular.module('playerApp')
   .controller('BatchUpdateController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
-    'config', 'batchService', '$filter', 'toasterService', 'userService',
+    'config', 'batchService', '$filter', 'toasterService', 'userService', 'permissionsService',
     function ($rootScope, $timeout, $state, $scope,
-      $stateParams, config, batchService, $filter, toasterService, userService) {
+      $stateParams, config, batchService, $filter, toasterService, userService, permissionsService) {
       var batchUpdate = this
       batchUpdate.userList = []
       batchUpdate.menterList = []
       batchUpdate.userId = $rootScope.userId
       batchUpdate.submitted = false
-      batchUpdate.batchData = ''
       batchUpdate.batchId = $stateParams.batchId
       batchUpdate.coursecreatedby = $stateParams.coursecreatedby
+      batchUpdate.searchUserMap = {}
+      batchUpdate.userSearchTime = 0
+      batchUpdate.selectedUsers = []
+      batchUpdate.selectedMentors = []
 
       batchUpdate.init = function () {
-        batchUpdate.getUserList()
+        batchUpdate.getBatchDetails()
+      }
+
+      batchUpdate.getSelectedUser = function (participant) {
+        var users = []
+        for (var key in participant) {
+          if (participant[key]) {
+            users.push(key)
+          }
+        }
+        return users
       }
 
       batchUpdate.getBatchDetails = function () {
@@ -24,7 +37,9 @@ angular.module('playerApp')
           batchService.getBatchDetails({ batchId: batchUpdate.batchId }).then(function (response) {
             if (response && response.responseCode === 'OK') {
               batchUpdate.batchData = response.result.response
-              batchUpdate.showUpdateBatchModal()
+              var selectedParticipants = batchUpdate.getSelectedUser(batchUpdate.batchData.participant)
+              var users = _.concat(selectedParticipants, batchUpdate.batchData.mentors)
+              batchUpdate.getUserList(undefined, users)
             } else {
               toasterService.error($rootScope.messages.fmsg.m0054)
             }
@@ -32,29 +47,39 @@ angular.module('playerApp')
             toasterService.error($rootScope.messages.fmsg.m0054)
           })
         } else {
-          batchUpdate.showUpdateBatchModal()
+          var selectedParticipants = batchUpdate.getSelectedUser(batchUpdate.batchData.participant)
+          var users = _.concat(selectedParticipants, batchUpdate.batchData.mentors)
+          batchUpdate.getUserList(undefined, users)
         }
       }
 
       batchUpdate.showUpdateBatchModal = function (batchData, coursecreatedby) {
-        batchUpdate.selectedUsers = []
-        batchUpdate.selectedMentors = []
         batchUpdate.coursecreatedby = batchUpdate.coursecreatedby || batchUpdate.batchData.courseCreator
         _.forEach(batchUpdate.batchData.participant, function (value, key) {
           if (!_.isUndefined(_.find(batchUpdate.userList, ['id', key]))) {
             batchUpdate.selectedUsers.push(_.find(batchUpdate.userList, ['id', key]))
             batchUpdate.userList = _.reject(batchUpdate.userList, ['id', key])
+            batchUpdate.selectedUsers = _.uniqBy(batchUpdate.selectedUsers, 'id')
           }
         })
         _.forEach(batchUpdate.batchData.mentors, function (mentorVal, key) {
           if (!_.isUndefined(_.find(batchUpdate.menterList, ['id', mentorVal]))) {
             batchUpdate.selectedMentors.push(_.find(batchUpdate.menterList, ['id', mentorVal]))
             batchUpdate.menterList = _.reject(batchUpdate.menterList, ['id', mentorVal])
+            batchUpdate.selectedMentors = _.uniqBy(batchUpdate.selectedMentors, 'id')
           }
         })
+
+        if (Object.keys(batchUpdate.searchUserMap).length <= 1) {
+          batchUpdate.initializeUI()
+        }
+      }
+
+      batchUpdate.initializeUI = function () {
         $timeout(function () {
           $('#users').dropdown()
           $('#mentors').dropdown()
+          batchUpdate.initializeEvent()
           if (batchUpdate.batchData.enrollmentType === 'open') {
             $('input:radio[name="enrollmentType"]').filter('[value="open"]').attr('checked', true)
           } else {
@@ -126,13 +151,55 @@ angular.module('playerApp')
         $('#updateBatch').form('clear')
         $('#updateBatch').find('.search').val('')
       }
-      batchUpdate.getUserList = function () {
+
+      batchUpdate.initializeEvent = function () {
+        $('#users input.search').focusin(function (e) {
+          batchUpdate.getUserListWithQuery('')
+        })
+        $('#mentors input.search').focusin(function (e) {
+          batchUpdate.getUserListWithQuery('')
+        })
+        $('#users input.search').on('keyup', function (e) {
+          batchUpdate.getUserListWithQuery(this.value)
+        })
+        $('#mentors input.search').on('keyup', function (e) {
+          batchUpdate.getUserListWithQuery(this.value)
+        })
+      }
+
+      batchUpdate.getUserListWithQuery = function (query) {
+        if (batchUpdate.userSearchTime) {
+          clearTimeout(batchUpdate.userSearchTime)
+        }
+        batchUpdate.userSearchTime = setTimeout(function () {
+          var users = batchUpdate.searchUserMap[query]
+          if (users) {
+            batchUpdate.userList = users.user
+            batchUpdate.menterList = users.mentor
+          } else {
+            batchUpdate.getUserList(query)
+          }
+        }, 1000)
+      }
+
+      batchUpdate.getUserList = function (query, users) {
         var request = {
           request: {
-            filters: {
-              'organisations.organisationId': $rootScope.organisationIds
-            }
+            filters: {}
           }
+        }
+        if (query) {
+          request.request.query = query
+        }
+        if (users) {
+          request.request.filters['identifier'] = users
+        }
+        var isCourseMentor = permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR']
+        var profile = userService.getCurrentUserProfile()
+        if (isCourseMentor && isCourseMentor.includes(profile.rootOrgId)) {
+          request.request.filters['rootOrgId'] = profile.rootOrgId
+        } else {
+          request.request.filters['organisations.organisationId'] = $rootScope.organisationIds
         }
 
         batchService.getUserList(request).then(function (response) {
@@ -141,8 +208,9 @@ angular.module('playerApp')
               if (userData.identifier !== $rootScope.userId) {
                 var user = {
                   id: userData.identifier,
-                  name: userData.firstName + ' ' + userData.lastName,
-                  avatar: userData.avatar
+                  name: userData.firstName + ' ' + userData.lastName ? userData.lastName : '',
+                  avatar: userData.avatar,
+                  otherDetail: batchService.getUserOtherDetail(userData)
                 }
                 _.forEach(userData.organisations, function (userOrgData) {
                   if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
@@ -152,11 +220,20 @@ angular.module('playerApp')
                 batchUpdate.userList.push(user)
               }
             })
-            batchUpdate.getBatchDetails()
+            batchUpdate.userList = _.uniqBy(batchUpdate.userList, 'id')
+            batchUpdate.menterList = _.uniqBy(batchUpdate.menterList, 'id')
+            if (!users) {
+              batchUpdate.searchUserMap[query || ''] = {
+                mentor: _.clone(batchUpdate.menterList),
+                user: _.clone(batchUpdate.userList)
+              }
+            }
+            batchUpdate.showUpdateBatchModal()
           } else {
             toasterService.error($rootScope.messages.fmsg.m0056)
           }
-        }).catch(function () {
+        }).catch(function (error) {
+          console.log(error)
           toasterService.error($rootScope.messages.fmsg.m0056)
         })
       }

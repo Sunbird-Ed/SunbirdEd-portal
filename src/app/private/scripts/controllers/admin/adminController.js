@@ -12,8 +12,9 @@ angular.module('playerApp')
     'toasterService',
     'permissionsService',
     'searchService',
+    'userService',
     function (adminService, $timeout, $state, config, $rootScope, $scope,
-      contentService, toasterService, permissionsService, searchService
+      contentService, toasterService, permissionsService, searchService, userService
     ) {
       /**
      * @class adminController
@@ -22,6 +23,8 @@ angular.module('playerApp')
      */
       var admin = this
       admin.searchResult = $scope.users
+      admin.courseMentorRole = { roleName: 'Course Mentor', role: 'COURSE_MENTOR' }
+
       admin.badges = adminService.getBadgesList()
       /**
          * @method getOrgName
@@ -76,7 +79,7 @@ angular.module('playerApp')
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
                   // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
                   if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 ||
-                   _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
+                    _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
                     user.isEditableProfile = true
                   }
                   var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -87,7 +90,7 @@ angular.module('playerApp')
               }
               // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root org of the user, set editable to true
               if (user.rootOrgId === $rootScope.rootOrgId &&
-                                    $rootScope.rootOrgAdmin === true) {
+                $rootScope.rootOrgAdmin === true) {
                 user.isEditableProfile = true
               }
             })
@@ -95,7 +98,7 @@ angular.module('playerApp')
         }
       }
       // open editRoles modal
-      admin.showModal = function (identifier, orgs) {
+      admin.showModal = function (identifier, orgs, profileLevelRoles) {
         $timeout(function () {
           $('#changeUserRoles').modal({
             onShow: function () {
@@ -103,12 +106,18 @@ angular.module('playerApp')
               admin.identifier = identifier
               admin.userOrganisations = orgs
               admin.selectedOrgUserRoles = []
+              admin.profileLevelRoles = profileLevelRoles
+              admin.isCourseMentorUser = profileLevelRoles.includes(admin.courseMentorRole.role)
+              admin.isGlobalRoleChange = false
+              admin.isOrgRoleChange = false
               $('.roleChckbox').checkbox()
             },
             onHide: function () {
               admin.userId = ''
               admin.userOrganisations = []
               admin.selectedOrgUserRoles = []
+              admin.profileLevelRoles = []
+              admin.isCourseMentorUser = false
               return true
             }
           }).modal('show')
@@ -144,9 +153,9 @@ angular.module('playerApp')
           var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
           var users = JSON.parse(nullReplacedToEmpty)
           alasql('SELECT firstName AS [First Name],lastName AS [Last Name], ' +
-                        ' organisationsName AS Organizations ,location AS Location, grade AS Grades, ' +
-                        'language AS Language ,subject as Subjects ' +
-                        ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users])
+            ' organisationsName AS Organizations ,location AS Location, grade AS Grades, ' +
+            'language AS Language ,subject as Subjects ' +
+            ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users])
         } else if (key === 'Organisations') {
           list.forEach(function (org) {
             switch (org.status) {
@@ -169,8 +178,8 @@ angular.module('playerApp')
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
           var organizations = JSON.parse(orgNullReplacedToEmpty)
           alasql('SELECT orgName AS orgName,orgType AS orgType,' +
-          'noOfMembers AS noOfMembers,channel AS channel, ' +
-          'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
+            'noOfMembers AS noOfMembers,channel AS channel, ' +
+            'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
           [organizations])
         }
       }
@@ -194,7 +203,7 @@ angular.module('playerApp')
               return user
             })
           } else { toasterService.error($rootScope.messages.fmsg.m0051) }
-                }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -204,6 +213,7 @@ angular.module('playerApp')
         return list.includes(role)
       }
       admin.editRoles = function (role, userRoles) {
+        admin.isOrgRoleChange = true
         if (userRoles.includes(role) === true) {
           admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
             return selectedRole !== role
@@ -212,33 +222,77 @@ angular.module('playerApp')
           admin.selectedOrgUserRoles.push(role)
         }
       }
-      admin.updateRoles = function (identifier, orgId, roles) {
-        var req = {
-          request: {
-            userId: identifier,
-            organisationId: orgId,
-            roles: roles
 
-          }
+      admin.editGlobalRoles = function (role) {
+        admin.isGlobalRoleChange = true
+        if (admin.isCourseMentorUser === true) {
+          admin.isCourseMentorUser = false
+          admin.profileLevelRoles = _.without(admin.profileLevelRoles, role)
+        } else {
+          admin.isCourseMentorUser = true
+          admin.profileLevelRoles.push(role)
         }
+      }
 
-        adminService.updateRoles(req).then(function (res) {
-          if (res.responseCode === 'OK') {
-            toasterService.success($rootScope.messages.smsg.m0028)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
-            })
-          } else {
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
-            })
-            // profile.isError = true;
-            toasterService.error($rootScope.messages.fmsg.m0051)
+      admin.hideChangeRoleModel = function () {
+        if (admin.isUserRoleUpdate && admin.isOrgRoleUpdated) {
+          $('#changeUserRoles').modal('hide', function () {
+            $('#changeUserRoles').modal('hide')
+          })
+        }
+      }
+
+      admin.updateRoles = function (identifier, orgId, roles) {
+        if (admin.isOrgRoleChange) {
+          var req = {
+            request: {
+              userId: identifier,
+              organisationId: orgId,
+              roles: roles
+            }
           }
-            }).catch(function(err) { // eslint-disable-line
-          // profile.isError = true
-          toasterService.error($rootScope.messages.fmsg.m0051)
-        })
+          admin.isOrgRoleUpdated = false
+          adminService.updateRoles(req).then(function (res) {
+            if (res.responseCode === 'OK') {
+              admin.isOrgRoleUpdated = true
+              admin.isOrgRoleChange = false
+              toasterService.success($rootScope.messages.smsg.m0028)
+            } else {
+              toasterService.error($rootScope.messages.fmsg.m0076)
+            }
+            admin.hideChangeRoleModel()
+          }).catch(function () {
+            toasterService.error($rootScope.messages.fmsg.m0051)
+          })
+        }
+      }
+
+      admin.updateGlobalLevelRoles = function (userid, roles) {
+        if (admin.isGlobalRoleChange) {
+          var index = admin.profileLevelRoles && admin.profileLevelRoles.indexOf('public')
+          if (index > -1) {
+            admin.profileLevelRoles[index] = 'PUBLIC'
+          }
+          var request = {
+            request: {
+              userId: userid,
+              roles: roles
+            }
+          }
+          admin.isUserRoleUpdate = false
+          adminService.updateRoles(request).then(function (res) {
+            if (res.responseCode === 'OK') {
+              admin.isUserRoleUpdate = true
+              admin.isGlobalRoleChange = false
+              toasterService.success($rootScope.messages.smsg.m0042)
+            } else {
+              toasterService.error($rootScope.messages.fmsg.m0077)
+            }
+            admin.hideChangeRoleModel()
+          }).catch(function () {
+            toasterService.error($rootScope.messages.fmsg.m0051)
+          })
+        }
       }
 
       // user Roles
@@ -256,7 +310,7 @@ angular.module('playerApp')
       }
 
       admin.setDefaultSelected = function (organizations) {
-        if (organizations) {
+        if (organizations.length > 0) {
           $timeout(function () {
             var orgDropdown = $('#userOrgs').dropdown()
             orgDropdown.dropdown('set text', organizations[0].orgName)
@@ -320,5 +374,15 @@ angular.module('playerApp')
         }
       }
       admin.getUserRoles()
+
+      admin.checkPermissionToUpdateGlobalRole = function () {
+        var profileData = userService.getCurrentUserProfile()
+        if (profileData) {
+          var isRootOrgAdmin = _.find(profileData.organisations, ['organisationId', profileData.rootOrgId])
+          return !!isRootOrgAdmin
+        } else {
+          return false
+        }
+      }
     }
   ])

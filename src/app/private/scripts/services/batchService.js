@@ -134,4 +134,16 @@ angular.module('playerApp')
     this.getBatchData = function () {
       return this.batchDetails
     }
+
+    this.getUserOtherDetail = function (userData) {
+      if (userData.email && userData.phone) {
+        return ' (' + userData.email + ', ' + userData.phone + ')'
+      }
+      if (userData.email && !userData.phone) {
+        return ' (' + userData.email + ')'
+      }
+      if (!userData.email && userData.phone) {
+        return ' (' + userData.phone + ')'
+      }
+    }
   }])

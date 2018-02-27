@@ -220,6 +220,16 @@ angular.module('playerApp')
       }
 
       $timeout(function () {
+        $('#users').dropdown({
+          onAdd: function () {
+            batch.getUserListWithQuery('')
+          }
+        })
+        $('#mentors').dropdown({
+          onAdd: function () {
+            batch.getUserListWithQuery('')
+          }
+        })
         $('#users input.search').on('keyup', function (e) {
           batch.getUserListWithQuery(this.value)
         })
@@ -246,20 +256,29 @@ angular.module('playerApp')
       batch.getUserList = function (query) {
         var request = {
           request: {
-            query: query,
-            filters: {
-              'organisations.organisationId': $rootScope.organisationIds
-            }
+            filters: {}
           }
         }
+        if (query) {
+          request.request.query = query
+        }
+        var isCourseMentor = permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR']
+        var profile = userService.getCurrentUserProfile()
+        if (isCourseMentor && isCourseMentor.includes(profile.rootOrgId)) {
+          request.request.filters['rootOrgId'] = profile.rootOrgId
+        } else {
+          request.request.filters['organisations.organisationId'] = $rootScope.organisationIds
+        }
+
         batchService.getUserList(request).then(function (response) {
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
               if (userData.identifier !== $rootScope.userId) {
                 var user = {
                   id: userData.identifier,
-                  name: userData.firstName + ' ' + userData.lastName,
-                  avatar: userData.avatar
+                  name: userData.firstName + ' ' + userData.lastName ? userData.lastName : '',
+                  avatar: userData.avatar,
+                  otherDetail: batchService.getUserOtherDetail(userData)
                 }
                 _.forEach(userData.organisations, function (userOrgData) {
                   if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
