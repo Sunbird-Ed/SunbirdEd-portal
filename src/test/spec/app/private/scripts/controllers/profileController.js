@@ -19,7 +19,8 @@ describe('Controller: ProfileController', function () {
     $q,
     $timeout,
     formValidation
-
+  var userProfile = testData.mockProfile.userProfile
+  var isPermanentChecked = testData.mockProfile.isPermanentChecked
   beforeEach(inject(function ($rootScope, $controller) {
     $controller('AppCtrl', {
       $rootScope: $rootScope,
@@ -44,9 +45,9 @@ describe('Controller: ProfileController', function () {
     contentService = _contentService_
     userService = _userService_
     searchService = _searchService_
-    learnService = _learnService_,
-    adminService = _adminService_,
-    workSpaceUtilsService = _workSpaceUtilsService_,
+    learnService = _learnService_
+    adminService = _adminService_
+    workSpaceUtilsService = _workSpaceUtilsService_
     formValidation = _formValidation_
     deferred = _$q_.defer()
     $q = _$q_
@@ -69,11 +70,10 @@ describe('Controller: ProfileController', function () {
 
     })
     if (typeof Array.prototype.includes !== 'function') {
-      Array.prototype.includes = function (iterator) {
+      Array.prototype.includes = function (iterator) { // eslint-disable-line no-extend-native
         var list = Object(this)
         var length = list.length >>> 0
-        var thisArg = arguments[1]
-        var value
+        var value // eslint-disable-line no-unused-vars
 
         for (var i = 0; i < length; i++) {
           value = list[i]
@@ -83,7 +83,7 @@ describe('Controller: ProfileController', function () {
       }
     }
     if (typeof Array.prototype.find !== 'function') {
-      Array.prototype.find = function (iterator) {
+      Array.prototype.find = function (iterator) { // eslint-disable-line no-extend-native
         var list = Object(this)
         var length = list.length >>> 0
         var thisArg = arguments[1]
@@ -214,7 +214,7 @@ describe('Controller: ProfileController', function () {
     var files = [{ name: 'name.txt', size: 8000000 }]
     profileCtrl.validateAvatar(files)
     expect(profileCtrl.icon).toBeUndefined()
-    expect(function () { parser.parse(raw) }).toThrow('')
+    expect(function () { parser.parse(raw) }).toThrow('') // eslint-disable-line no-undef
     expect(toasterService.warning).toHaveBeenCalled()
 
     done()
@@ -227,7 +227,7 @@ describe('Controller: ProfileController', function () {
     spyOn(profileCtrl, 'validateAvatar').and.returnValue(deferred1.promise)
     spyOn(contentService, 'uploadMedia').and.returnValue(deferred2.promise)
     profileCtrl.updateAvatar()
-    profileCtrl.validateAvatar(files)
+    profileCtrl.validateAvatar(files) // eslint-disable-line no-use-before-define
     deferred1.resolve(true)
     scope.$apply()
     contentService.uploadMedia()
@@ -300,6 +300,29 @@ describe('Controller: ProfileController', function () {
     scope.$apply()
 
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
+    done()
+  })
+  it('should show add a new address link ', function (done) {
+    spyOn(profileCtrl, 'processProfileData').and.callThrough()
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+    profileCtrl.address = []
+    scope.$apply()
+    expect(profileCtrl.isAddAddress).toBe(true)
+    done()
+  })
+
+  it('should not show add a new address link ', function (done) {
+    spyOn(profileCtrl, 'processProfileData').and.callThrough()
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+    profileCtrl.showAddAddress(userProfile.result.response.address)
+    expect(profileCtrl.isAddAddress).toBe(false)
+    done()
+  })
+  it('should Permanent radio button  checked by default', function (done) {
+    spyOn(profileCtrl, 'processProfileData').and.callThrough()
+    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+    profileCtrl.showAddAddress(isPermanentChecked.result.response.address)
+    expect(profileCtrl.ischekedCurrent).toBe(false)
     done()
   })
   it('should not validate new address values ', function (done) {
@@ -613,7 +636,8 @@ describe('Controller: ProfileController', function () {
 
   it('should get user Badges', function (done) {
     spyOn(profileCtrl, 'getUserBadges').and.callThrough()
-    spyOn(adminService, 'getBadgesList').and.returnValue([{ badgeTypeId: 123, name: 'test' }, { badgeTypeId: 222, name: 'test' }])
+    spyOn(adminService, 'getBadgesList').and.returnValue([{ badgeTypeId: 123, name: 'test' },
+      { badgeTypeId: 222, name: 'test' }])
     profileCtrl.user = { badges: [{ id: 123, name: 'test' }, { id: 222, name: 'test' }] }
     profileCtrl.getUserBadges()
     adminService.getBadgesList()

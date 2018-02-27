@@ -2,9 +2,9 @@
     <div class="header announcementCard-header">
         <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.summary}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'profileSummary'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit" ng-click="profileCtrl.openDiscriptionEdit=true">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.openDiscriptionEdit" ng-click="profileCtrl.openDiscriptionEdit=true; profileCtrl.generateInteractEvent('editSummary')">{{$root.frmelmnts.btn.edit}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.openDiscriptionEdit" ng-click="profileCtrl.openDiscriptionEdit=false;
-           profileCtrl.basicProfile.profileSummary=profileCtrl.getProfileObject(profileCtrl.user.profileSummary)">{{$root.frmelmnts.btn.close}}</a>
+           profileCtrl.basicProfile.profileSummary=profileCtrl.getProfileObject(profileCtrl.user.profileSummary); profileCtrl.generateInteractEvent('closeSummary')">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div class="description" ng-if="!profileCtrl.openDiscriptionEdit" ng-init="profileCtrl.readMore = false">
         <div  ng-if="!profileCtrl.readMore" >
@@ -23,7 +23,7 @@
             <textarea ng-model="profileCtrl.basicProfile.profileSummary"></textarea>
         </div>
 
-        <button class="ui primary button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary"ng-click="profileCtrl.EditDetails(profileCtrl.basicProfile.profileSummary);">{{$root.frmelmnts.btn.save}} </button>
+        <button class="ui primary button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary" ng-click="profileCtrl.EditDetails(profileCtrl.basicProfile.profileSummary); profileCtrl.generateInteractEvent('profileSummary')">{{$root.frmelmnts.btn.save}} </button>
 
     </form>
 </div>

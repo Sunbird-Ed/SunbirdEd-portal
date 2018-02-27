@@ -13,15 +13,42 @@ describe('HomeController', function () {
       $scope: $rootScope.$new()
     })
   }))
-  var rootScope, learnService, scope, $state, $q, deferred, homeCtrl
+  var rootScope, learnService, scope, deferred, homeCtrl, telemetryService
 
-  beforeEach(inject(function ($rootScope, _$state_, _$q_, $controller, _learnService_) {
+  var telemetrySpec = {
+    context: {
+      env: 'course',
+      sid: 'BhOOJNURrm_t0UPQYPGkIc4yLm_zFVfy',
+      did: 'ae5cf91de89fc62427fd5ded9e1adbe3',
+      cdata: [],
+      rollup: {
+        l1: '01232002070124134414',
+        l2: '012315809814749184151'
+      }
+    },
+    object: {
+      id: 'do_212345541699534848166',
+      type: 'course-read',
+      ver: '1.0'
+    },
+    tags: [
+      '01232002070124134414',
+      '012315809814749184151'
+    ],
+    edata: {
+      type: 'CLICK',
+      subtype: '',
+      id: 'course',
+      pageid: 'course'
+    }
+  }
+
+  beforeEach(inject(function ($rootScope, _$state_, _$q_, $controller, _learnService_, _telemetryService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    $state = _$state_
-    $q = _$q_
     deferred = _$q_.defer()
     learnService = _learnService_
+    telemetryService = _telemetryService_
     $rootScope.enrolledCourseIds = ['sdfsfsdfsdfsdfsdf']
     homeCtrl = new $controller('HomeController', {$scope: scope, $rootScope: rootScope})
   }))
@@ -97,5 +124,26 @@ describe('HomeController', function () {
     }
     homeCtrl.openCourseView(item, 'sdfsd')
     expect(homeCtrl.openCourseView).toBeDefined()
+  })
+
+  it('Should return telemetry interact event spec', function () {
+    spyOn(telemetryService, 'interactTelemetryData').and.returnValue(deferred.promise)
+    deferred.resolve(telemetrySpec)
+    spyOn(homeCtrl, 'generateInteractEvent').and.callThrough()
+    homeCtrl.generateInteractEvent('course', 'do_212345541699534848166', 'course', '1.0', 'course-read', 'course')
+    scope.$apply()
+    var response = telemetryService.interactTelemetryData().$$state.value
+    expect(response).toBe(telemetrySpec)
+  })
+
+  it('Should called lineInview method', function () {
+    var item = {
+      identifier: 'do_211321312312313132',
+      contentType: 'course'
+    }
+    spyOn(homeCtrl, 'lineInView').and.callThrough()
+    homeCtrl.lineInView(5, true, item, 'my course')
+    scope.$apply()
+    expect(homeCtrl.lineInView).toBeDefined()
   })
 })

@@ -99,13 +99,14 @@
         </div>
     </div>
      <div class="header announcementCard-header margin-top-30 margin-bottom-10">
-        <span class="header cardsHeading ">{{$root.frmelmnts.lbl.socialmedialinks}}</span>
+        <span class="header cardsHeading margin-left-10">{{$root.frmelmnts.lbl.socialmedialinks}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
+
         <profile-visibility  update="'true'" field="'webPages'"></profile-visibility>
      </div>
     <div ng-include="'views/profile/editProfile/socialMediaHelper.html'"></div>
 
     <div class="ui error message">
     </div>
-    <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.EditBasicProfile();">{{$root.frmelmnts.btn.save}} </button>
+    <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.EditBasicProfile(); profileCtrl.generateInteractEvent('basicInfo')">{{$root.frmelmnts.btn.save}} </button>
 
 </form>

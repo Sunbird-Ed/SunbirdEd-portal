@@ -93,7 +93,8 @@
     "lint": "eslint --ignore-path .eslintignore .",
     "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager",
     "validate": "npm ls",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "resource-bundles": "node app/helpers/resourceBundles/build.js"
   },
   "lint-staged": {
     "*.js": "eslint"

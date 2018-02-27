@@ -13,7 +13,7 @@ describe('pageSectionCtrl', function () {
       $scope: $rootScope.$new()
     })
   }))
-  var rootScope, pageSectionService, scope, $state, $q, deferred, sectionCtrl
+  var rootScope, pageSectionService, scope, deferred, sectionCtrl
   var getPageDataSuccessResponse = {
     'id': 'api.page.assemble',
     'ver': 'v1',
@@ -131,7 +131,6 @@ describe('pageSectionCtrl', function () {
                 'pkgVersion': 1,
                 'versionKey': '1510210140482',
                 'idealScreenDensity': 'hdpi',
-                's3Key': 'ecar_files/do_2123208084832829441775/1.-real-numbers_1505061829985_do_2123208084832829441775_1.0.ecar',
                 'lastSubmittedOn': '2017-09-10T16:46:04.022+0000',
                 'me_averageRating': 0,
                 'createdBy': '98e09d6e-b95b-4832-bfab-421e63d36aa7',
@@ -195,7 +194,6 @@ describe('pageSectionCtrl', function () {
                 'pkgVersion': 1,
                 'versionKey': '1505061846443',
                 'idealScreenDensity': 'hdpi',
-                's3Key': 'ecar_files/do_2123208084840939521776/13-probability_1505061846255_do_2123208084840939521776_1.0.ecar',
                 'lastSubmittedOn': '2017-09-10T16:46:20.723+0000',
                 'size': 985,
                 'lastPublishedOn': '2017-09-10T16:44:06.255+0000',
@@ -208,7 +206,7 @@ describe('pageSectionCtrl', function () {
                 'node_id': 62782
               }
             ],
-            'searchQuery': '{"request":{"query":"","filters":{"language":["English"],"contentType":["Story"]},"limit":10,"sort_by":{"lastUpdatedOn":"desc"}}}',
+            'searchQuery': '{"request":{"query":"","filters":{"language":["English"],"contentType":["Story"]}}}',
             'name': 'Popular Story',
             'id': '01228383384379392023',
             'group': 2
@@ -218,11 +216,9 @@ describe('pageSectionCtrl', function () {
     }
   }
 
-  beforeEach(inject(function ($rootScope, _$state_, _$q_, $controller, _pageSectionService_) {
+  beforeEach(inject(function ($rootScope, _$q_, $controller, _pageSectionService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    $state = _$state_
-    $q = _$q_
     deferred = _$q_.defer()
     pageSectionService = _pageSectionService_
     $rootScope.enrolledCourseIds = ['sdfsfsdfsdfsdfsdf']
@@ -284,5 +280,17 @@ describe('pageSectionCtrl', function () {
     spyOn(sectionCtrl, 'sections').and.callThrough()
     sectionCtrl.sections()
     done()
+  })
+
+  it('Should called lineInview method', function () {
+    var item = {
+      identifier: 'do_211321312312313132',
+      contentType: 'Course'
+    }
+    rootScope.visitData = [{objId: 'do_2331245645656788', objtype: 'Course', section: 'my course'}]
+    spyOn(rootScope, 'lineInView').and.callThrough()
+    rootScope.lineInView(5, true, item, 'my course')
+    scope.$apply()
+    expect(rootScope.lineInView).toBeDefined()
   })
 })

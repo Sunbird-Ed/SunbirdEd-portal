@@ -7,7 +7,7 @@ angular.module('playerApp')
       permissionsService, workSpaceUtilsService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
-      collectionEditor.frameworkId = $stateParams.frameworkId
+      collectionEditor.framework = $stateParams.framework
       collectionEditor.openCollectionEditor = function (data) {
         $('#collectionEditor').iziModal({
           title: '',
@@ -39,7 +39,7 @@ angular.module('playerApp')
           },
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
           channel: org.sunbird.portal.channel,
-          framework: collectionEditor.frameworkId,
+          framework: collectionEditor.framework,
           env: data.type.toLowerCase()
         }
 
