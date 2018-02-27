@@ -68,6 +68,7 @@ angular.module('playerApp')
             startDate = currentDate
           }
           $('#updateBatchModal').modal({
+            closable: false,
             onShow: function () {
               $('.ui.calendar#rangestartAdd').calendar({
                 type: 'date',
