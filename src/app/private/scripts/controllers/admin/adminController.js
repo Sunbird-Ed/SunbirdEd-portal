@@ -376,13 +376,7 @@ angular.module('playerApp')
       admin.getUserRoles()
 
       admin.checkPermissionToUpdateGlobalRole = function () {
-        var profileData = userService.getCurrentUserProfile()
-        if (profileData) {
-          var isRootOrgAdmin = _.find(profileData.organisations, ['organisationId', profileData.rootOrgId])
-          return !!isRootOrgAdmin
-        } else {
-          return false
-        }
+        return $rootScope.rootOrgAdmin
       }
     }
   ])
