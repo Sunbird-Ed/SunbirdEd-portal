@@ -1,11 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from './learner.service';
 
 describe('LearnerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LearnerService]
+      imports: [HttpClientModule],
+      providers: [LearnerService, ConfigService, HttpClient]
     });
   });
 
