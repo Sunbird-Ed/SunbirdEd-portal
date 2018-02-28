@@ -169,4 +169,16 @@ angular.module('playerApp')
           request: request
         }
       }
+
+      this.filterUserSearchResult = function (userData, query) {
+        if (query) {
+          var fname = userData.firstName !== null && userData.firstName.includes(query)
+          var lname = userData.lastName !== null && userData.lastName.includes(query)
+          var email = userData.email !== null && userData.email.includes(query)
+          var phone = userData.phone !== null && userData.phone.includes(query)
+          return fname || lname || email || phone
+        } else {
+          return true
+        }
+      }
     }])

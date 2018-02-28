@@ -19,6 +19,7 @@ angular.module('playerApp')
 
       batchUpdate.init = function () {
         batchUpdate.getBatchDetails()
+        batchUpdate.getUserList()
       }
 
       batchUpdate.getSelectedUser = function (participant) {
@@ -69,16 +70,16 @@ angular.module('playerApp')
             batchUpdate.selectedMentors = _.uniqBy(batchUpdate.selectedMentors, 'id')
           }
         })
-
-        if (Object.keys(batchUpdate.searchUserMap).length <= 1) {
+        batchUpdate.isUserSearch = 0
+        $('#users').dropdown('refresh')
+        $('#mentors').dropdown('refresh')
+        if (Object.keys(batchUpdate.searchUserMap).length <= 2) {
           batchUpdate.initializeUI()
         }
       }
 
       batchUpdate.initializeUI = function () {
         $timeout(function () {
-          $('#users').dropdown()
-          $('#mentors').dropdown()
           batchUpdate.initializeEvent()
           if (batchUpdate.batchData.enrollmentType === 'open') {
             $('input:radio[name="enrollmentType"]').filter('[value="open"]').attr('checked', true)
@@ -93,6 +94,7 @@ angular.module('playerApp')
             startDate = currentDate
           }
           $('#updateBatchModal').modal({
+            closable: false,
             onShow: function () {
               $('.ui.calendar#rangestartAdd').calendar({
                 type: 'date',
@@ -153,16 +155,13 @@ angular.module('playerApp')
       }
 
       batchUpdate.initializeEvent = function () {
-        $('#users input.search').focusin(function (e) {
-          batchUpdate.getUserListWithQuery('')
-        })
-        $('#mentors input.search').focusin(function (e) {
-          batchUpdate.getUserListWithQuery('')
-        })
+        $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true })
         $('#users input.search').on('keyup', function (e) {
+          batchUpdate.isUserSearch = 1
           batchUpdate.getUserListWithQuery(this.value)
         })
         $('#mentors input.search').on('keyup', function (e) {
+          batchUpdate.isUserSearch = 2
           batchUpdate.getUserListWithQuery(this.value)
         })
       }
@@ -174,8 +173,11 @@ angular.module('playerApp')
         batchUpdate.userSearchTime = setTimeout(function () {
           var users = batchUpdate.searchUserMap[query]
           if (users) {
+            batchUpdate.isUserSearch = 0
             batchUpdate.userList = users.user
             batchUpdate.menterList = users.mentor
+            $('#users').dropdown('refresh')
+            $('#mentors').dropdown('refresh')
           } else {
             batchUpdate.getUserList(query)
           }
@@ -188,18 +190,20 @@ angular.module('playerApp')
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
               if (userData.identifier !== $rootScope.userId) {
-                var user = {
-                  id: userData.identifier,
-                  name: userData.firstName + ' ' + userData.lastName ? userData.lastName : '',
-                  avatar: userData.avatar,
-                  otherDetail: batchService.getUserOtherDetail(userData)
-                }
-                _.forEach(userData.organisations, function (userOrgData) {
-                  if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-                    batchUpdate.menterList.push(user)
+                if (batchService.filterUserSearchResult(userData, query)) {
+                  var user = {
+                    id: userData.identifier,
+                    name: userData.firstName + (userData.lastName ? +' ' + userData.lastName : ''),
+                    avatar: userData.avatar,
+                    otherDetail: batchService.getUserOtherDetail(userData)
                   }
-                })
-                batchUpdate.userList.push(user)
+                  _.forEach(userData.organisations, function (userOrgData) {
+                    if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+                      batchUpdate.menterList.push(user)
+                    }
+                  })
+                  batchUpdate.userList.push(user)
+                }
               }
             })
             batchUpdate.userList = _.uniqBy(batchUpdate.userList, 'id')
@@ -210,12 +214,14 @@ angular.module('playerApp')
                 user: _.clone(batchUpdate.userList)
               }
             }
+            batchUpdate.isUserSearch = 0
             batchUpdate.showUpdateBatchModal()
           } else {
+            batchUpdate.isUserSearch = 0
             toasterService.error($rootScope.messages.fmsg.m0056)
           }
-        }).catch(function (error) {
-          console.log(error)
+        }).catch(function () {
+          batchUpdate.isUserSearch = 0
           toasterService.error($rootScope.messages.fmsg.m0056)
         })
       }
