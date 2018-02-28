@@ -254,22 +254,7 @@ angular.module('playerApp')
       }
 
       batch.getUserList = function (query) {
-        var request = {
-          request: {
-            filters: {}
-          }
-        }
-        if (query) {
-          request.request.query = query
-        }
-        var isCourseMentor = permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['COURSE_MENTOR']
-        var profile = userService.getCurrentUserProfile()
-        if (isCourseMentor && isCourseMentor.includes(profile.rootOrgId)) {
-          request.request.filters['rootOrgId'] = profile.rootOrgId
-        } else {
-          request.request.filters['organisations.organisationId'] = $rootScope.organisationIds
-        }
-
+        var request = batchService.getRequestBodyForUserSearch(query)
         batchService.getUserList(request).then(function (response) {
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
