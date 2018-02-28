@@ -1,11 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '@sunbird/shared';
 import { PermissionService } from './permission.service';
-
+import { LearnerService, UserService } from '@sunbird/core';
 describe('PermissionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PermissionService]
+      imports: [HttpClientModule],
+      providers: [PermissionService, ConfigService, HttpClient, LearnerService, UserService]
     });
   });
 
