@@ -8,7 +8,8 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 // Services
 import { OrganisationService } from './organization.service';
-import { LearnerService, ConfigService } from '@sunbird/core';
+import { LearnerService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils.service';
 // Test data
 import * as mockData from './organization.service.spec.data';

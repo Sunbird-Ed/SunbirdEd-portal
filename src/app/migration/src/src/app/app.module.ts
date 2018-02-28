@@ -1,4 +1,3 @@
-import { DashboardModule } from './modules/dashboard/dashboard.module';
 // import { SharedModule } from './modules/shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,6 +6,7 @@ import { AppRoutingModule } from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { CommunityModule } from '@sunbird/community';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';

@@ -8,12 +8,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 // Services
 import {
   OrganisationComponent, OrganisationService, DashboardUtilsService, RendererService,
-  LineChartService, DownloadService } from './../../index';
-import { ResourceService, UserService, SearchService, ContentService, LearnerService, ConfigService } from '@sunbird/core';
+  LineChartService, DownloadService
+} from './../../index';
+import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 // Test data
 import * as mockData from './organization.component.spec.data';
 const testData = mockData.mockRes;

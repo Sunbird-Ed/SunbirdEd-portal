@@ -9,7 +9,8 @@ import { ContentService } from './../content/content.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { SearchService } from './search.service';
 import { UserService } from './../user/user.service';
-import { ConfigService } from './../config/config.service';
+import { ConfigService } from '@sunbird/shared';
+
 
 describe('SearchService', () => {
   beforeEach(() => {

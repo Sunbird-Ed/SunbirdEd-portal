@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // SB service(S)
 import { RendererService, OrganisationService, DownloadService } from './../../services';
-import { UserService, ResourceService, SearchService } from '@sunbird/core';
+import { UserService, SearchService } from '@sunbird/core';
+import { ResourceService } from '@sunbird/shared';
 // import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import * as _ from 'lodash';
 

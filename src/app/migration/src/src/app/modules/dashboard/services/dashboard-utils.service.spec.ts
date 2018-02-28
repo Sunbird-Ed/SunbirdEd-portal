@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ConfigService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './dashboard-utils.service';
 
 describe('DashboardUtilsService', () => {
@@ -72,5 +72,4 @@ describe('DashboardUtilsService', () => {
     expect(service.constructDownloadReportApiUrl).toBeDefined();
     expect(response).toEqual(apiUrl);
   }));
-
 });

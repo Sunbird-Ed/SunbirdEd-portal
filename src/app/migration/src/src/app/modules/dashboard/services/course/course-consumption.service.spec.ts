@@ -7,7 +7,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 // Import service(s)
-import { LearnerService, ConfigService } from '@sunbird/core';
+import { LearnerService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService, DashboardUtilsService } from './..';
 // Test data
 import * as mockData from './course-consumption.service.spec.data';

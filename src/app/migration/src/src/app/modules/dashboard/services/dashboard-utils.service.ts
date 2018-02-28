@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import 'moment-duration-format';
-import { ConfigService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
 
 /**
  * Dashboard utils service

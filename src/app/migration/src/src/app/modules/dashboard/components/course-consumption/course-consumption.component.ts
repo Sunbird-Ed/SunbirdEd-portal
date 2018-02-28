@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
-import { UserService, ResourceService, SearchService } from '@sunbird/core';
+import { UserService, SearchService } from '@sunbird/core';
+import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 
 /**

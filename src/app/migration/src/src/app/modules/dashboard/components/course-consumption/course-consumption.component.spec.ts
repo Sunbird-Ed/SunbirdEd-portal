@@ -8,12 +8,12 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 
 // SB components and service
 import { CourseConsumptionComponent, DashboardUtilsService, LineChartService,
   CourseConsumptionService, RendererService } from './../../index';
-import { ResourceService, UserService, SearchService, ContentService, LearnerService, ConfigService } from '@sunbird/core';
+import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 import * as mockData from './course-consumption.component.spec.data';
 const testData = mockData.mockRes;
 
@@ -29,11 +29,7 @@ describe('CourseConsumptionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionComponent],
-      imports: [HttpClientTestingModule,
-        FormsModule,
-        SuiModule,
-        ChartsModule,
-        SharedModule],
+      imports: [HttpClientTestingModule, FormsModule, SuiModule, ChartsModule, SharedModule],
       providers: [HttpClientModule, CourseConsumptionService,
         RendererService,
         LearnerService,
@@ -42,8 +38,8 @@ describe('CourseConsumptionComponent', () => {
         SearchService,
         LineChartService,
         DashboardUtilsService,
-        ResourceService,
         ConfigService,
+        ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]

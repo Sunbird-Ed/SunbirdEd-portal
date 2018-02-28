@@ -1,7 +1,7 @@
-import { UserService, PermissionService, ResourceService, ConfigService } from './../../services';
+import { UserService, PermissionService } from './../../services';
 // import * as roleConfig from './../../../config/roles.config.json';
 import { Component, OnInit } from '@angular/core';
-
+import { ConfigService, ResourceService} from '@sunbird/shared';
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html',
