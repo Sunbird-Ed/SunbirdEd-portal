@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { AnnouncementService, PaginationService, ResourceService, ToasterService, ConfigService } from '@sunbird/core';
+import { AnnouncementService} from '@sunbird/core';
+import { ResourceService, ConfigService, PaginationService, ToasterService} from '@sunbird/shared';
 
 /**
  * The announcement outbox component displays all

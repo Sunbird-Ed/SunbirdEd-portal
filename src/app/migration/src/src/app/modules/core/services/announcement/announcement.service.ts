@@ -1,11 +1,13 @@
+// import { ConfigService } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
-import { AnnouncementSericeParam } from './../../interfaces/announcement.serivce';
-import { ConfigService} from './../config/config.service';
+import { AnnouncementSericeParam } from './../../../announcement/interfaces/announcement.serivce';
+import { ConfigService} from '@sunbird/shared';
+
 
 /**
  * Service for all announcement API calls

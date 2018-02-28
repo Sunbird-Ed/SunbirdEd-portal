@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { AnnouncementService, ResourceService, ToasterService } from '@sunbird/core';
+import { AnnouncementService } from '@sunbird/core';
+import { ResourceService, ToasterService} from '@sunbird/shared';
 
 /**
  * The delete component deletes the announcement

@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnnouncementRoutingModule } from './announcement-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService, PaginationService} from '@sunbird/shared';
 
-import { AnnouncementService, PaginationService, ResourceService} from '@sunbird/core';
+import { AnnouncementService} from '@sunbird/core';
 import { OutboxComponent, DeleteComponent} from './components/index';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { OutboxComponent, DeleteComponent} from './components/index';
     SuiModule
   ],
   declarations: [OutboxComponent, DeleteComponent],
-  providers: [AnnouncementService, PaginationService, ResourceService]
+  providers: [AnnouncementService, ResourceService, PaginationService]
 })
 export class AnnouncementModule { }
