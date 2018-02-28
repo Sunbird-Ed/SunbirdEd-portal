@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 // Import rxjs packages
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 // Import service(s)
 import { LearnerService, ConfigService } from '@sunbird/core';
 import { CourseConsumptionService, DashboardUtilsService } from './..';

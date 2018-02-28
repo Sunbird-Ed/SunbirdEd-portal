@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
 import { ChartsModule } from 'ng2-charts/ng2-charts';

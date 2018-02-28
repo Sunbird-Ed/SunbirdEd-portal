@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DownloadService, DashboardUtilsService } from './../';
 import { LearnerService, ConfigService } from '@sunbird/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import * as mockData from './download.service.spec.data';
 const testData = mockData.mockRes;
 

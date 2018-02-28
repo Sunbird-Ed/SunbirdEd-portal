@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SharedModule } from '@sunbird/shared';
 
 // SB components and service

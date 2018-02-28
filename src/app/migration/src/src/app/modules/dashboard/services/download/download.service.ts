@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { LearnerService } from '@sunbird/core';
 import { DashboardUtilsService } from './../dashboard-utils.service';
 import { Dashboard } from './../../index';
