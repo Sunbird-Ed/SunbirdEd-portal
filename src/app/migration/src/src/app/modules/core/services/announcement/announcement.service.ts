@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
-import { AnnouncementSericeParam } from './../../interfaces';
+import { AnnouncementSericeParam } from './../../interfaces/announcement.serivce';
 import { ConfigService} from './../config/config.service';
 
 /**
