@@ -226,6 +226,7 @@ angular.module('playerApp')
           forceSelection: false,
           fullTextSearch: true,
           onAdd: function () {
+            $('#createBatchModal').modal('refresh')
             batch.isUserSearch = 1
             batch.getUserListWithQuery('')
           }
@@ -234,6 +235,7 @@ angular.module('playerApp')
           fullTextSearch: true,
           forceSelection: false,
           onAdd: function () {
+            $('#createBatchModal').modal('refresh')
             batch.isUserSearch = 2
             batch.getUserListWithQuery('')
           }
