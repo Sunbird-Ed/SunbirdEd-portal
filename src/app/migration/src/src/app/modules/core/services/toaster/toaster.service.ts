@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 
+/**
+ * Service to show toaster
+ *
+ */
 @Injectable()
+
+/**
+ * ToasterService helps to change the config of
+ * the iziToast
+ */
 export class ToasterService {
 
   /**

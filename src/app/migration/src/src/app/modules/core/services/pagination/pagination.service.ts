@@ -2,8 +2,16 @@ import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './../config/config.service';
 
+/**
+ * Service for pagination
+ *
+ */
 @Injectable()
 
+/**
+ * PaginationService excepts 3 parameters which
+ * helps to create the pager object.
+ */
 export class PaginationService {
   /**
    * reference of config service.
@@ -19,6 +27,14 @@ export class PaginationService {
     this.config = config;
   }
 
+  /**
+  * Method to make api call to get inbox data.
+  * It calls the post method from data service class
+  *
+  * @param {number} totalItems Total number of items
+  * @param {number} currentPage Current page number which needs to be displayed
+  * @param {number} pageSize Number of items to be displayed in a page
+  */
   getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
     // calculate total pages
     const totalPages = Math.ceil(totalItems / pageSize);
@@ -34,11 +50,11 @@ export class PaginationService {
       if (currentPage <= 1) {
         startPage = 1;
         endPage = pageStrip;
-      // when pagination is on the last section
+        // when pagination is on the last section
       } else if (currentPage + (pageStrip - 1) >= totalPages) {
         startPage = totalPages - (pageStrip - 1);
         endPage = totalPages;
-      // when pagination is not on the first/last section
+        // when pagination is not on the first/last section
       } else {
         startPage = currentPage;
         endPage = currentPage + (pageStrip - 1);
