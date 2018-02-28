@@ -18,7 +18,7 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/core": "^0.2.0",
-    "@angular/animations": "^5.2.0",
+    "@angular/animations": "^5.2.6",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
@@ -33,6 +33,7 @@
     "angular2-uuid": "^1.1.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
+    "ng2-izitoast": "^1.0.1",
     "ng2-semantic-ui": "^0.9.6"
   },
   "devDependencies": {

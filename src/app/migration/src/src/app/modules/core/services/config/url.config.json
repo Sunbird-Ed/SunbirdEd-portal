@@ -99,7 +99,7 @@
           "DEFINITIONS" : "/definitions",
           "READ" : "/read",
           "RECEIVED":"/received",
-          "CANCEL":"/v1/cancel"
+          "CANCEL":"/cancel"
         },
         "CHANNEL": {
             "READ":"channel/v1/read"

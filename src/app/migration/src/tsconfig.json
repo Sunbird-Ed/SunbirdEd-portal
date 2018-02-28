@@ -12,6 +12,9 @@
       ],
       "@sunbird/shared": [
         "app/modules/shared"
+      ],
+      "@sunbird/announcement": [
+        "app/modules/announcement"
       ]
     },
     "sourceMap": true,

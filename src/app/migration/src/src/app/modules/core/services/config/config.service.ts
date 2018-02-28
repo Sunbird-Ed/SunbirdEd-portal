@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as  urlConfig from './url.config.json';
+import * as  appConfig from './app.config.json';
 import * as  dropDownConfig from './dropdown.config.json';
 import * as  rolesConfig from './roles.config.json';
 
@@ -13,7 +14,12 @@ export class ConfigService {
  * property containing url config
  *
  */
-  urlConFig = (<any>urlConfig);
+urlConFig = (<any>urlConfig);
+/**
+ * property containing app config
+ *
+ */
+pageConfig = (<any>appConfig);
 /**
  * property containing drop down config
  *

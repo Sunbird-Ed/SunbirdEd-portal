@@ -6,3 +6,7 @@ export * from './badges/badges.service';
 export * from './announcement/announcement.service';
 export * from './permission/permission.service';
 export * from './config/config.service';
+export * from './announcement/announcement.service';
+export * from './pagination/pagination.service';
+export * from './toaster/toaster.service';
+
