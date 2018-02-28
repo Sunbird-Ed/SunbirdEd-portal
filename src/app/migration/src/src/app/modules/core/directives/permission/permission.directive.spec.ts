@@ -1,5 +1,6 @@
 import { PermissionDirective } from './permission.directive';
-import { PermissionService } from './../../../../services/permission/permission.service';
+import { PermissionService } from './../../services';
+
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 describe('PermissionDirective', () => {

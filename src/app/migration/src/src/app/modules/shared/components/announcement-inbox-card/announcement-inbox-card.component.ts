@@ -1,5 +1,5 @@
-import { Announcement } from '../../interface/index';
-import { ResourceService } from './../../../core/services/resource/resource.service';
+import { Announcement } from '../../interfaces/index';
+import { ResourceService } from '../../services/index';
 import { Component, Input } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';

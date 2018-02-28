@@ -1,5 +1,4 @@
-import { ServerResponse } from './../../interfaces';
-import { ConfigService } from './../config/config.service';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -45,7 +44,6 @@ export class UserService {
   constructor(config: ConfigService, learner: LearnerService) {
     this.config = config;
     this.learner = learner;
-    this.getUserProfile();
   }
   /**
    * get method to fetch userid.
@@ -63,6 +61,7 @@ export class UserService {
    * method to fetch user profile from server.
    */
   public getUserProfile(): void {
+    // if (USprofileData) return USprofileData;
     const option = {
       url: this.config.urlConFig.URLS.USER.GET_PROFILE + this.userid,
       param: this.config.urlConFig.params.userReadParam
@@ -75,6 +74,10 @@ export class UserService {
         this._userData$.next({ err: err, userProfile: { ...this.userProfile } });
       }
     );
+  }
+
+  public initialize() {
+    this.getUserProfile();
   }
   /**
    * method to set user profile to behavior subject.

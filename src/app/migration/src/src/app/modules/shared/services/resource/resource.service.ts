@@ -1,15 +1,15 @@
+import { HttpOptions, RequestParam, ServerResponse} from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService } from './../config/config.service';
-import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ServerResponse } from './../../interfaces';
-
+import { UUID } from 'angular2-uuid';
+import * as moment from 'moment';
 /**
  * Service to fetch resource bundle
  */
 @Injectable()
-export class ResourceService extends DataService {
+export class ResourceService {
  /**
  * messages bundle
  */
@@ -22,6 +22,8 @@ export class ResourceService extends DataService {
    * reference of config service.
    */
   public config: ConfigService;
+  public baseUrl: string;
+  public http: HttpClient;
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -31,7 +33,7 @@ export class ResourceService extends DataService {
     /**
      * @param {HttpClient} http LearnerService reference
     */
-    super(http);
+    this.http = http;
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
     this.getResource();
@@ -53,4 +55,29 @@ export class ResourceService extends DataService {
       }
     );
    }
+   get(requestParam: RequestParam): Observable<any> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param
+    };
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions)
+    .flatMap((data: ServerResponse) => {
+      if (data.responseCode !== 'OK') {
+        return Observable.throw(data);
+      }
+      return Observable.of(data);
+    });
+  }
+  private getHeader(): HttpOptions['headers'] {
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-Consumer-ID': 'X-Consumer-ID',
+      'X-Device-ID': 'X-Device-ID',
+      'X-Org-code': '',
+      'X-Source': 'web',
+      'ts': moment().format(),
+      'X-msgid': UUID.UUID()
+    };
+  }
 }

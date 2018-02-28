@@ -1,13 +1,13 @@
-import { ConfigService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import services
-import { ResourceService } from './../../../core/services/resource/resource.service';
+import { ResourceService, ConfigService  } from '../../services/index';
 import { DateFormatPipe } from '../../pipes/index';
-import { Announcement } from '../../interface/index';
+import { Announcement } from '../../interfaces/index';
 import { AnnouncementInboxCardComponent } from './announcement-inbox-card.component';
 // Test data
 import * as mockData from './announcement-inbox-card.component.spec.data';
