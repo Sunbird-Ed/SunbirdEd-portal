@@ -1,5 +1,4 @@
-import { ServerResponse } from './../../interfaces/serverResponse';
-import { RequestParam , HttpOptions } from './../../interfaces';
+import { ServerResponse, RequestParam , HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';

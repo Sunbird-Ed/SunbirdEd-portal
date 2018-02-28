@@ -1,4 +1,4 @@
-import { PermissionService } from './../../../core/services/permission/permission.service';
+import { PermissionService } from './../../services';
 import { Directive, Renderer2, ElementRef, Input, OnInit } from '@angular/core';
 @Directive({
   selector: '[appPermission]'
