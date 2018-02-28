@@ -1,4 +1,4 @@
-import { ConfigService } from './../config/config.service';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ServerResponse } from './../../interfaces';
 
 /**
  * Service to fetch permission and validate user permission

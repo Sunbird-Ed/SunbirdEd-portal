@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 /**
  *component for community list
  */
@@ -6,10 +6,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './community-list.component.html',
   styleUrls: ['./community-list.component.css']
 })
-export class CommunityListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class CommunityListComponent {
 }

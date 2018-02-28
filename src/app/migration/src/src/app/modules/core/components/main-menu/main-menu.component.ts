@@ -1,4 +1,4 @@
-import { ResourceService } from './../../services';
+import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

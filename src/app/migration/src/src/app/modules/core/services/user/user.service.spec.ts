@@ -1,3 +1,5 @@
+import { LearnerService } from './../learner/learner.service';
+import { ConfigService } from './../config/config.service';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UserService } from './user.service';
@@ -5,7 +7,7 @@ import { UserService } from './user.service';
 describe('userService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserService]
+      providers: [UserService, ConfigService, LearnerService]
     });
   });
 

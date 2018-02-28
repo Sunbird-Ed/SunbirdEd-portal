@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from '@sunbird/core';
 /**
  * main app component
  *
@@ -9,4 +10,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(public userService: UserService) {
+    userService.initialize();
+  }
 }
