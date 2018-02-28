@@ -1,14 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ResourceService, ConfigService } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
   let fixture: ComponentFixture<MainMenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainMenuComponent ]
+      imports: [HttpClientModule],
+      declarations: [ MainMenuComponent ],
+      providers: [ HttpClient, ResourceService, ConfigService]
     })
     .compileComponents();
   }));

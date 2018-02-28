@@ -1,3 +1,5 @@
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { AnnouncementService } from './announcement.service';
@@ -5,7 +7,8 @@ import { AnnouncementService } from './announcement.service';
 describe('AnnouncementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AnnouncementService]
+      imports: [HttpClientModule],
+      providers: [AnnouncementService, ConfigService, HttpClient]
     });
   });
 
