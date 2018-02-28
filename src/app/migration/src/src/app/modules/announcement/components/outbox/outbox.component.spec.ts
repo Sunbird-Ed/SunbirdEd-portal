@@ -78,7 +78,6 @@ describe('OutboxComponent', () => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');
                     expect(err.error.params.status).toBe('failed');
                     expect(err.error.responseCode).toBe('CLIENT_ERROR');
-                    expect(err.error.responseCode).toBe('CLIENT_ERROR');
                     expect(toasterService.error).toHaveBeenCalledWith(err.error.params.errmsg);
                 }
             );
