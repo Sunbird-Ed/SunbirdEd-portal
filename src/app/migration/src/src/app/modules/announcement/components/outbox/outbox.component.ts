@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { AnnouncementService, PaginationService, ResourceService, ToasterService, ConfigService} from '@sunbird/core';
+import { AnnouncementService, PaginationService, ResourceService, ToasterService, ConfigService } from '@sunbird/core';
 
 /**
  * The announcement outbox component displays all
@@ -114,7 +114,7 @@ export class OutboxComponent {
     this.config = config;
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.renderOutbox( this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
+      this.renderOutbox(this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
   }
 
