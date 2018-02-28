@@ -15,10 +15,6 @@ import { OutboxComponent } from '../index';
 import { AnnouncementService, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 
-
-// import * as appConfig from './../../../../config/app.config.json';
-// const pageConfig = (<any>appConfig);
-
 describe('OutboxComponent', () => {
     let component: OutboxComponent;
     let fixture: ComponentFixture<OutboxComponent>;
