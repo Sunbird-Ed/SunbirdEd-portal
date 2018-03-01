@@ -185,11 +185,6 @@ angular.module('playerApp')
             self.roleOrgMap[role].push(org.organisationId)
           })
         })
-        if (profile.roles && profile.roles.includes('COURSE_MENTOR')) {
-          this.roleOrgMap['COURSE_MENTOR'] = this.roleOrgMap['COURSE_MENTOR'] || []
-          this.roleOrgMap['COURSE_MENTOR'].push(profile.rootOrgId)
-          this.roleOrgMap['COURSE_MENTOR'] = _.uniq(this.roleOrgMap['COURSE_MENTOR'])
-        }
       }
 
       this.getRoleOrgMap = function () {

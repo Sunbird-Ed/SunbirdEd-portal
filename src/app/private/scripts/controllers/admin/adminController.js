@@ -12,9 +12,8 @@ angular.module('playerApp')
     'toasterService',
     'permissionsService',
     'searchService',
-    'userService',
     function (adminService, $timeout, $state, config, $rootScope, $scope,
-      contentService, toasterService, permissionsService, searchService, userService
+      contentService, toasterService, permissionsService, searchService
     ) {
       /**
      * @class adminController
@@ -23,8 +22,6 @@ angular.module('playerApp')
      */
       var admin = this
       admin.searchResult = $scope.users
-      admin.courseMentorRole = { roleName: 'Course Mentor', role: 'COURSE_MENTOR' }
-
       admin.badges = adminService.getBadgesList()
       /**
          * @method getOrgName
@@ -98,7 +95,7 @@ angular.module('playerApp')
         }
       }
       // open editRoles modal
-      admin.showModal = function (identifier, orgs, profileLevelRoles) {
+      admin.showModal = function (identifier, orgs) {
         $timeout(function () {
           $('#changeUserRoles').modal({
             onShow: function () {
@@ -106,18 +103,12 @@ angular.module('playerApp')
               admin.identifier = identifier
               admin.userOrganisations = orgs
               admin.selectedOrgUserRoles = []
-              admin.profileLevelRoles = profileLevelRoles
-              admin.isCourseMentorUser = profileLevelRoles.includes(admin.courseMentorRole.role)
-              admin.isGlobalRoleChange = false
-              admin.isOrgRoleChange = false
               $('.roleChckbox').checkbox()
             },
             onHide: function () {
               admin.userId = ''
               admin.userOrganisations = []
               admin.selectedOrgUserRoles = []
-              admin.profileLevelRoles = []
-              admin.isCourseMentorUser = false
               return true
             }
           }).modal('show')
@@ -213,7 +204,6 @@ angular.module('playerApp')
         return list.includes(role)
       }
       admin.editRoles = function (role, userRoles) {
-        admin.isOrgRoleChange = true
         if (userRoles.includes(role) === true) {
           admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
             return selectedRole !== role
@@ -222,77 +212,33 @@ angular.module('playerApp')
           admin.selectedOrgUserRoles.push(role)
         }
       }
-
-      admin.editGlobalRoles = function (role) {
-        admin.isGlobalRoleChange = true
-        if (admin.isCourseMentorUser === true) {
-          admin.isCourseMentorUser = false
-          admin.profileLevelRoles = _.without(admin.profileLevelRoles, role)
-        } else {
-          admin.isCourseMentorUser = true
-          admin.profileLevelRoles.push(role)
-        }
-      }
-
-      admin.hideChangeRoleModel = function () {
-        if (admin.isUserRoleUpdate && admin.isOrgRoleUpdated) {
-          $('#changeUserRoles').modal('hide', function () {
-            $('#changeUserRoles').modal('hide')
-          })
-        }
-      }
-
       admin.updateRoles = function (identifier, orgId, roles) {
-        if (admin.isOrgRoleChange) {
-          var req = {
-            request: {
-              userId: identifier,
-              organisationId: orgId,
-              roles: roles
-            }
-          }
-          admin.isOrgRoleUpdated = false
-          adminService.updateRoles(req).then(function (res) {
-            if (res.responseCode === 'OK') {
-              admin.isOrgRoleUpdated = true
-              admin.isOrgRoleChange = false
-              toasterService.success($rootScope.messages.smsg.m0028)
-            } else {
-              toasterService.error($rootScope.messages.fmsg.m0076)
-            }
-            admin.hideChangeRoleModel()
-          }).catch(function () {
-            toasterService.error($rootScope.messages.fmsg.m0051)
-          })
-        }
-      }
+        var req = {
+          request: {
+            userId: identifier,
+            organisationId: orgId,
+            roles: roles
 
-      admin.updateGlobalLevelRoles = function (userid, roles) {
-        if (admin.isGlobalRoleChange) {
-          var index = admin.profileLevelRoles && admin.profileLevelRoles.indexOf('public')
-          if (index > -1) {
-            admin.profileLevelRoles[index] = 'PUBLIC'
           }
-          var request = {
-            request: {
-              userId: userid,
-              roles: roles
-            }
-          }
-          admin.isUserRoleUpdate = false
-          adminService.updateRoles(request).then(function (res) {
-            if (res.responseCode === 'OK') {
-              admin.isUserRoleUpdate = true
-              admin.isGlobalRoleChange = false
-              toasterService.success($rootScope.messages.smsg.m0042)
-            } else {
-              toasterService.error($rootScope.messages.fmsg.m0077)
-            }
-            admin.hideChangeRoleModel()
-          }).catch(function () {
-            toasterService.error($rootScope.messages.fmsg.m0051)
-          })
         }
+
+        adminService.updateRoles(req).then(function (res) {
+          if (res.responseCode === 'OK') {
+            toasterService.success($rootScope.messages.smsg.m0028)
+            $('#changeUserRoles').modal('hide', function () {
+              $('#changeUserRoles').modal('hide')
+            })
+          } else {
+            $('#changeUserRoles').modal('hide', function () {
+              $('#changeUserRoles').modal('hide')
+            })
+            // profile.isError = true;
+            toasterService.error($rootScope.messages.fmsg.m0051)
+          }
+        }).catch(function (err) { // eslint-disable-line
+          // profile.isError = true
+          toasterService.error($rootScope.messages.fmsg.m0051)
+        })
       }
 
       // user Roles
@@ -310,7 +256,7 @@ angular.module('playerApp')
       }
 
       admin.setDefaultSelected = function (organizations) {
-        if (organizations.length > 0) {
+        if (organizations) {
           $timeout(function () {
             var orgDropdown = $('#userOrgs').dropdown()
             orgDropdown.dropdown('set text', organizations[0].orgName)
@@ -374,9 +320,5 @@ angular.module('playerApp')
         }
       }
       admin.getUserRoles()
-
-      admin.checkPermissionToUpdateGlobalRole = function () {
-        return $rootScope.rootOrgAdmin
-      }
     }
   ])

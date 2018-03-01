@@ -35,22 +35,9 @@
 
             </ul>
         </div>
-
-        <h5 class="margin-top-30 margin-left-10" ng-if="admin.checkPermissionToUpdateGlobalRole()"><span class="ui header">{{$root.frmelmnts.lbl.globalRole}}</span></h5>
-        <div class="ui form">
-            <ul class="selectOrgRoles">
-                <li class="orgRolesListView">
-                    <div class="ui checkbox">
-                        <input type="checkbox" value='{{admin.courseMentorRole.role}}' ng-click="admin.editGlobalRoles(admin.courseMentorRole.role);" ng-checked="admin.isCourseMentorUser">
-                        <label>{{admin.courseMentorRole.roleName || admin.courseMentorRole.role}}</label>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
     </div>
-    <div class="actions">
-        <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary button" type="submit" ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles);admin.updateGlobalLevelRoles(admin.identifier, admin.profileLevelRoles)">
+    <div class="actions"> 
+        <button ng-disable="!admin.selectedOrgUserRoles" class="ui primary button" type="submit" ng-click="admin.updateRoles(admin.identifier,admin.selectedOrgUserId,admin.selectedOrgUserRoles);">
             {{$root.frmelmnts.btn.update}}</button>
     </div>
 </div>
