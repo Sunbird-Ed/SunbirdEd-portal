@@ -1,12 +1,12 @@
-import { LearnerService } from './../learner/learner.service';
-import { ConfigService } from './../config/config.service';
+import { ConfigService } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
-
-import { UserService } from './user.service';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { LearnerService, UserService, PermissionService } from '@sunbird/core';
 
 describe('userService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       providers: [UserService, ConfigService, LearnerService]
     });
   });

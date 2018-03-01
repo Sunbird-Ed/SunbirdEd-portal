@@ -1,11 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { LearnerService } from '@sunbird/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '@sunbird/shared';
 import { BadgesService } from './badges.service';
 
 describe('BadgesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BadgesService]
+      imports: [HttpClientModule],
+      providers: [BadgesService, ConfigService, HttpClient, LearnerService]
     });
   });
 
