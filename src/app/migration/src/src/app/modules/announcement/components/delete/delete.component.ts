@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService} from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 
 /**
  * The delete component deletes the announcement
@@ -72,6 +72,8 @@ export class DeleteComponent {
     this.iziToast = iziToast;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
+    });
+    this.activatedRoute.parent.params.subscribe((params) => {
       this.pageNumber = Number(params.pageNumber);
     });
   }

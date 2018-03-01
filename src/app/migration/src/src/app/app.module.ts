@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CommunityModule } from '@sunbird/community';
 import { CoreModule } from '@sunbird/core';
-import { SharedModule, ToasterService} from '@sunbird/shared';
+import { SharedModule} from '@sunbird/shared';
 import { AnnouncementModule } from '@sunbird/announcement';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
@@ -27,8 +27,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     AnnouncementModule,
     Ng2IziToastModule
   ],
-  providers: [ToasterService
-  ],
+  providers: [],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })

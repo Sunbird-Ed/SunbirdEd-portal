@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService} from '@sunbird/core';
