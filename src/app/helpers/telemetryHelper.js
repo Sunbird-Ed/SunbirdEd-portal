@@ -36,7 +36,7 @@ module.exports = {
   logSessionStart: function (req, callback) {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
-    var channel = req.session.rootOrghashTagId
+    var channel = req.session.rootOrghashTagId || md5('sunbird')
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 

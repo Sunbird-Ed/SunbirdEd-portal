@@ -52,7 +52,8 @@ let PERMISSIONS_HELPER = {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + apiAuthToken,
         'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
-      }
+      },
+      json: true
     }
     const telemetryData = {reqObj: reqObj,
       options: options,
@@ -63,7 +64,6 @@ let PERMISSIONS_HELPER = {
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
       if (!error && body && body.responseCode === 'OK') {
-        body = JSON.parse(body)
         module.exports.setRoleUrls(body.result)
       } else {
         telemetryData.resp = body
@@ -99,7 +99,8 @@ let PERMISSIONS_HELPER = {
         'accept': 'application/json',
         'Authorization': 'Bearer ' + apiAuthToken,
         'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
-      }
+      },
+      json: true
     }
     const telemetryData = {reqObj: reqObj,
       options: options,
@@ -117,7 +118,6 @@ let PERMISSIONS_HELPER = {
       if (!error && body) {
         try {
           if (body.responseCode === 'OK') {
-            body = JSON.parse(body)
             reqObj.session.userId = body.result.response.identifier
             reqObj.session.roles = body.result.response.roles
             if (body.result.response.organisations) {
