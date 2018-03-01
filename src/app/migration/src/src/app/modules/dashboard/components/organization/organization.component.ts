@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // SB service(S)
 import { RendererService, OrganisationService, DownloadService } from './../../services';
