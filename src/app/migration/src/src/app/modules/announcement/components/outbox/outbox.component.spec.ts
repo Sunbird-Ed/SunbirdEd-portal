@@ -8,12 +8,13 @@ import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { OutboxComponent } from '../index';
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, PaginationService, ToasterService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, PaginationService, ToasterService, ConfigService, DateFormatPipe } from '@sunbird/shared';
 
 describe('OutboxComponent', () => {
     let component: OutboxComponent;
@@ -27,12 +28,13 @@ describe('OutboxComponent', () => {
         TestBed.configureTestingModule({
             declarations: [OutboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
-                SuiModule, RouterModule,
+                SuiModule, RouterTestingModule,
                 SharedModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService,
-                PaginationService, ToasterService, ResourceService,
+                PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
-                { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+                { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+                { provide: RouterOutlet, useValue: fakeActivatedRoute }
             ]
         })
             .compileComponents();

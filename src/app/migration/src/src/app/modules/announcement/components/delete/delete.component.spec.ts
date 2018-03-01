@@ -11,14 +11,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
-import { AnnouncementService} from '@sunbird/core';
+import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
 
 describe('DeleteComponent', () => {
   let component: DeleteComponent;
   let fixture: ComponentFixture<DeleteComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 10 }]) };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 10 }]),
+    'parent': { 'params': Observable.from([{ 'pageNumber': 10 }]) }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -47,19 +50,20 @@ describe('DeleteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call delete api and get success response', inject([AnnouncementService], (announcementService) => {
-    spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
-    component.deleteAnnouncement();
-    const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
-    announcementService.deleteAnnouncement(params).subscribe(
-      apiResponse => {
-        expect(apiResponse.responseCode).toBe('OK');
-        expect(apiResponse.result.status).toBe('cancelled');
-        expect(apiResponse.params.status).toBe('successful');
-      }
-    );
-    fixture.detectChanges();
-  }));
+  it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute],
+    (announcementService, activatedRoute) => {
+      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
+      component.deleteAnnouncement();
+      const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
+      announcementService.deleteAnnouncement(params).subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.result.status).toBe('cancelled');
+          expect(apiResponse.params.status).toBe('successful');
+        }
+      );
+      fixture.detectChanges();
+    }));
 
   it('should call delete api and get error response', inject([AnnouncementService, ToasterService],
     (announcementService, toasterService) => {

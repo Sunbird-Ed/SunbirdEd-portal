@@ -82,7 +82,7 @@
                 <td (click)="showAnnouncementDetails(item.id, item)" class="cursor-pointer">{{item.title | slice:0:50}}
                   <span *ngIf="item.title.length > 50">...</span>
                 </td>
-                <td>{{item.createdDate}}</td>
+                <td>{{item.createdDate | dateFormat}}</td>
                 <td>{{item.metrics.sent ? item.metrics.sent : "N/A"}}</td>
                 <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>

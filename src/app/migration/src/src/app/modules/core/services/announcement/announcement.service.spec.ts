@@ -8,8 +8,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
-import { AnnouncementService} from '@sunbird/core';
-import {  ConfigService} from '@sunbird/shared';
+import { AnnouncementService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
 
 describe('AnnouncementService', () => {
   beforeEach(() => {

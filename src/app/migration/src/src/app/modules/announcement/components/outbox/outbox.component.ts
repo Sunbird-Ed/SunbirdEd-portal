@@ -1,8 +1,8 @@
-import { Component} from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule, Router, RouterOutlet } from '@angular/router';
 import * as _ from 'lodash';
-import { AnnouncementService} from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService} from '@sunbird/shared';
+import { AnnouncementService } from '@sunbird/core';
+import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe } from '@sunbird/shared';
 
 /**
  * The announcement outbox component displays all
@@ -14,7 +14,7 @@ import { ResourceService, ConfigService, PaginationService, ToasterService} from
   templateUrl: './outbox.component.html',
   styleUrls: ['./outbox.component.css']
 })
-export class OutboxComponent {
+export class OutboxComponent implements OnInit {
 
   /**
 	 * Contains object of outbox list data
@@ -169,5 +169,14 @@ export class OutboxComponent {
     }
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
+  }
+
+  /**
+   * This method subscribes announcement event in announcement service
+   * and calls the render outbox method to refresh the list
+	 *
+	 */
+  ngOnInit() {
+    this.announcementService.announcementEvent.subscribe(data => this.renderOutbox(this.pageLimit, this.pageNumber));
   }
 }
