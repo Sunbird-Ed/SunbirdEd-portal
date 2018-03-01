@@ -42,7 +42,7 @@ export class DeleteComponent {
   /**
    * To call resource service which helps to use language constant
    */
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
 
   /**
    * To call toaster service
