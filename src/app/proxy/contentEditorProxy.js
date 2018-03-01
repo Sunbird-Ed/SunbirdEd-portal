@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
+const learnerServiceBaseUrl = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
