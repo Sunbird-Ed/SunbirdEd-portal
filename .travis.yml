@@ -9,4 +9,4 @@ before_script:
     - ng build
     - ng lint
 script:
-    - ng test
+    - ng test --watch=false
