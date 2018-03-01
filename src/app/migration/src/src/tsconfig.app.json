@@ -14,7 +14,7 @@
         "app/modules/shared"
       ],
       "@sunbird/dashboard": [
-        "app/modules/dashboad"
+        "app/modules/dashboard"
       ]
     },
     "module": "es2015",
