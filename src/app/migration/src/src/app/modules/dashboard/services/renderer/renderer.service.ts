@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LineChartService } from './graphs/line-chart.service';
+import { LineChartService } from './../chartjs';
 import { DashboardData } from './../../interfaces';
 
 /**

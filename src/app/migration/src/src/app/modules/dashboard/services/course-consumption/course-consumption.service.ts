@@ -1,9 +1,9 @@
-import { DashboardData } from './../../interfaces';
 import { Injectable } from '@angular/core';
-import { LearnerService } from '@sunbird/core';
-import { DashboardUtilsService } from './../dashboard-utils.service';
-import { DashboardParams } from './../../interfaces';
 import { ServerResponse } from '@sunbird/shared';
+import { LearnerService } from '@sunbird/core';
+import { DashboardParams, DashboardData } from './../../interfaces';
+import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
+// Rxjs
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';

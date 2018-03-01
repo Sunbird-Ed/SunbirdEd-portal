@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
-import { DashboardUtilsService } from './../dashboard-utils.service';
+import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { DashboardParams, DashboardData } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';

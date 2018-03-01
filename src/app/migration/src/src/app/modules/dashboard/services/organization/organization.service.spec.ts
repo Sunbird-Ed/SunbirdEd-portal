@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { OrganisationService } from './organization.service';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
-import { DashboardUtilsService } from './../dashboard-utils.service';
+import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 // Test data
 import * as mockData from './organization.service.spec.data';
 const testData = <any>mockData.mockRes;

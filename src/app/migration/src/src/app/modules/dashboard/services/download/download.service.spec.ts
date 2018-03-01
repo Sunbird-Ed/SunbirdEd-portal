@@ -1,8 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { DownloadService, DashboardUtilsService } from './../';
+// SB service(S)
+import { DownloadService } from './download.service';
+import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
+// Rxjs
 import { Observable } from 'rxjs/Observable';
 import * as mockData from './download.service.spec.data';
 const testData = mockData.mockRes;

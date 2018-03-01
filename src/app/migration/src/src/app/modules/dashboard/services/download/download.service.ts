@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
-import { DashboardUtilsService } from './../dashboard-utils.service';
-import { DashboardParams } from './../../interfaces';
 import { ServerResponse } from '@sunbird/shared';
+import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
+import { DashboardParams } from './../../interfaces';
 
 /**
  * Service to download dashboard report
