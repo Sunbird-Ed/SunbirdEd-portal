@@ -11,8 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
-import { AnnouncementService, ResourceService, ToasterService, ConfigService} from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { AnnouncementService} from '@sunbird/core';
+import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
 
 describe('DeleteComponent', () => {

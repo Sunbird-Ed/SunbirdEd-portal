@@ -12,8 +12,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { OutboxComponent } from '../index';
-import { AnnouncementService, PaginationService, ToasterService, ConfigService } from '@sunbird/core';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { AnnouncementService } from '@sunbird/core';
+import { SharedModule, ResourceService, PaginationService, ToasterService, ConfigService } from '@sunbird/shared';
 
 describe('OutboxComponent', () => {
     let component: OutboxComponent;
