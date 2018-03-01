@@ -1,7 +1,6 @@
 // Import NG core testing module
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 // Import rxjs packages
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -9,16 +8,17 @@ import { Observable } from 'rxjs/Observable';
 // Import service(s)
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
-import { CourseConsumptionService, DashboardUtilsService } from './..';
+import { DashboardUtilsService } from './../dashboard-utils.service';
+import { CourseConsumptionService } from './course-consumption.service';
 // Test data
 import * as mockData from './course-consumption.service.spec.data';
-const testData = mockData.mockRes;
+const testData = <any>mockData.mockRes;
 
 describe('CourseConsumptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CourseConsumptionService, DashboardUtilsService, LearnerService, HttpClientModule, ConfigService]
+      imports: [HttpClientModule],
+      providers: [CourseConsumptionService, DashboardUtilsService, LearnerService, ConfigService]
     });
   });
 

@@ -1,6 +1,4 @@
 // Import NG testing module(s)
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Http } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 // Import services
@@ -15,7 +13,7 @@ import { ConfigService } from '@sunbird/shared';
 describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientModule],
       providers: [SearchService, ContentService, UserService, LearnerService, ConfigService]
     });
   });

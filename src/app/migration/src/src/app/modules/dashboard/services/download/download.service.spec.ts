@@ -1,6 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DownloadService, DashboardUtilsService } from './../';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
@@ -11,8 +10,8 @@ const testData = mockData.mockRes;
 describe('DownloadService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [HttpClientModule, DownloadService, LearnerService, DashboardUtilsService, ConfigService]
+      imports: [HttpClientModule],
+      providers: [DownloadService, LearnerService, DashboardUtilsService, ConfigService]
     });
   });
 

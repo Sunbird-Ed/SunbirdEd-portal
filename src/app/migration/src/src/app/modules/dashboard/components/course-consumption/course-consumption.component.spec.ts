@@ -1,6 +1,5 @@
 // NG core testing module(s)
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
@@ -9,11 +8,11 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-
 // SB components and service
-import { CourseConsumptionComponent, DashboardUtilsService, LineChartService,
-  CourseConsumptionService, RendererService } from './../../index';
+import { DashboardUtilsService, LineChartService, CourseConsumptionService, RendererService } from './../../services';
+import { CourseConsumptionComponent } from './course-consumption.component';
 import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
+// Test data
 import * as mockData from './course-consumption.component.spec.data';
 const testData = mockData.mockRes;
 
@@ -29,8 +28,8 @@ describe('CourseConsumptionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionComponent],
-      imports: [HttpClientTestingModule, FormsModule, SuiModule, ChartsModule, SharedModule],
-      providers: [HttpClientModule, CourseConsumptionService,
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      providers: [CourseConsumptionService,
         RendererService,
         LearnerService,
         ContentService,

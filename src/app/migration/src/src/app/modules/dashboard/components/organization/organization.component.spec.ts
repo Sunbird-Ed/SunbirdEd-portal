@@ -1,6 +1,5 @@
 // NG modules
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,10 +9,9 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 // Services
-import {
-  OrganisationComponent, OrganisationService, DashboardUtilsService, RendererService,
-  LineChartService, DownloadService
-} from './../../index';
+import { OrganisationService, DashboardUtilsService, RendererService,
+  LineChartService, DownloadService } from './../../services';
+import { OrganisationComponent } from './organization.component';
 import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 // Test data
 import * as mockData from './organization.component.spec.data';
@@ -33,7 +31,7 @@ describe('OrganisationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
-      imports: [HttpClientTestingModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
       providers: [LearnerService,
         LineChartService,
         OrganisationService,
@@ -104,6 +102,7 @@ describe('OrganisationComponent', () => {
 
   // When Org creation APIs throw's error
   it('should throw error - while getting org creation data', inject([OrganisationService], (organisationService) => {
+    component.blockData = [];
     spyOn(organisationService, 'getDashboardData').and.callFake(() => Observable.throw({}));
     spyOn(component, 'setError').and.callThrough();
     component.getDashboardData('7d', 'do_2123250076616048641482');

@@ -1,7 +1,6 @@
 // NG core modules
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 // Rxjs packages
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -13,13 +12,13 @@ import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils.service';
 // Test data
 import * as mockData from './organization.service.spec.data';
-const testData = mockData.mockRes;
+const testData = <any>mockData.mockRes;
 
 describe('OrganisationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [HttpClientTestingModule, OrganisationService, LearnerService, DashboardUtilsService, ConfigService]
+      providers: [OrganisationService, LearnerService, DashboardUtilsService, ConfigService]
     });
   });
 
