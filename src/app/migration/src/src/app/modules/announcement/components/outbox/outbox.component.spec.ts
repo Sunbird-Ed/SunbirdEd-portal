@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angu
 import * as testData from './outbox.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';

@@ -6,7 +6,7 @@ import * as testData from './announcement.service.spec.data';
 // Import rxjs packages
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { AnnouncementService} from '@sunbird/core';
 import {  ConfigService} from '@sunbird/shared';
