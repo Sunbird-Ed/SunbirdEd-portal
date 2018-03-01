@@ -5,7 +5,11 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { RendererService, CourseConsumptionService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
+// Interface
+import { DashboardData } from './../../interfaces';
 import * as _ from 'lodash';
+// Type-literal
+type courseDetails =  { identifier: string };
 
 /**
  * The course consumption dashboard component
@@ -144,7 +148,7 @@ export class CourseConsumptionComponent {
       }
     };
     this.consumptionService.getDashboardData(params)
-      .subscribe(data => {
+      .subscribe((data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
         this.showLoader = false;
@@ -217,7 +221,7 @@ export class CourseConsumptionComponent {
    *
    * @example onAfterCourseChange({name: Course 1, identifier: do_xxxxx})
    */
-  onAfterCourseChange(course: any) {
+  onAfterCourseChange(course: courseDetails) {
     if (this.identifier === course.identifier) {
       console.log('same as previous');
       return false;

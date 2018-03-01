@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
+import { ServerResponse } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils.service';
-import { Dashboard } from './../../index'; // Interface
+import { DashboardParams, DashboardData } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -29,22 +30,34 @@ export class OrganisationService {
   /**
    * Contains graph series data
    */
-  graphSeries: Array<any> = [];
+  graphSeries: string[];
 
   /**
    * Contains parsed snapshot data
    *
    * Snapshot data - authors and reviewers count
    */
-  blockData: Array<any> = [];
+  blockData: string[];
+
+  /**
+   * Contains learner service reference
+   */
+  public learner: LearnerService;
+
+  /**
+   * Dashboard helper service reference
+   */
+  public dashboardUtil: DashboardUtilsService;
 
   /**
    * Default method of OrganisationService class
    *
-   * @param learnerService
-   * @param DashboardUtil
+   * @param {LearnerService}        learnerService learner service
+   * @param {DashboardUtilsService} dashboardUtil  contains dashboard helper function
    */
-  constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) {
+  constructor(learner: LearnerService, dashboardUtil: DashboardUtilsService) {
+    this.learner = learner;
+    this.dashboardUtil = dashboardUtil;
     this.contentStatus = {
       'org.creation.content[@status=published].count': ' LIVE',
       'org.creation.content[@status=draft].count': ' Created',
@@ -59,13 +72,13 @@ export class OrganisationService {
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: Dashboard) {
+  getDashboardData(requestParam: DashboardParams) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
     };
 
-    return this.learnerService.get(paramOptions)
-      .map((data: any) => {
+    return this.learner.get(paramOptions)
+      .map((data: ServerResponse) => {
         if (data && data.responseCode === 'OK') {
           return this.parseApiResponse(data, requestParam.dataset);
         } else {
@@ -85,7 +98,7 @@ export class OrganisationService {
    *
    * @return {object} api response
    */
-  parseApiResponse(data: any, dataset: string) {
+  parseApiResponse(data: ServerResponse, dataset: string): DashboardData {
     this.graphSeries = [];
     this.blockData = [];
 

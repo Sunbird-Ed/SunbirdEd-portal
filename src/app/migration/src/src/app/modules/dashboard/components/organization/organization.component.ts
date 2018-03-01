@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // SB service(S)
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ServerResponse } from '@sunbird/shared';
+import { DashboardData } from './../../interfaces';
 // import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import * as _ from 'lodash';
 
@@ -48,7 +49,7 @@ export class OrganisationComponent {
   /**
    * Contains dashboard block data
    */
-  blockData: Array<any> = [];
+  blockData: string[];
 
   /**
    * Contains Graph index to switch between two graphs
@@ -164,7 +165,7 @@ export class OrganisationComponent {
     };
 
     this.orgService.getDashboardData(params).subscribe(
-      data => {
+      (data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
         this.showDashboard = true;
@@ -297,7 +298,7 @@ export class OrganisationComponent {
     };
 
     this.downloadService.getReport(option).subscribe(
-      data => {
+      (data: ServerResponse) => {
         this.showDownloadSuccessModal = true;
         this.disabledClass = false;
       },
@@ -310,11 +311,11 @@ export class OrganisationComponent {
   /**
    * To get organization details.
    *
-   * @param {any} orgIds orgids list
+   * @param {string[]} orgIds org id list
    *
    * @example getOrgDetails([do_xxxxx])
    */
-  getOrgDetails(orgIds: Array<any>) {
+  getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
       this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
         data => {

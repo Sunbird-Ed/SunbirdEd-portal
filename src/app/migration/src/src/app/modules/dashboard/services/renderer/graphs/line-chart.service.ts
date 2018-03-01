@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { ChartData } from './../../../index';
+import { DashboardData } from './../../../interfaces';
 
 /**
  * Service to prepare line chart data - x, y axes data, lineColor,chartOption data
@@ -24,7 +24,7 @@ export class LineChartService {
    *
    * @return {object} line chart data
    */
-  parseLineChart(data: ChartData) {
+  parseLineChart(data: DashboardData) {
     const chartList = [];
     const groupList = {};
     let i = 0;
@@ -123,7 +123,7 @@ export class LineChartService {
    *
    * @param {number} legendCount legendCount
    */
-  getChartColors(legendCount: number): Array<any> {
+  getChartColors(legendCount: number): string[] {
     const colorArray = [];
     for (let i = 0; i < legendCount; i++) {
       const randColor = this.getRandomColor();

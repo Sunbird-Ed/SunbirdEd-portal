@@ -1,4 +1,4 @@
-import { ChartData } from './../../../interfaces/chart';
+// import { ChartData } from './../../../interfaces';
 import { TestBed, inject } from '@angular/core/testing';
 import { LineChartService } from './line-chart.service';
 import * as _ from 'lodash';

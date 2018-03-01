@@ -1,7 +1,9 @@
+import { DashboardData } from './../../interfaces';
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { DashboardUtilsService } from './../dashboard-utils.service';
-import { Dashboard } from './../../index'; // Interface
+import { DashboardParams } from './../../interfaces';
+import { ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -22,7 +24,7 @@ export class CourseConsumptionService {
   /**
    * Contains parsed snapshot data like authors and reviewers count
    */
-  blockData: any;
+  blockData: string[];
 
   /**
    * Constructor - default method of CourseConsumptionService class
@@ -40,13 +42,13 @@ export class CourseConsumptionService {
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: Dashboard) {
+  getDashboardData(requestParam: DashboardParams) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, 'COURSE_CONSUMPTION')
     };
 
     return this.learnerService.get(paramOptions)
-      .map((data: any) => {
+      .map((data: ServerResponse) => {
         return this.parseApiResponse(data);
       })
       .catch((err) => {
@@ -61,7 +63,7 @@ export class CourseConsumptionService {
    *
    * @return {object} parsed api response
    */
-  parseApiResponse(data: any) {
+  parseApiResponse(data: ServerResponse): DashboardData {
     this.blockData = [];
     _.forEach(data.result.snapshot, (numericData, key) => {
       switch (key) {

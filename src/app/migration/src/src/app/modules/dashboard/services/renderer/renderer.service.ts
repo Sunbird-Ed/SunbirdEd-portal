@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LineChartService } from './graphs/line-chart.service';
-import { ChartData } from './../../index';
-
+import { DashboardData } from './../../interfaces';
 
 /**
  * Responsible to get chart data
@@ -25,10 +24,10 @@ export class RendererService {
    *
    * Currently, it supports only line chart
    *
-   * @param data ChartData chart data
-   * @param chartType chart type
+   * @param {DashboardData} data data
+   * @param {string}        chartType chart type
    */
-  visualizer(data: ChartData, chartType: string) {
+  visualizer(data: DashboardData, chartType: string) {
     switch (chartType) {
       case 'line':
         return this.lineChartService.parseLineChart(data);

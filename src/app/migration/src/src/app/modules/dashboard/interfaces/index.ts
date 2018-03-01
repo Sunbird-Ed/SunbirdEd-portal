@@ -1,2 +1,2 @@
-export * from './dashboard';
-export * from './chart';
+export * from './dashboardParams';
+export * from './dashboardData';
