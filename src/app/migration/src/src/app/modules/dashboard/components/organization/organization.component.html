@@ -66,11 +66,13 @@
     </div>
     <div *ngIf="showDashboard && myOrganizations && myOrganizations.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
       <div class="consumption-data-holder margin-top-20">
-        <div class="ui three cards">
-          <div class="card" *ngFor="let block of blockData">
-            <div class="content center aligned">
-              <div class="meta ">{{block.name}}</div>
-              <h2 class="description ">{{block.value}}</h2>
+        <div class="ui grid">
+          <div class="four wide column" *ngFor="let block of blockData">
+            <div class="ui card adminDashboardCard">
+              <div class="content center aligned">
+                <div class="meta ">{{block.name}}</div>
+                <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+              </div>
             </div>
           </div>
         </div>

@@ -8,8 +8,6 @@ import { ResourceService } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
 import * as _ from 'lodash';
-// Type-literal
-type courseDetails =  { identifier: string };
 
 /**
  * The course consumption dashboard component
@@ -221,7 +219,7 @@ export class CourseConsumptionComponent {
    *
    * @example onAfterCourseChange({name: Course 1, identifier: do_xxxxx})
    */
-  onAfterCourseChange(course: courseDetails) {
+  onAfterCourseChange(course: { identifier: string }) {
     if (this.identifier === course.identifier) {
       console.log('same as previous');
       return false;
