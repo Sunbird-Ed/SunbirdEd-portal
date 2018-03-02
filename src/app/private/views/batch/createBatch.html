@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="scrolling content">
             <form class="ui form" id="createBatch" name="createBatch" validate>
                 <div class="one field" ng-class="{true: 'error'}[batch.submitted && createBatch.name.$invalid]">
                     <div class="required field">
@@ -63,26 +63,28 @@
                 </div>
                 <div class="one field " ng-hide="batch.data.enrollmentType == 'open'">
                     <label>{{$root.frmelmnts.lbl.bacthmembers}}</label>
-                    <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="users">
+                    <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users"
+                        ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
                         <input rows="1" type="hidden" name="users" id="userSelList" ng-init="" ng-model="batch.data.users">
                         <i class="dropdown icon"></i>
                         <div class="default text">Select batch members</div>
                         <div class="menu">
                             <div class="item" data-value="{{user.id}}" ng-repeat="user in batch.userList">
-                                <img class="ui mini avatar image" ng-src="/common/images/user_logo.png"> {{user.name}}
+                                <img class="ui mini avatar image" ng-src="/common/images/user_logo.png"> {{user.name}}{{user.otherDetail}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="one field" ng-hide="batch.data.enrollmentType == 'open'">
                     <label>{{$root.frmelmnts.lbl.batchmentors}}</label>
-                    <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors">
+                    <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors"
+                        ng-class="batch.isUserSearch === 2 ? 'loading' : undefined">
                         <input rows="1" type="hidden" name="mentors" ng-init="" ng-model="batch.data.mentors" id="mentorSelList">
                         <i class="dropdown icon"></i>
                         <div class="default text">Select batch mentors</div>
                         <div class="menu">
                             <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batch.menterList">
-                                <img class="ui mini avatar image" ng-src="/common/images/user_logo.png">{{mentor.name}}
+                                <img class="ui mini avatar image" ng-src="/common/images/user_logo.png">{{mentor.name}}{{mentor.otherDetail}}
                             </div>
                         </div>
                     </div>
