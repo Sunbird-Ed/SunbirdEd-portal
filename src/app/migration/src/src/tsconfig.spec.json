@@ -13,6 +13,9 @@
       "@sunbird/shared": [
         "app/modules/shared"
       ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
       "@sunbird/announcement": [
         "app/modules/announcement"
       ]
