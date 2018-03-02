@@ -1,6 +1,6 @@
-import { LineChartService } from './graphs/line-chart.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { RendererService } from './renderer.service';
+import { LineChartService } from './../chartjs';
 
 describe('RendererService', () => {
   beforeEach(() => {
