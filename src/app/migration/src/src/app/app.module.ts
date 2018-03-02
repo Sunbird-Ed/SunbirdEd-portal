@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { CommunityModule } from '@sunbird/community';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
+import { HomeModule } from '@sunbird/home';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SharedModule } from '@sunbird/shared';
     HttpClientModule,
     SuiModule,
     CommunityModule,
-    SharedModule
+    SharedModule,
+    HomeModule
   ],
   providers: [
   ],

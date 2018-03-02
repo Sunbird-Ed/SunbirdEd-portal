@@ -1,0 +1,24 @@
+<div><div><app-content-card></app-content-card></div></div>
+
+
+<div>
+  <div class="ui grid ng-scope">
+    <div class="nine wide column" *ngIf="showdiv">
+      <div class="ui">
+        <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">{{resourceService.frmelmnts?.lbl?.anncmntinboxannmsg}}</div>
+      </div>
+    </div>
+    <div class="three wide column" *ngIf="showdiv">
+      <a class="ui right floated announcementSeeAllLink float-ContentRight" href="/private/index#!/announcement/inbox/list/1">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+  </div>
+  <div class=" margin-bottom-10" *ngIf="showdiv">
+    <div *ngFor="let item of listData; let index = index">
+      <app-announcement-inbox-card [announcement]="item"></app-announcement-inbox-card>
+    </div>
+  </div>
+</div>
+

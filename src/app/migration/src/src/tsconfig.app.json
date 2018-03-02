@@ -12,6 +12,9 @@
       ],
       "@sunbird/shared": [
         "app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "app/modules/home"
       ]
     },
     "module": "es2015",

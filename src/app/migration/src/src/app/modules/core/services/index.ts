@@ -4,3 +4,4 @@ export * from './learner/learner.service';
 export * from './badges/badges.service';
 export * from './announcement/announcement.service';
 export * from './permission/permission.service';
+export * from  './course/course.service';
