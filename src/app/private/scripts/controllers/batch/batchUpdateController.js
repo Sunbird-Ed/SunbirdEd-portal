@@ -193,7 +193,7 @@ angular.module('playerApp')
                 if (batchService.filterUserSearchResult(userData, query)) {
                   var user = {
                     id: userData.identifier,
-                    name: userData.firstName + (userData.lastName ? +' ' + userData.lastName : ''),
+                    name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
                     avatar: userData.avatar,
                     otherDetail: batchService.getUserOtherDetail(userData)
                   }
