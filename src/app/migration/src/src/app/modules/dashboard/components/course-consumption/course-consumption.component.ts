@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
 import * as _ from 'lodash';
@@ -140,16 +140,7 @@ export class CourseConsumptionComponent {
     this.resourceService = resourceService;
     this.route = route;
     this.activatedRoute.params.subscribe(params => {
-      // Get content
-      const myCourses = this.searchService.getSearchedContent();
-      if (myCourses && myCourses.length) {
-        this.myCoursesList = myCourses;
-        this.validateIdentifier(params.id);
-      } else {
-        // Make api call to search my course
-        this.getMyContent();
-      }
-
+      this.getMyContent();
       if (params.id && params.timePeriod) {
         this.isMultipleCourses = false;
         this.showDashboard = true;
@@ -215,45 +206,47 @@ export class CourseConsumptionComponent {
   /**
    * Get published course(s) of logged-in user
    */
-  getMyContent() {
-    const searchParams = {
-      status: ['Live'],
-      contentType: ['Course'],
-      params: { lastUpdatedOn: 'desc' }
-    };
-    this.searchService.searchContentByUserId(searchParams).subscribe(
-      data => {
-        if (data.result.count && data.result.content) {
-          this.myCoursesList = data.result.content;
-          this.searchService.setSearchedContent(this.myCoursesList);
-          if (data.result.content.length === 1) {
-            this.identifier = data.result.content[0].identifier;
-            this.courseName = data.result.content[0].name;
-            this.route.navigate(['dashboard/course/consumption', this.identifier, this.timePeriod]);
-          } else {
-            this.isMultipleCourses = true;
+  getMyContent(): void {
+    // First check local storage
+    const response = this.searchService.searchedContentList;
+    if (response && response.count) {
+      this.myCoursesList = response.content;
+    } else {
+      // Make search api call
+      const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
+      this.searchService.searchContentByUserId(searchParams).subscribe(
+        (data: ServerResponse) => {
+          if (data.result.count && data.result.content) {
+            this.myCoursesList = data.result.content;
+            if (data.result.content.length === 1) {
+              this.identifier = data.result.content[0].identifier;
+              this.courseName = data.result.content[0].name;
+              this.route.navigate(['dashboard/course/consumption', this.identifier, this.timePeriod]);
+            } else {
+              this.isMultipleCourses = true;
+            }
           }
+          this.showLoader = false;
+          if (this.identifier) {
+            this.validateIdentifier(this.identifier);
+          }
+        },
+        (err: ServerResponse) => {
+          this.showLoader = false;
         }
-        this.showLoader = false;
-        if (this.identifier) {
-          this.validateIdentifier(this.identifier);
-        }
-      },
-      err => {
-      }
-    );
+      );
+    }
   }
 
   /**
    * Function to change course selection and display selected course data
    *
-   * @param {any} course course object containg course details
+   * @param {object} course course object containg course details
    *
    * @example onAfterCourseChange({name: Course 1, identifier: do_xxxxx})
    */
   onAfterCourseChange(course: { identifier: string }) {
     if (this.identifier === course.identifier) {
-      console.log('same as previous');
       return false;
     }
 

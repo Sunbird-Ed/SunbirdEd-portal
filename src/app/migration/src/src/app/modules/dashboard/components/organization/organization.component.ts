@@ -164,25 +164,14 @@ export class OrganisationComponent {
     this.orgService = orgService;
     this.userService = userService;
     this.route = route;
-
     this.activatedRoute.params.subscribe(params => {
-      // Get already searched org list
-      const orgArray = this.searchService.getOrganisation();
-      if (orgArray && orgArray.length) {
-        this.myOrganizations = orgArray;
-        this.validateIdentifier(params.id);
-      } else {
-        // If org list not found then make api call
-        this.getMyOrganisations();
-      }
-
+      this.getMyOrganisations();
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
         this.getDashboardData(params.timePeriod, params.id);
       }
-    }
-    );
+    });
   }
 
   /**
@@ -230,7 +219,7 @@ export class OrganisationComponent {
    *
    * @example validateIdentifier(do_xxxxx)
    */
-  validateIdentifier(identifier: string) {
+  validateIdentifier(identifier: string | '') {
     if (identifier) {
       const selectedOrg = _.find(this.myOrganizations, ['identifier', identifier]);
       if (selectedOrg && selectedOrg.identifier) {
@@ -315,19 +304,24 @@ export class OrganisationComponent {
   /**
    * Get logged user organization ids list
    */
-  getMyOrganisations() {
-    this.userService.userData$.subscribe(
-      user => {
-        if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
-          this.getOrgDetails(user.userProfile.organisationIds);
-        } else {
-          // this.route.navigate(['groups']);
+  getMyOrganisations(): void {
+    const data = this.searchService.searchedOrganisationList;
+    if (data && data.content && data.content.length) {
+      this.myOrganizations = data.content;
+    } else {
+      this.userService.userData$.subscribe(
+        user => {
+          if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
+            this.getOrgDetails(user.userProfile.organisationIds);
+          } else {
+            // this.route.navigate(['groups']);
+          }
+        },
+        err => {
+          this.setError(true);
         }
-      },
-      err => {
-        this.setError(true);
-      }
-    );
+      );
+    }
   }
 
   /**
@@ -361,12 +355,10 @@ export class OrganisationComponent {
   getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
       this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
-        data => {
+        (data: ServerResponse) => {
           if (data.result.response.content) {
             this.myOrganizations = data.result.response.content;
-            this.searchService.setOrganisation(this.myOrganizations);
             this.isMultipleOrgs = orgIds.length > 1 ? true : false;
-
             if (this.myOrganizations.length === 1) {
               this.identifier = this.myOrganizations[0].identifier;
               this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
@@ -379,7 +371,7 @@ export class OrganisationComponent {
           }
           this.showLoader = false;
         },
-        err => {
+        (err: ServerResponse) => {
           this.setError(true);
         }
       );

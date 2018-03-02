@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServerResponse } from '@sunbird/shared';
+import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 import { DashboardParams, DashboardData } from './../../interfaces';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
@@ -27,12 +27,19 @@ export class CourseConsumptionService {
   blockData: string[];
 
   /**
+   * To get api urls
+   */
+  public config: ConfigService;
+
+  /**
    * Constructor - default method of CourseConsumptionService class
    *
    * @param learnerService
    * @param dashboardUtil
    */
-  constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) {
+  constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService,
+  config: ConfigService) {
+    this.config = config;
   }
 
   /**
@@ -42,9 +49,12 @@ export class CourseConsumptionService {
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: DashboardParams) {
+  getDashboardData(param: DashboardParams) {
     const paramOptions = {
-      url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, 'COURSE_CONSUMPTION')
+      url: this.config.urlConFig.URLS.DASHBOARD.COURSE_CONSUMPTION + '/' + param.data.identifier,
+      param: {
+        period: param.data.timePeriod
+      }
     };
 
     return this.learnerService.get(paramOptions)

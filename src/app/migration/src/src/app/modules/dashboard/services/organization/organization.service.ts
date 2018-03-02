@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
-import { ServerResponse } from '@sunbird/shared';
+import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { DashboardParams, DashboardData } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
@@ -50,12 +50,23 @@ export class OrganisationService {
   public dashboardUtil: DashboardUtilsService;
 
   /**
+   * To get api urls
+   */
+  public config: ConfigService;
+
+  /**
+   * Dataset types to hold course and organization api urls
+   */
+  datasetType: object = {};
+
+  /**
    * Default method of OrganisationService class
    *
    * @param {LearnerService}        learnerService learner service
    * @param {DashboardUtilsService} dashboardUtil  contains dashboard helper function
+   * @param {ConfigService} config To get api urls
    */
-  constructor(learner: LearnerService, dashboardUtil: DashboardUtilsService) {
+  constructor(learner: LearnerService, dashboardUtil: DashboardUtilsService, config: ConfigService) {
     this.learner = learner;
     this.dashboardUtil = dashboardUtil;
     this.contentStatus = {
@@ -63,27 +74,30 @@ export class OrganisationService {
       'org.creation.content[@status=draft].count': ' Created',
       'org.creation.content[@status=review].count': ' IN REVIEW'
     };
+    this.datasetType = {
+      'ORG_CREATION': config.urlConFig.URLS.DASHBOARD.ORG_CREATION,
+      'ORG_CONSUMPTION': config.urlConFig.URLS.DASHBOARD.ORG_CONSUMPTION
+    };
   }
 
   /**
    * To get organization creation and consumption data by making api call
    *
-   * @param {object} requestParam identifier, time period, and dataset type
+   * @param {DashboardParams} param identifier, time period, and dataset type
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: DashboardParams) {
+  getDashboardData(param: DashboardParams): Observable<DashboardData> {
     const paramOptions = {
-      url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
+      url: this.datasetType[param.dataset] + '/' + param.data.identifier,
+      param: {
+        period: param.data.timePeriod
+      }
     };
 
     return this.learner.get(paramOptions)
       .map((data: ServerResponse) => {
-        if (data && data.responseCode === 'OK') {
-          return this.parseApiResponse(data, requestParam.dataset);
-        } else {
-          return Observable.throw(data);
-        }
+        return this.parseApiResponse(data, param.dataset);
       })
       .catch((err) => {
         return Observable.throw(err);

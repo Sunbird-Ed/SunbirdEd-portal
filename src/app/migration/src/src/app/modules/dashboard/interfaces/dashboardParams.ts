@@ -5,7 +5,7 @@ export interface DashboardParams {
     /**
      * Query data - Content identifier and time period
      */
-    data: object;
+    data: { identifier: string, timePeriod: string };
 
     /**
      * Contains dashboard type - creation / consumption

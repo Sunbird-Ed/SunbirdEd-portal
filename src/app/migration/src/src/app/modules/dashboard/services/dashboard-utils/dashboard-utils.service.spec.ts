@@ -1,11 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './dashboard-utils.service';
 
 describe('DashboardUtilsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DashboardUtilsService, ConfigService]
+      providers: [DashboardUtilsService]
     });
   });
 
@@ -47,29 +46,5 @@ describe('DashboardUtilsService', () => {
     expect(service).toBeTruthy();
     expect(service.secondToMinConversion).toBeDefined();
     expect(response).toEqual(numericRes);
-  }));
-
-  it('should construct valid download report url', inject([DashboardUtilsService, ConfigService],
-    (service: DashboardUtilsService, configService) => {
-    const req = { 'identifier': 'do_123', 'timePeriod': '5w' };
-    const progressurl = configService.urlConFig.URLS.DASHBOARD.COURSE_CONSUMPTION;
-    const apiUrl = progressurl + '/' + req.identifier + '?period=' + req.timePeriod;
-    spyOn(service, 'constructDashboardApiUrl').and.callThrough();
-    const response = service.constructDashboardApiUrl(req, 'COURSE_CONSUMPTION');
-    expect(service).toBeTruthy();
-    expect(service.constructDashboardApiUrl).toBeDefined();
-    expect(response).toEqual(apiUrl);
-  }));
-
-  it('should construct valid download report url', inject([DashboardUtilsService, ConfigService],
-    (service: DashboardUtilsService, configService) => {
-    const req = { 'identifier': 'do_123', 'timePeriod': '5w' };
-    const progressurl = configService.urlConFig.URLS.DASHBOARD.COURSE_CONSUMPTION;
-    const apiUrl = progressurl + '/' + req.identifier + '/export?period=' + req.timePeriod + '&format=csv';
-    spyOn(service, 'constructDownloadReportApiUrl').and.callThrough();
-    const response = service.constructDownloadReportApiUrl(req, 'COURSE_CONSUMPTION');
-    expect(service).toBeTruthy();
-    expect(service.constructDownloadReportApiUrl).toBeDefined();
-    expect(response).toEqual(apiUrl);
   }));
 });

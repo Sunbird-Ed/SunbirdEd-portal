@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-
+    <!-- Filters -->
     <div class="ui grid" *ngIf="identifier">
       <div class="twelve wide column" *ngIf="myOrganizations && myOrganizations.length > 0">
         <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">
@@ -54,13 +54,14 @@
         </span>&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
-    <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
-      <div class="header">
-        {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
+    <div *ngIf="myOrganizations && myOrganizations.length > 0">
+      <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+        <div class="header">
+          {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
+        </div>
+        {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselecteddesc}}
       </div>
-      {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselecteddesc}}
     </div>
-
     <div *ngIf="showLoader" class="margin-top-20">
       <app-loader></app-loader>
     </div>
@@ -100,6 +101,7 @@
           </div>
         </div>
       </div>
+      <!-- Download-->
       <div class="twelve wide column margin-top-20" *ngIf="graphData && graphData.length > 0">
         <p class="text-align-right dashBoardCardText">
           {{resourceService?.frmelmnts?.instn?.t0058}}
@@ -107,7 +109,6 @@
             (click)="downloadReport();">{{resourceService?.frmelmnts?.instn?.t0059}}</a>
         </p>
       </div>
-      <!-- Download-->
       <div *ngIf="showDownloadSuccessModal">
         <sui-modal [isClosable]="true" (dismissed)="showDownloadSuccessModal = false" #modal>
           <div class="header">

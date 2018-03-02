@@ -1,7 +1,7 @@
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -9,11 +9,27 @@ import 'rxjs/add/observable/throw';
 /**
  * Interface
  */
-interface RequestParam {
-  status?: any;
-  contentType?: any;
+interface SearchParam {
+
+  /**
+   * Content status
+   */
+  status?: string[];
+
+  /**
+   * Content type - course,textbook,content
+   */
+  contentType?: string[];
+
+  /**
+   * Additional params - userId, lastUpdatedOn, sort etc
+   */
   params?: any;
-  orgid?: any;
+
+  /**
+   * Organization ids
+   */
+  orgid?: string[];
 }
 
 /**
@@ -28,12 +44,12 @@ export class SearchService {
   /**
    * Contains searched content list
    */
-  searchedContentList: any;
+  private _searchedContentList: any;
 
   /**
    * Contains searched organization list
    */
-  searchedOrganisationList: any;
+  private _searchedOrganisationList: any;
 
   /**
    * Reference of user service.
@@ -66,9 +82,9 @@ export class SearchService {
   /**
    * Search content by user id.
    *
-   * @param {RequestParam} requestParam api request data
+   * @param {SearchParam} requestParam api request data
    */
-  searchContentByUserId(requestParam: RequestParam) {
+  searchContentByUserId(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
       data: {
@@ -85,23 +101,18 @@ export class SearchService {
       }
     };
 
-    return this.content.post(option);
-  }
-
-  /**
-   * Set result of searchContentByUserId()
-   *
-   * @param {any} data api response
-   */
-  public setSearchedContent(data: any): void {
-    this.searchedContentList = data;
+    return this.content.post(option)
+    .map((data: ServerResponse) => {
+      this._searchedContentList = data.result;
+      return data;
+    });
   }
 
   /**
    * Get searched content list
    */
-  public getSearchedContent(): any {
-    return this.searchedContentList;
+  get searchedContentList(): { content: Array<any>, count: number } {
+    return this._searchedContentList;
   }
 
   /**
@@ -109,7 +120,7 @@ export class SearchService {
    *
    * @param {requestParam} requestParam api request data
    */
-  getOrganisationDetails(requestParam: RequestParam) {
+  getOrganisationDetails(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
       data: {
@@ -121,22 +132,17 @@ export class SearchService {
       }
     };
 
-    return this.content.post(option);
-  }
-
-  /**
-   * Set serched organization(s) list
-   *
-   * @param {data} data api response
-   */
-  public setOrganisation(data: any): void {
-    this.searchedOrganisationList = data;
+    return this.content.post(option)
+    .map((data: ServerResponse) => {
+      this._searchedOrganisationList = data.result.response;
+      return data;
+    });
   }
 
   /**
    * Get searched organization list
    */
-  public getOrganisation(): any {
-    return this.searchedOrganisationList;
+  get searchedOrganisationList(): { content: Array<any>, count: number } {
+    return this._searchedOrganisationList;
   }
 }

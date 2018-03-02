@@ -22,33 +22,6 @@ describe('SearchService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should set searched content result', inject([SearchService],
-    (service: SearchService) => {
-      service.searchedContentList = undefined;
-      const data = [{ id: 'do_123', name: 'test 1' }];
-      service.setSearchedContent(data);
-      expect(service).toBeTruthy();
-      expect(service.searchedContentList).not.toBeUndefined();
-      expect(service.searchedContentList).toEqual(data);
-    }));
-
-  it('should set searched organization result', inject([SearchService],
-    (service: SearchService) => {
-      service.searchedOrganisationList = undefined;
-      const data = [{ id: 'do_123', name: 'Sunbird' }];
-      service.setOrganisation(data);
-      expect(service).toBeTruthy();
-      expect(service.searchedOrganisationList).not.toBeUndefined();
-      expect(service.searchedOrganisationList).toEqual(data);
-    }));
-
-  it('should return get serched content result as undefined', inject([SearchService],
-    (service: SearchService) => {
-      expect(service).toBeTruthy();
-      const response = service.getSearchedContent();
-      expect(response).toBeUndefined();
-    }));
-
   it('should set searched content result', inject([SearchService, ContentService],
     (service: SearchService, contentService: ContentService) => {
       const params = { status: [], contetType: [], params: { userId: '', lastUpdatedOn: '' } };
@@ -65,12 +38,5 @@ describe('SearchService', () => {
       service.getOrganisationDetails(params);
       expect(service).toBeTruthy();
       expect(contentService.post).toHaveBeenCalled();
-    }));
-
-  it('should return searched organization result as undefined', inject([SearchService],
-    (service: SearchService) => {
-      expect(service).toBeTruthy();
-      const response = service.getOrganisation();
-      expect(response).toBeUndefined();
     }));
 });
