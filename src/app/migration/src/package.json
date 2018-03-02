@@ -33,6 +33,9 @@
     "angular2-uuid": "^1.1.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
+    "@types/moment-duration-format": "^2.2.0",
+    "moment-duration-format": "^2.2.2",
+    "ng2-charts": "^1.6.0",
     "ng2-semantic-ui": "^0.9.6"
   },
   "devDependencies": {
@@ -51,6 +54,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-coverage": "^1.1.1",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",

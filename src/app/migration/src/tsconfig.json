@@ -12,6 +12,9 @@
       ],
       "@sunbird/shared": [
         "app/modules/shared"
+      ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
       ]
     },
     "sourceMap": true,
