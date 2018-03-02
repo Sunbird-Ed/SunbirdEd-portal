@@ -3,6 +3,7 @@ import * as testData from './outbox.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -33,7 +34,7 @@ describe('OutboxComponent', () => {
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 SuiModule, RouterTestingModule,
                 SharedModule],
-            providers: [HttpClientModule, AnnouncementService, ConfigService,
+            providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
@@ -71,25 +72,31 @@ describe('OutboxComponent', () => {
         expect(component.outboxData.params.status).toBe('successful');
     }));
 
-    it('should call outbox api and get error response', inject([AnnouncementService, ToasterService],
-        (announcementService, toasterService) => {
+    it('should call outbox api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
+        HttpClient, ConfigService],
+        (announcementService, toasterService, resourceService, http, configService) => {
             spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.throw(testData.mockRes.outboxError));
+            spyOn(resourceService, 'getResource').and.callThrough();
             spyOn(toasterService, 'error').and.callThrough();
-            component.renderOutbox(10, 3);
-            const params = {};
+            spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+            http.get().subscribe(
+              data => {
+                resourceService.messages = data.messages;
+              }
+            );
+            spyOn(component, 'renderOutbox').and.callThrough();
             announcementService.getOutboxData({}).subscribe(
                 outboxResponse => { },
                 err => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');
                     expect(err.error.params.status).toBe('failed');
                     expect(err.error.responseCode).toBe('CLIENT_ERROR');
-                    expect(toasterService.error).toHaveBeenCalledWith(err.error.params.errmsg);
+                    expect(component.showLoader).toBe(true);
                 }
             );
             fixture.detectChanges();
-            expect(component.showLoader).toBe(false);
-            expect(component.pageNumber).toBe(3);
-            expect(component.pageLimit).toBe(10);
+            expect(component.pageNumber).toBe(component.pageNumber);
+            expect(component.pageLimit).toBe(configService.pageConfig.OUTBOX.PAGE_LIMIT);
         }));
 
     it('should call updateStatus', () => {

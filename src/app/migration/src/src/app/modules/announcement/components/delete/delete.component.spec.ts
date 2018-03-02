@@ -3,6 +3,7 @@ import * as testData from './delete.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -32,7 +33,7 @@ describe('DeleteComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, SharedModule],
       providers: [HttpClientModule, AnnouncementService,
-        ResourceService, ToasterService, ConfigService,
+        ResourceService, ToasterService, ConfigService, HttpClient,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
@@ -50,11 +51,20 @@ describe('DeleteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute],
-    (announcementService, activatedRoute) => {
+  it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute,
+    ResourceService, ToasterService, HttpClient],
+    (announcementService, activatedRoute, resourceService, toasterService, http) => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
-      component.deleteAnnouncement();
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
+      spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(toasterService, 'success').and.callThrough();
+      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      http.get().subscribe(
+        data => {
+          resourceService.messages = data.messages;
+        }
+      );
+      spyOn(component, 'deleteAnnouncement').and.callThrough();
       announcementService.deleteAnnouncement(params).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -65,12 +75,19 @@ describe('DeleteComponent', () => {
       fixture.detectChanges();
     }));
 
-  it('should call delete api and get error response', inject([AnnouncementService, ToasterService],
-    (announcementService, toasterService) => {
+  it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
+    (announcementService, toasterService, resourceService, http) => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.throw(testData.mockRes.deleteError));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.deleteAnnouncement();
       const param = { data: { 'request': { 'announcementId': '' } } };
+      spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(toasterService, 'error').and.callThrough();
+      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      http.get().subscribe(
+        data => {
+          resourceService.messages = data.messages;
+        }
+      );
+      spyOn(component, 'deleteAnnouncement').and.callThrough();
       announcementService.deleteAnnouncement(param).subscribe(
         apiResponse => {
         },
@@ -78,7 +95,6 @@ describe('DeleteComponent', () => {
           expect(err.error.params.errmsg).toBe('Unauthorized User');
           expect(err.error.params.status).toBe('failed');
           expect(err.error.responseCode).toBe('CLIENT_ERROR');
-          expect(toasterService.error).toHaveBeenCalledWith(err.error.params.errmsg);
         }
       );
     }));

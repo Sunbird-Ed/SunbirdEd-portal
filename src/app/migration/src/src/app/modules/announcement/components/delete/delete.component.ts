@@ -88,11 +88,11 @@ export class DeleteComponent {
     const option = { announcementId: this.announcementId };
     this.announcementService.deleteAnnouncement(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.iziToast.success('Succesfully deleted');
+        this.iziToast.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
       },
       err => {
-        this.iziToast.error(err.error.params.errmsg);
+        this.iziToast.error(this.resourceService.messages.emsg.m0005);
         this.redirect();
       }
     );

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse} from '@sunbird/shared';
@@ -148,7 +148,7 @@ export class OutboxComponent implements OnInit {
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
       },
       err => {
-        this.iziToast.error(err.error.params.errmsg);
+        this.iziToast.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
       }
     );

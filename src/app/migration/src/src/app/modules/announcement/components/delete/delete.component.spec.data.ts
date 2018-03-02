@@ -16,5 +16,15 @@ export const mockRes = {
                 'errmsg': 'Unauthorized User'
             }, 'responseCode': 'CLIENT_ERROR', 'result': {}
         }
+    },
+    resourceBundle: {
+        'messages': {
+            'smsg': {
+                'moo41': 'Announcement cancelled successfully...'
+            },
+            'emsg': {
+                'm0005': 'Something went wrong, please try in some time....',
+            }
+        }
     }
 };

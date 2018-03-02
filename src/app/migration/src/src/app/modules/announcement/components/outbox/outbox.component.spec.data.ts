@@ -28,5 +28,15 @@ export const mockRes = {
         'from': 'asdasd', 'type': 'Circular', 'title': 'wsw', 'description': 'asda', 'links': [],
         'attachments': [], 'createdDate': '2018-02-20 07:05:57:744+0000', 'status': 'active',
         'target': { 'geo': { 'ids': ['01236686178285977611'] } }, 'metrics': { 'sent': 0, 'read': 0, 'received': 0 }
-    }]
+    }],
+    resourceBundle: {
+        'messages': {
+            'smsg': {
+                'moo41': 'Announcement cancelled successfully...'
+            },
+            'emsg': {
+                'm0005': 'Something went wrong, please try in some time....',
+            }
+        }
+    }
 };
