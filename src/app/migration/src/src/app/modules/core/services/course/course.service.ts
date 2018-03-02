@@ -2,7 +2,7 @@
 // Import Module
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { HttpParams } from '@angular/common/http/src/params';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';

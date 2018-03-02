@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 // Import modules
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { HomeAnnouncementComponent } from './home-announcement.component';

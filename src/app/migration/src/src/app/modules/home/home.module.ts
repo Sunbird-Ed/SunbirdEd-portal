@@ -39,5 +39,4 @@ import {
   ]
 })
 export class HomeModule {
- 
 }
