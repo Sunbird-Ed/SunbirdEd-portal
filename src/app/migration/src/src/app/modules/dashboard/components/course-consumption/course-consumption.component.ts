@@ -90,23 +90,55 @@ export class CourseConsumptionComponent {
   showDashboard = false;
 
   /**
-   * Constructor to create injected service(s) object
+   * To get consumption dashboard data
+   */
+  public consumptionService: CourseConsumptionService;
+
+  /**
+   * Router to change url
+   */
+  public route: Router;
+
+  /**
+   * To get params from url
+   */
+  public activatedRoute: ActivatedRoute;
+
+  /**
+   * To get logged-in user published course(s)
+   */
+  searchService: SearchService;
+
+  /**
+   * Chart renderer to call chart service like Line chart service
    *
+   * Currently it supports only line and bar chart
+   */
+  rendererService: RendererService;
+
+  /**
+   * To get language constant
+   */
+  resourceService: ResourceService;
+
+  /**
    * Default method of CourseConsumptionComponent class
    *
-   * @param route
-   * @param consumptionService
-   * @param activatedRoute
-   * @param searchService
-   * @param rendererService
-   * @param resourceService
+   * @param {Router} route Url navigation
+   * @param {CourseConsumptionService} consumption To get dashboard data
+   * @param {ActivatedRoute} activatedRoute To get param(s) from url
+   * @param {SearchService} searchService To get logged-in user published course(s)
+   * @param {RendererService} rendererService To get chart service
+   * @param {ResourceService} resourceService To get language constant
    */
-  constructor(private route: Router,
-    private consumptionService: CourseConsumptionService,
-    private activatedRoute: ActivatedRoute,
-    private searchService: SearchService,
-    private rendererService: RendererService,
-    private resourceService: ResourceService) {
+  constructor(route: Router, consumption: CourseConsumptionService, activatedRoute: ActivatedRoute, searchService: SearchService,
+    rendererService: RendererService, resourceService: ResourceService) {
+    this.consumptionService = consumption;
+    this.activatedRoute = activatedRoute;
+    this.searchService = searchService;
+    this.rendererService = rendererService;
+    this.resourceService = resourceService;
+    this.route = route;
     this.activatedRoute.params.subscribe(params => {
       // Get content
       const myCourses = this.searchService.getSearchedContent();

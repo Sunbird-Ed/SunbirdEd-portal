@@ -5,7 +5,6 @@ import { RendererService, OrganisationService, DownloadService } from './../../s
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
-// import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import * as _ from 'lodash';
 
 /**
@@ -102,26 +101,70 @@ export class OrganisationComponent {
   showDownloadSuccessModal = false;
 
   /**
+   * Download report service
+   */
+  public downloadService: DownloadService;
+
+  /**
+   * Router to change url
+   */
+  public route: Router;
+
+  /**
+   * To get params from url
+   */
+  public activatedRoute: ActivatedRoute;
+
+  /**
+   * To get logged-in user published course(s)
+   */
+  searchService: SearchService;
+
+  /**
+   * Chart renderer to call chart service like Line chart service
+   *
+   * Currently it supports only line and bar chart
+   */
+  rendererService: RendererService;
+
+  /**
+   * To get language constant
+   */
+  resourceService: ResourceService;
+
+  /**
+   * To get org dashboard data by making api call
+   */
+  orgService: OrganisationService;
+
+  /**
+   * To get logged-in user profile
+   */
+  userService: UserService;
+
+  /**
    * Default method of OrganisationService class
    *
-   * @param downloadService
-   * @param route
-   * @param activatedRoute
-   * @param userService
-   * @param searchService
-   * @param rendererService
-   * @param orgService
-   * @param resourceService
+   * @param {DownloadService} downloadService To make download report api call
+   * @param {Router} route Url navigation
+   * @param {ActivatedRoute} activatedRoute To get params from url
+   * @param {UserService} userService To get logged-in user profile
+   * @param {SearchService} searchService To get organization details
+   * @param {RendererService} rendererService To get chart service
+   * @param {OrganisationService} orgService To get dashboard data
+   * @param {ResourceService} resourceService To get language constant
    */
-  constructor(
-    private downloadService: DownloadService,
-    private route: Router,
-    private activatedRoute: ActivatedRoute,
-    private userService: UserService,
-    private searchService: SearchService,
-    private rendererService: RendererService,
-    private orgService: OrganisationService,
-    private resourceService: ResourceService) {
+  constructor(downloadService: DownloadService, route: Router, activatedRoute: ActivatedRoute, userService: UserService,
+    searchService: SearchService, rendererService: RendererService, orgService: OrganisationService, resourceService: ResourceService) {
+    this.downloadService = downloadService;
+    this.activatedRoute = activatedRoute;
+    this.searchService = searchService;
+    this.rendererService = rendererService;
+    this.resourceService = resourceService;
+    this.orgService = orgService;
+    this.userService = userService;
+    this.route = route;
+
     this.activatedRoute.params.subscribe(params => {
       // Get already searched org list
       const orgArray = this.searchService.getOrganisation();
