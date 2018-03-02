@@ -9,12 +9,15 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, Router, RouterOutlet} from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { OutboxComponent } from '../index';
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, PaginationService, ToasterService, ConfigService, DateFormatPipe } from '@sunbird/shared';
+import {
+    SharedModule, ResourceService, PaginationService, ToasterService,
+    ConfigService, DateFormatPipe, ServerResponse
+} from '@sunbird/shared';
 
 describe('OutboxComponent', () => {
     let component: OutboxComponent;
@@ -88,6 +91,13 @@ describe('OutboxComponent', () => {
             expect(component.pageNumber).toBe(3);
             expect(component.pageLimit).toBe(10);
         }));
+
+    it('should call updateStatus', () => {
+        component.outboxData = testData.mockRes.outboxData;
+        component.updateStatus('7ffbff00-160c-11e8-b9b4-393f76d4675b');
+        fixture.detectChanges();
+        expect(component.outboxData[0].status).toEqual('cancelled');
+    });
 
     it('should call setpage method and set proper page number', inject([ConfigService, Router],
         (configService, route) => {

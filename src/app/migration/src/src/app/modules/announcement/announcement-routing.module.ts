@@ -7,9 +7,6 @@ const routes: Routes = [
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent,
     children: [{path: 'delete/:announcementId', component: DeleteComponent}]
   }
-  // {
-  //   path: 'announcement/outbox/:pageNumber/delete/:announcementId', component: DeleteComponent
-  // }
 ];
 
 @NgModule({

@@ -23,7 +23,7 @@ export class AnnouncementService extends DataService {
   /**
    * To listen event
    */
-  announcementEvent = new EventEmitter();
+  announcementDeleteEvent = new EventEmitter();
   /**
    * base Url for announcement api
    */
@@ -140,7 +140,7 @@ export class AnnouncementService extends DataService {
       }
     };
     return this.delete(option).map(data => {
-      this.announcementEvent.emit();
+      this.announcementDeleteEvent.emit(requestParam.announcementId);
       return data;
     });
   }

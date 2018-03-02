@@ -22,5 +22,11 @@ export const mockRes = {
                 'errmsg': 'Cannot set property of undefined'
             }, 'responseCode': 'CLIENT_ERROR', 'result': {}
         }
-    }
+    },
+    outboxData: [{
+        'id': '7ffbff00-160c-11e8-b9b4-393f76d4675b',
+        'from': 'asdasd', 'type': 'Circular', 'title': 'wsw', 'description': 'asda', 'links': [],
+        'attachments': [], 'createdDate': '2018-02-20 07:05:57:744+0000', 'status': 'active',
+        'target': { 'geo': { 'ids': ['01236686178285977611'] } }, 'metrics': { 'sent': 0, 'read': 0, 'received': 0 }
+    }]
 };

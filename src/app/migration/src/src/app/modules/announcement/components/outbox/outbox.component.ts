@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router, RouterOutlet } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse} from '@sunbird/shared';
 
 /**
  * The announcement outbox component displays all
@@ -140,7 +140,7 @@ export class OutboxComponent implements OnInit {
     };
 
     this.announcementService.getOutboxData(option).subscribe(
-      apiResponse => {
+      (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result.announcements;
         this.result = apiResponse.result;
         this.showLoader = false;
@@ -172,11 +172,25 @@ export class OutboxComponent implements OnInit {
   }
 
   /**
+   * This method updates the status of the API object.
+   * It updates the deleted announcement status to cancelled locally without
+   * calling the API
+	 *
+	 */
+  updateStatus(annid) {
+    _.each(this.outboxData,  (key, index) => {
+      if (annid && annid === key.id) {
+         this.outboxData[index].status = 'cancelled';
+      }
+    });
+  }
+
+  /**
    * This method subscribes announcement event in announcement service
    * and calls the render outbox method to refresh the list
 	 *
 	 */
   ngOnInit() {
-    this.announcementService.announcementEvent.subscribe(data => this.renderOutbox(this.pageLimit, this.pageNumber));
+    this.announcementService.announcementDeleteEvent.subscribe(data => this.updateStatus(data));
   }
 }

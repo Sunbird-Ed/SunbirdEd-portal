@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 
 /**
  * The delete component deletes the announcement
@@ -87,7 +87,7 @@ export class DeleteComponent {
   deleteAnnouncement() {
     const option = { announcementId: this.announcementId };
     this.announcementService.deleteAnnouncement(option).subscribe(
-      apiResponse => {
+      (apiResponse: ServerResponse) => {
         this.iziToast.success('Succesfully deleted');
         this.redirect();
       },
