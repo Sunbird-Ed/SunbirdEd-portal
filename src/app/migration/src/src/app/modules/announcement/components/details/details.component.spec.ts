@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import * as testData from './delete.component.spec.data';
+import * as testData from './details.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
@@ -14,11 +14,11 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
-import { DeleteComponent } from './delete.component';
+import { DetailsComponent } from './details.component';
 
-describe('DeleteComponent', () => {
-  let component: DeleteComponent;
-  let fixture: ComponentFixture<DeleteComponent>;
+describe('DetailsComponent', () => {
+  let component: DetailsComponent;
+  let fixture: ComponentFixture<DetailsComponent>;
   const fakeActivatedRoute = {
     'params': Observable.from([{ 'pageNumber': 10 }]),
     'parent': { 'params': Observable.from([{ 'pageNumber': 10 }]) }
@@ -29,7 +29,7 @@ describe('DeleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DeleteComponent],
+      declarations: [DetailsComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, SharedModule],
       providers: [HttpClientModule, AnnouncementService,
@@ -42,7 +42,7 @@ describe('DeleteComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteComponent);
+    fixture = TestBed.createComponent(DetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -51,11 +51,10 @@ describe('DeleteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute,
+  it('should call get announcement by id api and get success response', inject([AnnouncementService, ActivatedRoute,
     ResourceService, ToasterService, HttpClient],
     (announcementService, activatedRoute, resourceService, toasterService, http) => {
-      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
-      spyOn(component, 'deleteAnnouncement').and.callThrough();
+      spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.of(testData.mockRes.getAnnByIdSuccess));
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(toasterService, 'success').and.callThrough();
@@ -65,21 +64,24 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
-      component.deleteAnnouncement();
-      announcementService.deleteAnnouncement(params).subscribe(
+      // spyOn(component, 'getDetails').and.callThrough();
+      component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
+      announcementService.getAnnouncementById(params).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
-          expect(apiResponse.result.status).toBe('cancelled');
           expect(apiResponse.params.status).toBe('successful');
         }
       );
       fixture.detectChanges();
     }));
 
-  it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
+  xit('should call get announcement by id api and get error response',
+  inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
     (announcementService, toasterService, resourceService, http) => {
-      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.throw(testData.mockRes.deleteError));
-      spyOn(component, 'deleteAnnouncement').and.callThrough();
+
+      spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
+            spyOn(component, 'getDetails').and.callThrough();
+
       const param = { data: { 'request': { 'announcementId': '' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(toasterService, 'error').and.callThrough();
@@ -89,19 +91,19 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
-      component.deleteAnnouncement();
-      announcementService.deleteAnnouncement(param).subscribe(
+      component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
+      announcementService.getAnnouncementById(param).subscribe(
         apiResponse => {
         },
         err => {
-          expect(err.error.params.errmsg).toBe('Unauthorized User');
-          expect(err.error.params.status).toBe('failed');
-          expect(err.error.responseCode).toBe('CLIENT_ERROR');
+          expect(err.params.errmsg).toBe('Unauthorized User');
+          expect(err.params.status).toBe('failed');
+          expect(err.responseCode).toBe('CLIENT_ERROR');
         }
       );
     }));
 
-  it('should call redirect', inject([Router], (route) => {
+  xit('should call redirect', inject([Router], (route) => {
     component.redirect();
     fixture.detectChanges();
     expect(component).toBeTruthy();
@@ -109,3 +111,4 @@ describe('DeleteComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['announcement/outbox/', component.pageNumber]);
   }));
 });
+

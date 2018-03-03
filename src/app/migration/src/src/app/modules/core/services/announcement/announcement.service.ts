@@ -143,4 +143,17 @@ export class AnnouncementService extends DataService {
       return data;
     });
   }
+
+  /**
+  * Method to get announcement details
+  * It calls the get method from data service class
+  *
+  * @param {RequestParam} requestParam Request object needed for delete API call
+  */
+ getAnnouncementById(requestParam: AnnouncementSericeParam) {
+    const option = {
+      url: this.config.urlConFig.URLS.ANNOUNCEMENT.GET_BY_ID + '/' + requestParam.announcementId
+    };
+    return this.get(option);
+  }
 }

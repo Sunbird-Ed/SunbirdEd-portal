@@ -76,6 +76,7 @@ describe('OutboxComponent', () => {
         HttpClient, ConfigService],
         (announcementService, toasterService, resourceService, http, configService) => {
             spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.throw(testData.mockRes.outboxError));
+            spyOn(component, 'renderOutbox').and.callThrough();
             spyOn(resourceService, 'getResource').and.callThrough();
             spyOn(toasterService, 'error').and.callThrough();
             spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
@@ -84,14 +85,14 @@ describe('OutboxComponent', () => {
                 resourceService.messages = data.messages;
               }
             );
-            spyOn(component, 'renderOutbox').and.callThrough();
+            component.renderOutbox(configService.pageConfig.OUTBOX.PAGE_LIMIT, component.pageNumber);
             announcementService.getOutboxData({}).subscribe(
                 outboxResponse => { },
                 err => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');
                     expect(err.error.params.status).toBe('failed');
                     expect(err.error.responseCode).toBe('CLIENT_ERROR');
-                    expect(component.showLoader).toBe(true);
+                    expect(component.showLoader).toBe(false);
                 }
             );
             fixture.detectChanges();

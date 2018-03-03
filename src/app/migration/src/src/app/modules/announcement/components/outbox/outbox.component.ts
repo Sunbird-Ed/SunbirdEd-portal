@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse} from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 
 /**
  * The announcement outbox component displays all
@@ -178,9 +178,9 @@ export class OutboxComponent implements OnInit {
 	 *
 	 */
   updateStatus(annid) {
-    _.each(this.outboxData,  (key, index) => {
+    _.each(this.outboxData, (key, index) => {
       if (annid && annid === key.id) {
-         this.outboxData[index].status = 'cancelled';
+        this.outboxData[index].status = 'cancelled';
       }
     });
   }
