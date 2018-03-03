@@ -1,0 +1,13 @@
+{
+    "OUTBOX": {
+        "PAGE_LIMIT": 25
+    },
+    "PAGINATION": {
+        "PAGE_STRIP": 5
+    },
+    "API": {
+        "ANNOUNCEMENT": {
+            "CHANNEL": "web"
+        }
+    }
+}

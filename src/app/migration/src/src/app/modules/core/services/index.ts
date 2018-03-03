@@ -5,3 +5,4 @@ export * from './badges/badges.service';
 export * from './announcement/announcement.service';
 export * from './permission/permission.service';
 export * from './search/search.service';
+export * from './announcement/announcement.service';
