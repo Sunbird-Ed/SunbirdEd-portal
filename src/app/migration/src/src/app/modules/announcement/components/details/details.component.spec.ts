@@ -20,8 +20,7 @@ describe('DetailsComponent', () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 10 }]),
-    'parent': { 'params': Observable.from([{ 'pageNumber': 10 }]) }
+    'params': Observable.from([{ 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' }])
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -103,12 +102,6 @@ describe('DetailsComponent', () => {
       );
     }));
 
-  xit('should call redirect', inject([Router], (route) => {
-    component.redirect();
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    expect(component.pageNumber).toEqual(10);
-    expect(route.navigate).toHaveBeenCalledWith(['announcement/outbox/', component.pageNumber]);
-  }));
+
 });
 

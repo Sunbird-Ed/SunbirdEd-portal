@@ -21,11 +21,6 @@ export class DetailsComponent {
   announcementId: string;
 
   /**
-	 * Contains page number of outbox list
-	 */
-  pageNumber = 1;
-
-  /**
 	 * Contains parent url
 	 */
   parentUrl: string;
@@ -41,7 +36,7 @@ export class DetailsComponent {
   showLoader = true;
 
   /**
-   * To make outbox API calls
+   * To make details API calls
    */
   private announcementService: AnnouncementService;
 
@@ -88,9 +83,6 @@ export class DetailsComponent {
     this.iziToast = iziToast;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
-    });
-    this.activatedRoute.parent.params.subscribe((params) => {
-      this.pageNumber = Number(params.pageNumber);
     });
     this.getDetails(this.announcementId);
   }
