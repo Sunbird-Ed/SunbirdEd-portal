@@ -18,6 +18,9 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ],
+      "@sunbird/library": [
+        "app/modules/library"
       ]
     },
     "module": "es2015",

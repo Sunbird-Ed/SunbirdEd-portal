@@ -11,6 +11,8 @@ import { SharedModule } from '@sunbird/shared';
 import { DashboardModule } from '@sunbird/dashboard';
 import { AnnouncementModule } from '@sunbird/announcement';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { LibraryModule } from '@sunbird/library';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     SharedModule,
     DashboardModule,
     AnnouncementModule,
-    Ng2IziToastModule
+    Ng2IziToastModule,
+    LibraryModule
   ],
   providers: [],
   entryComponents: [AppComponent],
