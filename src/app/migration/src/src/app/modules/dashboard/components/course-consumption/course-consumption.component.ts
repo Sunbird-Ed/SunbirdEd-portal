@@ -19,7 +19,6 @@ import * as _ from 'lodash';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.css']
 })
-
 export class CourseConsumptionComponent {
 
   /**
