@@ -35,7 +35,6 @@ describe('MainHomeComponent', () => {
   it('should subscribe to user service', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    console.log(testData);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -50,7 +49,6 @@ describe('MainHomeComponent', () => {
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    console.log(testData);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseSuccess));
     courseService.getEnrolledCourses();
     fixture.detectChanges();

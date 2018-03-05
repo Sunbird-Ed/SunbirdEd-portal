@@ -120,7 +120,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       course => {
         if (course) {
           this.showLoader = false;
-          console.log(course);
           this.enrolledCourses = course.enrolledCourses;
           this.showError = false;
           this.toDoList = this.toDoList.concat(this.enrolledCourses);
