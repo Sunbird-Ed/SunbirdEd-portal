@@ -1,0 +1,25 @@
+<div class="">
+  <div class="ui fluid left icon input search-location-icon">
+    <i class="search icon annRecipientsSearchIcon"></i>
+    <input type="text" placeholder="Search for location">
+  </div>
+  <div class="ui segment items-area padding-top-none padding-left-none">
+    <div *ngIf="locationList && locationList.length && !showLoader">
+      <div class="grouped fields">
+        <div *ngFor="let item of locationList">
+          <div class="field component_items padding-right-none">
+            <sui-checkbox [(ngModel)]="item.selected" name="item.location" (ngModelChange)="checkAndUncheckItem($event, item, item.id);">{{item.location}}</sui-checkbox>
+            <span *ngIf="item.userCount && item.userCount === null || item.userCount === 0">(0 users)</span>
+            <span *ngIf="item.userCount && item.userCount !== null">({{item.userCount}} users)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="locationList && locationList.length === 0" class="margin-left-5">
+      No location found
+    </div>
+    <div *ngIf="showLoader" class="margin-left-5 padding-top-none margin-top-30">
+      <app-loader></app-loader>
+    </div>
+  </div>
+</div>
