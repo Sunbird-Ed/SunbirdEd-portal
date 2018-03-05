@@ -100,12 +100,13 @@ describe('GeoExplorerComponent', () => {
   it('should populate selected items', () => {
     const data = testData.locationSuccessData.result.response[0];
     component.selectedItems = [];
-    component.locationList = data;
+    component.locationList = testData.locationSuccessData.result.response;
     spyOn(component, 'populateItems').and.callThrough();
     component.populateItems([data.id]);
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.populateItems).toHaveBeenCalledWith([data.id]);
+    expect(component.selectedItems[0].selected).toEqual(true);
   });
 
   it('should throw error - adaptor config not found', () => {
