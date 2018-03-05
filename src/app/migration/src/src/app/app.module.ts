@@ -26,13 +26,12 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     SuiModule,
     CommunityModule,
     SharedModule,
-    HomeModule
-  ],
-  providers: [
+    HomeModule,
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule
   ],
+  providers: [],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
