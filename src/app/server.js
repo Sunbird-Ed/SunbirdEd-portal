@@ -300,6 +300,9 @@ app.all('/:tenantName', function (req, res) {
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
 
+// Mobile redirection to app
+require('./helpers/mobileRedirectHelper.js')(app)
+
 // Resource bundles apis
 
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
