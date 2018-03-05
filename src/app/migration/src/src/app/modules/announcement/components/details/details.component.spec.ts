@@ -75,33 +75,31 @@ describe('DetailsComponent', () => {
     }));
 
   xit('should call get announcement by id api and get error response',
-  inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
-    (announcementService, toasterService, resourceService, http) => {
+    inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
+      (announcementService, toasterService, resourceService, http) => {
 
-      spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
-            spyOn(component, 'getDetails').and.callThrough();
+        spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
+        spyOn(component, 'getDetails').and.callThrough();
 
-      const param = { data: { 'request': { 'announcementId': '' } } };
-      spyOn(resourceService, 'getResource').and.callThrough();
-      spyOn(toasterService, 'error').and.callThrough();
-      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
-      http.get().subscribe(
-        data => {
-          resourceService.messages = data.messages;
-        }
-      );
-      component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
-      announcementService.getAnnouncementById(param).subscribe(
-        apiResponse => {
-        },
-        err => {
-          expect(err.params.errmsg).toBe('Unauthorized User');
-          expect(err.params.status).toBe('failed');
-          expect(err.responseCode).toBe('CLIENT_ERROR');
-        }
-      );
-    }));
-
-
+        const param = { data: { 'request': { 'announcementId': '' } } };
+        spyOn(resourceService, 'getResource').and.callThrough();
+        spyOn(toasterService, 'error').and.callThrough();
+        spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+        http.get().subscribe(
+          data => {
+            resourceService.messages = data.messages;
+          }
+        );
+        component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
+        announcementService.getAnnouncementById(param).subscribe(
+          apiResponse => {
+          },
+          err => {
+            expect(err.params.errmsg).toBe('Unauthorized User');
+            expect(err.params.status).toBe('failed');
+            expect(err.responseCode).toBe('CLIENT_ERROR');
+          }
+        );
+      }));
 });
 
