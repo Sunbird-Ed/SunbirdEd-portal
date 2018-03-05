@@ -6,6 +6,7 @@ import { SharedModule, ResourceService, PaginationService, ToasterService} from 
 
 import { AnnouncementService} from '@sunbird/core';
 import { OutboxComponent, DeleteComponent} from './components/index';
+import { InboxComponent } from './components/inbox/inbox.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { OutboxComponent, DeleteComponent} from './components/index';
      SharedModule,
     SuiModule
   ],
-  declarations: [OutboxComponent, DeleteComponent],
+  declarations: [OutboxComponent, DeleteComponent, InboxComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService]
 })
 export class AnnouncementModule { }
