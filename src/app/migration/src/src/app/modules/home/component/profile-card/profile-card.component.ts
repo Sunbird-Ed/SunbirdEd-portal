@@ -1,7 +1,6 @@
 // Import services
 import {  UserService } from '@sunbird/core';
 import {  ResourceService } from '@sunbird/shared';
-
 import { Component, Input } from '@angular/core';
 /**
  * ProfileCardComponent is a card contains information about

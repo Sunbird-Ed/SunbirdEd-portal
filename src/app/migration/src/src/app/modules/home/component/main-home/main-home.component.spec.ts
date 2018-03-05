@@ -47,20 +47,6 @@ describe('MainHomeComponent', () => {
     expect(component.toDoList).toBeDefined();
   });
 
-  xit('should throw error', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    console.log(testData);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
-    userService.getUserProfile();
-    fixture.detectChanges();
-    component.getDetails();
-    fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.showError).toBeTruthy();
-  });
-
-
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
@@ -72,9 +58,7 @@ describe('MainHomeComponent', () => {
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.showError).toBeFalsy();
-     expect(component.enrolledList).toBeDefined();
+    expect(component.enrolledList).toBeDefined();
     expect(component.toDoList).toBeDefined();
   });
-
-
 });

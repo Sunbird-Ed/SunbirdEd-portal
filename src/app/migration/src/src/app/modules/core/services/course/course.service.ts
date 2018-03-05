@@ -1,4 +1,3 @@
-
 // Import Module
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
@@ -43,13 +42,9 @@ export class CoursesService {
    * contains all the enrolled courses details
    */
   enrolledCourses: any[] = [];
-  /**
-   * parsing session storage
-   */
-  sessionData = JSON.parse(window.sessionStorage.getItem('sbConfig') || '{}');
 
-  private _courseData$ = new BehaviorSubject<any>(undefined);
-  public readonly courseData$: Observable<any> = this._courseData$.asObservable();
+  private _enrolledCourseData$ = new BehaviorSubject<any>(undefined);
+  public readonly enrolledCourseData$: Observable<any> = this._enrolledCourseData$.asObservable();
 
   /**
   * the "constructor"
@@ -63,65 +58,26 @@ export class CoursesService {
     this.userService = userService;
     this.learnerService = learnerService;
     this.userid = this.userService.userid;
-    console.log('[[[[[', this.userid);
     this.getEnrolledCourses();
   }
   /**
   *  api call
   */
   public getEnrolledCourses() {
+    this.enrolledCourses = undefined;
     const option = {
       url: this.enrolledCoursesUrl + '/' + this.userid
     };
     this.learnerService.get(option).subscribe(
       data => {
-        this.setEnrolledCourses(data);
+        this.enrolledCourses = data.result.courses;
+      this._enrolledCourseData$.next({ err: null, enrolledCourses: this.enrolledCourses  });
       },
       err => {
-        this._courseData$.next({ err: err, enrolledCourses: { ...this.enrolledCourses } });
+        this._enrolledCourseData$.next({ err: err, enrolledCourses: this.enrolledCourses });
         console.log('error in getting courses', err);
       }
     );
-  }
-
-  /**
-   *  set the values of enrolled courses
-   *
-   * @param {object} res enrolled courses
-   */
-  public setEnrolledCourses(res) {
-    this.setSessionData('ENROLLED_COURSES', undefined);
-    if (res && res.responseCode === 'OK') {
-      this.enrolledCourses = res.result.courses;
-      this.setSessionData('ENROLLED_COURSES', {
-        userid: this.userid,
-        courseArr: this.enrolledCourses
-      });
-      this._courseData$.next({ err: null, enrolledCourses: { ...this.enrolledCourses } });
-    } else {
-      this.enrolledCourses = undefined;
-      this.setSessionData('ENROLLED_COURSES', undefined);
-    }
-  }
-
-  /**
-   *  get session value
-   *
-   * @param {string} key to get session data
-   */
-  getSessionData(key) {
-    return this.sessionData[key];
-  }
-  /**
-   *  set the session value
-   *
-   * @param {string} key send by session value
-   * @param {array} value session data
-   */
-  setSessionData(key, value) {
-    this.sessionData[key] = value;
-    window.sessionStorage
-      .setItem('sbConfig', JSON.stringify(this.sessionData));
   }
 
 }

@@ -38,7 +38,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   /**
    *  Store course api response in local
    */
-  enrolledCourses: any = {};
+  enrolledCourses: any = [];
   /**
    *  Contains userProfile missingfields value
    */
@@ -96,14 +96,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   * user profile
   */
   public getDetails() {
-    this.userService.userData$.subscribe(
+    this.userSubscription = this.userService.userData$.subscribe(
       user => {
         if (user && !user.err) {
           this.showLoader = false;
           this.showError = false;
-          this.profileCompleteness = user.userProfile['completeness'];
+          this.profileCompleteness = user.userProfile.completeness;
           this.profileMissingFields = user.userProfile['missingFields'];
-          this.getProfileList();
+          this.updateProfileList();
         } else {
           this.showLoader = false;
           this.showError = true;
@@ -111,20 +111,19 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   /**
    * Subscribe to courseService to get enrolledCourses
    * by user
    */
-
   public getCourses() {
-    this.courseSubscription = this.courseService.courseData$.subscribe(
+    this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
       course => {
         if (course) {
           this.showLoader = false;
+          console.log(course);
           this.enrolledCourses = course.enrolledCourses;
           this.showError = false;
-          this.getCourseList();
+          this.toDoList = this.toDoList.concat(this.enrolledCourses);
         }
       },
       err => {
@@ -134,10 +133,10 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     );
   }
   /**
-   * getprofilelist checks profileCompleteness is less than 100
+   * updateProfileList checks profileCompleteness is less than 100
    * and push profilelist to toDoList
    */
-  public getProfileList() {
+  public updateProfileList() {
     if (this.profileCompleteness < 100) {
       this.profileList = {
         missingFields: this.profileMissingFields,
@@ -147,19 +146,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     }
     this.toDoList.unshift(this.profileList);
   }
-
-  /**
-   * getCourseList push the enrolledlist
-   * to toDoList
-   */
-  public getCourseList() {
-    _.forIn(this.enrolledCourses, (value) => {
-      this.enrolledList.push(value);
-    });
-    this.toDoList = this.toDoList.concat(this.enrolledList);
-  }
-
-
   /**
    *To track any new entry
    *@param {number} index Give position for current entry
@@ -168,7 +154,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   trackByFn(index, item) {
     return index;
   }
-
   /**
   *Initialize getDetails and getCourses.
   */
@@ -180,11 +165,8 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    *ngOnDestroy unsubscribe the the subscription
    */
   ngOnDestroy() {
-    console.log('destroy');
     this.userSubscription.unsubscribe();
     this.courseSubscription.unsubscribe();
-
   }
-
 }
 

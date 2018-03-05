@@ -3,9 +3,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import {  ConfigService, ResourceService } from '@sunbird/shared';
-
-
-
 /**
  * HomeAnnouncementComponent displays announcement inbox card
  */
@@ -91,7 +88,6 @@ export class HomeAnnouncementComponent implements OnInit {
       this.getInbox(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
     });
   }
-
   /**
    * getInbox is subscribe to announcement service to get api response.
    */
@@ -109,7 +105,6 @@ export class HomeAnnouncementComponent implements OnInit {
           this.listData = res.result.announcements;
           this.showLoader = false;
           this.showdiv = true;
-          console.log('service', res);
         }
       },
       err => {
@@ -117,7 +112,6 @@ export class HomeAnnouncementComponent implements OnInit {
         this.showLoader = false;
       });
   }
-
   /**
    * Initialize getInbox
    */

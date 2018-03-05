@@ -30,22 +30,13 @@ describe('CoursesService', () => {
     const apiRes = coursesService.getEnrolledCourses();
     expect(coursesService).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();
-    expect(coursesService.courseData$).toBeDefined();
-    console.log('++++', coursesService.courseData$);
-  }));
-
-  it('should set data', inject([CoursesService], (coursesService: CoursesService) => {
-    coursesService.enrolledCourses = undefined;
-    const data = testData.successData;
-    coursesService.setEnrolledCourses(data);
-    expect(coursesService).toBeTruthy();
-    expect(coursesService.enrolledCourses).toBeDefined();
+    expect(coursesService.enrolledCourseData$).toBeDefined();
   }));
 
   it('doesnt contain data', inject([CoursesService], (coursesService: CoursesService) => {
+    coursesService.enrolledCourses = undefined;
     expect(coursesService).toBeTruthy();
     const data = testData.errorData;
-    coursesService.setEnrolledCourses(data);
     expect(coursesService.enrolledCourses).toBeUndefined();
   }));
 
