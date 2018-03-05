@@ -15,6 +15,12 @@
       ],
       "@sunbird/home": [
         "app/modules/home"
+      ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
+      "@sunbird/announcement": [
+        "app/modules/announcement"
       ]
     },
     "sourceMap": true,

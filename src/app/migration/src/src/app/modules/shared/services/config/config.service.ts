@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as  urlConfig from './url.config.json';
 import * as  dropDownConfig from './dropdown.config.json';
 import * as  rolesConfig from './roles.config.json';
+import * as  appConfig from './app.config.json';
 
 /**
  * Service to fetch config details.
@@ -24,5 +25,10 @@ export class ConfigService {
  *
  */
   rolesConfig = (<any>rolesConfig);
+/**
+ * property containing app config
+ *
+ */
+pageConfig = (<any>appConfig);
 }
 

@@ -1,0 +1,21 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+  <div class="content">
+    <div class="ui center aligned segment">
+      <div class="ui basic icon circular button deny">
+        <i class="ui huge help outline icon"></i>
+      </div>
+      <br/>
+      <br/>
+      <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirm}}</div>
+      <br/>
+      <div class="announcement-description">
+        {{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirmdescrption}}
+      </div>
+      <br/>
+      <br/>
+      <button class="ui basic button announcementButton btn-width-26 announcementButtonText" (click)="modal.approve('done'); deleteAnnouncement();">
+      {{resourceService?.frmelmnts?.btn?.yes}} </button>
+      <button class="ui button primary announcementButton btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
+    </div>
+  </div>
+</sui-modal>
