@@ -9,7 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
+/**
+ * Service to manage geo explorer http calls
+ */
 @Injectable()
+
 /**
  * @class GeoExplorerService to manage geo http call
  */

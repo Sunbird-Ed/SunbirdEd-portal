@@ -4,11 +4,19 @@ import { ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 
+/**
+ * The Geo-explorer component.
+ *
+ * To show list of districs along with user count
+ */
 @Component({
   selector: 'app-geo-explorer',
   templateUrl: './geo-explorer.component.html',
   styleUrls: ['./geo-explorer.component.css']
 })
+/**
+ * @class GeoExplorerComponent
+ */
 export class GeoExplorerComponent implements OnInit {
 
   /**
@@ -46,7 +54,7 @@ export class GeoExplorerComponent implements OnInit {
   /**
    * Flag to show error if any occur
    */
-  showError: true;
+  showError = false;
 
   /**
    * Reference of user service
