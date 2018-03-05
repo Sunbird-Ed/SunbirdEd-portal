@@ -1,7 +1,8 @@
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { GeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';
 
 /**
@@ -39,12 +40,12 @@ export class GeoExplorerComponent implements OnInit {
   /**
    * Contains list of locations
    */
-  locationList: Array<any>;
+  locationList: Array<GeoLocationDetails>;
 
   /**
    * Contains list of checked items
    */
-  selectedItems: any[] = [];
+  selectedItems: Array<GeoLocationDetails>;
 
   /**
    * Show loader
@@ -135,20 +136,13 @@ export class GeoExplorerComponent implements OnInit {
   }
 
   /**
-   * Function to return selected location
-   */
-  getSelectedLocation() {
-    return this.selectedItems;
-  }
-
-  /**
    * Function to set / reset selected items
    *
    * @param {boolean} event true / false
    * @param {object} item selected location details
    * @param {string} id location id
    */
-  checkAndUncheckItem(event: boolean, item: object, id: string) {
+  checkAndUncheckItem(event: boolean, item: GeoLocationDetails, id: string) {
     if (event) {
       this.selectedItems.push(item);
     } else {

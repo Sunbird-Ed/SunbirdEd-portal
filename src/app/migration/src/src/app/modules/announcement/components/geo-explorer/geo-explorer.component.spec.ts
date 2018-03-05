@@ -97,27 +97,15 @@ describe('GeoExplorerComponent', () => {
     expect(component.selectedItems.length).toEqual(0);
   });
 
-  it('should return selected items', () => {
-    const data = [{ id: 'do_123' }];
-    component.selectedItems = data;
-    spyOn(component, 'getSelectedLocation').and.callThrough();
-    const res = component.getSelectedLocation();
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    expect(component.getSelectedLocation).toHaveBeenCalled();
-    expect(res).toEqual(component.selectedItems);
-  });
-
   it('should populate selected items', () => {
-    const data = [{ id: 'do_123' }];
+    const data = testData.locationSuccessData.result.response[0];
     component.selectedItems = [];
     component.locationList = data;
     spyOn(component, 'populateItems').and.callThrough();
-    component.populateItems(['do_123']);
+    component.populateItems([data.id]);
     fixture.detectChanges();
     expect(component).toBeTruthy();
-    expect(component.populateItems).toHaveBeenCalledWith(['do_123']);
-    expect (component.selectedItems).toEqual(data);
+    expect(component.populateItems).toHaveBeenCalledWith([data.id]);
   });
 
   it('should throw error - adaptor config not found', () => {
