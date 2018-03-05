@@ -1,4 +1,7 @@
 {
+    "HOME": {
+        "PAGE_LIMIT": 2
+    },
     "OUTBOX": {
         "PAGE_LIMIT": 25
     },

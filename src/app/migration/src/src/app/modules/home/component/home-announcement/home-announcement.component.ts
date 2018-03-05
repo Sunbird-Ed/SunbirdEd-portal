@@ -122,7 +122,6 @@ export class HomeAnnouncementComponent implements OnInit {
    * Initialize getInbox
    */
   ngOnInit() {
-   // this.getInbox();
   }
 
 }
