@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ResourceComponent } from './component/index';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
     LibraryRoutingModule,
     SharedModule,
-    SuiModule
+    SuiModule,
+    FormsModule
   ],
   declarations: [ResourceComponent]
 })

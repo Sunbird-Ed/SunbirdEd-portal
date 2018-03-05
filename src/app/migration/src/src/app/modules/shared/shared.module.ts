@@ -1,3 +1,5 @@
+import { SuiModule } from 'ng2-semantic-ui/dist';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContentCardComponent } from './components/content-card/content-card.component';
 import { ConfigService, ResourceService } from './services';
 import { CommonModule } from '@angular/common';
@@ -10,6 +12,8 @@ import { PageSectionComponent } from './components/page-section/page-section.com
 @NgModule({
   imports: [
     CommonModule,
+    SuiModule,
+    FormsModule
   ],
 
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent, ContentCardComponent],

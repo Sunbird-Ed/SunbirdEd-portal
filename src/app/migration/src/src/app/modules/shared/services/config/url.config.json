@@ -9,6 +9,7 @@
         "CONTENT_PREFIX": "/content/",
         "ANNOUNCEMENT_PREFIX": "/announcement/v1",
         "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
+        "PAGE_PREFIX": "data/v1/page/assemble",
         "RESOURCEBUNDLES": {
             "ENG": "/read"
         },
