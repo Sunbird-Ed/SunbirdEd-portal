@@ -7,7 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Import services
 import { CoreModule } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule} from '@sunbird/shared';
 // Import component
 import {
   ActionCardComponent, HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
@@ -35,8 +35,7 @@ import {
     HomeAnnouncementComponent,
     NotificationComponent,
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class HomeModule {
 }

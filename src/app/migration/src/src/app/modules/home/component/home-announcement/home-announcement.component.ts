@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 // Import services
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ActivatedRoute, Router} from '@angular/router';
+import {  ConfigService, ResourceService } from '@sunbird/shared';
 
 
 
@@ -33,12 +34,12 @@ export class HomeAnnouncementComponent implements OnInit {
   /**
   * Contains page limit of inbox list
   */
-  pageLimit: 2;
+  pageLimit: number;
 
   /**
    * Contains page number of inbox list
    */
-  pageNumber: number;
+  pageNumber = 1;
   /**
    * Flags to show loader
    */
@@ -54,34 +55,62 @@ export class HomeAnnouncementComponent implements OnInit {
     headerMessage: '',
     loaderMessage: 'We are Fetching Details ...'
   };
+   /**
+   * To navigate to other pages
+   */
+  route: Router;
 
   /**
+   * To get params from url
+   */
+  private activatedRoute: ActivatedRoute;
+
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+
+   /**
     * Constructor
     * inject service(s)
     * @param {ResourceService} resourceService  ResourceService used to render resourcebundels.
     * @param {AnnouncementService} announcement AnnouncementService used to render announcement inbox detail.
-   */
-  constructor(resourceService: ResourceService, announcement: AnnouncementService) {
+    * @param {Router} route To navigate to other pages
+    * @param {ActivatedRoute} activatedRoute To get params from url
+    * @param {ConfigService} config ConfigService reference
+    */
+  constructor(resourceService: ResourceService, announcement: AnnouncementService,
+    route: Router, activatedRoute: ActivatedRoute, config: ConfigService) {
     this.resourceService = resourceService;
     this.announcement = announcement;
+    this.route = route;
+    this.activatedRoute = activatedRoute;
+    this.config = config;
+    this.activatedRoute.params.subscribe(params => {
+      this.pageNumber = Number(params.pageNumber);
+      this.getInbox(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
+    });
   }
 
   /**
    * getInbox is subscribe to announcement service to get api response.
    */
-  public getInbox() {
+  public getInbox(limit: number, pageNumber: number) {
+    this.pageNumber = pageNumber;
+    this.pageLimit = limit;
+
     const option = {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    this.announcement.getInboxList(option).subscribe(
+    this.announcement.getInboxData(option).subscribe(
       res => {
         if (res && res.result.count > 0) {
           this.listData = res.result.announcements;
+          this.showLoader = false;
           this.showdiv = true;
           console.log('service', res);
         }
-        this.showLoader = false;
       },
       err => {
         console.log('show error');
@@ -93,7 +122,7 @@ export class HomeAnnouncementComponent implements OnInit {
    * Initialize getInbox
    */
   ngOnInit() {
-    this.getInbox();
+   // this.getInbox();
   }
 
 }

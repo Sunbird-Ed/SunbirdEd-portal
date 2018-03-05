@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 // services
 import { CoursesService, UserService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService} from '@sunbird/shared';
 /**
  * The MainHomeComponent contains details about
  * user profile, enrolled courses and announcement inbox details.
@@ -98,7 +98,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   public getDetails() {
     this.userService.userData$.subscribe(
       user => {
-        console.log('----', user);
         if (user && !user.err) {
           this.showLoader = false;
           this.showError = false;
