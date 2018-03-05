@@ -127,10 +127,10 @@ angular.module('playerApp')
       admin.openImageBrowser = function (key) {
         if (key === 'users') {
           if (!((admin.bulkUsers.provider && admin.bulkUsers.externalid) ||
-                            admin.bulkUsers.OrgId)) {
+            admin.bulkUsers.OrgId)) {
             admin.bulkUploadError = true
             admin.bulkUploadErrorMessage =
-                            $rootScope.messages.emsg.m0003
+              $rootScope.messages.emsg.m0003
             if (!admin.bulkUploadError) {
               $timeout(function () {
                 admin.bulkUploadError = false
@@ -185,7 +185,7 @@ angular.module('playerApp')
           } else if (res.responseCode === 'CLIENT_ERROR') {
             toasterService.error(res.params.errmsg)
           } else { toasterService.error($rootScope.messages.fmsg.m0051) }
-                }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           admin.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
@@ -203,7 +203,7 @@ angular.module('playerApp')
           } else if (res.responseCode === 'CLIENT_ERROR') {
             toasterService.error(res.params.errmsg)
           } else { toasterService.error($rootScope.messages.fmsg.m0051) }
-                }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           admin.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
@@ -237,9 +237,10 @@ angular.module('playerApp')
             admin.bulkUploadStatus.objectType = res.result.response[0].objectType
             toasterService.success($rootScope.messages.smsg.m0032)
           } else {
-            toasterService.error($rootScope.messages.fmsg.m0051)
+            var errMsg = (res.params && res.params.errmsg) ? res.params.errmsg : $rootScope.messages.fmsg.m0051
+            toasterService.error(errMsg)
           }
-                }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           admin.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
@@ -250,7 +251,7 @@ angular.module('playerApp')
             [admin.sampleUserCSV])
         } else if (key === 'organizations') {
           alasql(' SELECT *  INTO CSV(\'Sample_Organizations.csv\',' +
-                        ' {headers: false,separator:","}) FROM ?', [admin.sampleOrgCSV])
+            ' {headers: false,separator:","}) FROM ?', [admin.sampleOrgCSV])
         }
       }
     }
