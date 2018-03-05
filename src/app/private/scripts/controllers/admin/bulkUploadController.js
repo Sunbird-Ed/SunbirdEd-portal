@@ -220,22 +220,21 @@ angular.module('playerApp')
           $('#statusBulkUpload').modal({ observeChanges: true }).modal('refresh')
           if (res.responseCode === 'OK') {
             admin.uploadStatusKey = key
-            res.result.response[0].successResult.forEach(function (status) {
-              if (status.createdDate) {
-                var createdDate = new Date(status.createdDate)
-                status.createdDate = moment(createdDate).format('DD/MM/YYYY')
-              }
-            })
-            admin.bulkUploadStatus.success = res.result.response[0].successResult
-            if (res.result.response[0].successResult.length) {
-              admin.headings = res.result.response[0].successResult.reduce(function (acc, cur) {
-                return Object.keys(acc).length > Object.keys(cur).length ? acc : cur
+            if (typeof (res.result.response) === 'string') {
+              toasterService.success(res.result.response)
+            } else {
+              res.result.response[0].successResult.forEach(function (status) {
+                if (status.createdDate) {
+                  var createdDate = new Date(status.createdDate)
+                  status.createdDate = moment(createdDate).format('DD/MM/YYYY')
+                }
               })
+              admin.bulkUploadStatus.success = res.result.response[0].successResult
+              admin.bulkUploadStatus.failure = res.result.response[0].failureResult
+              admin.bulkUploadStatus.processId = res.result.response[0].processId
+              admin.bulkUploadStatus.objectType = res.result.response[0].objectType
+              toasterService.success($rootScope.messages.smsg.m0032)
             }
-            admin.bulkUploadStatus.failure = res.result.response[0].failureResult
-            admin.bulkUploadStatus.processId = res.result.response[0].processId
-            admin.bulkUploadStatus.objectType = res.result.response[0].objectType
-            toasterService.success($rootScope.messages.smsg.m0032)
           } else {
             var errMsg = (res.params && res.params.errmsg) ? res.params.errmsg : $rootScope.messages.fmsg.m0051
             toasterService.error(errMsg)
