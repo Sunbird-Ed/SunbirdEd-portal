@@ -67,7 +67,7 @@
                                 <label>
                                 {{$root.frmelmnts.lbl.year}}
                             </label>
-                                <select name="year" class="ui fluid search selection  dropdown" id="yearDropDown" ng-options=" year for year in textbook.years" ng-model="textbook.data.year">
+                                <select name="year" class="ui fluid search selection  dropdown" id="yearDropDown" ng-options=" year for year in textbook.years | orderBy" ng-model="textbook.data.year">
                                 <option value="">{{$root.frmelmnts.lbl.year}}</option>
                             </select>
                             </div>

@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('LimitedPublishedContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', 'workSpaceUtilsService', '$timeout',
-    'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-      toasterService, workSpaceUtilsService, $timeout, PaginationService) {
+    'PaginationService', 'telemetryService', function (contentService, searchService, config, $rootScope, $state,
+      toasterService, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var lpContent = this
       lpContent.userId = $rootScope.userId
       lpContent.status = ['Unlisted']
@@ -51,6 +51,7 @@ angular.module('playerApp')
             lpContent.limitedpublishedContentData = res.result.content || []
             lpContent.totalCount = res.result.count
             lpContent.pageNumber = pageNumber
+            lpContent.version = res.ver
             if (lpContent.limitedpublishedContentData.length === 0) {
               lpContent.error = showErrorMessage(true,
                 $rootScope.messages.stmsg.m0083,
@@ -61,6 +62,8 @@ angular.module('playerApp')
             lpContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0064)
           }
+          /* lpContent.generateImpressionEvent('view', 'scroll', 'workspace-content-unlisted',
+            '/content/limited/publish') */
         }).catch(function () {
           lpContent.error.showError = false
           lpContent.loader.showLoader = false
@@ -101,6 +104,7 @@ angular.module('playerApp')
           if (res && res.responseCode === 'OK') {
             lpContent.loader.showLoader = false
             lpContent.selectedContentItem = []
+            lpContent.version = res.ver
             toasterService.success($rootScope.messages.smsg.m0006)
             lpContent.limitedpublishedContentData = workSpaceUtilsService
               .removeContentLocal(lpContent.limitedpublishedContentData, requestData)
@@ -129,6 +133,33 @@ angular.module('playerApp')
 
       lpContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of review content.
+             */
+      lpContent.generateInteractEvent = function (objtype, contentId) {
+        telemetryService.interactTelemetryData('workspace', contentId, objtype, '1.0',
+          'unlistedContent', 'workspace-unlisted-content')
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      lpContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

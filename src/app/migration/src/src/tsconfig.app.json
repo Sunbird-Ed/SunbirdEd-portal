@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "paths": {
+      "@sunbird/core": [
+          "app/modules/core"
+      ],
+      "@sunbird/community": [
+        "app/modules/community"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
+      ]
+    },
+    "module": "es2015",
+    "types": []
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}
