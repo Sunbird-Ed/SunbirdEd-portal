@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+<sui-modal [isClosable]="true" (dismissed)="parentNavigation.navigateToParentUrl(activatedRoute);" #modal>
   <div class="content annDetailsFormScroller">
     <div class="ui right aligned grid">
       <div class="ui raised segment width-100">

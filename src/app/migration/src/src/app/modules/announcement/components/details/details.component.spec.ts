@@ -13,7 +13,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DetailsComponent } from './details.component';
 
 describe('DetailsComponent', () => {
@@ -31,7 +31,7 @@ describe('DetailsComponent', () => {
       declarations: [DetailsComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, SharedModule],
-      providers: [HttpClientModule, AnnouncementService,
+      providers: [HttpClientModule, AnnouncementService, RouterNavigationService,
         ResourceService, ToasterService, ConfigService, HttpClient,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

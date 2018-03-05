@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 
 /**
@@ -48,7 +48,7 @@ export class DetailsComponent {
   /**
    * To get params from url
    */
-  private activatedRoute: ActivatedRoute;
+  public activatedRoute: ActivatedRoute;
 
   /**
    * To call resource service which helps to use language constant
@@ -59,6 +59,11 @@ export class DetailsComponent {
    * To call toaster service
    */
   private iziToast: ToasterService;
+
+  /**
+   * To call RouterNavigationService service for redirection to parent page
+   */
+  public parentNavigation: RouterNavigationService;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -75,12 +80,14 @@ export class DetailsComponent {
     route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
-    iziToast: ToasterService) {
+    iziToast: ToasterService,
+    parentNavigation: RouterNavigationService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.iziToast = iziToast;
+    this.parentNavigation = parentNavigation;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
     });
@@ -91,6 +98,7 @@ export class DetailsComponent {
    * This method calls the get announcement by id API with a particular announcement
    * id and and gets the details of the announcement
 	 *
+	 * @param {string} announcementId announcement id
 	 */
   getDetails(announcementId: string) {
     const option = { announcementId: this.announcementId };
@@ -105,25 +113,9 @@ export class DetailsComponent {
       err => {
         this.iziToast.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
-        this.redirect();
+        this.parentNavigation.navigateToParentUrl(this.activatedRoute);
       }
     );
-  }
-
-  /**
-   * This method detects the parent url, constructs it and
-   * helps to redirect to the parent page
-	 *
-	 */
-  redirect() {
-    const urlArray = [];
-    this.activatedRoute.parent.url.subscribe((urlPath) => {
-      _.each(urlPath, (key, index) => {
-        urlArray.push(key.path);
-      });
-    });
-    this.parentUrl = _.join(urlArray, '/');
-    this.route.navigate([this.parentUrl]);
   }
 }
 
