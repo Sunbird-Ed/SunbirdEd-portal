@@ -1,11 +1,11 @@
 <span ng-if="noteCard.showModalInLectureView" class="ui center aligned icon tiny header toc-note">
-    <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal();">
+    <span class="ui cardtakenote cursor-pointer" ng-click="noteCard.showAddNoteModal(); $root.generateInteractEvent('note',noteCard.courseId,'addNote','1.0','add-note','note-add')">
         <img ng-src="/common/images/takenote.png">
         <span>{{$root.frmelmnts.lbl.takenote}}</span>
 </span>
 </span>
 <span ng-if="noteCard.showModalInCourseView">
-    <span ng-click="noteCard.showAddNoteModal(); " class="cursor-pointer">
+    <span ng-click="noteCard.showAddNoteModal(); $root.generateInteractEvent('note',noteCard.courseId,'addNote','1.0','add-note','note-add')" class="cursor-pointer">
         <i class="circular icon margin-right-10 plus"></i>&nbsp;{{$root.frmelmnts.lbl.addnote}}
     </span>
 </span>
@@ -17,7 +17,7 @@
                     <span class="ui header">{{$root.frmelmnts.pgttl.takeanote}}</span>
                 </div>
                 <div class="one wide column actions">
-                    <h5 class="ui basic icon circular button deny">
+                    <h5 class="ui basic icon circular button deny" ng-click="$root.generateInteractEvent('note',noteCard.courseId,'closeNote','1.0','close-note','note-close')">
                         <i class="ui remove icon"></i>
                     </h5>
                 </div>
@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="actions" ng-if="!noteCard.createApi.loader.showLoader">
-            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="3" ng-click="noteCard.createNote(noteCard.add)">{{$root.frmelmnts.btn.save}}</button>
-            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData()" tabindex="4" >{{$root.frmelmnts.btn.clear}}</button>
+            <button class="ui primary right floated button margin-bottom-15 margin-top-10 " type="submit" ng-class="noteCard.denyModalClass" ng-disabled="!noteCard.add.title || !noteCard.add.note" tabindex="3" ng-click="noteCard.createNote(noteCard.add); $root.generateInteractEvent('note',noteCard.courseId,'createNote','1.0','add-note','note-create')">{{$root.frmelmnts.btn.save}}</button>
+            <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteCard.clearAddNoteData(); $root.generateInteractEvent('note',noteCard.courseId,'clearAddNote','1.0','clearadd-note','note-clear')" tabindex="4" >{{$root.frmelmnts.btn.clear}}</button>
         </div>
         <div class=" ui segment margin-top-10" ng-if="noteCard.createApi.loader.showLoader">
             <app-loader data="{{noteCard.createApi.loader}}"></app-loader>

@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <tr class="UpForReviewListHover cursor-pointer" ng-repeat="item in data.upForReviewContentData track by $index"
-     ng-click="data.openContentPlayer(item)" ng-init="$last && data.initTocPopup()">
+     ng-click="upForReviewContent.generateInteractEvent('upforreview',item.identifier); data.openContentPlayer(item)" ng-init="$last && data.initTocPopup()" in-view="upForReviewContent.lineInView($index, $inview, item, 'UpForReview')" in-view-options="{ throttle: 1000 }">
       <td >
         <h5 class="ui image header">
           <img ng-src="{{item.appIcon  ? item.appIcon : '/common/images/default.png'}}" class="ui tiny image UpReviewTinyImage">
@@ -17,16 +17,16 @@
             <div class="UpReviewSubHeader">{{item.contentType}}
           	</div>
         		</div>
-      	</h5>      	
+      	</h5>
       </td>
-      <td>  
-			<h5 class="ui image header">			
+      <td>
+			<h5 class="ui image header">
 				<div class="content">
 					 <div class="UpReviewHeader">{{item.creator}}</div>
 					<div class="UpReviewSubHeader">{{$root.frmelmnts.lbl.pendingSince}}: {{item.lastUpdatedOn | dateFilterXTimeAgo}}
 				 	</div>
        		 </div>
-			</h5>			
+			</h5>
        </td>
       <td  class="UpForReviewStatusOrange">{{item.status}}</td>
     </tr>

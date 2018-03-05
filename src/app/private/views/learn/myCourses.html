@@ -5,8 +5,7 @@
             <h4 class="ui header sectionHeading"><span>My Courses</span><span class="ui red circular inline label ">{{learn.enrolledCourses.length}}</span></h4>
 
             <div class="regular slider  courses-slider" ng-if="learn.enrolledCourses.length > 0">
-                <div ng-repeat="item in learn.enrolledCourses track by $index" ng-init="$last&&$root.loadProgress()" ng-click="learn.openCourseView(item, 'ENROLLED_COURSE')" add-slick>
-
+                <div ng-repeat="item in learn.enrolledCourses track by $index" in-view="learn.lineInView($index, $inview, item, 'My Courses', $index)" in-view-options="{ throttle: 1000 }" ng-init="$last&&$root.loadProgress()" ng-click="learn.openCourseView(item, 'ENROLLED_COURSE')" add-slick id="{{$index + '_' + item.identifier}}">
                     <div ng-include=" 'views/common/resumeCard.html'"></div>
                 </div>
             </div>

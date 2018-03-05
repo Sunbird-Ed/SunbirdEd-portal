@@ -2,7 +2,7 @@
     <div class="ui grid">
         <div class="four wide column padding-top-30">
             <div class="ui dropdown">
-                <div class="text">Ongoing Batches</div>
+                <div class="text" ng-click="batch.generateInteractEvent('batches-status')">Ongoing Batches</div>
                 <i class="dropdown icon"></i>
                 <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status" ng-change="batch.listBatches()" id="batchStatusOptions">
                 </select>
@@ -10,8 +10,8 @@
         </div>
     </div>
     <div class="ui three stackable cards">
-        <div class="link card mouse-pointer" ng-repeat="batchdata in batch.batchList track by $index">
-            <div class="image imageInCardsResponsive" ng-click="batch.showUpdateBatchModal(batchdata)">
+        <div class="link card mouse-pointer" ng-repeat="batchdata in batch.batchList track by $index" in-view="batch.lineInView($index, $inview, batchdata, 'CourseBatches')" in-view-options="{ throttle: 1000 }">
+            <div class="image imageInCardsResponsive" ng-click="batch.showUpdateBatchModal(batchdata); batch.generateInteractEvent('course-batches',batchdata.id)">
                 <div class="ui top right attached black label" data="batchdata.participant.length">Batch of {{batch.participants[batchdata.id]}}</div>
                 <div class="ui fluid image">
                     <img ng-src="/common/images/default.png">

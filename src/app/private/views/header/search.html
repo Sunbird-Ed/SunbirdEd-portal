@@ -11,7 +11,7 @@
             <div class="searchicon ui icon input ">
                 <input ng-disabled="!$root.isSearchPage" type="text" id="keyword" name="filter_search" ng-model="$root.search.searchKeyword" placeholder="{{$root.frmelmnts.prmpt.search}}" ng-keypress="($event.charCode==13)?search.searchRequest($event):false"
                     title="Search" autocomplete="off" spellcheck="false" dir="auto" class="searchinput" ng-keyup="search.keyUp()" ng-keydown="search.keyDown()" />
-                <i class="circular search link icon" ng-click="search.searchRequest()"></i>
+                <i class="circular search link icon" ng-click="search.searchRequest(); $root.generateInteractEvent('search','','search','1.0',$root.searchTelemetryId,$root.searchTelemetryPageid)"></i>
             </div>
             <div id="search-suggestions" ng-if="$root.search.autosuggest_data.length > 0" class="ui fluid results transition visible dropdown-menu-list">
                 <div>

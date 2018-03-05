@@ -3,7 +3,7 @@
         <div ng-init="flaggedContent.getAllFlaggedContent();contentModelSetBackLink();">
             <div ng-if="!flaggedContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="!flaggedContent.loader.showLoader && flaggedContent.flaggedContentData.length > 0">
-                    <div class=" link card mouse-pointer " ng-repeat="item in flaggedContent.flaggedContentData track by $index " ng-click="flaggedContent.openContentPlayer(item)" ng-init="$last && flaggedContent.initTocPopup()">
+                    <div class=" link card mouse-pointer " ng-repeat="item in flaggedContent.flaggedContentData track by $index " ng-click="flaggedContent.openContentPlayer(item); flaggedContent.generateInteractEvent(item.contentType,item.identifier)" ng-init="$last && flaggedContent.initTocPopup()" in-view="flaggedContent.lineInView($index, $inview, item, 'FlaggedContent')" in-view-options="{ throttle: 1000 }">
                         <div class="image imageInCardsResponsive ">
                             <div class="ui fluid image ">
                                 <a class="ui black right ribbon label ">{{item.contentType}}</a>
@@ -12,8 +12,8 @@
                             <div class="cardImageText center aligned ">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;
-                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15" 
-                                    data-content="{{item.name}}" data-position="top center"> 
+                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15"
+                                    data-content="{{item.name}}" data-position="top center">
                                     </i>
                                 </span>
                             </div>

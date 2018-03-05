@@ -36,6 +36,6 @@
     </div>
     <div class="ui error message">
     </div>
-    <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addEducation(profileCtrl.newEducation) ;">{{$root.frmelmnts.btn.save}}</button>
+    <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addEducation(profileCtrl.newEducation); profileCtrl.generateInteractEvent('education')">{{$root.frmelmnts.btn.save}}</button>
 
 </form>

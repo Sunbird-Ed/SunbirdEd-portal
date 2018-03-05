@@ -2,9 +2,9 @@
     <div class="header announcementCard-header">
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.address}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'address'"></profile-visibility></a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false ">{{$root.frmelmnts.btn.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm " ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={} ">{{$root.frmelmnts.btn.add}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address)">{{$root.frmelmnts.btn.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false; profileCtrl.generateInteractEvent('editAddress')">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.isAddAddress && !profileCtrl.addressForm" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={}; profileCtrl.generateInteractEvent('addAddress')">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address); profileCtrl.generateInteractEvent('closeAddress')">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
         <div class="item" ng-repeat="address in profileCtrl.user.address">
@@ -21,7 +21,7 @@
             </div>
             <div class="right-floated">
                 <div class="metadata">
-                    <a ng-click="address.isDeleted=true;profileCtrl.deleteAddress(address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    <a ng-click="address.isDeleted=true;profileCtrl.deleteAddress(address); profileCtrl.generateInteractEvent('deleteAddress')"> <i class="trash outline icon trashIcon-fontSize"></i></a>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <div ng-if="profileCtrl.addressForm" class="addressheader ui relaxed divided list">
         <div class="edit-address-form" ng-if="!profileCtrl.isNewAddress ">
             <div class=" ui " ng-repeat="address in profileCtrl.address track by $index " ng-include=" 'views/profile/editProfile/address.html' "></div>
-            <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address)" ;>{{$root.frmelmnts.btn.save}}</button>
+            <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address); profileCtrl.generateInteractEvent('profile-update-address', 'profile-read','1.0')">{{$root.frmelmnts.btn.save}}</button>
         </div>
         <div class="add-address-form" ng-if="profileCtrl.isNewAddress ">
             <div class="ui " ng-include=" 'views/profile/editProfile/addAddress.html' "></div>

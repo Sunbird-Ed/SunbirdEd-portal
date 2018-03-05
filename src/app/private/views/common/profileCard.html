@@ -3,7 +3,7 @@
                 <div class="course-progress ui tiny progress  progressBar-margin orange" data-value="{{item.value}}" data-total="100">
             <div class="bar"></div>
         </div>
-        <div class="profileUpdateCardPadding">
+        <div class="profileUpdateCardPadding" ng-click="homeCtrl.generateInteractEvent('home', $root.userId, 'user', '1.0', 'home', 'home')">
             <div class="item">
                 <div class="profileCard-circular-image light small blue margin-right-20">
                     <div class="profpic">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="sliderCards content CardcontentTopPadding">
-            <button class="ui blue basic right floated button margin-top-10">{{$root.frmelmnts.btn.update}}</button>
+            <button class="ui blue basic right floated button margin-top-10" ng-click="homeCtrl.generateInteractEvent('home', $root.userId,'user', '1.0', 'home', 'home')">{{$root.frmelmnts.btn.update}}</button>
             <div class="padding-top-10 sliderCardDesc"><span class="description profileUpdateCardSubDesc">Your profile is {{item.value}}% <br> complete</span></div>
         </div>
     </div>

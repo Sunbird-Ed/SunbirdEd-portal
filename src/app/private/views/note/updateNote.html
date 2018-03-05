@@ -10,7 +10,7 @@
         <pagedown-editor content="noteList.update.metaData.note" show-preview="false" placeholder={{$root.frmelmnts.lbl.description}} insert-image="noteList.insertImage()"></pagedown-editor>
 
     </div>
-    <button class="ui primary right floated button margin-top-10" type="submit" ng-click="noteList.updateNote(noteList.update.metaData)" ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">{{$root.frmelmnts.btn.update}}</button>
+    <button class="ui primary right floated button margin-top-10" type="submit" ng-click="noteList.updateNote(noteList.update.metaData); $root.generateInteractEvent('note',noteList.courseId,'viewAllCourseNote','1.0','update-note','note-update')" ng-disabled="!noteList.update.metaData.title || !noteList.update.metaData.note" tabindex="4">{{$root.frmelmnts.btn.update}}</button>
 </div>
 <div ng-if="noteList.updateApi.loader.showLoader">
     <app-loader data="{{noteList.updateApi.loader}}"></app-loader>

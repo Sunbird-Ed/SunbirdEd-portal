@@ -2,7 +2,7 @@
     <div class="content" ng-if="!noteCard.searchApi.loader.showLoader && noteCard.notesList.length > 0">
         <div class="header">
             <span>{{$root.frmelmnts.lbl.mynotebook}}</span>
-            <a class="ui right floated font-dark-blue" ng-click="noteCard.viewAllNotes()">{{$root.frmelmnts.lnk.viewall}}</a>
+            <a class="ui right floated font-dark-blue" ng-click="noteCard.viewAllNotes(); $root.generateInteractEvent('note',noteCard.courseId,'viewAllCourseNote','1.0','all-note','note-viewall')">{{$root.frmelmnts.lnk.viewall}}</a>
         </div>
         <div class="description">
             <div class="ui list" ng-repeat="note in noteCard.notesList| orderBy : '-updatedDate' | limitTo: noteCard.quantityOfNotes track by $index">
@@ -15,7 +15,7 @@
                             </span>
                         <span class="note-card-timeStamp right floated">{{note.updatedDate| dateFilterXTimeAgo}}</span>
                         </span>
-                        <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note">
+                        <div class="description" ng-init="noteData = note.note.length > 20 ? note.note.substring(0,20) : note.note" ng-click="$root.generateInteractEvent('note',noteCard.courseId,'viewCourseNote','1.0','view-note','note-view')">
                             <pagedown-viewer content="note.note.length > 20 ? note.note.substring(0,20) : note.note"></pagedown-viewer>
                             <i ng-if="note.note.length > 20" class="ellipsis horizontal icon popup-button" data-content="{{note.note}}" data-variation="wide">
                             </i>
