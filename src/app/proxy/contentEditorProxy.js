@@ -7,7 +7,6 @@ const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
-const learnerServiceBaseUrl = envHelper.LEARNER_URL
 
 module.exports = function (app) {
   const proxyReqPathResolverMethod = function (req) {
