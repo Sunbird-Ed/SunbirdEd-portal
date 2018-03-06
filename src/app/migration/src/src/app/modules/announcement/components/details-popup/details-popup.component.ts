@@ -22,11 +22,6 @@ export class DetailsPopupComponent {
   announcementId: string;
 
   /**
-	 * Contains parent url of this component
-	 */
-  parentUrl: string;
-
-  /**
 	 * Contains data of provided announcement
 	 */
   announcementDetails: any;
@@ -118,7 +113,7 @@ export class DetailsPopupComponent {
         err => {
           this.iziToast.error(this.resourceService.messages.emsg.m0005);
           this.showLoader = false;
-          this.parentNavigation.navigateToParentUrl(this.activatedRoute);
+          this.parentNavigation.navigateToParentUrl(this.activatedRoute.snapshot);
         }
       );
     } else {

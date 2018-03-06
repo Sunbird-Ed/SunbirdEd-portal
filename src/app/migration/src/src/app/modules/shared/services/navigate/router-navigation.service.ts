@@ -29,7 +29,7 @@ export class RouterNavigationService {
   }
 
   /**
- * This method acceptes the activated route as parameter
+ * This method acceptes the activated route snapshot as parameter
  * and detects the parent url, constructs it and
  * helps to redirect to the parent page
  *
@@ -37,13 +37,10 @@ export class RouterNavigationService {
  */
   navigateToParentUrl(activatedRoute: any) {
     const urlArray = [];
-    activatedRoute.parent.url.subscribe((urlPath) => {
-      _.each(urlPath, (key) => {
-        urlArray.push(key.path);
-      });
+    _.each(activatedRoute.parent.url, (key) => {
+      urlArray.push(key.path);
     });
     this.parentUrl = _.join(urlArray, '/');
     this.route.navigate([this.parentUrl]);
   }
-
 }
