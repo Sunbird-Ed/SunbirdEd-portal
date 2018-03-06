@@ -7,9 +7,10 @@ import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import 'rxjs/add/operator/mergeMap';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 // Import services
 import { AnnouncementService, UserService, CoursesService, LearnerService } from '@sunbird/core';
-import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './main-home-component.spec.data';
@@ -20,9 +21,9 @@ describe('MainHomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, HttpClientModule, SharedModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, HttpClientModule, SharedModule, Ng2IziToastModule],
       declarations: [MainHomeComponent],
-      providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService],
+      providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService, ToasterService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
