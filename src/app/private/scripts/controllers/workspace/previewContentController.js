@@ -1,10 +1,9 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('PreviewContentController', ['$stateParams', 'playerTelemetryUtilsService',
-    '$rootScope', '$state', 'contentService', '$timeout', 'config',
-    'toasterService', function ($stateParams, playerTelemetryUtilsService, $rootScope,
-      $state, contentService, $timeout, config, toasterService) {
+  .controller('PreviewContentController', ['$stateParams', '$rootScope', '$state', 'contentService',
+    '$timeout', 'config', 'toasterService', function ($stateParams, $rootScope, $state, contentService, $timeout,
+      config, toasterService) {
       var previewContent = this
       previewContent.contentProgress = 0
       previewContent.contentId = $stateParams.contentId

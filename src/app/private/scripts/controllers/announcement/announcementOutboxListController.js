@@ -2,8 +2,9 @@
 
 angular.module('playerApp')
   .controller('announcementOutboxListController', ['$rootScope', '$scope', '$timeout', '$state', '$stateParams',
-    'toasterService', 'announcementAdapter', 'PaginationService', function ($rootScope, $scope, $timeout, $state,
-      $stateParams, toasterService, announcementAdapter, PaginationService) {
+    'toasterService', 'announcementAdapter', 'PaginationService', 'telemetryService',
+    function ($rootScope, $scope, $timeout, $state, $stateParams, toasterService, announcementAdapter,
+      PaginationService, telemetryService) {
       var announcementOutboxData = this
 
       /**

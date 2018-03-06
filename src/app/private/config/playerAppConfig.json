@@ -508,6 +508,12 @@
             "h5p": "application/vnd.ekstep.h5p-archive",
             "webm": "video/webm"
         },
+        "ERROR":{
+            "PROFILE_IMAGE_UPLOAD": {
+                "err":"400",
+                "errorType":"Bad Request"
+            }
+        },
         "UNLISTED_CONTENT_TYPE" : "Unlisted",
         "AnncmntMaxFileSizeToUpload": 1024000,
         "AnncmntFileExtensionToUpload": "application/pdf, application/jpg, application/png",

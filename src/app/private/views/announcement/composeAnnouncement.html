@@ -1,5 +1,6 @@
 <div class="ui modal large announcementDetailsModal" ng-init="composeAnn.init();" id="createAnnouncementModal">
-  <i class="close icon"></i>
+  <i class="close icon" ng-click="$root.generateEndEvent('announcement','','announcement','1.0','announcement',
+        'announcement-create','')"></i>
   <div class=" ui segment margin-top-10">
     <div class=" margin-bottom-15">
       <div class="ui grid">
@@ -96,7 +97,7 @@
               </div>
             </div>
           </div>
-          <div class="four wide column" ng-init="composeAnn.initializeFileUploader(false)">
+          <div class="four wide column" ng-init="composeAnn.initializeFileUploader(false)" ng-click="$root.generateInteractEvent('announcement','','announcement','1.0','upload-attachment','announcement-create')">
             <div class="field">
               <label>{{$root.frmelmnts.lbl.anncmntuploadfile}}</label>
               <div fine-uploader></div>
@@ -111,7 +112,7 @@
         <div ng-if="composeAnn.stepNumber === 3" class="ui list ui grid">
           <div class="eight wide column createAnnFormScroller">
             <div class="ui message padding-10" ng-repeat="item in composeAnn.announcement.selTar">
-              <i class="close icon" ng-click='composeAnn.removeRecipients(item)'></i>
+              <i class="close icon" ng-click="composeAnn.removeRecipients(item);$root.generateInteractEvent('announcement','','announcement','1.0','remove-recipient','announcement-create')"></i>
               <span class="createAnnSelectedRecepient">{{item.location}}</span>
             </div>
           </div>
@@ -125,13 +126,13 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="composeAnn.stepNumber === 1" ng-click="composeAnn.goToBackStep()" data-current-state="{{composeAnn.stepNumber}}">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" ng-hide="composeAnn.stepNumber === 1" ng-click="composeAnn.goToBackStep(); $root.generateInteractEvent('announcement','','announcement','1.0','gotoback-step','announcement-create')" data-current-state="{{composeAnn.stepNumber}}">
       <span class="announcementButtonText">{{$root.frmelmnts.btn.back}}</span>
     </button>
-    <div class="ui primary button" ng-if="composeAnn.stepNumber === 2" ng-click="composeAnn.goToNextStep('receipients_confirm_view', 'list')">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" ng-if="composeAnn.stepNumber === 3" ng-click="composeAnn.goToNextStep('announcement_form_preview', 'view')">{{$root.frmelmnts.btn.anncmntpreview}}</div>
-    <div class="ui primary button" ng-if="composeAnn.stepNumber === 4" id="sendAnnouncement" ng-click="composeAnn.saveAnnouncement()"  ng-class="{'disabled': composeAnn.hideSendBtn === true}">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
-    <div ng-if="composeAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': composeAnn.disableBtn === true || announcementForm.$invalid}" ng-click="composeAnn.goToNextStep('community_explorer_view', 'list')" ng-init="composeAnn.enableRecepientBtn(false)">{{ composeAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 2" ng-click="composeAnn.goToNextStep('receipients_confirm_view', 'list'); $root.generateInteractEvent('announcement','','announcement','1.0','confirm-recipient','announcement-create')">{{$root.frmelmnts.btn.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 3" ng-click="composeAnn.goToNextStep('announcement_form_preview', 'view'); $root.generateInteractEvent('announcement','','announcement','1.0','preview-announcement','announcement-create')">{{$root.frmelmnts.btn.anncmntpreview}}</div>
+    <div class="ui primary button" ng-if="composeAnn.stepNumber === 4" id="sendAnnouncement" ng-click="composeAnn.saveAnnouncement(); $root.generateInteractEvent('announcement','','announcement','1.0','send-announcement','announcement-create')"  ng-class="{'disabled': composeAnn.hideSendBtn === true}">{{$root.frmelmnts.btn.anncmntsendanncmnt}}</div>
+    <div ng-if="composeAnn.stepNumber === 1" id="selectRecipientBtn" class="ui primary button" ng-class="{'disabled': composeAnn.disableBtn === true || announcementForm.$invalid}" ng-click="composeAnn.goToNextStep('community_explorer_view', 'list')" ng-init="composeAnn.enableRecepientBtn(false);" ng-click="$root.generateInteractEvent('announcement','','announcement','1.0','select-recipient','announcement-create')">{{ composeAnn.editAction ? $root.frmelmnts.btn.anncmnteditrecipients : $root.frmelmnts.btn.anncmntselectrecipients}}</div>
   </div>
 </div>
 
@@ -154,7 +155,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal')">
+          <button class="ui primary basic button announcementButton btn-width-34" ng-click="announcementOutboxData.closeModal('announcementResendModal'); $root.generateInteractEvent('announcement','','announcement','1.0','announcement-gotit','announcement-create')">
             <span class="announcementButtonText approve">{{$root.frmelmnts.btn.anncmntgotit}}</span>
           </button>
         </div>
@@ -182,7 +183,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34 approve">
+          <button class="ui primary basic button announcementButton btn-width-34 approve" ng-click="$root.generateInteractEvent('announcement','','announcement','1.0','announcement-gotit','announcement-create')">
             <span class="announcementButtonText">{{$root.frmelmnts.btn.anncmntgotit}}</span>
           </button>
         </div>

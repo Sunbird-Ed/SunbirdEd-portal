@@ -17,7 +17,9 @@
                                     <span  ng-if="profileCtrl.user.location">{{profileCtrl.user.location}}</span>
                                 </div>
                                 <div class="meta">
-                                    <div class="ui label" ng-if="profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}
+                                    <div class="ui label" ng-if="!profileCtrl.user.provider && profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}
+                                    </div>
+                                    <div class="ui label" ng-if="profileCtrl.user.provider && profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}@{{profileCtrl.user.provider}}
                                     </div>
                                     <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName"
                                     ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
