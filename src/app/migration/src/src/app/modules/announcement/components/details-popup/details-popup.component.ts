@@ -49,7 +49,7 @@ export class DetailsPopupComponent {
   /**
    * To call toaster service
    */
-  private iziToast: ToasterService;
+  private toasterService: ToasterService;
 
   /**
    * To call RouterNavigationService service for redirection to parent page
@@ -65,17 +65,17 @@ export class DetailsPopupComponent {
    * @param {Router} route To navigate to other pages
    * @param {ActivatedRoute} activatedRoute To get params from url
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {ToasterService} iziToast To call toaster service
+   * @param {ToasterService} toasterService To call toaster service
 	 */
   constructor(announcementService: AnnouncementService,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
-    iziToast: ToasterService,
+    toasterService: ToasterService,
     routerNavigationService: RouterNavigationService) {
     this.announcementService = announcementService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
@@ -104,7 +104,7 @@ export class DetailsPopupComponent {
           this.showLoader = false;
         },
         err => {
-          this.iziToast.error(this.resourceService.messages.emsg.m0005);
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
           this.showLoader = false;
           this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
         }

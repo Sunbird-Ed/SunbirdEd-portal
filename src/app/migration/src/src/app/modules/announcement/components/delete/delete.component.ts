@@ -47,7 +47,7 @@ export class DeleteComponent {
   /**
    * To call toaster service
    */
-  private iziToast: ToasterService;
+  private toasterService: ToasterService;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -58,18 +58,18 @@ export class DeleteComponent {
    * @param {Router} route To navigate to other pages
    * @param {ActivatedRoute} activatedRoute To get params from url
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {ToasterService} iziToast To call toaster service
+   * @param {ToasterService} toasterService To call toaster service
 	 */
   constructor(announcementService: AnnouncementService,
     route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
-    iziToast: ToasterService) {
+    toasterService: ToasterService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
     });
@@ -88,11 +88,11 @@ export class DeleteComponent {
     const option = { announcementId: this.announcementId };
     this.announcementService.deleteAnnouncement(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.iziToast.success(this.resourceService.messages.smsg.moo41);
+        this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
       },
       err => {
-        this.iziToast.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.redirect();
       }
     );

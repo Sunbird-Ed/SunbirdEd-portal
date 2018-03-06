@@ -79,7 +79,7 @@ export class OutboxComponent implements OnInit {
   /**
    * To call toaster service
    */
-  private iziToast: ToasterService;
+  private toasterService: ToasterService;
 
   /**
    * reference of config service.
@@ -96,7 +96,7 @@ export class OutboxComponent implements OnInit {
    * @param {ActivatedRoute} activatedRoute To get params from url
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
    * @param {PaginationService} paginationService To call pagination service
-   * @param {ToasterService} iziToast To call toaster service
+   * @param {ToasterService} toasterService To call toaster service
    * @param {ConfigService} config ConfigService reference
 	 */
   constructor(announcementService: AnnouncementService,
@@ -104,14 +104,14 @@ export class OutboxComponent implements OnInit {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     paginationService: PaginationService,
-    iziToast: ToasterService,
+    toasterService: ToasterService,
     config: ConfigService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.paginationService = paginationService;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
     this.config = config;
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
@@ -148,7 +148,7 @@ export class OutboxComponent implements OnInit {
         this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
       },
       err => {
-        this.iziToast.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
       }
     );
