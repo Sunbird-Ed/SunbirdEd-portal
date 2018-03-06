@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
@@ -37,11 +37,6 @@ export class DetailsPopupComponent {
   private announcementService: AnnouncementService;
 
   /**
-   * To navigate to other pages
-   */
-  route: Router;
-
-  /**
    * To get params from url
    */
   public activatedRoute: ActivatedRoute;
@@ -59,7 +54,7 @@ export class DetailsPopupComponent {
   /**
    * To call RouterNavigationService service for redirection to parent page
    */
-  public parentNavigation: RouterNavigationService;
+  public routerNavigationService: RouterNavigationService;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -73,17 +68,15 @@ export class DetailsPopupComponent {
    * @param {ToasterService} iziToast To call toaster service
 	 */
   constructor(announcementService: AnnouncementService,
-    route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     iziToast: ToasterService,
-    parentNavigation: RouterNavigationService) {
+    routerNavigationService: RouterNavigationService) {
     this.announcementService = announcementService;
-    this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.iziToast = iziToast;
-    this.parentNavigation = parentNavigation;
+    this.routerNavigationService = routerNavigationService;
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
     });
@@ -113,7 +106,7 @@ export class DetailsPopupComponent {
         err => {
           this.iziToast.error(this.resourceService.messages.emsg.m0005);
           this.showLoader = false;
-          this.parentNavigation.navigateToParentUrl(this.activatedRoute.snapshot);
+          this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
         }
       );
     } else {
