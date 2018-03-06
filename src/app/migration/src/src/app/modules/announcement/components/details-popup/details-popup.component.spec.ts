@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './details-popup.component.spec.data';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,7 @@ import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DetailsPopupComponent } from './details-popup.component';
 
-xdescribe('DetailsPopupComponent', () => {
+describe('DetailsPopupComponent', () => {
   let component: DetailsPopupComponent;
   let fixture: ComponentFixture<DetailsPopupComponent>;
   const fakeActivatedRoute = {
@@ -35,7 +35,8 @@ xdescribe('DetailsPopupComponent', () => {
         ResourceService, ToasterService, ConfigService, HttpClient,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
