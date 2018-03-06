@@ -21,12 +21,12 @@
                                 <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
                                     <div *ngIf="item.type === 'profile'">
                                         <a href="/private/index#!/profile">
-                                            <app-profile-card [item]="item"></app-profile-card>
+                                            <app-profile-card [profile]="item"></app-profile-card>
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
                                         <a href="/private/index#!/course/{{item.courseId}}/no">
-                                            <app-action-card [item]="item"></app-action-card>
+                                            <app-action-card [enrolledCourses]="item"></app-action-card>
                                         </a>
                                     </div>
                                 </div>

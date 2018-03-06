@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 // services
 import { CoursesService, UserService } from '@sunbird/core';
-import { ResourceService} from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 /**
  * The MainHomeComponent contains details about
  * user profile, enrolled courses and announcement inbox details.
@@ -36,23 +36,23 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    */
   resourceService: ResourceService;
   /**
+   * To call toaster service
+   */
+  private iziToast: ToasterService;
+  /**
    *  Store course api response in local
    */
-  enrolledCourses: any = [];
+  enrolledCourses: object[];
   /**
    *  Contains userProfile missingfields value
    */
-  profileMissingFields: Array<any> = [];
+  profileMissingFields: string[];
   /**
    *  Contains userProfile percentage of profile completeness
    */
   profileCompleteness: Number;
   /**
-   *  Contains enrolled course details
-   */
-  enrolledList: Array<any> = [];
-  /**
-   *  Contains details of profileList and enrolledList
+   *  Contains details of profileList and enrolledCourses
    */
   toDoList: Array<any> = [];
   /**
@@ -86,10 +86,11 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {CoursesService} courseService  CoursesService used to render enrolled courses.
    */
   constructor(resourceService: ResourceService,
-    userService: UserService, courseService: CoursesService) {
+    userService: UserService, courseService: CoursesService, iziToast: ToasterService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
+    this.iziToast = iziToast;
   }
   /**
   * Subscribe to userService to get details about
@@ -100,13 +101,11 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       user => {
         if (user && !user.err) {
           this.showLoader = false;
-          this.showError = false;
           this.profileCompleteness = user.userProfile.completeness;
           this.profileMissingFields = user.userProfile['missingFields'];
           this.updateProfileList();
         } else {
           this.showLoader = false;
-          this.showError = true;
         }
       }
     );
@@ -121,13 +120,12 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         if (course) {
           this.showLoader = false;
           this.enrolledCourses = course.enrolledCourses;
-          this.showError = false;
           this.toDoList = this.toDoList.concat(this.enrolledCourses);
         }
       },
       err => {
         this.showLoader = false;
-        this.showError = true;
+        this.iziToast.error(this.resourceService.messages.fmsg.m0001);
       }
     );
   }

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 // Import services
 import { ResourceService } from '@sunbird/shared';
+import { ActionCard } from './../../interfaces/index';
 /**
  * ActionCardComponent contains information about
  *enrolled courses by the user
@@ -17,9 +18,9 @@ export class ActionCardComponent {
    */
   public resourceService: ResourceService;
   /**
-   * item is type number used to get the values to diplay in the view.
+   * item is type ActionCard used to get the values to diplay in the view.
    */
-  @Input() item;
+  @Input() enrolledCourses: ActionCard;
   /**
    * The constructor
    * @param {ResourceService} resourceService  ResourceService used to render resourcebundels.

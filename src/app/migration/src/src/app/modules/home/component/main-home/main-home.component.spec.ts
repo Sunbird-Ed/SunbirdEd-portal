@@ -41,7 +41,6 @@ describe('MainHomeComponent', () => {
     component.getDetails();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.showError).toBeFalsy();
     expect(component.profileList).toBeDefined();
     expect(component.toDoList).toBeDefined();
   });
@@ -55,8 +54,7 @@ describe('MainHomeComponent', () => {
     component.getCourses();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.showError).toBeFalsy();
-    expect(component.enrolledList).toBeDefined();
+    expect(component.enrolledCourses).toBeDefined();
     expect(component.toDoList).toBeDefined();
   });
 });

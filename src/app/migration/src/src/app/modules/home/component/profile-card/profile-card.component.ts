@@ -2,6 +2,7 @@
 import {  UserService } from '@sunbird/core';
 import {  ResourceService } from '@sunbird/shared';
 import { Component, Input } from '@angular/core';
+import { ProfileCard } from './../../interfaces/index';
 /**
  * ProfileCardComponent is a card contains information about
  * user profile like completeness of profile, missing fields in profile.
@@ -22,9 +23,9 @@ export class ProfileCardComponent {
      */
  public userService: UserService;
     /**
-     * item is type number used to get the values display in the view.
+     * item is type ProfileCard used to get the values display in the view.
      */
-   @Input() item;
+   @Input() profile: ProfileCard;
    /**
    * inject service(s)
    * @param {ResourceService} resourceService ResourceService used to render resourcebundels.
