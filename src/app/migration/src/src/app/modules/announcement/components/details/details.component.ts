@@ -18,7 +18,7 @@ export class DetailsComponent {
    */
   public resourceService: ResourceService;
 
-  @Input() announcementDetails: any;
+  @Input() announcementDetails: object;
 
   /**
 	 * Constructor to create injected service(s) object
