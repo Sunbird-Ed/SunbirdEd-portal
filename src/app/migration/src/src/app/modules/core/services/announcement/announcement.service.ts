@@ -1,3 +1,4 @@
+import { Announcement } from './../../../shared/interfaces/announcement';
 import { DataService } from './../data/data.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +20,10 @@ import { ConfigService } from '@sunbird/shared';
  */
 export class AnnouncementService extends DataService {
 
+  /**
+   * To set details of specific announcement
+   */
+  announcementDetailsObject: any;
   /**
    * To listen event
    */
