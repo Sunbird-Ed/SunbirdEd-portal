@@ -3,9 +3,8 @@ import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 
 /**
- * The delete component deletes the announcement
- * which is requested by the logged in user have announcement
- * creator access
+ * The details component takes input of the announcement details
+ * object and renders it with the data
  */
 @Component({
   selector: 'app-details',
@@ -24,7 +23,7 @@ export class DetailsComponent {
   /**
 	 * Constructor to create injected service(s) object
 	 *
-	 * Default method of DeleteComponent class
+	 * Default method of DetailsComponent class
 	 *
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
 	 */

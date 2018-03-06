@@ -5,8 +5,9 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import * as _ from 'lodash';
 
 /**
- * The delete component deletes the announcement
- * which is requested by the logged in user have announcement
+ * The details popup component checks for the announcement details object
+ * present in announcement service. If object is undefined it calls API with
+ * the announcement id and gets the details.
  * creator access
  */
 @Component({
@@ -21,7 +22,7 @@ export class DetailsPopupComponent {
   announcementId: string;
 
   /**
-	 * Contains parent url
+	 * Contains parent url of this component
 	 */
   parentUrl: string;
 
@@ -68,7 +69,7 @@ export class DetailsPopupComponent {
   /**
 	 * Constructor to create injected service(s) object
 	 *
-	 * Default method of DeleteComponent class
+	 * Default method of DetailsPopupComponent class
 	 *
    * @param {AnnouncementService} announcementService To make outbox API calls
    * @param {Router} route To navigate to other pages
