@@ -107,6 +107,9 @@
         },
         "FRAMEWORK": {
             "READ":"framework/v1/read"
+        },
+        "GEO_EXPLORER":{
+            "LOCATION_READ": "org/v1/location/read/"
         }
     }
 }
