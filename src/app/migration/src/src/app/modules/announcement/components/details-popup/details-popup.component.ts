@@ -95,7 +95,9 @@ export class DetailsPopupComponent {
   }
 
   /**
-   * This method calls the get announcement by id API with a particular announcement
+   * This method checks in announcement service whether details exist
+   * for the given announcement id or not. If not then it calls the
+   * get announcement by id API with a particular announcement
    * id and and gets the details of the announcement
 	 *
 	 * @param {string} announcementId announcement id
