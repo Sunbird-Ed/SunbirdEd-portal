@@ -4,31 +4,31 @@
     </span>
 </h4>
 <div class="publicmenusection ui secondary vertical menu">
-    <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.ContentCreation" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','content-create','1.0','create-content' ,'workspace-content-create')">
         {{$root.frmelmnts.snav.start}}
     </a>
-    <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.DraftContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','draft','1.0','draft-content' ,'workspace-content-draft')">
         {{$root.frmelmnts.snav.draft}}
     </a>
-    <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.ReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','review-submission','1.0','review-submission' ,'workspace-content-inreview')">
         {{$root.frmelmnts.snav.inreview}}
     </a>
-    <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.PublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','publish-content','1.0','publish-content' ,'workspace-publish-content')">
         {{$root.frmelmnts.snav.published}}
     </a>
-    <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.AllUploadedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','alluploaded-content','1.0','uploaded-content' ,'workspace-content-alluploaded')">
         {{$root.frmelmnts.snav.alluploads}}
     </a>
-    <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
+    <a class="item" ui-sref="WorkSpace.UpForReviewContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','upforreview-content','1.0','review-content' ,'workspace-content-upforreview')">
         {{$root.frmelmnts.snav.upForReview}}
     </a>
-    <a class="item" ui-sref="WorkSpace.BatchList" ui-sref-active="active" sb-permissions permission-only="COURSE_MENTOR">
+    <a class="item" ui-sref="WorkSpace.BatchList" ui-sref-active="active" sb-permissions permission-only="COURSE_MENTOR" ng-click="$root.generateInteractEvent('workspace','','course-batches','1.0','course-batches','workspace-course-batch')">
         {{$root.frmelmnts.lnk.coursebacthes}}
     </a>
-    <a class="item" ui-sref="WorkSpace.FlaggedContent" ui-sref-active="active" sb-permissions permission-only="FLAG_REVIEWER">
+    <a class="item" ui-sref="WorkSpace.FlaggedContent" ui-sref-active="active" sb-permissions permission-only="FLAG_REVIEWER" ng-click="$root.generateInteractEvent('workspace','','flagged-content','1.0','flagged-content','workspace-content-flagged')">
         {{$root.frmelmnts.snav.flagged}}
     </a>
-    <a class="item" ui-sref="WorkSpace.LimitedPublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
-        {{$root.frmelmnts.snav.limitedPublishing}} 
+    <a class="item" ui-sref="WorkSpace.LimitedPublishedContent" ui-sref-active="active" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW" ng-click="$root.generateInteractEvent('workspace','','unlisted-content','1.0','unlisted-content' ,'workspace-content-unlisted')">
+        {{$root.frmelmnts.snav.limitedPublishing}}
     </a>
 </div>

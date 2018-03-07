@@ -11,14 +11,13 @@ org.sunbird.portal = new content_portal();// eslint-disable-line
 
 org.sunbird.portal.init = function () {
   org.sunbird.portal.addUnloadEvent()
-  TelemetryService.registerEvents()
   org.sunbird.portal.telemetryInit()
 }
 
 /**
  * To add the any window unload events
  */
-org.sunbird.portal.addUnloadEvent = function () {
+/* org.sunbird.portal.addUnloadEvent = function () {
   window.onbeforeunload = function (e) {
     e = e || window.event
     var y = e.pageY || e.clientY
@@ -26,7 +25,7 @@ org.sunbird.portal.addUnloadEvent = function () {
       TelemetryData: TelemetryService._data
     })
   }
-}
+} */
 
 org.sunbird.portal.telemetryInit = function () {
   var _instance = {

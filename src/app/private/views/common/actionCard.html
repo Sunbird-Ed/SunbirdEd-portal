@@ -4,9 +4,8 @@
             <div ng-if="item.leafNodesCount  && item.progress > 0" class="course-progress ui tiny progress  progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}">
                 <div class="bar"></div>
             </div>
-            <div class="ui fluid image">
+            <div class="ui fluid image" ng-click="homeCtrl.generateInteractEvent('home',item.courseId,'course', '1.0','home-course','home')">
                 <a class="ui black right ribbon label">{{$root.frmelmnts.bdge.course}}</a>
-                </a>
                 <img ng-src="{{item.appIcon || item.courseLogoUrl || '/common/images/default.png'}}">
             </div>
             <div class="cardImageText center aligned ">
@@ -19,7 +18,7 @@
             <div class="sliderCardDesc fixedRatingCard">
                 {{ item.description | limitTo: 55 }}&nbsp;<i ng-show="item.description.length >= 55" class="ellipsis horizontal icon popup-button link" data-content="{{item.description}}" data-variation="wide"></i>
             </div>
-            <button class="ui blue basic right floated button margin-top-10">{{$root.frmelmnts.btn.resume}}</button>
+            <button class="ui blue basic right floated button margin-top-10" ng-click="homeCtrl.generateInteractEvent('home',item.courseId,'course', '1.0','home-resume','home')">{{$root.frmelmnts.btn.resume}}</button>
             <div apply-script class="courseHeader-rating ui  star rating padding-top-20" data-rating="{{item.me_averageRating |number:0}}" data-max-rating="5"></div>
         </div>
     </div>

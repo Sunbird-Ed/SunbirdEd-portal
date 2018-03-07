@@ -16,21 +16,19 @@ describe('Directive: search', function () {
       $scope: $rootScope.$new()
     })
   }))
-
-  var element, manualCompiledElement, compile, templateCache, scope, rootScope, timeout, ctrl, template, searchService,
-    fileName = 'views/header/search.html'
+  var scope
+  var rootScope
+  var timeout
+  var fileName = 'views/header/search.html'
 
   beforeEach(inject(function ($rootScope, $controller, $templateCache, $compile, _$timeout_, _searchService_) {
     rootScope = $rootScope
     scope = rootScope.$new()
-    searchService = _searchService_
     timeout = _$timeout_
     $templateCache.put(fileName, '')
-    element = angular.element('<search type=\'searchKey\'></search>')
-    template = $compile(element)(scope)
     scope.$digest()
     // ctrl = element.controller
-    ctrl = $controller('SearchResultController', {
+    $controller('SearchResultController', {
       $rootScope: rootScope,
       $scope: scope
     })
@@ -38,7 +36,7 @@ describe('Directive: search', function () {
 
   it('Should add active class for selected filter option', function () {
     rootScope.search.selectedLanguage = []
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'selectFilter').and.callThrough()
     rootScope.search.selectFilter('selectedLanguage', 'English', '')
     timeout.flush(0)
@@ -47,7 +45,7 @@ describe('Directive: search', function () {
 
   it('Should remove active class for unselected filter option', function () {
     rootScope.search.selectedLanguage = ['English']
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'selectFilter').and.callThrough()
     rootScope.search.selectFilter('selectedLanguage', 'English', '')
     timeout.flush(0)
@@ -56,7 +54,7 @@ describe('Directive: search', function () {
 
   it('Should remove filter selection', function () {
     rootScope.search.selectedConcepts = []
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'removeFilterSelection').and.callThrough()
     rootScope.search.removeFilterSelection('selectedConcepts', 'Science')
     scope.$apply()
@@ -64,7 +62,7 @@ describe('Directive: search', function () {
 
   it('Should remove filter selection for concepts', function () {
     rootScope.search.selectedConcepts = ['Science']
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'removeFilterSelection').and.callThrough()
     rootScope.search.removeFilterSelection('selectedConcepts', 'Science')
     scope.$apply()
@@ -72,7 +70,7 @@ describe('Directive: search', function () {
 
   it('Should remove filter selection except concepts', function () {
     rootScope.search.selectedLanguage = []
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'removeFilterSelection').and.callThrough()
     rootScope.search.removeFilterSelection('selectedLanguage', 'English')
     scope.$apply()
@@ -80,7 +78,7 @@ describe('Directive: search', function () {
 
   it('Should remove filter selection except concepts', function () {
     rootScope.search.selectedLanguage = ['English']
-    var itemIndex = -1
+
     spyOn(rootScope.search, 'removeFilterSelection').and.callThrough()
     rootScope.search.removeFilterSelection('selectedLanguage', 'English')
     scope.$apply()
@@ -94,7 +92,7 @@ describe('Directive: search', function () {
 
   it('Should open course view on openCourseView call with courseId', function () {
     var course = {courseId: '123'}
-    rootScope.enrolledCourseIds[course]
+    rootScope.enrolledCourseIds['course'] = course
     spyOn(rootScope.search, 'openCourseView').and.callThrough()
     rootScope.search.openCourseView(course, 'enroll_course')
     scope.$apply()
@@ -102,7 +100,7 @@ describe('Directive: search', function () {
 
   it('Should open course view on openCourseView call with courseIdentifier', function () {
     var course = {identifier: '3245'}
-    rootScope.enrolledCourseIds[course]
+    rootScope.enrolledCourseIds['course'] = course
     spyOn(rootScope.search, 'openCourseView').and.callThrough()
     rootScope.search.openCourseView(course, 'enroll_course')
     scope.$apply()
@@ -220,6 +218,7 @@ describe('Directive: search', function () {
   })
 
   it('Should reset filter on resetFilter call', function () {
+    rootScope.search.selectedSearchKey = 'All'
     spyOn(rootScope.search, 'resetFilter').and.callThrough()
     rootScope.search.resetFilter()
     scope.$apply()

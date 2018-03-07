@@ -13,6 +13,7 @@ describe('Controller:UpForReviewContentController', function () {
 
   var searchService, // eslint-disable-line one-var
     scope,
+    telemetryService,
     rootScope,
     upForReviewContent,
     deferred,
@@ -51,11 +52,41 @@ describe('Controller:UpForReviewContentController', function () {
     result: {count: 0, content: [{}]}
   }
 
+  var telemetrySpec = {
+    context: {
+      env: 'course',
+      sid: 'BhOOJNURrm_t0UPQYPGkIc4yLm_zFVfy',
+      did: 'ae5cf91de89fc62427fd5ded9e1adbe3',
+      cdata: [],
+      rollup: {
+        l1: '01232002070124134414',
+        l2: '012315809814749184151'
+      }
+    },
+    object: {
+      id: 'do_212345541699534848166',
+      type: 'course-read',
+      ver: '1.0'
+    },
+    tags: [
+      '01232002070124134414',
+      '012315809814749184151'
+    ],
+    edata: {
+      type: 'CLICK',
+      subtype: '',
+      id: 'course',
+      pageid: 'course'
+    }
+  }
+
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _$timeout_, _$q_, _permissionsService_) { // eslint-disable-line no-undef
+  beforeEach(inject(function (_$rootScope_, _$controller_, _searchService_, _telemetryService_,
+    _$timeout_, _$q_, _permissionsService_) { // eslint-disable-line no-undef
     rootScope = _$rootScope_
     scope = _$rootScope_.$new()
     searchService = _searchService_
+    telemetryService = _telemetryService_
     timeout = _$timeout_
     permissionsService = _permissionsService_
     deferred = _$q_.defer()
@@ -270,5 +301,17 @@ describe('Controller:UpForReviewContentController', function () {
     upForReviewContent.hideFilter()
     expect(upForReviewContent.hideFilterPopup).toBe(false)
     scope.$apply()
+  })
+
+  it('Should return telemetry interact event spec', function () {
+    upForReviewContent = upForReviewController()
+    spyOn(telemetryService, 'interactTelemetryData').and.returnValue(deferred.promise)
+    deferred.resolve(telemetrySpec)
+    spyOn(upForReviewContent, 'generateInteractEvent').and.callThrough()
+    upForReviewContent.generateInteractEvent('course', 'do_212345541699534848166', 'course',
+      '1.0', 'course-read', 'course')
+    scope.$apply()
+    var response = telemetryService.interactTelemetryData().$$state.value
+    expect(response).toBe(telemetrySpec)
   })
 })
