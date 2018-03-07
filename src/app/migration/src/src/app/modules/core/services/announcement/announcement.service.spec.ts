@@ -143,4 +143,30 @@ describe('AnnouncementService', () => {
       }
     );
   }));
+
+  it('should make get announcement by id api call and get success response', inject([AnnouncementService],
+    (service: AnnouncementService) => {
+    const params = { data: { 'request': { 'announcementId': '92ca4110-19df-11e8-8773-d9334313c305' } } };
+    spyOn(service, 'delete').and.callFake(() => Observable.of(testData.mockRes.getAnnByIdSuccess));
+    service.getAnnouncementById(params).subscribe(
+      (apiResponse: any) => {
+        expect(apiResponse.responseCode).toBe('OK');
+        expect(apiResponse.params.status).toBe('successful');
+        expect(apiResponse.result.announcement.title).toBe('announcement-7th');
+      }
+    );
+  }));
+
+  it('should make get announcement by id api call and get error response', inject([AnnouncementService],
+    (service: AnnouncementService) => {
+    spyOn(service, 'delete').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
+    service.getAnnouncementById({}).subscribe(
+      apiResponse => { },
+      err => {
+        expect(err.params.errmsg).toBe('Unauthorized User');
+        expect(err.params.status).toBe('failed');
+        expect(err.responseCode).toBe('CLIENT_ERROR');
+      }
+    );
+  }));
 });

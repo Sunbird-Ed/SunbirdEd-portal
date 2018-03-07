@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse} from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
+import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
- * have announcement creator access
+ * having announcement creator access
  */
 @Component({
   selector: 'app-outbox',
@@ -17,17 +18,15 @@ import { ResourceService, ConfigService, PaginationService, ToasterService, Date
 export class OutboxComponent implements OnInit {
 
   /**
-	 * Contains object of outbox list data
+	 * Contains result object returned from get outbox API
 	 */
-  outboxData: any;
+  outboxData: IAnnouncementListData;
 
   /**
-	 * Contains whole object of result
-	 */
-  result: any;
-
-  /**
-	 * To show / hide loader
+	 * This variable hepls to show and hide page loader.
+   * It is kept true by default as at first when we comes
+   * to a page the loader should be displayed before showing
+   * any data
 	 */
   showLoader = true;
 
@@ -37,22 +36,17 @@ export class OutboxComponent implements OnInit {
   pageLimit: number;
 
   /**
-	 * Contains page number of outbox list
+	 * Contains current page number of outbox list
 	 */
   pageNumber = 1;
 
   /**
-	 * Contains total count of outbox list
-	 */
-  totalCount: number;
-
-  /**
 	 * Contains object of the pager service
 	 */
-  pager: any;
+  pager: IPagination;
 
   /**
-   * To make outbox API calls
+   * Reference of announcementService
    */
   private announcementService: AnnouncementService;
 
@@ -67,22 +61,22 @@ export class OutboxComponent implements OnInit {
   private activatedRoute: ActivatedRoute;
 
   /**
-   * To call resource service which helps to use language constant
+   * Reference of ResourceService
    */
   public resourceService: ResourceService;
 
   /**
-   * To call pagination service
+   * Reference of PaginationService
    */
   private paginationService: PaginationService;
 
   /**
-   * To call toaster service
+   * Reference of ToasterService
    */
-  private iziToast: ToasterService;
+  private toasterService: ToasterService;
 
   /**
-   * reference of config service.
+   * Reference of ConfigService
    */
   public config: ConfigService;
 
@@ -95,41 +89,35 @@ export class OutboxComponent implements OnInit {
    * @param {Router} route To navigate to other pages
    * @param {ActivatedRoute} activatedRoute To get params from url
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {PaginationService} paginationService To call pagination service
-   * @param {ToasterService} iziToast To call toaster service
-   * @param {ConfigService} config ConfigService reference
+   * @param {PaginationService} paginationService For showing pagination on outbox list
+   * @param {ToasterService} toasterService To show toaster(error, success etc) after any API calls
+   * @param {ConfigService} config To get url, app configs
 	 */
   constructor(announcementService: AnnouncementService,
     route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     paginationService: PaginationService,
-    iziToast: ToasterService,
+    toasterService: ToasterService,
     config: ConfigService) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.paginationService = paginationService;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
     this.config = config;
-    this.activatedRoute.params.subscribe(params => {
-      this.pageNumber = Number(params.pageNumber);
-      this.renderOutbox(this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
-    });
   }
 
   /**
-	 * Function to render outbox list. In this method 2 parameters is passed.
-   * First one is limit which helps to decide how many announcement should be displayed
-   * Second one is page number which helps to show which page is getting displayed.
+   * populate outbox data with given limit and pagenumber.
 	 *
-	 * @param {number} limit Variable to show how many announcement should be displayed
-	 * @param {number} pageNumber  Variable to decide which page should be displayed
+	 * @param {number} limit max no. of announcement to be shown.
+	 * @param {number} pageNumber page number to be displayed
 	 *
-	 * @example renderOutbox(10, 1)
+	 * @example populateOutboxData(10, 1)
 	 */
-  renderOutbox(limit: number, pageNumber: number) {
+  populateOutboxData(limit: number, pageNumber: number): void {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
@@ -141,14 +129,12 @@ export class OutboxComponent implements OnInit {
 
     this.announcementService.getOutboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.outboxData = apiResponse.result.announcements;
-        this.result = apiResponse.result;
+        this.outboxData = apiResponse.result;
         this.showLoader = false;
-        this.totalCount = apiResponse.result.count;
-        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
+        this.pager = this.paginationService.getPager(this.outboxData.count, this.pageNumber, this.pageLimit);
       },
       err => {
-        this.iziToast.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
       }
     );
@@ -156,41 +142,38 @@ export class OutboxComponent implements OnInit {
 
   /**
    * This method helps to navigate to different pages.
-   * If page number is less than 1 or total number
+   * If page number is less than 1 or page number is greater than total number
    * of pages is less which is not possible, then it returns.
 	 *
 	 * @param {number} page Variable to know which page has been clicked
 	 *
-	 * @example setPage(1)
+	 * @example navigateToPage(1)
 	 */
-  setPage(page: number) {
+  navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
-      return false;
+      return;
     }
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
 
   /**
-   * This method updates the status of the API object.
-   * It updates the deleted announcement status to cancelled locally without
-   * calling the API
-	 *
-	 */
-  updateStatus(annid) {
-    _.each(this.outboxData,  (key, index) => {
-      if (annid && annid === key.id) {
-         this.outboxData[index].status = 'cancelled';
-      }
-    });
-  }
-
-  /**
-   * This method subscribes announcement event in announcement service
-   * and calls the render outbox method to refresh the list
+   * This method calls the populateOutboxData to show outbox list.
+   * It also changes the status of a deleted announcement to cancelled.
 	 *
 	 */
   ngOnInit() {
-    this.announcementService.announcementDeleteEvent.subscribe(data => this.updateStatus(data));
+    this.activatedRoute.params.subscribe(params => {
+      this.pageNumber = Number(params.pageNumber);
+      this.populateOutboxData(this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
+    });
+
+    this.announcementService.announcementDeleteEvent.subscribe(data => {
+      _.each(this.outboxData.announcements, (key, index) => {
+        if (data && data === key.id) {
+          this.outboxData.announcements[index].status = 'cancelled';
+        }
+      });
+    });
   }
 }
