@@ -23,5 +23,15 @@ export const mockRes = {
                 'm0005': 'Something went wrong, please try in some time....',
             }
         }
+    },
+    detailsObject: {
+        createdDate: '2018-02-25 03:54:26:593+0000',
+        description: 'Test description',
+        from: 'test',
+        id: '92ca4110-19df-11e8-8773-d9334313c305',
+        status: 'failed',
+        target: '',
+        title: 'Test title',
+        type: 'Circular'
     }
 };

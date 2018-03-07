@@ -64,7 +64,6 @@ describe('DetailsPopupComponent', () => {
           resourceService.messages = data.messages;
         }
       );
-      // spyOn(component, 'getDetails').and.callThrough();
       component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
       announcementService.getAnnouncementById(params).subscribe(
         apiResponse => {
@@ -73,7 +72,45 @@ describe('DetailsPopupComponent', () => {
         }
       );
       fixture.detectChanges();
+      expect(component.showLoader).toBe(false);
+
     }));
+
+  it('should call announcementService and announcement details object', inject([AnnouncementService],
+    (announcementService) => {
+      announcementService.announcementDetailsObject = testData.mockRes.detailsObject;
+      component.getDetails('92ca4110-19df-11e8-8773-d9334313c305');
+      expect(component.showLoader).toBe(false);
+      fixture.detectChanges();
+    }));
+
+  it('should call get announcement by id api and get error response',
+    inject([AnnouncementService, ToasterService, ResourceService, HttpClient, RouterNavigationService],
+      (announcementService, toasterService, resourceService, http, routerNavigationService) => {
+        spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
+        spyOn(component, 'getDetails').and.callThrough();
+        const param = { data: { 'request': { 'announcementId': '' } } };
+        spyOn(resourceService, 'getResource').and.callThrough();
+        spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
+        spyOn(toasterService, 'error').and.callThrough();
+        spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+        http.get().subscribe(
+          data => {
+            resourceService.messages = data.messages;
+          }
+        );
+        component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
+        announcementService.getAnnouncementById(param).subscribe(
+          apiResponse => {
+          },
+          err => {
+            expect(err.params.errmsg).toBe('Unauthorized User');
+            expect(err.params.status).toBe('failed');
+            expect(err.responseCode).toBe('CLIENT_ERROR');
+          }
+        );
+        expect(component.showLoader).toBe(false);
+      }));
 });
 
 

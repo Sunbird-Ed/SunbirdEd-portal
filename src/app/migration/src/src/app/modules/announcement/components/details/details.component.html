@@ -23,7 +23,7 @@
           {{announcementDetails.description}}
         </div>
       </div>
-      <div *ngIf="announcementDetails.links.length">
+      <div *ngIf="announcementDetails.links && announcementDetails.links.length">
         <div class="padding-top-20">
           <strong class="annMediumText ng-binding">
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsweblinks}}
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="announcementDetails.attachments.length">
+      <div *ngIf="announcementDetails.attachments && announcementDetails.attachments.length">
         <div class="padding-top-20">
           <strong class="annMediumText ng-binding">
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsattachments}}

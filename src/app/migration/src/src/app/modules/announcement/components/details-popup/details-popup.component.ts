@@ -3,56 +3,60 @@ import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { IAnnouncementDetails } from '@sunbird/announcement';
 
 /**
  * The details popup component checks for the announcement details object
  * present in announcement service. If object is undefined it calls API with
  * the announcement id and gets the details.
- * creator access
  */
 @Component({
   selector: 'app-details-popup',
   templateUrl: './details-popup.component.html',
   styleUrls: ['./details-popup.component.css']
 })
-export class DetailsPopupComponent {
+export class DetailsPopupComponent implements OnInit {
   /**
 	 * Contains unique announcement id
 	 */
   announcementId: string;
 
   /**
-	 * Contains data of provided announcement
+	 * Contains announcement details returned from API or object called from
+   * announcement service
 	 */
-  announcementDetails: any;
+  announcementDetails: IAnnouncementDetails;
 
   /**
-	 * To show / hide loader
+	 * This variable hepls to show and hide page loader.
+   * It is kept true by default as at first when we comes
+   * to a page the loader should be displayed before showing
+   * any data
 	 */
   showLoader = true;
 
   /**
-   * To make details API calls
+   * Reference of announcementService
    */
   private announcementService: AnnouncementService;
 
   /**
-   * To get params from url
+   * To send activatedRoute.snapshot to routerNavigationService
    */
   public activatedRoute: ActivatedRoute;
 
   /**
-   * To call resource service which helps to use language constant
+   * Reference of resourceService
    */
   public resourceService: ResourceService;
 
   /**
-   * To call toaster service
+   * Reference of toaster service
    */
   private toasterService: ToasterService;
 
   /**
-   * To call RouterNavigationService service for redirection to parent page
+   * Reference of routerNavigationService
    */
   public routerNavigationService: RouterNavigationService;
 
@@ -62,10 +66,10 @@ export class DetailsPopupComponent {
 	 * Default method of DetailsPopupComponent class
 	 *
    * @param {AnnouncementService} announcementService To make outbox API calls
-   * @param {Router} route To navigate to other pages
    * @param {ActivatedRoute} activatedRoute To get params from url
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {ToasterService} toasterService To call toaster service
+   * @param {ToasterService} toasterService To show toaster(error, success etc) after any API calls
+   * @param {RouterNavigationService} routerNavigationService To navigate back to parent component
 	 */
   constructor(announcementService: AnnouncementService,
     activatedRoute: ActivatedRoute,
@@ -77,10 +81,6 @@ export class DetailsPopupComponent {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
-    this.activatedRoute.params.subscribe(params => {
-      this.announcementId = params.announcementId;
-    });
-    this.getDetails(this.announcementId);
   }
 
   /**
@@ -91,7 +91,7 @@ export class DetailsPopupComponent {
 	 *
 	 * @param {string} announcementId announcement id
 	 */
-  getDetails(announcementId: string) {
+  getDetails(announcementId: string): void {
     if (this.announcementService.announcementDetailsObject === undefined ||
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
@@ -113,6 +113,17 @@ export class DetailsPopupComponent {
       this.showLoader = false;
       this.announcementDetails = this.announcementService.announcementDetailsObject;
     }
+  }
+
+  /**
+   * This method calls the getDetails method to show details
+   * of a particular announcement
+	 */
+  ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+      this.announcementId = params.announcementId;
+    });
+    this.getDetails(this.announcementId);
   }
 }
 

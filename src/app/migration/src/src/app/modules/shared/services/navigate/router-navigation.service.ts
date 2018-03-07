@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import * as _ from 'lodash';
 
 /**
@@ -35,7 +35,7 @@ export class RouterNavigationService {
  *
 	 * @param {any} activatedRoute whole object of activated route
  */
-  navigateToParentUrl(activatedRoute: any) {
+  navigateToParentUrl(activatedRoute: ActivatedRouteSnapshot): void {
     const urlArray = [];
     _.each(activatedRoute.parent.url, (key) => {
       urlArray.push(key.path);

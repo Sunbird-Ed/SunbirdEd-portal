@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { IAnnouncementDetails } from '@sunbird/announcement';
 
 /**
  * The details component takes input of the announcement details
@@ -14,11 +15,13 @@ import * as _ from 'lodash';
 export class DetailsComponent {
 
   /**
-   * To call resource service which helps to use language constant
+   * Reference of resource service
    */
   public resourceService: ResourceService;
-
-  @Input() announcementDetails: object;
+  /**
+   * announcementDetails is used to render the Announcement values in the view
+   */
+  @Input() announcementDetails: IAnnouncementDetails;
 
   /**
 	 * Constructor to create injected service(s) object
