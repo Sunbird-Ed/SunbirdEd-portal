@@ -9,27 +9,29 @@ angular.module('playerApp')
       textbook.categoryModelList = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
 
-      searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          textbook.frameworkId = res.result.channel.defaultFramework
-          searchService.getFramework(textbook.frameworkId).then(function (res) {
-            if (res.responseCode === 'OK') {
-              textbook.frameworkData = res.result.framework.categories
-              var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              _.forEach(categoryMasterList, function (category) {
-                textbook.categoryListofFramework[category.index] = category.terms || []
-                var categoryName = 'category' + category.index
-                textbook[categoryName] = category
-                textbook.categoryModelList[category.index] = category.code
-              })
-            }
-          }).catch(function (error) {
-            console.log('error is ......', error)
-          })
-        }
-      }).catch(function (error) {
-        console.log('error is ......', error)
-      })
+      textbook.getChannel = function () {
+        searchService.getChannel().then(function (res) {
+          if (res.responseCode === 'OK') {
+            textbook.frameworkId = res.result.channel.defaultFramework
+            searchService.getFramework(textbook.frameworkId).then(function (res) {
+              if (res.responseCode === 'OK') {
+                textbook.frameworkData = res.result.framework.categories
+                var categoryMasterList = _.cloneDeep(res.result.framework.categories)
+                _.forEach(categoryMasterList, function (category) {
+                  textbook.categoryListofFramework[category.index] = category.terms || []
+                  var categoryName = 'category' + category.index
+                  textbook[categoryName] = category
+                  textbook.categoryModelList[category.index] = category.code
+                })
+              }
+            }).catch(function (error) {
+              console.log('error is ......', error)
+            })
+          }
+        }).catch(function (error) {
+          console.log('error is ......', error)
+        })
+      }
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
@@ -202,4 +204,5 @@ angular.module('playerApp')
         })
         return category
       }
+      textbook.getChannel()
     }])
