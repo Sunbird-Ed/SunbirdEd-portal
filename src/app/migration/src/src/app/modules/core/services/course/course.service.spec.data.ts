@@ -16,7 +16,7 @@ export const mockRes = {
     errorData: {
                 'id': 'api.course.getbyuser',
               'params': {
-                    'resmsgid': 'null', 'msgid': null, 'status': 'failed', 'err': '',
+                    'resmsgid': 'Unauthorized', 'msgid': null, 'status': 'failed', 'err': 'Unauthorized',
                    'errmsg': 'Cannot set property of undefined'
                }, 'responseCode': 'CLIENT_ERROR', 'result': {}
         },

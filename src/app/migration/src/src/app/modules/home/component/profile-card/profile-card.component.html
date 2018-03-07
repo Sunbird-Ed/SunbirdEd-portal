@@ -16,7 +16,6 @@
                     <div *ngFor="let field of profile.missingFields | slice:0:2 ;  let first = first; let last = last" [ngClass]="{ first: first, last: last }"
                         class="padding-top-5 profileUpdateCardSubDesc">
                         {{first ? 'Add ' + field + ( profile.missingFields.length > 1 ? '' : '' ) : field + (last ? ' now' : '') }}
-
                     </div>
                 </div>
             </div>

@@ -11,7 +11,6 @@ import { ConfigService } from '@sunbird/shared';
 // Test data
 import * as mockData from './course.service.spec.data';
 const testData = mockData.mockRes;
-
 describe('CoursesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,11 +18,9 @@ describe('CoursesService', () => {
       providers: [CoursesService, UserService, LearnerService, ConfigService]
     });
   });
-
   it('should be created', inject([CoursesService], (coursesService: CoursesService) => {
     expect(coursesService).toBeTruthy();
   }));
-
   it('should make api call', inject([CoursesService, UserService, LearnerService], (coursesService: CoursesService,
     userService: UserService, learnerService: LearnerService) => {
     spyOn(learnerService, 'get').and.callFake(() => Observable.of(testData.successData));
@@ -32,12 +29,4 @@ describe('CoursesService', () => {
     expect(learnerService.get).toHaveBeenCalled();
     expect(coursesService.enrolledCourseData$).toBeDefined();
   }));
-
-  it('doesnt contain data', inject([CoursesService], (coursesService: CoursesService) => {
-    coursesService.enrolledCourses = undefined;
-    expect(coursesService).toBeTruthy();
-    const data = testData.errorData;
-    expect(coursesService.enrolledCourses).toBeUndefined();
-  }));
-
 });

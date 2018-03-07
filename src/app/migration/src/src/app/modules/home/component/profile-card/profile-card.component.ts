@@ -12,18 +12,17 @@ import { ProfileCard } from './../../interfaces/index';
   templateUrl: './profile-card.component.html',
   styleUrls: ['./profile-card.component.css']
 })
-
 export class ProfileCardComponent {
     /**
-     * Property of ResourceService used to render resourcebundels.
+     * To inject ResourceService.
      */
- public resourceService: ResourceService;
+ private resourceService: ResourceService;
     /**
-     * Property of UserService used to render user profile data.
+     * To inject UserService.
      */
- public userService: UserService;
+ private userService: UserService;
     /**
-     * item is type ProfileCard used to get the values display in the view.
+     * profile is type ProfileCard used to get the values display in the view.
      */
    @Input() profile: ProfileCard;
    /**

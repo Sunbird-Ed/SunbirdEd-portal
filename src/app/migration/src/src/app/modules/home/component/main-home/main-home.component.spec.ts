@@ -18,7 +18,6 @@ const testData = mockData.mockRes;
 describe('MainHomeComponent', () => {
   let component: MainHomeComponent;
   let fixture: ComponentFixture<MainHomeComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, HttpClientModule, SharedModule, Ng2IziToastModule],
@@ -32,30 +31,46 @@ describe('MainHomeComponent', () => {
         component = fixture.componentInstance;
       });
   }));
-
   it('should subscribe to user service', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    component.getDetails();
+    component.subscribeUserProfile();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.profileList).toBeDefined();
     expect(component.toDoList).toBeDefined();
   });
-
+  it('should throw error', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
+    userService.getUserProfile();
+    fixture.detectChanges();
+    component.subscribeUserProfile();
+    fixture.detectChanges();
+    expect(component.showLoader).toBeFalsy();
+  });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseSuccess));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
-    component.getCourses();
+    component.subscribeCourse();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.enrolledCourses).toBeDefined();
     expect(component.toDoList).toBeDefined();
+  });
+  it('should throw error', () => {
+    const courseService = TestBed.get(CoursesService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseError));
+    courseService.getEnrolledCourses();
+    fixture.detectChanges();
+    component.subscribeCourse();
+    fixture.detectChanges();
+    expect(component.showLoader).toBeFalsy();
   });
 });

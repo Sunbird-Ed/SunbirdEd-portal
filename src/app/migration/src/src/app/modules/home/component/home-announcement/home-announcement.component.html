@@ -13,9 +13,8 @@
     </div>
   </div>
   <div class=" margin-bottom-10" *ngIf="showdiv">
-    <div *ngFor="let item of listData; let index = index">
-      <app-announcement-inbox-card [announcement]="item"></app-announcement-inbox-card>
+    <div *ngFor="let data of announcementlistData; let index = index">
+      <app-announcement-inbox-card [announcement]="data"></app-announcement-inbox-card>
     </div>
   </div>
 </div>
-

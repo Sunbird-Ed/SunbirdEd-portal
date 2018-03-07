@@ -1,12 +1,12 @@
 import { ISubscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as _ from 'lodash';
 // services
 import { CoursesService, UserService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 /**
  * The MainHomeComponent contains details about
- * user profile, enrolled courses and announcement inbox details.
+ * user profile like "how much profile is complete", "profilepic of user",
+ * list of enrolled courses by the user and announcement list.
  */
 @Component({
   selector: 'app-main-home',
@@ -16,67 +16,48 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 
 export class MainHomeComponent implements OnInit, OnDestroy {
   /**
-   * Property of ISubscription used to unsubscribe userSubscription
+   * Property of ISubscription used to unsubscribe userSubscription.
    */
   private userSubscription: ISubscription;
   /**
-   * Property of ISubscription used to unsubscribe courseSubscription
+   * Property of ISubscription used to unsubscribe courseSubscription.
    */
   private courseSubscription: ISubscription;
   /**
-   * Property of UserService used to render user profile data
+   * To inject userService.
    */
-  public userService: UserService;
+  private userService: UserService;
   /**
-   * Property of CoursesService used to render enrolled courses
+   * To inject courseService.
    */
-  courseService: CoursesService;
+  public courseService: CoursesService;
   /**
-   * Property of ResourceService used to render resourcebundels
+   * To inject resourceService.
    */
-  resourceService: ResourceService;
+  private resourceService: ResourceService;
   /**
-   * To call toaster service
+   * To inject toasterService.
    */
   private iziToast: ToasterService;
   /**
-   *  Store course api response in local
-   */
-  enrolledCourses: object[];
-  /**
-   *  Contains userProfile missingfields value
-   */
-  profileMissingFields: string[];
-  /**
-   *  Contains userProfile percentage of profile completeness
-   */
-  profileCompleteness: Number;
-  /**
-   *  Contains details of profileList and enrolledCourses
+   * Contains details of userprofile and  to get the length of the slider.
    */
   toDoList: Array<any> = [];
   /**
-   *  Contains user profile details
-   */
-  profileList: any = {};
-  /**
-   * Flags to show loader
+   * Flags to show loader have default value true because till it get all the data
+   * or get a error it should be in waiting process.
    */
   showLoader = true;
   /**
-   * Flags to show error
-   */
-  showError: boolean;
-  /**
-   * Loader message
+   * Loader message is the message shown in the loader giving details about loading reason.
    */
   loaderMessage = {
     headerMessage: '',
     loaderMessage: 'We are Fetching Details ...'
   };
   /**
- * Slider setting
- */
+  * Slider setting is used to display number of cards in the slider.
+  */
   slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
   /**
    * The "constructor"
@@ -84,6 +65,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {ResourceService} resourceService  ResourceService is used to render resourcebundels
    * @param {UserService} userService  UserService used to render user profile data.
    * @param {CoursesService} courseService  CoursesService used to render enrolled courses.
+   * @param {ToasterService} iziToast ToasterService used to show popup messages.
    */
   constructor(resourceService: ResourceService,
     userService: UserService, courseService: CoursesService, iziToast: ToasterService) {
@@ -94,16 +76,21 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   }
   /**
   * Subscribe to userService to get details about
-  * user profile
+  * user profile like missingFields, completeness.
   */
-  public getDetails() {
+  public subscribeUserProfile() {
+    const profile = 'profile';
     this.userSubscription = this.userService.userData$.subscribe(
       user => {
         if (user && !user.err) {
           this.showLoader = false;
-          this.profileCompleteness = user.userProfile.completeness;
-          this.profileMissingFields = user.userProfile['missingFields'];
-          this.updateProfileList();
+          if (user.userProfile.completeness < 100) {
+            this.toDoList.unshift({
+              type: profile,
+              missingFields: user.userProfile.missingFields,
+              value: user.userProfile.completeness
+            });
+          }
         } else {
           this.showLoader = false;
         }
@@ -111,16 +98,15 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     );
   }
   /**
-   * Subscribe to courseService to get enrolledCourses
-   * by user
+   * Subscribe to courseService to get enrolledCourses details
+   * by user like Title,description, progress of course.
    */
-  public getCourses() {
+  public subscribeCourse() {
     this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
       course => {
         if (course) {
           this.showLoader = false;
-          this.enrolledCourses = course.enrolledCourses;
-          this.toDoList = this.toDoList.concat(this.enrolledCourses);
+          this.toDoList = this.toDoList.concat(course.enrolledCourses);
         }
       },
       err => {
@@ -130,21 +116,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     );
   }
   /**
-   * updateProfileList checks profileCompleteness is less than 100
-   * and push profilelist to toDoList
-   */
-  public updateProfileList() {
-    if (this.profileCompleteness < 100) {
-      this.profileList = {
-        missingFields: this.profileMissingFields,
-        value: this.profileCompleteness,
-        type: 'profile'
-      };
-    }
-    this.toDoList.unshift(this.profileList);
-  }
-  /**
-   *To track any new entry
+   *To track any new entry in the array.
    *@param {number} index Give position for current entry
    *@param {number} item  Give postion
    */
@@ -152,14 +124,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     return index;
   }
   /**
-  *Initialize getDetails and getCourses.
+  *Initialize subscribeUserProfile and subscribeCourse.
   */
   ngOnInit() {
-    this.getDetails();
-    this.getCourses();
+    this.subscribeUserProfile();
+    this.subscribeCourse();
   }
   /**
-   *ngOnDestroy unsubscribe the the subscription
+   *ngOnDestroy unsubscribe the subscription
    */
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
