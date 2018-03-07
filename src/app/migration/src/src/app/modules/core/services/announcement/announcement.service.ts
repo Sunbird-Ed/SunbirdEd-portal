@@ -3,7 +3,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { IAnnouncementSericeParam } from './../../../announcement';
+import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
 
 /**
@@ -20,9 +20,9 @@ import { ConfigService } from '@sunbird/shared';
 export class AnnouncementService extends DataService {
 
   /**
-   * To set details of specific announcement
+   * To set announcement details of specific announcement
    */
-  announcementDetailsObject: any;
+  announcementDetailsObject: IAnnouncementDetails;
   /**
    * To listen event
    */
