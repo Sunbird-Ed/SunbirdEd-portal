@@ -13,9 +13,11 @@ export interface IAnnouncementDetails {
   links?: Array<string>;
   metrics?: { sent: number, received: number, read: number };
   status: string;
-  target: any;
+  target?: any;
   title: string;
   type: string;
+  read?: boolean;
+  received?: boolean;
 }
 
 export interface IAttachementType {

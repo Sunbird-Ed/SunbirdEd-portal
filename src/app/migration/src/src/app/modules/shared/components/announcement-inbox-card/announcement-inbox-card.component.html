@@ -1,7 +1,7 @@
 <div class="ui raised segment annGridPadding cursor-pointer margin-bottom-10" [ngClass]="{'announcementCardLeftBorder':announcement.read  === false}">
   <div>
     <p class="ui grey label annType" *ngIf="announcement.type">
-      {{announcement.type}}
+      {{announcement.type | uppercase}}
     </p>
   </div>
   <div class="header announcementHomeCard-header">

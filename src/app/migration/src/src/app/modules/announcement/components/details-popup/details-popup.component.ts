@@ -36,7 +36,7 @@ export class DetailsPopupComponent implements OnInit {
   showLoader = true;
 
   /**
-   * Reference of announcementService
+   * To make get announcement by id
    */
   private announcementService: AnnouncementService;
 
@@ -46,17 +46,17 @@ export class DetailsPopupComponent implements OnInit {
   public activatedRoute: ActivatedRoute;
 
   /**
-   * Reference of resourceService
+   * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
 
   /**
-   * Reference of toaster service
+   * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
 
   /**
-   * Reference of routerNavigationService
+   * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
 
@@ -65,11 +65,11 @@ export class DetailsPopupComponent implements OnInit {
 	 *
 	 * Default method of DetailsPopupComponent class
 	 *
-   * @param {AnnouncementService} announcementService To make outbox API calls
-   * @param {ActivatedRoute} activatedRoute To get params from url
-   * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {ToasterService} toasterService To show toaster(error, success etc) after any API calls
-   * @param {RouterNavigationService} routerNavigationService To navigate back to parent component
+   * @param {AnnouncementService} announcementService Reference of AnnouncementService
+   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+   * @param {ResourceService} resourceService Reference of ResourceService
+   * @param {ToasterService} toasterService Reference of ToasterService
+   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(announcementService: AnnouncementService,
     activatedRoute: ActivatedRoute,
