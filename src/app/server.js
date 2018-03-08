@@ -111,6 +111,9 @@ app.use('/private/index', function (req, res, next) {
   next()
 })
 
+// Mobile redirection to app
+require('./helpers/mobileRedirectHelper.js')(app)
+
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
