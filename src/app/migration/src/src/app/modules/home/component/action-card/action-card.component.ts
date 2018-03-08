@@ -1,10 +1,8 @@
 import { Component, Input } from '@angular/core';
-// Import services
 import { ResourceService } from '@sunbird/shared';
 import { ActionCard } from './../../interfaces/index';
 /**
- *ActionCardComponent is a card for enrolled courses contains deatils about course
- *like title, description, progress of course.
+ *This Component contains the details about enrolled courses.
  */
 @Component({
   selector: 'app-action-card',
@@ -13,16 +11,16 @@ import { ActionCard } from './../../interfaces/index';
 })
 export class ActionCardComponent {
   /**
-   * To inject ResourceService.
+   * To call resource service which helps to use language constant.
    */
   public resourceService: ResourceService;
   /**
-   * enrolledCourses is type of ActionCard used to diplay enrolled courses by user on the view.
+   * This is used to render the enrolled courses values in the view.
    */
   @Input() enrolledCourses: ActionCard;
   /**
    * The constructor
-   * @param {ResourceService} resourceService  ResourceService used to render resourcebundels.
+   * @param {ResourceService} resourceService Reference of ResourceService.
    */
   constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;

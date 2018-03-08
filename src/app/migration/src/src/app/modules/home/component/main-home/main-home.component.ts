@@ -1,12 +1,12 @@
-import { ISubscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-// services
+import { ISubscription } from 'rxjs/Subscription';
 import { CoursesService, UserService } from '@sunbird/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
 /**
- * The MainHomeComponent contains details about
- * user profile like "how much profile is complete", "profilepic of user",
- * list of enrolled courses by the user and announcement list.
+ * This component contains 3 sub components
+ * 1)ProfileCard: It displays user profile details.
+ * 2)ActionCard: It displays enrolled courses details.
+ * 3)HomeAnnouncement: It displays announcement inbox details.
  */
 @Component({
   selector: 'app-main-home',
@@ -15,70 +15,58 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 })
 
 export class MainHomeComponent implements OnInit, OnDestroy {
+  courseSubscription: ISubscription;
+  userSubscription: ISubscription;
   /**
-   * Property of ISubscription used to unsubscribe userSubscription.
-   */
-  private userSubscription: ISubscription;
-  /**
-   * Property of ISubscription used to unsubscribe courseSubscription.
-   */
-  private courseSubscription: ISubscription;
-  /**
-   * To inject userService.
+   * To get user details.
    */
   private userService: UserService;
   /**
-   * To inject courseService.
+   * To get enrolled courses details.
    */
   public courseService: CoursesService;
   /**
-   * To inject resourceService.
+   * To call resource service which helps to use language constant.
    */
   private resourceService: ResourceService;
   /**
-   * To inject toasterService.
+   * To show toaster(error, success etc) after any API calls.
    */
-  private iziToast: ToasterService;
+  private toasterService: ToasterService;
   /**
-   * Contains details of userprofile and  to get the length of the slider.
+   * Contains details of userprofile and enrolled courses.
    */
-  toDoList: Array<any> = [];
+  toDoList: Array<object> = [];
   /**
-   * Flags to show loader have default value true because till it get all the data
-   * or get a error it should be in waiting process.
+   * This variable hepls to show and hide page loader.
+   * It is kept true by default as at first when we comes
+   * to a page the loader should be displayed before showing
+   * any data
    */
   showLoader = true;
   /**
-   * Loader message is the message shown in the loader giving details about loading reason.
-   */
-  loaderMessage = {
-    headerMessage: '',
-    loaderMessage: 'We are Fetching Details ...'
-  };
-  /**
-  * Slider setting is used to display number of cards in the slider.
+  * Slider setting to display number of cards on the slider.
   */
   slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
   /**
    * The "constructor"
    *
-   * @param {ResourceService} resourceService  ResourceService is used to render resourcebundels
-   * @param {UserService} userService  UserService used to render user profile data.
-   * @param {CoursesService} courseService  CoursesService used to render enrolled courses.
-   * @param {ToasterService} iziToast ToasterService used to show popup messages.
+   * @param {ResourceService} resourceService Reference of resourceService.
+   * @param {UserService} userService Reference of userService.
+   * @param {CoursesService} courseService  Reference of courseService.
+   * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(resourceService: ResourceService,
-    userService: UserService, courseService: CoursesService, iziToast: ToasterService) {
+    userService: UserService, courseService: CoursesService, toasterService: ToasterService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
   }
   /**
-  * Subscribe to userService to get details about
-  * user profile like missingFields, completeness.
+   * This method calls the user API.
   */
-  public subscribeUserProfile() {
+  public populateUserProfile() {
     const profile = 'profile';
     this.userSubscription = this.userService.userData$.subscribe(
       user => {
@@ -88,35 +76,35 @@ export class MainHomeComponent implements OnInit, OnDestroy {
             this.toDoList.unshift({
               type: profile,
               missingFields: user.userProfile.missingFields,
-              value: user.userProfile.completeness
+              value: user.userProfile.completeness,
+              image: user.userProfile.avatar
             });
           }
-        } else {
+        } else if (user && user.err) {
           this.showLoader = false;
         }
       }
     );
   }
   /**
-   * Subscribe to courseService to get enrolledCourses details
-   * by user like Title,description, progress of course.
+   * This method calls the course API.
    */
-  public subscribeCourse() {
+  public populateEnrolledCourse() {
     this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
-      course => {
-        if (course) {
+     data => {
+        if (data) {
           this.showLoader = false;
-          this.toDoList = this.toDoList.concat(course.enrolledCourses);
+          this.toDoList = this.toDoList.concat(data.enrolledCourses);
         }
       },
       err => {
         this.showLoader = false;
-        this.iziToast.error(this.resourceService.messages.fmsg.m0001);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0001);
       }
     );
   }
   /**
-   *To track any new entry in the array.
+   * Used to dispaly profile as a first element.
    *@param {number} index Give position for current entry
    *@param {number} item  Give postion
    */
@@ -124,11 +112,12 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     return index;
   }
   /**
-  *Initialize subscribeUserProfile and subscribeCourse.
+  *This method calls the populateUserProfile and populateCourse to show
+  * user details and enrolled courses.
   */
   ngOnInit() {
-    this.subscribeUserProfile();
-    this.subscribeCourse();
+    this.populateUserProfile();
+    this.populateEnrolledCourse();
   }
   /**
    *ngOnDestroy unsubscribe the subscription

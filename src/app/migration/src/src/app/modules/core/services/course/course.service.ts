@@ -1,34 +1,27 @@
-// Import Module
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpParams } from '@angular/common/http/src/params';
-import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-// Import Services
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { IEnrolledCourses } from './../../interfaces/index';
 /**
- * The CoursesService is used to render course details
+ *  Service for course API calls.
  */
 @Injectable()
 export class CoursesService {
   /**
-   * To inject UserService.
+   * To get details about user profile.
    */
   private userService: UserService;
   /**
-   * To inject LearnerService.
+   *  To get prefix url.
    */
   private learnerService: LearnerService;
   /**
-   * To inject ConfigService
+   *  To get url, app configs.
    */
   private config: ConfigService;
-  /**
-   * api call
-   */
-  enrolledCoursesUrl: string;
   /**
    * user id
    */
@@ -36,42 +29,42 @@ export class CoursesService {
   /**
    * BehaviorSubject Containing enrolled courses.
    */
-  private _enrolledCourseData$ = new BehaviorSubject<any>(undefined);
+  private _enrolledCourseData$ = new BehaviorSubject<IEnrolledCourses>(undefined);
   /**
    * Read only observable Containing enrolled courses.
    */
-  public readonly enrolledCourseData$: Observable<any> = this._enrolledCourseData$.asObservable();
+  public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
   /**
   * the "constructor"
   *
-  * @param {LearnerService} learnerService  to call the prefix url "v1/learner"
-  * @param {UserService} userService  details about user profile
-  * @param {ConfigService} config ConfigService reference
+  * @param {LearnerService} learnerService Reference of LearnerService.
+  * @param {UserService} userService Reference of UserService.
+  * @param {ConfigService} config Reference of ConfigService
   */
   constructor(userService: UserService, learnerService: LearnerService, config: ConfigService) {
     this.config = config;
-    this.enrolledCoursesUrl = this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES;
     this.userService = userService;
     this.learnerService = learnerService;
     this.userid = this.userService.userid;
-    this.getEnrolledCourses();
   }
   /**
    *  api call for enrolled courses.
    */
   public getEnrolledCourses() {
     const option = {
-      url: this.enrolledCoursesUrl + '/' + this.userid
+      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid
     };
     this.learnerService.get(option).subscribe(
-      data => {
-        this._enrolledCourseData$.next({ err: null, enrolledCourses: data.result.courses });
+      (apiResponse: ServerResponse) => {
+        this._enrolledCourseData$.next({ err: null, enrolledCourses: apiResponse.result.courses });
       },
       err => {
         this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
-        console.log('error in getting courses', err);
       }
     );
+  }
+  public initialize() {
+    this.getEnrolledCourses();
   }
 }
 

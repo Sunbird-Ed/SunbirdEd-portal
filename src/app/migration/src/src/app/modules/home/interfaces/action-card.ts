@@ -2,11 +2,11 @@ export interface ActionCard {
     /**
     * number of nodes
     */
-    leafNodesCount?: string;
+    leafNodesCount?: number;
     /**
     * course progress
     */
-    progress?: string;
+    progress?: number;
     /**
     * course name
     */
@@ -27,8 +27,4 @@ export interface ActionCard {
     * course id
     */
     courseId: string;
-    /**
-    * user id
-    */
-    userId: string;
 }

@@ -1,14 +1,10 @@
-// Import NG core testing module(s)
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-// Import modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import 'rxjs/add/operator/mergeMap';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-// Import services
 import { AnnouncementService, UserService, CoursesService, LearnerService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
@@ -20,7 +16,7 @@ describe('MainHomeComponent', () => {
   let fixture: ComponentFixture<MainHomeComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, HttpClientModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, Ng2IziToastModule],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService, ToasterService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -37,7 +33,7 @@ describe('MainHomeComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    component.subscribeUserProfile();
+    component.populateUserProfile();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
@@ -48,7 +44,7 @@ describe('MainHomeComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
     userService.getUserProfile();
     fixture.detectChanges();
-    component.subscribeUserProfile();
+    component.populateUserProfile();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
@@ -58,7 +54,7 @@ describe('MainHomeComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseSuccess));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
-    component.subscribeCourse();
+    component.populateEnrolledCourse();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
@@ -69,7 +65,7 @@ describe('MainHomeComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseError));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
-    component.subscribeCourse();
+    component.populateEnrolledCourse();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });

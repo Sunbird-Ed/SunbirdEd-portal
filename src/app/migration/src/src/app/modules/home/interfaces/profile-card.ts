@@ -7,4 +7,9 @@ export interface ProfileCard {
     * profile missing fields
     */
     missingFields?: string[];
+    /**
+    * profile pic
+    */
+    avatar?: string;
+
 }

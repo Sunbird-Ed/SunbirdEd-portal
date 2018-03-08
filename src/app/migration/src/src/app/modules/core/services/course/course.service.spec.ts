@@ -1,20 +1,16 @@
-// Import NG core testing module(s)
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-// Import services
 import { CoursesService } from './course.service';
 import { UserService } from './../user/user.service';
 import { LearnerService } from './../learner/learner.service';
 import { ConfigService } from '@sunbird/shared';
-// Test data
 import * as mockData from './course.service.spec.data';
 const testData = mockData.mockRes;
 describe('CoursesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpClientModule],
+      imports: [HttpClientTestingModule],
       providers: [CoursesService, UserService, LearnerService, ConfigService]
     });
   });

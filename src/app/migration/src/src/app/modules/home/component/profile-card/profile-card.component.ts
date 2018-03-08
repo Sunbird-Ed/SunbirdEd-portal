@@ -1,11 +1,9 @@
-// Import services
-import {  UserService } from '@sunbird/core';
 import {  ResourceService } from '@sunbird/shared';
 import { Component, Input } from '@angular/core';
 import { ProfileCard } from './../../interfaces/index';
 /**
- * ProfileCardComponent is a card contains information about
- * user profile like completeness of profile, missing fields in profile.
+ * This component is a card contains details about user profile
+ * like profilecompleteness, missingfields.
  */
 @Component({
   selector: 'app-profile-card',
@@ -14,25 +12,18 @@ import { ProfileCard } from './../../interfaces/index';
 })
 export class ProfileCardComponent {
     /**
-     * To inject ResourceService.
+     * To call resource service which helps to use language constant.
      */
  private resourceService: ResourceService;
     /**
-     * To inject UserService.
-     */
- private userService: UserService;
-    /**
-     * profile is type ProfileCard used to get the values display in the view.
+     * This is used to render the userProfile values in the view.
      */
    @Input() profile: ProfileCard;
    /**
    * inject service(s)
-   * @param {ResourceService} resourceService ResourceService used to render resourcebundels.
-   * @param {UserService} userService UserService used to render user profile data.
+   * @param {ResourceService} resourceService Reference of ResourceService.
   */
-  constructor(resourceService: ResourceService,
-     userService: UserService) {
+  constructor(resourceService: ResourceService) {
        this.resourceService = resourceService;
-      this.userService = userService;
      }
 }

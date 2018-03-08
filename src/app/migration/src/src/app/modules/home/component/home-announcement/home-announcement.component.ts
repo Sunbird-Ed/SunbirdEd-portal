@@ -1,119 +1,85 @@
-import { Component, OnInit, Input } from '@angular/core';
-// Import services
+import { Component, OnInit } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, Announcement } from '@sunbird/shared';
+import { ConfigService, ResourceService, Announcement, ServerResponse } from '@sunbird/shared';
 /**
- * HomeAnnouncementComponent displays announcement inbox card on the home page.
+ * This component displays announcement inbox card on the home page.
  */
 @Component({
   selector: 'app-home-announcement',
   templateUrl: './home-announcement.component.html',
   styleUrls: ['./home-announcement.component.css']
 })
-/**
- *  HomeAnnouncementComponent
- * interact with announcement inbox data.
- */
 export class HomeAnnouncementComponent implements OnInit {
   /**
-   * To inject ResourceService.
+   * To call resource service which helps to use language constant.
    */
   private resourceService: ResourceService;
   /**
-   * To inject AnnouncementService.
+   * To make inbox API calls.
    */
   private announcement: AnnouncementService;
   /**
-   *  Contains announcement list data like links,Title,attachments,description.
-   */
-  announcementlistData: Announcement;
-  /**
-  * Contains page limit of inbox list to be display on home page.
-  */
-  pageLimit: number;
-  /**
-   * Contains page number from which the inbox list have to be render has default
-   * value 1 as on home page latest inbox list is shown.
-   */
-  pageNumber = 1;
-  /**
-   * Flags to showLoader have default value true because till it get all the data
-   * or get a error it should be in waiting process.
-   */
-  showLoader = true;
-  /**
-   * Flags to showdiv have default value false because if there is error in getting data or
-   * no data present then div should be hidden.
-   */
-  showdiv = false;
-  /**
-   * Loader message is the message shown in the loader giving details about loading reason.
-   */
-  loaderMessage = {
-    headerMessage: '',
-    loaderMessage: 'We are Fetching Details ...'
-  };
-  /**
-  * To navigate to other pages
-  */
-  route: Router;
-  /**
-   * To get params from url
-   */
-  private activatedRoute: ActivatedRoute;
-  /**
-   * reference of config service.
+   * To get url, app configs.
    */
   public config: ConfigService;
   /**
+   * Contains result object returned from get Inbox API.
+   */
+  announcementlist: Announcement;
+  /**
+  * Contains page limit of home inbox list.
+  */
+  pageLimit: number;
+  /**
+   * Contains current page number of outbox list.
+   */
+  pageNumber: number;
+  /**
+   * This variable hepls to show and hide page loader.
+   * It is kept true by default as at first when we comes
+   * to a page the loader should be displayed before showing
+   * any data
+   */
+  showLoader = true;
+  /**
    * Constructor
    * inject service(s)
-   * @param {ResourceService} resourceService  ResourceService used to render resourcebundels.
-   * @param {AnnouncementService} announcement AnnouncementService used to render announcement inbox detail.
-   * @param {Router} route To navigate to other pages
-   * @param {ActivatedRoute} activatedRoute To get params from url
-   * @param {ConfigService} config ConfigService reference
+   * @param {ResourceService} resourceService Reference of ResourceService.
+   * @param {AnnouncementService} announcement Reference of AnnouncementService.
+   * @param {ConfigService} config Reference of config service.
    */
   constructor(resourceService: ResourceService, announcement: AnnouncementService,
-    route: Router, activatedRoute: ActivatedRoute, config: ConfigService) {
+   config: ConfigService) {
     this.resourceService = resourceService;
     this.announcement = announcement;
-    this.route = route;
-    this.activatedRoute = activatedRoute;
     this.config = config;
   }
   /**
-   * subscribeInboxData is used to subscribe announcement service to get api response.
+   * populateHomeInboxData is used to subscribe announcement service.
    */
-  public subscribeInboxData(limit: number, pageNumber: number) {
+  public populateHomeInboxData(limit: number, pageNumber: number) {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
-
     const option = {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
     this.announcement.getInboxData(option).subscribe(
-      res => {
-        if (res && res.result.count > 0) {
-          this.announcementlistData = res.result.announcements;
-          this.showLoader = false;
-          this.showdiv = true;
+      (apiResponse: ServerResponse) => {
+        this.showLoader = false;
+        if (apiResponse && apiResponse.result.count > 0) {
+          this.announcementlist = apiResponse.result.announcements;
         }
       },
       err => {
-        console.log('show error');
         this.showLoader = false;
       });
   }
   /**
-   * Initialize getInbox
-   */
+   * This method calls the populateHomeInboxData to show inbox list.
+	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.pageNumber = Number(params.pageNumber);
-      this.subscribeInboxData(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
-    });
+      this.populateHomeInboxData(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
   }
 }

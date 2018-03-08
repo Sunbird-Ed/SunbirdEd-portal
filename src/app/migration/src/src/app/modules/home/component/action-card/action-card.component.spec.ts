@@ -1,17 +1,14 @@
-// Import  NG Core
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { ActionCardComponent } from './action-card.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// Import Services
 import { CoursesService, UserService, LearnerService } from '@sunbird/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-// Test data
+import { ActionCard } from './../../interfaces/index';
 import * as mockData from './action-card.component.spec.data';
 const testData = mockData.mockRes;
 describe('ActionCardComponent', () => {
@@ -19,7 +16,7 @@ describe('ActionCardComponent', () => {
     let fixture: ComponentFixture<ActionCardComponent>;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientModule, HttpClientTestingModule, SuiModule, CommonModule],
+            imports: [ HttpClientTestingModule, SuiModule, CommonModule],
             declarations: [ActionCardComponent],
             providers: [ResourceService, CoursesService, UserService, LearnerService, ConfigService],
             schemas: [NO_ERRORS_SCHEMA]
