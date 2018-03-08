@@ -36,7 +36,7 @@ describe('AnnouncementInboxCardComponent', () => {
     component.announcement = testData.successData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .announcementHomeCard-header').innerText).toEqual('abc');
-    expect(fixture.nativeElement.querySelector('div .annType').innerText).toEqual('circular');
+    expect(fixture.nativeElement.querySelector('div .annType').innerText).toEqual('CIRCULAR');
     expect(fixture.nativeElement.querySelector('div .annOrgName').innerText).toEqual('for');
     expect(fixture.nativeElement.querySelector('div .announcement-description').innerText).toEqual('');
     expect(fixture.nativeElement.querySelector('div.last span.announcement-description').innerText).toEqual('1 more attachment(s)');
@@ -46,7 +46,7 @@ describe('AnnouncementInboxCardComponent', () => {
   it('should show TEST INPUT for news type', () => {
     component.announcement = testData.parseSuccessData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .annType').innerText).toEqual('news');
+    expect(fixture.nativeElement.querySelector('div .annType').innerText).toEqual('NEWS');
     expect(fixture.nativeElement.querySelector('div .annUrlLinks')).toEqual(null);
     expect(fixture.nativeElement.querySelector('div .annAttachment').innerText).toEqual('');
     expect(fixture.nativeElement.querySelector('div .announcement-description').innerText).toEqual('hi');

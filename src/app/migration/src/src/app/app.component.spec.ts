@@ -1,9 +1,10 @@
-import { ConfigService, ToasterService } from '@sunbird/shared';
-import { UserService, LearnerService , PermissionService } from '@sunbird/core';
+
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
+import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('AppComponent', () => {
@@ -13,7 +14,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      providers: [ ToasterService, UserService, ConfigService, LearnerService , PermissionService , ResourceService],
+      providers: [ToasterService, UserService, ConfigService, LearnerService, PermissionService , ResourceService, CoursesService ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

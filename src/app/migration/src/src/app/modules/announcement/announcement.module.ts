@@ -5,7 +5,9 @@ import { AnnouncementRoutingModule } from './announcement-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, PaginationService, ToasterService, RouterNavigationService} from '@sunbird/shared';
 import { AnnouncementService} from '@sunbird/core';
-import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent} from './components';
+
+import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
+  DetailsPopupComponent, InboxComponent} from './components';
 import { GeoExplorerService } from './services';
 
 @NgModule({
@@ -15,7 +17,7 @@ import { GeoExplorerService } from './services';
     SharedModule, FormsModule,
     SuiModule
   ],
-  declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent],
+  declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService, RouterNavigationService]
 })
 export class AnnouncementModule { }

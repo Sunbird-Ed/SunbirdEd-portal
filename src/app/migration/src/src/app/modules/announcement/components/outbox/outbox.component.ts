@@ -41,12 +41,13 @@ export class OutboxComponent implements OnInit {
   pageNumber = 1;
 
   /**
-	 * Contains object of the pager service
-	 */
+  * Contains returned object of the pagination service
+  * which is needed to show the pagination on inbox view
+  */
   pager: IPagination;
 
   /**
-   * Reference of announcementService
+   * To make inbox API calls
    */
   private announcementService: AnnouncementService;
 
@@ -56,27 +57,28 @@ export class OutboxComponent implements OnInit {
   route: Router;
 
   /**
-   * To get params from url
+   * To send activatedRoute.snapshot to router navigation
+   * service for redirection to parent component
    */
   private activatedRoute: ActivatedRoute;
 
   /**
-   * Reference of ResourceService
+   * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
 
   /**
-   * Reference of PaginationService
+   * For showing pagination on inbox list
    */
   private paginationService: PaginationService;
 
   /**
-   * Reference of ToasterService
+   * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
 
   /**
-   * Reference of ConfigService
+   * To get url, app configs
    */
   public config: ConfigService;
 
@@ -85,13 +87,13 @@ export class OutboxComponent implements OnInit {
 	 *
 	 * Default method of AnnouncementService class
 	 *
-   * @param {AnnouncementService} announcementService To make outbox API calls
-   * @param {Router} route To navigate to other pages
-   * @param {ActivatedRoute} activatedRoute To get params from url
-   * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {PaginationService} paginationService For showing pagination on outbox list
-   * @param {ToasterService} toasterService To show toaster(error, success etc) after any API calls
-   * @param {ConfigService} config To get url, app configs
+   * @param {AnnouncementService} announcementService Reference of AnnouncementService
+   * @param {Router} route Reference of Router
+   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+   * @param {ResourceService} resourceService Reference of ResourceService
+   * @param {PaginationService} paginationService Reference of PaginationService
+   * @param {ToasterService} toasterService Reference of ToasterService
+   * @param {ConfigService} config Reference of ConfigService
 	 */
   constructor(announcementService: AnnouncementService,
     route: Router,
