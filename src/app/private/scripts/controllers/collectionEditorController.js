@@ -55,6 +55,16 @@ angular.module('playerApp')
             id: 'org.ekstep.sunbirdcommonheader',
             ver: '1.1',
             type: 'plugin'
+          },
+          {
+            id: 'org.ekstep.suggestcontent',
+            ver: '1.0',
+            type: 'plugin'
+          },
+          {
+            id: 'org.ekstep.lessonbrowser',
+            ver: '1.3',
+            type: 'plugin'
           }],
           localDispatcherEndpoint: '/collection-editor/telemetry',
           editorConfig: {
@@ -81,12 +91,12 @@ angular.module('playerApp')
         window.config.editorConfig.publishMode = false
         window.config.editorConfig.isFalgReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
-                            _.intersection(permissionsService.getCurrentUserRoles(),
-                              ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
+          _.intersection(permissionsService.getCurrentUserRoles(),
+            ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
           window.config.editorConfig.publishMode = true
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
-                            _.intersection(permissionsService.getCurrentUserRoles(),
-                              ['FLAG_REVIEWER']).length > 0) {
+          _.intersection(permissionsService.getCurrentUserRoles(),
+            ['FLAG_REVIEWER']).length > 0) {
           window.config.editorConfig.isFalgReviewer = true
         }
 
