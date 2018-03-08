@@ -18,7 +18,6 @@ import { ConfigService } from '@sunbird/shared';
  * get, post, delete etc methods are written
  */
 export class AnnouncementService extends DataService {
-
   /**
    * To set announcement details of specific announcement
    */
