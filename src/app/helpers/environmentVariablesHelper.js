@@ -35,6 +35,7 @@ let envVariables = {
   MOBILE_REDIRECT_URL: env.mobile_redirect_url || 'http://www.sunbird.org'
 }
 
-envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(',') : ['localhost']
+envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
+  ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
