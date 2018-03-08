@@ -39,7 +39,6 @@ angular.module('playerApp')
             contentId: item.identifier,
             type: item.contentType,
             state: state
-
           }
           if (item.framework) {
             params.framework = item.framework
