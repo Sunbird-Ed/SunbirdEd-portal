@@ -15,7 +15,7 @@ import { IAnnouncementDetails } from '@sunbird/announcement';
 export class DetailsComponent {
 
   /**
-   * Reference of resource service
+   * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
   /**

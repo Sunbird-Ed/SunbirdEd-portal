@@ -79,7 +79,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of outboxData.announcements" class="tableListNameAnn">
-                <td [routerLink]="['details/' + item.id]" (click)="announcementService.announcementDetailsObject = item" class="cursor-pointer">{{item.title | slice:0:50}}
+                <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item" class="cursor-pointer">{{item.title | slice:0:50}}
                   <span *ngIf="item.title.length > 50">...</span>
                 </td>
                 <td>{{item.createdDate | dateFormat}}</td>

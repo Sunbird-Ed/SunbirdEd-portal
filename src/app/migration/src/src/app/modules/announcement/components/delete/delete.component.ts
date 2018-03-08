@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule} from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 
@@ -25,27 +25,27 @@ export class DeleteComponent implements OnInit {
   pageNumber = 1;
 
   /**
-   * Reference of announcementService
+   * To make get announcement by id
    */
   private announcementService: AnnouncementService;
 
   /**
-   * To get params from url
+   * To send activatedRoute.snapshot to routerNavigationService
    */
-  private activatedRoute: ActivatedRoute;
+  public activatedRoute: ActivatedRoute;
 
   /**
-   * Reference of ResourceService
+   * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
 
   /**
-   * Reference of ToasterService
+   * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
 
   /**
-   * Reference of routerNavigationService
+   * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
 
@@ -54,11 +54,11 @@ export class DeleteComponent implements OnInit {
 	 *
 	 * Default method of DeleteComponent class
 	 *
-   * @param {AnnouncementService} announcementService To make outbox API calls
-   * @param {ActivatedRoute} activatedRoute To get params from url
-   * @param {ResourceService} resourceService To call resource service which helps to use language constant
-   * @param {ToasterService} toasterService To show toaster(error, success etc) after any API calls
-   * @param {RouterNavigationService} routerNavigationService To navigate back to parent component
+   * @param {AnnouncementService} announcementService Reference of AnnouncementService
+   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+   * @param {ResourceService} resourceService Reference of ResourceService
+   * @param {ToasterService} toasterService Reference of ToasterService
+   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(announcementService: AnnouncementService,
     activatedRoute: ActivatedRoute,

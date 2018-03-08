@@ -2,25 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 
 /**
- * The announcement outbox component displays all
- * the announcement which is created by the logged in user
- * having announcement creator access
+ * The announcement inbox component displays all
+ * the announcement which is received by the logged in user
  */
 @Component({
-  selector: 'app-outbox',
-  templateUrl: './outbox.component.html',
-  styleUrls: ['./outbox.component.css']
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html',
+  styleUrls: ['./inbox.component.css']
 })
-export class OutboxComponent implements OnInit {
+export class InboxComponent implements OnInit {
 
   /**
-	 * Contains result object returned from get outbox API
+	 * Contains result object returned from get inbox API
 	 */
-  outboxData: IAnnouncementListData;
+  inboxData: IAnnouncementListData;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -31,19 +30,19 @@ export class OutboxComponent implements OnInit {
   showLoader = true;
 
   /**
-	 * Contains page limit of outbox list
+	 * Contains page limit of inbox list
 	 */
   pageLimit: number;
 
   /**
-	 * Contains current page number of outbox list
+	 * Current page number of inbox list
 	 */
   pageNumber = 1;
 
   /**
-  * Contains returned object of the pagination service
-  * which is needed to show the pagination on inbox view
-  */
+	 * Contains returned object of the pagination service
+   * which is needed to show the pagination on inbox view
+	 */
   pager: IPagination;
 
   /**
@@ -112,14 +111,16 @@ export class OutboxComponent implements OnInit {
   }
 
   /**
-   * populate outbox data with given limit and pagenumber.
+   * Populate announcement inbox data with given limit and pagenumber.
+   * It also calls the received API to change the status of the
+   * announcements to false whose status is true.
 	 *
 	 * @param {number} limit max no. of announcement to be shown.
 	 * @param {number} pageNumber page number to be displayed
 	 *
-	 * @example populateOutboxData(10, 1)
+	 * @example populateInboxData(10, 1)
 	 */
-  populateOutboxData(limit: number, pageNumber: number): void {
+  populateInboxData(limit: number, pageNumber: number) {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
@@ -129,17 +130,48 @@ export class OutboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getOutboxData(option).subscribe(
+    this.announcementService.getInboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.outboxData = apiResponse.result;
+        this.inboxData = apiResponse.result;
         this.showLoader = false;
-        this.pager = this.paginationService.getPager(this.outboxData.count, this.pageNumber, this.pageLimit);
+        this.pager = this.paginationService.getPager(this.inboxData.count, this.pageNumber, this.pageLimit);
+
+        // Calling received API
+        _.each(this.inboxData.announcements, (key) => {
+          if (key.received === false) {
+            this.announcementService.receivedAnnouncement({ announcementId: key.id }).subscribe(
+              (response: ServerResponse) => { }
+            );
+          }
+        });
       },
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
       }
     );
+  }
+
+  /**
+   * This method checks whether a announcement's status is true or false.
+   * If false it calls the read API with the particular announcement id
+   * and changes its read status to true
+	 *
+	 * @param {string} announcementId Clicked announcement id
+	 * @param {boolean} read Read status of the clicked announcement id
+	 */
+  readAnnouncement(announcementId: string, read: boolean): void {
+    if (read === false) {
+      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+        (response: ServerResponse) => {
+          _.each(this.inboxData.announcements, (key, index) => {
+            if (announcementId === key.id) {
+              this.inboxData.announcements[index].read = true;
+            }
+          });
+        }
+      );
+    }
   }
 
   /**
@@ -156,26 +188,17 @@ export class OutboxComponent implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['announcement/outbox', this.pageNumber]);
+    this.route.navigate(['announcement/inbox', this.pageNumber]);
   }
 
   /**
-   * This method calls the populateOutboxData to show outbox list.
-   * It also changes the status of a deleted announcement to cancelled.
-	 *
+   * This method calls the populateInboxData to show inbox list.
 	 */
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.populateOutboxData(this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
-    });
-
-    this.announcementService.announcementDeleteEvent.subscribe(data => {
-      _.each(this.outboxData.announcements, (key, index) => {
-        if (data && data === key.id) {
-          this.outboxData.announcements[index].status = 'cancelled';
-        }
-      });
+      this.populateInboxData(this.config.pageConfig.INBOX.PAGE_LIMIT, this.pageNumber);
     });
   }
 }
+
