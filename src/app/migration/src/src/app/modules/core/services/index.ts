@@ -6,3 +6,4 @@ export * from './announcement/announcement.service';
 export * from './permission/permission.service';
 export * from './search/search.service';
 export * from './announcement/announcement.service';
+export * from './user/user.mock.spec.data';

@@ -1,5 +1,7 @@
+import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
-import { UserService } from '@sunbird/core';
+import { UserService, PermissionService } from '@sunbird/core';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 /**
  * main app component
  *
@@ -10,7 +12,28 @@ import { UserService } from '@sunbird/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public userService: UserService) {
-    userService.initialize();
+  /**
+   * reference of UserService service.
+   */
+  public userService: UserService;
+  /**
+   * reference of config service.
+   */
+  public permissionService: PermissionService;
+  /**
+   * reference of resourceService service.
+   */
+  public resourceService: ResourceService;
+  /**
+   * constructor
+   */
+  constructor(userService: UserService,
+    permissionService: PermissionService, resourceService: ResourceService) {
+      this.resourceService = resourceService;
+      this.permissionService = permissionService;
+      this.userService = userService;
+      userService.initialize();
+      permissionService.initialize();
+      resourceService.initialize();
   }
 }

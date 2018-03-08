@@ -1,13 +1,31 @@
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService , ResourceService} from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+interface Roles {
+  actionGroups: Array<ActionGroups>;
+  id: string;
+  name: string;
+}
+interface ActionGroups {
+  actions: Array<RoleAction>;
+  id: string;
+  name: string;
+}
+interface RolesAndPermissions {
+  actions: Array<RoleAction>;
+  role: string;
+  roleName: string;
+}
+interface RoleAction {
+  id: string;
+  name: string;
+  urls: Array<string>;
+}
 /**
  * Service to fetch permission and validate user permission
  *
@@ -17,19 +35,19 @@ export class PermissionService {
   /**
    * all roles with actions, including sub roles.
    */
-  private rolesAndPermissions: any[] = [];
+  private rolesAndPermissions: Array<RolesAndPermissions> = [];
   /**
    * main roles with action
    */
-  private mainRoles: any[] = [];
+  private mainRoles: Array<RolesAndPermissions> = [];
   /**
    * all user role action
    */
-  private userRoleActions: any[] = [];
+  private userRoleActions: Array<string> = [];
   /**
    * all user role
    */
-  private userRoles: any[] = [];
+  private userRoles: Array<string> = [];
   /**
    * flag to store permission availability
    */
@@ -42,13 +60,13 @@ export class PermissionService {
    */
   public permissionAvailable$ = new BehaviorSubject<string>(undefined);
   /**
+   * reference of ResourceService service.
+   */
+  public resourceService: ResourceService;
+  /**
    * reference of config service.
    */
   public config: ConfigService;
-    /**
-   * reference of HttpClient service.
-   */
-  public http: HttpClient;
   /**
    * reference of LearnerService service.
    */
@@ -60,15 +78,16 @@ export class PermissionService {
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
-   * @param {HttpClient} http HttpClient reference
    * @param {LearnerService} learner LearnerService reference
    * @param {UserService} userService UserService reference
    */
-  constructor(config: ConfigService, http: HttpClient, learner: LearnerService, userService: UserService) {
+  constructor(resourceService: ResourceService, config: ConfigService,
+    learner: LearnerService, userService: UserService, public toasterService: ToasterService) {
     this.config = config;
-    this.http = http;
     this.learner = learner;
     this.userService = userService;
+  }
+  public initialize() {
     this.getPermissionsData();
   }
   /**
@@ -80,24 +99,25 @@ export class PermissionService {
     };
     this.learner.get(option).subscribe(
       (data: ServerResponse) => {
-        this.setRolesAndPermissions(data);
+        if (data.result.roles) {
+          this.setRolesAndPermissions(data.result.roles);
+        }
       },
       (err: ServerResponse) => {
-
+        this.toasterService.error('Something went wrong, please try again later...');
       }
     );
   }
   /**
    * method to process roles and actions
-   * @param {ServerResponse} data ConfigService reference
+   * @param {Array<Roles>} data ConfigService reference
    */
-  private setRolesAndPermissions(data: ServerResponse): void {
-    const rolePermissions = _.cloneDeep(data.result.roles);
-    _.forEach(rolePermissions, (r, p) => {
-      const mainRole = { role: r.id, actions: [], roleName: r.name };
-      _.forEach(r.actionGroups, (ag) => {
-        const subRole = { role: ag.id, actions: ag.actions, roleName: ag.name };
-        mainRole.actions = _.concat(mainRole.actions, ag.actions);
+  private setRolesAndPermissions(roles: Array<Roles>): void {
+    _.forEach(roles, (role) => {
+      const mainRole = { role: role.id, actions: [], roleName: role.name };
+      _.forEach(role.actionGroups, (actionGroup) => {
+        const subRole = { role: actionGroup.id, actions: actionGroup.actions, roleName: actionGroup.name };
+        mainRole.actions = _.concat(mainRole.actions, actionGroup.actions);
         this.rolesAndPermissions.push(subRole);
       });
       this.mainRoles.push(mainRole);
@@ -112,58 +132,32 @@ export class PermissionService {
    */
   private setCurrentRoleActions(): void {
     this.userService.userData$.subscribe( user => {
-        if (user) {
-          if (!user.err) {
-            this.userRoles = user.userProfile.userRoles;
-            _.forEach(this.userRoles,  (r) => {
-              const roleActions = _.filter(this.rolesAndPermissions, { role: r });
-              if (_.isArray(roleActions) && roleActions.length > 0) {
-                this.userRoleActions = _.concat(this.userRoleActions,
-                  _.map(roleActions[0].actions, 'id'));
-              }
-            });
-            this.permissionAvailable$.next('success');
-            this.permissionAvailable = true;
-          } else if (user.err) {
-            this.permissionAvailable$.next('error');
+      if (user && !user.err) {
+        this.userRoles = user.userProfile.userRoles;
+        _.forEach(this.userRoles,  (role) => {
+          const roleActions = _.filter(this.rolesAndPermissions, { role: role });
+          if (_.isArray(roleActions) && roleActions.length > 0) {
+            this.userRoleActions = _.concat(this.userRoleActions, _.map(roleActions[0].actions, 'id'));
           }
-        } else {
-
-        }
+        });
+        this.permissionAvailable$.next('success');
+        this.permissionAvailable = true;
+      } else if (user && user.err) {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
+        this.permissionAvailable$.next('error');
       }
-    );
+    });
   }
   /**
    * method to validate permission
-   * @param {string[]}  roles roles to validate.
-   * @param {boolean} flag  flag. True if roles must be needed.
+   * @param {Array<string>}  roles roles to validate.
    */
-  public checkRolesPermissions(roles, flag): boolean {
+  public checkRolesPermissions(roles: Array<string>): boolean {
     if (this.userRoles && this.userRoles.length > 0) {
-      if (!this.checkActionsPermissions(roles, flag)) {
-        if (_.isArray(roles)) {
-          if ((_.intersection(roles, this.userRoles).length === 0) && !flag) {
-            return true;
-          }
-          return ((_.intersection(roles, this.userRoles).length > 0) && flag);
-        }
-      } else {
-        return true;
-      }
-    }
-    return false;
-  }
-  /**
-   * method to role action.
-   * @param {string[]}  roles roles to validate.
-   * @param {boolean} flag  flag. True if roles must be needed.
-   */
-  checkActionsPermissions(roles, flag) {
-    if (_.isArray(roles)) {
-      if ((_.intersection(roles, this.userRoleActions).length === 0) && !flag) {
+      if ((_.intersection(roles, this.userRoles).length === 0)) {
         return false;
       }
-      return ((_.intersection(roles, this.userRoleActions).length > 0) && flag);
+      return true;
     }
     return false;
   }
