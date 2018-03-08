@@ -1,11 +1,11 @@
-<div class="ui card" >
+<div class="ui link card">
+  <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
+    <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
+  </div>
   <div class="ui medium image ">
-      <a class="ui black right ribbon label ng-binding" *ngIf = "content.resourceType == undefined">{{content.contentType}}</a>
-      <!-- <a class="ui black right ribbon label ng-binding" *ngIf="content.resourceType.length > 0">{{content.resourceType}}</a> -->
-    <div class="course-progress ui tiny progress  progressBar-margin orange" *ngIf="content.leafNodesCount && content.progress > 0">
-      <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
-    </div>
-    <img src="{{ content.appIcon || '/assets/common/images/default.png' }}">
+    <!-- <a class="ui black right ribbon label ng-binding" *ngIf="content.resourceType.length > 0">{{content.resourceType}}</a> -->
+    <a class="ui black right ribbon label ng-binding" *ngIf="content.resourceType == undefined">{{content.contentType}}</a>
+    <img  src="{{ content.appIcon || '/assets/common/images/default.png' }}">
     <div class="cardImageText center aligned ">
       <span class="sliderCardHeading text-cencapitalize">{{content.name||content.courseName}}</span>
     </div>
@@ -18,7 +18,7 @@
   <div class="extra content">
     <span class="right floated">
       <a>
-        <button class="ui blue basic button ">resume</button>
+        <button class="ui blue basic button ">{{resourceService.frmelmnts?.btn?.resume}}</button>
       </a>
     </span>
     <sui-rating class="courseHeader-rating star" [ngModel]="content.me_averageRating | number:0" [maximum]="5" [isReadonly]="true"></sui-rating>

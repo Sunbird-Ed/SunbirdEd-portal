@@ -1,3 +1,4 @@
+import { ResourceService } from '../../services/index';
 import { Component, OnInit, Input } from '@angular/core';
 
 
@@ -7,9 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./content-card.component.css']
 })
 export class ContentCardComponent implements OnInit {
-
+  resourceService: ResourceService;
   @Input() content;
-  constructor() { }
+  constructor(resourceService: ResourceService) {
+    this.resourceService = resourceService;
+   }
 
   ngOnInit() {
   }

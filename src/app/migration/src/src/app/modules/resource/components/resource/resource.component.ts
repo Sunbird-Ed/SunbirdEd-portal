@@ -27,7 +27,23 @@ export class ResourceComponent implements OnInit {
       }
     );
    }
-
+   /**
+   * This method calls the course API.
+   */
+  // public populateEnrolledCourse() {
+  //   this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
+  //    data => {
+  //       if (data) {
+  //         this.showLoader = false;
+  //         this.toDoList = this.toDoList.concat(data.enrolledCourses);
+  //       }
+  //     },
+  //     err => {
+  //       this.showLoader = false;
+  //       this.toasterService.error(this.resourceService.messages.fmsg.m0001);
+  //     }
+  //   );
+  // }
   ngOnInit() {
     this.populateResourceData();  }
 
