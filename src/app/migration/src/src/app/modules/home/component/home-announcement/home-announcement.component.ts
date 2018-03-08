@@ -56,7 +56,7 @@ export class HomeAnnouncementComponent implements OnInit {
     this.config = config;
   }
   /**
-   * populateHomeInboxData is used to subscribe announcement service.
+   * This method calls the announcement inbox API.
    */
   public populateHomeInboxData(limit: number, pageNumber: number) {
     this.pageNumber = pageNumber;

@@ -15,7 +15,7 @@ export class CoursesService {
    */
   private userService: UserService;
   /**
-   *  To get prefix url.
+   *  To do learner service api call.
    */
   private learnerService: LearnerService;
   /**
