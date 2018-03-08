@@ -57,11 +57,6 @@ angular.module('playerApp')
             type: 'plugin'
           },
           {
-            id: 'org.ekstep.suggestcontent',
-            ver: '1.0',
-            type: 'plugin'
-          },
-          {
             id: 'org.ekstep.lessonbrowser',
             ver: '1.3',
             type: 'plugin'
@@ -87,7 +82,13 @@ angular.module('playerApp')
           },
           editorType: data.type
         }
-
+        if (data.type.toLowerCase() === 'textbook') {
+          window.config.plugins.push({
+            id: 'org.ekstep.suggestcontent',
+            ver: '1.0',
+            type: 'plugin'
+          })
+        }
         window.config.editorConfig.publishMode = false
         window.config.editorConfig.isFalgReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
@@ -365,6 +366,7 @@ angular.module('playerApp')
           })
           return editorConfig
         default:
+
           editorConfig.push({
             type: 'TextBook',
             label: 'Textbook',
