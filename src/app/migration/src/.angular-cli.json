@@ -19,12 +19,13 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
-        "../node_modules/izitoast/dist/css/iziToast.min.css"
+        "styles.css"
       ],
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
-        "../node_modules/izitoast/dist/js/iziToast.min.js"
+        "../node_modules/izitoast/dist/js/iziToast.min.js",
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/slick-carousel/slick/slick.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-page-section',
@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageSectionComponent implements OnInit {
 
+  @Input() pageSection;
+  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
   constructor() { }
 
   ngOnInit() {

@@ -19,8 +19,8 @@
       "@sunbird/announcement": [
         "app/modules/announcement"
       ],
-      "@sunbird/library": [
-        "app/modules/library"
+      "@sunbird/resource": [
+        "app/modules/resource"
       ]
     },
     "sourceMap": true,

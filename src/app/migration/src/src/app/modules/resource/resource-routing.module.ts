@@ -1,4 +1,4 @@
-import { ResourceComponent } from './component/index';
+import { ResourceComponent } from './components/index';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LibraryRoutingModule { }
+export class ResourceRoutingModule { }
