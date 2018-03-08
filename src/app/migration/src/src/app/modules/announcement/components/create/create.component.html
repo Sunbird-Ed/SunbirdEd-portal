@@ -1,0 +1,195 @@
+<sui-modal [isClosable]="true" [size]="'large'" #modal>
+  <div class=" ui segment margin-top-10">
+    <div class="margin-bottom-15">
+      <div class="ui grid">
+        <div class="ten wide column">
+          <span class="ui header">
+            <!-- Step 1 -->
+            <span class="ui" *ngIf="stepNumber == 1">
+              <span class="text announcementHeadingSection" *ngIf="!identifier">
+                {{resource?.frmelmnts?.lbl?.createnewanncmnt}}
+              </span>
+              <span class="text announcementHeadingSection" *ngIf="identifier">
+                {{resource?.frmelmnts?.lbl?.anncmntttlresend}}
+              </span>
+              <br/>
+              <span class="createAnnHeaderDesc">{{ identifier ? resource?.frmelmnts?.lbl?.resendanncmntdesc : resource?.frmelmnts?.lbl?.createnewanncmntdesc}}</span>
+              <span class="createAnnHeaderDesc">{{resource?.frmelmnts?.instn?.t0054}}</span>
+            </span>
+            <!-- Step 2 -->
+            <span class="ui" *ngIf="stepNumber == 2">
+              <span class="text announcementHeadingSection">{{resource?.frmelmnts?.lbl?.selectrecipient}}</span>
+              <br/>
+              <span class="createAnnHeaderDesc">{{ identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.selectrecipientdesc}}</span>
+            </span>
+            <span *ngIf="stepNumber == 3">
+              <span class="text announcementHeadingSection">{{identifier ? resource?.frmelmnts?.lbl?.selectrecipient: resource?.frmelmnts?.lbl?.confirmrecipient}}</span>
+              <br/>
+              <span class="createAnnHeaderDesc">{{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}</span>
+            </span>
+          </span>
+        </div>
+        <div class="two wide column">
+          <!--<div class="createAnnStepsIndicator">
+            <h6 class="createAnnMargin5 createAnnGrayShade">{{resource?.frmelmnts?.lbl?.anncmntstep}}</h6>
+            <span id="announcementSteps createAnnMargin4" class="announcementSteps">{{stepNumber}}</span>
+            <span class="createAnnGrayShade"> / 4</span>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <form class="ui form announcementForm" [formGroup]="announcementForm" (ngSubmit)="createAnnouncement(form)">
+        <div class="ui grid" *ngIf="stepNumber == 1">
+          <div class="eight wide column">
+            <div class="field createAnnFormScroller">
+              <div class="padding-right-25">
+                <div class="field required padding-top-5">
+                  {{announcementForm.controls['title'].error}}
+                  <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
+                  <input class="form-control" formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
+                  <p *ngIf="announcementForm.controls['title'].error" class="createAnnErrorMsg">Title is too long</p>
+                </div>
+                <div class="field required dropdown-margin-left">
+                  <label>{{resource?.frmelmnts?.lbl?.anncmntfrom}}</label>
+                  <div class="field">
+                    <input class="form-control" formControlName="from" placeholder="{{resource?.frmelmnts?.lbl?.anncmntfromDesc}}">
+                  </div>
+                </div>
+                <!-- Type -->
+                <div class="field required dropdown-margin-left">
+                  <label>{{resource?.frmelmnts?.lbl?.anncmnttype}}</label>
+                  <!-- <ng-template let-option #optionTemplate>
+                    {{ option.name }}
+                  </ng-template> -->
+                  <sui-select class="selection" formControlName="type" [options]="options" labelField="name" [placeholder]="'Select Course To See Dashboard'"
+                    [optionTemplate]="optionTemplate">
+                    <sui-select-option *ngFor="let type of announcementTypes" [value]="type">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+                <!-- Description -->
+                <div class="field required dropdown-margin-left">
+                  <label>{{resource?.frmelmnts?.lbl?.anncmntdesc}}</label>
+                  <div class="field">
+                    <input class="form-control" formControlName="description" placeholder="{{resource?.frmelmnts?.instn?.t0052}}">
+                  </div>
+                </div>
+                <!-- Links -->
+                <div class="field form-group dropdown-margin-left">
+                  <label>{{resource?.frmelmnts?.lbl?.anncmntlink}}</label>
+                  <div formArrayName="links">
+                    <div class="field" *ngFor="let item of announcementForm.get('links').controls; let i = index;">
+                      <div [formGroupName]="i" class="ui action input">
+                        <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
+                        <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <span (click)="addNewLink()">
+                    <i class="plus icon createAnnBlueClass cursor-pointer"></i>
+                    <span *ngIf="announcementForm.get('links').controls.length === 0">
+                      <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddlink}} </span>
+                      <span>{{resource?.frmelmnts?.lbl?.anncmntaddlinkdesc}}</span>
+                    </span>
+                    <span *ngIf="announcementForm.get('links').controls.length > 0">
+                      <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- File uploader -->
+          <div class="four wide column">
+            <div class="field">
+              <label>{{resource?.frmelmnts?.lbl?.anncmntuploadfile}}</label>
+              <div type="text/template" id="qq-template-manual-trigger" style="display: none;">
+                <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
+                  <div id="hide-section-with-button">
+                    <ul class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
+                      <li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge" qq-file-id="0">
+                        <i class="qq-upload-cancel-selector cursor-pointer remove icon float-ContentRight" id="qq-upload-cancel-manually" onclick=cancelUploadFile()></i>
+                        <span class="qq-upload-file-selector qq-upload-file anncmnt-upload-file" title=""></span>
+                        <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
+                      </li>
+                    </ul>
+                    <div class="qq-upload-drop-area-selector qq-upload-drop-area uploadicon twelve wide column" qq-hide-dropzone>
+                      <span class="qq-upload-drop-area-text-selector"></span>
+                    </div>
+                    <div class="ui grid">
+                      <div class="uploadicon twelve wide column text-align-center">
+                        <p class="dropfile anncmnt-drop-file-info">
+                          <span class="anncmnt-drop-file-info-size">Drop relevant attachment here </span>
+                          <br>
+                          <span class="anncmnt-drop-file-info-style"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
+                        </p>
+                      </div>
+                    </div>
+                    <p class="orinstuction anncmnt-fileupload-or-text">or</p>
+                    <div class="ui grid anncmnt-fileupload-negative-margin">
+                      <div class="twelve wide column text-align-center selectuploadfile anncmnt-upload-file-are">
+                        <label class="qq-upload-button-selector anncmnt-upload-file-btn ui primary basic button text-align-center padding-left-25 announcementButton">
+                          <span class="announcementButtonText">UPLOAD ATTACHMENT</span>
+                          <input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="UPLOAD ATTACHMENT" multiple="" type="file" name="qqfile"
+                            class="anncmnt-fileupload-input-field">
+                        </label>
+                      </div>
+                      <div class="one wide column"></div>
+                    </div>
+                  </div>
+                  <dialog class="qq-alert-dialog-selector">
+                    <div class="qq-dialog-message-selector"></div>
+                    <div class="qq-dialog-buttons">
+                      <button type="button" class="qq-cancel-button-selector">Close</button>
+                    </div>
+                  </dialog>
+                  <dialog class="qq-confirm-dialog-selector">
+                    <div class="qq-dialog-message-selector"></div>
+                    <div class="qq-dialog-buttons">
+                      <button type="button" class="qq-cancel-button-selector">No</button>
+                      <button type="button" class="qq-ok-button-selector">Yes</button>
+                    </div>
+                  </dialog>
+                  <dialog class="qq-prompt-dialog-selector">
+                    <div class="qq-dialog-message-selector"></div>
+                    <input type="text">
+                    <div class="qq-dialog-buttons">
+                      <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                      <button type="button" class="qq-ok-button-selector">Ok</button>
+                    </div>
+                  </dialog>
+                </div>
+              </div>
+              <div id="fine-uploader-manual-trigger1"></div>
+            </div>
+          </div>
+        </div>
+        <!-- GEO explorer -->
+        <div *ngIf="stepNumber == 2">
+          <app-geo-explorer [geoConfig]="{ geo: { adaptor: 'SERVICE', service: 'geoService' } }" [populateSelectedItem]="recipientsList"></app-geo-explorer>
+        </div>
+        <div *ngIf="stepNumber == 3" class="ui list ui grid">
+          <div class="eight wide column createAnnFormScroller">
+            <div class="ui message padding-10" *ngFor="let item of recipientsList">
+              <i class="close icon" (click)="removeRecipient(item);"></i>
+              <span class="createAnnSelectedRecepient">{{item.location}}</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" 
+      id="annBackBtn" (click)="previousStep();" [ngStyle]="{'display': stepNumber == 1 ? 'none' : 'block' }">
+      <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
+    </button>
+    <div class="ui primary button" *ngIf="stepNumber == 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" *ngIf="stepNumber == 3">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
+    <div class="ui primary button" *ngIf="stepNumber == 4">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</div>
+    <div *ngIf="stepNumber == 1" id="selectRecipientBtn" class="ui primary button" (click)="selectRecipients();">{{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}</div>
+  </div>
+</sui-modal>

@@ -1,0 +1,176 @@
+input.ng-invalid.ng-touched {
+   border-color: red;  
+}
+.createAnnHeaderDesc {
+	font-size: small;
+	color: @secondary-textColor;
+  }
+  
+  .createAnnStepsIndicator {
+	margin-left: 75px;
+	background-color: @tertiary-color;
+	margin-bottom: auto;
+	padding: 10px 20px;
+  }
+  
+  .createAnnFormScroller {
+	max-height: 400px;
+	overflow-y: auto;
+	height: 327px
+  }
+  
+  .createAnnAttchementHolder {
+	overflow-x: hidden;
+	max-height: 330px;
+	overflow-y: auto;
+  }
+  
+  .createAnnErrorMsg {
+	border-color: red;
+	color: red;
+	margin-top: 5px;
+  }
+  
+  .createAnnErrorDiv {
+	border-color: red ;
+	color: red;
+  }
+  
+  .announcementHeadingSection {
+	font-family: 'sunbirdboldfont';
+	font-size: smaller;
+  }
+  
+  .ui.modal .announcementForm input.ng-invalid {
+	border-color: red !important;
+  }
+  
+  .ui.modal .dropdown-margin-left .ui.dropdown>.text {
+	margin-left: -1em !important;
+  }
+  
+  .dropdown-margin-left {
+	margin-left: 1px !important;
+  }
+  
+  .createAnnSelectedRecepient {
+	font-size: small;
+  }
+  
+  .createAnnBackBtnWidth {
+	width: 15%;
+  }
+  
+  .createAnnBlueClass {
+	color: @primary-color;
+  }
+  
+  .createAnnMargin5 {
+	margin: 5px;
+  }
+  
+  .createAnnMargin4 {
+	margin: 4px;
+  }
+  
+  .createAnnGrayShade {
+	color: @secondary-textColor;
+  }
+  
+  .line-height-20 {
+	line-height: 20px;
+  }
+  .annRecipientsSearchIcon{
+	margin-left: -10px !important;
+  }
+  
+  .btn-width-34 {
+	width: 34%;
+  }
+  .announcementSteps{
+	margin-left: -5px;
+  }
+  .margin-left-17{
+	margin-left: 17px;
+  }
+.anncmnt-fileupload-list{
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+.anncmnt-drop-file-info{
+	padding-top: 50px;
+}
+
+.anncmnt-drop-file-info-size{
+	font-size: 1.2em;
+}
+
+.anncmnt-drop-file-info-style{
+	font-style: italic;
+}
+
+.anncmnt-fileupload-or-text{
+	margin-top: -3.5em;
+}
+
+.anncmnt-fileupload-negative-margin{
+	 margin-bottom: -3em;
+}
+
+.anncmnt-upload-file-btn{
+	position: relative; 
+	overflow: hidden; 
+	direction: ltr;
+}
+
+.anncmnt-fileupload-input-field{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	font-family: Arial;
+	font-size: 118px;
+	margin: 0px;
+	padding: 0px;
+	cursor: pointer;
+	opacity: 0;
+	height: 100%;
+}
+
+.qq-upload-list li.qq-upload-success.w3-border {
+    border: 1px solid @file-uploaderColor;
+}
+
+.qq-upload-list li.qq-upload-success.w3-round-xlarge {
+    border-radius: 5px;
+}
+
+.qq-upload-list li.qq-upload-success.qq-upload-success {
+    background-color: @white;
+    padding: 15px;
+}
+
+.anncmnt-upload-file-are {
+	margin-top: -2.5em;
+	padding-bottom: 75px;
+}
+
+.qq-uploader {
+	border: 2px dashed @file-uploaderColor;
+    max-height: 330px;
+    overflow-y: auto;
+    min-height: 300px;
+}
+
+body ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 6px;
+}
+
+.qq-upload-file {
+    width: 200px;
+}
+
+.qq-upload-list {    
+    overflow-y: hidden;      
+}

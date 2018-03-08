@@ -1,4 +1,4 @@
-import { ConfigService, ResourceService } from './services';
+import { ConfigService, ResourceService, FileUploadService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AppLoaderComponent } from './components/app-loader/app-loader.component';
@@ -12,6 +12,6 @@ import { DateFormatPipe } from './pipes/date-format/date-format.pipe';
 
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe],
-  providers: [ResourceService, ConfigService]
+  providers: [ResourceService, ConfigService, FileUploadService]
 })
 export class SharedModule { }

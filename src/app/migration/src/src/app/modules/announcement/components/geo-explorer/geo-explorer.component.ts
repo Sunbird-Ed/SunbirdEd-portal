@@ -27,6 +27,8 @@ export class GeoExplorerComponent implements OnInit {
    */
   @Input() geoConfig: object;
 
+  @Input() populateSelectedItem: any;
+
   /**
    * keyname to validate config
    */
@@ -76,6 +78,7 @@ export class GeoExplorerComponent implements OnInit {
   constructor(user: UserService, geo: GeoExplorerService) {
     this.geo = geo;
     this.user = user;
+    this.selectedItems = [];
   }
 
   /**
@@ -103,10 +106,11 @@ export class GeoExplorerComponent implements OnInit {
    *
    * @param {string[]} locationIds location id list
    */
-  populateItems(locationIds: string[]) {
+  populateItems() {
+    const id = _.map(this.populateSelectedItem, 'id');
     if (this.locationList && this.locationList.length) {
       _.forEach(this.locationList, (item) => {
-        if (locationIds.indexOf(item.id) !== -1) {
+        if (id.indexOf(item.id) !== -1) {
           item.selected = true;
           this.selectedItems.push(item);
         }
@@ -125,6 +129,7 @@ export class GeoExplorerComponent implements OnInit {
       (data: ServerResponse) => {
         if (data.result.response) {
           this.locationList = data.result.response;
+          this.populateItems();
         }
         this.showLoader = false;
       },
@@ -156,6 +161,7 @@ export class GeoExplorerComponent implements OnInit {
    * Angular life cycle hook
    */
   ngOnInit() {
+    this.selectedItems = [];
     this.user.userData$.subscribe(data => {
       if (data && data.userProfile && data.userProfile.rootOrgId) {
         this.rootOrgId = data.userProfile.rootOrgId;
