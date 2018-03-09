@@ -18,7 +18,7 @@ export class HomeAnnouncementComponent implements OnInit {
   /**
    * To make inbox API calls.
    */
-  private announcement: AnnouncementService;
+  private announcementService: AnnouncementService;
   /**
    * To get url, app configs.
    */
@@ -49,10 +49,10 @@ export class HomeAnnouncementComponent implements OnInit {
    * @param {AnnouncementService} announcement Reference of AnnouncementService.
    * @param {ConfigService} config Reference of config service.
    */
-  constructor(resourceService: ResourceService, announcement: AnnouncementService,
-   config: ConfigService) {
+  constructor(resourceService: ResourceService, announcementService: AnnouncementService,
+    config: ConfigService) {
     this.resourceService = resourceService;
-    this.announcement = announcement;
+    this.announcementService = announcementService;
     this.config = config;
   }
   /**
@@ -65,7 +65,7 @@ export class HomeAnnouncementComponent implements OnInit {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    this.announcement.getInboxData(option).subscribe(
+    this.announcementService.getInboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse && apiResponse.result.count > 0) {
@@ -76,10 +76,33 @@ export class HomeAnnouncementComponent implements OnInit {
         this.showLoader = false;
       });
   }
+
+  /**
+   * This method checks whether a announcement's status is true or false.
+   * If false it calls the read API with the particular announcement id
+   * and changes its read status to true
+	 *
+	 * @param {string} announcementId Clicked announcement id
+	 * @param {boolean} read Read status of the clicked announcement id
+	 */
+  readAnnouncement(announcementId: string, read: boolean): void {
+    if (read === false) {
+      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+        (response: ServerResponse) => {
+          _.each(this.announcementlist, (key, index) => {
+            if (announcementId === key.id) {
+              this.announcementlist[index].read = true;
+            }
+          });
+        }
+      );
+    }
+  }
+
   /**
    * This method calls the populateHomeInboxData to show inbox list.
 	 */
   ngOnInit() {
-      this.populateHomeInboxData(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
+    this.populateHomeInboxData(this.config.pageConfig.HOME.PAGE_LIMIT, this.pageNumber);
   }
 }

@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="three wide column" *ngIf="announcementlist && announcementlist.length > 0 && !showLoader">
-      <a class="ui right floated announcementSeeAllLink float-ContentRight" href="/private/index#!/announcement/inbox/list/1">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
+      <a class="ui right floated announcementSeeAllLink float-ContentRight" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
@@ -14,7 +14,12 @@
   </div>
   <div class=" margin-bottom-10" *ngIf="announcementlist && announcementlist.length > 0 && !showLoader">
     <div *ngFor="let announcement of announcementlist">
-      <app-announcement-inbox-card [announcement]="announcement"></app-announcement-inbox-card>
+      <div (click)="readAnnouncement(announcement.id, announcement.read); announcementService.announcementDetailsObject = announcement; announcement.read=true;"
+        [routerLink]="['view/' + announcement.id]">
+        <app-announcement-inbox-card [announcement]="announcement"></app-announcement-inbox-card>
+      </div>
     </div>
   </div>
 </div>
+
+<router-outlet></router-outlet>
