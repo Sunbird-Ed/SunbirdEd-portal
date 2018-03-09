@@ -7,6 +7,7 @@ import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
 import { UserService} from '@sunbird/core';
 import { GeoLocationDetails } from './../../interfaces';
+import { IAnnouncementDetails } from '@sunbird/announcement';
 
 // Rxjs
 import { Observable } from 'rxjs/Observable';
@@ -14,10 +15,29 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 
+interface IAnnouncementAttachment {
+  /**
+   * Contains file name
+   */
+  name: string;
+  /**
+   * File type
+   */
+  type: string;
+  /**
+   * File size
+   */
+  size: string;
+  /**
+   * File uploaded url
+   */
+  link: string;
+}
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit, AfterViewInit {
   /**
@@ -56,11 +76,23 @@ export class CreateComponent implements OnInit, AfterViewInit {
   recipientsList: Array<GeoLocationDetails>;
 
   /**
-   * It contains uploaded file(s) details
+   * Flag to disabled select recipients button
+   *
+   * Enforce user to fill at least one optional field
    */
-  attachments: Array<object>;
+  formErrorFlag = true;
 
   /**
+   * Contains announcement form data
+   */
+  announcementDetails: IAnnouncementDetails;
+
+  /**
+   * It contains uploaded file(s) details
+   */
+  attachments: Array<IAnnouncementAttachment>;
+
+  /*
    * Contains resource service ref
    */
   public resource: ResourceService;
@@ -107,14 +139,14 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
     this.recipientsList = [];
-    this.getAnnouncementTypes();
+    this.attachments = [];
   }
 
   getRootOrgId(): void {
     this.user.userData$.subscribe(
       user => {
-        if (user && user.userProfile && user.userProfile.getRootOrgId) {
-          this.createService._rootOrgId = user.userProfile.getRootOrgId;
+        if (user && user.userProfile && user.userProfile.rootOrgId) {
+          this.createService._rootOrgId = user.userProfile.rootOrgId;
           this.getAnnouncementTypes();
         } else {
         }
@@ -143,7 +175,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   addNewLink(): void {
     const arrayControl = <FormArray>this.announcementForm.controls['links'];
-    arrayControl.push(this.sbFormBuilder.group({ url: '' }));
+    arrayControl.push(this.sbFormBuilder.group({
+      url: ['', Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]
+    }));
   }
 
   removeLink(index: number): void {
@@ -174,16 +208,26 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  enableRecipientsBtn() {
+  previewAnnouncement(): void {
+    const data = this.announcementForm.value;
+    data.type  = data.type.name;
+    data.links = data.links.length ? _.map(data.links, 'url') : [];
+    this.announcementDetails = data;
+    this.announcementDetails.attachments = this.attachments;
+    this.route.navigate(['announcement/create', 4]);
+  }
+
+  enableRecipientsBtn(): boolean {
+    console.log('this.attachments', this.attachments);
     const data = this.announcementForm.value;
     if (data.title && data.from && data.type) {
-      if (data.links.length || data.description || this.attachments.length) {
-        console.log('All required fields are filled');
+      if (data.links.length || data.description || this.attachments && this.attachments.length) {
+        return this.formErrorFlag = false;
       } else {
-        console.log('All required fields are filled');
+        return this.formErrorFlag = true;
       }
     } else {
-      console.log('All required fields are filled');
+      return this.formErrorFlag = true;
     }
   }
 
@@ -216,6 +260,35 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Function gets executed when file gets uploaded
+   */
+  onFileUploadSuccess = (attachmentDetails: IAnnouncementAttachment): void => {
+    this.attachments.push(attachmentDetails);
+    this.enableRecipientsBtn();
+  }
+
+  onFileUploadCancel = (fileDetail): void => {
+    const data = this.attachments.splice(fileDetail.id, 1);
+    if (data.length === 0) {
+      _.forEach(this.attachments, function(value, key) {
+        if (value.name === fileDetail.name) {
+          this.attachments.splice(key, 1);
+        }
+      });
+    }
+
+    this.enableRecipientsBtn();
+  }
+
+  saveAnnouncement() {
+    const data = this.announcementForm.value;
+    data.target = this.recipientsList;
+    data.attachments = this.attachments;
+    console.log('ddddddddddddddd', data);
+    this.createService.saveAnnouncement(data);
+  }
+
   ngAfterViewInit() {
     const options = {
       containerName: 'attachments/announcement',
@@ -227,25 +300,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.fileUpload.initilizeFileUploader(options);
   }
 
-  onFileUploadCancel(id: number, name: string): void {
-    const data = this.attachments.splice(id, 1);
-    if (data.length === 0) {
-      _.forEach(this.attachments, function(value, key) {
-        if (value.name === name) {
-          this.attachments.splice(key, 1);
-        }
-      });
-    }
-
-    this.enableRecipientsBtn();
-  }
-
-  /**
-   * Function gets executed when file gets uploaded
-   */
-  onFileUploadSuccess(fileDetails: any): void {
-    console.log('uploadDetails', fileDetails.size);
-    this.attachments.push(fileDetails);
+  onFormValueChanges(): void {
+    this.announcementForm.valueChanges.subscribe(val => {
+      this.enableRecipientsBtn();
+    });
   }
 
   /**
@@ -265,5 +323,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.validateFormState(params.stepNumber);
       }
     });
+
+    this.getRootOrgId();
+    this.onFormValueChanges();
   }
 }

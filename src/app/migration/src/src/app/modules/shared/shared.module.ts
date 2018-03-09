@@ -7,8 +7,8 @@ import { DateFormatPipe } from './pipes/date-format/date-format.pipe';
 
 @NgModule({
   imports: [
-    CommonModule,
-  ],
+    CommonModule
+],
 
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe],

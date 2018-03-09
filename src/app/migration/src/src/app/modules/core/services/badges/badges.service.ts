@@ -39,6 +39,8 @@ export class BadgesService {
   constructor(config: ConfigService, learner: LearnerService) {
     this.config = config;
     this.learner = learner;
+  }
+  public initialize() {
     this.getBadges();
   }
   /**

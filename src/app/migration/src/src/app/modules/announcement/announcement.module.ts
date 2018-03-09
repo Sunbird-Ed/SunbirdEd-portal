@@ -3,14 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnnouncementRoutingModule } from './announcement-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule, ResourceService, PaginationService, ToasterService} from '@sunbird/shared';
+import { SharedModule, ResourceService, PaginationService, ToasterService, RouterNavigationService} from '@sunbird/shared';
 import { AnnouncementService} from '@sunbird/core';
-import { OutboxComponent, DeleteComponent} from './components/index';
-import { GeoExplorerComponent } from './components/geo-explorer/geo-explorer.component';
-import { GeoExplorerService, CreateService } from './services';
-import { CreateComponent } from './components/create/create.component';
-// import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
+import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
+  DetailsPopupComponent, InboxComponent, CreateComponent } from './components';
+  import { GeoExplorerService, CreateService } from './services';
 
 @NgModule({
   imports: [
@@ -19,7 +17,9 @@ import { CreateComponent } from './components/create/create.component';
     SharedModule, FormsModule,
     SuiModule, ReactiveFormsModule
   ],
-  declarations: [OutboxComponent, DeleteComponent, GeoExplorerComponent, CreateComponent],
-  providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService, CreateService]
+  declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent,
+     CreateComponent],
+  providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService,
+     RouterNavigationService, CreateService]
 })
 export class AnnouncementModule { }

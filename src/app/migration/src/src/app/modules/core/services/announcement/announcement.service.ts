@@ -3,7 +3,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { AnnouncementSericeParam } from './../../../announcement/interfaces/announcement.serivce';
+import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
 
 /**
@@ -18,7 +18,10 @@ import { ConfigService } from '@sunbird/shared';
  * get, post, delete etc methods are written
  */
 export class AnnouncementService extends DataService {
-
+  /**
+   * To set announcement details of specific announcement
+   */
+  announcementDetailsObject: IAnnouncementDetails;
   /**
    * To listen event
    */
@@ -51,9 +54,9 @@ export class AnnouncementService extends DataService {
   * Method to make api call to get inbox data.
   * It calls the post method from data service class
   *
-  * @param {AnnouncementSericeParam} requestParam Request object needed for inbox API call
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for inbox API call
   */
-  getInboxData(requestParam: AnnouncementSericeParam) {
+  getInboxData(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.INBOX_LIST,
       data: {
@@ -70,9 +73,9 @@ export class AnnouncementService extends DataService {
   * Method to make api call to get outbox data
   * It calls the post method from data service class
   *
-  * @param {RequestParam} requestParam Request object needed for outbox API call
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for outbox API call
   */
-  getOutboxData(requestParam: AnnouncementSericeParam) {
+  getOutboxData(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.OUTBOX_LIST,
       data: {
@@ -89,9 +92,9 @@ export class AnnouncementService extends DataService {
   * Method to make received api call
   * It calls the post method from data service class
   *
-  * @param {RequestParam} requestParam Request object needed for received API call
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for received API call
   */
-  receivedAnnouncement(requestParam: AnnouncementSericeParam) {
+  receivedAnnouncement(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.RECEIVED,
       data: {
@@ -108,9 +111,9 @@ export class AnnouncementService extends DataService {
   * Method to make read api call
   * It calls the post method from data service class
   *
-  * @param {RequestParam} requestParam Request object needed for read API call
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for read API call
   */
-  readAnnouncement(requestParam: AnnouncementSericeParam) {
+  readAnnouncement(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.READ,
       data: {
@@ -127,9 +130,9 @@ export class AnnouncementService extends DataService {
   * Method to make delete api call
   * It calls the delete method from data service class
   *
-  * @param {RequestParam} requestParam Request object needed for delete API call
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for delete API call
   */
-  deleteAnnouncement(requestParam: AnnouncementSericeParam) {
+  deleteAnnouncement(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.CANCEL,
       data: {
@@ -142,5 +145,18 @@ export class AnnouncementService extends DataService {
       this.announcementDeleteEvent.emit(requestParam.announcementId);
       return data;
     });
+  }
+
+  /**
+  * Method to get announcement details
+  * It calls the get method from data service class
+  *
+  * @param {IAnnouncementSericeParam} requestParam Request object needed for delete API call
+  */
+ getAnnouncementById(requestParam: IAnnouncementSericeParam) {
+    const option = {
+      url: this.config.urlConFig.URLS.ANNOUNCEMENT.GET_BY_ID + '/' + requestParam.announcementId
+    };
+    return this.get(option);
   }
 }

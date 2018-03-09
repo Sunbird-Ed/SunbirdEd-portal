@@ -1,9 +1,7 @@
-import { ToasterService } from './../toaster/toaster.service';
-// import { element } from 'protractor';
-///// <reference types="fine-uploader" />
 import { Injectable } from '@angular/core';
 import { ConfigService } from './../config/config.service';
 import { FineUploader, UIOptions } from 'fine-uploader';
+import { ToasterService } from './../toaster/toaster.service';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -21,31 +19,23 @@ export class FileUploadService {
   uiOptions: UIOptions;
 
   /**
-   * Contains uploaded file details
-   */
-  fileDetails: any;
-
-  /**
-   * Reference of ConfigService
+   * To get file upload api url
    */
   config: ConfigService;
-
-  fileTypeSize: any;
-
-  defaultOption: any;
-
-  uploadOption: any;
 
   /**
    * To show warning/error/success message
    */
   public tosterService: ToasterService;
 
+  /**
+   * Default method of class FileUploadService
+   *
+   * @param {ConfigService} config Reference of config service
+   * @param {ToasterService} tosterService Reference of toster service
+   */
   constructor(config: ConfigService, tosterService: ToasterService) {
     this.config = config;
-    this.getDefaultOption();
-    this.fileTypeSize = {};
-    this.uploadOption = {};
     this.tosterService = tosterService;
   }
 
@@ -54,8 +44,8 @@ export class FileUploadService {
    *
    * Default config contains http params - url and headers and allowed file extension(s) and size
    */
-  getDefaultOption(): void {
-    this.defaultOption = {
+  getDefaultOption(): object {
+    return {
       request: {
         endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
         inputName: 'file',
@@ -85,30 +75,23 @@ export class FileUploadService {
   /**
    * Initilize fineuploader plugin
    */
-  initilizeFileUploader(option: object) {
-    const fileDetails = {
-      'name': '',
-      'type': '',
-      'size': '',
-      'link': ''
-    };
-
-    this.uploadOption = _.merge({}, this.defaultOption, option);
-    console.log('this.uploadOption', this.uploadOption);
+  initilizeFileUploader(componentOption: object) {
+    const fileDetails = { 'name': '', 'type': '', 'size': '', 'link': '' };
+    const options = _.merge({}, this.getDefaultOption(), componentOption);
     this.uiOptions = {
       element: document.getElementById('fine-uploader-manual-trigger1'),
       template: 'qq-template-manual-trigger',
       autoUpload: true,
       debug: true,
       // stopOnFirstInvalidFile: false,
-      request: this.uploadOption.request,
-      validation: this.uploadOption.fileValidation,
+      request: options.request,
+      validation: options.fileValidation,
       messages: {
-        sizeError: '{file} ' + this.uploadOption.fileSizeErrorText + ' ' +
-          this.uploadOption.sizeLimit / (1000 * 1024) + ' MB.',
+        sizeError: '{file} ' + options.fileSizeErrorText + ' ' +
+          options.sizeLimit / (1000 * 1024) + ' MB.',
         tooManyItemsError: 'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'
       },
-      failedUploadTextDisplay: this.uploadOption.failedUploadTextDisplay,
+      failedUploadTextDisplay: options.failedUploadTextDisplay,
       showMessage: this.showErrorMessage,
       text: { fileInputTitle: 'UPLOAD ATTACHMENT' },
       callbacks: {
@@ -116,7 +99,7 @@ export class FileUploadService {
           if (responseJSON.responseCode === 'OK') {
             fileDetails.link = responseJSON.result.url;
             fileDetails.size = this.formatFileSize(+fileDetails.size);
-            this.uploadOption.uploadSuccess(fileDetails);
+            options.uploadSuccess(fileDetails);
           }
         },
         onSubmitted: function (id, name) {
@@ -125,8 +108,8 @@ export class FileUploadService {
           fileDetails.type = this.getFile(id).type;
           fileDetails.size = this.getSize(id);
         },
-        onCancel: this.uploadOption.onCancel
-      }
+        onCancel: options.onCancel
+      },
     };
     setTimeout(() => {
       this.uploader = new FineUploader(this.uiOptions);
@@ -141,23 +124,23 @@ export class FileUploadService {
    */
   formatFileSize(bytes: number = 0, precision: number = 2): string {
     const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
-    if ( isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) {
+    if (isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) {
       return '?';
     }
 
     let counter = 0;
-    while ( bytes >= 1024 ) {
+    while (bytes >= 1024) {
       bytes /= 1024;
-      counter ++;
+      counter++;
     }
 
-    return bytes.toFixed( + precision ) + ' ' + units[ counter ];
+    return bytes.toFixed(+ precision) + ' ' + units[counter];
   }
 
   /**
-   * To show file upload validation error message
+   * To show validation error message(s)
    */
-  showErrorMessage(message: string): void {
+  showErrorMessage = (message: string): void => {
     this.tosterService.warning(message);
   }
 }

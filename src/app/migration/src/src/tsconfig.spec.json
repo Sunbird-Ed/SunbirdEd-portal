@@ -13,6 +13,9 @@
       "@sunbird/shared": [
         "app/modules/shared"
       ],
+      "@sunbird/home": [
+        "app/modules/home"
+        ],
       "@sunbird/dashboard": [
         "app/modules/dashboard"
       ],

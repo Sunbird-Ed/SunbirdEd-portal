@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse,  } from '@sunbird/shared';
+import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { UserService, AnnouncementService } from '@sunbird/core';
 import { HttpClient } from '@angular/common/http';
@@ -24,17 +24,13 @@ export class CreateService {
   public _announcementTypes: object;
 
   /**
-   * Contains announcement api's base url
-   */
-  baseUrl: string;
-
-  /**
    * Default method of class CreateService
    *
    * @param user
+   * @param {UserService} user Reference of user service
    * @param {ConfigService} config Contains config service reference. It's used to get api's url
    */
-  constructor(private user: UserService, private config: ConfigService, private http: HttpClient,
+  constructor(private user: UserService, private config: ConfigService,
     private announcementService: AnnouncementService) {
   }
 
@@ -55,22 +51,43 @@ export class CreateService {
     };
 
     return this.announcementService.post(option)
-    .map((data: ServerResponse) => {
-      if (data.result.announcementTypes) {
-        this._announcementTypes = data.result.announcementTypes;
-      }
-      return data;
-    })
-    .catch((err: ServerResponse) => {
-      const data = [{
-        'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
-        'name': 'Circular'
-      }];
-      return Observable.throw(data);
-    });
+      .map((data: ServerResponse) => {
+        if (data.result.announcementTypes) {
+          this._announcementTypes = data.result.announcementTypes;
+        }
+        return data;
+      })
+      .catch((err: ServerResponse) => {
+        // TODO: remove this before pushing
+        const data = [{
+          'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
+          'name': 'Circular'
+        }];
+        return Observable.throw(data);
+      });
   }
 
-  formatFileSize(bytes) {
-    // const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 2);
+  saveAnnouncement(formData) {
+    const option = {
+      url: this.config.urlConFig.URLS.ANNOUNCEMENT.CREATE,
+      data: {
+        request: {
+          title: formData.title,
+          from: formData.from,
+          type: formData.type,
+          description: formData.description,
+          links: formData.links,
+          sourceId: formData.sourceId,
+          attachments: formData.attachments,
+          target: {
+            geo: {
+              id: _.map(formData.target, 'id')
+            }
+          }
+        }
+      }
+    };
+
+    this.announcementService.post(option);
   }
 }

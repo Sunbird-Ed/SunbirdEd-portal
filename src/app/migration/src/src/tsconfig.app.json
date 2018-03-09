@@ -13,6 +13,9 @@
       "@sunbird/shared": [
         "app/modules/shared"
       ],
+      "@sunbird/home": [
+        "app/modules/home"
+      ],
       "@sunbird/dashboard": [
         "app/modules/dashboard"
       ],
@@ -25,6 +28,7 @@
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.spec.data.ts"
   ]
 }

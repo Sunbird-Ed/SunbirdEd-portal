@@ -27,6 +27,11 @@
               <br/>
               <span class="createAnnHeaderDesc">{{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}</span>
             </span>
+            <span *ngIf="stepNumber == 4">
+              <span class="text announcementHeadingSection">{{resource?.frmelmnts?.lbl?.previewanncmnt}}</span>
+              <br/>
+              <span class="createAnnHeaderDesc">{{resource?.frmelmnts?.lbl?.previewanncmntdesc}}</span>
+            </span>
           </span>
         </div>
         <div class="two wide column">
@@ -45,10 +50,10 @@
             <div class="field createAnnFormScroller">
               <div class="padding-right-25">
                 <div class="field required padding-top-5">
-                  {{announcementForm.controls['title'].error}}
                   <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
                   <input class="form-control" formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
-                  <p *ngIf="announcementForm.controls['title'].error" class="createAnnErrorMsg">Title is too long</p>
+                  <section *ngIf="announcementForm.value.title.length" class="float-ContentRight">{{announcementForm.value.title.length}} / 100</section>
+                  <p *ngIf="announcementForm.controls['title'].errors && !announcementForm.controls['title'].pristine" class="createAnnErrorMsg">Title is too long</p>
                 </div>
                 <div class="field required dropdown-margin-left">
                   <label>{{resource?.frmelmnts?.lbl?.anncmntfrom}}</label>
@@ -179,6 +184,12 @@
             </div>
           </div>
         </div>
+        <!-- Preview announcement -->
+        <div *ngIf="stepNumber == 4" class="ui grid margin-right-none">
+          <div class="box width-100 eight wide column createAnnFormScroller">
+            <app-details [announcementDetails]="announcementDetails"></app-details>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -188,8 +199,10 @@
       <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
     <div class="ui primary button" *ngIf="stepNumber == 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" *ngIf="stepNumber == 3">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
-    <div class="ui primary button" *ngIf="stepNumber == 4">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</div>
-    <div *ngIf="stepNumber == 1" id="selectRecipientBtn" class="ui primary button" (click)="selectRecipients();">{{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}</div>
+    <div class="ui primary button" *ngIf="stepNumber == 3" (click)="previewAnnouncement();">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
+    <div class="ui primary button" *ngIf="stepNumber == 4" (click)="saveAnnouncement();">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</div>
+    <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber == 1" class="ui primary button" (click)="selectRecipients();">
+        {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
+    </button>
   </div>
 </sui-modal>

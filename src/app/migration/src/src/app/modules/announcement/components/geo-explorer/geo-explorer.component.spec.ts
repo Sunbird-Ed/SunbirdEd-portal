@@ -1,6 +1,6 @@
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule} from '@sunbird/shared';
+import { SharedModule, ToasterService } from '@sunbird/shared';
 
 // NG core testing module
 import { HttpClientModule } from '@angular/common/http';
@@ -16,6 +16,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 // Test data
 import * as mockData from './geo-explorer.component.spec.data';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 const testData = <any>mockData.mockRes;
 
 describe('GeoExplorerComponent', () => {
@@ -25,8 +26,8 @@ describe('GeoExplorerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GeoExplorerComponent ],
-      providers: [GeoExplorerService, LearnerService, UserService],
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule]
+      providers: [ToasterService , GeoExplorerService, LearnerService, UserService],
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, Ng2IziToastModule]
     })
     .compileComponents();
   }));

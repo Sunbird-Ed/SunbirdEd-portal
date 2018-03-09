@@ -26,6 +26,8 @@
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/izitoast/dist/js/iziToast.min.js",
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/slick-carousel/slick/slick.js",
         "../node_modules/fine-uploader/fine-uploader/fine-uploader.min.js"
       ],
       "environmentSource": "environments/environment.ts",
