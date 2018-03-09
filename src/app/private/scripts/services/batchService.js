@@ -164,7 +164,8 @@ angular.module('playerApp')
           request.filters['rootOrgId'] = profile.rootOrgId
         } else {
           try {
-            var orgIds = _.remove(permissionsService.getRoleOrgMap()['COURSE_MENTOR'], function (id) {
+            var orgIds = permissionsService.getRoleOrgMap()['COURSE_MENTOR']
+            _.remove(orgIds, function (id) {
               return id === profile.rootOrgId
             })
           } catch (error) {
