@@ -1,4 +1,5 @@
-<sui-modal [isClosable]="true" [size]="'large'" #modal>
+<!-- <sui-modal [isClosable]="true" [size]="'large'" #modal> -->
+<ng-template let-context let-modal="modal" #announcementFormModalTemplate>
   <div class=" ui segment margin-top-10">
     <div class="margin-bottom-15">
       <div class="ui grid">
@@ -205,4 +206,5 @@
         {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
   </div>
-</sui-modal>
+<!-- </sui-modal> -->
+</ng-template>
