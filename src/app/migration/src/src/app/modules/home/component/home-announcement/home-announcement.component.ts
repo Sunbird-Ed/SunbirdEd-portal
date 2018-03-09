@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, Announcement, ServerResponse } from '@sunbird/shared';
+import * as _ from 'lodash';
+
 /**
  * This component displays announcement inbox card on the home page.
  */
