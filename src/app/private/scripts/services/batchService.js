@@ -163,7 +163,14 @@ angular.module('playerApp')
         if (isCourseMentor && isCourseMentor.includes(profile.rootOrgId)) {
           request.filters['rootOrgId'] = profile.rootOrgId
         } else {
-          request.filters['organisations.organisationId'] = $rootScope.organisationIds
+          try {
+            var orgIds = _.remove(permissionsService.getRoleOrgMap()['COURSE_MENTOR'], function (id) {
+              return id === profile.rootOrgId
+            })
+          } catch (error) {
+            console.error(error)
+          }
+          request.filters['organisations.organisationId'] = orgIds
         }
         return {
           request: request
