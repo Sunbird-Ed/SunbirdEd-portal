@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, Announcement, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementListData } from '@sunbird/announcement';
 
@@ -73,6 +73,14 @@ export class HomeAnnouncementComponent implements OnInit {
         this.showLoader = false;
         if (apiResponse && apiResponse.result.count > 0) {
           this.announcementlist = apiResponse.result;
+          // Calling received API
+          _.each(this.announcementlist.announcements, (key) => {
+            if (key.received === false) {
+              this.announcementService.receivedAnnouncement({ announcementId: key.id }).subscribe(
+                (response: ServerResponse) => { }
+              );
+            }
+          });
         }
       },
       err => {
