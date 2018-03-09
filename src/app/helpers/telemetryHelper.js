@@ -276,7 +276,7 @@ module.exports = {
     if (req.body && req.body.event) {
       req.session['sessionEvents'] = req.session['sessionEvents'] || []
       req.session['sessionEvents'].push(JSON.parse(req.body.event))
-      if (req.session['sessionEvents'].length >= telemetryPacketSize) {
+      if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
           req.session['sessionEvents'] = err ? req.session['sessionEvents'] : []
           req.session.save()
