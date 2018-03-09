@@ -287,10 +287,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.createService.saveAnnouncement(data).
       subscribe(
         (res: ServerResponse) => {
-          alert('success');
+          this.iziToast.success('Announcement created successfully');
         },
         (err: ServerResponse) => {
-          alert('error');
         }
       );
   }
