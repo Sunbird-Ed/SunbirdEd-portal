@@ -119,6 +119,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   showSuccess = false;
 
+  suiModalHandler: any;
+
   /*
    * Contains resource service ref
    */
@@ -181,8 +183,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.modalService = modalService;
     this.recipientsList = [];
     this.attachments = [];
-    this.params = {
-      successModal: false
+    this.suiModalHandler = {
+      showCancelModal: false
     };
   }
 
@@ -198,7 +200,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
       .open(config)
       .onApprove(result => { })
       .onDeny(result => {
-        this.route.navigate(['announcement/outbox', 1]);
+        if (this.isMetaModified) {
+          this.suiModalHandler.showCancelModal = true;
+        } else {
+          this.route.navigate(['announcement/outbox', 1]);
+        }
       });
   }
 
