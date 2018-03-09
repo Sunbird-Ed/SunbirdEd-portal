@@ -3,6 +3,7 @@ import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, Announcement, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { IAnnouncementListData } from '@sunbird/announcement';
 
 /**
  * This component displays announcement inbox card on the home page.
@@ -16,7 +17,7 @@ export class HomeAnnouncementComponent implements OnInit {
   /**
    * To call resource service which helps to use language constant.
    */
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
   /**
    * To make inbox API calls.
    */
@@ -28,7 +29,7 @@ export class HomeAnnouncementComponent implements OnInit {
   /**
    * Contains result object returned from get Inbox API.
    */
-  announcementlist: Announcement;
+  announcementlist: IAnnouncementListData;
   /**
   * Contains page limit of home inbox list.
   */
@@ -71,7 +72,7 @@ export class HomeAnnouncementComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse && apiResponse.result.count > 0) {
-          this.announcementlist = apiResponse.result.announcements;
+          this.announcementlist = apiResponse.result;
         }
       },
       err => {
@@ -91,9 +92,9 @@ export class HomeAnnouncementComponent implements OnInit {
     if (read === false) {
       this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
         (response: ServerResponse) => {
-          _.each(this.announcementlist, (key, index) => {
+          _.each(this.announcementlist.announcements, (key, index) => {
             if (announcementId === key.id) {
-              this.announcementlist[index].read = true;
+              this.announcementlist.announcements[index].read = true;
             }
           });
         }

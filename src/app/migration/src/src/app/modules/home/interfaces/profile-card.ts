@@ -10,6 +10,6 @@ export interface ProfileCard {
     /**
     * profile pic
     */
-    avatar?: string;
+    image?: string;
 
 }

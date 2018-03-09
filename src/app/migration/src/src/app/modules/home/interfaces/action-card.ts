@@ -23,6 +23,7 @@ export interface ActionCard {
     * course image
     */
     courseLogoUrl?: string;
+    appIcon?: string;
     /**
     * course id
     */
