@@ -100,7 +100,7 @@ angular.module('playerApp')
         requestBody.mimeType = textbook.mimeType
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
-        requestBody.frameworkId = textbook.frameworkId
+        requestBody.framework = textbook.frameworkId
         if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
           delete requestBody['gradeLevel']
         }
