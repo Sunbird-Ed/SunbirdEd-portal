@@ -2,15 +2,15 @@ import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { UserService, AnnouncementService } from '@sunbird/core';
 import { HttpClient } from '@angular/common/http';
-
 // Rxjs
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import * as _ from 'lodash';
 
 @Injectable()
-export class CreateService {
 
+export class CreateService {
   /**
    * It holds logged-in user root org id
    *
@@ -24,14 +24,31 @@ export class CreateService {
   public _announcementTypes: object;
 
   /**
+   * To get logged-in user profile data
+   */
+  public user: UserService;
+
+  /**
+   * To get file upload api url
+   */
+  public config: ConfigService;
+
+  /**
+   * Announcement common service to make http call
+   */
+  public announcementService: AnnouncementService;
+
+  /**
    * Default method of class CreateService
    *
    * @param user
    * @param {UserService} user Reference of user service
    * @param {ConfigService} config Contains config service reference. It's used to get api's url
    */
-  constructor(private user: UserService, private config: ConfigService,
-    private announcementService: AnnouncementService) {
+  constructor(user: UserService, config: ConfigService, announcementService: AnnouncementService) {
+    this.user = user;
+    this.config = config;
+    this.announcementService = announcementService;
   }
 
   /**
@@ -39,7 +56,7 @@ export class CreateService {
    *
    * Announcement type is required field to create new announcement
    */
-  getAnnouncementTypes() {
+  getAnnouncementTypes(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.DEFINITIONS,
       data: {
@@ -67,7 +84,12 @@ export class CreateService {
       });
   }
 
-  saveAnnouncement(formData) {
+  /**
+   * To save announcement data by making http call
+   *
+   * @param formData user entered data
+   */
+  saveAnnouncement(formData): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.CREATE,
       data: {
@@ -77,17 +99,17 @@ export class CreateService {
           type: formData.type,
           description: formData.description,
           links: formData.links,
-          sourceId: formData.sourceId,
+          sourceId: this._rootOrgId,
           attachments: formData.attachments,
           target: {
             geo: {
-              id: _.map(formData.target, 'id')
+              ids: _.map(formData.target, 'id')
             }
           }
         }
       }
     };
 
-    this.announcementService.post(option);
+    return this.announcementService.post(option);
   }
 }

@@ -160,6 +160,13 @@ export class OutboxComponent implements OnInit {
   }
 
   /**
+   * Redirect to the announcement create page
+   */
+  createAnnouncement() {
+    this.route.navigate(['announcement/create', 1]);
+  }
+
+  /**
    * This method calls the populateOutboxData to show outbox list.
    * It also changes the status of a deleted announcement to cancelled.
 	 *

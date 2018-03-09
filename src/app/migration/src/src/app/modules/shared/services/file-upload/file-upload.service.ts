@@ -76,7 +76,7 @@ export class FileUploadService {
    * Initilize fineuploader plugin
    */
   initilizeFileUploader(componentOption: object) {
-    const fileDetails = { 'name': '', 'type': '', 'size': '', 'link': '' };
+    const fileDetails = { 'name': '', 'mimetype': '', 'size': '', 'link': '' };
     const options = _.merge({}, this.getDefaultOption(), componentOption);
     this.uiOptions = {
       element: document.getElementById('fine-uploader-manual-trigger1'),
@@ -105,7 +105,7 @@ export class FileUploadService {
         onSubmitted: function (id, name) {
           this.setParams({ 'filename': name, 'container': 'attachments/announcement' });
           fileDetails.name = name;
-          fileDetails.type = this.getFile(id).type;
+          fileDetails.mimetype = this.getFile(id).type;
           fileDetails.size = this.getSize(id);
         },
         onCancel: options.onCancel
@@ -113,7 +113,7 @@ export class FileUploadService {
     };
     setTimeout(() => {
       this.uploader = new FineUploader(this.uiOptions);
-    }, 700);
+    }, 100);
   }
 
   /**

@@ -5,7 +5,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
-import { UserService} from '@sunbird/core';
+import { UserService } from '@sunbird/core';
 import { GeoLocationDetails } from './../../interfaces';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 
@@ -21,9 +21,9 @@ interface IAnnouncementAttachment {
    */
   name: string;
   /**
-   * File type
+   * File mime type
    */
-  type: string;
+  mimetype: string;
   /**
    * File size
    */
@@ -130,7 +130,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, private user: UserService) {
-      this.stepNumber = 1;
+    this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -166,10 +166,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
             this.announcementTypes = data.result.announcementTypes;
           }
         },
-        (err: ServerResponse) => {
-          this.announcementTypes = err;
-        }
-      );
+          (err: ServerResponse) => {
+            this.announcementTypes = err;
+          }
+        );
     }
   }
 
@@ -210,7 +210,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   previewAnnouncement(): void {
     const data = this.announcementForm.value;
-    data.type  = data.type.name;
+    data.type = data.type.name;
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
     this.announcementDetails.attachments = this.attachments;
@@ -218,7 +218,6 @@ export class CreateComponent implements OnInit, AfterViewInit {
   }
 
   enableRecipientsBtn(): boolean {
-    console.log('this.attachments', this.attachments);
     const data = this.announcementForm.value;
     if (data.title && data.from && data.type) {
       if (data.links.length || data.description || this.attachments && this.attachments.length) {
@@ -271,7 +270,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   onFileUploadCancel = (fileDetail): void => {
     const data = this.attachments.splice(fileDetail.id, 1);
     if (data.length === 0) {
-      _.forEach(this.attachments, function(value, key) {
+      _.forEach(this.attachments, function (value, key) {
         if (value.name === fileDetail.name) {
           this.attachments.splice(key, 1);
         }
@@ -285,8 +284,15 @@ export class CreateComponent implements OnInit, AfterViewInit {
     const data = this.announcementForm.value;
     data.target = this.recipientsList;
     data.attachments = this.attachments;
-    console.log('ddddddddddddddd', data);
-    this.createService.saveAnnouncement(data);
+    this.createService.saveAnnouncement(data).
+      subscribe(
+        (res: ServerResponse) => {
+          alert('success');
+        },
+        (err: ServerResponse) => {
+          alert('error');
+        }
+      );
   }
 
   ngAfterViewInit() {
@@ -311,7 +317,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   ngOnInit(): void {
     this.announcementForm = this.sbFormBuilder.group({
-      title: ['', Validators.maxLength(100) ],
+      title: ['', Validators.maxLength(100)],
       from: ['', null],
       type: ['', null],
       description: ['', Validators.maxLength(1200)],
