@@ -114,6 +114,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   isMetaModified = false;
 
+  /**
+   * To show announcement success modal
+   */
+  showSuccess = false;
+
   /*
    * Contains resource service ref
    */
@@ -176,6 +181,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.modalService = modalService;
     this.recipientsList = [];
     this.attachments = [];
+    this.params = {
+      successModal: false
+    };
   }
 
   /**
@@ -343,9 +351,13 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   validateFormState(): void {
     const data = this.announcementForm.value;
-    if (!data.title || !data.from || !data.type) {
-      this.route.navigate(['announcement/create', 1]);
-    } else if (!data.links.length || !data.description || this.attachments && !this.attachments.length) {
+    if (data.title && data.from && data.type) {
+      if (data.links.length || data.description || this.attachments && this.attachments.length) {
+        console.log('All good. Load next step');
+      } else {
+        this.route.navigate(['announcement/create', 1]);
+      }
+    } else {
       this.route.navigate(['announcement/create', 1]);
     }
   }
@@ -379,6 +391,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
       subscribe(
         (res: ServerResponse) => {
           this.iziToast.success('Announcement created successfully');
+          this.showSuccess = true;
+          this.route.navigate(['announcement/outbox', 1]);
         },
         (err: ServerResponse) => {
         }
@@ -393,7 +407,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       uploadSuccess: this.onFileUploadSuccess
     };
 
-    this.fileUpload.initilizeFileUploader(options);
+    // this.fileUpload.initilizeFileUploader(options);
   }
 
   /**

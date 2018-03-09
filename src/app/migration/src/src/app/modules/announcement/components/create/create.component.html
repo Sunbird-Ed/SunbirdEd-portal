@@ -195,16 +195,43 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" 
-      id="annBackBtn" (click)="previousStep();" [ngStyle]="{'display': stepNumber == 1 ? 'none' : 'block' }">
+    <button class="ui primary basic button announcementButton createAnnBackBtnWidth float-ContentLeft" id="annBackBtn" (click)="previousStep();"
+      [ngStyle]="{'display': stepNumber == 1 ? 'none' : 'block' }">
       <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
     <div class="ui primary button" *ngIf="stepNumber == 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" *ngIf="stepNumber == 3" (click)="previewAnnouncement();">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
     <div class="ui primary button" *ngIf="stepNumber == 4" (click)="saveAnnouncement();">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</div>
-    <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber == 1" class="ui primary button" (click)="selectRecipients();">
-        {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
+    <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber == 1" class="ui primary button"
+      (click)="selectRecipients();">
+      {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
   </div>
-<!-- </sui-modal> -->
+  <!-- </sui-modal> -->
 </ng-template>
+<sui-modal *ngIf="showSuccess" [isClosable]="true" #modal>
+  <i class="close icon"></i>
+  <div class=" ui segment margin-top-10">
+    <div class="content">
+      <div class="ui grid">
+        <div class="ui centered grid">
+          <div class="row">
+            <i class="checkmark icon big circular createAnnGrayShade"></i>
+          </div>
+          <div class="row">
+            <span class="dashBoardSectionHeading">{{resource?.frmelmnts?.lbl?.anncmntsentsuccess}}</span>
+          </div>
+          <div class="">
+            <span class="createAnnGrayShade line-height-20">{{resource?.frmelmnts?.lbl?.anncmntsentdesc}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row ui two column centered grid margin-top-20 actions">
+          <button class="ui primary basic button announcementButton btn-width-34 approve" ng-click="$root.generateInteractEvent('announcement','','announcement','1.0','announcement-gotit','announcement-create')">
+            <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.anncmntgotit}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sui-modal>
