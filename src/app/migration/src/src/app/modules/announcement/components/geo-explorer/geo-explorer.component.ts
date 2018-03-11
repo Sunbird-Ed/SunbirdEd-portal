@@ -126,21 +126,27 @@ export class GeoExplorerComponent implements OnInit {
    * It will make api call to get location(s)
    */
   initializeServiceAdopter() {
-    const params = { rootOrgId: this.rootOrgId };
-    // Make api call to get location(s)
-    this.geo.getLocations(params).subscribe(
-      (data: ServerResponse) => {
-        if (data.result.response) {
-          this.locationList = data.result.response;
-          this.populateItems();
+    if (this.geo._locationList) {
+      this.locationList = this.geo._locationList;
+      this.populateItems();
+      this.showLoader = false;
+    } else {
+      const params = { rootOrgId: this.rootOrgId };
+      // Make api call to get location(s)
+      this.geo.getLocations(params).subscribe(
+        (data: ServerResponse) => {
+          if (data.result.response) {
+            this.locationList = data.result.response;
+            this.populateItems();
+          }
+          this.showLoader = false;
+        },
+        (error: ServerResponse) => {
+          this.showLoader = false;
+          this.showError = true;
         }
-        this.showLoader = false;
-      },
-      error => {
-        this.showLoader = false;
-        this.showError = true;
-      }
-    );
+      );
+    }
   }
 
   /**

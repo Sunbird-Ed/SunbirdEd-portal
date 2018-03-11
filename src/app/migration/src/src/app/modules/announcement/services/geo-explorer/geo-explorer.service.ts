@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 // Interface
-import { GeoHttpParam } from './../../interfaces';
+import { GeoHttpParam, GeoLocationDetails } from './../../interfaces';
 // Rxjs
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -19,6 +19,10 @@ import 'rxjs/add/observable/throw';
  */
 export class GeoExplorerService {
 
+  /**
+   * Contains geo data
+   */
+  public _locationList: Array<GeoLocationDetails>;
   /**
    * Contains config service reference
    */
@@ -50,6 +54,12 @@ export class GeoExplorerService {
       url: this.config.urlConFig.URLS.GEO_EXPLORER.LOCATION_READ + param.rootOrgId + '?type=organisation'
     };
 
-    return this.learner.get(option);
+    return this.learner.get(option)
+      .map((data: ServerResponse) => {
+        if (data.result.response) {
+          this._locationList = data.result.response;
+        }
+        return data;
+      });
   }
 }
