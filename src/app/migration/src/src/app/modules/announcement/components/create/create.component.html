@@ -64,8 +64,7 @@
                   <!-- Type -->
                   <div class="field required dropdown-margin-left">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttype}}</label>
-                    <sui-select class="selection" formControlName="type" [options]="options" labelField="name" [placeholder]="'Select announcement type'"
-                      [optionTemplate]="optionTemplate">
+                    <sui-select class="selection" formControlName="type" labelField="name" [placeholder]="'Select announcement type'">
                       <sui-select-option *ngFor="let type of announcementTypes" [value]="type"></sui-select-option>
                     </sui-select>
                   </div>
@@ -80,7 +79,7 @@
                   <div class="field form-group dropdown-margin-left">
                     <label>{{resource?.frmelmnts?.lbl?.anncmntlink}}</label>
                     <div formArrayName="links">
-                      <div class="field" *ngFor="let item of announcementForm.get('links').controls; let i = index;">
+                      <div class="field" *ngFor="let item of announcementForm.get('links')['controls']; let i = index;">
                         <div [formGroupName]="i" class="ui action input">
                           <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
                           <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
@@ -89,13 +88,13 @@
                     </div>
                   </div>
                   <div class="field">
-                    <span (click)="addNewLink()">
+                    <span (click)="addNewLink('')">
                       <i class="plus icon createAnnBlueClass cursor-pointer"></i>
-                      <span *ngIf="announcementForm.get('links').controls.length === 0">
+                      <span *ngIf="announcementForm.get('links')['controls'].length === 0">
                         <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddlink}}</span>
                         <span>{{resource?.frmelmnts?.lbl?.anncmntaddlinkdesc}}</span>
                       </span>
-                      <span *ngIf="announcementForm.get('links').controls.length > 0">
+                      <span *ngIf="announcementForm.get('links')['controls'].length > 0">
                         <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
                       </span>
                     </span>
