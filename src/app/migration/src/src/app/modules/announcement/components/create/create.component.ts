@@ -2,7 +2,7 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
@@ -22,7 +22,7 @@ import * as _ from 'lodash';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateComponent implements OnInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -403,6 +403,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
         this.enableRecipientsBtn();
         this.showLoader = false;
         this.isMetaModified = true;
+        this.onFormValueChanges();
       },
       (error: ServerResponse) => {
         this.showLoader = false;
@@ -411,9 +412,9 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * To initilize file uploader plugin 
+   * To initilize file uploader plugin
    */
-  ngAfterViewInit() {
+  initilizeFileUploader() {
     const options = {
       containerName: 'attachments/announcement',
       fileSizeErrorText: 'this.resource.messages.emsg.m0007',
@@ -422,7 +423,9 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     setTimeout(() => this.fileUpload.initilizeFileUploader(options), 500);
-    this.onFormValueChanges();
+    if (!this.identifier) {
+      this.onFormValueChanges();
+    }
   }
 
   /**
@@ -447,6 +450,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRootOrgId();
     this.recipientsList = [];
     this.attachments = [];
+    this.initilizeFileUploader();
   }
 
   ngOnDestroy() {
