@@ -19,6 +19,9 @@ const routes: Routes = [
   },
   {
     path: 'announcement/create/:stepNumber', component: CreateComponent
+  },
+  {
+    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent
   }
 ];
 

@@ -1,49 +1,28 @@
 /// <reference types="fine-uploader" />
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
 import { UserService } from '@sunbird/core';
 import { GeoLocationDetails } from './../../interfaces';
-import { IAnnouncementDetails } from '@sunbird/announcement';
-import { SuiModalService, TemplateModalConfig, ModalTemplate, ModalSize } from 'ng2-semantic-ui';
-interface IContext {
-  data: string;
-}
-
-// Rxjs
+import { IAnnouncementDetails, IAttachementType } from '@sunbird/announcement';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 
-interface IAnnouncementAttachment {
-  /**
-   * Contains file name
-   */
-  name: string;
-  /**
-   * File mime type
-   */
-  mimetype: string;
-  /**
-   * File size
-   */
-  size: string;
-  /**
-   * File uploaded url
-   */
-  link: string;
-}
-
+/**
+ * The announcement create component
+ */
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit, AfterViewInit {
+export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -51,16 +30,6 @@ export class CreateComponent implements OnInit, AfterViewInit {
    * Geo component is responsible to render location list
    */
   @ViewChild(GeoExplorerComponent) geoExplorer: GeoExplorerComponent;
-
-  /**
-   * Get semantic ui modal template
-   */
-  @ViewChild('announcementFormModalTemplate')
-
-  /**
-   * Contains template reference of semantic ui modal
-   */
-  public modalTemplate: ModalTemplate<IContext, string, string>;
 
   /**
    * Announcement creation form name
@@ -75,7 +44,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   /**
    * Contains wizard number
    */
-  stepNumber: 1;
+  stepNumber: number;
 
   /**
    * Contains announcement identifier
@@ -107,7 +76,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   /**
    * It contains uploaded file(s) details
    */
-  attachments: Array<IAnnouncementAttachment>;
+  attachments: Array<IAttachementType>;
 
   /**
    * Flag to check user has entered / modified meta data
@@ -115,11 +84,14 @@ export class CreateComponent implements OnInit, AfterViewInit {
   isMetaModified = false;
 
   /**
-   * To show announcement success modal
+   * To show / hide modal
    */
-  showSuccess = false;
+  modalName = 'create';
 
-  suiModalHandler: any;
+  /**
+   * Loader
+   */
+  showLoader = false;
 
   /*
    * Contains resource service ref
@@ -157,20 +129,13 @@ export class CreateComponent implements OnInit, AfterViewInit {
   public user: UserService;
 
   /**
-   * Reference of semantic UI modal service
-   * It helps to configure modal popup
-   */
-  public modalService: SuiModalService;
-
-  /**
    * Default method of classs CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
-    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    modalService: SuiModalService) {
+    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService, private location: Location) {
     this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
@@ -180,38 +145,12 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
     this.user = user;
-    this.modalService = modalService;
-    this.recipientsList = [];
-    this.attachments = [];
-    this.suiModalHandler = {
-      showCancelModal: false
-    };
   }
 
   /**
-   * Funtion to configure modal settings like modal size, isClosable and callback function
-   */
-  public configureSuiModal() {
-    const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
-    config.closeResult = 'closed!';
-    config.size = 'large';
-    config.isClosable = true;
-    this.modalService
-      .open(config)
-      .onApprove(result => { })
-      .onDeny(result => {
-        if (this.isMetaModified) {
-          this.suiModalHandler.showCancelModal = true;
-        } else {
-          this.route.navigate(['announcement/outbox', 1]);
-        }
-      });
-  }
-
-  /**
-   * Function to get logged-in user root org id
+   * Get logged-in user root org id
    *
-   * Root org id is needed to get and create announcement types
+   * Root org id is needed to get announcement type(s) by making definition api call
    */
   getRootOrgId(): void {
     this.user.userData$.subscribe(
@@ -237,16 +176,16 @@ export class CreateComponent implements OnInit, AfterViewInit {
     if (this.createService._announcementTypes) {
       this.announcementTypes = this.createService._announcementTypes;
     } else {
-      this.createService.getAnnouncementTypes().
-        subscribe((data: ServerResponse) => {
+      this.createService.getAnnouncementTypes().subscribe(
+        (data: ServerResponse) => {
           if (data.result.announcementTypes) {
             this.announcementTypes = data.result.announcementTypes;
           }
         },
-          (err: ServerResponse) => {
-            this.announcementTypes = err;
-          }
-        );
+        (err: ServerResponse) => {
+          this.iziToast.error(this.resource.messages.imsg.m0020);
+        }
+      );
     }
   }
 
@@ -255,10 +194,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
    *
    * Helps user to add more than one web url
    */
-  addNewLink(): void {
+  addNewLink(data: string | ''): void {
     const arrayControl = <FormArray>this.announcementForm.controls['links'];
     arrayControl.push(this.sbFormBuilder.group({
-      url: ['', Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]
+      url: [data, Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]
     }));
   }
 
@@ -272,15 +211,24 @@ export class CreateComponent implements OnInit, AfterViewInit {
     links.removeAt(index);
   }
 
+  getNextStep(step) {
+    if (this.identifier) {
+      this.route.navigate(['announcement/resend', this.identifier, +step]);
+    } else {
+      this.route.navigate(['announcement/create', +step]);
+    }
+  }
+
   /**
    * Executed when user click on confirm recipients button
    *
    * It enforce user to select at least one location
    */
   confirmRecipients(): void {
+    console.log('this.geoExplorer.selectedItems', this.geoExplorer.selectedItems);
     this.recipientsList = this.geoExplorer.selectedItems;
     if (this.recipientsList && this.recipientsList.length) {
-      this.route.navigate(['announcement/create', 3]);
+      this.getNextStep(3);
     } else {
       this.iziToast.warning(this.resource.messages.emsg.m0006);
     }
@@ -289,7 +237,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   /**
    * Executed when user click remove icon on confirm recipients page
    *
-   * @param {GeoLocationDetails} item contains selected location details
+   * @param {GeoLocationDetails} item selected location details
    */
   removeRecipient(item: GeoLocationDetails): void {
     _.remove(this.recipientsList, (recipient) => {
@@ -301,7 +249,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
     });
 
     if (this.recipientsList.length === 0) {
-      this.route.navigate(['announcement/create', 2]);
+      this.getNextStep(2);
     }
   }
 
@@ -316,14 +264,17 @@ export class CreateComponent implements OnInit, AfterViewInit {
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
     this.announcementDetails.attachments = this.attachments;
-    this.route.navigate(['announcement/create', 4]);
+    this.getNextStep(4);
   }
 
   /**
-   * Executed when user enter value input field value
+   * To enable select recipients button.
+   *
+   * Button gets enabled when all required fields and
+   * at least one of 'Description' or 'URL / weblink' or 'Attachment' must be provided
    */
   enableRecipientsBtn(): boolean {
-    const data = this.announcementForm.value;
+    const data = this.announcementForm ? this.announcementForm.value : '';
     if (data.title && data.from && data.type) {
       if (data.links.length || data.description || this.attachments && this.attachments.length) {
         return this.formErrorFlag = false;
@@ -335,21 +286,6 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectRecipients(): void {
-    // TODO: add validation check here
-    this.route.navigate(['announcement/create', 2]);
-  }
-
-  /**
-   * Navigate user to previous form step
-   *
-   * It helps user to change form input
-   */
-  previousStep(): void {
-    const step = this.stepNumber - 1;
-    this.route.navigate(['announcement/create', step]);
-  }
-
   /**
    * It gets executed when user directly hit the url.
    *
@@ -357,26 +293,33 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   validateFormState(): void {
     const data = this.announcementForm.value;
-    if (data.title && data.from && data.type) {
+    if (data.title && data.from) {
       if (data.links.length || data.description || this.attachments && this.attachments.length) {
         console.log('All good. Load next step');
       } else {
-        this.route.navigate(['announcement/create', 1]);
+        this.getNextStep(1);
       }
     } else {
-      this.route.navigate(['announcement/create', 1]);
+      this.getNextStep(1);
     }
   }
 
   /**
-   * Function gets executed when file gets uploaded
+   * Callback function gets called from FileUploadService when api returns success
+   *
+   * Its used to get uploaded file details - file name, size, mime type and url
    */
-  onFileUploadSuccess = (attachmentDetails: IAnnouncementAttachment): void => {
+  onFileUploadSuccess = (attachmentDetails: IAttachementType): void => {
     this.attachments.push(attachmentDetails);
     this.enableRecipientsBtn();
   }
 
-  onFileUploadCancel = (fileDetail): void => {
+  /**
+   * Callback function gets called from FileUploadService when user click on remove icon
+   *
+   * Used to remove uploaded file details from local variable
+   */
+  onFileUploadCancel = (fileDetail: { id: number, name: string }): void => {
     const data = this.attachments.splice(fileDetail.id, 1);
     if (data.length === 0) {
       _.forEach(this.attachments, function (value, key) {
@@ -385,39 +328,39 @@ export class CreateComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
     this.enableRecipientsBtn();
   }
 
+  /**
+   * Post announcement form data
+   */
   saveAnnouncement() {
     const data = this.announcementForm.value;
     data.target = this.recipientsList;
     data.attachments = this.attachments;
-    this.createService.saveAnnouncement(data).
+    this.createService.saveAnnouncement(data, this.identifier ? true : false).
       subscribe(
         (res: ServerResponse) => {
-          this.iziToast.success('Announcement created successfully');
-          this.showSuccess = true;
-          this.route.navigate(['announcement/outbox', 1]);
+          this.modalName = 'success';
         },
         (err: ServerResponse) => {
+          this.formErrorFlag = false;
         }
       );
   }
 
-  ngAfterViewInit() {
-    const options = {
-      containerName: 'attachments/announcement',
-      fileSizeErrorText: 'this.resource.messages.emsg.m0007',
-      onCancel: this.onFileUploadCancel,
-      uploadSuccess: this.onFileUploadSuccess
-    };
-
-    // this.fileUpload.initilizeFileUploader(options);
+  /**
+   * Used to redirect user to outbox page.
+   *
+   * Function gets executed when user click close icon of announcement form
+   */
+  redirectToOutbox(): void {
+    this.route.navigate(['announcement/outbox/1']);
   }
 
   /**
-   * To detech form input value changes.
+   * Function used to detect form input value changes.
+   * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges.subscribe(val => {
@@ -431,30 +374,82 @@ export class CreateComponent implements OnInit, AfterViewInit {
    *
    * It helps to initialize form fields and apply field level validation
    */
-  initializeFormFields(): void {
+  initializeFormFields(formData): void {
+    const data = formData ? formData : this.createService.getAnnouncementModel({});
     this.announcementForm = this.sbFormBuilder.group({
-      title: ['', Validators.maxLength(100)],
-      from: ['', null],
-      type: ['', null],
-      description: ['', Validators.maxLength(1200)],
+      title: [data.title, Validators.maxLength(100)],
+      from: [data.from, null],
+      type: [data.type, null],
+      description: [data.description, Validators.maxLength(1200)],
       links: this.sbFormBuilder.array([])
     });
+  }
+
+  /**
+   * Resend already created announcement.
+   * Make announcement/resend api call to get announcement data
+   */
+  resendAnnouncement() {
+    this.showLoader = true;
+    this.createService.resendAnnouncement(this.identifier).subscribe(
+      (res: ServerResponse) => {
+        const data = res.result.announcement;
+        this.initializeFormFields(data);
+        this.attachments = data.attachments;
+        this.recipientsList = data.target.geo.ids;
+        _.forEach(data.links, (value, key) => {
+          this.addNewLink(value);
+        });
+        this.enableRecipientsBtn();
+        this.showLoader = false;
+        this.isMetaModified = true;
+      },
+      (error: ServerResponse) => {
+        this.showLoader = false;
+      }
+    );
+  }
+
+  /**
+   * To initilize file uploader plugin 
+   */
+  ngAfterViewInit() {
+    const options = {
+      containerName: 'attachments/announcement',
+      fileSizeErrorText: 'this.resource.messages.emsg.m0007',
+      onCancel: this.onFileUploadCancel,
+      uploadSuccess: this.onFileUploadSuccess
+    };
+
+    setTimeout(() => this.fileUpload.initilizeFileUploader(options), 500);
+    this.onFormValueChanges();
   }
 
   /**
    * Angular life cycle hook
    */
   ngOnInit(): void {
-    this.initializeFormFields();
+    // Initialize form field with empty values
+    this.initializeFormFields('');
     this.activatedRoute.params.subscribe(params => {
       if (params.stepNumber) {
-        this.stepNumber = params.stepNumber;
-        this.validateFormState();
+        this.stepNumber = +params.stepNumber;
       }
+      if (params.identifier) {
+        this.identifier = params.identifier;
+      }
+      this.validateFormState();
     });
 
+    if (this.identifier) {
+      this.resendAnnouncement();
+    }
     this.getRootOrgId();
-    this.onFormValueChanges();
-    setTimeout(() => this.configureSuiModal(), 0);
+    this.recipientsList = [];
+    this.attachments = [];
+  }
+
+  ngOnDestroy() {
+    this.modalName = 'close';
   }
 }

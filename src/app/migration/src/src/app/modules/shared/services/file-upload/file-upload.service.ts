@@ -7,6 +7,9 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 @Injectable()
+/**
+ * @class FileUploadService
+ */
 export class FileUploadService {
 
   /**
@@ -50,7 +53,7 @@ export class FileUploadService {
         endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
         inputName: 'file',
         customHeaders: {
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'X-Consumer-ID': 'X-Consumer-ID',
           'X-Device-ID': 'X-Device-ID',
           'X-msgid': UUID.UUID(),
@@ -73,16 +76,20 @@ export class FileUploadService {
   }
 
   /**
-   * Initilize fineuploader plugin
+   * Function to initilize file uploader with default config - upload api http param,
+   * file validation(type, size) and validation error message
+   *
+   * @param {object} componentConfig contains component specific config to override default one
    */
-  initilizeFileUploader(componentOption: object) {
+  initilizeFileUploader(componentConfig: object) {
+    // To hold uploaded file details
     const fileDetails = { 'name': '', 'mimetype': '', 'size': '', 'link': '' };
-    const options = _.merge({}, this.getDefaultOption(), componentOption);
+    // Merge component and default option(s)
+    const options = _.merge({}, this.getDefaultOption(), componentConfig);
     this.uiOptions = {
-      element: document.getElementById('fine-uploader-manual-trigger1'),
+      element: document.getElementById('fine-uploader-manual-trigger'),
       template: 'qq-template-manual-trigger',
       autoUpload: true,
-      debug: true,
       // stopOnFirstInvalidFile: false,
       request: options.request,
       validation: options.fileValidation,
@@ -138,7 +145,9 @@ export class FileUploadService {
   }
 
   /**
-   * To show validation error message(s)
+   * Callback function gets executed when fine uploader throws any validation error message
+   *
+   * @param {string} message error message text
    */
   showErrorMessage = (message: string): void => {
     this.tosterService.warning(message);

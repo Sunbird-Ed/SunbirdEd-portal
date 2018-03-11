@@ -1,8 +1,6 @@
-import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
+import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { UserService, AnnouncementService } from '@sunbird/core';
-import { HttpClient } from '@angular/common/http';
-// Rxjs
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -73,25 +71,18 @@ export class CreateService {
           this._announcementTypes = data.result.announcementTypes;
         }
         return data;
-      })
-      .catch((err: ServerResponse) => {
-        // TODO: remove this before pushing
-        const data = [{
-          'id': '9b20d566-c5db-11e7-abc4-cec278b6b50a',
-          'name': 'Circular'
-        }];
-        return Observable.throw(data);
       });
   }
 
   /**
    * To save announcement data by making http call
    *
-   * @param formData user entered data
+   * @param {object}  formData announcement form data
+   * @param {boolean} resend   to make announcement resend api call
    */
-  saveAnnouncement(formData): Observable<ServerResponse> {
+  saveAnnouncement(formData, resend: boolean): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ANNOUNCEMENT.CREATE,
+      url: resend ? this.config.urlConFig.URLS.ANNOUNCEMENT.RESEND : this.config.urlConFig.URLS.ANNOUNCEMENT.CREATE,
       data: {
         request: {
           title: formData.title,
@@ -111,5 +102,32 @@ export class CreateService {
     };
 
     return this.announcementService.post(option);
+  }
+
+  /**
+   * Get announcement form field value(s)
+   *
+   * @param {object} data announcement data
+   */
+  getAnnouncementModel(data): object {
+    return {
+      title: data.title || '',
+      from: data.from || '',
+      type: data.type || '',
+      description: data.description || '',
+      links: data.links || ''
+    };
+  }
+
+  /**
+   * Get resend announcement data
+   *
+   * @param {string} id announcement identifier
+   */
+  resendAnnouncement(id: string): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ANNOUNCEMENT.RESEND + '/' + id
+    };
+    return this.announcementService.get(option);
   }
 }

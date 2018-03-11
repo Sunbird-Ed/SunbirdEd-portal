@@ -103,12 +103,15 @@ export class GeoExplorerComponent implements OnInit {
 
   /**
    * Function to populate selected location
-   *
-   * @param {string[]} locationIds location id list
    */
   populateItems() {
-    const id = _.map(this.populateSelectedItem, 'id');
-    if (this.locationList && this.locationList.length) {
+    let id;
+    if (typeof this.populateSelectedItem === 'object') {
+      if (this.populateSelectedItem[0] && this.populateSelectedItem[0].id) {
+        id = _.map(this.populateSelectedItem, 'id');
+      } else {
+        id = this.populateSelectedItem;
+      }
       _.forEach(this.locationList, (item) => {
         if (id.indexOf(item.id) !== -1) {
           item.selected = true;
@@ -161,7 +164,6 @@ export class GeoExplorerComponent implements OnInit {
    * Angular life cycle hook
    */
   ngOnInit() {
-    this.selectedItems = [];
     this.user.userData$.subscribe(data => {
       if (data && data.userProfile && data.userProfile.rootOrgId) {
         this.rootOrgId = data.userProfile.rootOrgId;
