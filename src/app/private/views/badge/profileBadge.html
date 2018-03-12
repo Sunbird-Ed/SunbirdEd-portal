@@ -1,0 +1,32 @@
+<div class="ui raised segment margin-bottom-0" ng-if="isprofileinfo">
+  <div class="header announcementCard-header">
+    <span class="header cardsHeading">Certifactions & Awards</span>
+  </div>
+  <div class="ui large list">
+    <div class="item" ng-repeat="badge in badges">
+      <img class="ui avatar image" src="{{badge.badgeClassImage}}"style="
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 500rem !important;
+  ">
+      <div class="content description">{{badge.badgeClassName}}
+
+      </div>
+      <div class="right floated content">
+        <span>{{badge.createdTS | dateFilterWithMY}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="ui large list" ng-if="isprofilesearch">
+    <div class="item" ng-repeat="badge in badges">
+      <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}" style="
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 500rem !important;
+  ">
+      <div class="content description">{{badge.badgeClassName}}
+
+      </div>
+    </div>
+  </div>

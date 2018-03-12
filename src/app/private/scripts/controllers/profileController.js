@@ -73,18 +73,14 @@ angular.module('playerApp')
       }
       // user badges
       profile.getUserBadges = function () {
-        var badges = adminService.getBadgesList()
-        if (profile.user.badges.length) {
-          profile.user.badges.forEach(function (badge) {
-            var userBadge = badges.find(function (badgE) {
-              return badgE.id === badge.badgeTypeId
-            })
-
-            profile.badges.push({
-              title: userBadge.name
-            })
-          })
-        }
+        return [{
+          'issuerId': 'islug123',
+          'badgeClassId': 'bslug123',
+          'badgeClassName': 'cert123',
+          'badgeClassImage': '/common/images/pdf.png',
+          'assertionId': 'aslug123',
+          'createdTS': 1520586333
+        }]
       }
       // processing profile data
       profile.processProfileData = function (userProfile) {
@@ -117,8 +113,8 @@ angular.module('playerApp')
           if (profile.user.lastLoginTime > 0) {
             profile.lastLoginTime = angular.copy(profile.user.lastLoginTime)
           }
-          if (profile.user.badges) {
-            profile.getUserBadges()
+          if (!profile.badgeAssertions) {
+            profile.badgeAssertions = profile.getUserBadges()
           }
           if (profileData.completeness) {
             $rootScope.profileCompleteness = profileData.completeness

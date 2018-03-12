@@ -45,6 +45,9 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <content-badge contentid="cpvm.courseHierachy.identifier"></content-badge>
+            </div>
         </div>
         <div id="collectionPlayer" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  cpvm.courseHierachy.children track by $index" ng-click="cpvm.expandMe($event, item)">
             <div class="courseAccordianHeading title title-padding-left accordian-left-text" name="{{item.identifier}}">
