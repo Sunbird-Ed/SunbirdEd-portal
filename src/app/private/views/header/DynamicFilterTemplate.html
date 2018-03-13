@@ -22,7 +22,7 @@
                   <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
                 </div> -->
                 <!--Dynamic Fields-->
-                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.width}} wide column" ng-repeat="field in dynamic.CourseFieldProperties"
+                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.width}} wide column" ng-repeat="field in dynamic.formFieldProperties"
                   ng-include=" 'views/header/filterFieldTemplate.html' ">
                 </div>
               </div>
@@ -31,10 +31,14 @@
                   <a class="searchfilterbutton ui blue tiny  button" ng-click="dynamic.search.applyFilter()">{{$root.frmelmnts.btn.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" ng-click="dynamic.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
                 </div>
-                <div class="ui grid content margin-top-15">
+                <div class="twelve wide column content margin-top-15">
                   <!--Dynamic Fields lables-->
-                  <div ng-if="dynamic.search.showFilters" ng-repeat="fieldLabel in dynamic.CourseFieldProperties"  ng-include=" 'views/header/filterFieldsLableTemplate.html' ">
-                  </div>
+                  <span ng-repeat="fieldLabel in dynamic.formFieldProperties">
+                      <span ng-if="dynamic.search.showFilters">
+                          <span ng-include=" 'views/header/filterFieldsLableTemplate.html' "></span>
+                      </span>
+                      
+                  </span>
                 </div>
             </div>
           </div>

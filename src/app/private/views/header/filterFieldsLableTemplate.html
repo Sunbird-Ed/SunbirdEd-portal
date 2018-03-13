@@ -1,4 +1,4 @@
-<div ng-switch on="fieldLabel.inputType">
+<span ng-switch on="fieldLabel.inputType">
     <span ng-switch-when="Concept" class="padded chip margin-top--5" ng-if='dynamic.search.selectedConcepts.length > 0'>
         {{$root.frmelmnts.prmpt.concepts}}:
         <a class="ui label margin-top--5" ng-repeat="concept in dynamic.search.selectedConcepts" ng-init="$last && $root.expandFilters()">
@@ -20,4 +20,4 @@
             <i class="delete icon" ng-click="dynamic.search.removeFilterSelection('selected'+fieldLabel.code,category)"></i>
         </a>
     </span>
-</div>
+</span>

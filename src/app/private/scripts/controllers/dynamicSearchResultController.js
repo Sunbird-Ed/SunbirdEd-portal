@@ -54,12 +54,12 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
     var selectedsearchKeyHandler = $rootScope.$on('DynsetSearchKey', function (event, args) {
       dynamic.search.selectedSearchKey = args.key
       if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.CourseFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
-        _.forEach(dynamic.CourseFieldProperties, function (category) {
+        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
+        _.forEach(dynamic.formFieldProperties, function (category) {
           dynamic.search['selected' + category.code] = []
         })
-        dynamic.getChannel(dynamic.CourseFieldProperties)
-        dynamic.CourseFieldProperties.sort(function (a, b) {
+        dynamic.getChannel(dynamic.formFieldProperties)
+        dynamic.formFieldProperties.sort(function (a, b) {
           return a.renderingHints.order - b.renderingHints.order
         })
       }
@@ -70,13 +70,13 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
       dynamic.searchKey = args.key
       dynamic.search.selectedSearchKey = dynamic.searchKey
       if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.CourseFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
+        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
 
-        _.forEach(dynamic.CourseFieldProperties, function (category) {
+        _.forEach(dynamic.formFieldProperties, function (category) {
           dynamic.search['selected' + category.code] = []
         })
-        dynamic.getChannel(dynamic.CourseFieldProperties)
-        dynamic.CourseFieldProperties.sort(function (a, b) {
+        dynamic.getChannel(dynamic.formFieldProperties)
+        dynamic.formFieldProperties.sort(function (a, b) {
           return a.renderingHints.order - b.renderingHints.order
         })
       }
@@ -189,7 +189,7 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
       dynamic.search.filters = JSON.parse(atob(searchParams.filters || btoa('{}')))
       dynamic.search.sortBy = JSON.parse(atob(searchParams.sort || btoa('{}')))
       dynamic.search.selectedContentType = dynamic.search.filters.contentType || []
-      _.forEach(dynamic.CourseFieldProperties, function (category) {
+      _.forEach(dynamic.formFieldProperties, function (category) {
         dynamic.search['selected' + category.code] = dynamic.search.filters[category.code] || []
       })
       dynamic.search.broadCastConcepts()
@@ -347,7 +347,7 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
     }
 
     dynamic.search.applyFilter = function () {
-      _.forEach(dynamic.CourseFieldProperties, function (category) {
+      _.forEach(dynamic.formFieldProperties, function (category) {
         if (category.inputType === 'Term' || category.inputType === 'Select') {
           if (dynamic.search['selected' + category.code].length) {
             dynamic.search.filters[category.code] = dynamic.search['selected' + category.code]
@@ -363,7 +363,7 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
     }
 
     dynamic.search.resetFilter = function () {
-      _.forEach(dynamic.CourseFieldProperties, function (category) {
+      _.forEach(dynamic.formFieldProperties, function (category) {
         if (dynamic.search['selected' + category.code].length) {
           dynamic.search['selected' + category.code] = []
         }
