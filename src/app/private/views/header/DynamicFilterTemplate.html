@@ -18,8 +18,8 @@
             </div>
             <div class="twelve wide column content">
               <div class="ui grid content margin-bottom-15">
-                <!--Dynamic Fileds lables-->
-                <div ng-if="dynamic.search.showFilters" ng-repeat="filedLabel in dynamic.CourseFieldProperties"  ng-include=" 'views/header/filterFiledsLableTemplate.html' ">
+                <!--Dynamic Fields lables-->
+                <div ng-if="dynamic.search.showFilters" ng-repeat="fieldLabel in dynamic.CourseFieldProperties"  ng-include=" 'views/header/filterFieldsLableTemplate.html' ">
                 </div>
 
               </div>
@@ -27,9 +27,9 @@
                 <!-- <div class="one wide column filter-text">
                   <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
                 </div> -->
-                <!--Dynamic Fileds-->
-                <div ng-if="dynamic.search.showFilters" class="{{filed.renderingHints.width}} wide column" ng-repeat="filed in dynamic.CourseFieldProperties"
-                  ng-include=" 'views/header/filterFiledTemplate.html' ">
+                <!--Dynamic Fields-->
+                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.width}} wide column" ng-repeat="field in dynamic.CourseFieldProperties"
+                  ng-include=" 'views/header/filterFieldTemplate.html' ">
                 </div>
 
                 <!-- buttons -->

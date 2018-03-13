@@ -1,14 +1,14 @@
 
-<div ng-switch on="filed.inputType">
+<div ng-switch on="field.inputType">
     <div ng-switch-when="Text">
-        <input type="text" placeholder="hiii" ng-class="{'error': 'enter', 'required': filed.required}" />
+        <input type="text" placeholder="hiii" ng-class="{'error': 'enter', 'required': field.required}" />
     </div>
-    <div ng-switch-when="Select" ng-if="filed.inputType==='Select' && filed.renderingHints.inputType==='select'">
+    <div ng-switch-when="Select" ng-if="field.inputType==='Select' && field.renderingHints.inputType==='select'">
         <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
             <input type='hidden' ng-value='{{}}' />
             <i class="dropdown icon"></i>
-            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length > 0 ">{{dynamic.search.selectedContentType.length+' '+filed.name}}</div>
-            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length == 0 ">{{filed.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length > 0 ">{{dynamic.search.selectedContentType.length+' '+field.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length == 0 ">{{field.name}}</div>
             <div class="menu">
                 <div ng-click="dynamic.search.selectFilter('selectedContentType',contentType.key,$event)" ng-repeat="contentType in dynamic.search.contentTypes"
                     class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType.key)>=0)}"
@@ -16,14 +16,14 @@
             </div>
         </div>
     </div>
-    <div ng-switch-when="Select|Term" ng-switch-when-separator="|" ng-if="filed.inputType==='Term' && filed.renderingHints.inputType==='select'">
+    <div ng-switch-when="Select|Term" ng-switch-when-separator="|" ng-if="field.inputType==='Term' && field.renderingHints.inputType==='select'">
         <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
             <i class="dropdown icon"></i>
-            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(filed.code).length > 0 ">{{dynamic.search.dynamicSelectedSearch(filed.code).length+' '+ filed.name}}</div>
-            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(filed.code).length == 0 ">{{filed.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(field.code).length > 0 ">{{dynamic.search.dynamicSelectedSearch(field.code).length+' '+ field.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(field.code).length == 0 ">{{field.name}}</div>
             <div class="menu">
-                <div ng-click="dynamic.search.selectFilter('selected'+filed.code,category.name,$event)" ng-repeat="category in filed.category"
-                    class="item dropdown-item" ng-class="{'active':(dynamic.search.dynamicSelectedSearch(filed.code).indexOf(category)>=0)}"
+                <div ng-click="dynamic.search.selectFilter('selected'+field.code,category.name,$event)" ng-repeat="category in field.category"
+                    class="item dropdown-item" ng-class="{'active':(dynamic.search.dynamicSelectedSearch(field.code).indexOf(category)>=0)}"
                     data-value="{{category.name}}">{{category.name}}</div>
             </div>
         </div>

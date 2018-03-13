@@ -205,7 +205,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 4, "inputType": "concept","width":"two"}
+                        "renderingHints": {"order": 5, "inputType": "concept","width":"two"}
                     },
                     {
                         "code": "board",
@@ -226,7 +226,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 2, "inputType": "select","width":"two"}
+                        "renderingHints": {"order": 4, "inputType": "select","width":"two"}
                     },
                     {
                       "code": "subject",
@@ -236,7 +236,7 @@
                       "required": false,    
                       "displayProperty": "Editable",
                       "defaultValue": "",
-                      "renderingHints": { "order": 3, "inputType": "select","width":"two"}
+                      "renderingHints": { "order": 2, "inputType": "select","width":"two"}
                     }
                 ],
                 "Library": [
@@ -248,7 +248,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 4, "inputType": "concept","width":"three"}
+                        "renderingHints": {"order": 5, "inputType": "concept","width":"two"}
                     },
                     {
                         "code": "Content",
@@ -258,7 +258,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 5, "inputType": "select","width":"three"}
+                        "renderingHints": {"order": 6, "inputType": "select","width":"two"}
                     },
                     {
                         "code": "board",
@@ -268,7 +268,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 1, "inputType": "select","width":"three"}
+                        "renderingHints": {"order": 1, "inputType": "select","width":"two"}
                     },
                     {
                         
@@ -279,7 +279,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 2, "inputType": "select","width":"three"}
+                        "renderingHints": {"order": 4, "inputType": "select","width":"two"}
                     },
                     {
                       "code": "subject",
@@ -289,7 +289,7 @@
                       "required": false,    
                       "displayProperty": "Editable",
                       "defaultValue": "",
-                      "renderingHints": { "order": 3, "inputType": "select","width":"three"}
+                      "renderingHints": { "order": 3, "inputType": "select","width":"two"}
                     }
                 ]
             }
