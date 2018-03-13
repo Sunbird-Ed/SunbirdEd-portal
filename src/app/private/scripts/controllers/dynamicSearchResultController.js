@@ -59,7 +59,7 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
           dynamic.search['selected' + category.code] = []
         })
         dynamic.getChannel(dynamic.CourseFieldProperties)
-        dynamic.CourseFieldProperties.sort((a, b) => {
+        dynamic.CourseFieldProperties.sort(function (a, b) {
           return a.renderingHints.order - b.renderingHints.order
         })
       }
@@ -76,7 +76,7 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
           dynamic.search['selected' + category.code] = []
         })
         dynamic.getChannel(dynamic.CourseFieldProperties)
-        dynamic.CourseFieldProperties.sort((a, b) => {
+        dynamic.CourseFieldProperties.sort(function (a, b) {
           return a.renderingHints.order - b.renderingHints.order
         })
       }
