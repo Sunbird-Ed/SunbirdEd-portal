@@ -205,7 +205,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 4, "inputType": "concept","width":"three"}
+                        "renderingHints": {"order": 4, "inputType": "concept","width":"two"}
                     },
                     {
                         "code": "board",
@@ -215,7 +215,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 1, "inputType": "select","width":"three"}
+                        "renderingHints": {"order": 1, "inputType": "select","width":"two"}
                     },
                     {
                         
@@ -226,7 +226,7 @@
                         "required": false,
                         "displayProperty": "Editable",
                         "defaultValue": "",
-                        "renderingHints": {"order": 2, "inputType": "select","width":"three"}
+                        "renderingHints": {"order": 2, "inputType": "select","width":"two"}
                     },
                     {
                       "code": "subject",
@@ -236,7 +236,7 @@
                       "required": false,    
                       "displayProperty": "Editable",
                       "defaultValue": "",
-                      "renderingHints": { "order": 3, "inputType": "select","width":"three"}
+                      "renderingHints": { "order": 3, "inputType": "select","width":"two"}
                     }
                 ],
                 "Library": [
