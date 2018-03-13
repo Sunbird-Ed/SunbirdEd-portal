@@ -1,0 +1,42 @@
+<style>
+    .rajat>.search {
+        width: 100%;
+    }
+</style>
+<div ng-switch on="filed.inputType">
+    <div class="rajath" ng-switch-when="Text">
+        <input type="text" placeholder="hiii" ng-class="{'error': 'enter', 'required': filed.required}" />
+    </div>
+    <div class='rajath' ng-switch-when="Select" ng-if="filed.inputType==='Select' && filed.renderingHints.inputType==='select'">
+        <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+            <input type='hidden' ng-value='{{}}' />
+            <i class="dropdown icon"></i>
+            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length > 0 ">{{dynamic.search.selectedContentType.length+' '+filed.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length == 0 ">{{filed.name}}</div>
+            <div class="menu">
+                <div ng-click="dynamic.search.selectFilter('selectedContentType',contentType.key,$event)" ng-repeat="contentType in dynamic.search.contentTypes"
+                    class="item dropdown-item" ng-class="{'active':($root.search.selectedContentType.indexOf(contentType.key)>=0)}"
+                    data-value="{{contentType.key}}">{{contentType.value}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="rajath" ng-switch-when="Select|Term" ng-switch-when-separator="|" ng-if="filed.inputType==='Term' && filed.renderingHints.inputType==='select'">
+        <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+            <i class="dropdown icon"></i>
+            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(filed.code).length > 0 ">{{dynamic.search.dynamicSelectedSearch(filed.code).length+' '+ filed.name}}</div>
+            <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(filed.code).length == 0 ">{{filed.name}}</div>
+            <div class="menu">
+                <div ng-click="dynamic.search.selectFilter('selected'+filed.code,category.name,$event)" ng-repeat="category in filed.category"
+                    class="item dropdown-item" ng-class="{'active':(dynamic.search.dynamicSelectedSearch(filed.code).indexOf(category)>=0)}"
+                    data-value="{{category.name}}">{{category.name}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="rajath" ng-switch-when="Concept" ng-if="$root.concepts">
+        <div class="field">
+            <form class="conceptSelector ui form ">
+                <concept-picker is-search-page="true" selected-concepts="dynamic.search.selectedConcepts"></concept-picker>
+            </form>
+        </div>
+    </div>
+</div>
