@@ -1,7 +1,7 @@
 
 <div ng-switch on="field.inputType">
-    <div ng-switch-when="Text">
-        <input type="text" placeholder="hiii" ng-class="{'error': 'enter', 'required': field.required}" />
+    <div ng-switch-when="Text" class="field">
+        <input type="text" placeholder="{{field.name}}" ng-class="{'error': 'enter', 'required': field.required}" ng-model="dynamic.data(field.code)"/>
     </div>
     <div ng-switch-when="Select" ng-if="field.inputType==='Select' && field.renderingHints.inputType==='select'">
         <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
