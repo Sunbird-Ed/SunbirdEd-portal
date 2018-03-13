@@ -123,7 +123,7 @@
     "request": "^2.81.0",
     "sb_api_interceptor": "file:app/thirdparty/libs/sb_api_interceptor",
     "sb_cache_manager": "file:app/thirdparty/libs/sb_cache_manager",
-    "sb_telemetry_util": "file:app/thirdparty/libs/sb_telemetry_util", 
+    "sb_telemetry_util": "file:app/thirdparty/libs/sb_telemetry_util",
     "ua-parser-js": "^0.7.13",
     "uuid": "^3.1.0"
   },
