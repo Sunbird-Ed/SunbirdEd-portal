@@ -4,7 +4,7 @@
         <input type="text" placeholder="{{field.name}}" ng-class="{'error': 'enter', 'required': field.required}" ng-model="dynamic.data(field.code)"/>
     </div>
     <div ng-switch-when="Select" ng-if="field.inputType==='Select' && field.renderingHints.inputType==='select'">
-        <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+        <div apply-script id="filterContent" class="ui filterFieldSearch ui multiple selection dropdown-items course-search-filter dropdown">
             <input type='hidden' ng-value='{{}}' />
             <i class="dropdown icon"></i>
             <div class="filter-sel-text" ng-if="dynamic.search.selectedContentType.length > 0 ">{{dynamic.search.selectedContentType.length+' '+field.name}}</div>
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div ng-switch-when="Select|Term" ng-switch-when-separator="|" ng-if="field.inputType==='Term' && field.renderingHints.inputType==='select'">
-        <div apply-script id="filterSub" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
+        <div apply-script id="filterSub" class="ui filterFieldSearch ui multiple selection dropdown-items course-search-filter dropdown">
             <i class="dropdown icon"></i>
             <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(field.code).length > 0 ">{{dynamic.search.dynamicSelectedSearch(field.code).length+' '+ field.name}}</div>
             <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(field.code).length == 0 ">{{field.name}}</div>

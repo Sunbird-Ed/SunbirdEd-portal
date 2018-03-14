@@ -6,10 +6,10 @@
     <div ng-if="$root.showFilter && (($root.searchKey!=='Courses' || $root.search.selectedSearchKey!=='Courses')&&($root.searchKey!=='Library' || $root.search.selectedSearchKey!=='Library'))"
          class="header-filter-container" ng-include="'views/header/filter.html'">
     </div>
-    <div ng-controller="DynamicSearchResultController as dynamic">
+    <div ng-controller="DataDrivenFiltersController as dynamic">
             <div  ng-if="$root.showFilter &&
             ((dynamic.searchKey==='Courses' && dynamic.search.selectedSearchKey==='Courses')||(dynamic.searchKey==='Library' && dynamic.search.selectedSearchKey==='Library'))" 
-            class="header-filter-container" ng-include="'views/header/DynamicFilterTemplate.html'">
+            class="header-filter-container" ng-include="'views/header/FilterTemplate.html'">
            </div>
     </div>
     

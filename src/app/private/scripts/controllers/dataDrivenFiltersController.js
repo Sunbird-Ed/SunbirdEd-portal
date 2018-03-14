@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('playerApp').controller('DynamicSearchResultController', [
+angular.module('playerApp').controller('DataDrivenFiltersController', [
   '$scope',
   'config',
   '$rootScope',
@@ -37,10 +37,8 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
     dynamic.search.searchKeyword = ''
     dynamic.search.filters = {}
     dynamic.search.contentTypes = config.FILTER.RESOURCES.contentTypes
-    $scope.search.searchTypeKeys = config.searchTypeKeys
     dynamic.search.sortingOptions = config.sortingOptions
     dynamic.search.sortBy = { createdOn: 'asc' }
-    $scope.search.searchSelectionKeys = config.searchSelectionKeys
     dynamic.search.sortIcon = true
     dynamic.search.selectedLanguage = []
     dynamic.search.selectedContentType = []
@@ -63,7 +61,6 @@ angular.module('playerApp').controller('DynamicSearchResultController', [
           return a.renderingHints.order - b.renderingHints.order
         })
       }
-      // $scope.search.searchRequest(false)
     })
 
     var searchKeyHandler = $rootScope.$on('DynSearchKey', function (event, args) {
