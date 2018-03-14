@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/izitoast/dist/css/iziToast.min.css"
       ],
       "scripts": [
         "../node_modules/moment/min/moment.min.js",

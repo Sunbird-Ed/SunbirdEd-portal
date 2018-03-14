@@ -1,14 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {ICaraouselData} from '../../interfaces/caraouselData';
 import { PageSectionComponent } from './page-section.component';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui';
+import { SlickModule } from 'ngx-slick';
+import { ResourceService, ConfigService  } from '../../services/index';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import * as mockData from './page-section.component.spec.data';
+const testData = mockData.mockRes;
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageSectionComponent ]
+      imports: [HttpClientTestingModule, SuiModule, SlickModule],
+      declarations: [ PageSectionComponent ],
+      providers: [ ResourceService, ConfigService ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -16,10 +25,19 @@ describe('PageSectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PageSectionComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should show TEST INPUT for success data', () => {
+    component.section = testData.successData;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('div .sectionHeading').innerText).toEqual('Multiple Data 1');
+    expect(fixture.nativeElement.querySelector('div span.circular').innerText).toEqual('1');
   });
+  it('should show TEST INPUT for no contents data', () => {
+    component.section = testData.defaultData;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
+   expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
+  });
+
 });

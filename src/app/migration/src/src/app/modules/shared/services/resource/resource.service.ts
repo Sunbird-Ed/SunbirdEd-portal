@@ -36,8 +36,10 @@ export class ResourceService {
     this.http = http;
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
-    this.getResource();
    }
+  public initialize() {
+    this.getResource();
+  }
   /**
    * method to fetch resource bundle
   */
@@ -51,7 +53,6 @@ export class ResourceService {
           this.frmelmnts = data.result.frmelmnts;
       },
       (err: ServerResponse) => {
-        console.log('error in getting resource', err);
       }
     );
    }

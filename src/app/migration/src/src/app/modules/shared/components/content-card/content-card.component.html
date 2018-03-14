@@ -1,26 +1,37 @@
-<div class="ui link card">
-  <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
-    <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
-  </div>
-  <div class="ui medium image ">
-    <!-- <a class="ui black right ribbon label ng-binding" *ngIf="content.resourceType.length > 0">{{content.resourceType}}</a> -->
-    <a class="ui black right ribbon label ng-binding" *ngIf="content.resourceType == undefined">{{content.contentType}}</a>
-    <img  src="{{ content.appIcon || '/assets/common/images/default.png' }}">
-    <div class="cardImageText center aligned ">
-      <span class="sliderCardHeading text-cencapitalize">{{content.name||content.courseName}}</span>
+<div class="ui link cards margin-right-20">
+  <div class="card">
+    <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
+      <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
+    </div>
+    <div class="ui image " [ngStyle]="{'overflow':'hidden', 'height': '150px'}">
+      <a class="ui black right ribbon label " *ngIf="content.resourceType !== undefined">{{content.resourceType}}</a>
+      <a class="ui black right ribbon label " *ngIf="content.resourceType == undefined">{{content.contentType || 'Course'}}</a>
+      <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">
+      <div class="cardImageText center aligned ">
+        <span class="sliderCardHeading text-cencapitalize">{{content.name || content.courseName}}</span>
+      </div>
+    </div>
+    <div class="content">
+      <div class="description" *ngIf="content.description.length > 0 ">
+        {{content.description | slice:0:40}}
+        <i class="ellipsis horizontal icon" *ngIf="content.description.length >= 40" suiPopup popupText="{{content.description}}"></i>
+      </div>
+    </div>
+    <div class="extra content">
+          <span class="right floated" *ngIf="content.action.type.button"> 
+            <a><button class="{{content.action.classes.button}}">{{content.action.label}}</button></a>
+          </span>
+          <span class="right floated" *ngIf="content.action.type.icon">
+            <a><i class="{{content.action.classes.icon}}"></i></a>
+          </span>
+          <span *ngIf="content.action.type.dual">
+              <a><i class="{{content.action.classes.icon}} right floated"></i></a>
+              <a><button class="{{content.action.classes.button}}">{{content.action.label}}</button></a>
+          </span>
+          <span class="left floated" *ngIf="content.action.type.rating">
+              <sui-rating class="courseHeader-rating star" [ngModel]="content.me_averageRating | number:0"
+        [maximum]="5" [isReadonly]="true"></sui-rating>
+            </span>
     </div>
   </div>
-  <div class="content">
-    <div class="description">
-      {{content.description}}
-    </div>
   </div>
-  <div class="extra content">
-    <span class="right floated">
-      <a>
-        <button class="ui blue basic button ">{{resourceService.frmelmnts?.btn?.resume}}</button>
-      </a>
-    </span>
-    <sui-rating class="courseHeader-rating star" [ngModel]="content.me_averageRating | number:0" [maximum]="5" [isReadonly]="true"></sui-rating>
-  </div>
-</div>

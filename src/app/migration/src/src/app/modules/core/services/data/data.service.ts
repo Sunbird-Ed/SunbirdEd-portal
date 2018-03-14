@@ -38,7 +38,7 @@ export class DataService {
    *
    * @param requestParam interface
    */
-  get(requestParam: RequestParam): Observable<any> {
+  get(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
@@ -58,10 +58,10 @@ export class DataService {
    * @param {RequestParam} requestParam interface
    *
    */
-  post(requestParam: RequestParam): Observable<any> {
+  post(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
-      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
-      params: (<any>requestParam.param)
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param
     };
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions)
     .flatMap((data: ServerResponse) => {
@@ -78,25 +78,37 @@ export class DataService {
    * @param {RequestParam} requestParam interface
    *
    */
-  patch(requestParam: RequestParam): Observable<any> {
+  patch(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
-      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
-      params: (<any>requestParam.param)
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param
     };
-    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions);
+    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions)
+    .flatMap((data: ServerResponse) => {
+      if (data.responseCode !== 'OK') {
+        return Observable.throw(data);
+      }
+      return Observable.of(data);
+    });
   }
 
   /**
    * for making delete api calls
    * @param {RequestParam} requestParam interface
    */
-  delete(requestParam: RequestParam): Observable<any> {
+  delete(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
-      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
-      params: (<any>requestParam.param),
+      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      params: requestParam.param,
       body: requestParam.data
     };
-    return this.http.delete(this.baseUrl + requestParam.url, httpOptions);
+    return this.http.delete(this.baseUrl + requestParam.url, httpOptions)
+    .flatMap((data: ServerResponse) => {
+      if (data.responseCode !== 'OK') {
+        return Observable.throw(data);
+      }
+      return Observable.of(data);
+    });
   }
 
   /**

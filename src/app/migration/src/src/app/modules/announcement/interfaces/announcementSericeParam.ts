@@ -1,4 +1,4 @@
-export interface AnnouncementSericeParam {
+export interface IAnnouncementSericeParam {
     pageNumber?: number;
     limit?: number;
     announcementId?: string;

@@ -1,6 +1,5 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
 @import  "../node_modules/slick-carousel/slick/slick-theme.css";
-@import "../node_modules/izitoast/dist/css/iziToast.min.css";
 
 /*sunbird light font*/
 @font-face {
@@ -781,9 +780,6 @@ th {
   box-shadow: none;
   font-size: 1em;
   border-radius: 0;
-}
-.ui.medium.image > img {
-  height: 14em;
 }
 
 .sliderCards.ui.card {

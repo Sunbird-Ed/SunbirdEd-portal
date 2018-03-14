@@ -1,11 +1,10 @@
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, UserProfile, UserData } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 /**
  * Service to fetch user details from server
  *
@@ -19,15 +18,15 @@ export class UserService {
   /**
    * Contains user profile.
    */
-  private userProfile: any = {};
+  private userProfile: UserProfile;
   /**
    * BehaviorSubject Containing user profile.
    */
-  private _userData$ = new BehaviorSubject<any>(undefined);
+  private _userData$ = new BehaviorSubject<UserData>(undefined);
   /**
    * Read only observable Containing user profile.
    */
-  public readonly userData$: Observable<any> = this._userData$.asObservable();
+  public readonly userData$: Observable<UserData> = this._userData$.asObservable();
   /**
    * reference of config service.
    */
@@ -61,9 +60,8 @@ export class UserService {
    * method to fetch user profile from server.
    */
   public getUserProfile(): void {
-    // if (USprofileData) return USprofileData;
     const option = {
-      url: this.config.urlConFig.URLS.USER.GET_PROFILE + this.userid,
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
     this.learner.get(option).subscribe(
@@ -71,7 +69,7 @@ export class UserService {
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
-        this._userData$.next({ err: err, userProfile: { ...this.userProfile } });
+        this._userData$.next({ err: err, userProfile: this.userProfile });
       }
     );
   }
@@ -83,36 +81,31 @@ export class UserService {
    * method to set user profile to behavior subject.
    */
   private setUserProfile(res: ServerResponse) {
-      const profileData = res.result.response;
-      const orgRoleMap = {};
-      let organisationIds = [];
-      // const organisationNames = [];
-      let userRoles = profileData.roles;
-      if (profileData.organisations) {
-        _.forEach(profileData.organisations, (org) => {
-          if (org.roles && _.isArray(org.roles)) {
-            userRoles = _.union(userRoles, org.roles);
-            if (org.organisationId === profileData.rootOrgId &&
-              (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
-                _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
-              profileData.rootOrgAdmin = true;
-            }
-            orgRoleMap[org.organisationId] = org.roles;
+    const profileData = res.result.response;
+    const orgRoleMap = {};
+    let organisationIds = [];
+    let userRoles = profileData.roles;
+    if (profileData.organisations) {
+      _.forEach(profileData.organisations, (org) => {
+        if (org.roles && _.isArray(org.roles)) {
+          userRoles = _.union(userRoles, org.roles);
+          if (org.organisationId === profileData.rootOrgId &&
+            (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
+              _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
+            profileData.rootOrgAdmin = true;
           }
-          if (org.organisationId) {
-            organisationIds.push(org.organisationId);
-          }
-          // if (org.orgName) {
-          //   organisationNames.push(org.orgName);
-          // }
-        });
-      }
-      organisationIds = _.uniq(organisationIds);
-      this.userProfile = profileData;
-      this.userProfile.userRoles = userRoles;
-      this.userProfile.orgRoleMap = orgRoleMap;
-      this.userProfile.organisationIds = organisationIds;
-      // this.userProfile.organisationNames = organisationNames;
-      this._userData$.next({ err: null, userProfile: { ...this.userProfile } });
+          orgRoleMap[org.organisationId] = org.roles;
+        }
+        if (org.organisationId) {
+          organisationIds.push(org.organisationId);
+        }
+      });
+    }
+    organisationIds = _.uniq(organisationIds);
+    this.userProfile = profileData;
+    this.userProfile.userRoles = userRoles;
+    this.userProfile.orgRoleMap = orgRoleMap;
+    this.userProfile.organisationIds = organisationIds;
+    this._userData$.next({ err: null, userProfile: this.userProfile });
   }
 }

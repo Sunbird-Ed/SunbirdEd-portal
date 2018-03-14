@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 
 interface LoaderMessage {
+  /**
+   * header message
+  */
   headerMessage?: string;
+  /**
+   * loader message
+  */
   loaderMessage?: string;
 }
 /**
@@ -14,9 +20,17 @@ interface LoaderMessage {
   styleUrls: ['./app-loader.component.css']
 })
 export class AppLoaderComponent implements OnInit {
+  /**
+   * loader message
+  */
   @Input() data: LoaderMessage;
-
+  /**
+   * header message
+  */
   headerMessage = 'Please wait.';
+  /**
+   * loader message
+  */
   loaderMessage = 'We are fetching details';
 
   constructor() { }

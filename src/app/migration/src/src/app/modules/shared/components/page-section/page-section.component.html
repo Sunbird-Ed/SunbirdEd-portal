@@ -1,10 +1,10 @@
-<div class="ui link popular-section">
-    <h4 class="ui header card-section-header sectionHeading" *ngIf="pageSection.contents && pageSection.contents.length > 0">{{pageSection.name}}
-        <span class="ui red circular inline label">{{pageSection.contents.length}}</span>
+<div class="ui link popular-section" *ngIf="section.contents && section.contents.length > 0">
+    <h4 class="ui header card-section-header sectionHeading">{{section.name}}
+        <span class="ui red circular inline label">{{section.contents.length}}</span>
     </h4>
     <div>
         <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
-            <div ngxSlickItem *ngFor="let content of pageSection.contents" class="slide">
+            <div ngxSlickItem *ngFor="let content of section.contents" class="slide">    
                 <app-content-card [content]="content"></app-content-card>
             </div>
         </ngx-slick>

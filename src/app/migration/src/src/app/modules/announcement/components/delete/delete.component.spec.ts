@@ -13,7 +13,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { AnnouncementService } from '@sunbird/core';
-import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
 
 describe('DeleteComponent', () => {
@@ -33,7 +33,7 @@ describe('DeleteComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, SharedModule],
       providers: [HttpClientModule, AnnouncementService,
-        ResourceService, ToasterService, ConfigService, HttpClient,
+        ResourceService, ToasterService, ConfigService, HttpClient, RouterNavigationService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
@@ -52,11 +52,13 @@ describe('DeleteComponent', () => {
   });
 
   it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute,
-    ResourceService, ToasterService, HttpClient],
-    (announcementService, activatedRoute, resourceService, toasterService, http) => {
+    ResourceService, ToasterService, HttpClient, RouterNavigationService],
+    (announcementService, activatedRoute, resourceService, toasterService, http, routerNavigationService) => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
+      spyOn(component, 'deleteAnnouncement').and.callThrough();
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'success').and.callThrough();
       spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
       http.get().subscribe(
@@ -64,7 +66,7 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
-      spyOn(component, 'deleteAnnouncement').and.callThrough();
+      component.deleteAnnouncement();
       announcementService.deleteAnnouncement(params).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -75,11 +77,14 @@ describe('DeleteComponent', () => {
       fixture.detectChanges();
     }));
 
-  it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService, HttpClient],
-    (announcementService, toasterService, resourceService, http) => {
+  it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
+    HttpClient, RouterNavigationService],
+    (announcementService, toasterService, resourceService, http, routerNavigationService) => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.throw(testData.mockRes.deleteError));
+      spyOn(component, 'deleteAnnouncement').and.callThrough();
       const param = { data: { 'request': { 'announcementId': '' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'error').and.callThrough();
       spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
       http.get().subscribe(
@@ -87,7 +92,7 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
-      spyOn(component, 'deleteAnnouncement').and.callThrough();
+      component.deleteAnnouncement();
       announcementService.deleteAnnouncement(param).subscribe(
         apiResponse => {
         },
@@ -99,11 +104,11 @@ describe('DeleteComponent', () => {
       );
     }));
 
-  it('should call redirect', inject([Router], (route) => {
+  it('should call redirect', inject([RouterNavigationService], (routerNavigationService) => {
+    spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
     component.redirect();
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.pageNumber).toEqual(10);
-    expect(route.navigate).toHaveBeenCalledWith(['announcement/outbox/', component.pageNumber]);
   }));
 });

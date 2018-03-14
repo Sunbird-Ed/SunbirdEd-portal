@@ -1,46 +1,90 @@
 import { UserService, PermissionService } from './../../services';
-// import * as roleConfig from './../../../config/roles.config.json';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService, ResourceService} from '@sunbird/shared';
+import { ConfigService, ResourceService, UserProfile, UserData} from '@sunbird/shared';
+/**
+ * Main header component
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.css']
 })
-
 export class MainHeaderComponent implements OnInit {
-  userid: string;
-  userProfile: object;
-  orgLogo: any;
-  isOpen: any;
-  userRoles: any;
-  roleconFig = this.config.rolesConfig;
-  workSpaceRole = this.roleconFig.headerDropdownRoles.workSpaceRole;
-  adminDashboard = this.roleconFig.headerDropdownRoles.adminDashboard;
-  announcementRole = this.roleconFig.headerDropdownRoles.announcementRole;
-  myActivityRole = this.roleconFig.headerDropdownRoles.myActivityRole;
-  orgSetupRole = this.roleconFig.headerDropdownRoles.orgSetupRole;
-  constructor(public config: ConfigService,
-    public resourceService: ResourceService,
-    public permissionService: PermissionService,
-    private userService: UserService) {
+  /**
+   * organization log
+   */
+  orgLogo: string;
+  /**
+   * user profile details.
+   */
+  userProfile: UserProfile;
+  /**
+   * Sui dropdown initiator
+   */
+  isOpen: boolean;
+  /**
+   * Workspace access roles
+   */
+  workSpaceRole: Array<string>;
+  /**
+   * Admin Dashboard access roles
+   */
+  adminDashboard: Array<string>;
+  /**
+   * Announcement access roles
+   */
+  announcementRole: Array<string>;
+  /**
+   * MyActivity access roles
+   */
+  myActivityRole: Array<string>;
+  /**
+   * Organization Setup access roles
+   */
+  orgSetupRole: Array<string>;
+  /**
+   * reference of UserService service.
+   */
+  public userService: UserService;
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+  /**
+   * reference of resourceService service.
+   */
+  public resourceService: ResourceService;
+  /**
+   * reference of permissionService service.
+   */
+  public permissionService: PermissionService;
+  /*
+  * constructor
+  */
+  constructor(config: ConfigService, resourceService: ResourceService,
+    permissionService: PermissionService, userService: UserService) {
+      this.config = config;
+      this.resourceService = resourceService;
+      this.permissionService = permissionService;
+      this.userService = userService;
   }
 
   ngOnInit() {
+    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+    this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
+    this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
+    this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
+    this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
     this.userService.userData$.subscribe(
-      user => {
-        if (user) {
-          if (!user.err) {
+      (user: UserData) => {
+          if (user && !user.err) {
             this.userProfile = user.userProfile;
-          } else if (user.err) {
-
           }
-        } else {
-
-        }
-      }
-    );
+      });
   }
+  /**
+   * logout function.
+   */
   logout () {
     window.document.location.replace('/logout');
   }

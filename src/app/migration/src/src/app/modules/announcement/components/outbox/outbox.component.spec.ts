@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
+import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
+
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -56,42 +58,43 @@ describe('OutboxComponent', () => {
 
     it('should call outbox api and get success response', inject([AnnouncementService], (announcementService) => {
         spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.of(testData.mockRes.outBoxSuccess));
-        component.renderOutbox(5, 1);
+        component.populateOutboxData(5, 1);
         const params = { pageNumber: 2, limit: 1 };
         announcementService.getOutboxData(params).subscribe(
             outboxResponse => {
-                component.outboxData = outboxResponse;
+                component.outboxData = outboxResponse.result;
+                component.outboxData.count = outboxResponse.result.count;
+                expect(outboxResponse.params.status).toBe('successful');
             }
         );
         fixture.detectChanges();
         expect(component.showLoader).toBe(false);
         expect(component.pageNumber).toBe(1);
         expect(component.pageLimit).toBe(5);
-        expect(component.outboxData.responseCode).toBe('OK');
-        expect(component.outboxData.result.count).toBe(1169);
-        expect(component.outboxData.params.status).toBe('successful');
+        expect(component.outboxData.count).toBe(1173);
     }));
 
     it('should call outbox api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
         HttpClient, ConfigService],
         (announcementService, toasterService, resourceService, http, configService) => {
             spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.throw(testData.mockRes.outboxError));
+            spyOn(component, 'populateOutboxData').and.callThrough();
             spyOn(resourceService, 'getResource').and.callThrough();
             spyOn(toasterService, 'error').and.callThrough();
             spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
             http.get().subscribe(
-              data => {
-                resourceService.messages = data.messages;
-              }
+                data => {
+                    resourceService.messages = data.messages;
+                }
             );
-            spyOn(component, 'renderOutbox').and.callThrough();
+            component.populateOutboxData(configService.pageConfig.OUTBOX.PAGE_LIMIT, component.pageNumber);
             announcementService.getOutboxData({}).subscribe(
                 outboxResponse => { },
                 err => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');
                     expect(err.error.params.status).toBe('failed');
                     expect(err.error.responseCode).toBe('CLIENT_ERROR');
-                    expect(component.showLoader).toBe(true);
+                    expect(component.showLoader).toBe(false);
                 }
             );
             fixture.detectChanges();
@@ -99,18 +102,11 @@ describe('OutboxComponent', () => {
             expect(component.pageLimit).toBe(configService.pageConfig.OUTBOX.PAGE_LIMIT);
         }));
 
-    it('should call updateStatus', () => {
-        component.outboxData = testData.mockRes.outboxData;
-        component.updateStatus('7ffbff00-160c-11e8-b9b4-393f76d4675b');
-        fixture.detectChanges();
-        expect(component.outboxData[0].status).toEqual('cancelled');
-    });
-
     it('should call setpage method and set proper page number', inject([ConfigService, Router],
         (configService, route) => {
-            component.pager = {};
+            component.pager = testData.mockRes.pager;
             component.pager.totalPages = 10;
-            component.setPage(3);
+            component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(3);
             expect(component.pageLimit).toEqual(configService.pageConfig.OUTBOX.PAGE_LIMIT);
@@ -119,11 +115,24 @@ describe('OutboxComponent', () => {
 
     it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
         (configService, route) => {
-            component.pager = {};
+            component.pager = testData.mockRes.pager;
             component.pager.totalPages = 0;
-            component.setPage(3);
+            component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(1);
             expect(component.pageLimit).toEqual(configService.pageConfig.OUTBOX.PAGE_LIMIT);
+        }));
+
+    it('should call announcementDeleteEvent emitter', inject([AnnouncementService],
+        (announcementService) => {
+            component.outboxData = testData.mockRes.outBoxSuccess.result;
+            announcementService.announcementDeleteEvent.emit();
+            spyOn(announcementService, 'announcementDeleteEvent').and.callFake(() =>
+                Observable.of('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43'));
+            announcementService.announcementDeleteEvent().subscribe(
+                data => {
+                    expect(data).toEqual('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43');
+                }
+            );
         }));
 });

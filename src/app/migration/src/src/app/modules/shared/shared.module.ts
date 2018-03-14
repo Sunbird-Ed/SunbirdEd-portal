@@ -17,7 +17,6 @@ import { PageSectionComponent } from './components/page-section/page-section.com
     SlickModule,
     FormsModule
   ],
-
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent, ContentCardComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent, ContentCardComponent],
   providers: [ResourceService, ConfigService]
