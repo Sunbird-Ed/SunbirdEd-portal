@@ -220,13 +220,14 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * It takes form wizard number as a input and redirect user to that page
    *
-   * @param {number} wizardNumber announcement form wizard number
+   * @param {number} wizardNumber announcement form wizard number navigateToWizardNumber
    */
-  navigateUser(wizardNumber: number): void {
+  navigateToWizardNumber(wizardNumber: number): void {
+    this.stepNumber = Number(wizardNumber);
     if (this.identifier) {
-      this.route.navigate(['announcement/resend', this.identifier, +wizardNumber]);
+      this.route.navigate(['announcement/resend', this.identifier, this.stepNumber]);
     } else {
-      this.route.navigate(['announcement/create', +wizardNumber]);
+      this.route.navigate(['announcement/create', this.stepNumber]);
     }
   }
 
@@ -238,7 +239,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   confirmRecipients(): void {
     this.recipientsList = this.geoExplorer && this.geoExplorer.selectedItems ? this.geoExplorer.selectedItems : [];
     if (this.recipientsList && this.recipientsList.length) {
-      this.navigateUser(3);
+      this.navigateToWizardNumber(3);
     } else {
       this.iziToast.warning(this.resource.messages.emsg.m0006);
     }
@@ -259,7 +260,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     });
 
     if (this.recipientsList.length === 0) {
-      this.navigateUser(2);
+      this.navigateToWizardNumber(2);
     }
   }
 
@@ -274,7 +275,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
     this.announcementDetails.attachments = this.attachments;
-    this.navigateUser(4);
+    this.navigateToWizardNumber(4);
   }
 
   /**
@@ -306,10 +307,10 @@ export class CreateComponent implements OnInit, OnDestroy {
     if (data.title && data.from) {
       if (data.links.length || data.description || this.attachments && this.attachments.length) {
       } else {
-        this.navigateUser(1);
+        this.navigateToWizardNumber(1);
       }
     } else {
-      this.navigateUser(1);
+      this.navigateToWizardNumber(1);
     }
   }
 

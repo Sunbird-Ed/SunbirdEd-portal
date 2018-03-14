@@ -196,7 +196,7 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateUser((+stepNumber - 1))">
+    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1))">
       <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
     <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
@@ -204,7 +204,7 @@
     <button type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true"
       [disabled]="formErrorFlag">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</button>
     <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber === 1" class="ui primary button"
-      (click)="navigateUser(2)">
+      (click)="navigateToWizardNumber(2)">
       {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
   </div>

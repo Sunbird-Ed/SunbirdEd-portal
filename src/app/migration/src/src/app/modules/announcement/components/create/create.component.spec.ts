@@ -136,7 +136,7 @@ describe('CreateComponent', () => {
   it('should return selected recipients', inject([HttpClient, ResourceService],
     (http, resourceService) => {
       spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
-      spyOn(component, 'navigateUser').and.callThrough();
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
       http.get().subscribe(
         data => {
           resourceService.messages = data.messages;
@@ -145,25 +145,25 @@ describe('CreateComponent', () => {
       spyOn(component, 'confirmRecipients').and.callThrough();
       component.confirmRecipients();
       fixture.detectChanges();
-      expect(component.navigateUser).not.toHaveBeenCalled();
+      expect(component.navigateToWizardNumber).not.toHaveBeenCalled();
     }));
 
   it('should redirect to announcement/resend/1234/1', inject([Router],
     (route) => {
       component.identifier = '1234';
-      spyOn(component, 'navigateUser').and.callThrough();
-      component.navigateUser(2);
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
+      component.navigateToWizardNumber(2);
       fixture.detectChanges();
-      expect(component.navigateUser).toHaveBeenCalled();
+      expect(component.navigateToWizardNumber).toHaveBeenCalled();
       expect(route.navigate).toHaveBeenCalledWith(['announcement/resend', component.identifier, 2]);
     }));
 
   it('should redirect to announcement/create/1234/1', inject([Router],
     (route) => {
-      spyOn(component, 'navigateUser').and.callThrough();
-      component.navigateUser(1);
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
+      component.navigateToWizardNumber(1);
       fixture.detectChanges();
-      expect(component.navigateUser).toHaveBeenCalled();
+      expect(component.navigateToWizardNumber).toHaveBeenCalled();
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
 
@@ -171,14 +171,14 @@ describe('CreateComponent', () => {
     (route, http, resourceService) => {
       spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
       spyOn(component, 'removeRecipient').and.callThrough();
-      spyOn(component, 'navigateUser').and.callThrough();
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
       http.get().subscribe(
         data => {
           resourceService.messages = data.messages;
           component.recipientsList = [testData.mockRes.getLocationDetails];
           component.removeRecipient(testData.mockRes.getLocationDetails);
           fixture.detectChanges();
-          expect(component.navigateUser).toHaveBeenCalled();
+          expect(component.navigateToWizardNumber).toHaveBeenCalled();
           expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 2]);
         }
       );
@@ -188,11 +188,11 @@ describe('CreateComponent', () => {
     (route) => {
       spyOn(component, 'navigateToPreviewPage').and.callThrough();
       spyOn(component, 'setFormValues').and.callThrough();
-      spyOn(component, 'navigateUser').and.callThrough();
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
       component.setFormValues(testData.mockRes.resendAnnouncement);
       component.navigateToPreviewPage();
       fixture.detectChanges();
-      expect(component.navigateUser).toHaveBeenCalled();
+      expect(component.navigateToWizardNumber).toHaveBeenCalled();
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 4]);
     }));
 
@@ -226,7 +226,7 @@ describe('CreateComponent', () => {
     (route) => {
       spyOn(component, 'validateFormState').and.callThrough();
       spyOn(component, 'setFormValues').and.callThrough();
-      spyOn(component, 'navigateUser').and.callThrough();
+      spyOn(component, 'navigateToWizardNumber').and.callThrough();
       // Set empty value
       const data = testData.mockRes.resendAnnouncement;
       data.description = ''; data.links = []; data.attachments = [];
@@ -234,7 +234,7 @@ describe('CreateComponent', () => {
       component.validateFormState();
       fixture.detectChanges();
       expect(component.setFormValues).toHaveBeenCalled();
-      expect(component.navigateUser).toHaveBeenCalledWith(1);
+      expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
 
