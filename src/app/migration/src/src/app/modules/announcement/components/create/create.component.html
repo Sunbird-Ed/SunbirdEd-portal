@@ -196,15 +196,15 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="getNextStep((+stepNumber - 1))">
+    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateUser((+stepNumber - 1))">
       <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
     <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" *ngIf="stepNumber === 3" (click)="previewAnnouncement();">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
+    <div class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage();">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
     <button type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true"
       [disabled]="formErrorFlag">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</button>
     <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber === 1" class="ui primary button"
-      (click)="getNextStep(2)">
+      (click)="navigateUser(2)">
       {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
   </div>
@@ -256,7 +256,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();createModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div #closeAnnouncementModal class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();createModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
           <div class="ui primary button announcementButton btn-width-34" (click)="modalName = 'create'">{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>

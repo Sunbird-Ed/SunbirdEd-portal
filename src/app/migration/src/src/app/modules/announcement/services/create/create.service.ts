@@ -71,6 +71,9 @@ export class CreateService {
           this._announcementTypes = data.result.announcementTypes;
         }
         return data;
+      })
+      .catch((err) => {
+        return Observable.throw(err);
       });
   }
 
@@ -102,21 +105,6 @@ export class CreateService {
     };
 
     return this.announcementService.post(option);
-  }
-
-  /**
-   * Get announcement form field value(s)
-   *
-   * @param {object} data announcement data
-   */
-  getAnnouncementModel(data): object {
-    return {
-      title: data.title || '',
-      from: data.from || '',
-      type: data.type || '',
-      description: data.description || '',
-      links: data.links || ''
-    };
   }
 
   /**

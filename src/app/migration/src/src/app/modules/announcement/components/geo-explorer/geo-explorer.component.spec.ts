@@ -103,10 +103,10 @@ describe('GeoExplorerComponent', () => {
     component.selectedItems = [];
     component.locationList = testData.locationSuccessData.result.response;
     spyOn(component, 'populateItems').and.callThrough();
-    component.populateItems([data.id]);
+    component.populateItems();
     fixture.detectChanges();
     expect(component).toBeTruthy();
-    expect(component.populateItems).toHaveBeenCalledWith([data.id]);
+    expect(component.populateItems).toHaveBeenCalledWith();
     expect(component.selectedItems[0].selected).toEqual(true);
   });
 
