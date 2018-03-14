@@ -7,6 +7,7 @@ import {IAction} from './action';
         leafNodesCount: number;
         progress?: number;
         appIcon?: string;
+        courseLogoUrl?: string;
         resourceType?: string;
         contentType?: string;
         identifier?: string;
