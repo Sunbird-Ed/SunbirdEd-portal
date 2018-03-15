@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PermissionService } from './../services';
-import { ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, UserProfile, UserData } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 /**
  * Service for Route Guards to restrict the access of route
@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
     * @param {resourceService}
     * @param {Router}
     */
-    constructor(router: Router, permissionService: PermissionService, resourceService: ResourceService) {
+    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
         this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
@@ -54,6 +54,9 @@ export class AuthGuard implements CanActivate {
                         return Observable.of(true);
                     }
                 }
+            } else {
+                this.router.navigate(['home']);
+                return Observable.of(false);
             }
         });
         return Observable.of(false);
