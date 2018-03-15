@@ -6,7 +6,8 @@ before_script:
     - npm install -g @angular/cli
     - cd src/app/migration/src/
     - npm install
-    - ng build
+    - ng build --prod
     - ng lint
 script:
     - ng test --watch=false
+
