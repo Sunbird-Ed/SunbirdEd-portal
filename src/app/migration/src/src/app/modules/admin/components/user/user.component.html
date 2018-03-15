@@ -1,0 +1,137 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">Upload Users</span>
+      </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny" (click)="modal.deny(); redirect();">
+          <i class="ui remove icon"></i>
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <!-- <div ng-if="admin.loader.showLoader">
+      <app-loader data="{{admin.loader}}"></app-loader>
+    </div> -->
+    <form class="ui form" id="bulkUsers">
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="six wide column">
+          <div class="required field">
+            <label>Provider</label>
+            <input type="text" placeholder="Provider" ng-model="admin.bulkUsers.provider">
+          </div>
+        </div>
+        <div class="six wide column">
+          <div class="required field">
+            <label>External Id</label>
+            <input type="text" placeholder="External Id" ng-model="admin.bulkUsers.externalid">
+          </div>
+        </div>
+      </div>
+      <div class="ui horizontal divider margin-top-40">
+        Or
+      </div>
+      <div class="ui grid" ng-if="!admin.bulkUsersProcessId">
+        <div class="six wide column">
+          <div class="one field">
+            <div class=" required field">
+              <label>OrgId</label>
+              <input type="text" placeholder="OrgId" ng-model="admin.bulkUsers.OrgId">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <!-- <div class="ui negative message" ng-if="admin.bulkUploadError">
+      <i class="close icon" ng-click="admin.closeBulkUploadError()"></i>
+      <p>{{admin.bulkUploadErrorMessage}}</p>
+    </div> -->
+    <h5 ng-if="admin.fileName">
+      <i class="file outline icon"></i>
+    </h5>
+    <!-- show progress -->
+    <div ng-if="admin.bulkUsersProcessId">
+      <!-- <h5>{{$root.frmelmnts.lbl.processid}}: {{admin.bulkUsersProcessId}}</h5> -->
+      <!-- <p>{{$root.frmelmnts.instn.t0012}}</p> -->
+    </div>
+    <div class="ui horizontal divider margin-top-40">
+
+    </div>
+    <div class="ui info message">
+      <!-- <i class="close icon"></i> -->
+      <div class="header">
+        Instructions :
+      </div>
+      <ol class="ui list">
+        <li>Download the csv file for reference</li>
+        <li>You can add or upload details of up to 199 users at a time in one csv file</li>
+        <li>The following columns are mandatory:
+          <ol>
+            <li>FirstName: The user’s first name</li>
+            <li>Email: The user’s verified email ID</li>
+            <li>UserName: The unique name assigned to the user by the organization.Ensure that no two users of the same organization
+              have the same username.</li>
+            <li>Password: Unique or common password given by organization</li>
+          </ol>
+        </li>
+        <li>All other columns are optional. These columns include information about the user such as:
+          <ol>
+            <li>Phone</li>
+            <li>Role: User’s role on DIKSHA. Examples for this column: CONTENT_CREATOR, CONTENT_REVIEWER, FLAG_REVIEWER, COURSE_MENTOR,
+              ORG_ADMIN, SYSTEM_ADMINISTRATION, COURSE_ADMIN, COURSE_CREATOR</li>
+            <li>Grade: Classes taught by the user</li>
+            <li>Location: User’s place of location of the user</li>
+            <li>DOB: User’s date of birth, the value should be entered in DD-MM-YYYY format</li>
+            <li>Gender: User’s gender</li>
+            <li>Language: User's language preferences. Examples: English, Gujarati, Hindi, Kannada, Marathi, Punjabi, Tamil,
+              Telugu
+            </li>
+            <li>Profile summary: User’s profile summary</li>
+            <li>Subjects: Taught by the user. Examples: Assamese, Bengali, Hindi, Kannada, Malayalam, Oriya, Punjabi, Tamil,
+              Telugu, Biology, Chemistry, Physics, Mathematics, Environmental Studies, Geography, History, Political Science,
+              Economics, Sanskrit, Gujarati, Marathi, Nepali</li>
+            <li>Columns titled emailVerified, phoneVerified and provider are conditionally mandatory. Value for emailVerified
+              and phoneVerified should be True, if details are provided for provider</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grid">
+      <div class="four wide column">
+        <button class="ui left floated button">DOWNLOAD SAMPLE CSV</button>
+      </div>
+      <div class="four wide column">
+      </div>
+      <div class="four wide column">
+        <button [disabled]="" class="ui primary right floated button">UPLOAD USERS CSV</button>
+        <input type="file" accept=".csv" class="content-input ui small " id="uploadUsrsCSV" (change)="angular.element(this).scope().validateFile(this.files,'users');"
+          required="" />
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="content">
+    <div class="ui center aligned segment">
+      <div class="ui basic icon circular button deny">
+        <i class="ui huge help outline icon"></i>
+      </div>
+      <br/>
+      <br/>
+      <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirm}}</div>
+      <br/>
+      <div class="announcement-description">
+        {{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirmdescrption}}
+      </div>
+      <br/>
+      <br/>
+      <button class="ui basic button announcementButton btn-width-26 announcementButtonText" (click)="modal.approve('done'); deleteAnnouncement();">
+        {{resourceService?.frmelmnts?.btn?.yes}} </button>
+      <button class="ui button primary announcementButton btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
+    </div>
+  </div> -->
+</sui-modal>

@@ -21,6 +21,9 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ],
+      "@sunbird/admin": [
+        "app/modules/admin"
       ]
     },
     "module": "es2015",
