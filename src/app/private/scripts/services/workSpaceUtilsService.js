@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .service('workSpaceUtilsService',
-    ['$state', '$window', '$location', 'config',
-      function ($state, $window, $location, config) {
+  ['$state', '$window', '$location', 'config',
+    function ($state, $window, $location, config) {
         /**
      * @class workSpaceUtilsService
      * @desc Service to manage workspace.
@@ -41,7 +41,7 @@ angular.module('playerApp')
             state: state
           }
           if (item.framework) {
-            params.framework = item.framework
+            params.frameworkId = item.framework
           }
           $state.go('CollectionEditor', params)
         }
