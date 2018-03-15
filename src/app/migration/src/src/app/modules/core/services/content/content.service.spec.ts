@@ -1,11 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '@sunbird/shared';
 import { ContentService } from './content.service';
 
 describe('ContentService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ContentService]
+      imports: [HttpClientModule],
+      providers: [ContentService, ConfigService, HttpClient]
     });
   });
 

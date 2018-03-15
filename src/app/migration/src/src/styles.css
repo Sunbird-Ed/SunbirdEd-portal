@@ -1,4 +1,5 @@
-
+@import "../node_modules/slick-carousel/slick/slick.css";
+@import "../node_modules/slick-carousel/slick/slick-theme.css";
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -926,7 +927,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(/common/images/Backword.png);
+  content: url(./assets/common/images/Backword.png);
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -936,7 +937,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(/common/images/Forward.png);
+  content: url(./assets/common/images/Forward.png);
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;

@@ -1,0 +1,114 @@
+<div>
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="nine wide column">
+          <div class="ui">
+            <div class="text dashBoardSectionHeading padding-top-10">
+              <i class="announcement icon padding-right-10"></i> {{resourceService?.frmelmnts?.lbl?.anncmntmine}}</div>
+          </div>
+        </div>
+        <div class="right floated three wide column padding-right-dropdown padding-right-10">
+          <div class="ui float-ContentRight">
+            <button class="ui primary basic button announcementButton">
+              <span class="announcementButtonText">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui grid">
+        <div class="eight wide column">
+          <div class="ui">
+            <div class="text padding-top-5 showingAllSentAnn">{{resourceService?.frmelmnts?.lbl?.anncmntsent}}</div>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="ui float-ContentRight">
+            <div class="text showingAllSentAnn">
+              <span class="margin-right-10">Viewing {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{outboxData.count}} </span>
+              <div class="ui small basic icon buttons">
+                <button class="ui button" [ngClass]="{'disabled' : pager.startIndex === 0}" (click)="navigateToPage(pager.currentPage - 1)">
+                  <i class="left chevron icon"></i>
+                </button>
+                <button class="ui button" [ngClass]="{'disabled' : pager.currentPage === pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)">
+                  <i class="right chevron icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" *ngIf="showLoader">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <app-loader></app-loader>
+    </div>
+  </div>
+  <div class="ui grid" *ngIf="outboxData && outboxData.announcements.length === 0 && !showLoader">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui warning message">
+        <div class="header">{{resourceService?.frmelmnts?.lbl?.anncmntnotfound}}</div>
+        {{resourceService?.frmelmnts?.lbl?.anncmntplzcreate}}
+      </div>
+    </div>
+  </div>
+  <div class="margin-top-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
+    <div class="resource-padding ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div class="ui tweleve wide column">
+          <table class="ui padded table">
+            <thead>
+              <tr class="announcementTableHeading">
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblname}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblpublished}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblsent}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblreceived}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblseen}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblactions}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of outboxData.announcements" class="tableListNameAnn">
+                <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item" class="cursor-pointer">{{item.title | slice:0:50}}
+                  <span *ngIf="item.title.length > 50">...</span>
+                </td>
+                <td>{{item.createdDate | dateFormat}}</td>
+                <td>{{item.metrics.sent ? item.metrics.sent : "N/A"}}</td>
+                <td>{{item.metrics.received ? item.metrics.received : "N/A"}}</td>
+                <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
+                <td class="cursor-pointer announcementRedText" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
+                  <i class="icon trash"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxdelete}}</td>
+                <td (click)="getResend(item.id, item.title);" *ngIf="item.status == 'cancelled'" class="cursor-pointer announcementBlueText">
+                  <i class="external share icon"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxresend}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
+    <div class="one wide column"></div>
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="ui">
+          <div class="text announcementDataText" *ngIf="outboxData.metricsupdateddate">
+            <span class="announcementBlueText">*</span>{{resourceService?.frmelmnts?.lbl?.anncmntlastupdate}} {{outboxData.metrics.updatedate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Popup -->
+<router-outlet></router-outlet>

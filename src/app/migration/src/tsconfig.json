@@ -12,6 +12,15 @@
       ],
       "@sunbird/shared": [
         "app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "app/modules/home"
+      ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
+      "@sunbird/announcement": [
+        "app/modules/announcement"
       ]
     },
     "sourceMap": true,
@@ -27,5 +36,8 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "exclude": [
+    "**/*.spec.data.ts"
+  ]
 }

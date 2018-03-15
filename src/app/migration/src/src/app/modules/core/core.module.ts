@@ -1,11 +1,12 @@
+import { PermissionDirective } from './directives';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import {
-  ConfigService, UserService, LearnerService,
-  ResourceService, PermissionService, AnnouncementService,
-  BadgesService, ContentService
+  UserService, LearnerService, PermissionService, AnnouncementService,
+  BadgesService, ContentService, CoursesService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent , SearchComponent
@@ -16,13 +17,14 @@ import {
   imports: [
     CommonModule,
     SuiModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
-  declarations: [ MainHeaderComponent, MainMenuComponent , SearchComponent ],
+  declarations: [ MainHeaderComponent, MainMenuComponent , SearchComponent , PermissionDirective],
   exports: [MainHeaderComponent],
   providers: [
-    ConfigService, LearnerService, ResourceService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService ]
+    LearnerService, UserService,
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService ]
 })
 export class CoreModule {
 }

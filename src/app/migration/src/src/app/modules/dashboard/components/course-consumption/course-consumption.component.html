@@ -1,0 +1,99 @@
+<div class="ui grid margin-top">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid margin-top-20">
+      <div class="five wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length === 1">
+        <span class="dashBoardSectionHeading">
+          <i class="large bar chart icon"></i>
+        </span>
+        <span class="dashBoardSectionHeading">{{courseName}}</span>
+      </div>
+      <div class="one wide column" *ngIf="myCoursesList && myCoursesList.length > 1">
+        <span class="dashBoardSectionHeading">
+          <i class="large bar chart icon padding-top-5"></i>
+        </span>
+      </div>
+      <div class="four wide column float-ContentLeft course-dropdown" *ngIf="myCoursesList && myCoursesList.length > 1">
+        <ng-template let-option #optionTemplate>
+          {{ option.name }}
+        </ng-template>
+        <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="options"
+          labelField="name" [placeholder]="'Select Course To See Dashboard'" [optionTemplate]="optionTemplate" [isSearchable]="true"
+          #templated>
+          <sui-select-option *ngFor="let course of myCoursesList" [value]="course" [ngClass]="{'active': course.identifier === identifier }">
+
+          </sui-select-option>
+        </sui-select>
+      </div>
+    </div>
+    <!-- Filters -->
+    <div class="ui grid margin-top-10 padding-left-5" *ngIf="showDashboard">
+      <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
+        <div class="ui text menu float-ContentLeft padding-top-10">
+          <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">
+            {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
+          </span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">
+            {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
+          </span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">
+            {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
+          </span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+      </div>
+      <div class="two wide column"></div>
+    </div>
+    <!-- Loader -->
+    <div class="twelve wide column margin-top-20" *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <!-- Select course div -->
+    <div class="ui warning message tweleve wide column" *ngIf="myCoursesList && myCoursesList.length > 1 && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+      <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnocourseselected}}</div>
+      {{resourceService?.frmelmnts?.lbl?.dashboardnocourseselecteddesc}}
+    </div>
+    <!-- Empty course -->
+    <div *ngIf="!showLoader" class="margin-top-20">
+      <div class="ui info message" *ngIf="myCoursesList && myCoursesList.length === 0">
+        <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
+        <ul class="list">
+          <li>{{resourceService?.frmelmnts?.instn?.t0063}}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Actual dashboard data -->
+    <div class="consumption-data-holder" *ngIf="showDashboard && myCoursesList && myCoursesList.length > 0" [ngStyle]="{'display':showLoader ? 'none' : '' }">
+      <div class="ui four cards">
+        <div class="card" *ngFor="let block of blockData">
+          <div class="content center aligned">
+            <div class="meta dashBoardCardText">{{block.name}}</div>
+            <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0">
+        <div class="column">
+          <div class="regular slider padding-top-30 course-graph-holder">
+            <div *ngFor="let block of graphData;let graphIndex = index;">
+              <div [hidden]="showGraph === graphIndex">
+                <div class="ui segment">
+                  <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                    [colors]="block.chartColors" [legend]="chartLegend" [chartType]="chartType">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+            <div class="corse-graph-navigation-btn">
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
+                <i class="left arrow icon"></i>
+              </button>
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+                <i class="right arrow icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
