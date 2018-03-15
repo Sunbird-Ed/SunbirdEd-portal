@@ -8,7 +8,7 @@
             </div>
             <div class="field">
                 <label>&nbsp;  </label>
-                <input type="text" name="" placeholder="Last Name" ng-model="profileCtrl.user.lastName">
+                <input type="text" name="lastName" placeholder="Last Name" ng-model="profileCtrl.user.lastName">
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
         <div class="field">
             <label>{{$root.frmelmnts.lbl.gender}}</label>
             <div class="ui input right icon">
-                <select class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.user.gender">
+                <select name="gender" class="ui fluid dropdown genderSelectionDropDown" ng-model="profileCtrl.user.gender">
                     <option value="Female">{{$root.frmelmnts.drpdn.female}}</option>
                     <option value="Male">{{$root.frmelmnts.drpdn.male}}</option>
                     <option value="Transgender">{{$root.frmelmnts.drpdn.transgender}}</option>
@@ -46,7 +46,7 @@
             <div ng-init="profileCtrl.setDob();" class="ui calendar" id="editDob">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" placeholder="Date" ng-model="profileCtrl.user.dob">
+                    <input type="text" name="birthdate" placeholder="Date" ng-model="profileCtrl.user.dob">
 
                    <div ng-if="dobVis"> <profile-visibility top="'true'"   update="'true'" field="'dob'"></profile-visibility></div>
 
@@ -91,7 +91,7 @@
         <label>{{$root.frmelmnts.lbl.subjects}}</label>
         <div class="field" ng-init=" profileCtrl.setSubject()">
             <div class="ui input right icon">
-                <select id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects | orderBy:'toString()'">
+                <select name="subjects" id="setSubjects" class="ui fluid dropdown " multiple="" ng-model="profileCtrl.user.subject" ng-value="option.value" ng-options=" subject for subject in profileCtrl.subjects | orderBy:'toString()'">
                 </select>
 
                 <profile-visibility  top="'true'"   update="'true'" field="'subject'"></profile-visibility>

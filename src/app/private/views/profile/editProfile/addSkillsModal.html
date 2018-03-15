@@ -22,19 +22,19 @@
         </div>
         <div class=" ui form">
             <div id="addSkill" class="ui fluid addSkillsMarginCursor multiple search selection dropdown">
-                <input id="users" name="users" type="hidden">
+                <input id="users" name="users" type="hidden" maxlength="10">
                 <i class="dropdown icon"></i>
                 <div class="default text">
                     {{$root.frmelmnts.instn.t0020}}
                 </div>
                 <div class="menu">
-                    <div class="item" ng-repeat="skill in profileCtrl.skills" data-value="{{skill}}">{{skill}}</div>
+                    <div class="item" ng-repeat="skill in profileCtrl.skills"  maxlength="10" data-value="{{skill}}">{{skill}}</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="actions margin-top-40">
-        <button class="ui cancel primary basic left floated x" ng-click="profileCtrl.generateInteractEvent('cancelSkills')">
+        <button class="ui cancel primary basic button left floated" ng-click="profileCtrl.generateInteractEvent('cancelSkills')">
             {{$root.frmelmnts.btn.cancel}}
         </button>
         <button class="ui approve primary button" ng-click="profileCtrl.addSkills(); profileCtrl.generateInteractEvent('skills')">

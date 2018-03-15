@@ -1,0 +1,70 @@
+<div ng-init="dynamic.getChannel()">
+  <div class="ui divider header-search-filters-divider"></div>
+  <div class="filtercolumn ui grid">
+    <div class="one wide column">
+    </div>
+    <div class=" ten wide column ">
+      <div apply-script class="ui accordion" id='content-search-filter-accordion'>
+        <div class="ui twelve column grid">
+          <div class="eleven wide column">
+            <div class="twelve wide column title">
+              <div class="ui grid">
+                <div class="ten wide column">
+                  <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i>
+                  <span class="ShowFilterTitle" ng-click="$root.generateInteractEvent('filter','','filter','1.0','filter-content','filter-content'); dynamic.doFilter() ">{{$root.frmelmnts.lbl.filters}}</span>
+                  <i id='filterIcon' class="dropdown icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="twelve wide column content">
+              <div class="filtercolmntext ui grid">
+                <!-- <div class="one wide column filter-text">
+                  <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
+                </div> -->
+                <!--Dynamic Fields-->
+                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.width}} wide column" ng-repeat="field in dynamic.formFieldProperties"
+                  ng-include=" 'views/header/filterFieldTemplate.html' ">
+                </div>
+              </div>
+                  <!-- buttons -->
+                <div class="three wide column filter-button margin-top-15">
+                  <a class="searchfilterbutton ui blue tiny  button" ng-click="dynamic.search.applyFilter()">{{$root.frmelmnts.btn.apply}}</a>
+                  <a class="searchfilterbutton ui primary tiny basic button" ng-click="dynamic.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
+                </div>
+                <div class="twelve wide column content margin-top-15">
+                  <!--Dynamic Fields lables-->
+                  <span ng-repeat="fieldLabel in dynamic.formFieldProperties">
+                      <span ng-if="dynamic.search.showFilters">
+                          <span ng-include=" 'views/header/filterFieldsLableTemplate.html' "></span>
+                      </span>  
+                  </span>
+                </div>
+            </div>
+          </div>
+
+          <div class="one wide column">
+            <div class="field" ng-if="dynamic.search.selectedSearchKey === 'Library' || dynamic.search.selectedSearchKey === 'Courses'">
+              <div class="content dropdown-content">
+                <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.sort}}&nbsp;</span>
+                <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
+                  <div class="text"></div>
+                  <i class="dropdown icon"></i>
+                  <select ng-options="sortingOption.field as sortingOption.name for sortingOption in dynamic.search.sortingOptions" ng-model="dynamic.search.sortByOption"
+                    ng-change="dynamic.search.applySorting(); dynamic.generateInteractEvent('sort', '', dynamic.search.sortByOption, '1.0', 'sort-content', 'sort-content')">
+                    <option value=""></option>
+                  </select>
+                </div>
+                <i alt="{{dynamic.frmelmnts.alt.sortby}}" class="link" ng-if="!!dynamic.search.sortByOption && dynamic.search.sortByOption.length > 0"
+                  ng-class="{'sort content ascending icon':(dynamic.search.sortIcon===true),'sort content descending icon':(dynamic.search.sortIcon===false)}"
+                  ng-click="dynamic.search.sortIcon=!dynamic.search.sortIcon;dynamic.search.applySorting()"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
