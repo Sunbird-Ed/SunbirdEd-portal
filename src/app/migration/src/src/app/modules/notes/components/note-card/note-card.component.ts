@@ -93,12 +93,6 @@ export class NoteCardComponent implements OnInit {
     */
     const selectedNote = this.selectedNote;
     this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
-    // this.noteService.finalNotesListData.subscribe(data => {
-    //   const id = data.substr(1, data.length);
-    //   this.notesList = this.notesList.filter(function(note) {
-    //     return note.id !== id;
-    //   } );
-    // } );
   }
 
   public searchNote(request) {
@@ -141,7 +135,6 @@ export class NoteCardComponent implements OnInit {
     const requestData = {
       request: {
       filter: {
-        // userid: this.userService.userid,
         userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
         courseid: 'do_2123229899264573441612'
       },
