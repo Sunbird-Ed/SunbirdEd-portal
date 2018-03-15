@@ -2795,9 +2795,9 @@ ol.ui.list ol li:before {
   font-family: 'sunbirdboldfont';
   font-size: smaller;
 }
-.ui.modal .announcementForm input.ng-invalid {
+/* .ui.modal .announcementForm input.ng-dirty.ng-invalid {
   border-color: red !important;
-}
+} */
 .ui.modal .dropdown-margin-left .ui.dropdown > .text {
   margin-left: -1em !important;
 }

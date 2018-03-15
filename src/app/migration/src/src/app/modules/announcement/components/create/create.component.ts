@@ -2,7 +2,7 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // import { Location } from '@angular/common';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
@@ -13,6 +13,10 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
+
+function getWindow() {
+  return window;
+}
 
 /**
  * The announcement create component
@@ -35,6 +39,10 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Dom element reference to close modal
    */
   @ViewChild('closeAnnouncementModal') closeAnnouncementModal: ElementRef;
+
+  @ViewChildren('populateAttachment') populateAttachment;
+  @ViewChildren('abc') abc: ElementRef;
+
 
   /**
    * Announcement creation form name
@@ -59,7 +67,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * Contains announcement types
    */
-  announcementTypes: any;
+  announcementTypes = [];
 
   /**
    * Contains announcement recipients list
@@ -164,8 +172,6 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.createService._rootOrgId = user.userProfile.rootOrgId;
           this.setAnnouncementTypes();
         }
-      },
-      err => {
       }
     );
   }
@@ -177,13 +183,18 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Without type(s) user won't be able to create new announcement
    */
   setAnnouncementTypes(): void {
+    this.announcementTypes = [];
     if (this.createService._announcementTypes) {
-      this.announcementTypes = this.createService._announcementTypes;
+      _.each(this.createService._announcementTypes, (key) => {
+        this.announcementTypes.push(key.name);
+      });
     } else {
       this.createService.getAnnouncementTypes().subscribe(
         (data: ServerResponse) => {
           if (data.result.announcementTypes) {
-            this.announcementTypes = data.result.announcementTypes;
+            _.each(data.result.announcementTypes, (key) => {
+              this.announcementTypes.push(key.name);
+            });
           }
         },
         (err: ServerResponse) => {
@@ -270,11 +281,19 @@ export class CreateComponent implements OnInit, OnDestroy {
    * It helps user to show announcement preview - after creating the announcement how it will look
    */
   navigateToPreviewPage(): void {
-    const data = this.announcementForm.value;
-    data.type = data.type.name;
+    const data = { ...this.announcementForm.value };
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
-    this.announcementDetails.attachments = this.attachments;
+    const atta = { ...this.attachments };
+    this.announcementDetails.attachments = [];
+
+    _.forEach(atta, (value, key) => {
+      this.announcementDetails.attachments.push(value);
+    });
+
+    _.forEach(this.fileUpload.attachedFiles, (value, key) => {
+      this.announcementDetails.attachments.push(value);
+    });
     this.navigateToWizardNumber(4);
   }
 
@@ -286,8 +305,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   enableRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
-    if (data.title && data.from && data.type) {
-      if (data.links.length || data.description || this.attachments && this.attachments.length) {
+    if (this.announcementForm.status === 'VALID') {
+      if (data.links.length || data.description || this.attachments && this.attachments.length > 0) {
         return this.formErrorFlag = false;
       } else {
         return this.formErrorFlag = true;
@@ -304,8 +323,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   validateFormState(): void {
     const data = this.announcementForm.value;
-    if (data.title && data.from) {
-      if (data.links.length || data.description || this.attachments && this.attachments.length) {
+    if (this.announcementForm.status === 'VALID') {
+      if (data.links.length || data.description || this.attachments && this.attachments.length > 0) {
       } else {
         this.navigateToWizardNumber(1);
       }
@@ -315,25 +334,15 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Callback function gets called from FileUploadService when api returns success
-   *
-   * Its used to get uploaded file details - file name, size, mime type and url
-   */
-  onFileUploadSuccess = (attachmentDetails: IAttachementType): void => {
-    this.attachments.push(attachmentDetails);
-    this.enableRecipientsBtn();
-  }
-
-  /**
    * Callback function gets called from FileUploadService when user click on remove icon
    *
    * Used to remove uploaded file details from local variable
    */
-  onFileUploadCancel = (fileDetail: { id: number, name: string }): void => {
-    const data = this.attachments.splice(fileDetail.id, 1);
+  onFileUploadCancel = (id: number, name: string): void => {
+    const data = this.attachments.splice(id, 1);
     if (data.length === 0) {
-      _.forEach(this.attachments, function (value, key) {
-        if (value.name === fileDetail.name) {
+      _.forEach(this.attachments, (value, key) => {
+        if (value.name === name) {
           this.attachments.splice(key, 1);
         }
       });
@@ -345,9 +354,11 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Post announcement form data
    */
   saveAnnouncement() {
-    const data = this.announcementForm.value;
+    const data = { ...this.announcementForm.value };
+    data.links = data.links.length ? _.map(data.links, 'url') : [];
     data.target = this.recipientsList;
-    data.attachments = this.attachments;
+    // data.attachments = this.attachments;
+    data.attachments = this.announcementDetails.attachments;
     this.createService.saveAnnouncement(data, this.identifier ? true : false).
       subscribe(
         (res: ServerResponse) => {
@@ -386,24 +397,24 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   initializeFormFields(): void {
     this.announcementForm = this.sbFormBuilder.group({
-      title: ['', Validators.maxLength(100)],
-      from: ['', null],
-      type: ['', null],
+      title: ['', [Validators.required, Validators.maxLength(100)]],
+      from: ['', Validators.required],
+      type: ['', Validators.required],
       description: ['', Validators.maxLength(1200)],
       links: this.sbFormBuilder.array([])
     });
   }
 
   /**
-   * Function to set form values
+   * Function to set resend form values
    */
-  setFormValues(data) {
-    this.announcementForm.setValue({
-      title: data.title,
-      from: data.from,
-      type: data.type,
-      description: data.description,
-      links: []
+  setResendFormValues(data) {
+    this.announcementForm = this.sbFormBuilder.group({
+      title: [data.title, [Validators.required, Validators.maxLength(100)]],
+      from: [data.from, Validators.required],
+      type: [data.type, Validators.required],
+      description: [data.description, Validators.maxLength(1200)],
+      links: this.sbFormBuilder.array([])
     });
     // Set links value
     _.forEach(data.links, (value, key) => {
@@ -411,7 +422,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     });
     // Update attachments
     this.attachments = data.attachments;
-    this.recipientsList = data.target.geo && data.target.geo.ids ?  data.target.geo.ids : [];
+    this.populateResendAttachment(this.attachments);
+    this.recipientsList = data.target.geo && data.target.geo.ids ? data.target.geo.ids : [];
   }
 
   /**
@@ -422,7 +434,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     this.createService.resendAnnouncement(this.identifier).subscribe(
       (res: ServerResponse) => {
-        this.setFormValues(res.result.announcement ? res.result.announcement : []);
+        this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
         this.enableRecipientsBtn();
         this.onFormValueChanges();
         this.showLoader = false;
@@ -451,13 +463,30 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Populate announcement attachements on fine uploader UI while resend
+   */
+  populateResendAttachment(attachments: any) {
+    let li = '';
+    _.forEach(attachments, function (attachment, pos) {
+      li += `<li class="qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" id="attachement${pos}">
+   <i id="removeFile" onclick="souravCancel(this, ${pos},` + `'${attachment.name}'` + `)" class="remove icon cursor-pointer"
+                style="float:right;"></i><span class="qq-upload-file-selectorqq-upload-file" style="width: 200px;">
+                ${attachment.name}</span></li>`;
+    });
+
+    this.populateAttachment.last.nativeElement.innerHTML =
+      '<ul _ngcontent-c4="" aria-live="polite"  aria-relevant="additions removals" class="qq-upload-list-selector' +
+      'qq-upload-list anncmnt-fileupload-list"> ' + li + '</ul>';
+  }
+
+  /**
    * Initialize form fields and file upload plugin
    */
   ngOnInit(): void {
     // Initialize form fields
     this.initializeFormFields();
     const routeParam = this.activatedRoute.snapshot.params;
-    this.stepNumber  = routeParam.stepNumber ? +routeParam.stepNumber : 1;
+    this.stepNumber = routeParam.stepNumber ? +routeParam.stepNumber : 1;
     if (routeParam.identifier) {
       this.identifier = routeParam.identifier;
       this.resendAnnouncement();
@@ -471,6 +500,11 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.attachments = [];
     this.validateFormState();
   }
+
+  // getWindow.removeCreateAnnAttachment = function (item, pos, name) {
+  //   // $(item).closest('li').remove();
+  //   // composeAnn.onUploadCancel(pos, name);
+  // };
 
   ngOnDestroy() {
     this.closeAnnouncementModal.nativeElement.click();

@@ -1,3 +1,4 @@
+import { OnCancel } from './../../../../../../../../thirdparty/bower_components/file-upload/typescript/fine-uploader.d';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './../config/config.service';
 import { FineUploader, UIOptions } from 'fine-uploader';
@@ -26,6 +27,8 @@ export class FileUploadService {
    */
   config: ConfigService;
 
+  attachedFiles: Array<any>;
+
   /**
    * To show warning/error/success message
    */
@@ -40,6 +43,14 @@ export class FileUploadService {
   constructor(config: ConfigService, tosterService: ToasterService) {
     this.config = config;
     this.tosterService = tosterService;
+    this.attachedFiles = [];
+  }
+
+  /**
+   * Return the global native browser window object
+   */
+  get getWindowObject(): any {
+    return window;
   }
 
   /**
@@ -69,7 +80,8 @@ export class FileUploadService {
       fileValidation: {
         itemLimit: 10,
         sizeLimit: this.config.pageConfig.ANNOUNCEMENT.MAXFILESIZETOUPLOAD,
-        allowedExtensions: this.config.pageConfig.ANNOUNCEMENT.ALLOWEDFILEEXTENSION
+        allowedExtensions: this.config.pageConfig.ANNOUNCEMENT.ALLOWEDFILEEXTENSION,
+        stopOnFirstInvalidFile: false
       },
       containerName: 'attachments/announcement'
     };
@@ -90,7 +102,6 @@ export class FileUploadService {
       element: document.getElementById('fine-uploader-manual-trigger'),
       template: 'qq-template-manual-trigger',
       autoUpload: true,
-      // stopOnFirstInvalidFile: false,
       request: options.request,
       validation: options.fileValidation,
       messages: {
@@ -106,7 +117,9 @@ export class FileUploadService {
           if (responseJSON.responseCode === 'OK') {
             fileDetails.link = responseJSON.result.url;
             fileDetails.size = this.formatFileSize(+fileDetails.size);
-            options.uploadSuccess(fileDetails);
+            fileDetails.name = name;
+            // options.uploadSuccess(fileDetails);
+            this.attachedFiles.push({ ...fileDetails });
           }
         },
         onSubmitted: function (id, name) {
@@ -115,8 +128,23 @@ export class FileUploadService {
           fileDetails.mimetype = this.getFile(id).type;
           fileDetails.size = this.getSize(id);
         },
-        onCancel: options.onCancel
+        onCancel: (id, name) => {
+          _.forEach(this.attachedFiles, (value, key) => {
+            if (value.name === name) {
+              this.attachedFiles.splice(key, 1);
+            }
+          });
+        }
       },
+    };
+    this.getWindowObject.cancelUploadFile = function () {
+      document.getElementById('hide-section-with-button').style.display = 'block';
+    };
+
+    this.getWindowObject.souravCancel = function (item, pos, name) {
+      document.getElementById('attachement' + pos).remove();
+      document.getElementById('hide-section-with-button').style.display = 'block';
+      options.onCancel(pos, name);
     };
     setTimeout(() => {
       this.uploader = new FineUploader(this.uiOptions);
@@ -132,7 +160,7 @@ export class FileUploadService {
   formatFileSize(bytes: number = 0, precision: number = 2): string {
     const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
     if (isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) {
-      return '?';
+      return;
     }
 
     let counter = 0;

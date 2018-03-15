@@ -77,14 +77,14 @@ describe('CreateComponent', () => {
       component.identifier = 'do_12345';
       const response = { result: { announcement: testData.mockRes.resendAnnouncement } };
       spyOn(component, 'resendAnnouncement').and.callThrough();
-      spyOn(component, 'setFormValues').and.callThrough();
+      spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'enableRecipientsBtn').and.callThrough();
       spyOn(createService, 'resendAnnouncement').and.callFake(() => Observable.of(response));
       component.resendAnnouncement();
       fixture.detectChanges();
       expect(component.resendAnnouncement).toHaveBeenCalled();
       expect(createService.resendAnnouncement).toHaveBeenCalledWith(component.identifier);
-      expect(component.setFormValues).toHaveBeenCalledWith(response.result.announcement);
+      expect(component.setResendFormValues).toHaveBeenCalledWith(response.result.announcement);
       expect(component.enableRecipientsBtn).toHaveBeenCalledWith();
       expect(component.showLoader).toEqual(false);
     }));
@@ -187,9 +187,9 @@ describe('CreateComponent', () => {
   it('should redirect announcement preview page', inject([Router],
     (route) => {
       spyOn(component, 'navigateToPreviewPage').and.callThrough();
-      spyOn(component, 'setFormValues').and.callThrough();
+      spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
-      component.setFormValues(testData.mockRes.resendAnnouncement);
+      component.setResendFormValues(testData.mockRes.resendAnnouncement);
       component.navigateToPreviewPage();
       fixture.detectChanges();
       expect(component.navigateToWizardNumber).toHaveBeenCalled();
@@ -200,53 +200,41 @@ describe('CreateComponent', () => {
     (route) => {
       component.formErrorFlag = true;
       spyOn(component, 'enableRecipientsBtn').and.callThrough();
-      spyOn(component, 'setFormValues').and.callThrough();
-      component.setFormValues(testData.mockRes.resendAnnouncement);
+      spyOn(component, 'setResendFormValues').and.callThrough();
+      component.setResendFormValues(testData.mockRes.resendAnnouncement);
       const data = component.enableRecipientsBtn();
       fixture.detectChanges();
-      expect(component.setFormValues).toHaveBeenCalled();
+      expect(component.setResendFormValues).toHaveBeenCalled();
       expect(data).toEqual(false);
     }));
 
   it('should not enable recipients button', inject([Router],
     (route) => {
       spyOn(component, 'enableRecipientsBtn').and.callThrough();
-      spyOn(component, 'setFormValues').and.callThrough();
+      spyOn(component, 'setResendFormValues').and.callThrough();
       // Set empty value
       const data = testData.mockRes.resendAnnouncement;
       data.description = ''; data.links = []; data.attachments = [];
-      component.setFormValues(data);
+      component.setResendFormValues(data);
       const res = component.enableRecipientsBtn();
       fixture.detectChanges();
-      expect(component.setFormValues).toHaveBeenCalled();
+      expect(component.setResendFormValues).toHaveBeenCalled();
       expect(res).toEqual(true);
     }));
 
   it('should validate form state/data and redirect to step 1', inject([Router],
     (route) => {
       spyOn(component, 'validateFormState').and.callThrough();
-      spyOn(component, 'setFormValues').and.callThrough();
+      spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       // Set empty value
       const data = testData.mockRes.resendAnnouncement;
       data.description = ''; data.links = []; data.attachments = [];
-      component.setFormValues(data);
+      component.setResendFormValues(data);
       component.validateFormState();
       fixture.detectChanges();
-      expect(component.setFormValues).toHaveBeenCalled();
+      expect(component.setResendFormValues).toHaveBeenCalled();
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
-    }));
-
-  xit('should push uploaded file details in local variable', inject([Router],
-    (route) => {
-      // Define empty array
-      component.attachments = [];
-      spyOn(component, 'attachments').and.callThrough();
-      spyOn(component, 'enableRecipientsBtn').and.callThrough();
-      component.onFileUploadSuccess(testData.mockRes.resendAnnouncement.attachments[1]);
-      fixture.detectChanges();
-      expect(component.attachments.length).toEqual(1);
-      expect(component.enableRecipientsBtn).toHaveBeenCalled();
     }));
 });

@@ -43,30 +43,41 @@
       </div>
     </div>
     <div class="content">
-      <form class="ui form announcementForm" [formGroup]="announcementForm">
-        <div class="" [ngStyle]="{'display': (stepNumber === 1 && !showLoader) ? 'block' : 'none'}">
-          <div class="ui grid">
-            <div class="eight wide column">
+      <div class="" [ngStyle]="{'display': (stepNumber === 1 && !showLoader) ? 'block' : 'none'}">
+        <div class="ui grid">
+          <div class="eight wide column">
+            <form class="ui form announcementForm" [formGroup]="announcementForm">
               <div class="createAnnFormScroller">
                 <div class="padding-right-25">
                   <div class="field required padding-top-5">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
-                    <input class="form-control" formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
+                    <input formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
+                    <div class="ui pointing red basic label below " *ngIf="announcementForm.controls['title'].errors && announcementForm.controls['title'].errors.required && !announcementForm.controls['title'].pristine">
+                      Title is required
+                    </div>
+                    <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['title'].errors && announcementForm.controls['title'].errors.maxlength && !announcementForm.controls['title'].pristine">
+                      Title is too long
+                    </div>
                     <section *ngIf="announcementForm.value.title.length" class="float-ContentRight">{{announcementForm.value.title.length}} / 100</section>
-                    <p *ngIf="announcementForm.controls['title'].errors && !announcementForm.controls['title'].pristine" class="createAnnErrorMsg">Title is too long</p>
                   </div>
                   <div class="field required dropdown-margin-left">
                     <label>{{resource?.frmelmnts?.lbl?.anncmntfrom}}</label>
                     <div class="field">
                       <input class="form-control" formControlName="from" placeholder="{{resource?.frmelmnts?.lbl?.anncmntfromDesc}}">
+                      <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['from'].errors && announcementForm.controls['from'].errors.required && !announcementForm.controls['from'].pristine">
+                        From is required
+                      </div>
                     </div>
                   </div>
                   <!-- Type -->
                   <div class="field required dropdown-margin-left">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttype}}</label>
-                    <sui-select class="selection" formControlName="type" labelField="name" [placeholder]="'Select announcement type'">
+                    <sui-select class="selection" formControlName="type" [placeholder]="'Select announcement type'">
                       <sui-select-option *ngFor="let type of announcementTypes" [value]="type"></sui-select-option>
                     </sui-select>
+                    <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['type'].errors && announcementForm.controls['type'].errors.required && !announcementForm.controls['type'].pristine">
+                      Type is required
+                    </div>
                   </div>
                   <!-- Description -->
                   <div class="field dropdown-margin-left">
@@ -101,77 +112,80 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- File uploader -->
-            <div class="four wide column">
-              <div class="field">
-                <label>{{resource?.frmelmnts?.lbl?.anncmntuploadfile}}</label>
-                <div>
-                  <div type="text/template" id="qq-template-manual-trigger" style="display: none;">
-                    <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
-                      <div id="hide-section-with-button">
-                        <ul class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
-                          <li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge" qq-file-id="0">
-                            <i class="qq-upload-cancel-selector cursor-pointer remove icon float-ContentRight" id="qq-upload-cancel-manually" onclick=cancelUploadFile()></i>
-                            <span class="qq-upload-file-selector qq-upload-file anncmnt-upload-file" title=""></span>
-                            <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
-                          </li>
-                        </ul>
-                        <div class="qq-upload-drop-area-selector qq-upload-drop-area uploadicon twelve wide column" qq-hide-dropzone>
-                          <span class="qq-upload-drop-area-text-selector"></span>
-                        </div>
-                        <div class="ui grid">
-                          <div class="uploadicon twelve wide column text-align-center">
-                            <p class="dropfile anncmnt-drop-file-info">
-                              <span class="anncmnt-drop-file-info-size">Drop relevant attachment here </span>
-                              <br>
-                              <span class="anncmnt-drop-file-info-style"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
-                            </p>
-                          </div>
-                        </div>
-                        <p class="orinstuction anncmnt-fileupload-or-text">or</p>
-                        <div class="ui grid anncmnt-fileupload-negative-margin">
-                          <div class="twelve wide column text-align-center selectuploadfile anncmnt-upload-file-are">
-                            <label class="qq-upload-button-selector anncmnt-upload-file-btn ui primary basic button text-align-center padding-left-25 announcementButton">
-                              <span class="announcementButtonText">UPLOAD ATTACHMENT</span>
-                              <input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="UPLOAD ATTACHMENT" multiple="" type="file" name="qqfile"
-                                class="anncmnt-fileupload-input-field">
-                            </label>
-                          </div>
-                          <div class="one wide column"></div>
+            </form>
+          </div>
+          <!-- File uploader -->
+          <div class="four wide column">
+            <div class="field">
+              <label>{{resource?.frmelmnts?.lbl?.anncmntuploadfile}}</label>
+              <div>
+                <div type="text/template" #abc id="qq-template-manual-trigger" style="display: none;">
+                  <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
+                    <div id="hide-section-with-button" >
+                      <div #populateAttachment></div>
+                      <ul  class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
+                        <li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge" qq-file-id="0">
+                          <i class="qq-upload-cancel-selector cursor-pointer remove icon float-ContentRight" id="qq-upload-cancel-manually" onclick=cancelUploadFile()></i>
+                          <span class="qq-upload-file-selector qq-upload-file anncmnt-upload-file" title=""></span>
+                          <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
+                        </li>
+                      </ul>
+                      <div class="qq-upload-drop-area-selector qq-upload-drop-area uploadicon twelve wide column" qq-hide-dropzone>
+                        <span class="qq-upload-drop-area-text-selector"></span>
+                      </div>
+                      <div class="ui grid">
+                        <div class="uploadicon twelve wide column text-align-center">
+                          <p class="dropfile anncmnt-drop-file-info">
+                            <span class="anncmnt-drop-file-info-size">Drop relevant attachment here </span>
+                            <br>
+                            <span class="anncmnt-drop-file-info-style"> (Format: .pdf, .png, .jpg. File Limit: 1MB)</span>
+                          </p>
                         </div>
                       </div>
-                      <dialog class="qq-alert-dialog-selector">
-                        <div class="qq-dialog-message-selector"></div>
-                        <div class="qq-dialog-buttons">
-                          <button type="button" class="qq-cancel-button-selector">Close</button>
+                      <p class="orinstuction anncmnt-fileupload-or-text">or</p>
+                      <div class="ui grid anncmnt-fileupload-negative-margin">
+                        <div class="twelve wide column text-align-center selectuploadfile anncmnt-upload-file-are">
+                          <label class="qq-upload-button-selector anncmnt-upload-file-btn ui primary basic button text-align-center padding-left-25 announcementButton">
+                            <span class="announcementButtonText">UPLOAD ATTACHMENT</span>
+                            <input qq-button-id="abe6b3ad-947a-4bae-bd34-f51ab331a6bc" title="UPLOAD ATTACHMENT" multiple="" type="file" name="qqfile"
+                              class="anncmnt-fileupload-input-field">
+                          </label>
                         </div>
-                      </dialog>
-                      <dialog class="qq-confirm-dialog-selector">
-                        <div class="qq-dialog-message-selector"></div>
-                        <div class="qq-dialog-buttons">
-                          <button type="button" class="qq-cancel-button-selector">No</button>
-                          <button type="button" class="qq-ok-button-selector">Yes</button>
-                        </div>
-                      </dialog>
-                      <dialog class="qq-prompt-dialog-selector">
-                        <div class="qq-dialog-message-selector"></div>
-                        <input type="text">
-                        <div class="qq-dialog-buttons">
-                          <button type="button" class="qq-cancel-button-selector">Cancel</button>
-                          <button type="button" class="qq-ok-button-selector">Ok</button>
-                        </div>
-                      </dialog>
+                        <div class="one wide column"></div>
+                      </div>
                     </div>
+                    <dialog class="qq-alert-dialog-selector">
+                      <div class="qq-dialog-message-selector"></div>
+                      <div class="qq-dialog-buttons">
+                        <button type="button" class="qq-cancel-button-selector">Close</button>
+                      </div>
+                    </dialog>
+                    <dialog class="qq-confirm-dialog-selector">
+                      <div class="qq-dialog-message-selector"></div>
+                      <div class="qq-dialog-buttons">
+                        <button type="button" class="qq-cancel-button-selector">No</button>
+                        <button type="button" class="qq-ok-button-selector">Yes</button>
+                      </div>
+                    </dialog>
+                    <dialog class="qq-prompt-dialog-selector">
+                      <div class="qq-dialog-message-selector"></div>
+                      <input type="text">
+                      <div class="qq-dialog-buttons">
+                        <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                        <button type="button" class="qq-ok-button-selector">Ok</button>
+                      </div>
+                    </dialog>
                   </div>
-                  <div id="fine-uploader-manual-trigger"></div>
                 </div>
+                <div id="fine-uploader-manual-trigger"><div #populateAttachment></div></div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="ui form announcementForm">
         <div class="ui segment items-area padding-top-none padding-left-none" *ngIf="showLoader">
-            <app-loader></app-loader>
+          <app-loader></app-loader>
         </div>
         <!-- GEO explorer -->
         <div *ngIf="stepNumber === 2">
@@ -192,7 +206,7 @@
             <app-details [announcementDetails]="announcementDetails"></app-details>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <div class="actions">
@@ -237,7 +251,8 @@
   </div>
 </sui-modal>
 <!-- Cancel modal -->
-<sui-modal [isClosable]="false" [size]="'small'" [hidden]="(modalName === 'create' || modalName === 'success' || modalName === 'close')" #cancelModal>
+<sui-modal [isClosable]="false" [size]="'small'" [hidden]="(modalName === 'create' || modalName === 'success' || modalName === 'close')"
+  #cancelModal>
   <div class=" ui segment margin-top-10">
     <div class="content">
       <div class="ui grid">
