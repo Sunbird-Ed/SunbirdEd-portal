@@ -14,7 +14,7 @@ export class ProfileCardComponent {
     /**
      * To call resource service which helps to use language constant.
      */
- private resourceService: ResourceService;
+ public resourceService: ResourceService;
     /**
      * This is used to render the userProfile values in the view.
      */

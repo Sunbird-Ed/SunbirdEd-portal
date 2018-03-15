@@ -20,8 +20,9 @@
 .ui.form input[type=text], .ui.form input[type=text]:focus, .ui.form input[type=email], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=url], .ui.form input:not([type]) {
     border: 0;
     border-bottom: 1px solid @form-element-border;
-    border-radius: 0;
-    padding: 0.8em 0;
+    border-radius: 0 !important;
+    padding: 0.8em 0 0.8em 1em;
+    font-family: Roboto, sans-serif;
 }
 
 
@@ -85,7 +86,7 @@
 /*it is a quick fix to make modal content scrollable need to updated with semantic libray*/
 
 .ui.modal .scrolling.content {
-    max-height: calc(70vh);
+    max-height: calc(70vh); 
     overflow: auto;
 }
 

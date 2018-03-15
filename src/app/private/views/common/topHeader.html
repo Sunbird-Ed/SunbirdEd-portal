@@ -3,8 +3,16 @@
     </div>
     <div class="ui secondary pointing menu" ng-include="'views/header/mainMenu.html'">
     </div>
-    <div ng-if="$root.showFilter " class="header-filter-container" ng-include="'views/header/filter.html'">
+    <div ng-if="$root.showFilter && (($root.searchKey!=='Courses' || $root.search.selectedSearchKey!=='Courses')&&($root.searchKey!=='Library' || $root.search.selectedSearchKey!=='Library'))"
+         class="header-filter-container" ng-include="'views/header/filter.html'">
     </div>
+    <div ng-controller="DataDrivenFiltersController as dynamic">
+            <div  ng-if="$root.showFilter &&
+            ((dynamic.searchKey==='Courses' && dynamic.search.selectedSearchKey==='Courses')||(dynamic.searchKey==='Library' && dynamic.search.selectedSearchKey==='Library'))" 
+            class="header-filter-container" ng-include="'views/header/FilterTemplate.html'">
+           </div>
+    </div>
+    
     <div ng-include="'views/header/breadCrumbs.html'">
     </div>
 </div>

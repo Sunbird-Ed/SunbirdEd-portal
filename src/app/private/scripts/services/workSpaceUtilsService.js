@@ -35,11 +35,15 @@ angular.module('playerApp')
      * @instance
      */
         this.collectionEditor = function (item, state) {
-          $state.go('CollectionEditor', {
+          var params = {
             contentId: item.identifier,
             type: item.contentType,
             state: state
-          })
+          }
+          if (item.framework) {
+            params.framework = item.framework
+          }
+          $state.go('CollectionEditor', params)
         }
 
         /**

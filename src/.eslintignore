@@ -12,3 +12,4 @@ node_modules/**
 coverage/**
 docs/**
 test/testData/testData.js
+app/helpers/announcement

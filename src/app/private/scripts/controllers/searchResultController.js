@@ -64,6 +64,7 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.$watch('searchKey', function () {
       $timeout(function () {
         $rootScope.search.selectedSearchKey = $rootScope.searchKey
+        $rootScope.$emit('DynSearchKey', { key: $rootScope.searchKey })
         $scope.search.isSearchTypeKey = $scope.search.searchTypeKeys
           .includes($rootScope.search.selectedSearchKey)
         $('#headerSearch').dropdown('set selected',
@@ -482,6 +483,7 @@ angular.module('playerApp').controller('SearchResultController', [
     }
     $rootScope.search.setSearchKey = function (key) {
       $rootScope.$emit('setSearchKey', { key: key })
+      $rootScope.$emit('DynsetSearchKey', { key: key })
     }
     $scope.$on('$destroy', function () {
       conceptSelHandler()

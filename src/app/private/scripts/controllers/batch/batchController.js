@@ -24,6 +24,9 @@ angular.module('playerApp')
         { name: 'Upcoming', value: 0 }
       ]
       batch.showEnroll = true
+      batch.searchUserMap = {}
+      batch.userSearchTime = 0
+
       batch.showCreateBatchModal = function () {
         batch.getUserList()
         $timeout(function () {
@@ -32,6 +35,7 @@ angular.module('playerApp')
           $('#users,#mentors').dropdown({ forceSelection: false, fullTextSearch: true })
           $('.ui.calendar').calendar({ refresh: true })
           $('#createBatchModal').modal({
+            closable: false,
             onShow: function () {
               var today = new Date()
               $('.ui.calendar#rangestartAdd').calendar({
@@ -217,36 +221,91 @@ angular.module('playerApp')
         $state.go('updateBatch', { batchId: batchData.identifier, coursecreatedby: coursecreatedby })
       }
 
-      batch.getUserList = function () {
-        var request = {
-          request: {
-            filters: {
-              'organisations.organisationId': $rootScope.organisationIds
-            }
+      // User search status = 1, Mentor search status = 2, Normal status = 0
+      $timeout(function () {
+        $('#users').dropdown({
+          forceSelection: false,
+          fullTextSearch: true,
+          onAdd: function () {
+            $('#createBatchModal').modal('refresh')
+            batch.isUserSearch = 1
+            batch.getUserListWithQuery('')
           }
+        })
+        $('#mentors').dropdown({
+          fullTextSearch: true,
+          forceSelection: false,
+          onAdd: function () {
+            $('#createBatchModal').modal('refresh')
+            batch.isUserSearch = 2
+            batch.getUserListWithQuery('')
+          }
+        })
+        $('#users input.search').on('keyup', function (e) {
+          batch.isUserSearch = 1
+          batch.getUserListWithQuery(this.value)
+        })
+        $('#mentors input.search').on('keyup', function (e) {
+          batch.isUserSearch = 2
+          batch.getUserListWithQuery(this.value)
+        })
+      }, 1000)
+
+      batch.getUserListWithQuery = function (query) {
+        if (batch.userSearchTime) {
+          clearTimeout(batch.userSearchTime)
         }
+        batch.userSearchTime = setTimeout(function () {
+          var users = batch.searchUserMap[query]
+          if (users) {
+            batch.isUserSearch = 0
+            batch.userList = users.user
+            batch.menterList = users.mentor
+            $('#users').dropdown('refresh')
+            $('#mentors').dropdown('refresh')
+          } else {
+            batch.getUserList(query)
+          }
+        }, 1000)
+      }
+
+      batch.getUserList = function (query) {
+        var request = batchService.getRequestBodyForUserSearch(query)
         batchService.getUserList(request).then(function (response) {
           if (response && response.responseCode === 'OK') {
             _.forEach(response.result.response.content, function (userData) {
               if (userData.identifier !== $rootScope.userId) {
-                var user = {
-                  id: userData.identifier,
-                  name: userData.firstName + ' ' + userData.lastName,
-                  avatar: userData.avatar
-                }
-                _.forEach(userData.organisations, function (userOrgData) {
-                  if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-                    batch.menterList.push(user)
+                if (batchService.filterUserSearchResult(userData, query)) {
+                  var user = {
+                    id: userData.identifier,
+                    name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+                    avatar: userData.avatar,
+                    otherDetail: batchService.getUserOtherDetail(userData)
                   }
-                })
-                batch.userList.push(user)
+                  _.forEach(userData.organisations, function (userOrgData) {
+                    if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+                      batch.menterList.push(user)
+                    }
+                  })
+                  batch.userList.push(user)
+                }
               }
             })
+            batch.userList = _.uniqBy(batch.userList, 'id')
+            batch.menterList = _.uniqBy(batch.menterList, 'id')
+            batch.searchUserMap[query || ''] = {
+              mentor: _.clone(batch.menterList),
+              user: _.clone(batch.userList)
+            }
+            $('#users').dropdown('refresh')
+            $('#mentors').dropdown('refresh')
+            batch.isUserSearch = 0
           } else {
+            batch.isUserSearch = 0
             toasterService.error($rootScope.messages.fmsg.m0056)
           }
-          console.log('response ', response)
         }).catch(function () {
+          batch.isUserSearch = 0
           toasterService.error($rootScope.messages.fmsg.m0056)
         })
       }

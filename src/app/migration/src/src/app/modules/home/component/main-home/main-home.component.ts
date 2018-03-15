@@ -28,7 +28,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   /**
    * To call resource service which helps to use language constant.
    */
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
   /**
    * To show toaster(error, success etc) after any API calls.
    */
