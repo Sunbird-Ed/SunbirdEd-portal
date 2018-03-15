@@ -154,8 +154,16 @@ angular.module('playerApp')
       var initSearchHandler = $rootScope.$on('initPageSearch', function (event, args) {
         section.sections()
       })
+      var initSearchHandlerForDynamicSearchPage = $rootScope.$on('initPageSearchFromDynamicPage',
+        function (event, args) {
+          $rootScope.search.filters = args.FilterData
+          $rootScope.search.sortBy = args.sortByData
+          section.sections()
+        })
+
       $scope.$on('$destroy', function () {
         initSearchHandler()
+        initSearchHandlerForDynamicSearchPage()
       })
 
       // telemetry visit spec

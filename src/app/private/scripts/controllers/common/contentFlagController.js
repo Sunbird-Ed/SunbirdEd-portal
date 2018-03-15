@@ -14,16 +14,20 @@ angular.module('playerApp')
       contentFlag.contentVersionKey = $scope.versionkey
       contentFlag.reasons = [{
         name: 'Inappropriate content',
+        value: 'Inappropriate Content',
         description: 'Hateful, harmful or explicit lesson that is inappropriate for young learners'
       }, {
         name: 'Copyright violation',
+        value: 'Copyright Violation',
         description: 'Uses copyrighted work without permission'
       }, {
         name: 'Privacy violation',
+        value: 'Privacy Violation',
         description: 'Collects sensitive data or personal information about users, such as name' +
         '\n address, photo or other personally identifiable information'
       }, {
-        name: 'Other'
+        name: 'Other',
+        value: 'Other'
       }]
 
       contentFlag.reasonDescription = {

@@ -76,7 +76,7 @@ angular.module('playerApp')
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
                   // if user belongs to an org in which the current logged in user is ORG_ADMIN, set editable to true
                   if (typeof (user.isEditableProfile) === 'undefined' && (_.indexOf(adminRoles, 'ORG_ADMIN') > -1 ||
-                   _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
+                    _.indexOf(adminRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
                     user.isEditableProfile = true
                   }
                   var orgNameAndId = orgIdAndNames.find(function (org) {
@@ -87,7 +87,7 @@ angular.module('playerApp')
               }
               // if current logged in user is ORG_ADMIN, SYSTEM_ADMINISTRATION of the root org of the user, set editable to true
               if (user.rootOrgId === $rootScope.rootOrgId &&
-                                    $rootScope.rootOrgAdmin === true) {
+                $rootScope.rootOrgAdmin === true) {
                 user.isEditableProfile = true
               }
             })
@@ -144,9 +144,9 @@ angular.module('playerApp')
           var nullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
           var users = JSON.parse(nullReplacedToEmpty)
           alasql('SELECT firstName AS [First Name],lastName AS [Last Name], ' +
-                        ' organisationsName AS Organizations ,location AS Location, grade AS Grades, ' +
-                        'language AS Language ,subject as Subjects ' +
-                        ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users])
+            ' organisationsName AS Organizations ,location AS Location, grade AS Grades, ' +
+            'language AS Language ,subject as Subjects ' +
+            ' INTO CSV(\'Users.csv\',{headers:true ,separator:","}) FROM ?', [users])
         } else if (key === 'Organisations') {
           list.forEach(function (org) {
             switch (org.status) {
@@ -169,8 +169,8 @@ angular.module('playerApp')
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
           var organizations = JSON.parse(orgNullReplacedToEmpty)
           alasql('SELECT orgName AS orgName,orgType AS orgType,' +
-          'noOfMembers AS noOfMembers,channel AS channel, ' +
-          'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
+            'noOfMembers AS noOfMembers,channel AS channel, ' +
+            'status AS Status INTO CSV(\'Organizations.csv\',{headers:true,separator:","}) FROM ?',
           [organizations])
         }
       }
@@ -194,7 +194,7 @@ angular.module('playerApp')
               return user
             })
           } else { toasterService.error($rootScope.messages.fmsg.m0051) }
-                }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -235,7 +235,7 @@ angular.module('playerApp')
             // profile.isError = true;
             toasterService.error($rootScope.messages.fmsg.m0051)
           }
-            }).catch(function(err) { // eslint-disable-line
+        }).catch(function (err) { // eslint-disable-line
           // profile.isError = true
           toasterService.error($rootScope.messages.fmsg.m0051)
         })

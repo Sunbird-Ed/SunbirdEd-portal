@@ -1,5 +1,5 @@
 <div ng-init="batchUpdate.init()">
-    <div class="ui modal" id="updateBatchModal">
+    <div class="ui long modal" id="updateBatchModal">
         <div class="header">
             <div class="ui grid">
                 <div class="eleven wide column">
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="scrolling content">
             <form class="ui form batchAddUserForm" id="updateBatch" name="updateBatch" validate>
                 <div ng-if="batchUpdate.batchData.status == 0">
                     <div class="one field" ng-class="{true: 'error'}[batchUpdate.submitted && updateBatch.name.$invalid]">
@@ -64,13 +64,13 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.frmelmnts.lbl.batchmentors}}</label>
-                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors">
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors" ng-class="batchUpdate.isUserSearch === 2 ? 'loading' : undefined">
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon"></i>
                             <div class="default text">Start searching by name</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -78,18 +78,18 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchselmentors}}</label>
                         <a class="ui label margin-top--5" ng-hide="batchUpdate.selectedMentors.length < 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
                         </a>
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.frmelmnts.lbl.bacthmembers}}</label>
-                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users">
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select User</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchparticipants}}</label>
                         <a class="ui label margin-top--5" ng-hide="batchUpdate.selectedUsers.length < 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                         </a>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                             <div class="default text">Start searching by name</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -165,18 +165,18 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchselmentors}}</label>
                         <a class="ui label margin-top--5" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
                         </a>
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.frmelmnts.lbl.bacthmembers}}</label>
-                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users">
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select User</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchparticipants}}</label>
                         <a class="ui label margin-top--5" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                         </a>
                     </div>
                 </div>
@@ -222,7 +222,8 @@
                             <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
                                 <div class="ui input left icon">
                                     <i class="calendar icon date-calendar"></i>
-                                    <input class="date-select" type="text" id="startDate" name="startDate" ng-model="batchUpdate.batchData.startDate" required disabled="true">
+                                    <input class="date-select" type="text" id="startDate" name="startDate" ng-model="batchUpdate.batchData.startDate" required
+                                        disabled="true">
                                 </div>
                             </div>
                         </div>
@@ -238,13 +239,13 @@
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.frmelmnts.lbl.batchmentors}}</label>
-                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors">
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors" ng-class="batchUpdate.isUserSearch === 2 ? 'loading' : undefined">
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon "></i>
                             <div class="default text">Start searching by name</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
-                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}
+                                    <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -252,18 +253,18 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedMentors.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchselmentors}}</label>
                         <a class="ui label" ng-show="batchUpdate.selectedMentors.length > 0" ng-repeat="mentor in batchUpdate.selectedMentors">
-                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
                         </a>
                     </div>
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only'">
                         <label>{{$root.frmelmnts.lbl.bacthmembers}}</label>
-                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users">
+                        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select User</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
-                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                                    <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                                 </div>
                             </div>
                         </div>
@@ -271,7 +272,7 @@
                     <div class="one field" ng-show="batchUpdate.batchData.enrollmentType == 'invite-only' && batchUpdate.selectedUsers.length > 0">
                         <label>{{$root.frmelmnts.lbl.batchparticipants}}</label>
                         <a class="ui label" ng-show="batchUpdate.selectedUsers.length > 0" ng-repeat="user in batchUpdate.selectedUsers">
-                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}
+                            <img class="ui right spaced avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
                         </a>
                     </div>
                 </div>

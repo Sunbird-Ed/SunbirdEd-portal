@@ -20,7 +20,7 @@
 
     <form class="ui form margin-top-20 "  ng-if="profileCtrl.openDiscriptionEdit">
         <div class="field">
-            <textarea ng-model="profileCtrl.basicProfile.profileSummary"></textarea>
+            <textarea ng-model="profileCtrl.basicProfile.profileSummary" maxlength="2000" ></textarea>
         </div>
 
         <button class="ui primary button margin-top-15" ng-if="profileCtrl.openDiscriptionEdit" ng-disable="!profileCtrl.profileSummary" ng-click="profileCtrl.EditDetails(profileCtrl.basicProfile.profileSummary); profileCtrl.generateInteractEvent('profileSummary')">{{$root.frmelmnts.btn.save}} </button>
