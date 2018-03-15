@@ -8,7 +8,7 @@
         </div>
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.designation}}</label>
-            <input type="text" name="" ng-model="profileCtrl.newExperience.role">
+            <input type="text" name="designation" ng-model="profileCtrl.newExperience.role">
         </div>
 
 
@@ -21,7 +21,7 @@
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.subjectstaught}}</label>
             <div class="field">
-                <select apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                <select name="subjectstaught" apply-script class="ui fluid dropdown signupMultiple" multiple="" ng-model="profileCtrl.newExperience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
             </select>
             </div>
         </div>
@@ -48,7 +48,7 @@
             <div class="ui calendar" id="rangestartAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="newExperience.joiningDate">
+                    <input type="text" name="joiningDate" ng-model="newExperience.joiningDate">
                 </div>
             </div>
         </div>
@@ -58,13 +58,13 @@
             <div apply-script class="ui calendar" id="rangeendAdd">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="newExperience.endDate">
+                    <input type="text" name="endDate" ng-model="newExperience.endDate">
                 </div>
             </div>
         </div>
     </div>
     <div class="ui error message">
     </div>
-    <button class="ui primary button" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience); profileCtrl.generateInteractEvent(experience')">{{$root.frmelmnts.btn.save}}</button>
+    <button class="ui primary button" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addExperience(profileCtrl.newExperience); profileCtrl.generateInteractEvent('experience')">{{$root.frmelmnts.btn.save}}</button>
 
 </form>

@@ -50,7 +50,7 @@
             </a>
             </span>
             <!-- Content type -->
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedContentType.length > 0'>
+            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedContentType.length > 0'>
                 {{$root.frmelmnts.prmpt.contenttypes}}:
                 <a class="ui label margin-top--5" ng-repeat="contenttype in upForReviewContent.search.appliedContentType" ng-init="$last && $root.expandFilters()">
                     {{upForReviewContent.search.getSelectedContentTypeValue(upForReviewContent.search.contentTypes, contenttype)}}
@@ -58,7 +58,7 @@
                 </a>
             </span>
             <!-- grades -->
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedGrades.length > 0'>
+            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedGrades.length > 0'>
                 {{$root.frmelmnts.prmpt.grades}}:
                 <a class="ui label margin-top--5" ng-repeat="grade in upForReviewContent.search.appliedGrades" ng-init="$last && $root.expandFilters()">
                     {{grade}}
@@ -66,7 +66,7 @@
                 </a>
             </span>
             <!-- medium -->
-            <span class="padded chip" ng-if='upForReviewContent.search.appliedMedium.length > 0'>
+            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedMedium.length > 0'>
                 {{$root.frmelmnts.prmpt.medium}}:
                 <a class="ui label margin-top--5" ng-repeat="medium in upForReviewContent.search.appliedMedium" ng-init="$last && $root.expandFilters()">
                     {{medium}}
@@ -74,7 +74,7 @@
                 </a>
             </span>
             <!-- subject -->
-            <span class="padded chip margin-top--5" ng-if='upForReviewContent.search.appliedSubject.length > 0'>
+            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedSubject.length > 0'>
                 {{$root.frmelmnts.prmpt.subject}}:
                 <a class="ui label margin-top--5" ng-repeat="subject in upForReviewContent.search.appliedSubject" ng-init="$last && $root.expandFilters()">
                     {{subject}}
