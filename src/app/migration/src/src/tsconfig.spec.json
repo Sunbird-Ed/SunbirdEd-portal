@@ -1,0 +1,39 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./",
+    "paths": {
+      "@sunbird/core": [
+          "app/modules/core"
+      ],
+      "@sunbird/community": [
+        "app/modules/community"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "app/modules/home"
+        ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
+      "@sunbird/announcement": [
+        "app/modules/announcement"
+      ]
+    },
+    "module": "commonjs",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "test.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ]
+}

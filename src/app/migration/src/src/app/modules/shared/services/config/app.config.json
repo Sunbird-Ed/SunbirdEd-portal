@@ -1,0 +1,19 @@
+{
+    "HOME": {
+        "PAGE_LIMIT": 2
+    },
+    "OUTBOX": {
+        "PAGE_LIMIT": 25
+    },
+    "INBOX": {
+        "PAGE_LIMIT": 10
+    },
+    "PAGINATION": {
+        "PAGE_STRIP": 5
+    },
+    "API": {
+        "ANNOUNCEMENT": {
+            "CHANNEL": "web"
+        }
+    }
+}

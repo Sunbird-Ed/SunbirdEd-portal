@@ -1,0 +1,87 @@
+<div class="ui right aligned grid">
+  <div class="ui raised segment width-100">
+    <div class="ui warning message tweleve wide column" *ngIf="announcementDetails && !announcementDetails.title">
+      <div class="header">
+        {{resourceService?.frmelmnts?.instn?.t0055}}
+      </div>
+      {{resourceService?.frmelmnts?.instn?.t0056}}
+    </div>
+    <div *ngIf="announcementDetails && announcementDetails.title">
+      <div>
+        <p class="ui grey label annType" *ngIf="announcementDetails.type">
+          {{announcementDetails.type | uppercase}}
+        </p>
+      </div>
+      <div class="header padding-top-5">
+        <div class="header padding-top-10 announcementHomeCard-header" *ngIf="announcementDetails.title">
+          {{announcementDetails.title}}
+        </div>
+        <div class="ng-binding annOrgName padding-top-10" *ngIf="announcementDetails.from">
+          {{announcementDetails.from}}
+        </div>
+        <div class="padding-top-20 announcement-description" *ngIf="announcementDetails.description">
+          {{announcementDetails.description}}
+        </div>
+      </div>
+      <div *ngIf="announcementDetails.links && announcementDetails.links.length">
+        <div class="padding-top-20">
+          <strong class="annMediumText ng-binding">
+            {{resourceService?.frmelmnts?.lbl?.anncmntdtlsweblinks}}
+          </strong>
+        </div>
+        <div class="padding-top-10 tweleve wide column">
+          <div *ngFor="let link of announcementDetails.links">
+            <p>
+              <a class="annUrlLinks" href="{{link}}" target="_blank">
+                {{link | slice:0:70}}
+                <span class="announcementBlueText" *ngIf="link.length > 70">...</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="announcementDetails.attachments && announcementDetails.attachments.length">
+        <div class="padding-top-20">
+          <strong class="annMediumText ng-binding">
+            {{resourceService?.frmelmnts?.lbl?.anncmntdtlsattachments}}
+          </strong>
+        </div>
+        <div class="sixteen wide column margin-bottom-20 padding-top-20">
+          <div class="ui items">
+            <div class="ui item box" *ngFor="let attachment of announcementDetails.attachments">
+              <div class="ui grid">
+                <div class="column">
+                  <div class="attachmentPlacementBgr" [ngSwitch]="attachment.mimetype">
+                    <i *ngSwitchCase="'application/pdf'" class="file pdf announcementAttachmentsIcon big outline icon"></i>
+                    <i *ngSwitchDefault class="file image outline icon big announcementAttachmentsIcon"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="middle aligned content padding-left-none">
+                <div class="ui float-ContentRight">
+                  <a class="ui primary basic button announcementButton" href="{{attachment.link}}" target="_blank">
+                    <span class="announcementButtonText">
+                      {{resourceService?.frmelmnts?.btn?.anncmntdtlsview}}
+                    </span>
+                  </a>
+                </div>
+                <p class="annAttaFilename annAttaFileName" title="{{attachment.name}}">
+                  {{attachment.name | slice:0:50}}
+                  <span *ngIf="attachment.name.length > 50">...</span>
+                </p>
+                <p class="annAttaFilesize annAttaFileSize" *ngIf="attachment.size">
+                  {{attachment.size | uppercase}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="gray-full-width announcementSentOnDate" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
+        <span class="ng-binding announcement-description">
+          {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

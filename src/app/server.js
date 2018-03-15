@@ -99,7 +99,7 @@ if (defaultTenant) {
 }
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
-
+app.use(express.static(path.join(__dirname, 'migration/dist'), { extensions: ['ejs'], index: false }))
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
@@ -206,6 +206,57 @@ app.all('/private/service/v1/content/*',
     }
   }))
 
+app.post('/learner/content/v1/media/upload',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(learnerURL + '/content/v1/media/upload').path
+    },
+    userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+      let data = JSON.parse(proxyResData.toString('utf8'))
+      if (data.responseCode === 'OK') {
+        data.success = true
+      }
+      return JSON.stringify(data)
+    }
+  }))
+
+app.all('/learner/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
+      }
+    }
+  }))
+
+app.all('/content/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(contentURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(contentURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(contentURL + urlParam).path
+      }
+    }
+  }))
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
 
@@ -220,6 +271,15 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(path.join(__dirname, 'private', 'index.ejs'))
+})
+
+app.all('/migration/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
+  res.locals.userId = req.kauth.grant.access_token.content.sub
+  res.locals.sessionId = req.sessionID
+  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.render(path.join(__dirname, 'migration/dist', 'index.ejs'))
 })
 
 app.get('/get/envData', keycloak.protect(), function (req, res) {
@@ -252,6 +312,10 @@ app.all('/:tenantName', function (req, res) {
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
 
+// Resource bundles apis
+
+app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 // redirect to home if nothing found
 app.all('*', function (req, res) {
   res.redirect('/')

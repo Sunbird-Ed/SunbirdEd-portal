@@ -1,0 +1,37 @@
+<div class="ui grid">
+<div class="center aligned twelve column row padding-top-2rem headerBackground">
+    <div class="one wide column"></div>
+    <div class="two wide column">
+        <a href="/private/index#!/home">
+            <img class="image centered header-logo" src="{{orgLogo || '/assets/common/images/sunbird_logo.png'}} ">
+        </a>
+    </div>
+    <div class="six wide column padding-top-1rem">
+        <app-search></app-search>
+    </div>
+    <div class="one wide column">
+    </div>
+    <div class="one wide column">
+        <i class="float-ContentLeft alarm-icon-header alarm icon large alaramIconColor"></i>
+        <div suiDropdown [(isOpen)]="isOpen"  class="ui floating dropdown right top pointing
+             header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
+            <img src="{{ userProfile?.avatar || '/assets/common/images/user_logo.png'}}" class="ui circular image logged-in-user" />
+            <div class="menu" suiDropdownMenu>
+                <div *ngIf='userProfile' class="item headerDropdownProfile" >{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
+                <div *ngIf='userProfile' class="ui divider"></div>
+
+                <a class="item" href="/private/index#!/profile" >{{resourceService.frmelmnts?.lnk?.profile}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'adminDashboard' href="/private/index#!/org-dashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'announcementRole' [routerLink]="['announcement/outbox/1']" >{{resourceService.frmelmnts?.lnk?.announcement}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'workSpaceRole' href="/private/index#!/workspace/content/create" >{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'myActivityRole' href="/private/index#!/course-creator-dashboard" >{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'orgSetupRole' href="/private/index#!/course-creator-dashboard" >Setup</a>
+                <a class="item" href="#" (click)='logout()'>{{resourceService.frmelmnts?.lnk?.logout}}</a>
+
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+</div>
+<app-main-menu></app-main-menu>

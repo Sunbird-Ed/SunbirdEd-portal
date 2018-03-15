@@ -1,0 +1,30 @@
+<div class="ui link cards">
+    <div class="sliderCards ui card margin-right-20 margin-top-15">
+        <div class="image imageInCardsResponsive">
+            <div *ngIf="enrolledCourses.leafNodesCount  && enrolledCourses.progress > 0" class="course-progress ui tiny progress  progressBar-margin orange">
+                <sui-progress class="top attached  active" [value]="enrolledCourses.progress" [maximum]="enrolledCourses.leafNodesCount"></sui-progress>
+            </div>
+            <div class="ui fluid image">
+                <a class="ui black right ribbon label">{{resourceService.frmelmnts?.bdge?.course}}</a>
+
+                <img src="{{ enrolledCourses.appIcon || enrolledCourses.courseLogoUrl || '/assets/common/images/default.png' }}">
+            </div>
+            <div class="cardImageText center aligned ">
+                <span class="sliderCardHeading text-cencapitalize">
+                    {{enrolledCourses.courseName | slice:0:14}}
+                </span>
+            </div>
+        </div>
+        <div class="sliderCards content">
+            <div class="sliderCardDesc fixedRatingCard">
+                {{ enrolledCourses.description | slice:0:55 }}
+                <i *ngIf="enrolledCourses.description.length >= 55" class="ellipsis horizontal icon popup-button link" [attr.data-content]="enrolledCourses.description"
+                    [attr.data-variation]="wide"></i>
+            </div>
+            <button class="ui blue basic right floated button margin-top-10">{{resourceService.frmelmnts?.btn?.resume}}</button>
+            <div class=" ui courseHeader-rating ui  star rating padding-top-20">
+                <sui-rating [ngModel]="enrolledCourses.me_averageRating |number:0" [maximum]="5" [isReadonly]="true"></sui-rating>
+            </div>
+        </div>
+    </div>
+</div>
