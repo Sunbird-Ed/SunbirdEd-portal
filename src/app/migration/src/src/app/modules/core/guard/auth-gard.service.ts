@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
     * @param {resourceService}
     * @param {Router}
     */
-    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
+    constructor( router: Router, permissionService: PermissionService, resourceService: ResourceService) {
         this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
