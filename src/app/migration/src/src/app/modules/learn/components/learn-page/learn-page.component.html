@@ -2,7 +2,7 @@
 <br>
 <div class=" ui grid">
   <div class="one wide column"></div>
-  <div class="ten wide column" *ngIf=" !showLoader">
+  <div class="ten wide column" *ngIf="!showLoader">
     <div *ngFor="let section of caraouselData">
       <app-page-section [section]="section"></app-page-section>
     </div>

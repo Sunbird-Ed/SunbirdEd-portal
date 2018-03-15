@@ -45,20 +45,38 @@ export const mockRes = {
             }]
         }
     },
-    courseError: {
-        'id': 'api.course.getbyuser', 'params': {
-            'resmsgid': 'UNAUTHORIZED', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
-            'status': 'error', 'err': 'UNAUTHORIZED', 'errmsg': 'UNAUTHORIZED'
-        }, 'responseCode': 'error',
-        'result': { 'courses': [{}] }
-    },
-    enrolledCourses: {
-        'err': null,
+    enrolledCourses: [{
+        'name': 'My Course',
+        'length': 1,
         'enrolledCourses': [
              {
                 'active': 'true', 'courseId': 'do_2123412199319552001265', 'courseName': '27-sept',
                 'description': 'test', 'leafNodesCount': '0', 'progress': '0', 'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
             }
         ]
+    }],
+    noCourses: {'id': 'api.course.getbyuser', 'params': {
+        'resmsgid': 'null', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
+        'status': 'success', 'err': 'null', 'errmsg': 'null'
+    }, 'responseCode': 'OK',
+    'result': {
+        'courses': [
+             ]
     }
+},
+errorCourse: {'id': 'api.course.getbyuser', 'params': {
+    'resmsgid': 'UnAutorized', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
+    'status': 'UnAutorized', 'err': 'UnAutorized', 'errmsg': 'UnAutorized'
+}, 'responseCode': 'Err',
+'result': {'courses': [
+]
+}
+},
+resourceBundle : {
+    'messages': {
+      'fmsg': {
+          'm0001': 'Fetching enrolled course is failed, please try again later...'
+      }
+   }
+   }
 };

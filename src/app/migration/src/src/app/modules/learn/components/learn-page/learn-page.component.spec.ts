@@ -50,21 +50,32 @@ describe('LearnPageComponent', () => {
      expect(component.showLoader).toBeFalsy();
      expect(component.caraouselData).toBeDefined();
   });
-
-  it('should take else statement', () => {
-    const courseService = TestBed.get(CoursesService);
-    const pageSectionService = TestBed.get(PageSectionService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(testData.successData));
-     component.caraouselData = testData.successData.result.response.sections;
-    component.populatePageData();
-    fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-  });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseSuccess));
+    courseService.getEnrolledCourses();
+    fixture.detectChanges();
+    component.populateEnrolledCourse();
+    fixture.detectChanges();
+    expect(component.showLoader).toBeFalsy();
+  });
+  it('should else', () => {
+    const courseService = TestBed.get(CoursesService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.noCourses));
+    courseService.getEnrolledCourses();
+    fixture.detectChanges();
+    component.populateEnrolledCourse();
+    fixture.detectChanges();
+    expect(component.showLoader).toBeFalsy();
+  });
+  it('should take err ', () => {
+    const courseService = TestBed.get(CoursesService);
+    const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
+   resourceService.messages = testData.resourceBundle.messages;
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw(testData.errorCourse));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
     component.populateEnrolledCourse();

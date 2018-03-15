@@ -1,7 +1,7 @@
 import { ICourses } from './../../../core/interfaces/enrolledCourses';
 import { PageSectionService, CoursesService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService} from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { ICaraouselData, IContents, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
@@ -23,18 +23,18 @@ export class LearnPageComponent implements OnInit {
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
-   /**
-   * To call get course data.
-   */
+  /**
+  * To call get course data.
+  */
   pageSectionService: PageSectionService;
   /**
    * To get enrolled courses details.
    */
   coursesService: CoursesService;
-   /**
-   * Contains result object returned from enrolled course API.
-   */
-  enrolledCourses: any;
+  /**
+  * Contains result object returned from enrolled course API.
+  */
+  enrolledCourses: Array<any>;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -42,13 +42,13 @@ export class LearnPageComponent implements OnInit {
    * any data
    */
   showLoader = true;
-   /**
-   * Contains result object returned from getPageData API.
-   */
+  /**
+  * Contains result object returned from getPageData API.
+  */
   caraouselData: Array<ICaraouselData> = [];
-   /**
-   * Contains object send to api result.
-   */
+  /**
+  * Contains object send to api result.
+  */
   action: IAction;
 
   /**
@@ -66,8 +66,43 @@ export class LearnPageComponent implements OnInit {
     this.resourceService = resourceService;
   }
   /**
-  * This method calls the course API.
-  */
+     * This method calls the enrolled courses API.
+     */
+  populateEnrolledCourse() {
+    this.coursesService.enrolledCourseData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          if (data.enrolledCourses.length > 0) {
+            this.showLoader = false;
+            this.action = {
+              type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
+              label: 'Resume'
+            };
+            this.enrolledCourses = data.enrolledCourses;
+            _.forEach(this.enrolledCourses, (value, index) => {
+              this.enrolledCourses[index].action = this.action;
+            });
+            this.caraouselData.unshift({
+              name: 'My Courses',
+              length: this.enrolledCourses.length,
+              contents: this.enrolledCourses
+            });
+            this.populatePageData();
+          } else if (data.enrolledCourses.length === 0) {
+            this.populatePageData();
+            this.showLoader = false;
+          }
+        } else if (data && data.err) {
+          this.populatePageData();
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0001);
+        }
+      },
+    );
+  }
+  /**
+   * This method calls the page prefix API.
+   */
   populatePageData() {
     const option = {
       source: 'web',
@@ -75,81 +110,52 @@ export class LearnPageComponent implements OnInit {
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse) {
-          this.showLoader = false;
-          this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
-          _.forEach(this.caraouselData, (value, index) => {
-            if (value.name !== 'My Courses') {
-              _.forEach(this.caraouselData[index].contents, (value1, index1) => {
-                this.coursesService.enrolledCourseData$.subscribe(
-                  data => {
-                    if (apiResponse) {
-                      _.forEach(this.enrolledCourses, (value2, index2) => {
-                        if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses.courseId) {
-                          this.action = this.action = {
-                            type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
-                            label: 'Resume'
-                          };
-                          this.caraouselData[index].contents[index1].action = this.action;
-                        } else {
-                          this.action = this.action = {
-                            type: { button: false, rating: true }, classes: { button: 'ui blue basic button' },
-                            label: 'Resume'
-                          };
-                          this.caraouselData[index].contents[index1].action = this.action;
-                        }
-                      });
-                    }  else {
-                      this.action = this.action = {
-                        type: { button: false, rating: true }, classes: { button: 'ui blue basic button' },
-                        label: 'Resume'
-                      };
-                      this.caraouselData[index].contents[index1].action = this.action;
-                    }
-                  }
-                );
-              });
-            }
-          });
-        } else {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.stmsg.m0053);
-        }
+        this.showLoader = false;
+        this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
+        this.processActionObject();
+      },
+      err => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0002);
       }
     );
   }
   /**
-  * This method calls the enrolled course API.
-  */
-  public populateEnrolledCourse() {
-    this.coursesService.enrolledCourseData$.subscribe(
-      data => {
-        if (data) {
-          this.showLoader = false;
-          const action = this.action = {
-            type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
-            label: 'Resume'
-          };
-          this.enrolledCourses = data.enrolledCourses;
-          _.forEach(this.enrolledCourses, (value, index) => {
-            this.enrolledCourses[index].action = action;
-          });
-          this.caraouselData.unshift({
-            name: 'My Courses',
-            length: this.enrolledCourses.length,
-            contents: this.enrolledCourses
-          });
-        } else {
-          this.showLoader = false;
-        }
-      },
-      err => {
-        this.showLoader = false;
+   * This method process the action object.
+   */
+  processActionObject() {
+    _.forEach(this.caraouselData, (value, index) => {
+      if (value.name !== 'My Courses') {
+        _.forEach(this.caraouselData[index].contents, (value1, index1) => {
+          if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+            _.forEach(this.enrolledCourses, (value2, index2) => {
+              if (this.caraouselData[index].contents[index2].identifier === this.enrolledCourses[index2].courseId) {
+                this.action = {
+                  type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
+                  label: 'Resume'
+                };
+                this.caraouselData[index].contents[index1].action = this.action;
+              } else {
+                this.action = {
+                  type: { button: false, rating: true }
+                };
+                this.caraouselData[index].contents[index1].action = this.action;
+              }
+            });
+          } else {
+            this.action = {
+              type: { button: false, rating: true }
+            };
+            this.caraouselData[index].contents[index1].action = this.action;
+          }
+        });
       }
-    );
+    });
   }
+  /**
+ *This method calls the populateEnrolledCourse
+ */
   ngOnInit() {
     this.populateEnrolledCourse();
-    this.populatePageData();
   }
 }

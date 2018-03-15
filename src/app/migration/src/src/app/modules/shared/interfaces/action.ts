@@ -1,6 +1,6 @@
 
 export interface IAction {
-    type?: {
+    type: {
         dual?: boolean;
         button?: boolean;
         icon?: boolean;

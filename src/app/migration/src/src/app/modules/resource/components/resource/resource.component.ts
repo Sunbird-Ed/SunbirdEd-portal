@@ -25,7 +25,7 @@ export class ResourceComponent implements OnInit {
    /**
    * To call get resource data.
    */
-  pageSectionService: PageSectionService;
+ private pageSectionService: PageSectionService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -60,7 +60,8 @@ export class ResourceComponent implements OnInit {
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.showLoader = false;
+        if (apiResponse) {
+          this.showLoader = false;
         this.caraouselData = apiResponse.result.response.sections;
         _.forEach(this.caraouselData, (value, index) => {
           _.forEach(this.caraouselData[index].contents, (item, key) => {
@@ -68,10 +69,11 @@ export class ResourceComponent implements OnInit {
               this.caraouselData[index].contents[key].action = this.action;
           });
         });
+        }
       },
       err => {
         this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.stmsg.m0053);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
     );
    }

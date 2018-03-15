@@ -1,11 +1,11 @@
 import {IAction} from './action';
     export interface IContents {
-        name: string;
+        name?: string;
         courseName?: string;
         description?: string;
         me_averageRating?: number;
         leafNodesCount: number;
-        progress?: number;
+        progress: number;
         appIcon?: string;
         courseLogoUrl?: string;
         resourceType?: string;
