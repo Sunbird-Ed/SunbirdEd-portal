@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PermissionService } from './../services';
-import { ConfigService, ResourceService, UserProfile, UserData } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 /**
  * Service for Route Guards to restrict the access of route
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
     /**
     * method CanActivate for guard .
     */
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         if (state.url.indexOf('/') === 0) {
             this.currentUrl = state.url.replace('/', '');
         }
