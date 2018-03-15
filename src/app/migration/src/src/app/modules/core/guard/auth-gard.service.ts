@@ -3,11 +3,15 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { PermissionService } from './../services';
 import { ConfigService, ResourceService, UserProfile, UserData } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
+/**
+ * Service for Route Guards to restrict the access of route
+ * based on roles and permission of logedin user.
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
-  /**
-   *currentUrl bundle
-  */
+    /**
+     *currentUrl
+    */
     public currentUrl = '';
     /**
    * reference of permissionService service.
@@ -17,16 +21,25 @@ export class AuthGuard implements CanActivate {
    * reference of resourceService service.
    */
     public resourceService: ResourceService;
+
     /**
-   * constructor
-   */
-    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
+    * reference of angular core  router.
+    */
+    private router: Router;
+
+    /**
+    * constructor
+    * @param {permissionService}
+    * @param {resourceService}
+    * @param {Router}
+    */
+    constructor(router: Router, permissionService: PermissionService, resourceService: ResourceService) {
         this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
     }
     /**
-    * method CanActivate for  guard.
+    * method CanActivate for guard .
     */
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (state.url.indexOf('/') === 0) {
@@ -36,7 +49,6 @@ export class AuthGuard implements CanActivate {
         this.permissionService.permissionAvailable$.subscribe((permisionavi: any) => {
             if (permisionavi && permisionavi === 'success') {
                 const rolePermission = this.resourceService.config.rolesConfig.ROLES[this.currentUrl];
-                console.log(rolePermission);
                 if (rolePermission) {
                     if (this.permissionService.checkRolesPermissions(rolePermission)) {
                         return Observable.of(true);
