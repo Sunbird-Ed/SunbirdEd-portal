@@ -1,4 +1,4 @@
-export const mockRes = {
+export const Response = {
 successData: {
     name: 'Test1182016-02',
     description: 'Test',

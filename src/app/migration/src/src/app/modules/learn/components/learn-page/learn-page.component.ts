@@ -45,11 +45,6 @@ export class LearnPageComponent implements OnInit {
   */
   caraouselData: Array<ICaraouselData> = [];
   /**
-  * Contains object send to api result.
-  */
-  action: IAction;
-
-  /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
@@ -72,14 +67,14 @@ export class LearnPageComponent implements OnInit {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.showLoader = false;
-            this.action = {
+            const action = {
               type: { button: true, rating: true },
               classes: { button: 'ui blue basic button' },
               label: 'Resume'
             };
             this.enrolledCourses = data.enrolledCourses;
             _.forEach(this.enrolledCourses, (value, index) => {
-              this.enrolledCourses[index].action = this.action;
+              this.enrolledCourses[index].action = action;
             });
             this.caraouselData.unshift({
               name: 'My Courses',
@@ -127,24 +122,24 @@ export class LearnPageComponent implements OnInit {
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index2].identifier === this.enrolledCourses[index2].courseId) {
-                this.action = {
+                const action = {
                   type: { button: true, rating: true },
                   classes: { button: 'ui blue basic button' },
                   label: 'Resume'
                 };
-                this.caraouselData[index].contents[index1].action = this.action;
+                this.caraouselData[index].contents[index1].action = action;
               } else {
-                this.action = {
+                const action = {
                   type: { rating: true }
                 };
-                this.caraouselData[index].contents[index1].action = this.action;
+                this.caraouselData[index].contents[index1].action = action;
               }
             });
           } else {
-            this.action = {
+            const action = {
               type: { rating: true }
             };
-            this.caraouselData[index].contents[index1].action = this.action;
+            this.caraouselData[index].contents[index1].action = action;
           }
         });
       }

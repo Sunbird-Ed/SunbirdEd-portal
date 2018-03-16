@@ -1,4 +1,4 @@
-export const mockRes = {
+export const Response = {
     successData: {
        name: 'Multiple Data',
        length: 1,

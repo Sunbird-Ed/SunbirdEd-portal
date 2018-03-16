@@ -1,4 +1,4 @@
-export const mockRes = {
+export const testData = {
     successData: {
         id: 'api.page.assemble',
         params: {

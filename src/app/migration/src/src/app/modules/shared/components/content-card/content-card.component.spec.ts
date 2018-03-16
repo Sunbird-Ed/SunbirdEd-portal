@@ -5,8 +5,7 @@ import { ContentCardComponent } from './content-card.component';
 import { ResourceService , ConfigService} from '../../services/index';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {By} from '@angular/platform-browser';
-import * as mockData from './content-card.component.spec.data';
-const testData = mockData.mockRes;
+import { Response } from './content-card.component.spec.data';
 
 describe('ContentCardComponent', () => {
   let component: ContentCardComponent;
@@ -29,7 +28,7 @@ describe('ContentCardComponent', () => {
 
 
   it('should show TEST INPUT for success data', () => {
-    component.content = testData.successData;
+    component.content = Response.successData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .description').innerText).toEqual('Test');
     expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toEqual('Test1182016-02');
@@ -37,7 +36,7 @@ describe('ContentCardComponent', () => {
     expect(fixture.nativeElement.querySelector('div span.right').innerText).toEqual(' Resume');
   });
   it('should show TEST INPUT for default data', () => {
-    component.content = testData.defaultData;
+    component.content = Response.defaultData;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .description')).toEqual(null);
     expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toEqual('Test1182016-02');

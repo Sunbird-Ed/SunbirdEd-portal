@@ -38,10 +38,6 @@ export class ResourceComponent implements OnInit {
   */
   caraouselData: Array<ICaraouselData> = [];
   /**
-  * Contains object send to api result.
-  */
-  action: IAction;
-  /**
    * The "constructor"
    *
    * @param {PageApiService} pageSectionService Reference of pageSectionService.
@@ -68,8 +64,8 @@ export class ResourceComponent implements OnInit {
           this.caraouselData = apiResponse.result.response.sections;
           _.forEach(this.caraouselData, (value, index) => {
             _.forEach(this.caraouselData[index].contents, (item, key) => {
-              this.action = { type: { rating: true } };
-              this.caraouselData[index].contents[key].action = this.action;
+              const action = { type: { rating: true } };
+              this.caraouselData[index].contents[key].action = action;
             });
           });
         }
