@@ -2,7 +2,7 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // import { Location } from '@angular/common';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren, AfterViewInit } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService } from './../../services/create/create.service';
@@ -26,7 +26,7 @@ function getWindow() {
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -39,10 +39,6 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Dom element reference to close modal
    */
   @ViewChild('closeAnnouncementModal') closeAnnouncementModal: ElementRef;
-
-  @ViewChildren('populateAttachment') populateAttachment;
-  @ViewChildren('abc') abc: ElementRef;
-
 
   /**
    * Announcement creation form name
@@ -148,7 +144,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    * @param {FileUploadService} fileUpload To upload file
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
-    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService) {
+    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
+    private elRef: ElementRef) {
     this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
@@ -285,15 +282,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
     const atta = { ...this.attachments };
-    this.announcementDetails.attachments = [];
-
-    _.forEach(atta, (value, key) => {
-      this.announcementDetails.attachments.push(value);
-    });
-
-    _.forEach(this.fileUpload.attachedFiles, (value, key) => {
-      this.announcementDetails.attachments.push(value);
-    });
+    this.announcementDetails.attachments = this.fileUpload.attachedFiles;
     this.navigateToWizardNumber(4);
   }
 
@@ -306,7 +295,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   enableRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
     if (this.announcementForm.status === 'VALID') {
-      if (data.links.length || data.description || this.attachments && this.attachments.length > 0) {
+      if (data.links.length || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0) {
         return this.formErrorFlag = false;
       } else {
         return this.formErrorFlag = true;
@@ -324,7 +313,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   validateFormState(): void {
     const data = this.announcementForm.value;
     if (this.announcementForm.status === 'VALID') {
-      if (data.links.length || data.description || this.attachments && this.attachments.length > 0) {
+      if (data.links.length || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0) {
       } else {
         this.navigateToWizardNumber(1);
       }
@@ -357,7 +346,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     const data = { ...this.announcementForm.value };
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     data.target = this.recipientsList;
-    // data.attachments = this.attachments;
     data.attachments = this.announcementDetails.attachments;
     this.createService.saveAnnouncement(data, this.identifier ? true : false).
       subscribe(
@@ -422,7 +410,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     });
     // Update attachments
     this.attachments = data.attachments;
-    this.populateResendAttachment(this.attachments);
+    // this.populateResendAttachment(this.attachments);
     this.recipientsList = data.target.geo && data.target.geo.ids ? data.target.geo.ids : [];
   }
 
@@ -439,6 +427,8 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.onFormValueChanges();
         this.showLoader = false;
         this.isMetaModified = true;
+        this.fileUpload.uploader.addInitialFiles(this.attachments);
+        this.fileUpload.attachedFiles = this.attachments;
       },
       (error: ServerResponse) => {
         this.iziToast.error(this.resource.messages.emsg.m0005);
@@ -457,26 +447,7 @@ export class CreateComponent implements OnInit, OnDestroy {
       fileSizeErrorText: 'this.resource.messages.emsg.m0007',
       onCancel: this.onFileUploadCancel
     };
-
-    setTimeout(() => this.fileUpload.initilizeFileUploader(options), 500);
-  }
-
-  /**
-   * Populate announcement attachements on fine uploader UI while resend
-   */
-  populateResendAttachment(attachments: any) {
-    let li = '';
-    _.forEach(attachments, function (attachment, pos) {
-      li += `<li class="qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" id="attachement${pos}">
-   <i id="removeFile" onclick="removeAutoPopulatedResendAttachment(this, ${pos},` + `'${attachment.name}'` + `)"
-   class="remove icon cursor-pointer"
-                style="float:right;"></i><span class="qq-upload-file-selectorqq-upload-file" style="width: 200px;">
-                ${attachment.name}</span></li>`;
-    });
-
-    this.populateAttachment.last.nativeElement.innerHTML =
-      '<ul _ngcontent-c4="" aria-live="polite"  aria-relevant="additions removals" class="qq-upload-list-selector' +
-      'qq-upload-list anncmnt-fileupload-list"> ' + li + '</ul>';
+    this.fileUpload.initilizeFileUploader(options);
   }
 
   /**
@@ -493,18 +464,16 @@ export class CreateComponent implements OnInit, OnDestroy {
     } else {
       this.onFormValueChanges();
     }
-
+    this.fileUpload.attachedFiles = [];
     this.setRootOrgId();
-    this.initilizeFileUploader();
     this.recipientsList = [];
     this.attachments = [];
     this.validateFormState();
   }
 
-  // getWindow.removeCreateAnnAttachment = function (item, pos, name) {
-  //   // $(item).closest('li').remove();
-  //   // composeAnn.onUploadCancel(pos, name);
-  // };
+  ngAfterViewInit() {
+    this.initilizeFileUploader();
+  }
 
   ngOnDestroy() {
     this.closeAnnouncementModal.nativeElement.click();

@@ -119,15 +119,14 @@
             <div class="field">
               <label>{{resource?.frmelmnts?.lbl?.anncmntuploadfile}}</label>
               <div>
-                <div type="text/template" #abc id="qq-template-manual-trigger" [hidden]="true">
+                <div type="text/template" id="qq-template-manual-trigger" [hidden]="true">
                   <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
                     <div id="hide-section-with-button" >
-                      <div #populateAttachment></div>
-                      <ul  class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
+                      <ul class="qq-upload-list-selector qq-upload-list anncmnt-fileupload-list" aria-live="polite" aria-relevant="additions removals">
                         <li class="qq-file-id-0 qq-upload-retryable w3-container w3-border w3-round-xlarge" qq-file-id="0">
                           <i class="qq-upload-cancel-selector cursor-pointer remove icon float-ContentRight" id="qq-upload-cancel-manually" onclick=cancelUploadFile()></i>
                           <span class="qq-upload-file-selector qq-upload-file anncmnt-upload-file" title=""></span>
-                          <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">Upload failed</span>
+                          <span role="status" class="qq-upload-status-text-selector qq-upload-status-text">{{status}}</span>
                         </li>
                       </ul>
                       <div class="qq-upload-drop-area-selector qq-upload-drop-area uploadicon twelve wide column" qq-hide-dropzone>
@@ -177,7 +176,7 @@
                     </dialog>
                   </div>
                 </div>
-                <div id="fine-uploader-manual-trigger"><div #populateAttachment></div></div>
+                <div id="fine-uploader-manual-trigger"></div>
               </div>
             </div>
           </div>

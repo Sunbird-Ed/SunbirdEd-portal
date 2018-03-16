@@ -94,6 +94,7 @@ export class FileUploadService {
    */
   initilizeFileUploader(componentConfig: object) {
     // To hold uploaded file details
+    const self = this;
     const fileDetails = { 'name': '', 'mimetype': '', 'size': '', 'link': '' };
     // Merge component and default option(s)
     const options = _.merge({}, this.getDefaultOption(), componentConfig);
@@ -112,25 +113,22 @@ export class FileUploadService {
       showMessage: this.showErrorMessage,
       text: { fileInputTitle: 'UPLOAD ATTACHMENT' },
       callbacks: {
-        onComplete: (id, name, responseJSON, xhr) => {
+        onComplete: function (id, name, responseJSON, xhr) {
           if (responseJSON.responseCode === 'OK') {
             fileDetails.link = responseJSON.result.url;
-            fileDetails.size = this.formatFileSize(+fileDetails.size);
             fileDetails.name = name;
-            // options.uploadSuccess(fileDetails);
-            this.attachedFiles.push({ ...fileDetails });
+            fileDetails.mimetype = this.getFile(id).type;
+            fileDetails.size = self.formatFileSize(this.getSize(id));
+            self.attachedFiles.push({ ...fileDetails });
           }
         },
         onSubmitted: function (id, name) {
           this.setParams({ 'filename': name, 'container': 'attachments/announcement' });
-          fileDetails.name = name;
-          fileDetails.mimetype = this.getFile(id).type;
-          fileDetails.size = this.getSize(id);
         },
         onCancel: (id, name) => {
-          _.forEach(this.attachedFiles, (value, key) => {
+          _.forEach(self.attachedFiles, (value, key) => {
             if (value.name === name) {
-              this.attachedFiles.splice(key, 1);
+              self.attachedFiles.splice(key, 1);
             }
           });
         }
@@ -140,14 +138,7 @@ export class FileUploadService {
       document.getElementById('hide-section-with-button').style.display = 'block';
     };
 
-    this.getWindowObject.removeAutoPopulatedResendAttachment = function (item, pos, name) {
-      document.getElementById('attachement' + pos).remove();
-      document.getElementById('hide-section-with-button').style.display = 'block';
-      options.onCancel(pos, name);
-    };
-    setTimeout(() => {
-      this.uploader = new FineUploader(this.uiOptions);
-    }, 100);
+    this.uploader = new FineUploader(this.uiOptions);
   }
 
   /**
