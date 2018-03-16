@@ -1,6 +1,6 @@
-import { PageSectionService} from '@sunbird/core';
+import { PageApiService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService} from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
@@ -14,18 +14,18 @@ import * as _ from 'lodash';
   styleUrls: ['./resource.component.css']
 })
 export class ResourceComponent implements OnInit {
-    /**
-   * To show toaster(error, success etc) after any API calls
-   */
+  /**
+ * To show toaster(error, success etc) after any API calls
+ */
   private toasterService: ToasterService;
   /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
-   /**
-   * To call get resource data.
-   */
- private pageSectionService: PageSectionService;
+  /**
+  * To call get resource data.
+  */
+  private pageSectionService: PageApiService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -33,27 +33,30 @@ export class ResourceComponent implements OnInit {
    * any data
    */
   showLoader = true;
-   /**
-   * Contains result object returned from getPageData API.
-   */
+  /**
+  * Contains result object returned from getPageData API.
+  */
   caraouselData: Array<ICaraouselData> = [];
-   /**
-   * Contains object send to api result.
-   */
+  /**
+  * Contains object send to api result.
+  */
   action: IAction;
   /**
    * The "constructor"
    *
-   * @param {PageSectionService} pageSectionService Reference of pageSectionService.
+   * @param {PageApiService} pageSectionService Reference of pageSectionService.
    * @param {ToasterService} iziToast Reference of toasterService.
    */
-  constructor(pageSectionService: PageSectionService, toasterService: ToasterService, resourceService: ResourceService) {
+  constructor(pageSectionService: PageApiService, toasterService: ToasterService,
+    resourceService: ResourceService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
-   }
-
-   populatePageData() {
+  }
+  /**
+  * Subscribe to getPageData api.
+  */
+  populatePageData() {
     const option = {
       source: 'web',
       name: 'Resource'
@@ -62,13 +65,13 @@ export class ResourceComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         if (apiResponse) {
           this.showLoader = false;
-        this.caraouselData = apiResponse.result.response.sections;
-        _.forEach(this.caraouselData, (value, index) => {
-          _.forEach(this.caraouselData[index].contents, (item, key) => {
-              this.action = { type: {button: false, rating: true}};
+          this.caraouselData = apiResponse.result.response.sections;
+          _.forEach(this.caraouselData, (value, index) => {
+            _.forEach(this.caraouselData[index].contents, (item, key) => {
+              this.action = { type: { rating: true } };
               this.caraouselData[index].contents[key].action = this.action;
+            });
           });
-        });
         }
       },
       err => {
@@ -76,9 +79,12 @@ export class ResourceComponent implements OnInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
     );
-   }
+  }
+  /**
+ *This method calls the populatePageData
+ */
   ngOnInit() {
     this.populatePageData();
-   }
+  }
 
 }

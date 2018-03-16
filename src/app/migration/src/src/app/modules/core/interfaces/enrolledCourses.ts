@@ -1,11 +1,11 @@
-import { ServerResponse } from '@sunbird/shared';
+import { ServerResponse, IAction } from '@sunbird/shared';
 export interface IEnrolledCourses {
     err: ServerResponse;
     enrolledCourses: ICourses[];
 }
 
 export interface ICourses {
-/**
+   /**
     * course name
     */
     courseName: string;
@@ -30,6 +30,10 @@ export interface ICourses {
     */
     courseId: string;
     /**
+    * course identifier
+    */
+    identifier?: string;
+    /**
     * course rating
     */
     me_averageRating?: number;
@@ -37,5 +41,8 @@ export interface ICourses {
     * user id
     */
     userId: string;
-
+    /**
+    * object type of IAction
+    */
+    action?: IAction;
 }

@@ -10,6 +10,8 @@ import {IContents} from '../../interfaces/content';
   styleUrls: ['./content-card.component.css']
 })
 export class ContentCardComponent {
-  public resourceService: ResourceService;
+  /**
+  * content is used to render IContents value on the view
+  */
   @Input() content: IContents;
 }

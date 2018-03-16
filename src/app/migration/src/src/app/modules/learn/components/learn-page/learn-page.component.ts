@@ -1,8 +1,6 @@
-import { ICourses } from './../../../core/interfaces/enrolledCourses';
-import { PageSectionService, CoursesService } from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
-import { ICaraouselData, IContents, IAction } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService,  ICaraouselData, IContents, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
  * This component contains 2 sub components
@@ -26,7 +24,7 @@ export class LearnPageComponent implements OnInit {
   /**
   * To call get course data.
   */
-  pageSectionService: PageSectionService;
+  pageSectionService: PageApiService;
   /**
    * To get enrolled courses details.
    */
@@ -34,7 +32,7 @@ export class LearnPageComponent implements OnInit {
   /**
   * Contains result object returned from enrolled course API.
   */
-  enrolledCourses: Array<any>;
+  enrolledCourses: Array<ICourses>;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -55,10 +53,10 @@ export class LearnPageComponent implements OnInit {
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {PageSectionService} pageSectionService Reference of pageSectionService.
+   * @param {PageApiService} pageSectionService Reference of pageSectionService.
    * @param {CoursesService} courseService  Reference of courseService.
 	 */
-  constructor(pageSectionService: PageSectionService, coursesService: CoursesService,
+  constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
@@ -75,7 +73,8 @@ export class LearnPageComponent implements OnInit {
           if (data.enrolledCourses.length > 0) {
             this.showLoader = false;
             this.action = {
-              type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
+              type: { button: true, rating: true },
+              classes: { button: 'ui blue basic button' },
               label: 'Resume'
             };
             this.enrolledCourses = data.enrolledCourses;
@@ -87,17 +86,15 @@ export class LearnPageComponent implements OnInit {
               length: this.enrolledCourses.length,
               contents: this.enrolledCourses
             });
-            this.populatePageData();
-          } else if (data.enrolledCourses.length === 0) {
-            this.populatePageData();
-            this.showLoader = false;
           }
+          this.populatePageData();
+          this.showLoader = false;
         } else if (data && data.err) {
           this.populatePageData();
           this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
         }
-      },
+      }
     );
   }
   /**
@@ -131,20 +128,21 @@ export class LearnPageComponent implements OnInit {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index2].identifier === this.enrolledCourses[index2].courseId) {
                 this.action = {
-                  type: { button: true, rating: true }, classes: { button: 'ui blue basic button' },
+                  type: { button: true, rating: true },
+                  classes: { button: 'ui blue basic button' },
                   label: 'Resume'
                 };
                 this.caraouselData[index].contents[index1].action = this.action;
               } else {
                 this.action = {
-                  type: { button: false, rating: true }
+                  type: { rating: true }
                 };
                 this.caraouselData[index].contents[index1].action = this.action;
               }
             });
           } else {
             this.action = {
-              type: { button: false, rating: true }
+              type: { rating: true }
             };
             this.caraouselData[index].contents[index1].action = this.action;
           }

@@ -4,7 +4,7 @@ import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { ResourceService, ConfigService  } from '../../services/index';
+import { ResourceService, ConfigService  } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './page-section.component.spec.data';
 const testData = mockData.mockRes;

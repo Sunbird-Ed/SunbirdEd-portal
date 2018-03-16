@@ -1,7 +1,21 @@
-import {IContents} from './content';
-import {IAction} from './action';
+import { ICourses } from '@sunbird/core';
+import { IContents } from './content';
+import { IAction } from './action';
+/**
+ * ICaraouselData interface
+*/
 export interface ICaraouselData {
+    /**
+    * CaraouselData name
+    */
     name: string;
+    /**
+    * CaraouselData length
+    */
     length: number;
-    contents?: Array<IContents>;
+    /**
+     * CaraouselData content can be of
+     * IContents or ICourses
+     */
+    contents?: Array<IContents> | Array<ICourses>;
 }
