@@ -1,0 +1,14 @@
+{
+  "name": "sb_telemetry_util",
+  "version": "1.0.0",
+  "description": "Expose method for log telemetry event and sync the telemetry",
+  "main": "index.js",
+  "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sunbird",
+  "license": "ISC",
+  "dependencies": {
+      "request": "^2.83.0"
+  }
+}

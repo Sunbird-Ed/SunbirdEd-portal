@@ -16,6 +16,7 @@ let Dataservice = require('./services/dataService.js')
 let httpWrapper = require('./services/httpWrapper.js')
 let AppError = require('./services/ErrorInterface.js')
 let DataTransform = require("node-json-transform").DataTransform
+let telemetry = require('./telemetry/telemetryHelper')
 
 const statusConstant = {
     'ACTIVE': 'active',
@@ -125,7 +126,7 @@ class AnnouncementController {
                 } else {
                     throw this.customError({message:'Unauthorized', status: HttpStatus.UNAUTHORIZED, isCustom:true})
                 }
-                let sentCount = await(this.dataService.getAudience(_.get(requestObj, 'body.request.target.geo.ids')))
+                let sentCount = await(this.dataService.getAudience(_.get(requestObj, 'body.request.target.geo.ids'), undefined, requestObj.reqID))
                 requestObj.body.request.sentCount = sentCount
                 var newAnnouncementObj = await (this.__saveAnnouncement(requestObj.body.request))
                 if (newAnnouncementObj.data.id) {
@@ -237,7 +238,7 @@ class AnnouncementController {
                         msg: payloadValidation.error
                     }
                 }
-                notifier.send(target, payload.getPayload())
+                notifier.send(target, payload.getPayload(), requestObj.reqID)
             })
         } catch (error) {
             throw this.customError(error)
@@ -254,7 +255,8 @@ class AnnouncementController {
     getAnnouncementById(requestObj) {
         return new Promise((resolve, reject) => {
             let announcementId = requestObj.params.id
-            let announcement = this.__getAnnouncementById(announcementId).then((data) => {
+            telemetry.addObjectData(requestObj.reqID, telemetry.getObjectData(announcementId, 'announcement'))
+            let announcement = this.__getAnnouncementById(announcementId, requestObj.reqID).then((data) => {
                                 let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap)
                                 let transformedData = this.__transformResponse(data, transformationMap)
                                 return {announcement: transformedData[0]}
@@ -309,7 +311,8 @@ class AnnouncementController {
                 query: {
                     'rootorgid': _.get(requestObj, 'body.request.rootOrgId'),
                     'status': statusConstant.ACTIVE
-                }
+                },
+                reqID: requestObj.reqID
             }
             this.announcementTypeStore.findObject(query)
                 .then((data) => {
@@ -359,7 +362,8 @@ class AnnouncementController {
                         values: {
                             id: _.get(requestObj, 'body.request.announcementId'),
                             status: statusConstant.CANCELLED
-                        }
+                        },
+                        reqID: requestObj.reqID
                     }
 
                     this.announcementStore.updateObjectById(query)
@@ -406,14 +410,12 @@ class AnnouncementController {
     __getUserInbox() {
         return async((requestObj) => {
             let authUserToken = this.__getToken(requestObj)
-
             let userId = await(this.__getLoggedinUserId()(requestObj))
             if (userId) {
                 requestObj.body.request.userId = userId
             }
 
-            let userProfile = await (this.__getUserProfile(authUserToken))
-
+            let userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
             // Parse the list of Organisations (User > Orgs) from the response
             let targetOrganisations = []
             _.forEach(userProfile.organisations, function(userOrg) {
@@ -427,7 +429,7 @@ class AnnouncementController {
             // Parse the list of Geolocations (Orgs > Geolocations) from the response
             let targetGeolocations = []
             try {
-                let geoData = await (this.dataService.getGeoLocations(targetOrganisations, authUserToken))
+                let geoData = await (this.dataService.getGeoLocations(targetOrganisations, authUserToken, requestObj.reqID))
                     //handle emty target list
                 _.forEach(geoData.content, function(geo) {
                     if (geo.locationId) {
@@ -456,7 +458,8 @@ class AnnouncementController {
                     "createddate": "desc"
                 },
                 limit: this.__getLimit(requestObj.body.request.limit),
-                offset: this.__getOffset(requestObj.body.request.offset)
+                offset: this.__getOffset(requestObj.body.request.offset),
+                reqID: requestObj.reqID
             }
 
             try {
@@ -498,7 +501,7 @@ class AnnouncementController {
                     announcement[metricsActivityConstant.READ] = false
                     announcement[metricsActivityConstant.RECEIVED] = false
                 })
-                let metricsData = await (this.__getMetricsForInbox(announcementIds, userProfile.id))
+                let metricsData = await (this.__getMetricsForInbox(announcementIds, userProfile.id, requestObj.reqID))
 
                 if (metricsData) {
                     _.forEach(metricsData, (metricsObj, k) => {
@@ -531,14 +534,15 @@ class AnnouncementController {
      * @param  String userId
      * @return Object
      */
-    __getMetricsForInbox(announcementIds, userId) {
+    __getMetricsForInbox(announcementIds, userId, reqID) {
         return new Promise((resolve, reject) => {
             let query = {
                 query: {
                     "announcementid": announcementIds,
                     "userid": userId
                 },
-                limit: 10000
+                limit: 10000,
+                reqID: reqID
             }
 
             this.announcementMetricsStore.findObject(query)
@@ -588,7 +592,8 @@ class AnnouncementController {
                     "createddate": "desc"
                 },
                 limit: this.__getLimit(requestObj.body.request.limit),
-                offset: this.__getOffset(requestObj.body.request.offset)
+                offset: this.__getOffset(requestObj.body.request.offset),
+                reqID: requestObj.reqID
             }
 
             // execute query and process response
@@ -625,7 +630,7 @@ class AnnouncementController {
 
             //Get read and received status and append to response
             
-            let metricsData = await (this.__getOutboxMetrics(announcementIds))
+            let metricsData = await (this.__getOutboxMetrics(announcementIds, requestObj.reqID))
 
             if (metricsData) {
                 _.forEach(metricsData, (metricsObj, k) => {
@@ -674,7 +679,7 @@ class AnnouncementController {
      * @param  Array announcementIds
      * @return Object
      */
-    __getOutboxMetrics(announcementIds) {
+    __getOutboxMetrics(announcementIds, reqID) {
         return new Promise((resolve, reject) => {
             let query = {
                     "aggs": {
@@ -697,7 +702,7 @@ class AnnouncementController {
                         }
                     }
                 }
-            this.announcementMetricsStore.getMetrics(query)
+            this.announcementMetricsStore.getMetrics(query, reqID)
                 .then((response) => {
                     if (!response) {
                         resolve(false)
@@ -875,7 +880,8 @@ class AnnouncementController {
                     "announcementid": requestObj.announcementId,
                     "userid": requestObj.userId,
                     "activity": metricsActivity
-                }
+                },
+                reqID: requestObj.reqID
             }
 
             this.announcementMetricsStore.findObject(query)
@@ -915,7 +921,8 @@ class AnnouncementController {
                     if (status) {
                         return new Promise((resolve, reject) => {
                             let announcementId = requestObj.params.announcementId
-                            let announcement = this.__getAnnouncementById(announcementId).then((data) => {
+                            telemetry.addObjectData(requestObj.reqID, telemetry.getObjectData(announcementId, 'announcement'))
+                            let announcement = this.__getAnnouncementById(announcementId, requestObj.reqID).then((data) => {
                                                 let transformationMap = this.__getTransformationMap(announcementBaseFieldsMap, announcementResendFieldsMap)
                                                 let transformedData = this.__transformResponse(data, transformationMap)
                                                 return {announcement: transformedData[0]}
@@ -961,12 +968,13 @@ class AnnouncementController {
      * @param  String announcementId
      * @return Object                Announcement object
      */
-    __getAnnouncementById(announcementId) {
+    __getAnnouncementById(announcementId, reqID) {
         return new Promise((resolve, reject) => {
             let query = {
                 query: {
                     'id': announcementId
-                }
+                },
+                reqID: reqID
             }
             this.announcementStore.findObject(query)
                 .then((data) => {
@@ -1095,7 +1103,7 @@ class AnnouncementController {
      * @param  String authUserToken User's access token
      * @return Object               Profile data
      */
-    __getUserProfile(authUserToken) {
+    __getUserProfile(authUserToken, reqID) {
         return new Promise((resolve, reject) => {
             try {
                 let tokenDetails = await(this.__getTokenDetails(authUserToken))
@@ -1107,6 +1115,8 @@ class AnnouncementController {
                     uri: envVariables.DATASERVICE_URL + 'user/v1/read/' + tokenDetails.userId,
                     headers: this.httpService.getRequestHeader(authUserToken)
                 }
+                telemetry.addObjectData(reqID, telemetry.getObjectData(tokenDetails.userId, 'user'))
+                telemetry.generateApiCallLogEvent(reqID, options, 'user/v1/read/')
                 this.httpService.call(options).then((data) => {
                         data.body = JSON.parse(data.body)
                         resolve(_.get(data, 'body.result.response'))

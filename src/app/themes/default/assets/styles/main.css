@@ -52,6 +52,7 @@
   font-family: 'sunbirdregularfont';
   font-size: 1em;
   color: #7c7b7b;
+  overflow-wrap: break-word;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont';
@@ -991,8 +992,9 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input:not([type]) {
   border: 0;
   border-bottom: 1px solid #333333;
-  border-radius: 0;
-  padding: 0.8em 0;
+  border-radius: 0 !important;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
 }
 .ui.selection.dropdown {
   border: 0;
@@ -2011,6 +2013,9 @@ ul.fancytree-container li {
   color: #7c7b7b;
   font-size: 13px;
 }
+.filterFieldSearch.ui.selection.dropdown {
+  min-width: 100%;
+}
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
   margin-bottom: 1em;
@@ -2273,7 +2278,7 @@ ul.fancytree-container li {
   top: 17px !important;
 }
 .ui.addSkillsMarginCursor.multiple.dropdown > .label {
-  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
+  margin: 0.2285714rem .28571429rem .14285714rem 0 !important;
 }
 .addSkillMoreBtn {
   padding: 10px 10px 14px 15px !important;
@@ -2757,6 +2762,19 @@ ol.ui.list ol li:before {
     top: 60px !important;
     position: relative !important;
     margin: 0 0 0 -373px !important;
+  }
+}
+@media only screen and (max-width: 1290px) and (min-width: 992px) {
+  .modals.dimmer .ui.modal.updateRoleModel {
+    top: 60px !important;
+    position: relative !important;
+    margin: 0 0 0 -400px !important;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .modals.dimmer .ui.modal.updateRoleModel {
+    margin-top: -300px !important;
+    position: relative !important;
   }
 }
 .createAnnHeaderDesc {

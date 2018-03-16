@@ -30,7 +30,7 @@
                 <div ng-repeat="reason in contentFlag.reasons">
                     <div class="field radiomargin">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="radio" ng-model="contentFlag.data.flagReasons" value="{{reason.name}}">
+                            <input type="radio" name="radio" ng-model="contentFlag.data.flagReasons" value="{{reason.value}}">
                             <label>{{reason.name}}</label>
                         </div>
                         <i ng-if="reason.description" class="help circle icon link helpPopup" data-content="{{reason.description}}" data-variation="wide" data-position="right center"></i>

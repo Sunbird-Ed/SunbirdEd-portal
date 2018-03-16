@@ -31,10 +31,11 @@ let envVariables = {
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
   KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
   CACHE_STORE: env.sunbird_cache_store || 'memory',
-  CACHE_TTL: env.sunbird_cache_ttl || 1800
-
+  CACHE_TTL: env.sunbird_cache_ttl || 1800,
+  MOBILE_REDIRECT_URL: env.mobile_redirect_url || 'http://www.sunbird.org'
 }
 
-envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(',') : ['localhost']
+envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
+  ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables

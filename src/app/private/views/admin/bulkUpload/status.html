@@ -37,7 +37,7 @@
                     <h5 ng-if="status === 'success'">{{$root.frmelmnts.lbl.successres}}</h5>
                     <h5 ng-if="status === 'failure'">{{$root.frmelmnts.lbl.failres}}</h5>
                     <table class="ui celled padded table">
-                        <thead ng-if="admin.bulkUploadStatus[status][0].userName">
+                        <thead ng-if="admin.bulkUploadStatus.objectType === 'user'">
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.firstName}}</th>
                                 <th>{{$root.frmelmnts.lbl.lastName}}</th>
@@ -61,7 +61,7 @@
                                 <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
                             </tr>
                         </thead>
-                        <thead ng-if="admin.bulkUploadStatus[status][0].orgName">
+                        <thead ng-if="admin.bulkUploadStatus.objectType === 'organisation'">
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.orgId}}</th>
                                 <th>{{$root.frmelmnts.lbl.orgName}}</th>
@@ -78,7 +78,7 @@
                                 <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
                             </tr>
                         </thead>
-                        <tbody ng-if="admin.bulkUploadStatus[status][0].userName">
+                        <tbody ng-if="admin.bulkUploadStatus.objectType === 'user'">
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.firstName || "empty"}}</td>
                                 <td>{{ row.lastName || "empty"}}</td>
@@ -101,7 +101,7 @@
                                 <td>{{ row.subject || "empty"}}</td>
                                 <td ng-if="status === 'failure'">{{ row.err_msg || "empty"}}</td>
                         </tbody>
-                        <tbody ng-if="admin.bulkUploadStatus[status][0].orgName">
+                        <tbody ng-if="admin.bulkUploadStatus.objectType === 'organisation'">
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.id || "empty"}}</td>
                                 <td>{{ row.orgName || "empty"}}</td>
