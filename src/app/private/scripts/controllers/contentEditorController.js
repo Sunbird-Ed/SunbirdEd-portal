@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService',
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', '$window',
     function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
-      workSpaceUtilsService) {
+      workSpaceUtilsService, $window) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       contentEditor.openContentEditor = function () {
@@ -114,11 +114,13 @@ angular.module('playerApp')
               contentEditor.openContentEditor()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              $state.go('Home')
+              const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
             }
           } else {
             toasterService.warning($rootScope.messages.imsg.m0004)
-            $state.go('Home')
+            const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+            $state.go(previousState.name, previousState.params)
           }
         })
       }

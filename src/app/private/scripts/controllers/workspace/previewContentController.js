@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('PreviewContentController', ['$stateParams', '$rootScope', '$state', 'contentService',
-    '$timeout', 'config', 'toasterService', function ($stateParams, $rootScope, $state, contentService, $timeout,
-      config, toasterService) {
+    '$timeout', 'config', 'toasterService', '$window', function ($stateParams, $rootScope, $state,
+      contentService, $timeout, config, toasterService, $window) {
       var previewContent = this
       previewContent.contentProgress = 0
       previewContent.contentId = $stateParams.contentId
@@ -52,9 +52,9 @@ angular.module('playerApp')
         rspData.userId = $rootScope.userId
 
         if (!checkContentAccess(rspData, validateModal)) {
-          toasterService
-            .warning($rootScope.messages.imsg.m0004)
-          $state.go('Home')
+          toasterService.warning($rootScope.messages.imsg.m0004)
+          const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+          $state.go(previousState.name, previousState.params)
         }
         previewContent.contentData = data
         previewContent.contentPlayer.contentData = data

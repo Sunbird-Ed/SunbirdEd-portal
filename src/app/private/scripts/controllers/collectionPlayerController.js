@@ -2,9 +2,9 @@
 
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-    'courseService', '$rootScope', '$stateParams', 'toasterService', 'telemetryService',
+    'courseService', '$rootScope', '$stateParams', 'toasterService', 'telemetryService', '$window',
     function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService,
-      telemetryService) {
+      telemetryService, $window) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -53,7 +53,8 @@
               cpvm.applyAccordion()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0018)
-              $state.go('Home')
+              const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
             }
 
             /* -----------telemetry start event------------ */
