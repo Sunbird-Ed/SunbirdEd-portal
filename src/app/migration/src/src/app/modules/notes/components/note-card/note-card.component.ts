@@ -80,17 +80,10 @@ export class NoteCardComponent implements OnInit {
     toasterService: ToasterService) {
       this.toasterService = toasterService;
       this.activatedRoute = this.activatedRoute;
-      // this.activatedRoute.params.subscribe((params) => {
-      //   console.log(params);
-      //   });
     }
   ngOnInit() {
 
     this.getAllNotes();
-
-    /**
-     *
-    */
     const selectedNote = this.selectedNote;
     this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
   }
@@ -135,7 +128,7 @@ export class NoteCardComponent implements OnInit {
     const requestData = {
       request: {
       filter: {
-        userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
+        userid: this.userService.userid,
         courseid: 'do_2123229899264573441612'
       },
       sort_by: {

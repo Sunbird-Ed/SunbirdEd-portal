@@ -58,6 +58,10 @@ export class NoteListComponent implements OnInit {
    */
   searchData: string;
   /**
+   * The course id of the selected course.
+   */
+  courseId: string;
+  /**
    * To get course and note params.
    */
   private activatedRoute: ActivatedRoute;
@@ -85,17 +89,17 @@ export class NoteListComponent implements OnInit {
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService) {
       this.toasterService = toasterService;
-      this.activatedRoute = this.activatedRoute;
+      this.activatedRoute = activatedRoute;
     }
 
   ngOnInit() {
     /**
-     *
+     * Initializing notesList array
      */
     this.getAllNotes();
 
     /**
-     *
+     * Initializing selectedNote
     */
     const selectedNote = this.selectedNote;
     this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
@@ -105,6 +109,9 @@ export class NoteListComponent implements OnInit {
         return note.id !== id;
       } );
     } );
+    this.activatedRoute.params.subscribe((params) => {
+      this.courseId = params.courseId;
+    });
 
   }
 
@@ -143,7 +150,6 @@ export class NoteListComponent implements OnInit {
     this.selectedNote = note;
     this.noteService.selectedNote = this.selectedNote;
     this.selectedIndex = a;
-    console.log(a);
   }
 
   /**
@@ -153,15 +159,15 @@ export class NoteListComponent implements OnInit {
     const requestData = {
       request: {
       filter: {
-        userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
-        courseid: 'do_2123229899264573441612'
+        userid: this.userService.userid,
+        courseid: this.courseId
       },
       sort_by: {
         updatedDate: this.sortBy
       }
     }
   };
-    this.searchNote(requestData);
+   this.searchNote(requestData);
   }
 
 }

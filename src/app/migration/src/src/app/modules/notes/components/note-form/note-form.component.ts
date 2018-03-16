@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
-
-
+// import * as Markdown from 'pagedown-core/node-pagedown.js';
+// import 'pagedown-core/Markdown.Editor.js';
 
 @Component({
   selector: 'app-note-form',
@@ -52,6 +52,16 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    */
   selectedNote: any = {};
   /**
+   * The course id of the selected course.
+   */
+  courseId: string;
+
+  /**
+   * The content id of the selected content.
+   */
+  contentId: string;
+
+  /**
    * This variable helps in displaying and hiding page loader.
    * By default it is assigned a value of 'true'. This ensures that
    * the page loader is displayed the first time the page is loaded.
@@ -61,6 +71,8 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
+
+  // private Markdown: any;
 
   /**
    * The constructor
@@ -92,10 +104,13 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.selectedNote = this.noteService.selectedNote;
+    this.activatedRoute.parent.params.subscribe((params) => {
+      this.courseId = params.courseId;
+      this.contentId = params.contentId;
+    });
   }
 
   ngAfterViewInit() {
-    const Markdown: any = [];
     const converter1 = Markdown.getSanitizingConverter();
     converter1.hooks.chain('preBlockGamut', function (text, rbg) {
       return text.replace(/^ {0,3}""" *\n((?:.*?\n)+?) {0,3}""" *$/gm, function (whole, inner) {
@@ -132,12 +147,12 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
     const requestData = {
       request: {
         note: this.noteData.note,
-        userId: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
+        userId: this.userService.userid,
         title: this.noteData.title,
-        courseId: 'do_212282810437918720179',
-        contentId: 'do_2123475531394826241107',
-        createdBy: this.userService._userid,
-        updatedBy: this.userService._userid,
+        courseId: this.courseId,
+        contentId: this.contentId,
+        createdBy: this.userService.userid,
+        updatedBy: this.userService.userid,
         createdDate: {},
         updatedDate: {},
         id: {}
@@ -145,7 +160,6 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
     };
     this.noteService.create(requestData).subscribe(
       (response: any ) => {
-        console.log('Response ' + response );
         if (response && response.responseCode === this.successResponseCode) {
         this.showLoader = false;
       } else {

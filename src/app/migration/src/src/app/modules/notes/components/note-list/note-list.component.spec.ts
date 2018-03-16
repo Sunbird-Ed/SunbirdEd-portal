@@ -29,7 +29,9 @@ describe('NoteListComponent', () => {
       declarations: [ NoteListComponent, NoteFormComponent, FilterPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
          ConfigService, ContentService, SuiModalService, SuiComponentFactory,
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
+          { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        // { provide: ActivatedRoute, useValue: { 'params': Observable.of({courseId: 'do_2123229899264573441612'}) } }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents()
@@ -47,11 +49,10 @@ describe('NoteListComponent', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    const noteService = TestBed.get(NotesService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(noteService, 'search').and.returnValue(Observable.of(testData.responseSuccess));
+    spyOn(notesService, 'search').and.returnValue(Observable.of(testData.responseSuccess));
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./delete-note.component.css']
 })
 
-export class DeleteNoteComponent implements OnInit {
+export class DeleteNoteComponent {
 
   /**
    * This variable helps redirecting the user to NotesList view once
@@ -57,9 +57,6 @@ export class DeleteNoteComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
    }
-
-  ngOnInit() {
-  }
 
   /**
    * This method redirects the user from the editor.

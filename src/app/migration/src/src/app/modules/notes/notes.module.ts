@@ -7,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipe } from './components';
-import { NgxEditorModule } from 'ngx-editor';
 import { MarkdownModule } from 'ngx-md';
 import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComponent } from './components/index';
 
@@ -19,7 +18,6 @@ import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComp
     FormsModule,
     OrderModule,
     BrowserModule,
-    NgxEditorModule,
     MarkdownModule.forRoot()
   ],
   declarations: [FilterPipe, NoteListComponent, NoteCardComponent, NoteFormComponent, DeleteNoteComponent],

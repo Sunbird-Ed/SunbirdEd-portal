@@ -6,16 +6,33 @@ import { ConfigService } from '@sunbird/shared';
 @Injectable()
 
 export class NotesService {
-
+  /**
+   * To get url and app config.
+   */
   public config: ConfigService;
+
+  /**
+   * The constructor
+   * @param {LearnerService} learnerService Reference of LearnerService
+   * @param {ConfigService} config Reference of ConfigService
+   */
 
   constructor(public learnerService: LearnerService, config: ConfigService) {
     this.config = config;
-   }
-
+  }
+  /**
+   * An event emitter to update notesList after creating a note.
+   */
   updateNotesListData: EventEmitter<any> = new EventEmitter();
+  /**
+   * An event emitter to update notesList after removing a note.
+   */
   finalNotesListData: EventEmitter<any> = new EventEmitter();
   selectedNote: any = {};
+
+  /**
+   * API call to gather existing notes.
+   */
 
   public search(request) {
     const option = {
@@ -24,6 +41,10 @@ export class NotesService {
     };
     return this.learnerService.post(option);
   }
+
+  /**
+   * API call to create a new note.
+   */
 
   public create(request) {
     const option = {
@@ -47,6 +68,10 @@ export class NotesService {
       this.updateNotesListData.emit(returnObj);
     });
   }
+
+  /**
+   * API call to update an existing note.
+   */
   public update(request) {
     const option = {
       url: `${this.config.urlConFig.URLS.NOTES.UPDATE}${request.noteId}`,
@@ -54,6 +79,10 @@ export class NotesService {
     };
     return this.learnerService.patch(option);
   }
+
+  /**
+   * API call to remove an existing note.
+   */
   public remove(request: { noteId: string }) {
     const option = {
       url: `${this.config.urlConFig.URLS.NOTES.DELETE}${request.noteId}`
