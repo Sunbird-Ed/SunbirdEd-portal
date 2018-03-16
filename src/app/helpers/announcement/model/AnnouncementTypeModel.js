@@ -4,18 +4,24 @@ let Joi = require('joi')
  * Whichs is used to validate the model object
  */
 let modelSchema = Joi.object().keys({
+  id: Joi.string().required(),
   rootorgid: Joi.string().required(),
-  sourceid: Joi.string().required(),
   createddate: Joi.string().required(),
-  typename: Joi.string().required(),
-  status: Joi.string()
+  name: Joi.string().min(2).max(50).required(),
+  status: Joi.string().valid('active', 'inactive').required()
 })
 
 /**
  * Which is used to validate the api request object
  * @type {Object}
  */
-let apiSchema = {}
+let apiSchema = Joi.object().keys({
+  request: Joi.object().keys({
+    rootOrgId: Joi.string().required(),
+    name: Joi.string().min(2).max(50).required(),
+    status: Joi.string().valid('active', 'inactive').required()
+  }).required()
+})
 
 class AnnouncementTypeModel extends BaseModel {
   constructor (modelSchema = {}, apiSchema = {}) {

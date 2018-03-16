@@ -1149,6 +1149,80 @@ class AnnouncementController {
     }
 
     /**
+     * To create an announcement type
+     * @param  Object requestObj Request object
+     * @return Object            Response
+     */
+    createAnnouncementType(requestObj) {
+        return this.__createAnnouncementType()(requestObj)
+    }
+
+    __createAnnouncementType() {
+        return async((requestObj) => {
+            try {
+                let validation = this.announcementTypeModel.validateApi(requestObj.body)
+
+                if (!validation.isValid) throw {
+                    message: validation.error,
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
+
+                var newAnnouncementTypeObj = await (this.__saveAnnouncementType(requestObj.body.request))
+                
+                return {
+                    announcementType: newAnnouncementTypeObj.data
+                }
+            } catch (error) {
+                throw this.customError(error)
+            }
+        })
+    }
+
+    __saveAnnouncementType(data) {
+        return new Promise((resolve, reject) => {
+            let announcementTypeId = uuidv1()
+            if (!data) reject(this.customError({
+                message: 'Invalid Request, Values are required.',
+                statusCode: HttpStatus.BAD_REQUEST,
+                isCustom:true
+            }))
+
+            let query = {
+                values: {
+                    'id': announcementTypeId,
+                    'rootorgid': data.rootOrgId,
+                    'name': data.name,
+                    'status': data.status,
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo", true),
+                }
+            }
+            this.announcementTypeStore.createObject(query)
+                .then((data) => {
+                    if (data) {
+                        resolve({
+                            data: {
+                                id: announcementTypeId
+                            }
+                        })
+                    } else {
+                        throw {
+                            message: 'Unable to create!',
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            isCustom:true
+                        }
+                    }
+                })
+                .catch((error) => {
+                    reject(this.customError(error))
+                })
+        })
+    }
+
+
+
+
+    /**
      * Parse attachments string to JSON object
      * @param  {[type]} announcement [description]
      * @return {[type]}              [description]
