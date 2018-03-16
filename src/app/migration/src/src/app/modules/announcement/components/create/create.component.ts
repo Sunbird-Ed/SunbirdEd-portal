@@ -455,8 +455,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     const options = {
       containerName: 'attachments/announcement',
       fileSizeErrorText: 'this.resource.messages.emsg.m0007',
-      onCancel: this.onFileUploadCancel,
-      uploadSuccess: this.onFileUploadSuccess
+      onCancel: this.onFileUploadCancel
     };
 
     setTimeout(() => this.fileUpload.initilizeFileUploader(options), 500);
@@ -469,7 +468,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     let li = '';
     _.forEach(attachments, function (attachment, pos) {
       li += `<li class="qq-upload-retryable w3-container w3-border w3-round-xlarge qq-upload-success" id="attachement${pos}">
-   <i id="removeFile" onclick="souravCancel(this, ${pos},` + `'${attachment.name}'` + `)" class="remove icon cursor-pointer"
+   <i id="removeFile" onclick="removeAutoPopulatedResendAttachment(this, ${pos},` + `'${attachment.name}'` + `)"
+   class="remove icon cursor-pointer"
                 style="float:right;"></i><span class="qq-upload-file-selectorqq-upload-file" style="width: 200px;">
                 ${attachment.name}</span></li>`;
     });

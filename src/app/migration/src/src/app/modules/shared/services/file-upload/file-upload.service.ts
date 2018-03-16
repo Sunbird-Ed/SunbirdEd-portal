@@ -1,4 +1,3 @@
-import { OnCancel } from './../../../../../../../../thirdparty/bower_components/file-upload/typescript/fine-uploader.d';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './../config/config.service';
 import { FineUploader, UIOptions } from 'fine-uploader';
@@ -141,7 +140,7 @@ export class FileUploadService {
       document.getElementById('hide-section-with-button').style.display = 'block';
     };
 
-    this.getWindowObject.souravCancel = function (item, pos, name) {
+    this.getWindowObject.removeAutoPopulatedResendAttachment = function (item, pos, name) {
       document.getElementById('attachement' + pos).remove();
       document.getElementById('hide-section-with-button').style.display = 'block';
       options.onCancel(pos, name);
@@ -160,7 +159,7 @@ export class FileUploadService {
   formatFileSize(bytes: number = 0, precision: number = 2): string {
     const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
     if (isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) {
-      return;
+      return 'N/A';
     }
 
     let counter = 0;

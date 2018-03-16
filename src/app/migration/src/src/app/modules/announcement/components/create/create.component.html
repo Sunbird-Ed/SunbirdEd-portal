@@ -119,7 +119,7 @@
             <div class="field">
               <label>{{resource?.frmelmnts?.lbl?.anncmntuploadfile}}</label>
               <div>
-                <div type="text/template" #abc id="qq-template-manual-trigger" style="display: none;">
+                <div type="text/template" #abc id="qq-template-manual-trigger" [hidden]="true">
                   <div class="qq-uploader-selector qq-uploader padding-bottom-5 sb-createAnnFineUploaderHolder" qq-drop-area-text="">
                     <div id="hide-section-with-button" >
                       <div #populateAttachment></div>
