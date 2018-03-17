@@ -55,8 +55,15 @@ angular.module('loginApp')
           }
         })
       }
-
+      newUser.dropdown = function () {
+        console.log('here')
+        $('#headerSearchtab')
+          .dropdown()
+        $('#headerSearchmob')
+          .dropdown()
+      }
       newUser.showModal = function () {
+        console.log('here')
         newUser.firstName = ''
         newUser.lastName = ''
         newUser.password = ''

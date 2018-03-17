@@ -1,0 +1,61 @@
+<div class="ui grid" >
+	<div class="row">
+		<div class="six wide computer twelve wide mobile eight wide tablet column centered padding-top-10">
+	        <div class="ui fluid icon input">
+	            <input type="text" name="search" ng-keypress="($event.charCode==13)?dialctrl.search():false" ng-model="dialctrl.searchKeyword" placeholder="search" title="Search" class=""/>
+	            <i class="search icon" ng-click="dialctrl.search();"></i>
+	        </div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="one wide column"></div>
+		<div class="ten wide column"> 
+			<div ng-if="dialctrl.loader.showLoader">
+        		<app-loader data="{{dialctrl.loader}}"></app-loader>
+    		</div>	
+		</div>
+		<div class="one wide column"></div>
+	</div>
+	<div ng-show="dialctrl.searchResults.length > 0" class="row">
+		<div class="one wide column"></div>
+		<div class="ten wide column"> 
+			<div style="font-weight: 650 !important;" class="ui tiny header"> dial code '{{dialctrl.dialcode}}'
+			</div>
+			<div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> Linked contents  ({{dialctrl.searchResults.length}})
+			</div>
+
+		</div>
+		<div class="one wide column"></div>
+	</div>
+	<div class="row">
+		<div class="one wide column"></div>
+		<div class="ten wide column"> 
+			<div class="ui stackable four column grid dynamic-section-card ">
+		        <div class="column " ng-repeat="item in dialctrl.searchResults track by $index">
+		            <div ng-if="item.contentType!='Course'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.playContent(item)"></div>
+		            <div ng-if="item.contentType=='Course'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.openCourseView(item)"></div>
+		        </div>
+		    </div>
+		</div>
+		<div class="one wide column"></div>
+	</div>
+</div>
+<div ng-hide="dialctrl.appFooter" class="ui footer basic segment">
+	<i class="close icon" ng-click="dialctrl.appFooter=true"></i>
+      <a href='app'> <div class="ui container stackable two column grid">
+		  	<div class="column left floated left aligned">
+		  		<h1 style="font-weight: 550 !important;" class="ui medium header"> Download the Diksha App 
+					<div class="sub header padding-top-5"> 
+						Get access to unlimited resources: worksheets, lesson plans and more!
+					</div>
+				</h1>
+				<div class="ui tiny image">
+			      	<img src="https://play.google.com/intl/en_us/badges/images/badge_new.png">
+			    </div>
+			</div>
+			<div class="column computer only">
+				      <img class="ui tiny centered image" src="">
+			</div>
+      </div></a>
+</div>
+

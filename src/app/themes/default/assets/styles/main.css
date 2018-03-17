@@ -231,6 +231,9 @@
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.padding-topBottom-10 {
+  padding: 10px 0px!important;
+}
 .padding-topBottom-20 {
   padding: 10px 0px!important;
 }
@@ -242,6 +245,9 @@
 }
 .padding-topBottom-35 {
   padding: 35px 0px!important;
+}
+.padding-dail-code-segment {
+  padding: 25px 35px!important;
 }
 .padding-topBottomNone {
   padding-top: 0px!important;
@@ -1928,6 +1934,9 @@ ul.fancytree-container li {
 .searchfilterinput.ui.search .prompt {
   border-radius: 0;
 }
+.searchinputpublic {
+  width: 30em;
+}
 .searchinput {
   width: 600px;
 }
@@ -2855,4 +2864,39 @@ body {
 }
 html {
   height: 100%;
+}
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: -1em;
+    background-color: white;
+}
+.ui.footer.segment >.close.icon {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    top: 1em;
+    right: 2em;
+}
+.bars.icon.tablet {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 0.2em;
+    padding-left: 5em;
+    opacity: .7;
+    -webkit-transition: opacity .1s ease;
+    transition: opacity .1s ease;
+}
+.dailcode-background {
+  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  height: 100vh;
+}
+.bars.icon.mobile {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 0.2em;
+    padding-left: 6em;
 }
