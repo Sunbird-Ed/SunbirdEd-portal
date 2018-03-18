@@ -79,8 +79,9 @@
                 "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
             },
             "BADGE": {
-                "GET": "org/v1/badges/list",
-                "ASSIGN": "user/v1/badges/add"
+                "GET_ISSUER_LIST": "badging/v1/issuer/list",
+                "GET_BADGE_CLASS_LIST": "badging/v1/issuer/badge/list",
+                "ASSIGN": "badging/v1/issuer/badge/assertion/create"
 
             },
             "ORG_TYPE":{

@@ -27,7 +27,7 @@ let envVariables = {
   PORTAL_PRIMARY_BUNDLE_LANGUAGE: env.sunbird_portal_primary_bundle_language || 'en',
   CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
+  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://dev.open-sunbird.org/api/',
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
   KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
   CACHE_STORE: env.sunbird_cache_store || 'memory',

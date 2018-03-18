@@ -550,18 +550,6 @@ describe('Controller: ProfileController', function () {
     expect(profileCtrl.contentList).not.toBeUndefined()
     done()
   })
-  it('should return badges list ', function (done) {
-    spyOn(profileCtrl, 'getbadges').and.callThrough()
-    spyOn(learnService, 'enrolledCourses').and.returnValue(deferred.promise)
-    deferred.resolve({ responseCode: 'OK',
-      result: {
-        courses: [{ leafNodesCount: 1, progress: 1 }] } })
-    profileCtrl.getbadges()
-    learnService.enrolledCourses()
-    scope.$apply()
-    expect(profileCtrl.badges).not.toBeUndefined()
-    done()
-  })
 
   it('should open previewCollection player ', function (done) {
     spyOn(profileCtrl, 'openContentPlayer').and.callThrough()

@@ -39,7 +39,6 @@ angular.module('playerApp')
       profile.isError = false
       profile.contentSortBy = 'desc'
       profile.quantityOfContent = 4
-      profile.badges = []
       profile.isViewMore = true
       profile.isAddAddress = true
       profile.ischekedCurrent = true
@@ -698,23 +697,6 @@ angular.module('playerApp')
           workSpaceUtilsService.previewContent(item, $state.current.name)
         }
       }
-
-      profile.getbadges = function () {
-        learnService.enrolledCourses($rootScope.userId).then(function (res) {
-          if (res && res.responseCode === 'OK') {
-            var courses = res.result.courses
-            _.forEach(courses, function (course) {
-              if (course.leafNodesCount && course.progress && course.leafNodesCount === course.progress) {
-                profile.badges.push({
-                  title: course.courseName
-                })
-              }
-            })
-          }
-        })
-      }
-
-      profile.getbadges()
 
       profile.setSelectedGrades = function () {
         $timeout(function () {

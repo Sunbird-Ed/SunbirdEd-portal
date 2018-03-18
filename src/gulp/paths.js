@@ -287,8 +287,11 @@ var paths = {
     'dist/private/scripts/services/dashboard/datasources/orgConsumptionDataSource.js',
     'dist/private/scripts/services/dashboard/datasources/dataSourceUtils.js',
     'dist/private/scripts/services/dashboard/datasources/downloadReportDataSource.js',
-    'dist/private/scripts/services/telemetryService.js'
-
+    'dist/private/scripts/services/telemetryService.js',
+    'dist/private/scripts/directives/badge/contentBadgeDirective.js',
+    'dist/private/scripts/directives/badge/profileBadgeDirective.js',
+    'dist/private/scripts/controllers/badge/contentBadgeController.js',
+    'dist/private/scripts/services/badgeService.js'
   ],
   telemetry_js: [
     'dist/private/scripts/telemetry/TelemetryEvent.js',

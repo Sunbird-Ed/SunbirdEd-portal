@@ -29,6 +29,22 @@ angular.module('playerApp')
                      * @returns {Promise} Promise object containing list of badges.
                      * @instance
                      */
+      this.getIssueList = function () {
+        var url = config.URL.BADGE.GET_ISSUER_LIST
+        return restfulLearnerService.get(url)
+      }
+      /**
+                     * @method getBadges
+                     * @desc Get badges
+                     * @memberOf Services.adminService
+                     * @returns {Promise} Promise object containing list of badges.
+                     * @instance
+                     */
+      this.getAllBadgesList = function (data) {
+        var url = config.URL.BADGE.GET_BADGE_CLASS_LIST
+        return restfulLearnerService.post(url, data)
+      }
+
       this.getBadges = function () {
         var url = config.URL.BADGE.GET
         return restfulLearnerService.get(url)
