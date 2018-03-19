@@ -9,9 +9,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as mockData from './delete-note-component.spec.data';
-const testData = mockData.mockRes;
-
 import { DeleteNoteComponent } from './delete-note.component';
+const testData = mockData.mockRes;
 
 describe('DeleteNoteComponent', () => {
   let component: DeleteNoteComponent;
@@ -61,7 +60,6 @@ describe('DeleteNoteComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
-    // const http = TestBed.get(HttpClientTestingModule);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = testData.resourceBundle.messages;
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
@@ -78,7 +76,6 @@ describe('DeleteNoteComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
-    // const http = TestBed.get(HttpClientTestingModule);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = testData.resourceBundle.messages;
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));

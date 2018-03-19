@@ -43,18 +43,27 @@ export class NoteCardComponent implements OnInit {
    *Stores the details of a note selected by the user.
    */
   selectedNote: any = {};
+
+  /**
+   * The course id of the selected course.
+   */
+  courseId: string;
+
   /**
    * Stores the index of the selected note in notesList array.
    */
   selectedIndex: number;
+
   /**
    * This variable stores the search input from the search bar.
    */
   searchData: string;
+
   /**
    * To get course and note params.
    */
   private activatedRoute: ActivatedRoute;
+
   /**
    * To display toaster(if any) after each API call.
    */
@@ -86,8 +95,15 @@ export class NoteCardComponent implements OnInit {
     this.getAllNotes();
     const selectedNote = this.selectedNote;
     this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
+    this.activatedRoute.params.subscribe((params) => {
+      this.courseId = params.courseId;
+    });
   }
 
+  /**
+   * To gather existing list of notes.
+   * @param request Request body.
+   */
   public searchNote(request) {
 
     const requestBody = request;
@@ -114,11 +130,11 @@ export class NoteCardComponent implements OnInit {
    * This method sets the value of a selected note to the variable 'selectedNote'
    * and passes it on to notesService.
    * @param note The selected note from list view.
+   * @param a Index of selected note.
    */
   public showNoteList(note, a) {
     this.selectedNote = note;
     this.noteService.selectedNote = this.selectedNote;
-    console.log(a);
   }
 
   /**
@@ -129,7 +145,7 @@ export class NoteCardComponent implements OnInit {
       request: {
       filter: {
         userid: this.userService.userid,
-        courseid: 'do_2123229899264573441612'
+        courseid: this.courseId
       },
       sort_by: {
         updatedDate: this.sortBy

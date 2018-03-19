@@ -5,8 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
-// import * as Markdown from 'pagedown-core/node-pagedown.js';
-// import 'pagedown-core/Markdown.Editor.js';
 
 @Component({
   selector: 'app-note-form',
@@ -72,7 +70,6 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    */
   private toasterService: ToasterService;
 
-  // private Markdown: any;
 
   /**
    * The constructor
@@ -104,6 +101,9 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.selectedNote = this.noteService.selectedNote;
+    /**
+     * Gathering courseId and contentId form parent params
+     */
     this.activatedRoute.parent.params.subscribe((params) => {
       this.courseId = params.courseId;
       this.contentId = params.contentId;

@@ -11,11 +11,10 @@ import { FilterPipe } from '../note-list/filter.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import * as mockData from '../note-list/note-list-component.spec.data';
-const testData = mockData.mockRes;
 import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
 import { NoteCardComponent } from './note-card.component';
+const testData = mockData.mockRes;
 
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;

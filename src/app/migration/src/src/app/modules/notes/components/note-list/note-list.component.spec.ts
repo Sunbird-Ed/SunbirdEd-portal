@@ -1,4 +1,3 @@
-// import { ActivatedRoute } from '@angular/router';
 import { Routes, RouterModule, ActivatedRoute } from '@angular/router';
 import { NoteFormComponent } from './../note-form/note-form.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -12,11 +11,10 @@ import { FilterPipe } from './filter.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import * as mockData from './note-list-component.spec.data';
-const testData = mockData.mockRes;
-
 import { NoteListComponent } from './note-list.component';
 import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+const testData = mockData.mockRes;
 
 describe('NoteListComponent', () => {
   let component: NoteListComponent;
@@ -30,7 +28,6 @@ describe('NoteListComponent', () => {
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
          ConfigService, ContentService, SuiModalService, SuiComponentFactory,
           { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-        // { provide: ActivatedRoute, useValue: { 'params': Observable.of({courseId: 'do_2123229899264573441612'}) } }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

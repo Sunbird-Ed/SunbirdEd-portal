@@ -3,10 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import * as mockData from './notes-service.spec.data';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-const testData = mockData.mockRes;
-
 import { NotesService } from './notes.service';
 import { UserService, ContentService, LearnerService } from '@sunbird/core';
+const testData = mockData.mockRes;
 
 describe('NotesService', () => {
   beforeEach(() => {

@@ -9,9 +9,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as mockData from './note-form-component.spec.data';
-const testData = mockData.mockRes;
-
 import { NoteFormComponent } from './note-form.component';
+const testData = mockData.mockRes;
 
 describe('NoteFormComponent', () => {
   let component: NoteFormComponent;
@@ -141,7 +140,6 @@ describe('NoteFormComponent', () => {
 
   it('should call redirect', () => {
     const route = TestBed.get(Router);
-    // spyOn(route, 'navigate').and.returnValue(undefined);
     component.redirect();
     fixture.detectChanges();
     expect(component).toBeDefined();
