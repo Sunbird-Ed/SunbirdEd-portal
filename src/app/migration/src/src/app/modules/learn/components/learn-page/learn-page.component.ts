@@ -121,7 +121,7 @@ export class LearnPageComponent implements OnInit {
         _.forEach(this.caraouselData[index].contents, (value1, index1) => {
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
-              if (this.caraouselData[index].contents[index2].identifier === this.enrolledCourses[index2].courseId) {
+              if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
                 const action = {
                   type: { button: true, rating: true },
                   classes: { button: 'ui blue basic button' },
