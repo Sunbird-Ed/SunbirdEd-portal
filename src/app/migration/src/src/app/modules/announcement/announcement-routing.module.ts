@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
-   InboxComponent, CreateComponent } from './components/index';
+   InboxComponent, CreateComponent } from './components';
 
 const routes: Routes = [
   {

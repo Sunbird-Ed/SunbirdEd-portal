@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 // Interface
-import { GeoHttpParam, GeoLocationDetails } from './../../interfaces';
+import { GeoHttpParam, IGeoLocationDetails } from './../../interfaces';
 // Rxjs
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -22,7 +22,7 @@ export class GeoExplorerService {
   /**
    * Contains geo data
    */
-  public _locationList: Array<GeoLocationDetails>;
+  public _locationList: Array<IGeoLocationDetails>;
   /**
    * Contains config service reference
    */

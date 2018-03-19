@@ -26,7 +26,10 @@ export class FileUploadService {
    */
   config: ConfigService;
 
-  attachedFiles: Array<any>;
+  /**
+   * Array which have all the upladed image object
+   */
+  attachedFiles = [];
 
   /**
    * To show warning/error/success message

@@ -1,22 +1,17 @@
 /// <reference types="fine-uploader" />
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// import { Location } from '@angular/common';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren} from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
-import { CreateService } from './../../services/create/create.service';
+import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
-import { GeoLocationDetails } from './../../interfaces';
+import { IGeoLocationDetails } from './../../interfaces';
 import { IAnnouncementDetails, IAttachementType } from '@sunbird/announcement';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
-
-function getWindow() {
-  return window;
-}
 
 /**
  * The announcement create component
@@ -26,7 +21,7 @@ function getWindow() {
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateComponent implements OnInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -63,12 +58,12 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Contains announcement types
    */
-  announcementTypes = [];
+  announcementTypes: Array<string> = [];
 
   /**
    * Contains announcement recipients list
    */
-  recipientsList: Array<GeoLocationDetails>;
+  recipientsList: Array<IGeoLocationDetails>;
 
   /**
    * Flag to disabled select recipients button
@@ -102,6 +97,11 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   showLoader = false;
 
+  /**
+   * Config to get geo component
+   */
+  geoConfig = { geo: { adaptor: 'SERVICE', service: 'geoService' } };
+
   /*
    * Contains resource service ref
    */
@@ -125,7 +125,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * To show messages
    */
-  public iziToast: ToasterService;
+  public toasterService: ToasterService;
 
   /**
    * Contains reference of announcement create service
@@ -144,14 +144,14 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {FileUploadService} fileUpload To upload file
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
-    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
+    toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
     private elRef: ElementRef) {
     this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.iziToast = iziToast;
+    this.toasterService = toasterService;
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
     this.user = user;
@@ -180,7 +180,6 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    * Without type(s) user won't be able to create new announcement
    */
   setAnnouncementTypes(): void {
-    this.announcementTypes = [];
     if (this.createService._announcementTypes) {
       _.each(this.createService._announcementTypes, (key) => {
         this.announcementTypes.push(key.name);
@@ -195,7 +194,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         },
         (err: ServerResponse) => {
-          this.iziToast.error(this.resource.messages.emsg.m0005);
+          this.toasterService.error(this.resource.messages.emsg.m0005);
           // Close announcement form and redirect user to outbox page
           this.closeAnnouncementModal.nativeElement.click();
         }
@@ -246,23 +245,23 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   confirmRecipients(): void {
     this.recipientsList = this.geoExplorer && this.geoExplorer.selectedItems ? this.geoExplorer.selectedItems : [];
-    if (this.recipientsList && this.recipientsList.length) {
+    if (this.recipientsList && this.recipientsList.length > 0) {
       this.navigateToWizardNumber(3);
     } else {
-      this.iziToast.warning(this.resource.messages.emsg.m0006);
+      this.toasterService.warning(this.resource.messages.emsg.m0006);
     }
   }
 
   /**
    * Executed when user click remove icon on confirm recipients page
    *
-   * @param {GeoLocationDetails} item selected location details
+   * @param {IGeoLocationDetails} item selected location details
    */
-  removeRecipient(item: GeoLocationDetails): void {
+  removeRecipient(item: IGeoLocationDetails): void {
     _.remove(this.recipientsList, (recipient) => {
       if (recipient.id === item.id) {
         item.selected = false;
-        this.iziToast.info(item.location + ' ' + this.resource.messages.imsg.m0020);
+        this.toasterService.info(item.location + ' ' + this.resource.messages.imsg.m0020);
         return recipient.location;
       }
     });
@@ -281,7 +280,6 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     const data = { ...this.announcementForm.value };
     data.links = data.links.length ? _.map(data.links, 'url') : [];
     this.announcementDetails = data;
-    const atta = { ...this.attachments };
     this.announcementDetails.attachments = this.fileUpload.attachedFiles;
     this.navigateToWizardNumber(4);
   }
@@ -294,49 +292,12 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   enableRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
-    if (this.announcementForm.status === 'VALID') {
-      if (data.links.length || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0) {
+    if (this.announcementForm.status === 'VALID' && (data.links.length || data.description
+      || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
         return this.formErrorFlag = false;
-      } else {
-        return this.formErrorFlag = true;
-      }
     } else {
       return this.formErrorFlag = true;
     }
-  }
-
-  /**
-   * It gets executed when user directly hit the url.
-   *
-   * It navigates user to the first step if required fields data are not filled
-   */
-  validateFormState(): void {
-    const data = this.announcementForm.value;
-    if (this.announcementForm.status === 'VALID') {
-      if (data.links.length || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0) {
-      } else {
-        this.navigateToWizardNumber(1);
-      }
-    } else {
-      this.navigateToWizardNumber(1);
-    }
-  }
-
-  /**
-   * Callback function gets called from FileUploadService when user click on remove icon
-   *
-   * Used to remove uploaded file details from local variable
-   */
-  onFileUploadCancel = (id: number, name: string): void => {
-    const data = this.attachments.splice(id, 1);
-    if (data.length === 0) {
-      _.forEach(this.attachments, (value, key) => {
-        if (value.name === name) {
-          this.attachments.splice(key, 1);
-        }
-      });
-    }
-    this.enableRecipientsBtn();
   }
 
   /**
@@ -399,7 +360,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
   setResendFormValues(data) {
     this.announcementForm = this.sbFormBuilder.group({
       title: [data.title, [Validators.required, Validators.maxLength(100)]],
-      from: [data.from, Validators.required],
+      from: [data.from, [Validators.required, Validators.maxLength(200)]],
       type: [data.type, Validators.required],
       description: [data.description, Validators.maxLength(1200)],
       links: this.sbFormBuilder.array([])
@@ -410,7 +371,6 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     // Update attachments
     this.attachments = data.attachments;
-    // this.populateResendAttachment(this.attachments);
     this.recipientsList = data.target.geo && data.target.geo.ids ? data.target.geo.ids : [];
   }
 
@@ -418,7 +378,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
    * Function to get resend announcement data.
    * Make announcement/resend api call to get announcement data
    */
-  resendAnnouncement() {
+  getAnnouncementDetails() {
     this.showLoader = true;
     this.createService.resendAnnouncement(this.identifier).subscribe(
       (res: ServerResponse) => {
@@ -431,7 +391,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
         this.fileUpload.attachedFiles = this.attachments;
       },
       (error: ServerResponse) => {
-        this.iziToast.error(this.resource.messages.emsg.m0005);
+        this.toasterService.error(this.resource.messages.emsg.m0005);
         // Close announcement form and redirect user to outbox page
         this.closeAnnouncementModal.nativeElement.click();
       }
@@ -444,8 +404,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
   initilizeFileUploader() {
     const options = {
       containerName: 'attachments/announcement',
-      fileSizeErrorText: 'this.resource.messages.emsg.m0007',
-      onCancel: this.onFileUploadCancel
+      fileSizeErrorText: 'this.resource.messages.emsg.m0007'
     };
     this.fileUpload.initilizeFileUploader(options);
   }
@@ -460,7 +419,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.stepNumber = routeParam.stepNumber ? +routeParam.stepNumber : 1;
     if (routeParam.identifier) {
       this.identifier = routeParam.identifier;
-      this.resendAnnouncement();
+      this.getAnnouncementDetails();
     } else {
       this.onFormValueChanges();
     }
@@ -468,10 +427,7 @@ export class CreateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setRootOrgId();
     this.recipientsList = [];
     this.attachments = [];
-    this.validateFormState();
-  }
-
-  ngAfterViewInit() {
+    this.navigateToWizardNumber(1);
     this.initilizeFileUploader();
   }
 

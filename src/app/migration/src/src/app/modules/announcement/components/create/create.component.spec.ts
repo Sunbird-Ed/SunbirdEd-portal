@@ -12,7 +12,7 @@ import { CreateComponent } from './create.component';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { CreateService, GeoExplorerService } from './../../services';
 import { UserService, LearnerService, AnnouncementService } from '@sunbird/core';
-import { GeoLocationDetails } from './../../interfaces';
+import { IGeoLocationDetails } from './../../interfaces';
 
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { DetailsComponent } from '@sunbird/announcement';
@@ -66,23 +66,19 @@ describe('CreateComponent', () => {
     router = TestBed.get(Router);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should get resend announcement data', inject([Router, CreateService, AnnouncementService],
     (route, createService, announcementService) => {
       component.isMetaModified = false;
       component.showLoader = true;
       component.identifier = 'do_12345';
       const response = { result: { announcement: testData.mockRes.resendAnnouncement } };
-      spyOn(component, 'resendAnnouncement').and.callThrough();
+      spyOn(component, 'getAnnouncementDetails').and.callThrough();
       spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'enableRecipientsBtn').and.callThrough();
       spyOn(createService, 'resendAnnouncement').and.callFake(() => Observable.of(response));
-      component.resendAnnouncement();
+      component.getAnnouncementDetails();
       fixture.detectChanges();
-      expect(component.resendAnnouncement).toHaveBeenCalled();
+      expect(component.getAnnouncementDetails).toHaveBeenCalled();
       expect(createService.resendAnnouncement).toHaveBeenCalledWith(component.identifier);
       expect(component.setResendFormValues).toHaveBeenCalledWith(response.result.announcement);
       expect(component.enableRecipientsBtn).toHaveBeenCalledWith();
@@ -224,14 +220,13 @@ describe('CreateComponent', () => {
 
   it('should validate form state/data and redirect to step 1', inject([Router],
     (route) => {
-      spyOn(component, 'validateFormState').and.callThrough();
       spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       // Set empty value
       const data = testData.mockRes.resendAnnouncement;
       data.description = ''; data.links = []; data.attachments = [];
       component.setResendFormValues(data);
-      component.validateFormState();
+      component.navigateToWizardNumber(1);
       fixture.detectChanges();
       expect(component.setResendFormValues).toHaveBeenCalled();
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);

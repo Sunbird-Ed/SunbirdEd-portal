@@ -1015,12 +1015,12 @@ i.large.icon.limitedPublishingLinkIcon {
   line-height: 0 ;
 }
 .field > label {
-  color: #fdfdfd;
+  color: #333333;
   font-weight: bold;
   line-height: 14px;
 }
 .inline.fields > label {
-  color: #fdfdfd;
+  color: #333333;
 }
 .ui.modal .ui.radio.checkbox .box,
 .ui.radio.checkbox label {
