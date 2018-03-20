@@ -41,6 +41,7 @@ angular.module('playerApp')
             'Game'
           ]
         }
+        req = this.updateReqForChannelFilter(req)
         return restfulContentService.post(config.URL.CONTENT.SEARCH, req)
       }
       /**
@@ -64,6 +65,7 @@ angular.module('playerApp')
              */
 
       this.courseSearch = function (req) {
+        req = this.updateReqForChannelFilter(req)
         return restfulContentService.post(config.URL.COURSE.SEARCH, req)
       }
       /**
@@ -86,6 +88,10 @@ angular.module('playerApp')
              */
 
       this.search = function (req) {
+        var objectType = req.filters && req.filters.objectType
+        if (!objectType || objectType === 'Content' || objectType.includes('Content')) {
+          req = this.updateReqForChannelFilter(req)
+        }
         return restfulContentService.post(config.URL.COMPOSITE.SEARCH, req)
       }
       /**
@@ -170,5 +176,13 @@ angular.module('playerApp')
 
       this.getFramework = function (id) {
         return restfulContentService.get(config.URL.FRAMEWORK.READ + '/' + id)
+      }
+
+      this.updateReqForChannelFilter = function (req) {
+        if ($rootScope.content_channel_filter_type.toLowerCase() === 'self') {
+          req.filters = req.filters || {}
+          req.filters.channel = org.sunbird.portal.channel
+        }
+        return req
       }
     }])

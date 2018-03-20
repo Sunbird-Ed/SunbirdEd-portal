@@ -219,6 +219,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
   res.render(path.join(__dirname, 'private', 'index.ejs'))
 })
 
