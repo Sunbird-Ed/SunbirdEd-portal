@@ -298,11 +298,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Post announcement form data
    */
   saveAnnouncement() {
-    const data = { ...this.announcementForm.value };
-    data.links = data.links.length ? _.map(data.links, 'url') : [];
-    data.target = this.recipientsList;
-    data.attachments = this.announcementDetails.attachments;
-    this.createService.saveAnnouncement(data, this.identifier ? true : false).
+    this.announcementDetails.target = this.recipientsList;
+    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
