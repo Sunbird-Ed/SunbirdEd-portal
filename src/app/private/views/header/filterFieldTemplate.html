@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="field.inputType==='select'">
+    <div ng-if="field.inputType==='select' && field.code!='Content'">
         <div apply-script id="filterSub" class="ui filterFieldSearch ui multiple selection dropdown-items course-search-filter dropdown">
             <i class="dropdown icon"></i>
             <div class="filter-sel-text" ng-if="dynamic.search.dynamicSelectedSearch(field.code).length > 0 ">{{dynamic.search.dynamicSelectedSearch(field.code).length+' '+ field.name}}</div>

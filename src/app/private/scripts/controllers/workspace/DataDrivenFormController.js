@@ -165,6 +165,7 @@ angular.module('playerApp')
       }
 
       dataDrivenForm.updateErrorMessage = function () {
+        if ($scope.metaForm.$valid) return
         _.forEach(dataDrivenForm.formFieldProperties, function (value, key) {
           if ($scope.metaForm[value.code] && $scope.metaForm[value.code].$invalid) {
             $scope.validation[value.code] = {}
