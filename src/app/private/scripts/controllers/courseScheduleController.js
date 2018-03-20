@@ -32,7 +32,7 @@ angular.module('playerApp')
               }
             } else {
               toc.loader.showLoader = false
-              toasterService.warning($rootScope.messages.imsg.m0019)
+              toasterService.warning($rootScope.messages.imsg.m0026)
               const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
               $state.go(previousState.name, previousState.params)
               return

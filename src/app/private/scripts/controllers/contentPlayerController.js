@@ -120,7 +120,7 @@ angular.module('playerApp')
             } else {
               if (!count) {
                 count += 1
-                toasterService.warning($rootScope.messages.imsg.m0018)
+                toasterService.warning($rootScope.messages.imsg.m0027)
                 $window.history.back()
               }
             }
