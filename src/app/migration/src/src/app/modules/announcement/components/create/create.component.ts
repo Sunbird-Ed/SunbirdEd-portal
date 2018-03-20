@@ -3,6 +3,7 @@ import { ResourceService, FileUploadService, ToasterService, ServerResponse } fr
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren} from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
+import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails } from './../../interfaces';
@@ -13,7 +14,7 @@ import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 
 /**
- * The announcement create component
+ * This component helps to create and resend announcement
  */
 @Component({
   selector: 'app-create',
@@ -389,17 +390,6 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * To initilize file uploader plugin
-   */
-  initilizeFileUploader() {
-    const options = {
-      containerName: 'attachments/announcement',
-      fileSizeErrorText: 'this.resource.messages.emsg.m0007'
-    };
-    this.fileUpload.initilizeFileUploader(options);
-  }
-
-  /**
    * Initialize form fields and file upload plugin
    */
   ngOnInit(): void {
@@ -415,7 +405,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
     this.setRootOrgId();
     this.navigateToWizardNumber(1);
-    this.initilizeFileUploader();
   }
 
   ngOnDestroy() {

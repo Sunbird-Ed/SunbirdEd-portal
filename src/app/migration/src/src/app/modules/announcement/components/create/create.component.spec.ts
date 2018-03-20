@@ -11,7 +11,7 @@ import { UserService, LearnerService, AnnouncementService } from '@sunbird/core'
 import { SharedModule, ResourceService, ToasterService, } from '@sunbird/shared';
 import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
-  CreateService, IGeoLocationDetails
+  CreateService, IGeoLocationDetails, FileUploaderComponent
 } from '@sunbird/announcement';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './create.component.spec.data';
@@ -41,7 +41,7 @@ describe('CreateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent],
+      declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule,
         Ng2IziToastModule],
       providers: [ToasterService, ResourceService, CreateService, UserService, LearnerService, AnnouncementService,

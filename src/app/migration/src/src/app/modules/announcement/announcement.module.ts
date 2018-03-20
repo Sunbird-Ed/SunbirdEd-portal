@@ -7,7 +7,7 @@ import { SharedModule, ResourceService, PaginationService, ToasterService, Route
 import { AnnouncementService} from '@sunbird/core';
 
 import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
-  DetailsPopupComponent, InboxComponent, CreateComponent } from './components';
+  DetailsPopupComponent, InboxComponent, CreateComponent, FileUploaderComponent } from './components';
   import { GeoExplorerService, CreateService } from './services';
 
 @NgModule({
@@ -18,7 +18,7 @@ import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponen
     SuiModule, ReactiveFormsModule
   ],
   declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent,
-     CreateComponent],
+     CreateComponent, FileUploaderComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService,
      RouterNavigationService, CreateService]
 })

@@ -131,7 +131,7 @@ export class FileUploadService {
         },
         onCancel: (id, name) => {
           _.forEach(self.attachedFiles, (value, key) => {
-            if (value.name === name) {
+            if ( value && value.name === name) {
               self.attachedFiles.splice(key, 1);
             }
           });
