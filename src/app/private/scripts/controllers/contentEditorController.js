@@ -7,6 +7,7 @@ angular.module('playerApp')
       workSpaceUtilsService, $window) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
+      var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
       contentEditor.openContentEditor = function () {
         window.context = {
           user: {
@@ -114,12 +115,10 @@ angular.module('playerApp')
               contentEditor.openContentEditor()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
               $state.go(previousState.name, previousState.params)
             }
           } else {
             toasterService.warning($rootScope.messages.imsg.m0004)
-            const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
             $state.go(previousState.name, previousState.params)
           }
         })

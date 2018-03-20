@@ -53,7 +53,7 @@
               cpvm.applyAccordion()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0018)
-              const previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
               $state.go(previousState.name, previousState.params)
             }
 
