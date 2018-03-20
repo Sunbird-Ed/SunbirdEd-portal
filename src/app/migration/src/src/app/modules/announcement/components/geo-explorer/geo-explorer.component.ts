@@ -126,8 +126,8 @@ export class GeoExplorerComponent implements OnInit {
    * It will make api call to get location(s)
    */
   initializeServiceAdopter() {
-    if (this.geo._locationList) {
-      this.locationList = this.geo._locationList;
+    if (this.geo.locationList) {
+      this.locationList = [...this.geo.locationList];
       this.populateItems();
       this.showLoader = false;
     } else {
@@ -136,7 +136,7 @@ export class GeoExplorerComponent implements OnInit {
       this.geo.getLocations(params).subscribe(
         (data: ServerResponse) => {
           if (data.result.response) {
-            this.locationList = data.result.response;
+            this.locationList =  (data.result.response);
             this.populateItems();
           }
           this.showLoader = false;

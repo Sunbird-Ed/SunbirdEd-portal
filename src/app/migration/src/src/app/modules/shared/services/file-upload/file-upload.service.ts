@@ -96,6 +96,7 @@ export class FileUploadService {
    * @param {object} componentConfig contains component specific config to override default one
    */
   initilizeFileUploader(componentConfig: object) {
+    this.attachedFiles = [];
     // To hold uploaded file details
     const self = this;
     const fileDetails = { 'name': '', 'mimetype': '', 'size': '', 'link': '' };
@@ -137,7 +138,7 @@ export class FileUploadService {
         }
       },
     };
-    this.getWindowObject.cancelUploadFile = function () {
+    this.getWindowObject.cancelUploadFile = () => {
       document.getElementById('hide-section-with-button').style.display = 'block';
     };
 

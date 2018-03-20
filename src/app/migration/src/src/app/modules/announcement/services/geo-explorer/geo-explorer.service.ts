@@ -8,6 +8,7 @@ import { GeoHttpParam, IGeoLocationDetails } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import * as _ from 'lodash';
 
 /**
  * Service to manage geo explorer http calls
@@ -57,9 +58,13 @@ export class GeoExplorerService {
     return this.learner.get(option)
       .map((data: ServerResponse) => {
         if (data.result.response) {
-          this._locationList = data.result.response;
+          this._locationList = _.cloneDeep(data.result.response);
         }
         return data;
       });
+  }
+
+  get locationList () {
+    return _.cloneDeep(this._locationList);
   }
 }

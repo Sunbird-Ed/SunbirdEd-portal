@@ -1,4 +1,3 @@
-/// <reference types="fine-uploader" />
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren} from '@angular/core';
@@ -63,7 +62,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * Contains announcement recipients list
    */
-  recipientsList: Array<IGeoLocationDetails>;
+  recipientsList: Array<IGeoLocationDetails> = [];
 
   /**
    * Flag to disabled select recipients button
@@ -80,12 +79,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * It contains uploaded file(s) details
    */
-  attachments: Array<IAttachementType>;
-
-  /**
-   * Flag to check user has entered / modified meta data
-   */
-  isMetaModified = false;
+  attachments: Array<IAttachementType> = [];
 
   /**
    * To show / hide modal
@@ -314,6 +308,7 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.modalName = 'success';
         },
         (err: ServerResponse) => {
+          this.toasterService.error(this.resource.messages.emsg.m0005);
           this.formErrorFlag = false;
         }
       );
@@ -334,7 +329,6 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges.subscribe(val => {
-      this.isMetaModified = true;
       this.enableRecipientsBtn();
     });
   }
@@ -386,7 +380,6 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.enableRecipientsBtn();
         this.onFormValueChanges();
         this.showLoader = false;
-        this.isMetaModified = true;
         this.fileUpload.uploader.addInitialFiles(this.attachments);
         this.fileUpload.attachedFiles = this.attachments;
       },
@@ -423,10 +416,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     } else {
       this.onFormValueChanges();
     }
-    this.fileUpload.attachedFiles = [];
     this.setRootOrgId();
-    this.recipientsList = [];
-    this.attachments = [];
     this.navigateToWizardNumber(1);
     this.initilizeFileUploader();
   }
