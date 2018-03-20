@@ -88,7 +88,7 @@ angular.module('playerApp')
              */
 
       this.search = function (req) {
-        var objectType = req.filters && req.filters.objectType
+        var objectType = req && req.filters && req.filters.objectType
         if (!objectType || objectType === 'Content' || objectType.includes('Content')) {
           req = this.updateReqForChannelFilter(req)
         }
@@ -179,7 +179,7 @@ angular.module('playerApp')
       }
 
       this.updateReqForChannelFilter = function (req) {
-        if ($rootScope.content_channel_filter_type.toLowerCase() === 'self') {
+        if ($rootScope.content_channel_filter_type && $rootScope.content_channel_filter_type.toLowerCase() === 'self') {
           req.filters = req.filters || {}
           req.filters.channel = org.sunbird.portal.channel
         }
