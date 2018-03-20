@@ -1,0 +1,23 @@
+<span ng-switch on="fieldLabel.inputType">
+    <span ng-switch-when="Concept" class="padded chip margin-top--5" ng-if='dynamic.search.selectedConcepts.length > 0'>
+        {{$root.frmelmnts.prmpt.concepts}}:
+        <a class="ui label margin-top--5" ng-repeat="concept in dynamic.search.selectedConcepts" ng-init="$last && $root.expandFilters()">
+            {{concept.name}}
+            <i class="delete icon" ng-click="dynamic.search.removeFilterSelection('selectedConcepts',concept.identifier)"></i>
+        </a>
+    </span>
+    <span ng-switch-when="Select" class="padded chip margin-top--5" ng-if='dynamic.search.selectedContentType.length > 0'>
+            {{$root.frmelmnts.prmpt.contenttypes}}:
+            <a class="ui label margin-top--5" ng-repeat="contenttype in dynamic.search.selectedContentType" ng-init="$last && $root.expandFilters()">
+                {{dynamic.search.getSelectedContentTypeValue(dynamic.search.contentTypes, contenttype)}}
+                <i class="delete icon" ng-click="dynamic.search.removeFilterSelection('selectedContentType',contenttype)"></i>
+            </a>
+        </span>
+    <span ng-switch-default class="padded chip margin-top--5" ng-if='dynamic.search.dynamicSelectedSearch(fieldLabel.code).length > 0'>
+        {{fieldLabel.name}}:
+        <a class="ui label margin-top--5" ng-repeat="category in dynamic.search.dynamicSelectedSearch(fieldLabel.code)">
+            {{category}}
+            <i class="delete icon" ng-click="dynamic.search.removeFilterSelection('selected'+fieldLabel.code,category)"></i>
+        </a>
+    </span>
+</span>
