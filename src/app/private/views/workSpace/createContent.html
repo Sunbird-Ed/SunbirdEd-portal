@@ -3,7 +3,7 @@
         <div class="twelve wide column ">
             <div class="ui grid">
                 <div class="three wide column">
-                    <div class="ui link card workspacecontent" ui-sref="CreateTextbook" ng-click="$root.generateInteractEvent('workspace','','textbook','1.0','create-textbook','workspace-create-textbook')">
+                    <div class="ui link card workspacecontent" ui-sref="CreateTextbook" ng-click="$root.generateInteractEvent('workspace','','textbook','1.0','create-textbook','workspace-create-textbook'); $root.dispatchEvent('TextBook')">
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon file text outline icon '></i>

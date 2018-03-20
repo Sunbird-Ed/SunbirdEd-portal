@@ -51,32 +51,51 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     // search select dropdown changes
     var selectedsearchKeyHandler = $rootScope.$on('DynsetSearchKey', function (event, args) {
       dynamic.search.selectedSearchKey = args.key
-      if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
-        _.forEach(dynamic.formFieldProperties, function (category) {
-          dynamic.search['selected' + category.code] = []
-        })
-        dynamic.getChannel(dynamic.formFieldProperties)
-        dynamic.formFieldProperties.sort(function (a, b) {
-          return a.renderingHints.order - b.renderingHints.order
-        })
+      // console.log("dynamic.search.selectedSearchKey",dynamic.search.selectedSearchKey)
+      switch (dynamic.search.selectedSearchKey) {
+      case 'Courses':
+        dynamic.selectedFilter = 'coursesFilterConfigurations'
+        break
+      case 'Library':
+        dynamic.selectedFilter = 'libraryFilterConfigurations'
+        break
       }
+      // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
+      var filter = config.FILTER.RESOURCES[dynamic.selectedFilter]
+      // console.log("filter",filter)
+      dynamic.formFieldProperties = filter.fields
+      _.forEach(dynamic.formFieldProperties, function (category) {
+        dynamic.search['selected' + category.code] = []
+      })
+      dynamic.getChannel(dynamic.formFieldProperties)
+      dynamic.formFieldProperties.sort(function (a, b) {
+        return a.index - b.index
+      })
     })
 
     var searchKeyHandler = $rootScope.$on('DynSearchKey', function (event, args) {
       dynamic.searchKey = args.key
       dynamic.search.selectedSearchKey = dynamic.searchKey
-      if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
-
-        _.forEach(dynamic.formFieldProperties, function (category) {
-          dynamic.search['selected' + category.code] = []
-        })
-        dynamic.getChannel(dynamic.formFieldProperties)
-        dynamic.formFieldProperties.sort(function (a, b) {
-          return a.renderingHints.order - b.renderingHints.order
-        })
+      // console.log("dynamic.search.selectedSearchKey",dynamic.search.selectedSearchKey)
+      switch (dynamic.search.selectedSearchKey) {
+      case 'Courses':
+        dynamic.selectedFilter = 'coursesFilterConfigurations'
+        break
+      case 'Library':
+        dynamic.selectedFilter = 'libraryFilterConfigurations'
+        break
       }
+      // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
+      var filter = config.FILTER.RESOURCES[dynamic.selectedFilter]
+      // console.log("filter",filter)
+      dynamic.formFieldProperties = filter.fields
+      _.forEach(dynamic.formFieldProperties, function (category) {
+        dynamic.search['selected' + category.code] = []
+      })
+      dynamic.getChannel(dynamic.formFieldProperties)
+      dynamic.formFieldProperties.sort(function (a, b) {
+        return a.index - b.index
+      })
       // $scope.search.searchRequest(false)
     })
 

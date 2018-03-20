@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('CollectionController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', function (contentService, $timeout, $state, config,
-      $rootScope, toasterService) {
+    '$rootScope', 'toasterService', '$scope', function (contentService, $timeout, $state, config,
+      $rootScope, toasterService, $scope) {
       var collection = this
       collection.showCreateCollectionModel = false
       collection.isCollectionCreated = false
@@ -68,4 +68,12 @@ angular.module('playerApp')
         var params = { contentId: contentId, type: 'Collection' }
         $state.go('CollectionEditor', params)
       }
+      var CreateCollectionFromDataDrivenForm = $rootScope.$on('CreateCollection',
+        function (event, args) {
+          collection.saveMetaData(args.Data)
+        })
+
+      $scope.$on('$destroy', function () {
+        CreateCollectionFromDataDrivenForm()
+      })
     }])
