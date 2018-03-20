@@ -36,6 +36,11 @@ angular.module('playerApp')
             type: 'course'
           }]
         }
+        configuration.context.pdata = {
+          'id': org.sunbird.portal.appid || 'sunbird.portal',
+          'ver': '1.0',
+          'pid': 'sunbird-portal'
+        }
         configuration.config = config.ekstep_CP_config.config
         configuration.config.plugins = config.ekstep_CP_config.config.plugins
         configuration.config.repos = config.ekstep_CP_config.config.repos
@@ -105,7 +110,7 @@ angular.module('playerApp')
       function getContent (contentId) {
         var req = { contentId: contentId }
         var qs = {
-          fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
+          fields: 'body,editorState,templateId,languageCode,template,' +
                         'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
                         'domain,code,visibility,createdBy,description,language,mediaType,' +
                         'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
