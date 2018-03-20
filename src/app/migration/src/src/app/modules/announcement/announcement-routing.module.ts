@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent, InboxComponent } from './components/index';
+import { OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
+   InboxComponent, CreateComponent } from './components';
 
 const routes: Routes = [
   {
@@ -15,6 +16,12 @@ const routes: Routes = [
     children: [
       { path: 'view/:announcementId', component: DetailsPopupComponent }
     ]
+  },
+  {
+    path: 'announcement/create/:stepNumber', component: CreateComponent
+  },
+  {
+    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent
   }
 ];
 

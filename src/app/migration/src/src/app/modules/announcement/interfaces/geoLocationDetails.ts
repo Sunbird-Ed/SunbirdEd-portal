@@ -1,7 +1,7 @@
 /**
  * Location item object
  */
-export interface GeoLocationDetails {
+export interface IGeoLocationDetails {
     /**
      * Contains created date
      */

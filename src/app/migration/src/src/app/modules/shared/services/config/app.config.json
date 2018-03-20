@@ -15,5 +15,10 @@
         "ANNOUNCEMENT": {
             "CHANNEL": "web"
         }
+    },
+    "ANNOUNCEMENT": {
+        "MAXFILESIZETOUPLOAD": 1024000,
+        "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
+        "ALLOWEDFILEEXTENSION": ["png", "pdf", "jpg"]
     }
 }

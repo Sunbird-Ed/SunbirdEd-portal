@@ -34,7 +34,7 @@
             <p>
               <a class="annUrlLinks" href="{{link}}" target="_blank">
                 {{link | slice:0:70}}
-                <span class="announcementBlueText" *ngIf="link.length > 70">...</span>
+                <span class="announcementBlueText" *ngIf="link && link.length > 70">...</span>
               </a>
             </p>
           </div>
