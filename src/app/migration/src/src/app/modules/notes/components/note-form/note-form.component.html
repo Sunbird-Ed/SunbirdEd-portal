@@ -1,0 +1,33 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+  <div *ngIf= "mode === 'create'" class="header cardsHeading">{{resourceService?.frmelmnts?.pgttl?.takeanote}}</div>
+
+  <div *ngIf= "mode === 'create'" class="content">
+    <div class="ui fluid icon input">
+      <input type="text" [(ngModel)]="noteData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
+    </div>
+    <div class="editor">
+      <div id="wmd-button-bar"></div>
+      <textarea class="wmd-input" [(ngModel)]="noteData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
+    </div>
+  </div>
+  <div *ngIf= "mode === 'update'" class="header cardsHeading">{{selectedNote.title}}</div>
+  <div *ngIf= "mode === 'update'" class="content">
+      <div class="ui fluid icon input">
+        <input type="text" [(ngModel)]="selectedNote.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
+      </div>
+  
+      <div class="editor">
+        <div id="wmd-button-bar"></div>
+        <textarea class="wmd-input" [(ngModel)]="selectedNote.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
+      </div>
+    </div>
+  <div class="actions">
+    <button *ngIf= "mode === 'create'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+      (click)="modal.approve('done'); createNote();" [disabled]="!noteData.title || !noteData.note" tabindex="3">SAVE</button>
+    <button *ngIf="mode === 'create'" class="ui secondary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+      (click)="clearNote()" tabindex="4">CLEAR</button>
+
+    <button *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+      (click)="modal.approve('done'); updateNote()" tabindex="4">UPDATE</button>
+  </div>
+</sui-modal>

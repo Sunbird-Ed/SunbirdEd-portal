@@ -21,6 +21,9 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ],
+      "@sunbird/notes": [
+        "app/modules/notes"
       ]
     },
     "module": "commonjs",

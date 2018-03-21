@@ -1,3 +1,4 @@
+import { NotesModule } from '@sunbird/notes';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -29,7 +30,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     HomeModule,
     DashboardModule,
     AnnouncementModule,
-    Ng2IziToastModule
+    Ng2IziToastModule,
+    NotesModule
   ],
   providers: [],
   entryComponents: [AppComponent],

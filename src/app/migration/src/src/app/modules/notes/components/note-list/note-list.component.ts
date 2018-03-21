@@ -1,0 +1,173 @@
+import { ResourceService, ToasterService } from '@sunbird/shared';
+import { NotesService } from '../../services/index';
+import { UserService, ContentService} from '@sunbird/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { NoteFormComponent } from '../note-form/note-form.component';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router} from '@angular/router';
+import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
+
+/**
+ * This component contains 2 sub components
+ * 1)NoteForm: Provides the editor to create and update notes.
+ * 2)DeleteNote: To delete an existing note.
+ */
+
+@Component({
+  selector: 'app-note-list',
+  templateUrl: './note-list.component.html',
+  styleUrls: ['./note-list.component.css'],
+  entryComponents: [ NoteFormComponent ]
+})
+export class NoteListComponent implements OnInit {
+
+  /**
+   * This variable helps in displaying and hiding page loader.
+   * By default it is assigned a value of 'true'. This ensures that
+   * the page loader is displayed the first time the page is loaded.
+   */
+  showLoader = true;
+
+  /**
+   * The 'sortBy' variable helps in making sure that the array of notes
+   * retrieved while making the search API call is sorted in descending order.
+   */
+  sortBy = 'desc';
+
+  /**
+   * This variablles is used to cross check the response status code.
+   */
+  successResponseCode = 'OK';
+
+  /**
+   * The notesList array holds the entire list of existing notes. Each
+   * note is saved as an object.
+   */
+  notesList: any = [];
+
+  /**
+   *Stores the details of a note selected by the user.
+   */
+  selectedNote: any = {};
+  /**
+   * Stores the index of the selected note in notesList array.
+   */
+  selectedIndex: number;
+  /**
+   * This variable stores the search input from the search bar.
+   */
+  searchData: string;
+  /**
+   * The course id of the selected course.
+   */
+  courseId: string;
+  /**
+   * To get course and note params.
+   */
+  private activatedRoute: ActivatedRoute;
+  /**
+   * To display toaster(if any) after each API call.
+   */
+  private toasterService: ToasterService;
+
+  /**
+   * The constructor
+   *
+   * @param {ToasterService} iziToast Reference of toasterService.
+   * @param {UserService} userService Reference of userService.
+   * @param {ContentService} contentService Reference of contentService.
+   * @param {ResourceService} resourceService Reference of resourceService.
+   * @param {SuiModalService} modalService Reference of modalService.
+   * @param {NotesService} notesService Reference of notesService.
+   */
+
+  constructor(public noteService: NotesService,
+    public userService: UserService,
+    public contentService: ContentService,
+    public resourceService: ResourceService,
+    public modalService: SuiModalService,
+    activatedRoute: ActivatedRoute,
+    toasterService: ToasterService) {
+      this.toasterService = toasterService;
+      this.activatedRoute = activatedRoute;
+    }
+
+  ngOnInit() {
+    /**
+     * Initializing notesList array
+     */
+    this.getAllNotes();
+
+    /**
+     * Initializing selectedNote
+    */
+    const selectedNote = this.selectedNote;
+    this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
+    this.noteService.finalNotesListData.subscribe(data => {
+      const id = data.substr(1, data.length);
+      this.notesList = this.notesList.filter(function(note) {
+        return note.id !== id;
+      } );
+    } );
+    this.activatedRoute.params.subscribe((params) => {
+      this.courseId = params.courseId;
+    });
+
+  }
+
+  /**
+   * This method calls the search API.
+   * @param request contains request body.
+   */
+  public searchNote(request) {
+
+    const requestBody = request;
+
+    this.noteService.search(requestBody).subscribe(
+      (response) => {
+        if (response && response.responseCode === this.successResponseCode) {
+          this.showLoader = false;
+          this.notesList = response.result.response.note;
+          this.selectedNote = this.notesList[0];
+        } else {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+        }
+      },
+      (err) => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+      }
+    );
+  }
+
+  /**
+   * This method sets the value of a selected note to the variable 'selectedNote'
+   * and passes it on to notesService.
+   * @param note The selected note from list view.
+   */
+  public showNoteList(note, a) {
+    this.selectedNote = note;
+    this.noteService.selectedNote = this.selectedNote;
+    this.selectedIndex = a;
+  }
+
+  /**
+   * This method creates the request body for the search API call.
+  */
+  public getAllNotes() {
+    const requestData = {
+      request: {
+      filter: {
+        userid: this.userService.userid,
+        courseid: this.courseId
+      },
+      sort_by: {
+        updatedDate: this.sortBy
+      }
+    }
+  };
+   this.searchNote(requestData);
+  }
+
+}
