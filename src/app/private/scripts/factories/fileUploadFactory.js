@@ -27,7 +27,8 @@ angular.module('playerApp')
         fileValidation: {
           itemLimit: 10,
           sizeLimit: config.AnncmntMaxFileSizeToUpload,
-          allowedExtensions: config.AnncmntAllowedFileExtension
+          allowedExtensions: config.AnncmntAllowedFileExtension,
+          stopOnFirstInvalidFile: false
         }
       }
 
@@ -87,7 +88,6 @@ angular.module('playerApp')
               autoUpload: true,
               paramsInBody: true,
               debug: false,
-              stopOnFirstInvalidFile: false,
               request: controllerOption.request,
               validation: controllerOption.fileValidation,
               messages: {
