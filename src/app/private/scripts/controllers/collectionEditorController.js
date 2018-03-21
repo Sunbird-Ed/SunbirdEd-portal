@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
-    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
+    '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService', '$window',
     function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-      permissionsService, workSpaceUtilsService) {
+      permissionsService, workSpaceUtilsService, $window) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
       collectionEditor.framework = $stateParams.framework
@@ -142,7 +142,8 @@ angular.module('playerApp')
               }, 100)
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              $state.go('Home')
+              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
             }
           }
         })

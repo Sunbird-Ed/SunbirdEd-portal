@@ -11,6 +11,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.sessionId = $('#sessionId').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
+    $rootScope.content_channel_filter_type = $('#contentChannelFilterType').attr('value')
     $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''

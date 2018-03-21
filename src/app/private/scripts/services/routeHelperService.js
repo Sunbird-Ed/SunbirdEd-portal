@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .service('routeHelperService', ['$rootScope', '$stateParams', '$timeout', 'sessionService',
-    'permissionsService', 'toasterService', '$state',
+    'permissionsService', 'toasterService', '$state', '$window',
     function ($rootScope, $stateParams, $timeout, sessionService, permissionsService,
-      toasterService, $state) {
+      toasterService, $state, $window) {
       /**
      * @class routeHelperService
      * @desc Service to manages breadCrumb and route states.
@@ -351,7 +351,8 @@ angular.module('playerApp')
         if (permissionsService.checkRolesPermissions(data, flag)) {
           toasterService.warning($rootScope.messages.imsg.m0004)
           event.preventDefault()
-          $state.go('Home')
+          var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+          $state.go(previousState.name, previousState.params)
         }
       }
       /**
