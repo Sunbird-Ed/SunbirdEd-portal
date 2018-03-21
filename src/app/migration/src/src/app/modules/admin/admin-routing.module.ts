@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganizationComponent, UserComponent, BulkUploadComponent, TestComponent } from './components/index';
+import { OrganizationComponent, UserComponent, BulkUploadComponent, TestComponent, StatusComponent } from './components/index';
 
 const routes: Routes = [
   {
@@ -10,7 +10,8 @@ const routes: Routes = [
         path: 'bulkUpload', component: BulkUploadComponent,
         children: [
           { path: 'uploadOrg', component: OrganizationComponent },
-          { path: 'uploadUser', component: UserComponent }
+          { path: 'uploadUser', component: UserComponent },
+          { path: 'checkStatus', component: StatusComponent }
         ]
       }
     ]

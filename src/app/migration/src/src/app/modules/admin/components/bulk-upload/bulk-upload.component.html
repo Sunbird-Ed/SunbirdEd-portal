@@ -1,17 +1,23 @@
 <div class="ui padded grid">
-  <div class="row">
-    <!-- <div class="twelve wide column"> -->
-      <div class="one wide column"></div>
-      <div class="six wide column"></div>
-      <div class="four wide column">
-        <div class="ui vertical basic buttons">
-          <button class="ui button" (click)="uploadOrg()">Upload organization</button>
-          <button class="ui button" (click)="uploadUser()">Upload User</button>
-          <button class="ui button">Check upload status</button>
-        </div>
-      </div>
-      <div class="one wide column"></div>
-    <!-- </div> -->
+  <div class="one wide column"></div>
+  <div class="eight wide column"></div>
+  <div class="two wide column">
+    <div class="ui padding-top-none padding-bottom-15">
+      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadOrg">
+        {{resourceService?.frmelmnts?.instn?.t0015}}
+      </a>
+    </div>
+    <div class="ui padding-top-none padding-bottom-15">
+      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadUser">
+        {{resourceService?.frmelmnts?.instn?.t0016}}
+      </a>
+    </div>
+    <div class="ui padding-top-none padding-bottom-15">
+      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/checkStatus">
+        {{resourceService?.frmelmnts?.lbl?.chkuploadsts}}
+      </a>
+    </div>
   </div>
+  <div class="one wide column"></div>
 </div>
 <router-outlet></router-outlet>

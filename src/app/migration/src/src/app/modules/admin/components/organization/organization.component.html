@@ -2,7 +2,7 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">Upload Organizations</span>
+        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0015}}</span>
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny" (click)="modal.deny(); redirect();">
@@ -12,43 +12,42 @@
     </div>
   </div>
   <div class="content">
-    <!-- <div *ngIf="admin.loader.showLoader">
-      <app-loader data="{{admin.loader}}"></app-loader>
-    </div> -->
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
     <!-- file name -->
-    <h5>
-      <i class="file outline icon"></i>
+    <h5 *ngIf="fileName">
+      <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
     </h5>
     <!-- show progress -->
-    <div>
-      <p class="padding-top-bottom-0 "></p>
-      <!-- <p>{{$root.frmelmnts.instn.t0012}}</p> -->
+    <div *ngIf="processId">
+      <p class="padding-top-bottom-0">{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</p>
+      <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
     </div>
-    <div class="ui info message">
+    <div *ngIf="!processId && !showLoader" class="ui info message">
       <!-- <i class="close icon"></i> -->
       <div class="header">
-        Instructions :
+        {{resourceService?.frmelmnts?.scttl?.instructions}}
       </div>
       <ol class="ui list">
-        <li>Download the csv file for reference</li>
-        <li>You can add or upload details of up to 199 organizations at a time in one csv file</li>
-        <li>The OrgName column is mandatory. Enter organization name in this column</li>
-        <li>Enter each organization's name in a separate row</li>
-        <li>Entering details in all other columns is optional:
+        <li>{{resourceService?.frmelmnts?.instn?.t0013}}</li>
+        <li>{{resourceService?.frmelmnts?.instn?.t0002}}</li>
+        <li>{{resourceService?.frmelmnts?.instn?.t0007}}</li>
+        <li>{{resourceService?.frmelmnts?.instn?.t0021}}</li>
+        <li>{{resourceService?.frmelmnts?.instn?.t0022}}
           <ol>
-            <li>isRootOrg: Valid values for this column True False</li>
-            <li>channel: Unique ID provided during master organization creation</li>
-            <li>externalId: Unique ID associated with each organization in the administrating organization's repository</li>
-            <li>provider: Channel ID of the administrator organization</li>
-            <li>description: Details describing the organization</li>
-            <li>homeUrl: Organization's homepage url</li>
-            <li>orgCode: Organization's unique code, if any,</li>
-            <li>orgType: Type of organization, such as, NGO, primary school, secondary school etc</li>
-            <li>preferredLanguage: Language preferences for the organization, if any</li>
-            <li>contactDetail: Organization's phone number and email ID. Details should be entered within curly brackets in single
-              quotes. For example: ['Phonenumber': '1234567890']</li>
-            <li>channel is mandatory if value for column isRootorg is True</li>
-            <li>externalid and provider are mutually mandatory</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0023}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0024}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0025}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0026}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0027}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0028}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0029}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0030}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0031}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0032}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0049}}</li>
+            <li>{{resourceService?.frmelmnts?.instn?.t0050}}</li>
           </ol>
         </li>
       </ol>
@@ -57,35 +56,19 @@
   <div class="actions">
     <div class="ui grid">
       <div class="four wide column">
-        <button class="ui left floated button">DOWNLOAD SAMPLE CSV</button>
+        <button class="ui left floated button" (click)="downloadSample()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
       </div>
       <div class="four wide column">
       </div>
       <div class="four wide column">
-        <button [disabled]="bulkOrgProcessId" class="ui primary right floated button">UPLOAD ORGANIZATIONS CSV</button>
-        <input type="file" accept=".csv" class="content-input ui small " id="orgUploadCSV" (change)="angular.element(this).scope().validateFile(this.files, 'organizations');"
-          required="" />
+        <div>
+          <label class="ui primary right floated button" for="uploadorgscsv">
+            {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
+          </label>
+        </div>
+        <input [disabled]="processId" type="file" style='display:none' accept=".csv" id="uploadorgscsv" (change)="uploadOrg($event.target.files)" autofocus required=""
+        />
       </div>
     </div>
   </div>
-
-  <!-- <div class="content">
-    <div class="ui center aligned segment">
-      <div class="ui basic icon circular button deny">
-        <i class="ui huge help outline icon"></i>
-      </div>
-      <br/>
-      <br/>
-      <div class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirm}}</div>
-      <br/>
-      <div class="announcement-description">
-        {{resourceService?.frmelmnts?.lbl?.anncmntcancelconfirmdescrption}}
-      </div>
-      <br/>
-      <br/>
-      <button class="ui basic button announcementButton btn-width-26 announcementButtonText" (click)="modal.approve('done'); deleteAnnouncement();">
-        {{resourceService?.frmelmnts?.btn?.yes}} </button>
-      <button class="ui button primary announcementButton btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
-    </div>
-  </div> -->
 </sui-modal>
