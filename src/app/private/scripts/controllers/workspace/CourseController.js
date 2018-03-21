@@ -72,7 +72,7 @@ angular.module('playerApp')
 
       var CreateCourseFromDataDrivenForm = $rootScope.$on('CreateCourse',
         function (event, args) {
-          course.saveMetaData(args.Data)
+          course.saveMetaData(args.Data, args.framework)
         })
 
       $scope.$on('$destroy', function () {

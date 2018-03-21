@@ -66,6 +66,7 @@ angular.module('playerApp')
         requestBody.name = requestBody.name ? requestBody.name : lessonPlan.defaultName
         requestBody.mimeType = lessonPlan.mimeType
         requestBody.createdBy = lessonPlan.userId
+        requestBody.contentType = lessonPlan.contentType
         requestBody.framework = lessonPlan.framework
         if (requestBody.language) {
           requestBody.language = [requestBody.language]

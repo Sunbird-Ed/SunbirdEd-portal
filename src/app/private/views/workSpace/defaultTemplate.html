@@ -12,7 +12,7 @@
         <div ng-if="field.inputType==='select' && field.code!='year' ">
             <div class="field" ng-class="{ 'disabled':!field.editable} ">
                     <label >{{field.name}}</label>
-                    <select id="#_select{{field.code}}" class="ui search dropdown placeholder-padding"
+                    <select id="{{field.code}}" class="ui search dropdown placeholder-padding"
                     ng-model="dataDrivenForm.data[field.code]" ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, 'field':field, value:dataDrivenForm.data[field.code]})">
                         <option value="">Select</option>
                         <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>
@@ -22,7 +22,7 @@
         <div ng-if="field.inputType==='multiSelect'">
                 <div class="field" ng-class="{ 'disabled':!field.editable} ">
                         <label>{{field.name}}</label>
-            <select id="#_select{{field.code}}" multiple="" class="ui search dropdown placeholder-padding"
+            <select id="{{field.code}}" multiple="" class="ui search dropdown placeholder-padding"
                 ng-class="{{field.code}}" ng-model="dataDrivenForm.data[field.code]" ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, field:field, value:dataDrivenForm.data[field.code]}) ">
                 <option value="">Select</option>
                 <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>

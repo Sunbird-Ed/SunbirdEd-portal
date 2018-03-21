@@ -66,7 +66,7 @@ angular.module('playerApp')
       dataDrivenForm.updateForm = function (object) {
         if (object.field.range) {
           dataDrivenForm.getAssociations(object.value, object.field.range, function (associations) {
-            dataDrivenForm.applayDependencyRules(object.field, associations)
+            dataDrivenForm.applayDependencyRules(object.field, associations, true)
           })
         }
       }
@@ -77,8 +77,8 @@ angular.module('playerApp')
      * @param {Object} range           - Which refers to framework terms/range object
      */
       dataDrivenForm.getAssociations = function (keys, range, callback) {
-        let associations = []
-        let values = _.filter(range, function (res) { return _.includes(keys, res.name) })
+        var associations = []
+        var values = _.filter(range, function (res) { return _.includes(keys, res.name) })
         _.forEach(values, function (key, value) {
           if (key.associations) {
             _.forEach(key.associations, function (key, value) {
@@ -96,15 +96,15 @@ angular.module('playerApp')
      * @param {Boolean} resetSelected  - @default true Which defines while resolving the dependency dropdown
      *                                   Should reset the selected values of the field or not
      */
-      dataDrivenForm.applayDependencyRules = function (field, associations, resetSelected = true) {
+      dataDrivenForm.applayDependencyRules = function (field, associations, resetSelected) {
         // reset the depended field first
         // Update the depended field with associated value
         // Currently, supported only for the dropdown values
-        let dependedValues
+        var dependedValues
         if (field.depends && field.depends.length) {
           _.forEach(field.depends, function (id) {
             resetSelected && dataDrivenForm.resetSelectedField(id)
-            dependedValues = _.map(associations, i => _.pick(i, 'name'))
+            dependedValues = _.map(associations, function (i) { return _.pick(i, 'name') })
             dataDrivenForm.updateDropDownList(id, dependedValues)
           })
         }
@@ -130,8 +130,9 @@ angular.module('playerApp')
      */
       dataDrivenForm.resetSelectedField = function (id) {
         setTimeout(function () {
-          $('#_select' + id).dropdown('restore defaults')
-          dataDrivenForm.frameworkData[id] = undefined
+          $('#' + id).dropdown('restore defaults')
+          $('#' + id).dropdown('refresh')
+          dataDrivenForm.data[id] = undefined
         }, 0)
       }
 
@@ -148,10 +149,10 @@ angular.module('playerApp')
             $rootScope.$broadcast('CreateTextbook', { Data: data, framework: dataDrivenForm.framework })
             break
           case 'CreateCourse':
-            $rootScope.$broadcast('CreateCourse', { Data: data })
+            $rootScope.$broadcast('CreateCourse', { Data: data, framework: dataDrivenForm.framework })
             break
           case 'CreateCollection':
-            $rootScope.$broadcast('CreateCollection', { Data: data })
+            $rootScope.$broadcast('CreateCollection', { Data: data, framework: dataDrivenForm.framework })
             break
           case 'CreateLesson':
             $rootScope.$broadcast('CreateLesson', { Data: data, framework: dataDrivenForm.framework })
@@ -196,7 +197,7 @@ angular.module('playerApp')
       dataDrivenForm.configureDropdowns = function (labels = false, forceSelection = false) {
         // TODO: Need to remove the timeout
         setTimeout(function () {
-          $('.ui.search.dropdown').dropdown({
+          $('.ui.dropdown').dropdown({
             useLabels: labels,
             forceSelection: forceSelection
           })
@@ -282,11 +283,11 @@ angular.module('playerApp')
                 })
                 dataDrivenForm.loader.showLoader = false
                 // console.log("dataDrivenForm.formFieldProperties", dataDrivenForm.formFieldProperties)
-                const DROPDOWN_INPUT_TYPES = ['Select', 'Term']
+                const DROPDOWN_INPUT_TYPES = ['select', 'multiSelect']
                 $timeout(function () {
                   _.forEach(dataDrivenForm.formFieldProperties, function (field) {
                     if (_.includes(DROPDOWN_INPUT_TYPES, field.inputType)) {
-                      // $('#'+field.code).dropdown('set selected', dataDrivenForm.frameworkData[field.code]);
+                      $('#' + field.code).dropdown('set selected', dataDrivenForm.frameworkData[field.code])
                       if (field.depends && field.depends.length) {
                         dataDrivenForm.getAssociations(dataDrivenForm.frameworkData[field.code],
                           field.range, function (associations) {

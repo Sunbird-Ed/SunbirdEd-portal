@@ -7,6 +7,7 @@ angular.module('playerApp')
       workSpaceUtilsService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
+      contentEditor.framework = $stateParams.framework
       contentEditor.openContentEditor = function () {
         window.context = {
           user: {
@@ -15,6 +16,7 @@ angular.module('playerApp')
           },
           sid: $rootScope.sessionId,
           contentId: contentEditor.contentId,
+          framework: contentEditor.framework,
           pdata: {
             id: org.sunbird.portal.appid,
             ver: '1.0'

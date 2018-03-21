@@ -51,13 +51,14 @@ angular.module('playerApp')
         })
       }
 
-      collection.saveMetaData = function (data) {
+      collection.saveMetaData = function (data, framework) {
+        collection.framework = framework
         var requestBody = angular.copy(data)
         requestBody.name = requestBody.name ? requestBody.name : collection.defaultName
         requestBody.mimeType = collection.mimeType
         requestBody.createdBy = collection.userId
         requestBody.contentType = collection.contentType
-
+        requestBody.framework = collection.framework
         var requestData = {
           content: requestBody
         }
@@ -65,12 +66,12 @@ angular.module('playerApp')
       }
 
       collection.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'Collection' }
+        var params = { contentId: contentId, type: 'Collection', framework: collection.framework }
         $state.go('CollectionEditor', params)
       }
       var CreateCollectionFromDataDrivenForm = $rootScope.$on('CreateCollection',
         function (event, args) {
-          collection.saveMetaData(args.Data)
+          collection.saveMetaData(args.Data, args.framework)
         })
 
       $scope.$on('$destroy', function () {
