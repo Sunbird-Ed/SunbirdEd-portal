@@ -36,7 +36,7 @@ let updateApiSchema = Joi.object().keys({
 })
 
 class AnnouncementTypeModel extends BaseModel {
-  constructor (modelSchema = {}, apiSchema = {}) {
+  constructor (modelSchema = {}, apiSchema = {}, updateApiSchema = {}) {
     super()
 
     /**
@@ -99,4 +99,4 @@ class AnnouncementTypeModel extends BaseModel {
     return this.apiSubSchema(property)
   }
 }
-module.exports = new AnnouncementTypeModel(modelSchema, apiSchema)
+module.exports = new AnnouncementTypeModel(modelSchema, apiSchema, updateApiSchema)
