@@ -8,4 +8,4 @@ export * from  './course/course.service';
 export * from './search/search.service';
 export * from './announcement/announcement.service';
 export * from './user/user.mock.spec.data';
-
+export * from './admin/admin.service';
