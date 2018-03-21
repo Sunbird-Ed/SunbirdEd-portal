@@ -30,9 +30,9 @@ let apiSchema = Joi.object().keys({
 let updateApiSchema = Joi.object().keys({
   request: Joi.object().keys({
     id: Joi.string().required(),
-    name: Joi.string().min(2).max(50).required(),
-    status: Joi.string().valid('active', 'inactive').required()
-  }).required()
+    name: Joi.string().min(2).max(50),
+    status: Joi.string().valid('active', 'inactive')
+  }).required().or('name', 'status')
 })
 
 class AnnouncementTypeModel extends BaseModel {
