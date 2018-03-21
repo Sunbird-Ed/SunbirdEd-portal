@@ -50,7 +50,7 @@
             </a>
             </span>
             <!-- Content type -->
-            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedContentType.length > 0'>
+            <span class="padded chip margin-top--5 margin-left-10" ng-if='upForReviewContent.search.appliedContentType.length > 0' sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
                 {{$root.frmelmnts.prmpt.contenttypes}}:
                 <a class="ui label margin-top--5" ng-repeat="contenttype in upForReviewContent.search.appliedContentType" ng-init="$last && $root.expandFilters()">
                     {{upForReviewContent.search.getSelectedContentTypeValue(upForReviewContent.search.contentTypes, contenttype)}}
@@ -172,7 +172,7 @@
 
 
             <!-- Content Type -->
-            <div class='three wide column'>
+            <div class='three wide column' sb-permissions permission-only="CONTENT_REVIEWER,CONTENT_REVIEW">
                 <div apply-script id="filterContent" class="ui filtersearch ui multiple selection dropdown-items course-search-filter dropdown">
                     <input type='hidden' ng-value='{{}}' />
                     <i class="dropdown icon"></i>

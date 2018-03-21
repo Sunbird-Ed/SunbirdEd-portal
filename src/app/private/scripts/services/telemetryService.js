@@ -11,9 +11,9 @@ angular.module('playerApp')
   .service('telemetryService', ['$rootScope', 'config', '$window', function ($rootScope, config, $window) {
     this.config = {
       'pdata': {
-        'id': org.sunbird.portal.appid || 'org.sunbird',
+        'id': org.sunbird.portal.appid || 'sunbird.portal',
         'ver': '1.0',
-        'pid': ''
+        'pid': 'sunbird-portal'
       },
       'env': 'Home',
       'channel': org.sunbird.portal.channel || 'sunbird',
