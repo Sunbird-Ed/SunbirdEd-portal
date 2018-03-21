@@ -425,7 +425,7 @@ angular.module('playerApp')
         edata: this.interactEventData('CLICK', '', edataId, pageId),
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
 
       this.interact(data)
@@ -449,7 +449,7 @@ angular.module('playerApp')
         edata: this.impressionEventData('view', subtype, pageId, uri, visit),
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
       this.impression(data)
     }
@@ -472,7 +472,7 @@ angular.module('playerApp')
         contentVer: $rootScope.version,
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
       this.start(data)
     }
@@ -495,7 +495,7 @@ angular.module('playerApp')
         contentVer: $rootScope.version,
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
       this.end(data)
     }
@@ -518,7 +518,7 @@ angular.module('playerApp')
         edata: this.shareEventData('Link', items, 'Out'),
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
       this.share(data)
     }
@@ -539,7 +539,7 @@ angular.module('playerApp')
         edata: this.errorEventData(errCode, errType, stacktrace, pageId),
         context: this.getContextData(contextData),
         object: this.getObjectData(objectData),
-        tags: $rootScope.organisationIds
+        tags: _.concat([], org.sunbird.portal.channel)
       }
       this.error(data)
     }
