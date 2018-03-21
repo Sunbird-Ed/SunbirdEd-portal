@@ -87,7 +87,7 @@ angular.module('playerApp')
               template: 'qq-template-manual-trigger',
               autoUpload: true,
               paramsInBody: true,
-              debug: false,              
+              debug: false,
               request: controllerOption.request,
               validation: controllerOption.fileValidation,
               messages: {
