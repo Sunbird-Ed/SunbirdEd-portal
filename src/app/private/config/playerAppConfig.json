@@ -754,7 +754,7 @@
                         "description": "Medium of instruction",
                         "editable": true,
                         "placeholder": "Medium",
-                        "inputType": "multiSelect",
+                        "inputType": "select",
                         "required": false,
                         "displayProperty": "Editable",
                         "visible": true,
