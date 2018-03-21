@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', '$window',
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', '$window', 'searchService',
     function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
-      workSpaceUtilsService, $window) {
+      workSpaceUtilsService, $window, searchService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
@@ -22,6 +22,10 @@ angular.module('playerApp')
           },
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
           channel: org.sunbird.portal.channel
+        }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.context.searchCriteria = searchService.updateReqForChannelFilter()
         }
         window.config = {
           baseURL: '',
