@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
-    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', 'telemetryService',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', 'telemetryService', '$window',
     function ($state, $scope, contentService, $timeout, $stateParams, config, $rootScope,
-      $location, $anchorScroll, toasterService, telemetryService) {
+      $location, $anchorScroll, toasterService, telemetryService, $window) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
@@ -125,8 +125,8 @@ angular.module('playerApp')
             } else {
               if (!count) {
                 count += 1
-                toasterService.warning($rootScope.messages.imsg.m0018)
-                $state.go('Home')
+                toasterService.warning($rootScope.messages.imsg.m0027)
+                $window.history.back()
               }
             }
           } else {

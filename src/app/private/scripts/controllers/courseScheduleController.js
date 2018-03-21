@@ -3,10 +3,10 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl', ['$rootScope', '$stateParams', 'courseService', 'toasterService',
     '$timeout', 'contentStateService', '$scope', '$location', 'batchService', 'dataService', 'sessionService',
-    '$anchorScroll', 'permissionsService', '$state', 'telemetryService',
+    '$anchorScroll', 'permissionsService', '$state', 'telemetryService', '$window',
     function ($rootScope, $stateParams, courseService, toasterService, $timeout, contentStateService,
       $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService,
-      $state, telemetryService) {
+      $state, telemetryService, $window) {
       var toc = this
 
       toc.getCourseToc = function () {
@@ -31,8 +31,10 @@ angular.module('playerApp')
                 toc.courseHierarchy = res.result.content
               }
             } else {
-              toasterService.warning($rootScope.messages.imsg.m0019)
-              $state.go('Home')
+              toc.loader.showLoader = false
+              toasterService.warning($rootScope.messages.imsg.m0026)
+              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
               return
             }
           } else {
