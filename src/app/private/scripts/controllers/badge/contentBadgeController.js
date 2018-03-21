@@ -12,7 +12,7 @@ angular.module('playerApp')
       permissionsService, $q, toasterService) {
       var contentBadge = this
       contentBadge.showBadgeAssingModel = false
-      contentBadge.selectedBadgeList = []
+      contentBadge.selectedBadgeList = ($scope.data && $scope.data.badgeAssertions) || []
       contentBadge.type = 'content'
       contentBadge.contentId = $scope.contentid
       contentBadge.recipientEmail = 'dummy_content_email@gmail.com'
@@ -47,15 +47,16 @@ angular.module('playerApp')
           req.request.issuerList = _.map(issueResp.result.issuers, 'issuerId')
           badgeService.getAllBadgesList(req).then(function (response) {
             if (response && response.responseCode === 'OK') {
-              contentBadge.allBadgeList = response.result.badges
+              contentBadge.allBadgeList =
+                _.differenceBy(response.result.badges, contentBadge.selectedBadgeList, 'badgeId')
             } else {
               toasterService.error('Unable to get badges, Please try again later')
             }
           }).catch(function (error) {
-            toasterService.error(error)
+            toasterService.error(error.message)
           })
         }).catch(function (error) {
-          toasterService.error(error)
+          toasterService.error(error.message)
         })
       }
 
@@ -103,6 +104,7 @@ angular.module('playerApp')
               return badge.badgeClassId !== selectedBadge.badgeClassId
             })
             contentBadge.hideContentBadgeModal()
+            toasterService.success('Badge assinged successfully')
           } else {
             toasterService.error('Unable to assing badges, Please try again later')
           }

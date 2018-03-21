@@ -3,6 +3,7 @@
         <div class="image imageInCardsResponsive">
             <a class="ui black right ribbon label ng-binding" ng-if="item.resourceType">{{item.resourceType}}</a>
             <a class="ui black right ribbon label ng-binding" ng-if = "!item.resourceType">{{item.contentType}}</a>
+            <a class="ui blue left ribbon label ng-binding" ng-if = "item.badgeAssertions && item.badgeAssertions.length>0">{{item.badgeAssertions[0].name || item.badgeAssertions[0].badgeId}}</a>
             <div ng-if="item.leafNodesCount && item.progress > 0" class="ui tiny progress course-progress progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}">
                 <div class="bar"></div>
             </div>

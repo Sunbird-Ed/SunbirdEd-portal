@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div ng-if="cpvm.courseHierachy.identifier">
-                <content-badge contentid="cpvm.courseHierachy.identifier"></content-badge>
+                <content-badge contentid="cpvm.courseHierachy.identifier" data="cpvm.courseHierachy"></content-badge>
             </div>
         </div>
         <div id="collectionPlayer" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100" ng-repeat="item in  cpvm.courseHierachy.children track by $index" ng-click="cpvm.expandMe($event, item)">

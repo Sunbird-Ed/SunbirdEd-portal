@@ -1,7 +1,7 @@
 <div class="ui grid" ng-init="contentBadge.getAllBadges()">
     <div class="six wide column">
         <div ng-if="contentBadge.selectedBadgeList.length>0">
-            <button class="ui big blue label button margin-top-0" ng-repeat="badge in contentBadge.selectedBadgeList">{{badge.name}}</button>
+            <button class="ui big blue label button margin-top-0" ng-repeat="selectedbadge in contentBadge.selectedBadgeList">{{selectedbadge.name || selectedbadge.badgeId}}</button>
         </div>
     </div>
     <div class="six wide column  margin-top-0" style="text-align:right" ng-if="contentBadge.allBadgeList && contentBadge.allBadgeList.length > 0">
