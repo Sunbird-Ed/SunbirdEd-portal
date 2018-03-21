@@ -64,7 +64,7 @@ export class ResourceComponent implements OnInit {
           this.caraouselData = apiResponse.result.response.sections;
           _.forEach(this.caraouselData, (value, index) => {
             _.forEach(this.caraouselData[index].contents, (item, key) => {
-              const action = { type: { rating: true } };
+              const action = { left: { displayType: 'rating' } };
               this.caraouselData[index].contents[key].action = action;
             });
           });

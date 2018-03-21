@@ -67,11 +67,11 @@ export class LearnPageComponent implements OnInit {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.showLoader = false;
-            const action = {
-              type: { button: true, rating: true },
-              classes: { button: 'ui blue basic button' },
-              label: 'Resume'
-            };
+            const action = { right: { displayType: 'button' ,
+                 classes: 'ui blue basic button' ,
+                 text: 'Resume' },
+                 left: { displayType: 'rating' }
+                };
             this.enrolledCourses = data.enrolledCourses;
             _.forEach(this.enrolledCourses, (value, index) => {
               this.enrolledCourses[index].action = action;
@@ -122,23 +122,19 @@ export class LearnPageComponent implements OnInit {
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                const action = {
-                  type: { button: true, rating: true },
-                  classes: { button: 'ui blue basic button' },
-                  label: 'Resume'
+                const action = { right: {displayType: 'button' ,
+                 classes: 'ui blue basic button' ,
+                 text: 'Resume' },
+                 left: { displayType: 'rating' }
                 };
                 this.caraouselData[index].contents[index1].action = action;
               } else {
-                const action = {
-                  type: { rating: true }
-                };
+                const action = { left: { displayType: 'rating' } };
                 this.caraouselData[index].contents[index1].action = action;
               }
             });
           } else {
-            const action = {
-              type: { rating: true }
-            };
+            const action = { left: { displayType: 'rating' } };
             this.caraouselData[index].contents[index1].action = action;
           }
         });
