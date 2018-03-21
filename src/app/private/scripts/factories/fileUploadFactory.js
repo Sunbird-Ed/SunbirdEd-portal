@@ -27,7 +27,8 @@ angular.module('playerApp')
         fileValidation: {
           itemLimit: 10,
           sizeLimit: config.AnncmntMaxFileSizeToUpload,
-          allowedExtensions: config.AnncmntAllowedFileExtension
+          allowedExtensions: config.AnncmntAllowedFileExtension,
+          stopOnFirstInvalidFile: false
         }
       }
 
@@ -86,8 +87,7 @@ angular.module('playerApp')
               template: 'qq-template-manual-trigger',
               autoUpload: true,
               paramsInBody: true,
-              debug: false,
-              stopOnFirstInvalidFile: false,
+              debug: false,              
               request: controllerOption.request,
               validation: controllerOption.fileValidation,
               messages: {
