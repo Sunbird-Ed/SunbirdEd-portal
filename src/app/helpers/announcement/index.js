@@ -29,7 +29,8 @@ const API_IDS = {
     getresend: 'getresend.id',
     resend: 'resend',
     createAnnouncementType: 'manage.announcementtype.create',
-    listAnnouncementType: 'manage.announcementtype.list'
+    listAnnouncementType: 'manage.announcementtype.list',
+    updateAnnouncementType: 'manage.announcementtype.update'
 }
 
 let announcementController = new controller({
@@ -385,6 +386,24 @@ module.exports = function(keycloak) {
                 })
                 .catch((err) => {
                     sendErrorResponse(responseObj, API_IDS.listAnnouncementType, err.message, err.status)
+                })
+        })
+
+        router.post('/manage/announcement-type/update', storeTelemetryData, (requestObj, responseObj, next) => {
+            let config = {apiid: API_IDS.updateAnnouncementType}
+            validate()(requestObj, responseObj, next, keycloak, config)
+        }, (requestObj, responseObj, next) => {
+            let config = {
+                apiid: API_IDS.updateAnnouncementType
+            }
+            validateRoles()(requestObj, responseObj, next, config)
+        }, (requestObj, responseObj, next) => {
+            announcementController.updateAnnouncementType(requestObj)
+                .then((data) => {
+                    sendSuccessResponse(responseObj, API_IDS.updateAnnouncementType, data, HttpStatus.OK)
+                })
+                .catch((err) => {
+                    sendErrorResponse(responseObj, API_IDS.updateAnnouncementType, err.message, err.status)
                 })
         })
 

@@ -382,7 +382,7 @@ class AnnouncementController {
                 status = await (this.__isAuthor()(userId, _.get(requestObj, 'body.request.announcementId')))
             } else {
                 throw this.customError({
-                    message: 'Unauthorized User!11',
+                    message: 'Unauthorized User!',
                     status: HttpStatus.UNAUTHORIZED,
                     isCustom:true
                 })
@@ -417,7 +417,7 @@ class AnnouncementController {
                         })
                 } else {
                     reject(this.customError({
-                        message: 'Unauthorized User!22',
+                        message: 'Unauthorized User!',
                         status: HttpStatus.UNAUTHORIZED,
                         isCustom:true
                     }))
@@ -1270,6 +1270,64 @@ class AnnouncementController {
             } catch (error) {
                 throw this.customError(error)
             }
+        })
+    }
+
+    /**
+     * Update announcement type for name, status
+     *
+     * @param   Object  requestObj  Request object
+     *
+     * @return  Object              Response object
+     */
+    updateAnnouncementType(requestObj) {
+        return this.__updateAnnouncementType()(requestObj)
+    }
+
+    __updateAnnouncementType() {
+        return async((requestObj) => {
+
+
+            let validation = this.announcementTypeModel.validateUpdateApi(requestObj.body)
+
+            if (!validation.isValid) throw {
+                message: validation.error,
+                status: HttpStatus.BAD_REQUEST,
+                isCustom:true
+            }
+
+            return new Promise((resolve, reject) => {
+                let newStatus = _.get(requestObj, 'body.request.status')
+                let newName = _.get(requestObj, 'body.request.name')
+
+                let query = {
+                    values: {
+                        id: _.get(requestObj, 'body.request.id'),
+                        name: newName,
+                        status: newStatus
+                    },
+                    reqID: requestObj.reqID
+                }
+
+                this.announcementTypeStore.updateObjectById(query)
+                    .then((data) => {
+                        if (data) {
+                            resolve({
+                                id: requestObj.params.id
+                            })
+                        } else {
+                            throw {
+                                message: 'Unable to process!',
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                isCustom:true
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                        reject(this.customError(error))
+                    })
+                
+            })
         })
     }
 

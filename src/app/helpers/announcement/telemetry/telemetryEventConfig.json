@@ -127,5 +127,11 @@
     "title": "List announcement types",
     "category": "announcementtype",
     "env": "announcement"
+  },
+  "/manage/announcement-type/update": {
+    "rid": "announcement.manage.announcementtype.update",
+    "title": "Update announcement type",
+    "category": "announcementtype",
+    "env": "announcement"
   }
 }

@@ -12,12 +12,24 @@ let modelSchema = Joi.object().keys({
 })
 
 /**
- * Which is used to validate the api request object
+ * Which is used to validate the create api request object
  * @type {Object}
  */
 let apiSchema = Joi.object().keys({
   request: Joi.object().keys({
     rootOrgId: Joi.string().required(),
+    name: Joi.string().min(2).max(50).required(),
+    status: Joi.string().valid('active', 'inactive').required()
+  }).required()
+})
+
+/**
+ * Which is used to validate the update api request object
+ * @type {Object}
+ */
+let updateApiSchema = Joi.object().keys({
+  request: Joi.object().keys({
+    id: Joi.string().required(),
     name: Joi.string().min(2).max(50).required(),
     status: Joi.string().valid('active', 'inactive').required()
   }).required()
@@ -38,6 +50,11 @@ class AnnouncementTypeModel extends BaseModel {
     this.apiSchema = apiSchema
 
     /**
+     * Defined schema which is used to validate the UPDATE api request object structure.
+     */
+    this.updateApiSchema = updateApiSchema
+
+    /**
      * Defined schema which is used to validate the model object structure.
      */
     this.modelSchema = modelSchema
@@ -49,6 +66,14 @@ class AnnouncementTypeModel extends BaseModel {
      */
   validateApi (obj) {
     return this.validate(obj, this.apiSchema)
+  }
+  /**
+     * Which is used to validate the UPDATE api request object structure based on the `this.apiSchema`
+     * @param  {object} obj - request object
+     * @return {object}
+     */
+  validateUpdateApi (obj) {
+    return this.validate(obj, this.updateApiSchema)
   }
   /**
    * Which is used to validat the model object.
