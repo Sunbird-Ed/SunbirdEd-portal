@@ -121,5 +121,11 @@
     "title": "Create announcement type",
     "category": "announcementtype",
     "env": "announcement"
+  },
+  "/manage/announcement-type/list": {
+    "rid": "announcement.manage.announcementtype.list",
+    "title": "List announcement types",
+    "category": "announcementtype",
+    "env": "announcement"
   }
 }

@@ -20,6 +20,7 @@ let telemetry = require('./telemetry/telemetryHelper')
 
 const statusConstant = {
     'ACTIVE': 'active',
+    'INACTIVE': 'inactive',
     'CANCELLED': 'cancelled',
     'DRAFT': 'draft'
 }
@@ -62,6 +63,12 @@ const announcementOutboxFieldsMap = {
 const announcementTypeMap = {
     id: "id",
     name: "name"
+}
+
+const announcementTypeMapAdmin = {
+    createdDate: "createddate",
+    status: "status",
+    rootOrgId: "rootorgid"
 }
 
 class AnnouncementController {
@@ -305,20 +312,44 @@ class AnnouncementController {
      *
      * @return  {[type]}  [description]
      */
-    __getAnnouncementTypes(requestObj) {
+    __getAnnouncementTypes(requestObj, manageObj = false) {
         return new Promise((resolve, reject) => {
-            let query = {
-                query: {
-                    'rootorgid': _.get(requestObj, 'body.request.rootOrgId'),
+            let rootorgid = _.get(requestObj, 'body.request.rootOrgId')
+            if (_.isUndefined(rootorgid)) {
+                reject(this.customError({
+                            message: 'Invalid input!',
+                            status: HttpStatus.BAD_REQUEST,
+                            isCustom:true
+                        }))
+            }
+
+
+            let queryParams = {
+                    'rootorgid': rootorgid,
                     'status': statusConstant.ACTIVE
-                },
+            }
+
+            if (manageObj) {
+                queryParams = _.pick(queryParams, ['rootorgid'])
+            }
+            
+
+            let queryObj = {
+                query: queryParams,
                 reqID: requestObj.reqID
             }
-            this.announcementTypeStore.findObject(query)
+
+            this.announcementTypeStore.findObject(queryObj)
                 .then((data) => {
                     if (data) {
 
-                        let transformationMap = this.__getTransformationMap(announcementTypeMap)
+                        let transformationMap = {}
+                        if (manageObj) {
+                            transformationMap = this.__getTransformationMap(announcementTypeMap, announcementTypeMapAdmin)
+                        } else {
+                            transformationMap = this.__getTransformationMap(announcementTypeMap)
+                        }
+
                         let transformedData = this.__transformResponse(data.data.content, transformationMap)
                         
                         resolve(transformedData)
@@ -1219,8 +1250,28 @@ class AnnouncementController {
         })
     }
 
+    /**
+     * List all the announcement types for the given root org. 
+     * @param  Object requestObj Request object
+     * @return Object            Response object
+     */
+    listAnnouncementType(requestObj) {
+        return this.__listAnnouncementType()(requestObj)
+    }
 
 
+    __listAnnouncementType() {
+        return async((requestObj) => {
+            try {
+                let responseObj = {}
+                let announcementTypes = await (this.__getAnnouncementTypes(requestObj, true))
+                responseObj["announcementTypes"] = announcementTypes
+                return responseObj
+            } catch (error) {
+                throw this.customError(error)
+            }
+        })
+    }
 
     /**
      * Parse attachments string to JSON object
