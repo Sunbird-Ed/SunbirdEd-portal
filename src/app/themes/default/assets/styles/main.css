@@ -2814,7 +2814,10 @@ ol.ui.list ol li:before {
   border-color: red !important;
 }
 .ui.modal .dropdown-margin-left .ui.dropdown > .text {
-  margin-left: -1em !important;
+  color: #cdcccc;
+}
+.ui.dropdown:not(.button) > .default.text {
+  color: #cdcccc;
 }
 .dropdown-margin-left {
   margin-left: 1px !important;
