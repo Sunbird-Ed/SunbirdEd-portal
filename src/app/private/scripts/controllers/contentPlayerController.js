@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
-    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', 'telemetryService',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', 'telemetryService', '$window',
     function ($state, $scope, contentService, $timeout, $stateParams, config, $rootScope,
-      $location, $anchorScroll, toasterService, telemetryService) {
+      $location, $anchorScroll, toasterService, telemetryService, $window) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
@@ -35,6 +35,11 @@ angular.module('playerApp')
             id: $stateParams.courseId,
             type: 'course'
           }]
+        }
+        configuration.context.pdata = {
+          'id': org.sunbird.portal.appid || 'sunbird.portal',
+          'ver': '1.0',
+          'pid': 'sunbird-portal'
         }
         configuration.config = config.ekstep_CP_config.config
         configuration.config.plugins = config.ekstep_CP_config.config.plugins
@@ -105,7 +110,7 @@ angular.module('playerApp')
       function getContent (contentId) {
         var req = { contentId: contentId }
         var qs = {
-          fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
+          fields: 'body,editorState,templateId,languageCode,template,' +
                         'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
                         'domain,code,visibility,createdBy,description,language,mediaType,' +
                         'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
@@ -120,8 +125,8 @@ angular.module('playerApp')
             } else {
               if (!count) {
                 count += 1
-                toasterService.warning($rootScope.messages.imsg.m0018)
-                $state.go('Home')
+                toasterService.warning($rootScope.messages.imsg.m0027)
+                $window.history.back()
               }
             }
           } else {

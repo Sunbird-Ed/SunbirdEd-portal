@@ -1,8 +1,8 @@
-<div sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
+<div sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,BOOK_CREATOR">
     <div class="ui grid" ng-init="contentModelSetBackLink();">
         <div class="twelve wide column ">
             <div class="ui grid">
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="BOOK_CREATOR">
                     <div class="ui link card workspacecontent" ui-sref="CreateTextbook" ng-click="$root.generateInteractEvent('workspace','','textbook','1.0','create-textbook','workspace-create-textbook')">
                         <div class="content">
                             <div class="textcontent">
@@ -13,7 +13,7 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.frmelmnts.lbl.textbookdescription}}</p>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
                     <div class="ui link card workspacecontent" ui-sref="CreateCourse" ng-click="$root.generateInteractEvent('workspace','','course','1.0','create-course' ,'workspace-create-course')">
                         <div class="content">
                             <div class="textcontent">
@@ -24,7 +24,7 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.frmelmnts.lbl.coursedescription}}</p>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
                     <div class="ui link card workspacecontent" ui-sref="CreateLesson" ng-click="$root.generateInteractEvent('workspace','','lesson','1.0','create-study-material', 'workspace-create-lesson')">
                         <div class="content">
                             <div class="textcontent">
@@ -35,7 +35,7 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.frmelmnts.lbl.lessondescription}}</p>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
                 <div class="ui link card workspacecontent" ui-sref="CreateCollection" ng-click="$root.generateInteractEvent('workspace','','collection','1.0','create-collection' ,'workspace-create-collection')">
                         <div class="content">
                             <div class="textcontent">
@@ -46,11 +46,7 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.frmelmnts.lbl.collectiondescription}}</p>
                 </div>
-            </div>
-        </div>
-        <div class="twelve wide column ">
-            <div class="ui grid">
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW">
                     <div class="ui link card workspacecontent" ui-sref="CreateLessonPlan" ng-click="$root.generateInteractEvent('workspace','','lessonplan','1.0','create-lesson-plan' ,'workspace-create-lessonplan')">
                         <div class="content">
                             <div class="textcontent">
@@ -61,7 +57,7 @@
                     </div>
                     <p class="workspaceinstuction">{{$root.frmelmnts.lbl.lessonplandescription}}</p>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW"> 
                     <div class="ui link card workspacecontent" ui-sref="GenericEditor">
                         <div class="content">
                             <div class="textcontent">

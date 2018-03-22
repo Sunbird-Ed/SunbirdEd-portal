@@ -1,7 +1,8 @@
 'use strict'
 
 angular.module('playerApp')
-  .service('pageSectionService', ['restfulLearnerService', function (restfulLearnerService) {
+  .service('pageSectionService', ['restfulLearnerService', 'searchService',
+    function (restfulLearnerService, searchService) {
     /**
      * @class pageSectionService
      * @desc Service to manage sections of page.
@@ -18,7 +19,8 @@ angular.module('playerApp')
          * @returns {Promise} Promise object represents sections of a page
          * @instance
          */
-    this.getPageData = function (path, req) {
-      return restfulLearnerService.post(path, req)
-    }
-  }])
+      this.getPageData = function (path, req) {
+        req = searchService.updateReqForChannelFilter(req)
+        return restfulLearnerService.post(path, req)
+      }
+    }])

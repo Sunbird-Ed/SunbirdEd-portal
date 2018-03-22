@@ -574,7 +574,7 @@
         },
         "CURRENT_USER_ROLES": ["CONTENT_REVIEWER"],
         "COMMON_ROLES_CHECK": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"],
-        "WORKSPACE_ACCESS_ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "FLAG_REVIEWER", "COURSE_MENTOR"],
+        "WORKSPACE_ACCESS_ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "FLAG_REVIEWER", "COURSE_MENTOR","BOOK_CREATOR","BOOK_REVIEWER"],
         "CreateLessonMimeType": "application/vnd.ekstep.ecml-archive",
         "CreateCollectionMimeType": "application/vnd.ekstep.content-collection",
         "MimeTypeExceptCollection": ["application/pdf", "video/mp4", "video/x-youtube",
@@ -623,6 +623,54 @@
         "UNLISTED_CONTENT_TYPE" : "Unlisted",
         "AnncmntMaxFileSizeToUpload": 1024000,
         "AnncmntFileExtensionToUpload": "application/pdf, application/jpg, application/png",
-        "AnncmntAllowedFileExtension": ["png", "pdf", "jpg"]
+        "AnncmntAllowedFileExtension": ["png", "pdf", "jpg"],
+        "WORKSPACE": {
+            "CREATE": {
+                "BOOK" : {
+                    "ROLES": ["BOOK_CREATOR"]
+                }
+            },
+            "DRAFT": {
+                "ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "BOOK_CREATOR"]
+            },
+            "REVIEW":{
+                "ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "BOOK_CREATOR"]
+            },
+            "PUBLISHED":{
+                "ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER", "BOOK_CREATOR"]
+            },
+            "ALL_UPLOADS":{
+                "ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"]
+            },
+            "UP_FOR_REVIEW":{
+                "ROLES":["CONTENT_REVIEWER", "CONTENT_REVIEW", "BOOK_REVIEWER"],
+                "contentTypes": [
+                    {
+                      "key": "Collection",
+                      "value": "Collection"
+                    },
+                    {
+                      "key": "LessonPlan",
+                      "value": "Lesson Plan"
+                    },
+                    {
+                      "key": "Resource",
+                      "value": "Resource"
+                    },
+                    {
+                      "key": "Story",
+                      "value": "Story"
+                    },
+                    {
+                      "key": "Worksheet",
+                      "value": "Worksheet"
+                    },
+                    {
+                      "key": "Game",
+                      "value": "Game"
+                    }
+                  ]
+            }
+        }
     }
 }
