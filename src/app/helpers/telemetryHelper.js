@@ -344,6 +344,16 @@ module.exports = {
   /**
    * This function helps to generate telemetry for proxy api's
    */
+  generateTelemetryForLearnerService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.learnerServiceEnv
+    next()
+  },
+
+  generateTelemetryForContentService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.contentServiceEnv
+    next()
+  },
+
   generateTelemetryForProxy: function (req, res, next) {
     let params = [
       { 'url': req.originalUrl },
@@ -357,7 +367,7 @@ module.exports = {
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 
-    const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
+    const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
     if (req.session && req.session.sessionID) {
       context.sid = req.session.sessionID
     }

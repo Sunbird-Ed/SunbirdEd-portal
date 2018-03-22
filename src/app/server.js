@@ -152,8 +152,8 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
 }))
 
 // Generate telemetry fot public service
-app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
-
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -188,6 +188,9 @@ app.all('/private/service/v1/learner/*',
       }
     }
   }))
+
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 
 app.all('/private/service/v1/content/*',
   proxyUtils.verifyToken(),
