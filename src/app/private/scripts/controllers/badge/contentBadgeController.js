@@ -15,46 +15,25 @@ angular.module('playerApp')
       contentBadge.selectedBadgeList = ($scope.data && $scope.data.badgeAssertions) || []
       contentBadge.type = 'content'
       contentBadge.contentId = $scope.contentid
-      contentBadge.recipientEmail = 'dummy_content_email@gmail.com'
-
-      contentBadge.getAllIssuerList = function () {
-        var deferred = $q.defer()
-        badgeService.getIssueList().then(function (response) {
-          if (response && response.responseCode === 'OK') {
-            deferred.resolve(response)
-          } else {
-            deferred.reject(new Error('Unable to get badges, Please try again later'))
-          }
-        }).catch(function () {
-          deferred.reject(new Error('Unable to get badges, Please try again later'))
-        })
-        return deferred.promise
-      }
 
       contentBadge.getAllBadges = function () {
         var req = {
           request: {
-            'issuerList': [],
-            'context': {
+            filters: {
+              'issuerList': [],
               'rootOrgId': $rootScope.rootOrgId,
               'type': contentBadge.type,
               'roles': permissionsService.getCurrentUserRoles()
             }
           }
         }
-
-        contentBadge.getAllIssuerList().then(function (issueResp) {
-          req.request.issuerList = _.map(issueResp.result.issuers, 'issuerId')
-          badgeService.getAllBadgesList(req).then(function (response) {
-            if (response && response.responseCode === 'OK') {
-              contentBadge.allBadgeList =
-                _.differenceBy(response.result.badges, contentBadge.selectedBadgeList, 'badgeId')
-            } else {
-              toasterService.error('Unable to get badges, Please try again later')
-            }
-          }).catch(function (error) {
-            toasterService.error(error.message)
-          })
+        badgeService.getAllBadgesList(req).then(function (response) {
+          if (response && response.responseCode === 'OK') {
+            contentBadge.allBadgeList =
+              _.differenceBy(response.result.badges, contentBadge.selectedBadgeList, 'badgeId')
+          } else {
+            toasterService.error('Unable to get badges, Please try again later')
+          }
         }).catch(function (error) {
           toasterService.error(error.message)
         })
@@ -71,7 +50,6 @@ angular.module('playerApp')
             $('#badgeAssignModel').modal('hide dimmer')
           }, 0)
         } else {
-
         }
       }
 
@@ -91,25 +69,23 @@ angular.module('playerApp')
         var req = {
           'issuerId': selectedBadge.issuerId,
           'badgeId': selectedBadge.badgeId,
-          'recipientEmail': contentBadge.recipientEmail,
           'recipientId': contentBadge.contentId,
           'recipientType': contentBadge.type
         }
-        console.log('Assign batch req:', req)
 
-        badgeService.addBadges({request: req}).then(function (response) {
+        badgeService.addBadges({ request: req }).then(function (response) {
           if (response && response.responseCode === 'OK') {
+            contentBadge.hideContentBadgeModal()
+            toasterService.success('Badge assigned successfully')
             contentBadge.selectedBadgeList.push(selectedBadge)
             contentBadge.allBadgeList = contentBadge.allBadgeList.filter(function (badge) {
-              return badge.badgeClassId !== selectedBadge.badgeClassId
+              return badge.badgeId !== selectedBadge.badgeId
             })
-            contentBadge.hideContentBadgeModal()
-            toasterService.success('Badge assinged successfully')
           } else {
-            toasterService.error('Unable to assing badges, Please try again later')
+            toasterService.error('Unable to assign badges, Please try again later')
           }
         }).catch(function () {
-          toasterService.error('Unable to assing badges, Please try again later')
+          toasterService.error('Unable to assign badges, Please try again later')
         })
       }
     }])

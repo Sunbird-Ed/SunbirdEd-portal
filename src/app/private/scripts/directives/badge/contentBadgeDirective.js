@@ -12,8 +12,6 @@ angular.module('playerApp')
       restrict: 'E',
       scope: {
         contentid: '=',
-        collectionid: '=',
-        type: '=',
         data: '='
       },
         link: function (scope, element, attrs) {// eslint-disable-line

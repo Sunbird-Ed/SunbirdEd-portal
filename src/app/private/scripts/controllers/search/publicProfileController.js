@@ -64,16 +64,6 @@ angular.module('playerApp') // add those all values
                   .includes(currentUserId)
               })
             }
-
-            publicProfile.badgeAssertions = res.badgeAssertions || [{
-              'issuerId': 'islug123',
-              'badgeClassId': 'bslug123',
-              'badgeClassName': 'cert123',
-              'badgeClassImage': '/common/images/pdf.png',
-              'assertionId': 'aslug123',
-              'createdTS': 1520586333
-            }]
-
             publicProfile.userSkills = userSkills
           } else {
             toasterService.error($rootScope.messages.fmsg.m0005)

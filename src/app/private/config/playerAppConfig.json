@@ -80,7 +80,7 @@
             },
             "BADGE": {
                 "GET_ISSUER_LIST": "badging/v1/issuer/list",
-                "GET_BADGE_CLASS_LIST": "badging/v1/issuer/badge/list",
+                "BADGE_CLASS_SEARCH": "badging/v1/issuer/badge/search",
                 "ASSIGN": "badging/v1/issuer/badge/assertion/create"
 
             },

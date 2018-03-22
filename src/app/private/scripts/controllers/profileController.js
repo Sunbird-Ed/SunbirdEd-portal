@@ -70,17 +70,6 @@ angular.module('playerApp')
           }, this)
         }
       }
-      // user badges
-      profile.getUserBadges = function () {
-        return [{
-          'issuerId': 'islug123',
-          'badgeClassId': 'bslug123',
-          'badgeClassName': 'cert123',
-          'badgeClassImage': '/common/images/pdf.png',
-          'assertionId': 'aslug123',
-          'createdTS': 1520586333
-        }]
-      }
       // processing profile data
       profile.processProfileData = function (userProfile) {
         profile.loader.showLoader = false
@@ -112,9 +101,7 @@ angular.module('playerApp')
           if (profile.user.lastLoginTime > 0) {
             profile.lastLoginTime = angular.copy(profile.user.lastLoginTime)
           }
-          if (!profile.badgeAssertions) {
-            profile.badgeAssertions = profile.getUserBadges()
-          }
+          profile.badgeAssertions = profileData.badgeAssertions
           if (profileData.completeness) {
             $rootScope.profileCompleteness = profileData.completeness
             $('.profile-progress').progress({

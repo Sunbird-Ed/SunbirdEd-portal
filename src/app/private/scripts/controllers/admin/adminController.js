@@ -70,24 +70,8 @@ angular.module('playerApp')
                     .includes('SYSTEM_ADMINISTRATION')
                 }
               }
-
               // Add batches mock response
-              user.badgeAssertions = [{
-                'issuerId': 'islug123',
-                'badgeClassId': 'bslug123',
-                'badgeClassName': 'cert123',
-                'badgeClassImage': '/common/images/pdf.png',
-                'assertionId': 'aslug123',
-                'createdTS': 1520586333
-              },
-              {
-                'issuerId': 'islug123',
-                'badgeClassId': 'bslug123',
-                'badgeClassName': 'cert123',
-                'badgeClassImage': '/common/images/mp4.png',
-                'assertionId': 'aslug123',
-                'createdTS': 1520586333
-              }]
+              user.badgeAssertions = user.badgeAssertions
               if (user.organisations) {
                 user.organisations.forEach(function (userOrg) {
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]

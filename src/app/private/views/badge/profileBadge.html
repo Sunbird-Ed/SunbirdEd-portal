@@ -4,7 +4,7 @@
   </div>
   <div class="ui large list">
     <div class="item" ng-repeat="badge in badges">
-      <img class="ui avatar image" src="{{badge.badgeClassImage}}"style="
+      <img class="ui avatar image" src="{{badge.badgeClassImage}}" style="
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 500rem !important;
@@ -18,15 +18,15 @@
     </div>
   </div>
 </div>
-  <div class="ui large list" ng-if="isprofilesearch">
-    <div class="item" ng-repeat="badge in badges">
-      <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}" style="
+<div class="ui large list" ng-if="isprofilesearch">
+  <div class="item" ng-repeat="badge in badges">
+    <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}" style="
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 500rem !important;
   ">
-      <div class="content description">{{badge.badgeClassName}}
+    <div class="content description">{{badge.badgeClassName}}
 
-      </div>
     </div>
   </div>
+</div>
