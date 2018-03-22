@@ -11,7 +11,7 @@
         enrollLoader: false
       }
       dialctrl.searchKeyword = null
-
+      dialctrl.dailCodeBackground = $rootScope.dailCodeBackground
       dialctrl.search = function (dialcodes) {
         if (dialctrl.searchKeyword) {
           var params = {
@@ -63,7 +63,6 @@
           // show message
         }
       }
-
       dialctrl.init()
     }])
 }())

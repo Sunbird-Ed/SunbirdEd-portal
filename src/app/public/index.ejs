@@ -23,14 +23,11 @@
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
-        <div class="ui padded grid">
-            <div class="row">
-                <div class="twelve wide column dailcode-background">
-                    <div ui-view="mainView">
-                    </div>
-                </div>
+        <div ng-class="{'dailcode-background' : $root.dailCodeBackground === true }"
+        class="twelve wide column">
+            <div ui-view="mainView">
             </div>
-        </div>
+        </div> 
     </div>
     <script src="../common/js/org.js"></script>
     <!-- inject:js -->
@@ -70,6 +67,7 @@
     <script src="/public/scripts/controllers/collectionPlayerController.js"></script>
     <script src="/public/scripts/controllers/dialCodeController.js"></script>
     <script src="/public/scripts/filters/dateFilter.js"></script>
+    <script src="/public/scripts/filters/fileSize.js"></script>
     <!-- endinject -->
     <script src="../common/js/frmelmnts.js"></script>
     <script src="../common/js/messages.js"></script>

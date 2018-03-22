@@ -590,7 +590,6 @@ a:hover {
 30 px   1.875 em
 40 px   2.5 em
 50 px   3.125 em
-
 */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
@@ -2865,38 +2864,86 @@ body {
 html {
   height: 100%;
 }
+
+
+/*get dial code page responsive css*/
+
 .ui.footer.segment {
     position: fixed;
     bottom: 0;
     width: 100%;
-    margin-left: -1em;
     background-color: white;
 }
-.ui.footer.segment >.close.icon {
+
+.bars.icon.tablet.sunbird-hamburger-menu {
     cursor: pointer;
     position: absolute;
     margin: 0;
-    top: 1em;
-    right: 2em;
-}
-.bars.icon.tablet {
-    cursor: pointer;
-    position: absolute;
-    margin: 0;
-    padding-top: 0.2em;
-    padding-left: 5em;
+    padding-top: 0.5em;
     opacity: .7;
     -webkit-transition: opacity .1s ease;
     transition: opacity .1s ease;
 }
+
 .dailcode-background {
   background: linear-gradient(-90deg, #5C8DB7, #91AECC);
   height: 100vh;
 }
-.bars.icon.mobile {
+
+.bars.icon.mobile.sunbird-hamburger-menu {
     cursor: pointer;
     position: absolute;
     margin: 0;
-    padding-top: 0.2em;
-    padding-left: 6em;
+    padding-top: 1.5em; 
+}
+
+
+.dial-section-header {
+  margin-top: 3em;
+}
+
+.ui.header.dial-section-header-text {
+  color:#fff;
+}
+
+.ui.header .sub.header.dial-section-subheader-text {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.dial-section-input {
+  margin-top: 10em;
+}
+
+@media screen and  (min-width: 240px) and (max-width: 768px) {
+  .dial-section-input {
+    margin-top: 2em;
+  }
+}
+
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.header.dial-section-header-text {
+    padding-top: 2em;
+  }
+}
+
+.dial-code-section-bg {
+  background: #fff;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.container.publicResponviveContainer {    
+    margin-right: 0 !important; 
+  } 
+}
+
+@media only screen and (min-width: 768px) {
+  .closeBtn-dial-code {
+    float:right;
+  }
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.small.header.popUp-dial-code-header {
+    font-size: 1.2em;
+  }
 }

@@ -13,8 +13,11 @@ angular.module('loginApp')
             controller: 'dialCodeController as dialctrl'
           }
         },
-        onEnter: function ($window) {
-          delete $window.localStorage.redirectUrl
+        onEnter: function ($window, $rootScope) {
+          $rootScope.dailCodeBackground = true
+        },
+        onExit: function ($rootScope) {
+          $rootScope.dailCodeBackground = false
         }
       })
       .state('dialCode', {
@@ -25,8 +28,11 @@ angular.module('loginApp')
             controller: 'dialCodeController as dialctrl'
           }
         },
-        onEnter: function ($window) {
-          delete $window.localStorage.redirectUrl
+        onEnter: function ($window, $rootScope) {
+          $rootScope.dailCodeBackground = true
+        },
+        onExit: function ($rootScope) {
+          $rootScope.dailCodeBackground = false
         }
       })
       .state('Landing', {

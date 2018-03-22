@@ -27,7 +27,7 @@ angular.module('loginApp', [
 
       /**
            * Delete redirect url if user direct close the window
-           */
+      */
       $(window).on('onunload', function () {
         delete window.localStorage.redirectUrl
       })
