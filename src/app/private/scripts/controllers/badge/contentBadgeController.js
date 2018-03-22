@@ -32,10 +32,10 @@ angular.module('playerApp')
             contentBadge.allBadgeList =
               _.differenceBy(response.result.badges, contentBadge.selectedBadgeList, 'badgeId')
           } else {
-            toasterService.error('Unable to get badges, Please try again later')
+            toasterService.error($rootScope.messages.fmsg.m0078)
           }
-        }).catch(function (error) {
-          toasterService.error(error.message)
+        }).catch(function () {
+          toasterService.error($rootScope.messages.fmsg.m0078)
         })
       }
 
@@ -76,16 +76,16 @@ angular.module('playerApp')
         badgeService.addBadges({ request: req }).then(function (response) {
           if (response && response.responseCode === 'OK') {
             contentBadge.hideContentBadgeModal()
-            toasterService.success('Badge assigned successfully')
+            toasterService.error($rootScope.messages.smsg.moo42)
             contentBadge.selectedBadgeList.push(selectedBadge)
             contentBadge.allBadgeList = contentBadge.allBadgeList.filter(function (badge) {
               return badge.badgeId !== selectedBadge.badgeId
             })
           } else {
-            toasterService.error('Unable to assign badges, Please try again later')
+            toasterService.error($rootScope.messages.fmsg.m0079)
           }
         }).catch(function () {
-          toasterService.error('Unable to assign badges, Please try again later')
+          toasterService.error($rootScope.messages.fmsg.m0079)
         })
       }
     }])
