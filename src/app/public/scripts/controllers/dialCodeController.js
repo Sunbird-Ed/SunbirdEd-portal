@@ -44,7 +44,7 @@
             if (res.result.content && res.result.content.length > 0) {
               dialctrl.searchResults = res.result.content
             } else {
-              toasterService.error('no content found')
+              toasterService.error($rootScope.messages.stmsg.m0006)
             }
           } else {
             toasterService.error($rootScope.messages.fmsg.m0049)

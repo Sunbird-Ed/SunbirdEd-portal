@@ -14,8 +14,7 @@ angular.module('loginApp')
       }
 
       this.search = function (req) {
-        // var url = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.COMPOSITE.SEARCH
-        var url = '/public/service/' + 'v1/content/' + 'composite/v1/search'
+        var url = config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX + config.URL.COMPOSITE.SEARCH
         return httpService.post(url, req)
       }
     }])
