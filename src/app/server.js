@@ -20,6 +20,7 @@ const publicServicehelper = require('./helpers/publicServiceHelper.js')
 const userHelper = require('./helpers/userHelper.js')
 const resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
+const healthService = require('./helpers/healthCheckService.js')
 const fs = require('fs')
 const port = envHelper.PORTAL_PORT
 const learnerURL = envHelper.LEARNER_URL
@@ -235,6 +236,9 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+// healthcheck
+app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName

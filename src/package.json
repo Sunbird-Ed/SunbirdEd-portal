@@ -107,6 +107,7 @@
     "ejs": "^2.5.6",
     "eslint": "4.7.1",
     "express": "^4.15.3",
+    "express-cassandra": "^2.2.0",
     "express-http-proxy": "^1.0.6",
     "express-session": "^1.15.3",
     "helmet": "3.8.1",
