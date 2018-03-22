@@ -1,48 +1,51 @@
-<div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()"
-    class="ui divided searchListInfo items">
-    <div class="item userSearchCardHover " ng-repeat="user in admin.searchResult" in-view="$root.lineInView($index, $inview, user, 'Users')"
-        in-view-options="{ throttle: 1000 }">
-        <div class="ui tiny image userSearchImage">
-            <img ng-src="{{user.avatar|| '/common/images/user_logo.png'}} ">
-        </div>
-        <div class="content ">
-            <a class="header " ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
-            <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
-                <!-- update user roles -->
-                <span ng-click="admin.showModal(user.identifier,user.organisations);">
-                    <i class="edit icon editIcon-fontSize"></i>
-                </span>
-                <!-- delete user -->
-                <span>
-                    <i class="trash outline icon trashIcon-fontSize" ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
-                    </i>
-                    <span>
-            </a>
-            <!-- organization Name -->
-            <div class="meta ">
-                <span class="cinema ">
-                    <span ng-repeat="org in user.organisations">
-                        {{org.orgName}}
-                        <span ng-if="!$last">,</span>
-                    </span>
-                </span>
-            </div>
-            <div class="extra ">
-                <div class="ui label " ng-if="user.status===0">{{$root.frmelmnts.lbl.inactive}}</div>
-                <div class="ui label " ng-if="user.status===1">{{$root.frmelmnts.lbl.active}}</div>
-                <div class="ui label " ng-if="user.status===2">{{$root.frmelmnts.lbl.blocked}}</div>
-                <div class="ui label " ng-if="user.status===3">{{$root.frmelmnts.lbl.retired}}</div>
+<div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()">
+    <div class="ui segment padding-bottom-none userSearchCardHover" ng-repeat="user in admin.searchResult">
+        <div class="ui items">
+            <div class="item" in-view="$root.lineInView($index, $inview, user, 'Users')" in-view-options="{ throttle: 1000 }">
+                <div class="ui tiny image userSearchImage">
+                    <img ng-src="{{user.avatar|| '/common/images/user_logo.png'}} ">
+                </div>
+                <div class="content ">
+                    <a class="header " ng-click="user.status===1 && admin.openPublicProfile(user.identifier,user)">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                    <a ng-if="user.status===1 && user.isEditableProfile " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="float-ContentRight">
+                        <!-- update user roles -->
+                        <span ng-click="admin.showModal(user.identifier,user.organisations);">
+                            <i class="edit icon editIcon-fontSize"></i>
+                        </span>
+                        <!-- delete user -->
+                        <span>
+                            <i class="trash outline icon trashIcon-fontSize" ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
+                            </i>
+                            <span>
+                    </a>
+                    <!-- organization Name -->
+                    <div class="meta ">
+                        <span class="cinema ">
+                            <span ng-repeat="org in user.organisations">
+                                {{org.orgName}}
+                                <span ng-if="!$last">,</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="extra ">
+                        <div class="ui label " ng-if="user.status===0">{{$root.frmelmnts.lbl.inactive}}</div>
+                        <div class="ui label " ng-if="user.status===1">{{$root.frmelmnts.lbl.active}}</div>
+                        <div class="ui label " ng-if="user.status===2">{{$root.frmelmnts.lbl.blocked}}</div>
+                        <div class="ui label " ng-if="user.status===3">{{$root.frmelmnts.lbl.retired}}</div>
+                    </div>
+                </div>
             </div>
             <!-- Badging (Certifications and Awards) -->
-            <div style="
-                margin-left: -7rem;
-                margin-top: 2rem;
-                margin-bottom: 0rem;" ng-if="user.badgeAssertions">
-                <profile-badge isshowadd="false" badgelist="user.badgeAssertions" isprofilesearch="true"></profile-badge>
+            <div class="ui middle aligned list" ng-if="user.badgeAssertions && user.badgeAssertions.length > 0">
+                <div class="item" ng-repeat="badge in user.badgeAssertions">
+                    <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}">
+                    <div class="content">
+                        <div class="header">{{badge.badgeClassName}}</div>
+                    </div>
+                </div>
             </div>
+            <div ng-include=" 'views/admin/updateRoleModal.html' "></div>
+            <div ng-include=" 'views/admin/deleteUser.html' "></div>
         </div>
     </div>
-    <div ng-include=" 'views/admin/updateRoleModal.html' "></div>
-    <div ng-include=" 'views/admin/deleteUser.html' "></div>
-
 </div>
