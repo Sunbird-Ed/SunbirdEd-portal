@@ -2,44 +2,15 @@ import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
+import {SearchParam} from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 /**
- * Interface
- */
-interface SearchParam {
-
-  /**
-   * Content status
-   */
-  status?: string[];
-
-  /**
-   * Content type - course,textbook,content
-   */
-  contentType?: string[];
-
-  /**
-   * Additional params - userId, lastUpdatedOn, sort etc
-   */
-  params?: any;
-
-  /**
-   * Organization ids
-   */
-  orgid?: string[];
-}
-
-/**
  * Service to search content
  */
 @Injectable()
-
-/**
- * @class SearchService
- */
 export class SearchService {
   /**
    * Contains searched content list
@@ -91,9 +62,13 @@ export class SearchService {
         request: {
           filters: {
             status: requestParam.status || ['Live'],
+            // createdBy: 'd882967f-b3e1-456b-b984-d800470837ab',
             createdBy: requestParam.params.userId ? requestParam.params.userId : this.user.userid,
-            contentType: requestParam.contentType || ['Course']
+            contentType: requestParam.contentType || ['Course'],
+            mimeType: requestParam.mimeType,
           },
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
           sort_by: {
             lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
           }

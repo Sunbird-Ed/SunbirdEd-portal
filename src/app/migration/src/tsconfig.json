@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "experimentalDecorators": true,
+    "allowJs": true,
     "paths": {
       "@sunbird/core": [
         "src/app/modules/core"
@@ -21,6 +23,9 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ],
+       "@sunbird/workspace": [
+        "app/modules/workspace"
       ]
     },
     "sourceMap": true,
@@ -40,4 +45,5 @@
   "exclude": [
     "**/*.spec.data.ts"
   ]
+  
 }

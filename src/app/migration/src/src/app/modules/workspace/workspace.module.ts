@@ -5,12 +5,20 @@ import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { WorkspaceComponent } from './components';
 import { WorkspacesidebarComponent } from './components/workspacesidebar/workspacesidebar.component';
 import { CreateContentComponent } from './components/create-content/create-content.component';
-
+import { DraftComponent } from './components/draft/draft.component';
+import { SharedModule } from '@sunbird/shared';
+import { SuiModule } from 'ng2-semantic-ui/dist';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WorkSpaceService } from './services';
 @NgModule({
   imports: [
     CommonModule,
-    WorkspaceRoutingModule
+    WorkspaceRoutingModule,
+    SharedModule,
+    SuiModule,
+    FormsModule
   ],
-  declarations: [WorkspaceComponent, WorkspacesidebarComponent, CreateContentComponent]
+  declarations: [WorkspaceComponent, WorkspacesidebarComponent, CreateContentComponent, DraftComponent],
+   providers: [WorkSpaceService]
 })
 export class WorkspaceModule { }

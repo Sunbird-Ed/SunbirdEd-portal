@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     /**
     * reference of angular core  router.
     */
-    private router: Router;
+    // private router: Router;
 
     /**
     * constructor
@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
     * @param {resourceService}
     * @param {Router}
     */
-    constructor( router: Router, permissionService: PermissionService, resourceService: ResourceService) {
+    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
         this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
@@ -42,25 +42,37 @@ export class AuthGuard implements CanActivate {
     * method CanActivate for guard .
     */
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        if (state.url.indexOf('/') === 0) {
-            this.currentUrl = state.url.replace('/', '');
-        }
-        this.currentUrl = this.currentUrl.split('/')[0];
-        this.permissionService.permissionAvailable$.subscribe((permisionavi: any) => {
-            if (permisionavi && permisionavi === 'success') {
-                const rolePermission = this.resourceService.config.rolesConfig.ROLES[this.currentUrl];
-                if (rolePermission) {
-                    if (this.permissionService.checkRolesPermissions(rolePermission)) {
-                        return Observable.of(true);
-                    }
-                }
-            } else {
-                this.router.navigate(['home']);
-                return Observable.of(false);
-            }
-        });
-        return Observable.of(false);
+        return this.getPermission(state);
     }
 
+    getPermission(state) {
+        return Observable.create(observer => {
+            this.permissionService.permissionAvailable$.subscribe(
+                permissionAvailable => {
+                    if (permissionAvailable && permissionAvailable === 'success') {
+                        if (state && state.url.indexOf('/') === 0) {
+                            this.currentUrl = state.url.replace('/', '');
+                        }
+                        this.currentUrl = this.currentUrl.split('/')[0];
+                        const rolePermission = this.resourceService.config.rolesConfig.ROLES[this.currentUrl];
+                        if (rolePermission) {
+                            if (this.permissionService.checkRolesPermissions(rolePermission)) {
+                                observer.next(true);
+                            } else {
+                                this.router.navigate(['home']);
+                                observer.next(false);
+                            }
+                        }
+                        observer.complete();
+                    } else if (permissionAvailable && permissionAvailable === 'error') {
+                        this.router.navigate(['home']);
+                        observer.next(false);
+                    }
+                }
+            );
+        });
+    }
 
 }
+
+

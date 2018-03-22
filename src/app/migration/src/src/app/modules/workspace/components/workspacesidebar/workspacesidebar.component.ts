@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 /**
- * The Workspace side  component shows the sidebar for workspace 
+ * The Workspace side  component shows the sidebar for workspace
  */
 @Component({
   selector: 'app-workspacesidebar',

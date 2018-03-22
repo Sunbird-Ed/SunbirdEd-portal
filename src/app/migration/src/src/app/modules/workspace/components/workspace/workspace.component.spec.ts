@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkspaceComponent } from './workspace.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('WorkspaceComponent', () => {
   let component: WorkspaceComponent;
@@ -8,7 +9,8 @@ describe('WorkspaceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkspaceComponent ]
+      declarations: [ WorkspaceComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
