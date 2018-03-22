@@ -446,7 +446,16 @@ class AnnouncementController {
                 requestObj.body.request.userId = userId
             }
 
-            let userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
+            try {
+                let userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
+            } catch (error) {
+                console.log("Announcement - inbox userprofile - Error", error)
+                return {
+                    count: 0,
+                    announcements: []
+                }
+            }
+
             // Parse the list of Organisations (User > Orgs) from the response
             let targetOrganisations = []
             _.forEach(userProfile.organisations, function(userOrg) {
@@ -473,6 +482,7 @@ class AnnouncementController {
                     announcements: []
                 }
             } catch (error) {
+                console.log("Announcement - inbox geolocations - Error", error)
                 return {
                     count: 0,
                     announcements: []
@@ -497,12 +507,8 @@ class AnnouncementController {
                 let data = await (new Promise((resolve, reject) => {
                     this.announcementStore.findObject(query)
                         .then((data) => {
-                            if (!data) {
-                                throw {
-                                    message: 'Unable to fetch!',
-                                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                                    isCustom:true
-                                }
+                            if (_.size(data) <= 0) {
+                                resolve()
                             } else {
                                 _.forEach(data.data.content, (announcementObj) => {
                                     this.__parseAttachments(announcementObj)
@@ -511,7 +517,8 @@ class AnnouncementController {
                             }
                         })
                         .catch((error) => {
-                            reject(this.customError(error))
+                            console.log("Announcement - inbox get announcements - Error", error)
+                            resolve()
                         })
                 }))
 
@@ -552,7 +559,11 @@ class AnnouncementController {
                 }
 
             } catch (error) {
-                throw this.customError(error)
+                console.log("Announcement - inbox - Error", error)
+                return {
+                    count: 0,
+                    announcements: []
+                }
             }
         })
     }

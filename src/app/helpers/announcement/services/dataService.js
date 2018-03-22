@@ -47,10 +47,13 @@ class DataService {
         json: true
       }
       telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/notification/audience')
+      console.log('Announcement - get audience - Request', JSON.stringify(options))
+
       this.service.call(options).then((data) => {
         let locations = _.get(data, 'body.result.locations')
         resolve(_.sumBy(locations, 'userCount'))
       }).catch((error) => {
+        console.log('Announcement - get audience - Error', error)
         reject(new AppError({
           message: 'Unable to get the sent count',
           status: HttpStatus.INTERNAL_SERVER_ERROR
@@ -86,15 +89,19 @@ class DataService {
         }
         options.headers = this.service.getRequestHeader(token)
         telemetry.generateApiCallLogEvent(reqID, options, 'org/v1/search')
+        console.log('Announcement - get geolocations - Request', JSON.stringify(options))
+
         let data = new Promise((resolve, reject) => {
           this.service.call(options).then((data) => {
             resolve(data.body.result.response)
           }).catch((error) => {
+            console.log('Announcement - get geolocations - Error', error)
             reject(error)
           })
         })
         resolve(data)
       } catch (error) {
+        console.log('Announcement - get geolocations - Error', error)
         throw error
       }
     })
