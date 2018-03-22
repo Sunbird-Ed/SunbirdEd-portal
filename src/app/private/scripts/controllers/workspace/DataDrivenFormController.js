@@ -194,7 +194,7 @@ angular.module('playerApp')
        * @param {Boolean} labels           - @default false Which defines the MultiSelect should be tag format design or not
        * @param {Boolean} forceSelection   - @default false Which defines the force selection should enalbe or not
        */
-      dataDrivenForm.configureDropdowns = function (labels = false, forceSelection = false) {
+      dataDrivenForm.configureDropdowns = function (labels, forceSelection) {
         // TODO: Need to remove the timeout
         setTimeout(function () {
           $('.ui.dropdown').dropdown({
@@ -283,7 +283,7 @@ angular.module('playerApp')
                 })
                 dataDrivenForm.loader.showLoader = false
                 // console.log("dataDrivenForm.formFieldProperties", dataDrivenForm.formFieldProperties)
-                const DROPDOWN_INPUT_TYPES = ['select', 'multiSelect']
+                var DROPDOWN_INPUT_TYPES = ['select', 'multiSelect']
                 $timeout(function () {
                   _.forEach(dataDrivenForm.formFieldProperties, function (field) {
                     if (_.includes(DROPDOWN_INPUT_TYPES, field.inputType)) {
@@ -296,7 +296,7 @@ angular.module('playerApp')
                       }
                     }
                   })
-                  dataDrivenForm.configureDropdowns(dataDrivenForm.formFieldProperties)
+                  dataDrivenForm.configureDropdowns(false, false)
                 }, 0)
                 dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties)
               }

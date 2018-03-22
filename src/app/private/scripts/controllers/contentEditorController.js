@@ -2,12 +2,13 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService',
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', '$window',
     function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
-      workSpaceUtilsService) {
+      workSpaceUtilsService, $window) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
       contentEditor.framework = $stateParams.framework
+      var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
       contentEditor.openContentEditor = function () {
         window.context = {
           user: {
@@ -116,11 +117,11 @@ angular.module('playerApp')
               contentEditor.openContentEditor()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              $state.go('Home')
+              $state.go(previousState.name, previousState.params)
             }
           } else {
             toasterService.warning($rootScope.messages.imsg.m0004)
-            $state.go('Home')
+            $state.go(previousState.name, previousState.params)
           }
         })
       }

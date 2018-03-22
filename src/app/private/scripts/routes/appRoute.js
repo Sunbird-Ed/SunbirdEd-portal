@@ -868,7 +868,7 @@ angular.module('playerApp')
         routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
         break
       case 'CreateTextbook':
-        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.CREATE.BOOK.ROLES, false, event)
         break
       case 'CreateCollection':
         routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
@@ -883,7 +883,7 @@ angular.module('playerApp')
         routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
         break
       case 'WorkSpace.UpForReviewContent':
-        routeHelperService.checkStateAccess(['CONTENT_REVIEWER', 'CONTENT_REVIEW'], false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.UP_FOR_REVIEW.ROLES, false, event)
         break
       case 'WorkSpace.FlaggedContent':
         routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event)
@@ -895,16 +895,16 @@ angular.module('playerApp')
         routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
         break
       case 'WorkSpace.DraftContent':
-        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.DRAFT.ROLES, false, event)
         break
       case 'WorkSpace.ReviewContent':
-        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.REVIEW.ROLES, false, event)
         break
       case 'WorkSpace.PublishedContent':
-        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.PUBLISHED.ROLES, false, event)
         break
       case 'WorkSpace.AllUploadedContent':
-        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        routeHelperService.checkStateAccess(config.WORKSPACE.ALL_UPLOADS.ROLES, false, event)
         break
       case 'WorkSpace.BatchList':
         routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event)
