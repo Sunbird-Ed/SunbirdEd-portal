@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="cpvm.courseHierachy.identifier">
+            <div ng-if="cpvm.courseHierachy.identifier && cpvm.isShowBadgeAssign(cpvm.courseHierachy)">
                 <content-badge contentid="cpvm.courseHierachy.identifier" data="cpvm.courseHierachy"></content-badge>
             </div>
         </div>

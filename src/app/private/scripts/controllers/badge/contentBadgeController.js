@@ -76,7 +76,7 @@ angular.module('playerApp')
         badgeService.addBadges({ request: req }).then(function (response) {
           if (response && response.responseCode === 'OK') {
             contentBadge.hideContentBadgeModal()
-            toasterService.error($rootScope.messages.smsg.moo42)
+            toasterService.success($rootScope.messages.smsg.moo42)
             contentBadge.selectedBadgeList.push(selectedBadge)
             contentBadge.allBadgeList = contentBadge.allBadgeList.filter(function (badge) {
               return badge.badgeId !== selectedBadge.badgeId

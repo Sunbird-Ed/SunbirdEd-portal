@@ -181,6 +181,14 @@
         }
       }
 
+      cpvm.isShowBadgeAssign = function (contentData) {
+        switch (contentData.contentType) {
+        case 'TextBook':
+          return true
+        default:
+          return false
+        }
+      }
       cpvm.loadData()
     }])
 }())
