@@ -7,6 +7,7 @@ let envVariables = require('../../../environmentVariablesHelper.js')
 let httpWrapper = require('../httpWrapper.js')
 let async = require('async')
 let HttpStatus = require('http-status-codes')
+let telemetry = require('../../telemetry/telemetryHelper')
 
 const _ = require('lodash')
 /**
@@ -54,7 +55,7 @@ class NotificationService {
      * @param  {instance} target - Instance of notificatonTarget.
      * @param  {instance} payload - Instance of notificationPayload.
      */
-  send (target, payload) {
+  send (target, payload, reqID) {
     return new Promise((resolve, reject) => {
       if (!target || !payload) {
         reject({
@@ -74,6 +75,7 @@ class NotificationService {
           }
         }
       }
+      telemetry.generateApiCallLogEvent(reqID, config, this.uri)
       config.headers = this.httpService.getRequestHeader(this.userAccessToken)
       config.body.request.data.notificationpayload = payload
       config.body.request.type = this.type

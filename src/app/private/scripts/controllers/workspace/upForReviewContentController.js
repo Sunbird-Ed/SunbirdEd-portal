@@ -266,15 +266,13 @@ angular.module('playerApp')
         upForReviewContent.search.selectedGrades = angular.copy(upForReviewContent.search.appliedGrades)
 
         upForReviewContent.hideFilterPopup = true
-        $timeout(function () {
-          $('#showFilterButton')
-            .popup({
-              popup: $('#showFilterPopup'),
-              on: 'click',
-              position: 'bottom right',
-              color: '#4183c4'
-            })
-        }, 0)
+        $('#showFilterButton')
+          .popup({
+            popup: $('#showFilterPopup'),
+            on: 'click',
+            position: 'bottom right',
+            color: '#4183c4'
+          })
       }
 
       upForReviewContent.hideFilter = function () {
