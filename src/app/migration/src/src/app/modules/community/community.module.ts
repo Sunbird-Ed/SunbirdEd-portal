@@ -9,6 +9,7 @@ import { CommunityRoutingModule } from './community-routing.module';
     CommonModule,
     CommunityRoutingModule,
   ],
-  declarations: [CommunityListComponent]
+  declarations: [CommunityListComponent],
+
 })
 export class CommunityModule { }
