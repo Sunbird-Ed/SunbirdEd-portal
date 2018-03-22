@@ -30,8 +30,6 @@ var hcMessages = {
   API_VERSION: '1.5'
 }
 // Function return to get health check object
-console.log(envHelper.content_Service_Local_BaseUrl + '/health')
-console.log(envHelper.learner_Service_Local_BaseUrl + '/health')
 function getHealthCheckObj (name, healthy, err, errMsg) {
   return {
     name: name,
@@ -134,7 +132,6 @@ function learnerServiceHealthCheck (callback) {
   }
   request(options, function (error, response, body) {
     if (!error && body && body.responseCode === 'OK') {
-      console.log('response', response)
       callback(null, true)
     } else {
       callback(error, false)
