@@ -25,14 +25,15 @@
             <button *ngIf="content.action.right.clickable" class="{{content.action.right.classes}}">{{content.action.right.text}}</button>
           </a>
         </span>
-        <span *ngIf="(content.action.right.displayType == 'icon') && ( content.action.right.displayType != 'button')">
-          <a>
-            <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" (click)="onDelete(content.identifier)"
-              class="{{content.action.right.classes}}">
-            </i>
-            <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>
-          </a>
-        </span>
+        <span *ngIf="content.action.right.displayType == 'icon' ">
+            <a>
+              <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" 
+              (click)="onAction(content.identifier,content.action.right.actionType)"
+                class="{{content.action.right.classes}}">
+              </i>
+              <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>
+            </a>
+          </span>
       </div>
       <div *ngIf="content.action.left" class="content.action.left" class="left floated">
         <span *ngIf="content.action.left.displayType == 'rating'">
