@@ -84,12 +84,12 @@ module.exports = {
             callback(error, response)
           } else if (body === '/test') {
             self.errorMsg = undefined
-            console.log('echo API succesful')
+            console.log('echo API succesful with token:', req.query['token'])
             callback(null, response)
           } else {
             telemetryData.resp = body
             telemetryHelper.logAPIErrorEvent(telemetryData)
-            console.log('echo returned invalid response', body)
+            console.log('echo returned invalid response', body, ' for token ', req.query['token'])
             callback(body, response)
           }
         })
@@ -99,11 +99,13 @@ module.exports = {
         var timeInSeconds = parseInt(Date.now() / 1000)
         self.errorMsg = 'Request credentials verification failed. Please try with valid credentials.'
         if (!(self.payload['iat'] && self.payload['iat'] < timeInSeconds)) {
-          callback(new Error('Token issued time is not available or it is in future'), null)
+          callback(
+            new Error('Token issued time is not available or it is in future, Token :', req.query['token'])
+            , null)
         } else if (!(self.payload['exp'] && self.payload['exp'] > timeInSeconds)) {
-          callback(new Error('Token expired time is not available or it is expired'), null)
+          callback(new Error('Token expired time is not available or it is expired Token :', req.query['token']), null)
         } else if (!self.payload['sub']) {
-          callback(new Error('user id not present'), null)
+          callback(new Error('user id not present Token :', req.query['token']), null)
         } else {
           self.errorMsg = undefined
           callback(null, {})
@@ -215,7 +217,7 @@ module.exports = {
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
-      console.log('check user exists', response.statusCode)
+      console.log('check user exists', response.statusCode, 'for Login Id :', loginId)
       if (body.responseCode === 'OK') {
         callback(null, true)
       } else {

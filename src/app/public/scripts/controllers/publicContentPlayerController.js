@@ -21,6 +21,11 @@ angular.module('loginApp')
           id: $stateParams.courseId,
           type: 'course'
         }]
+        configuration.context.pdata = {
+          'id': 'sunbird.portal',
+          'ver': '1.0',
+          'pid': 'sunbird-portal'
+        }
         configuration.config = config.ekstep_CP_config.config
         configuration.config.plugins = config.ekstep_CP_config.config.plugins
         configuration.config.repos = config.ekstep_CP_config.config.repos

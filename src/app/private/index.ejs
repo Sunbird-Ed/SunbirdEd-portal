@@ -30,6 +30,7 @@
     <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
     <input type="hidden" id="theme" value="<%=theme%>" />
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+    <input type="hidden" id="contentChannelFilterType" value="<%=contentChannelFilterType%>" />
     <div ng-include="'views/common/topHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div class="ui padded grid">
@@ -183,6 +184,7 @@
     <script src="scripts/directives/profileVisibility.js"></script>
     <script src="scripts/controllers/profileVisibilityController.js"></script>
     <script src="scripts/services/telemetryService.js"></script>
+    <script src="scripts/controllers/dataDrivenFiltersController.js"></script>
 
     <!-- Announcement flow -->
     <script src="/thirdparty/bower_components/file-upload/fine-uploader/fine-uploader.js"></script>

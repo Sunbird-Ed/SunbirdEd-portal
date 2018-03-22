@@ -115,5 +115,23 @@
     "title": "orgsearch",
     "category": "orgsearch",
     "env": "announcement"
+  },
+  "/manage/announcement-type/create": {
+    "rid": "announcement.manage.announcementtype.create",
+    "title": "Create announcement type",
+    "category": "announcementtype",
+    "env": "announcement"
+  },
+  "/manage/announcement-type/list": {
+    "rid": "announcement.manage.announcementtype.list",
+    "title": "List announcement types",
+    "category": "announcementtype",
+    "env": "announcement"
+  },
+  "/manage/announcement-type/update": {
+    "rid": "announcement.manage.announcementtype.update",
+    "title": "Update announcement type",
+    "category": "announcementtype",
+    "env": "announcement"
   }
 }

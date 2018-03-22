@@ -173,6 +173,15 @@ angular.module('playerApp')
           req.sort_by = upForReviewContent.search.sortBy
         }
 
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') === -1) {
+          req.filters.contentType = _.without(req.filters.contentType, 'TextBook')
+        }
+
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'CONTENT_REVIEWER') === -1 &&
+            _.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1) {
+          req.filters.contentType = ['TextBook']
+        }
+
         return req
       }
 
@@ -266,15 +275,13 @@ angular.module('playerApp')
         upForReviewContent.search.selectedGrades = angular.copy(upForReviewContent.search.appliedGrades)
 
         upForReviewContent.hideFilterPopup = true
-        $timeout(function () {
-          $('#showFilterButton')
-            .popup({
-              popup: $('#showFilterPopup'),
-              on: 'click',
-              position: 'bottom right',
-              color: '#4183c4'
-            })
-        }, 0)
+        $('#showFilterButton')
+          .popup({
+            popup: $('#showFilterPopup'),
+            on: 'click',
+            position: 'bottom right',
+            color: '#4183c4'
+          })
       }
 
       upForReviewContent.hideFilter = function () {

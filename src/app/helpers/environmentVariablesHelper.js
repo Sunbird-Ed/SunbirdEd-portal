@@ -13,7 +13,7 @@ let envVariables = {
   EKSTEP_ENV: env.ekstep_env || 'qa',
   PORTAL_PORT: env.sunbird_port || 3000,
   PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
-  PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 20,
+  PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
   PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
@@ -34,8 +34,10 @@ let envVariables = {
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   MOBILE_REDIRECT_URL: env.mobile_redirect_url || 'http://www.sunbird.org',
   MOBILE_APP_URL: env.sunbird_mobile_app_url || 'http://www.sunbird.org'
+  CONTENT_CHANNEL_FILTER_TYPE: env.sunbird_content_channel_filter_type || 'all'
 }
 
-envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '') ? env.sunbird_cassandra_urls.split(',') : ['localhost']
+envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
+  ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
