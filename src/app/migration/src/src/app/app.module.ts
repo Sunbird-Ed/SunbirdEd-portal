@@ -11,6 +11,7 @@ import { SharedModule } from '@sunbird/shared';
 import { HomeModule } from '@sunbird/home';
 import { DashboardModule } from '@sunbird/dashboard';
 import { AnnouncementModule } from '@sunbird/announcement';
+import { WorkspaceModule } from '@sunbird/workspace';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ResourceModule } from '@sunbird/resource';
 import { LearnModule } from '@sunbird/learn';
@@ -32,6 +33,7 @@ import { LearnModule } from '@sunbird/learn';
     HomeModule,
     DashboardModule,
     AnnouncementModule,
+    WorkspaceModule,
     Ng2IziToastModule,
     ResourceModule,
     LearnModule

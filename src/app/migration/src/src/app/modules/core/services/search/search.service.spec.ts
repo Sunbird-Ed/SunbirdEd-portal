@@ -8,7 +8,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { SearchService } from './search.service';
 import { UserService } from './../user/user.service';
 import { ConfigService } from '@sunbird/shared';
-
+import {SearchParam} from '@sunbird/core';
 
 describe('SearchService', () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('SearchService', () => {
 
   it('should set searched content result', inject([SearchService, ContentService],
     (service: SearchService, contentService: ContentService) => {
-      const params = { status: [], contetType: [], params: { userId: '', lastUpdatedOn: '' } };
+      const params = { status: [], contetType: [], mimeType : [], contentType: [], orgid: [], params: { userId: '', lastUpdatedOn: '' } };
       spyOn(contentService, 'post').and.callFake(() => Observable.throw({}));
       service.searchContentByUserId(params);
       expect(service).toBeTruthy();

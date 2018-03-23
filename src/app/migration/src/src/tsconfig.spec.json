@@ -21,6 +21,9 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ], 
+      "@sunbird/workspace": [
+        "app/modules/workspace"
       ],
       "@sunbird/resource": [
         "app/modules/resource"

@@ -2846,3 +2846,6 @@ body {
 html {
   height: 100%;
 }
+.ui.modal>.close {
+    display: none
+}
