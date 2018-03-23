@@ -60,7 +60,7 @@ export class FileUploadService {
    *
    * Default config contains http params - url and headers and allowed file extension(s) and size
    */
-  getDefaultOption(): object {
+  getDefaultOption(): any {
     return {
       request: {
         endpoint: this.config.urlConFig.URLS.LEARNER_PREFIX + this.config.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
