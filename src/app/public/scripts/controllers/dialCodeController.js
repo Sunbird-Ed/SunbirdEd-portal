@@ -39,7 +39,7 @@
           var params = { courseId: course.identifier }
           $state.go('PublicCourse', params)
         }
-        contentService.search(req).then((res) => {
+        contentService.search(req).then(function (res) {
           if (res && res.responseCode === 'OK') {
             if (res.result.content && res.result.content.length > 0) {
               dialctrl.searchResults = res.result.content
@@ -50,7 +50,7 @@
             toasterService.error($rootScope.messages.fmsg.m0049)
           }
           dialctrl.loader.showLoader = false
-        }, function (err) {
+        }, function () {
           dialctrl.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0049)
         })

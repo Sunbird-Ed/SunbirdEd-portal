@@ -1,6 +1,5 @@
 const envHelper = require('./environmentVariablesHelper.js')
 const publicUri = '/public/#!'
-const privateUri = '/private/#!'
 
 module.exports = function (app) {
   app.all('/get', function (req, res) {

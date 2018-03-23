@@ -17,7 +17,7 @@
 		</div>
 		<div class="one wide column"></div>
 	</div>
-	<div ng-show="dialctrl.searchResults.length > 0" class="row dial-code-section-bg">
+	<div ng-if="!dialctrl.loader.showLoader" class="row dial-code-section-bg">
 		<div class="one wide column"></div>
 		<div class="ten wide column"> 
 			<div style="font-weight: 650 !important;" class="ui tiny header"> Dial code '{{dialctrl.dialcode}}'
