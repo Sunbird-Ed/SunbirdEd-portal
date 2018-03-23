@@ -1,0 +1,128 @@
+import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { OrganizationUploadComponent } from './organization-upload.component';
+import { SuiModule } from 'ng2-semantic-ui';
+import { LearnerService, OrgManagementService } from '@sunbird/core';
+import { Observable } from 'rxjs/Observable';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Ng2IziToastModule } from 'ng2-izitoast';
+import { Ng2IzitoastService } from 'ng2-izitoast';
+import * as testData from './organization-upload.component.spec.data';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
+describe('OrganizationUploadComponent', () => {
+  let component: OrganizationUploadComponent;
+  let fixture: ComponentFixture<OrganizationUploadComponent>;
+  let input;
+  let router: Router;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [OrganizationUploadComponent],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule],
+      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService, ResourceService, LearnerService, HttpClient,
+        { provide: Router, useClass: RouterStub }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(OrganizationUploadComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    router = TestBed.get(Router);
+    // input = angular.
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should call redirect', () => {
+    // spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
+    component.redirect();
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
+  xit('should call downloadSample method and download a sample csv file', () => {
+    component.downloadSample();
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
+  it('should call openImageBrowser method', () => {
+    component.openImageBrowser('inputbtn');
+    fixture.detectChanges();
+    spyOn(component, 'openImageBrowser').and.callThrough();
+    expect(component.openImageBrowser).toHaveBeenCalled();
+  });
+  it('should  call uploadOrg method and return success response with process id', inject([OrgManagementService,
+    ResourceService, ToasterService, HttpClient],
+    (orgManagementService, resourceService, toasterService, http) => {
+      // component.showLoader = false;
+      var file = [{
+        name: 'organizations.csv',
+        orgName: 'new org',
+        isRootOrg: 'TRUE',
+        channel: 'channel110001',
+        externalId: 'ugc0001',
+        provider: 'technical002',
+        description: 'desc',
+        homeUrl: 'googlehomeurl',
+        orgCode: 'orgcode12345',
+        orgType: '',
+        preferredLanguage: 'hindi',
+        theme: 'goodtheme',
+        contactDetail: ''
+      }];
+      spyOn(component, 'uploadOrg').and.callThrough();
+      spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
+      component.uploadOrg(file);
+      orgManagementService.bulkOrgUpload().subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(component.fileName).toBeDefined();
+        });
+      spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(toasterService, 'success').and.callThrough();
+      // expect(component.showLoader).toBe(false);
+    }));
+  it('should not call uploadOrg method and return error response', inject([OrgManagementService,
+    ResourceService, ToasterService, HttpClient],
+    (orgManagementService, resourceService, toasterService, http) => {
+      // component.showLoader = false;
+      var file = '';
+      spyOn(component, 'uploadOrg').and.callThrough();
+      spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
+      component.uploadOrg(file);
+      orgManagementService.bulkOrgUpload().subscribe(
+        apiResponse => { },
+        err => {
+          expect(err.responseCode).toBe('CLIENT_ERROR');
+        });
+      expect(component.showLoader).toBe(false);
+      spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(toasterService, 'error').and.callThrough();
+      // expect(component.showLoader).toBe(false);
+    }));
+  it('should not call uploadOrg method', inject([ResourceService, ToasterService],
+    (resourceService, toasterService) => {
+    var file = '';
+    spyOn(component, 'uploadOrg').and.callThrough();
+    component.uploadOrg(file);
+    spyOn(toasterService, 'error').and.callThrough();
+    // expect(component.bulkUploadError).toBe(true);
+    // orgManagementService.bulkOrgUpload().subscribe(
+    //   apiResponse => {
+    //     expect(component.showLoader).toBe(false);
+    //     expect(apiResponse.responseCode).toBe('OK');
+    //   }
+    // )
+  }));
+});
