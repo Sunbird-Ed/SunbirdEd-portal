@@ -287,10 +287,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
     }
 
-    $rootScope.dispatchEvent = function (Creation) {
-      $rootScope.$broadcast('selectedCreationType', { Data: Creation })
-    }
-
     // telemetry start event
     $rootScope.generateStartEvent = function (env, objId, objType, objVer, startContentType,
       pageId, mode) {
