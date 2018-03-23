@@ -84,7 +84,7 @@ export class UserComponent implements OnInit {
   public redirect() {
     this.fileName = '';
     this.processId = '';
-    this.router.navigate(['admin/bulkUpload']);
+    this.router.navigate(['bulkUpload']);
   }
   public downloadSample() {
     const options = {
@@ -105,12 +105,9 @@ export class UserComponent implements OnInit {
     } else {
       this.bulkUploadError = true;
       this.bulkUploadErrorMessage = this.resourceService.messages.emsg.m0003;
-      // inputbtn.click();
     }
   }
   uploadUser(file) {
-    // this.openImageBrowser();
-    console.log('inside upload');
     const data = this.uploadUserForm.value;
     if (file[0] && file[0].name.match(/.(csv)$/i)) {
       this.showLoader = true;

@@ -56,7 +56,7 @@ export class StatusComponent implements OnInit {
   }
   public redirect() {
     this.processId = '';
-    this.router.navigate(['admin/bulkUpload']);
+    this.router.navigate(['bulkUpload']);
   }
   getBulkUploadStatus(processId) {
     this.showLoader = true;

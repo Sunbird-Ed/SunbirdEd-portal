@@ -82,6 +82,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
           }
         } else if (user && user.err) {
           this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
         }
       }
     );
@@ -92,15 +93,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   public populateEnrolledCourse() {
     this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
      data => {
-        if (data) {
+        if (data && !data.err) {
           this.showLoader = false;
           this.toDoList = this.toDoList.concat(data.enrolledCourses);
+        } else if (data && data.err) {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0001);
         }
       },
-      err => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0001);
-      }
     );
   }
   /**

@@ -76,7 +76,7 @@ export class OrganizationUploadComponent implements OnInit {
   public redirect() {
     this.fileName = '';
     this.processId = '';
-    this.router.navigate(['admin/bulkUpload']);
+    this.router.navigate(['/bulkUpload']);
   }
   public downloadSample() {
     const options = {
@@ -93,27 +93,25 @@ export class OrganizationUploadComponent implements OnInit {
     inputbtn.click();
   }
   uploadOrg(file) {
-    if (file[0]) {
-      if (file[0].name.match(/.(csv)$/i)) {
-        this.showLoader = true;
-        const formData = new FormData();
-        formData.append('org', file[0]);
-        const fd = formData;
-        this.orgManagementService.bulkOrgUpload(fd).subscribe(
-          (apiResponse: ServerResponse) => {
-            this.showLoader = false;
-            this.processId = apiResponse.result.processId;
-            this.toasterService.success(this.resourceService.messages.smsg.m0031);
-            this.fileName = file[0].name;
-          },
-          err => {
-            this.showLoader = false;
-            this.toasterService.error(err.error.params.errmsg);
-          });
-      } else {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      }
+    if (file[0] && file[0].name.match(/.(csv)$/i)) {
+      this.showLoader = true;
+      const formData = new FormData();
+      formData.append('org', file[0]);
+      const fd = formData;
+      this.orgManagementService.bulkOrgUpload(fd).subscribe(
+        (apiResponse: ServerResponse) => {
+          this.showLoader = false;
+          this.processId = apiResponse.result.processId;
+          this.toasterService.success(this.resourceService.messages.smsg.m0031);
+          this.fileName = file[0].name;
+        },
+        err => {
+          this.showLoader = false;
+          this.toasterService.error(err.error.params.errmsg);
+        });
+    } else {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     }
   }
 }

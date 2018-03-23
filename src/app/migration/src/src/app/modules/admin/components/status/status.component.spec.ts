@@ -46,7 +46,7 @@ describe('StatusComponent', () => {
     component.redirect();
     fixture.detectChanges();
     expect(component.redirect).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['admin/bulkUpload']);
+    expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
   }));
   it('should call organization management service and get failure or success status based on given processId', inject([OrgManagementService,
     ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {

@@ -4,9 +4,9 @@ import { OrganizationUploadComponent, UserComponent, BulkUploadComponent, TestCo
 
 const routes: Routes = [
   {
-    path: 'admin', component: TestComponent,
-    children: [
-      {
+    // path: 'admin', component: TestComponent,
+    // children: [
+    //   {
         path: 'bulkUpload', component: BulkUploadComponent,
         children: [
           { path: 'uploadOrg', component: OrganizationUploadComponent },
@@ -14,8 +14,8 @@ const routes: Routes = [
           { path: 'checkStatus', component: StatusComponent }
         ]
       }
-    ]
-  }
+  //   ]
+  // }
 ];
 
 @NgModule({
