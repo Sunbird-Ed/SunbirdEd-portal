@@ -50,7 +50,7 @@ module.exports = {
       edata: edata,
       context: context,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
     return callback()
   },
@@ -61,13 +61,11 @@ module.exports = {
   logSessionEnd: function (req) {
     const edata = telemetry.endEventData('session')
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
-    var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || md5('sunbird')
-    dims = dims ? _.concat(dims, channel) : channel
     telemetry.end({
       edata: edata,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -92,7 +90,7 @@ module.exports = {
       edata: edata,
       context: context,
       actor: actor,
-      tags: dims
+      tags: _.concat(dims, channel)
     })
   },
 
@@ -104,13 +102,11 @@ module.exports = {
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
     const actor = telemetry.getActorData(payload.sub, 'user')
-    var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || md5('sunbird')
-    dims = dims ? _.concat(dims, channel) : channel
     telemetry.end({
       edata: edata,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -167,7 +163,7 @@ module.exports = {
       context: context,
       object: object,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -197,7 +193,7 @@ module.exports = {
       context: context,
       object: object,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -234,7 +230,7 @@ module.exports = {
       context: context,
       object: object,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -268,7 +264,7 @@ module.exports = {
       context: context,
       object: object,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -348,6 +344,16 @@ module.exports = {
   /**
    * This function helps to generate telemetry for proxy api's
    */
+  generateTelemetryForLearnerService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.learnerServiceEnv
+    next()
+  },
+
+  generateTelemetryForContentService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.contentServiceEnv
+    next()
+  },
+
   generateTelemetryForProxy: function (req, res, next) {
     let params = [
       { 'url': req.originalUrl },
@@ -361,7 +367,7 @@ module.exports = {
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 
-    const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
+    const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
     if (req.session && req.session.sessionID) {
       context.sid = req.session.sessionID
     }
@@ -371,7 +377,7 @@ module.exports = {
       edata: edata,
       context: context,
       actor: module.exports.getTelemetryActorData(req),
-      tags: dims
+      tags: _.concat([], channel)
     })
     next()
   }

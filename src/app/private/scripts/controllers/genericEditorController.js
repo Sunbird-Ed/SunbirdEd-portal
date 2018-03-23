@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('GenericEditorController', ['config', '$stateParams', 'toasterService', '$sce',
     '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
-    function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-      permissionsService, workSpaceUtilsService) {
+    'searchService', function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope,
+      contentService, permissionsService, workSpaceUtilsService, searchService) {
       var genericEditor = this
       genericEditor.contentId = (_.isUndefined($stateParams.contentId) ||
       _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
@@ -41,6 +41,11 @@ angular.module('playerApp')
           etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
           channel: org.sunbird.portal.channel,
           env: 'genericeditor'
+        }
+
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.context.searchCriteria = searchService.updateReqForChannelFilter()
         }
 
         window.config = {
