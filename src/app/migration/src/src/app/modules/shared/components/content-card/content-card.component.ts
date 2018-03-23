@@ -15,11 +15,10 @@ export class ContentCardComponent {
 * content is used to render IContents value on the view
 */
 @Input() content: IContents;
-@Output('actionClick')
-actionClick = new EventEmitter<any>();
+@Output('clickEvent')
+clickEvent = new EventEmitter<any>();
 
 public onAction(contentId, actionType) {
-  console.log(contentId);
-  this.actionClick.emit({'type': actionType, 'contentId': contentId});
+  this.clickEvent.emit({'type': actionType, 'contentId': contentId});
 }
 }
