@@ -47,7 +47,7 @@ angular.module('playerApp')
           contentId: '',
           contentVer: '1.0',
           context: telemetryService.getContextData(contextData),
-          tags: $rootScope.organisationIds
+          tags: _.concat([], org.sunbird.portal.channel)
         }
         telemetryService.log(edata)
         return $http({
