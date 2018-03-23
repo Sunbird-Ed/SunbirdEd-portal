@@ -55,6 +55,7 @@ export class CreateService {
    * Announcement type is required field to create new announcement
    */
   getAnnouncementTypes(): Observable<ServerResponse> {
+    this._rootOrgId = this.user.rootOrgId;
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.DEFINITIONS,
       data: {
@@ -84,6 +85,7 @@ export class CreateService {
    * @param {boolean} resend   to make announcement resend api call
    */
   saveAnnouncement(formData, resend: boolean): Observable<ServerResponse> {
+    this._rootOrgId = this.user.rootOrgId;
     const option = {
       url: resend ? this.config.urlConFig.URLS.ANNOUNCEMENT.RESEND : this.config.urlConFig.URLS.ANNOUNCEMENT.CREATE,
       data: {

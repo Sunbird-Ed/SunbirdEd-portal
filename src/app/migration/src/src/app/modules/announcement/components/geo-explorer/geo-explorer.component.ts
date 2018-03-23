@@ -85,19 +85,21 @@ export class GeoExplorerComponent implements OnInit {
    * Function to validate adaptor / config.
    */
   validateAdaptor() {
-    const adaptor = this.geoConfig[this.keyName] && this.geoConfig[this.keyName].adaptor ? this.geoConfig[this.keyName].adaptor : '';
-    if (adaptor) {
-      switch (adaptor.toUpperCase()) {
-        case 'SERVICE':
-          this.initializeServiceAdopter();
-          break;
-        default:
-          this.showError = true;
-          console.warn('Invalid adaptor');
+    if (this.geoConfig !== undefined) {
+      const adaptor = this.geoConfig[this.keyName] && this.geoConfig[this.keyName].adaptor ? this.geoConfig[this.keyName].adaptor : '';
+      if (adaptor) {
+        switch (adaptor.toUpperCase()) {
+          case 'SERVICE':
+            this.initializeServiceAdopter();
+            break;
+          default:
+            this.showError = true;
+            console.warn('Invalid adaptor');
+        }
+      } else {
+        this.showError = true;
+        console.warn('Invalid adaptor');
       }
-    } else {
-      this.showError = true;
-      console.warn('Invalid adaptor');
     }
   }
 
@@ -136,7 +138,7 @@ export class GeoExplorerComponent implements OnInit {
       this.geo.getLocations(params).subscribe(
         (data: ServerResponse) => {
           if (data.result.response) {
-            this.locationList =  (data.result.response);
+            this.locationList = (data.result.response);
             this.populateItems();
           }
           this.showLoader = false;
@@ -170,13 +172,7 @@ export class GeoExplorerComponent implements OnInit {
    * Angular life cycle hook
    */
   ngOnInit() {
-    this.user.userData$.subscribe(data => {
-      if (data && data.userProfile && data.userProfile.rootOrgId) {
-        this.rootOrgId = data.userProfile.rootOrgId;
-        this.validateAdaptor();
-      } else {
-        console.log('Root org id not found');
-      }
-    });
+    this.rootOrgId = this.user.rootOrgId;
+    this.validateAdaptor();
   }
 }

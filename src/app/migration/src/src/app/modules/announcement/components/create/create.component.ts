@@ -1,6 +1,6 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -48,7 +48,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * Contains wizard number
    */
-  stepNumber: number;
+  stepNumber = 1;
 
   /**
    * Contains announcement identifier
@@ -88,9 +88,14 @@ export class CreateComponent implements OnInit, OnDestroy {
   modalName = 'create';
 
   /**
-   * Loader
+   * showResendLoader helps to show loader during resend announcement
    */
-  showLoader = false;
+  showResendLoader = false;
+
+  /**
+   * This flag helps to show the announcement form after every thing is initailised
+   */
+  showAnnouncementForm = true;
 
   /**
    * Config to get geo component
@@ -141,7 +146,6 @@ export class CreateComponent implements OnInit, OnDestroy {
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
     private elRef: ElementRef) {
-    this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -150,22 +154,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
     this.user = user;
-  }
-
-  /**
-   * Get logged-in user root org id
-   *
-   * Root org id is needed to get announcement type(s) by making definition api call
-   */
-  setRootOrgId(): void {
-    this.user.userData$.subscribe(
-      user => {
-        if (user && user.userProfile && user.userProfile.rootOrgId) {
-          this.createService._rootOrgId = user.userProfile.rootOrgId;
-          this.setAnnouncementTypes();
-        }
-      }
-    );
   }
 
   /**
@@ -195,28 +183,6 @@ export class CreateComponent implements OnInit, OnDestroy {
         }
       );
     }
-  }
-
-  /**
-   * Executed when user click on add new link icon while creating announcement
-   *
-   * Helps user to add more than one web url
-   */
-  addNewLink(data: string | ''): void {
-    const arrayControl = <FormArray>this.announcementForm.controls['links'];
-    arrayControl.push(this.sbFormBuilder.group({
-      url: [data, Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]
-    }));
-  }
-
-  /**
-   * Executed when user click on delete icon
-   *
-   * @param {number} index index of current url
-   */
-  removeLink(index: number): void {
-    const links = <FormArray>this.announcementForm.controls['links'];
-    links.removeAt(index);
   }
 
   /**
@@ -289,7 +255,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     const data = this.announcementForm ? this.announcementForm.value : '';
     if (this.announcementForm.status === 'VALID' && (data.links.length || data.description
       || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
-        return this.formErrorFlag = false;
+      return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
     }
@@ -347,6 +313,28 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Executed when user click on add new link icon while creating announcement
+   *
+   * Helps user to add more than one web url
+   */
+  addNewLink(data: string | ''): void {
+    const arrayControl = <FormArray>this.announcementForm.controls['links'];
+    arrayControl.push(this.sbFormBuilder.group({
+      url: [data, Validators.pattern('https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]
+    }));
+  }
+
+  /**
+   * Executed when user click on delete icon
+   *
+   * @param {number} index index of current url
+   */
+  removeLink(index: number): void {
+    const links = <FormArray>this.announcementForm.controls['links'];
+    links.removeAt(index);
+  }
+
+  /**
    * Function to set resend form values
    */
   setResendFormValues(data) {
@@ -371,13 +359,13 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Make announcement/resend api call to get announcement data
    */
   getAnnouncementDetails() {
-    this.showLoader = true;
+    this.showResendLoader = true;
     this.createService.resendAnnouncement(this.identifier).subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
         this.enableRecipientsBtn();
         this.onFormValueChanges();
-        this.showLoader = false;
+        this.showResendLoader = false;
         this.fileUpload.uploader.addInitialFiles(this.attachments);
         this.fileUpload.attachedFiles = this.attachments;
       },
@@ -394,17 +382,25 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Initialize form fields
-    this.initializeFormFields();
-    const routeParam = this.activatedRoute.snapshot.params;
-    this.stepNumber = routeParam.stepNumber ? +routeParam.stepNumber : 1;
-    if (routeParam.identifier) {
-      this.identifier = routeParam.identifier;
-      this.getAnnouncementDetails();
-    } else {
-      this.onFormValueChanges();
-    }
-    this.setRootOrgId();
-    this.navigateToWizardNumber(1);
+    this.user.userData$.subscribe(user => {
+      if (user && user.userProfile) {
+        this.showAnnouncementForm = false;
+        this.initializeFormFields();
+        const routeParam = this.activatedRoute.snapshot.params;
+        this.stepNumber = routeParam.stepNumber ? +routeParam.stepNumber : 1;
+        if (routeParam.identifier) {
+          this.identifier = routeParam.identifier;
+          this.getAnnouncementDetails();
+        } else {
+          this.onFormValueChanges();
+        }
+        this.setAnnouncementTypes();
+        this.navigateToWizardNumber(1);
+      } else if (user && user.err) {
+        this.showAnnouncementForm = false;
+        this.toasterService.error(this.resource.messages.emsg.m0005);
+      }
+    });
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
-<sui-modal [isClosable]="false" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')" (dismissed)="redirectToOutbox()"
-  #createModal>
+<sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
+  (dismissed)="redirectToOutbox()" #createModal>
   <i class="close icon" (click)="modalName = 'cancel'"></i>
   <div class="ui segment margin-top-10">
     <div class="margin-bottom-15">
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="" [ngStyle]="{'display': (stepNumber === 1 && !showLoader) ? 'block' : 'none'}">
+      <div class="" [ngStyle]="{'display': (stepNumber === 1 && !showResendLoader) ? 'block' : 'none'}">
         <div class="ui grid">
           <div class="eight wide column">
             <form class="ui form announcementForm" [formGroup]="announcementForm">
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div class="ui form announcementForm">
-        <div class="ui segment items-area padding-top-none padding-left-none" *ngIf="showLoader">
+        <div class="ui segment items-area padding-top-none padding-right-none padding-left-none" *ngIf="showResendLoader">
           <app-loader></app-loader>
         </div>
         <!-- GEO explorer -->
@@ -214,7 +214,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div #closeAnnouncementModal class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();createModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div #closeAnnouncementModal class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
           <div class="ui primary button announcementButton btn-width-34" (click)="modalName = 'create'">{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>
