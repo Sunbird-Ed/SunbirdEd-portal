@@ -1,0 +1,14 @@
+<div class="ui raised segment margin-bottom-0" ng-if="isprofileinfo">
+  <div class="header announcementCard-header">
+    <span class="header cardsHeading">Certifactions & Awards</span>
+  </div>
+  <div class="ui items margin-top-10">
+    <div class="item" ng-repeat="badge in badges">
+      <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}">
+      <div class="middle aligned content padding-left-10">
+        <div class="ui huge sub header">{{badge.badgeClassName}}</div>
+      </div>
+      <div class="meta">{{badge.createdTS | dateFilterWithMY}}</div>
+    </div>
+  </div>
+</div>

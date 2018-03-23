@@ -1,0 +1,37 @@
+<div class="ui grid" ng-init="contentBadge.getAllBadges()">
+    <div class="six wide column">
+        <div ng-if="contentBadge.selectedBadgeList.length>0">
+            <button class="ui big blue label button margin-top-0" ng-repeat="selectedbadge in contentBadge.selectedBadgeList">{{selectedbadge.badgeClassName || selectedbadge.name}}</button>
+        </div>
+    </div>
+    <div class="six wide column  margin-top-0" style="text-align:right" ng-if="contentBadge.allBadgeList && contentBadge.allBadgeList.length > 0">
+        <sapn>{{$root.frmelmnts.lbl.markas}}:</sapn>
+        <button class="ui basic primary button" ng-repeat="badge in contentBadge.allBadgeList" ng-click="contentBadge.initializeModal(badge)">{{badge.name}}</button>
+    </div>
+</div>
+
+<div ng-show="contentBadge.showBadgeAssingModel">
+    <div class="ui small modal" id="badgeAssignModel">
+        <div class="header">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    <h3>{{$root.frmelmnts.lbl.markas}} {{contentBadge.selectedBadge.name}}</h3>
+                </div>
+                <div class="one wide column actions">
+                    <h5 class="ui basic icon circular button deny">
+                        <i class="ui remove icon"></i>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="description">
+                {{$root.frmelmnts.lbl.badgeassignconfigmation}}
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui basic blue button left floated" ng-click="contentBadge.hideContentBadgeModal()">{{$root.frmelmnts.btn.cancel}}</div>
+            <div class="ui primary button " ng-click="contentBadge.assignBadge(contentBadge.selectedBadge)">{{$root.frmelmnts.btn.yesiamsure}}</div>
+        </div>
+    </div>
+</div>

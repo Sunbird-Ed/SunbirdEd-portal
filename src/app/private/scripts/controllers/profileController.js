@@ -39,7 +39,6 @@ angular.module('playerApp')
       profile.isError = false
       profile.contentSortBy = 'desc'
       profile.quantityOfContent = 4
-      profile.badges = []
       profile.isViewMore = true
       profile.isAddAddress = true
       profile.ischekedCurrent = true
@@ -69,21 +68,6 @@ angular.module('playerApp')
               element.updatedDate = new Date(element.updatedDate)
             }
           }, this)
-        }
-      }
-      // user badges
-      profile.getUserBadges = function () {
-        var badges = adminService.getBadgesList()
-        if (profile.user.badges.length) {
-          profile.user.badges.forEach(function (badge) {
-            var userBadge = badges.find(function (badgE) {
-              return badgE.id === badge.badgeTypeId
-            })
-
-            profile.badges.push({
-              title: userBadge.name
-            })
-          })
         }
       }
       // processing profile data
@@ -117,9 +101,7 @@ angular.module('playerApp')
           if (profile.user.lastLoginTime > 0) {
             profile.lastLoginTime = angular.copy(profile.user.lastLoginTime)
           }
-          if (profile.user.badges) {
-            profile.getUserBadges()
-          }
+          profile.badgeAssertions = profileData.badgeAssertions
           if (profileData.completeness) {
             $rootScope.profileCompleteness = profileData.completeness
             $('.profile-progress').progress({
@@ -702,23 +684,6 @@ angular.module('playerApp')
           workSpaceUtilsService.previewContent(item, $state.current.name)
         }
       }
-
-      profile.getbadges = function () {
-        learnService.enrolledCourses($rootScope.userId).then(function (res) {
-          if (res && res.responseCode === 'OK') {
-            var courses = res.result.courses
-            _.forEach(courses, function (course) {
-              if (course.leafNodesCount && course.progress && course.leafNodesCount === course.progress) {
-                profile.badges.push({
-                  title: course.courseName
-                })
-              }
-            })
-          }
-        })
-      }
-
-      profile.getbadges()
 
       profile.setSelectedGrades = function () {
         $timeout(function () {

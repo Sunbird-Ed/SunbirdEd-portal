@@ -260,14 +260,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         }
       })
     }
-    // badges
-    $scope.getBadges = function () {
-      adminService.getBadges().then(function (res) {
-        if (res.responseCode === 'OK') {
-          adminService.setBadges(res)
-        }
-      })
-    }
     // orgTypes
     $scope.getOrgTypes = function () {
       searchService.getOrgTypes().then(function (res) {
@@ -301,7 +293,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         pageId, mode)
     }
 
-    $scope.getBadges()
     $scope.getOrgTypes()
 
     $window.onbeforeunload = function () {

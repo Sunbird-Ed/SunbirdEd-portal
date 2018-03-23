@@ -3,8 +3,6 @@
         <div class="ui grid">
             <div class="twelve wide column padding-bottom-none" ng-include=" 'views/profile/profileView/userDescription.html' ">
             </div>
-            <div class="twelve wide column padding-bottom-none" ng-include=" 'views/profile/profileView/userBadges.html' ">
-            </div>
             <div class="twelve wide column padding-top-none" ng-include="'views/profile/profileView/userExperience.html'">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userAddress.html' ">
@@ -12,6 +10,10 @@
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
+            </div>
+            <!-- Badging (Certifications and Awards) -->
+            <div class="twelve wide column" ng-if="profileCtrl.badgeAssertions">
+                <profile-badge isshowadd="false" badgelist="profileCtrl.badgeAssertions" isprofileinfo="true"></profile-badge>
             </div>
             <div class="twelve wide column padding-top-none" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
             </div>

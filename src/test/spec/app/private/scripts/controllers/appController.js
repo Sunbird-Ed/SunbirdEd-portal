@@ -7,7 +7,7 @@
 describe('App controller', function () {
   beforeEach(module('playerApp'))
   var rootScope, $timeout, scope, deferred, searchService,
-    userService, telemetryService, adminService, $httpBackend
+    userService, telemetryService, $httpBackend
 
   if (typeof Array.prototype.includes !== 'function') {
     Array.prototype.includes = function (iterator) { // eslint-disable-line no-extend-native
@@ -70,7 +70,7 @@ describe('App controller', function () {
   // spyOn(Array.prototype, 'find').and.callThrough()
 
   beforeEach(inject(function ($rootScope, _$stateParams_, _contentService_, _$timeout_, _$q_,
-    $controller, _searchService_, _telemetryService_, _adminService_, _userService_,
+    $controller, _searchService_, _telemetryService_, _userService_,
     _$httpBackend_) {
     rootScope = $rootScope
     $timeout = _$timeout_
@@ -78,7 +78,6 @@ describe('App controller', function () {
     deferred = _$q_.defer()
     window.localStorage.redirectUrl = 'sddsf'
     searchService = _searchService_
-    adminService = _adminService_
     userService = _userService_
     telemetryService = _telemetryService_
     $httpBackend = _$httpBackend_
@@ -155,24 +154,6 @@ describe('App controller', function () {
       scope.getOrgTypes()
       scope.$apply()
       var response = searchService.getOrgTypes().$$state.value
-      expect(response).not.toBe(undefined)
-    })
-  })
-
-  describe('Search get Badges', function () {
-    it('Called badges service', function () {
-      spyOn(adminService, 'getBadges').and.callThrough()
-      adminService.getBadges()
-      expect(adminService.getBadges).toBeDefined()
-    })
-
-    it('Should get Badges ', function () {
-      spyOn(adminService, 'getBadges').and.returnValue(deferred.promise)
-      deferred.resolve({responseCode: 'OK'})
-      spyOn(scope, 'getBadges').and.callThrough()
-      scope.getBadges()
-      scope.$apply()
-      var response = adminService.getBadges().$$state.value
       expect(response).not.toBe(undefined)
     })
   })
