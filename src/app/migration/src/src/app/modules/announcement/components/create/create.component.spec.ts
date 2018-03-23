@@ -73,14 +73,14 @@ describe('CreateComponent', () => {
       fileUploadService.uploader.addInitialFiles(mockRes.resendAnnouncement.attachments);
       spyOn(component, 'getAnnouncementDetails').and.callThrough();
       spyOn(component, 'setResendFormValues').and.callThrough();
-      spyOn(component, 'enableRecipientsBtn').and.callThrough();
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
       spyOn(createService, 'resendAnnouncement').and.callFake(() => Observable.of(response));
       component.getAnnouncementDetails();
       fixture.detectChanges();
       expect(component.getAnnouncementDetails).toHaveBeenCalled();
       expect(createService.resendAnnouncement).toHaveBeenCalledWith(component.identifier);
       expect(component.setResendFormValues).toHaveBeenCalledWith(response.result.announcement);
-      expect(component.enableRecipientsBtn).toHaveBeenCalledWith();
+      expect(component.enableSelectRecipientsBtn).toHaveBeenCalledWith();
       expect(component.showResendLoader).toEqual(false);
     }));
 
@@ -186,10 +186,10 @@ describe('CreateComponent', () => {
   it('should enable recipients button', inject([Router],
     (route) => {
       component.formErrorFlag = true;
-      spyOn(component, 'enableRecipientsBtn').and.callThrough();
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
       spyOn(component, 'setResendFormValues').and.callThrough();
       component.setResendFormValues(mockRes.resendAnnouncement);
-      const data = component.enableRecipientsBtn();
+      const data = component.enableSelectRecipientsBtn();
       fixture.detectChanges();
       expect(component.setResendFormValues).toHaveBeenCalled();
       expect(data).toEqual(false);
@@ -197,13 +197,13 @@ describe('CreateComponent', () => {
 
   it('should not enable recipients button', inject([Router],
     (route) => {
-      spyOn(component, 'enableRecipientsBtn').and.callThrough();
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
       spyOn(component, 'setResendFormValues').and.callThrough();
       // Set empty value
       const data = mockRes.resendAnnouncement;
       data.description = ''; data.links = []; data.attachments = [];
       component.setResendFormValues(data);
-      const res = component.enableRecipientsBtn();
+      const res = component.enableSelectRecipientsBtn();
       fixture.detectChanges();
       expect(component.setResendFormValues).toHaveBeenCalled();
       expect(res).toEqual(true);

@@ -251,7 +251,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Button gets enabled when all required fields and
    * at least one of 'Description' or 'URL / weblink' or 'Attachment' must be provided
    */
-  enableRecipientsBtn(): boolean {
+  enableSelectRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
     if (this.announcementForm.status === 'VALID' && (data.links.length || data.description
       || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
@@ -293,7 +293,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges.subscribe(val => {
-      this.enableRecipientsBtn();
+      this.enableSelectRecipientsBtn();
     });
   }
 
@@ -363,7 +363,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.createService.resendAnnouncement(this.identifier).subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
-        this.enableRecipientsBtn();
+        this.enableSelectRecipientsBtn();
         this.onFormValueChanges();
         this.showResendLoader = false;
         this.fileUpload.uploader.addInitialFiles(this.attachments);

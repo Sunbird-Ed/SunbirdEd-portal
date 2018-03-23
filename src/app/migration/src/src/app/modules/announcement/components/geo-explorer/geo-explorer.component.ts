@@ -158,7 +158,7 @@ export class GeoExplorerComponent implements OnInit {
    * @param {IGeoLocationDetails} item selected location details
    * @param {string} id location id
    */
-  checkAndUncheckItem(event: boolean, item: IGeoLocationDetails, id: string) {
+  toggle(event: boolean, item: IGeoLocationDetails, id: string) {
     if (event) {
       this.selectedItems.push(item);
     } else {
