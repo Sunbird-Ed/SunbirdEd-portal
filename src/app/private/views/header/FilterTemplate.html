@@ -22,7 +22,7 @@
                   <span class="ShowFilterSubTitle">{{$root.frmelmnts.lbl.filterby}}</span>
                 </div> -->
                 <!--Dynamic Fields-->
-                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.width}} wide column" ng-repeat="field in dynamic.formFieldProperties"
+                <div ng-if="dynamic.search.showFilters" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" ng-repeat="field in dynamic.formFieldProperties"
                   ng-include=" 'views/header/filterFieldTemplate.html' ">
                 </div>
               </div>

@@ -51,32 +51,41 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     // search select dropdown changes
     var selectedsearchKeyHandler = $rootScope.$on('DynsetSearchKey', function (event, args) {
       dynamic.search.selectedSearchKey = args.key
-      if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
-        _.forEach(dynamic.formFieldProperties, function (category) {
-          dynamic.search['selected' + category.code] = []
-        })
-        dynamic.getChannel(dynamic.formFieldProperties)
-        dynamic.formFieldProperties.sort(function (a, b) {
-          return a.renderingHints.order - b.renderingHints.order
-        })
+      // console.log("dynamic.search.selectedSearchKey",dynamic.search.selectedSearchKey)
+      var req = {
+        type: 'content',
+        action: 'search'
       }
+      switch (dynamic.search.selectedSearchKey) {
+      case 'Courses':
+        req.subType = 'course'
+        break
+      case 'Library':
+        req.subType = 'library'
+        break
+      }
+      // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
+      dynamic.getChannel(req)
     })
 
     var searchKeyHandler = $rootScope.$on('DynSearchKey', function (event, args) {
       dynamic.searchKey = args.key
       dynamic.search.selectedSearchKey = dynamic.searchKey
-      if (dynamic.search.selectedSearchKey === 'Courses' || dynamic.search.selectedSearchKey === 'Library') {
-        dynamic.formFieldProperties = _.uniq(config.FILTER.RESOURCES[dynamic.search.selectedSearchKey])
-
-        _.forEach(dynamic.formFieldProperties, function (category) {
-          dynamic.search['selected' + category.code] = []
-        })
-        dynamic.getChannel(dynamic.formFieldProperties)
-        dynamic.formFieldProperties.sort(function (a, b) {
-          return a.renderingHints.order - b.renderingHints.order
-        })
+      // console.log("dynamic.search.selectedSearchKey",dynamic.search.selectedSearchKey)
+      var req = {
+        type: 'content',
+        action: 'search'
       }
+      switch (dynamic.search.selectedSearchKey) {
+      case 'Courses':
+        req.subType = 'course'
+        break
+      case 'Library':
+        req.subType = 'library'
+        break
+      }
+      // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
+      dynamic.getChannel(req)
       // $scope.search.searchRequest(false)
     })
 
@@ -103,22 +112,37 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       dynamic.isSearchPage = true
     }
 
-    dynamic.getChannel = function (dynamicFields) {
-      var dynamicField = dynamicFields
+    dynamic.getChannel = function (req) {
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
           var frameworkId = res.result.channel.defaultFramework
+          dynamic.search.showFilters = true
           searchService.getFramework(frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
-              dynamic.search.showFilters = true
+              req.framework = frameworkId
               var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              _.forEach(categoryMasterList, function (category) {
-                _.forEach(dynamicField, function (category1) {
-                  if (category.code === category1.code) {
-                    category1.category = category.terms
-                  }
-                  return category1
-                })
+              searchService.getDataDrivenFormsConfig(req).then(function (res) {
+                if (res.responseCode === 'OK') {
+                  dynamic.formFieldProperties = res.result.form.data.fields
+                  _.forEach(dynamic.formFieldProperties, function (category) {
+                    dynamic.search['selected' + category.code] = []
+                  })
+                  dynamic.formFieldProperties.sort(function (a, b) {
+                    return a.index - b.index
+                  })
+                  _.forEach(categoryMasterList, function (category) {
+                    _.forEach(dynamic.formFieldProperties, function (category1) {
+                      if (category.code === category1.code) {
+                        category1.category = category.terms
+                      }
+                      return category1
+                    })
+                  })
+                } else {
+                  dynamic.search.showFilters = false
+                }
+              }).catch(function (error) {
+                console.log('error is ......', error)
               })
             }
           }).catch(function (error) {

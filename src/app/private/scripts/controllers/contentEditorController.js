@@ -7,6 +7,7 @@ angular.module('playerApp')
       workSpaceUtilsService, $window, searchService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
+      contentEditor.framework = $stateParams.framework
       var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
       contentEditor.openContentEditor = function () {
         window.context = {
@@ -16,6 +17,7 @@ angular.module('playerApp')
           },
           sid: $rootScope.sessionId,
           contentId: contentEditor.contentId,
+          framework: contentEditor.framework,
           pdata: {
             id: org.sunbird.portal.appid,
             ver: '1.0'
