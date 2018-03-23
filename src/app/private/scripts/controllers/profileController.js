@@ -568,7 +568,8 @@ angular.module('playerApp')
       profile.setDob = function () {
         $('#editDob').calendar('set date', profile.user.dob)
         $('#editDob').calendar({
-          maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+          maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+          type: 'date'
         })
         $timeout(function () { $scope.dobVis = true }, 100)
       }
