@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('CollectionEditorController', ['config', '$stateParams', 'toasterService', '$sce',
     '$state', '$timeout', '$rootScope', 'contentService', 'permissionsService', 'workSpaceUtilsService',
-    function (config, $stateParams, toasterService, $sce, $state, $timeout, $rootScope, contentService,
-      permissionsService, workSpaceUtilsService) {
+    '$window', 'searchService', function (config, $stateParams, toasterService, $sce, $state, $timeout,
+      $rootScope, contentService, permissionsService, workSpaceUtilsService, $window, searchService) {
       var collectionEditor = this
       collectionEditor.contentId = $stateParams.contentId
       collectionEditor.framework = $stateParams.framework
@@ -41,6 +41,10 @@ angular.module('playerApp')
           channel: org.sunbird.portal.channel,
           framework: collectionEditor.framework,
           env: data.type.toLowerCase()
+        }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.context.searchCriteria = searchService.updateReqForChannelFilter()
         }
 
         window.config = {

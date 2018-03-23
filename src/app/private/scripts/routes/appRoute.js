@@ -173,7 +173,7 @@ angular.module('playerApp')
             edata: telemetryService.endEventData('course', 'course-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.end(data)
         }
@@ -242,7 +242,7 @@ angular.module('playerApp')
             edata: telemetryService.endEventData('lirary', 'library-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.end(data)
         }
@@ -309,7 +309,7 @@ angular.module('playerApp')
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', 'course-read', url),
             context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
         },
@@ -330,7 +330,7 @@ angular.module('playerApp')
             edata: telemetryService.endEventData('course', 'course-read', 'play'),
             context: telemetryService.getContextData(contextData),
             object: telemetryService.getObjectData(objectData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.end(data)
           dataService.setData('isTrackingEnabled', false)
@@ -359,7 +359,7 @@ angular.module('playerApp')
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', 'workspace', '/workspace'),
             context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
         },
@@ -673,7 +673,7 @@ angular.module('playerApp')
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', 'batch-read', 'batches'),
             context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
         },
@@ -700,7 +700,7 @@ angular.module('playerApp')
           var data = {
             edata: telemetryService.impressionEventData('view', 'scroll', 'batch-edit', '/update/batch/'),
             context: telemetryService.getContextData(contextData),
-            tags: $rootScope.organisationIds
+            tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
         },

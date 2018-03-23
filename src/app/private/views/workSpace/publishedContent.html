@@ -6,7 +6,7 @@
                     <div class="card" ng-repeat="item in publishedContent.publishedContentData track by $index" in-view="publishedContent.lineInView($index, $inview, item, 'PublishedContent')" in-view-options="{ throttle: 1000 }">
                         <div class="image imageInCardsResponsive" ng-click="publishedContent.openContentPlayer(item)" ng-init="$last && publishedContent.initTocPopup()">
                             <div class="ui fluid image mouse-pointer">
-                                <span class="ui black left ribbon label">{{item.contentType}}</span>
+                                <span class="ui black right ribbon label">{{item.contentType}}</span>
                                 <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
                             </div>
                             <div class="cardImageText center aligned mouse-pointer">

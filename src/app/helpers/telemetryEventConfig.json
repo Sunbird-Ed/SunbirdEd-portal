@@ -1,13 +1,14 @@
 {
   "endpoint": "data/v1/telemetry",
   "pdata": {
-    "id": "portal-backend",
     "ver": "0.0.1"
   },
   "default_username": "public",
   "default_userid": "public",
   "default_did": "sunbird-portal",
   "env": "portal-backend",
+  "learnerServiceEnv": "learner-service",
+  "contentServiceEnv": "content-service",
   "URL": {
     "data/v1/role/read": {
       "title": "Read role",
@@ -59,11 +60,11 @@
       "env": "user"
     },
     "tenant/info": {
-      "title": "tanent info",
+      "title": "tenant info",
       "category": "tenantinfo",
-      "url": "tanent/info",
-      "message": "Called tanent info",
-      "env": "tanent"
+      "url": "tenant/info",
+      "message": "Called tenant info",
+      "env": "tenant"
     }
   }
 
