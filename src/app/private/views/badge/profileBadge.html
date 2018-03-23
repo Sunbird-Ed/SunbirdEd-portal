@@ -1,13 +1,4 @@
 <div class="ui raised segment margin-bottom-0" ng-if="isprofileinfo">
-    <!-- <span class="header cardsHeading">Certifactions & Awards</span>
-    <div class="ui middle aligned list" ng-if="user.badgeAssertions && user.badgeAssertions.length > 0">
-        <div class="item" ng-repeat="badge in user.badgeAssertions">
-            <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}">
-            <div class="content">
-                <div class="header">{{badge.badgeClassName}}</div>
-            </div>
-        </div>
-    </div> -->
   <div class="header announcementCard-header">
     <span class="header cardsHeading">Certifactions & Awards</span>
   </div>
@@ -15,9 +6,9 @@
     <div class="item" ng-repeat="badge in badges">
       <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}">
       <div class="middle aligned content padding-left-10">
-        <div class="ui huge sub header">{{badge.badgeClassName}}</div> 
+        <div class="ui huge sub header">{{badge.badgeClassName}}</div>
       </div>
-        <div class="meta">{{badge.createdTS | dateFilterWithMY}}</div>
+      <div class="meta">{{badge.createdTS | dateFilterWithMY}}</div>
     </div>
   </div>
 </div>

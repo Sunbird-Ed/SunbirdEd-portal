@@ -70,7 +70,6 @@ angular.module('playerApp')
                     .includes('SYSTEM_ADMINISTRATION')
                 }
               }
-              // Add batches mock response
               user.badgeAssertions = user.badgeAssertions
               if (user.organisations) {
                 user.organisations.forEach(function (userOrg) {
