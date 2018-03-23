@@ -231,6 +231,9 @@
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.padding-topBottom-10 {
+  padding: 10px 0px!important;
+}
 .padding-topBottom-20 {
   padding: 10px 0px!important;
 }
@@ -242,6 +245,9 @@
 }
 .padding-topBottom-35 {
   padding: 35px 0px!important;
+}
+.padding-dail-code-segment {
+  padding: 25px 35px!important;
 }
 .padding-topBottomNone {
   padding-top: 0px!important;
@@ -590,7 +596,6 @@ a:hover {
 30 px   1.875 em
 40 px   2.5 em
 50 px   3.125 em
-
 */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
@@ -1934,8 +1939,8 @@ ul.fancytree-container li {
 .searchfilterinput.ui.search .prompt {
   border-radius: 0;
 }
-.searchinput {
-  width: 600px;
+.searchinputpublic {
+  width: 30em;
 }
 @media only screen and (max-width: 1400px) {
   .searchinput {
@@ -2877,4 +2882,96 @@ body {
 }
 html {
   height: 100%;
+}
+
+
+/*get dial code page responsive css*/
+
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 989898;
+}
+
+.bars.icon.tablet.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 0.5em;
+    opacity: .7;
+    -webkit-transition: opacity .1s ease;
+    transition: opacity .1s ease;
+}
+
+.getPage-background {
+  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  height: 100vh;
+}
+.dailcodePage-background {
+  background: #f9f9f9;
+  height: 100vh;
+}
+.bars.icon.mobile.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 1.5em; 
+}
+
+
+.dial-section-header {
+  margin-top: 3em;
+}
+.dail-section-meta {
+  color: white;
+}
+.ui.header.dial-section-header-text {
+  color:#fff;
+}
+
+.ui.header .sub.header.dial-section-subheader-text {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.dial-section-input {
+  margin-top: 10em;
+}
+
+@media screen and  (min-width: 240px) and (max-width: 768px) {
+  .dial-section-input {
+    margin-top: 2em;
+  }
+}
+
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.header.dial-section-header-text {
+    padding-top: 4em !important;
+  }
+}
+
+.dial-code-section-bg {
+  background: #fff;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.container.publicResponviveContainer {    
+    margin-right: 0 !important; 
+  } 
+}
+
+@media only screen and (min-width: 768px) {
+  .closeBtn-dial-code {
+    float:right;
+  }
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.small.header.popUp-dial-code-header {
+    font-size: 1.2em;
+  }
+}
+.menu-public-header{
+  border-top: 2px solid rgba(0,0,0,.13);
 }

@@ -7,6 +7,9 @@
             "USER": {
                 "SIGNUP": "user/v1/create"
             },
+            "COMPOSITE": {
+                "SEARCH": "composite/v1/search"
+            },
             "COURSE": {
                 "HIERARCHY": "course/v1/hierarchy"
             },

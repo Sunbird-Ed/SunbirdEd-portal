@@ -23,14 +23,12 @@
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
-        <div class="ui padded grid">
-            <div class="row">
-                <div class="twelve wide column">
-                    <div ui-view="mainView">
-                    </div>
-                </div>
+        <div ng-class="{'dailcodePage-background' : $root.dailCodePageBackground === true,
+         'getPage-background' :  $root.getPageBackground}"
+        class="twelve wide column menu-public-header">
+            <div ui-view="mainView">
             </div>
-        </div>
+        </div> 
     </div>
     <script src="../common/js/org.js"></script>
     <!-- inject:js -->
@@ -59,6 +57,7 @@
     <script src="/public/scripts/service/signUpService.js"></script>
     <script src="/public/scripts/service/toasterService.js"></script>
     <script src="/public/scripts/service/contentService.js"></script>
+    <script src="/public/scripts/directive/searchDirective.js"></script>
     <script src="/public/scripts/directive/error.js"></script>
     <script src="/public/scripts/directive/loader.js"></script>
     <script src="/public/scripts/directive/courseDiscussions.js"></script>
@@ -67,7 +66,9 @@
     <script src="/public/scripts/controllers/publicContentPlayerController.js"></script>
     <script src="/public/scripts/controllers/courseScheduleController.js"></script>
     <script src="/public/scripts/controllers/collectionPlayerController.js"></script>
+    <script src="/public/scripts/controllers/dialCodeController.js"></script>
     <script src="/public/scripts/filters/dateFilter.js"></script>
+    <script src="/public/scripts/filters/fileSize.js"></script>
     <!-- endinject -->
     <script src="../common/js/frmelmnts.js"></script>
     <script src="../common/js/messages.js"></script>

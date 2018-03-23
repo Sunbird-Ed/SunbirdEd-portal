@@ -113,7 +113,7 @@ app.use('/private/index', function (req, res, next) {
 })
 
 // Mobile redirection to app
-require('./helpers/mobileRedirectHelper.js')(app)
+require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
