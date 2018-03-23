@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -33,7 +33,7 @@
         <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
       </div>
       <div *ngFor="let status of ['success', 'failure']">
-        <div class="margin-top-40 overflowContentHorizontal" >
+        <div class="margin-top-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
           <h5 *ngIf="status === 'success'">{{resourceService?.frmelmnts?.lbl?.successres}}</h5>
           <h5 *ngIf="status === 'failure'">{{resourceService?.frmelmnts?.lbl?.failres}}</h5>
           <table class="ui celled padded table">
@@ -101,8 +101,8 @@
                 <td>{{ row.subject || "empty"}}</td>
                 <td *ngIf="status === 'failure'">{{ row.err_msg || "empty"}}</td>
             </tbody>
-            <tbody>
-              <tr [ngClass]="status === 'success' ? 'positive' : 'error'" *ngFor="let row of status">
+            <tbody *ngIf="objectType === 'organisation'">
+              <tr [ngClass]="status === 'success' ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
                 <td>{{ row.id || "empty"}}</td>
                 <td>{{ row.orgName || "empty"}}</td>
                 <td>{{ row.isRootOrg || "empty"}}</td>
@@ -124,7 +124,7 @@
   </div>
   <div class="actions">
     <div class="ui grid">
-      <div class="twelve wide column">
+      <div *ngIf="!processId" class="twelve wide column">
         <button [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
           (click)="getBulkUploadStatus(statusForm.value)">
           {{resourceService?.frmelmnts?.btn?.chksts}}</button>

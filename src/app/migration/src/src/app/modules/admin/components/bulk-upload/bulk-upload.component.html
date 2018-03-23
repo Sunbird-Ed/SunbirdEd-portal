@@ -3,17 +3,17 @@
   <div class="eight wide column"></div>
   <div class="two wide column">
     <div class="ui padding-top-none padding-bottom-15">
-      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadOrg">
+      <a class="ui cursor-pointer" *ngIf='permissionService.permissionAvailable' appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadOrg">
         {{resourceService?.frmelmnts?.instn?.t0015}}
       </a>
     </div>
     <div class="ui padding-top-none padding-bottom-15">
-      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadUser">
+      <a class="ui cursor-pointer" *ngIf='permissionService.permissionAvailable' appPermission [permission]='admin' routerLink="/admin/bulkUpload/uploadUser">
         {{resourceService?.frmelmnts?.instn?.t0016}}
       </a>
     </div>
     <div class="ui padding-top-none padding-bottom-15">
-      <a class="ui cursor-pointer" appPermission [permission]='admin' routerLink="/admin/bulkUpload/checkStatus">
+      <a class="ui cursor-pointer" *ngIf='permissionService.permissionAvailable' appPermission [permission]='admin' routerLink="/admin/bulkUpload/checkStatus">
         {{resourceService?.frmelmnts?.lbl?.chkuploadsts}}
       </a>
     </div>

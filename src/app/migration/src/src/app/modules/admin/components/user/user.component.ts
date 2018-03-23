@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
-import { AdminService } from '@sunbird/core';
+import { OrgManagementService } from '@sunbird/core';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
   /**
 * To call admin service which helps to upload csv file
 */
-  public adminService: AdminService;
+  public orgManagementService: OrgManagementService;
   processId: string;
   fileName: string;
   bulkUploadError: boolean;
@@ -45,11 +45,11 @@ export class UserComponent implements OnInit {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
-  constructor(adminService: AdminService, formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
+  constructor(orgManagementService: OrgManagementService, formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
     resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
-    this.adminService = adminService;
+    this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
   }
 
@@ -121,7 +121,7 @@ export class UserComponent implements OnInit {
       formData.append('organisationId', data.organisationId);
       const fd = formData;
       this.fileName = file[0].name;
-      this.adminService.bulkUserUpload(fd).subscribe(
+      this.orgManagementService.bulkUserUpload(fd).subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
           this.processId = apiResponse.result.processId;
