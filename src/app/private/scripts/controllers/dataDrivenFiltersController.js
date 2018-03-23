@@ -116,13 +116,13 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
           var frameworkId = res.result.channel.defaultFramework
-          dynamic.search.showFilters = true
           searchService.getFramework(frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
               req.framework = frameworkId
               var categoryMasterList = _.cloneDeep(res.result.framework.categories)
               searchService.getDataDrivenFormsConfig(req).then(function (res) {
                 if (res.responseCode === 'OK') {
+                  dynamic.search.showFilters = true
                   dynamic.formFieldProperties = res.result.form.data.fields
                   _.forEach(dynamic.formFieldProperties, function (category) {
                     dynamic.search['selected' + category.code] = []
