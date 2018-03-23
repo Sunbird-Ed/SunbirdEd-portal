@@ -475,6 +475,12 @@ a:active,
 a:hover {
   outline: none !important;
 }
+.primary-text-color-sunbird {
+  color: #333333 !important;
+}
+.secondary-text-color-sunbird {
+  color: #7c7b7b !important;
+}
 .ui.menu {
   font-family: 'sunbirdregularfont';
   color: #333333;
