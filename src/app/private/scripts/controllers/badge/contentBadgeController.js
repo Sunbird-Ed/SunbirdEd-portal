@@ -40,29 +40,24 @@ angular.module('playerApp')
       }
 
       contentBadge.hideContentBadgeModal = function () {
-        if (contentBadge.showBadgeAssingModel) {
-          contentBadge.showBadgeAssingModel = false
-          contentBadge.selectedBadge = undefined
-          $timeout(function () {
-            $('#badgeAssignModel').modal('hide')
-            $('#badgeAssignModel').modal('hide others')
-            $('#badgeAssignModel').modal('hide all')
-            $('#badgeAssignModel').modal('hide dimmer')
-          }, 0)
-        } else {
-        }
+        $('#badgeAssignModel').modal('hide')
+        $('#badgeAssignModel').modal('hide all')
+        $('#badgeAssignModel').modal('hide dimmer')
       }
 
       contentBadge.initializeModal = function (badge) {
-        contentBadge.selectedBadge = badge
         contentBadge.showBadgeAssingModel = true
         $timeout(function () {
           $('#badgeAssignModel').modal({
             onHide: function () {
-              contentBadge.hideContentBadgeModal()
+              contentBadge.showBadgeAssingModel = false
+              contentBadge.selectedBadge = {}
+            },
+            onShow: function () {
+              contentBadge.selectedBadge = badge
             }
           }).modal('show')
-        }, 10)
+        }, 0)
       }
 
       contentBadge.assignBadge = function (selectedBadge) {

@@ -182,7 +182,7 @@
                 </div>
             </div>
             <!-- Badging (Certifications and Awards) -->
-            <div class="twelve wide column" ng-if="publicProfile.user.badgeAssertions">
+            <div class="twelve wide column" ng-if="publicProfile.user && publicProfile.user.badgeAssertions && publicProfile.user.badgeAssertions.length > 0">
                 <profile-badge isshowadd="false" badgelist="publicProfile.user.badgeAssertions" isprofileinfo="true"></profile-badge>
             </div>
             <!-- aditional information -->
