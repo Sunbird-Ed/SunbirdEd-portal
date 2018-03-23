@@ -132,7 +132,6 @@ angular.module('playerApp')
         setTimeout(function () {
           $('#' + id).dropdown('restore defaults')
           $('#' + id).dropdown('refresh')
-          dataDrivenForm.data[id] = undefined
         }, 0)
       }
 
@@ -201,6 +200,9 @@ angular.module('playerApp')
             useLabels: labels,
             forceSelection: forceSelection
           })
+          if (dataDrivenForm.loader.showLoader) {
+            dataDrivenForm.loader.showLoader = false
+          }
         }, 0)
       }
 
@@ -212,93 +214,82 @@ angular.module('playerApp')
         dataDrivenForm.loader = toasterService.loader('', $rootScope.messages.stmsg.m0014)
         org.sunbird.portal.eventManager.addEventListener('editor:form:change', dataDrivenForm.onConfigChange,
           dataDrivenForm.formFieldProperties)
+        var req = {
+          type: 'content',
+          action: 'create'
+        }
         switch ($state.current.name) {
         case 'CreateTextbook':
-          dataDrivenForm.selectedContent = 'textBookFormConfigurations'
+          req.subType = 'textbook'
           break
         case 'CreateCourse':
-          dataDrivenForm.selectedContent = 'courseFormConfigurations'
+          req.subType = 'course'
           break
         case 'CreateCollection':
-          dataDrivenForm.selectedContent = 'collectionFormConfigurations'
+          req.subType = 'collection'
           break
         case 'CreateLesson':
-          dataDrivenForm.selectedContent = 'lessonFormConfigurations'
+          req.subType = 'resource'
           break
         case 'CreateLessonPlan':
-          dataDrivenForm.selectedContent = 'lessonPlanFormConfigurations'
+          req.subType = 'lessonplan'
           break
         }
-        var selectedForm = config.FILTER.RESOURCES[dataDrivenForm.selectedContent]
-        dataDrivenForm.Template = selectedForm.templateName
-        // console.log("dataDrivenForm.Template",dataDrivenForm.Template)
-        dataDrivenForm.formFieldProperties = selectedForm.fields
-        // console.log("dataDrivenForm.formFieldProperties",dataDrivenForm.formFieldProperties)
-        // console.log("dataDrivenForm.years",dataDrivenForm.years)
-        dataDrivenForm.formFieldProperties.sort(function (a, b) {
-          return a.index - b.index
-        })
-        // _.forEach(dataDrivenForm.formFieldProperties, function (category) {
-        //   console.log("category.range", category.range)
-        //   if (category.inputType === 'Term' || category.inputType === 'Select' || category.inputType === 'Year')
-        //     dataDrivenForm.dropdownId.push(category)
-        // })
-        // setTimeout(function() {
-        //   _.forEach(dataDrivenForm.dropdownId, function (dropdown) {
-        //     var id = '#' + dropdown.code
-        //     $(id).dropdown();
-        //   })
-        // }, 0)
 
         searchService.getChannel().then(function (res) {
           if (res.responseCode === 'OK') {
             dataDrivenForm.version = res.ver
             dataDrivenForm.framework = null
-            dataDrivenForm.framework = _.find(res.result.channel.suggested_frameworks, function (framework) {
-              return framework.identifier === res.result.channel.defaultFramework
-            }).identifier
+            dataDrivenForm.framework = res.result.channel.defaultFramework
             // console.log("dataDrivenForm.framework", dataDrivenForm.framework)
             searchService.getFramework(dataDrivenForm.framework).then(function (res) {
               if (res.responseCode === 'OK') {
                 dataDrivenForm.frameworkData = res.result.framework.categories
                 var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-                _.forEach(categoryMasterList, function (category) {
-                  _.forEach(dataDrivenForm.formFieldProperties, function (formFieldCategory) {
-                    if (formFieldCategory.code === 'year') {
-                      formFieldCategory.range = dataDrivenForm.years
-                    }
-                    if (formFieldCategory.validation) {
-                      _.forEach(formFieldCategory.validation, function (value, key) {
-                        if (value.type === 'regex') {
-                          value.value = new RegExp(value.value)
-                        }
-                        formFieldCategory.validation[value.type] = value
-                      })
-                    }
-                    if (category.code === formFieldCategory.code) {
-                      formFieldCategory.range = category.terms
-                    }
-                    return formFieldCategory
+                req.framework = dataDrivenForm.framework
+                searchService.getDataDrivenFormsConfig(req).then(function (res) {
+                  dataDrivenForm.formFieldProperties = res.result.form.data.fields
+                  _.forEach(categoryMasterList, function (category) {
+                    _.forEach(dataDrivenForm.formFieldProperties, function (formFieldCategory) {
+                      if (formFieldCategory.code === 'year') {
+                        formFieldCategory.range = dataDrivenForm.years
+                      }
+                      if (formFieldCategory.validation) {
+                        _.forEach(formFieldCategory.validation, function (value, key) {
+                          if (value.type === 'regex') {
+                            value.value = new RegExp(value.value)
+                          }
+                          formFieldCategory.validation[value.type] = value
+                        })
+                      }
+                      if (category.code === formFieldCategory.code) {
+                        formFieldCategory.range = category.terms
+                      }
+                      return formFieldCategory
+                    })
                   })
+                  var DROPDOWN_INPUT_TYPES = ['select', 'multiSelect']
+                  $timeout(function () {
+                    _.forEach(dataDrivenForm.formFieldProperties, function (field) {
+                      if (_.includes(DROPDOWN_INPUT_TYPES, field.inputType)) {
+                        $('#' + field.code).dropdown('set selected', dataDrivenForm.frameworkData[field.code])
+                        if (field.depends && field.depends.length) {
+                          dataDrivenForm.getAssociations(dataDrivenForm.frameworkData[field.code],
+                            field.range, function (associations) {
+                              dataDrivenForm.applayDependencyRules(field, associations, false)
+                              dataDrivenForm.loader.showLoader = false
+                            })
+                        }
+                      }
+                    })
+                    dataDrivenForm.configureDropdowns(false, false)
+                  }, 0)
+                  dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties)
+                }).catch(function (error) {
+                  console.log('error is ......', error)
                 })
                 dataDrivenForm.loader.showLoader = false
                 // console.log("dataDrivenForm.formFieldProperties", dataDrivenForm.formFieldProperties)
-                var DROPDOWN_INPUT_TYPES = ['select', 'multiSelect']
-                $timeout(function () {
-                  _.forEach(dataDrivenForm.formFieldProperties, function (field) {
-                    if (_.includes(DROPDOWN_INPUT_TYPES, field.inputType)) {
-                      $('#' + field.code).dropdown('set selected', dataDrivenForm.frameworkData[field.code])
-                      if (field.depends && field.depends.length) {
-                        dataDrivenForm.getAssociations(dataDrivenForm.frameworkData[field.code],
-                          field.range, function (associations) {
-                            dataDrivenForm.applayDependencyRules(field, associations, false)
-                          })
-                      }
-                    }
-                  })
-                  dataDrivenForm.configureDropdowns(false, false)
-                }, 0)
-                dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties)
               }
             }).catch(function (error) {
               console.log('error is ......', error)

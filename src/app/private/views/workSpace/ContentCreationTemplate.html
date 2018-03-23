@@ -10,6 +10,9 @@
                         </div>
                     </div>
                 </div>
+                <div class=" ui segment margin-top-10" ng-if="dataDrivenForm.loader.showLoader">
+                        <app-loader data="{{course.loader}}"></app-loader>
+                    </div>
         <div class="actions">
                 <p class="text-align-center padding-top-20">
                     <button class="ui primary text-align-center icon button" ng-click="dataDrivenForm.saveMetaData(dataDrivenForm.data)" ng-disabled="dataDrivenForm.loader.showLoader">
