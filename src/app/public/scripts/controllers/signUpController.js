@@ -56,7 +56,6 @@ angular.module('loginApp')
         })
       }
       newUser.dropdown = function () {
-        console.log('here')
         $('#headerSearchtab')
           .dropdown()
         $('#headerSearchmob')
