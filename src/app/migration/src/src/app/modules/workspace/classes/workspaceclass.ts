@@ -1,7 +1,7 @@
 import { WorkSpaceService } from './../services/work-space.service';
 import { SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
-
+import * as _ from 'lodash';
 /**
  * Base class for workspace module
  */
@@ -16,18 +16,10 @@ export class Workspaceclass {
     constructor(public searchService: SearchService, public workSpaceService: WorkSpaceService ) {
     }
 
-    search(pageNumber, pageLimit) {
+    search(searchParams) {
         /**
         * Search Api call
          */
-        const searchParams = {
-            status: ['Draft'],
-            contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
-            mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
-            pageNumber: pageNumber,
-            limit: pageLimit,
-            params: { lastUpdatedOn: 'desc' }
-        };
         return this.searchService.searchContentByUserId(searchParams);
 
     }

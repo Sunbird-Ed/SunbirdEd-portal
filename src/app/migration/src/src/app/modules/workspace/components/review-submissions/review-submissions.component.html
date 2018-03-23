@@ -6,17 +6,18 @@
 <div class="ui grid">
   <div class="twelve wide column">
     <div class="ui three stackable cards">
-      <div *ngFor="let content of drafList">
-       <app-content-card [content]="content" (clickEvent)="deleteDraft($event)" ></app-content-card>
+      <div *ngFor="let content of reviewContent">
+       <app-content-card [content]="content" (actionClick)="actionClick($event)" ></app-content-card>
       </div>
     </div>
   </div>
 </div>
+
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="nine wide column padding-top-none">
-    <div class="padding-bottom-10" *ngIf="drafList && drafList.length > 0 && !showLoader">
-      <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
+    <div class="padding-bottom-10" *ngIf="reviewContent && reviewContent.length > 0 && !showLoader">
+      <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length>1">
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
         <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
@@ -27,14 +28,3 @@
   </div>
   <div class="one wide column"></div>
 </div>
-
-<ng-template let-context let-modal="modal" #modalTemplate>
-    <div class="header">Delete Content</div>
-    <div class="content">
-        <p>{{ context.data }}</p>
-    </div>
-    <div class="actions">
-        <button class="ui red button" (click)="modal.deny('denied')">No</button>
-        <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
-    </div>
-</ng-template>

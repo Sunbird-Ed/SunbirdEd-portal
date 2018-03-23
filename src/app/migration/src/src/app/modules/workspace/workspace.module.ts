@@ -10,6 +10,7 @@ import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WorkSpaceService } from './services';
+import { ReviewSubmissionsComponent } from './components/review-submissions/review-submissions.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,7 +19,7 @@ import { WorkSpaceService } from './services';
     SuiModule,
     FormsModule
   ],
-  declarations: [WorkspaceComponent, WorkspacesidebarComponent, CreateContentComponent, DraftComponent],
+  declarations: [WorkspaceComponent, WorkspacesidebarComponent, CreateContentComponent, DraftComponent, ReviewSubmissionsComponent],
    providers: [WorkSpaceService]
 })
 export class WorkspaceModule { }

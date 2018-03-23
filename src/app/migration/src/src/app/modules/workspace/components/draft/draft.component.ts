@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workspaceclass } from '../../classes/workspaceclass';
-import { SearchService } from '@sunbird/core';
+import { SearchService , UserService} from '@sunbird/core';
 import { ServerResponse, PaginationService } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -55,6 +55,11 @@ export class DraftComponent extends Workspaceclass implements OnInit {
     private paginationService: PaginationService;
 
     /**
+      * Refrence of UserService
+    */
+    private userService: UserService;
+
+    /**
        * Contains page limit of inbox list
     */
     pageLimit = 9;
@@ -74,6 +79,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
       * Constructor to create injected service(s) object
       Default method of Draft Component class
       * @param {SearchService} SearchService Reference of SearchService
+      * @param {UserService} UserService Reference of UserService
       * @param {Router} route Reference of Router
       * @param {PaginationService} paginationService Reference of PaginationService
       * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
@@ -82,11 +88,12 @@ export class DraftComponent extends Workspaceclass implements OnInit {
         public workSpaceService: WorkSpaceService,
         paginationService: PaginationService,
         activatedRoute: ActivatedRoute,
-        route: Router) {
+        route: Router, userService: UserService) {
         super(searchService, workSpaceService);
         this.paginationService = paginationService;
         this.route = route;
         this.activatedRoute = activatedRoute;
+        this.userService = userService;
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -98,7 +105,16 @@ export class DraftComponent extends Workspaceclass implements OnInit {
      * This method sets the make an api call to get all drafts with page No and offset
      */
     fetchDrafts() {
-        this.search(this.pageNumber, this.pageLimit).subscribe(
+        const searchParams = {
+            status: ['Draft'],
+            contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
+            mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
+            pageNumber: this.pageNumber,
+            limit: this.pageLimit,
+            userId: this.userService._userid,
+            params: { lastUpdatedOn: 'desc' }
+        };
+        this.search(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content) {
                     this.drafList = data.result.content;
@@ -124,7 +140,6 @@ export class DraftComponent extends Workspaceclass implements OnInit {
         );
     }
     deleteDraft(param) {
-        console.log(param);
         if (param.type === 'delete') {
             this.deleteConfirmModal(param.contentId);
         }

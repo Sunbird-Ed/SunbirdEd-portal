@@ -70,6 +70,14 @@ describe('DraftComponent', () => {
       fixture.detectChanges();
     }));
 
+    // if  search api's throw's error
+   it('should throw error', inject([SearchService], (searchService) => {
+     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.throw({}));
+     component.fetchDrafts();
+     fixture.detectChanges();
+     expect(component.drafList.length).toBeLessThanOrEqual(0);
+     expect(component.drafList.length).toEqual(0);
+   }));
 });
 
 

@@ -62,10 +62,11 @@ export class SearchService {
         request: {
           filters: {
             status: requestParam.status || ['Live'],
-            // createdBy: 'd882967f-b3e1-456b-b984-d800470837ab',
+            //createdBy: 'd882967f-b3e1-456b-b984-d800470837ab',
             createdBy: requestParam.params.userId ? requestParam.params.userId : this.user.userid,
             contentType: requestParam.contentType || ['Course'],
             mimeType: requestParam.mimeType,
+            objectType: requestParam.objectType
           },
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
