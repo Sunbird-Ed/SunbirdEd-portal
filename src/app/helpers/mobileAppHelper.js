@@ -1,17 +1,17 @@
-const envHelper = require('./environmentVariablesHelper.js')
-const publicUri = '/public/#!'
+var envHelper = require('./environmentVariablesHelper.js')
+var publicUri = '/public/#!'
 
 module.exports = function (app) {
-  app.all('/get', function (req, res) {
-    const redirectUrl = publicUri + req.path
+  app.all(['*/get', '/get'], function (req, res) {
+    var redirectUrl = publicUri + '/get'
     res.redirect(redirectUrl)
   })
-  app.all('/get/dial/**', function (req, res) {
-    const redirectUrl = publicUri + req.path
+  app.all(['*/get/dial/:dialCode', '/get/dial/:dialCode'], function (req, res) {
+    var redirectUrl = publicUri + '/get/dial/' + req.params.dialCode
     res.redirect(redirectUrl)
   })
   app.all('/app', function (req, res) {
-    const redirectUrl = envHelper.MOBILE_APP_URL
+    var redirectUrl = envHelper.MOBILE_APP_URL
     res.redirect(redirectUrl)
   })
 }
