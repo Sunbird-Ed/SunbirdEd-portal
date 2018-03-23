@@ -781,6 +781,7 @@ th {
   font-size: 1em;
   border-radius: 0;
 }
+
 .sliderCards.ui.card {
   max-width: 100%;
   position: relative;
@@ -911,8 +912,8 @@ i.large.icon.limitedPublishingLinkIcon {
   font-size: 24px;
   z-index: 3;
   transition: .3s;
-  height: 40px;
-  width: 40px;
+  height: 47px;
+  width: 47px;
   padding: 10px 10px;
   border-radius: 50%;
   background: #ffffff;
@@ -928,7 +929,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png);
+  content: url(./assets/common/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -938,7 +939,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png);
+  content: url(./assets/common/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;

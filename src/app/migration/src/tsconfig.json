@@ -21,6 +21,12 @@
       ],
       "@sunbird/announcement": [
         "app/modules/announcement"
+      ],
+      "@sunbird/resource": [
+        "app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "app/modules/learn"
       ]
     },
     "sourceMap": true,
