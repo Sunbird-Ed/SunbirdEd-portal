@@ -63,7 +63,6 @@ angular.module('loginApp')
           .dropdown()
       }
       newUser.showModal = function () {
-        console.log('here')
         newUser.firstName = ''
         newUser.lastName = ''
         newUser.password = ''

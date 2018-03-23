@@ -31,12 +31,12 @@
           }
         }
         dialctrl.playContent = function (item) {
-          var params = { id: item.identifier}
+          var params = { id: item.identifier }
           $state.go('PublicContent', params)
         }
 
         dialctrl.openCourseView = function (course) {
-          var params = { courseId: course.identifier}
+          var params = { courseId: course.identifier }
           $state.go('PublicCourse', params)
         }
         contentService.search(req).then((res) => {
@@ -51,6 +51,7 @@
           }
           dialctrl.loader.showLoader = false
         }, function (err) {
+          dialctrl.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0049)
         })
       }
@@ -59,8 +60,6 @@
         dialctrl.dialcode = $state.params.dialcode
         if (dialctrl.dialcode) {
           dialctrl.compositeSearch(dialctrl.dialcode)
-        } else {
-          // show message
         }
       }
       dialctrl.init()
