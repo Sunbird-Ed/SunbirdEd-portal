@@ -12,6 +12,7 @@ import { HomeModule } from '@sunbird/home';
 import { DashboardModule } from '@sunbird/dashboard';
 import { AnnouncementModule } from '@sunbird/announcement';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { OrgManagementModule } from './modules/org-management/org-management.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     HomeModule,
     DashboardModule,
     AnnouncementModule,
-    Ng2IziToastModule
+    Ng2IziToastModule,
+    OrgManagementModule
   ],
   providers: [],
   entryComponents: [AppComponent],
