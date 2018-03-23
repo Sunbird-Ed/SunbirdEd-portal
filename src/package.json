@@ -90,6 +90,7 @@
   },
   "scripts": {
     "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
+    "test-discussions": "mocha 'test/discussions/**/*.js' --reporter mochawesome",
     "lint": "eslint --ignore-path .eslintignore .",
     "preinstall": "npm install ./app/thirdparty/libs/sb_api_interceptor && npm install ./app/thirdparty/libs/sb_cache_manager  && npm install ./app/thirdparty/libs/sb_telemetry_util",
     "validate": "npm ls",
