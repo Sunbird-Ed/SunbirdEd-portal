@@ -292,7 +292,7 @@ var paths = {
     'dist/private/scripts/directives/badge/contentBadgeDirective.js',
     'dist/private/scripts/directives/badge/profileBadgeDirective.js',
     'dist/private/scripts/controllers/badge/contentBadgeController.js',
-    'dist/private/scripts/services/badgeService.js'
+    'dist/private/scripts/services/badgeService.js',
     'dist/private/scripts/controllers/workspace/DataDrivenFormController.js'
   ],
   telemetry_js: [
