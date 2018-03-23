@@ -14,10 +14,10 @@ angular.module('loginApp')
           }
         },
         onEnter: function ($window, $rootScope) {
-          $rootScope.dailCodeBackground = true
+          $rootScope.getPageBackground = true
         },
         onExit: function ($rootScope) {
-          $rootScope.dailCodeBackground = false
+          $rootScope.getPageBackground = false
         }
       })
       .state('dialCode', {
@@ -29,10 +29,10 @@ angular.module('loginApp')
           }
         },
         onEnter: function ($window, $rootScope) {
-          $rootScope.dailCodeBackground = true
+          $rootScope.dailCodePageBackground = true
         },
         onExit: function ($rootScope) {
-          $rootScope.dailCodeBackground = false
+          $rootScope.dailCodePageBackground = false
         }
       })
       .state('Landing', {

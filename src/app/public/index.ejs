@@ -23,8 +23,9 @@
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
-        <div ng-class="{'dailcode-background' : $root.dailCodeBackground === true }"
-        class="twelve wide column">
+        <div ng-class="{'dailcodePage-background' : $root.dailCodePageBackground === true,
+         'getPage-background' :  $root.getPageBackground}"
+        class="twelve wide column menu-public-header">
             <div ui-view="mainView">
             </div>
         </div> 

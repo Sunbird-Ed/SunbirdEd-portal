@@ -2876,6 +2876,7 @@ html {
     bottom: 0;
     width: 100%;
     background-color: white;
+    z-index: 989898;
 }
 
 .bars.icon.tablet.sunbird-hamburger-menu {
@@ -2888,11 +2889,14 @@ html {
     transition: opacity .1s ease;
 }
 
-.dailcode-background {
+.getPage-background {
   background: linear-gradient(-90deg, #5C8DB7, #91AECC);
   height: 100vh;
 }
-
+.dailcodePage-background {
+  background: #f9f9f9;
+  height: 100vh;
+}
 .bars.icon.mobile.sunbird-hamburger-menu {
     cursor: pointer;
     position: absolute;
@@ -2904,7 +2908,9 @@ html {
 .dial-section-header {
   margin-top: 3em;
 }
-
+.dail-section-meta {
+  color: white;
+}
 .ui.header.dial-section-header-text {
   color:#fff;
 }
@@ -2926,7 +2932,7 @@ html {
 
 @media screen and  (min-width: 320px) and (max-width: 768px) {
   .ui.header.dial-section-header-text {
-    padding-top: 2em;
+    padding-top: 4em !important;
   }
 }
 
@@ -2949,4 +2955,7 @@ html {
   .ui.small.header.popUp-dial-code-header {
     font-size: 1.2em;
   }
+}
+.menu-public-header{
+  border-top: 2px solid rgba(0,0,0,.13);
 }
