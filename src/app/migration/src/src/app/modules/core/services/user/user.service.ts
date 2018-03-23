@@ -16,9 +16,13 @@ export class UserService {
    */
   public _userid: string;
   /**
+   * Contains root org id
+   */
+  public _rootOrgId: string;
+  /**
    * Contains user profile.
    */
-  private userProfile: UserProfile;
+  private _userProfile: UserProfile;
   /**
    * BehaviorSubject Containing user profile.
    */
@@ -49,6 +53,9 @@ export class UserService {
    */
   get userid(): string {
     try {
+      if (this._userid) {
+        return this._userid;
+      }
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._userid = this._userid === '<%=userId%>' ? 'userId' : this._userid;
     } catch (e) {
@@ -69,7 +76,7 @@ export class UserService {
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
-        this._userData$.next({ err: err, userProfile: this.userProfile });
+        this._userData$.next({ err: err, userProfile: this._userProfile });
       }
     );
   }
@@ -99,13 +106,25 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
+        if ( profileData.rootOrgId ) {
+          organisationIds.push(profileData.rootOrgId);
+        }
       });
     }
     organisationIds = _.uniq(organisationIds);
-    this.userProfile = profileData;
-    this.userProfile.userRoles = userRoles;
-    this.userProfile.orgRoleMap = orgRoleMap;
-    this.userProfile.organisationIds = organisationIds;
-    this._userData$.next({ err: null, userProfile: this.userProfile });
+    this._userProfile = profileData;
+    this._userProfile.userRoles = userRoles;
+    this._userProfile.orgRoleMap = orgRoleMap;
+    this._userProfile.organisationIds = organisationIds;
+    this._userid = this._userProfile.userId;
+    this._rootOrgId = this._userProfile.rootOrgId;
+    this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  get userProfile() {
+    return _.cloneDeep(this._userProfile);
+  }
+
+  get rootOrgId() {
+    return this._rootOrgId;
   }
 }

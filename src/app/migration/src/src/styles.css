@@ -1,6 +1,6 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
-@import  "../node_modules/slick-carousel/slick/slick-theme.css";
-
+@import "../node_modules/slick-carousel/slick/slick-theme.css";
+@import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -1017,12 +1017,12 @@ i.large.icon.limitedPublishingLinkIcon {
   line-height: 0 ;
 }
 .field > label {
-  color: #fdfdfd;
+  color: #333333;
   font-weight: bold;
   line-height: 14px;
 }
 .inline.fields > label {
-  color: #fdfdfd;
+  color: #333333;
 }
 .ui.modal .ui.radio.checkbox .box,
 .ui.radio.checkbox label {
@@ -2797,9 +2797,9 @@ ol.ui.list ol li:before {
   font-family: 'sunbirdboldfont';
   font-size: smaller;
 }
-.ui.modal .announcementForm input.ng-invalid {
+/* .ui.modal .announcementForm input.ng-dirty.ng-invalid {
   border-color: red !important;
-}
+} */
 .ui.modal .dropdown-margin-left .ui.dropdown > .text {
   margin-left: -1em !important;
 }
