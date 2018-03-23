@@ -5,7 +5,7 @@
                         <app-loader data="{{dataDrivenForm.loader}}"></app-loader>
                 </div> -->
             <div  class="ui grid">
-                    <div class="{{field.renderingHints.width}} wide column" ng-repeat="field in dataDrivenForm.formFieldProperties">
+                    <div class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" ng-repeat="field in dataDrivenForm.formFieldProperties">
                         <div ng-include="'views/workSpace/defaultTemplate.html'">
                         </div>
                     </div>
