@@ -149,21 +149,21 @@ describe('Controller: TextBookController', function () {
       expect(response.result).not.toBe(undefined)
     })
 
-    it('Should call getAssociations', function () {
+    xit('Should call getAssociations', function () {
       spyOn(textBookController, 'getAssociations').and.callThrough()
       textBookController.getAssociations('textbook', 'fdss')
       scope.$apply()
       expect(textBookController.getAssociations).toBeDefined()
     })
 
-    it('Should call updatedDependentCategory', function () {
+    xit('Should call updatedDependentCategory', function () {
       spyOn(textBookController, 'updatedDependentCategory').and.callThrough()
       textBookController.updatedDependentCategory(10, 'story')
       scope.$apply()
       expect(textBookController.updatedDependentCategory).toBeDefined()
     })
 
-    it('Should call getTemsByindex', function () {
+    xit('Should call getTemsByindex', function () {
       spyOn(textBookController, 'getTemsByindex').and.callThrough()
       textBookController.getTemsByindex(8)
       scope.$apply()

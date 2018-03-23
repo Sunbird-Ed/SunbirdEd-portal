@@ -92,21 +92,6 @@ angular.module('playerApp')
             ver: '1.0',
             type: 'plugin'
           })
-          window.config.nodeDisplayCriteria = {
-            contentType: ['TextBook', 'TextBookUnit']
-          }
-        } else if (data.type.toLowerCase() === 'course') {
-          window.config.nodeDisplayCriteria = {
-            contentType: ['Course', 'CourseUnit']
-          }
-        } else if (data.type.toLowerCase() === 'lessonplan') {
-          window.config.nodeDisplayCriteria = {
-            contentType: ['LessonPlan', 'LessonPlanUnit']
-          }
-        } else {
-          window.config.nodeDisplayCriteria = {
-            contentType: ['Collection']
-          }
         }
         window.config.editorConfig.publishMode = false
         window.config.editorConfig.isFalgReviewer = false
@@ -146,8 +131,7 @@ angular.module('playerApp')
               }, 100)
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
-              $state.go(previousState.name, previousState.params)
+              $state.go('Home')
             }
           }
         })

@@ -483,7 +483,7 @@ angular.module('playerApp')
         }
       })
       .state('ContentEditor', {
-        url: '/content/editor/:contentId/:state',
+        url: '/content/editor/:contentId/:state/:framework',
         views: {
           mainView: {
             templateUrl: 'views/common/contentEditor.html',
@@ -492,7 +492,8 @@ angular.module('playerApp')
         },
         params: {
           contentId: null,
-          state: null
+          state: null,
+          framework: null
         },
         onEnter: function ($state, $rootScope, $stateParams) {
           $rootScope.profileActive = 'active'
