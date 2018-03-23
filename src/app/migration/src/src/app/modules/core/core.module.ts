@@ -6,7 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, AdminService
+  BadgesService, ContentService, CoursesService, OrgManagementService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent , SearchComponent
@@ -24,7 +24,7 @@ import {
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
     LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, AdminService ]
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, OrgManagementService ]
 })
 export class CoreModule {
 }
