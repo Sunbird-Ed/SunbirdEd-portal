@@ -33,9 +33,7 @@ let envVariables = {
   CACHE_STORE: env.sunbird_cache_store || 'memory',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   MOBILE_REDIRECT_URL: env.mobile_redirect_url || 'http://www.sunbird.org',
-  CONTENT_CHANNEL_FILTER_TYPE: env.sunbird_content_channel_filter_type || 'all',
-  learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
-  content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:9000'
+  CONTENT_CHANNEL_FILTER_TYPE: env.sunbird_content_channel_filter_type || 'all'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
