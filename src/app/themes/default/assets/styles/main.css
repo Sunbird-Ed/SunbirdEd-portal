@@ -2834,9 +2834,6 @@ ol.ui.list ol li:before {
 .ui.modal .announcementForm input.ng-invalid {
   border-color: red !important;
 }
-.ui.modal .dropdown-margin-left .ui.dropdown > .text {
-  color: #cdcccc;
-}
 .ui.dropdown:not(.button) > .default.text {
   color: #cdcccc;
 }
