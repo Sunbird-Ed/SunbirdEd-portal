@@ -7,7 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import { AuthGuard } from './guard/auth-gard.service';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService
+  BadgesService, ContentService, CoursesService, PageApiService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
@@ -25,7 +25,7 @@ import {
   exports: [MainHeaderComponent],
   providers: [
     LearnerService, UserService, AuthGuard,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService]
+    PermissionService, AuthGuard, AnnouncementService, BadgesService, ContentService, CoursesService]
 })
 export class CoreModule {
 }

@@ -24,6 +24,12 @@
       ],
       "@sunbird/workspace": [
         "app/modules/workspace"
+      ],  
+      "@sunbird/resource": [
+        "app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "app/modules/learn"
       ]
     },
     "module": "es2015",

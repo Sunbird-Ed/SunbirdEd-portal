@@ -13,6 +13,9 @@ import { DashboardModule } from '@sunbird/dashboard';
 import { AnnouncementModule } from '@sunbird/announcement';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { ResourceModule } from '@sunbird/resource';
+import { LearnModule } from '@sunbird/learn';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
     DashboardModule,
     AnnouncementModule,
     WorkspaceModule,
-    Ng2IziToastModule
+    Ng2IziToastModule,
+    ResourceModule,
+    LearnModule
   ],
   providers: [],
   entryComponents: [AppComponent],

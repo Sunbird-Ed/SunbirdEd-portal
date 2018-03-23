@@ -1,0 +1,14 @@
+<br>
+<br>
+<div class=" ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div *ngFor="let section of caraouselData">
+      <app-page-section [section]="section"></app-page-section>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+        <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
