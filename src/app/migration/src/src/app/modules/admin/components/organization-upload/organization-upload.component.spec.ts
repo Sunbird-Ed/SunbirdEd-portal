@@ -86,10 +86,6 @@ describe('OrganizationUploadComponent', () => {
       // component.showLoader = false;
       var modifiedDate = new Date();
       var file = new File([], 'orgSample001.csv');
-      console.log('file', mockFileInput, file);
-      // component.uploadOrg(file);
-      console.log('here');
-      // expect(component.showLoader).toBe(true);
       spyOn(component, 'uploadOrg').and.callThrough();
       spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
       component.uploadOrg(mockFileInput);

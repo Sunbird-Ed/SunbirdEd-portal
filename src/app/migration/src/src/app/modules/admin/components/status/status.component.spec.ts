@@ -41,11 +41,13 @@ describe('StatusComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should call redirect', () => {
+  it('should call redirect', inject([Router], (router) => {
+    spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    expect(component.redirect).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['admin/bulkUpload']);
+  }));
   it('should call organization management service and get failure or success status based on given processId', inject([OrgManagementService,
     ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {
       spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.successResponse));
@@ -68,13 +70,25 @@ describe('StatusComponent', () => {
       component.getBulkUploadStatus('12134');
       spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
       spyOn(component, 'getBulkUploadStatus').and.callThrough();
+      spyOn(resourceService, 'getResource').and.callThrough();
+      spyOn(toasterService, 'error').and.callThrough();
+      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      http.get().subscribe(
+        data => {
+          resourceService.messages = data.messages;
+        }
+      );
       const processId = '123456';
       component.getBulkUploadStatus(processId);
       orgManagementService.bulkUploadStatus(processId).subscribe(
         apiResponse => {
-          expect(apiResponse.responseCode).toBe('RESOURCE_NOT_FOUND');
-          spyOn(toasterService, 'error').and.callThrough();
-          // expect(component.showLoader).toBe(false);
+          console.log('correct');
+        },
+        err => {
+          console.log('here');
+          expect(component.showLoader).toBe(false);
+          expect(err.params.status).toBe('INVALID_PROCESS_ID');
+          expect(err.error.responseCode).toBe('RESOURCE_NOT_FOUND');
         }
       )
       spyOn(resourceService, 'getResource').and.callThrough();

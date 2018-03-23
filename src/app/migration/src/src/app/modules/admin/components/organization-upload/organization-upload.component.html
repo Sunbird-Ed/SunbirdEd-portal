@@ -62,11 +62,11 @@
       </div>
       <div class="four wide column">
         <div>
-          <label class="ui primary right floated button" for="uploadorgscsv">
+          <button [disabled]="processId" class="ui primary right floated button"(click)="openImageBrowser(inputbtn)">
             {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
-          </label>
+          </button>
         </div>
-        <input [disabled]="processId" type="file" style='display:none' accept=".csv" id="uploadorgscsv" (change)="uploadOrg($event.target.files)" autofocus required=""
+        <input #inputbtn type="file" style='display:none' accept=".csv" id="uploadorgscsv" (change)="uploadOrg($event.target.files)" autofocus required=""
         />
       </div>
     </div>

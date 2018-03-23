@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -40,4 +40,38 @@ describe('UserComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should call redirect', inject([Router], (router) => {
+    spyOn(component, 'redirect').and.callThrough();
+    component.redirect();
+    fixture.detectChanges();
+    expect(component.redirect).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['admin/bulkUpload']);
+  }));
+  xit('should call downloadSample method to download a csv file', () => {
+    spyOn(component, 'downloadSample').and.callThrough();
+    component.downloadSample();
+    fixture.detectChanges();
+    expect(component.downloadSample).toHaveBeenCalled();
+  });
+  it('should call openImageBrowser method', () => {
+    component.uploadUserForm.value.provider = 1234;
+    component.uploadUserForm.value.externalId = 5678;
+    component.uploadUserForm.value.organizationId = 98765;
+    component.openImageBrowser('user');
+    fixture.detectChanges();
+    spyOn(component, 'openImageBrowser').and.callThrough();
+  });
+  it('should not call openImageBrowser method', () => {
+    spyOn(component, 'openImageBrowser').and.callThrough();
+    component.openImageBrowser('user');
+    fixture.detectChanges();
+    expect(component.bulkUploadError).toBe(true);
+  });
+  it('should call closeBulkUploadError method', () => {
+    spyOn(component, 'closeBulkUploadError').and.callThrough();
+    expect(component.closeBulkUploadError).toHaveBeenCalled();
+    expect(component.showLoader).toBe(false);
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  })
 });

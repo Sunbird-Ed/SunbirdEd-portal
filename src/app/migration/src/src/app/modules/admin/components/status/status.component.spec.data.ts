@@ -122,5 +122,8 @@ export const mockRes = {
         "responseCode": "RESOURCE_NOT_FOUND",
         "result": {
         }
+    },
+    resourceBundle: {
+        
     }
 }

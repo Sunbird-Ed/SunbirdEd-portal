@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Route, Router } from '@angular/router';
 import { OrgManagementService } from '@sunbird/core';
@@ -10,6 +10,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
   styleUrls: ['./organization-upload.component.css']
 })
 export class OrganizationUploadComponent implements OnInit {
+  @ViewChild('inputbtn') inputbtn: ElementRef;
   showLoader = false;
   /**
    * To call resource service which helps to use language constant
@@ -86,6 +87,10 @@ export class OrganizationUploadComponent implements OnInit {
     };
     // tslint:disable-next-line:no-unused-expression
     new Angular2Csv(this.sampleOrgCSV, 'Sample_Organizations', options);
+  }
+  openImageBrowser(inputbtn) {
+    console.log('inside openImageBrowser');
+    inputbtn.click();
   }
   uploadOrg(file) {
     if (file[0]) {
