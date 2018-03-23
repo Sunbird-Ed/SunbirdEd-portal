@@ -20,6 +20,7 @@ const publicServicehelper = require('./helpers/publicServiceHelper.js')
 const userHelper = require('./helpers/userHelper.js')
 const resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
+const healthService = require('./helpers/healthCheckService.js')
 const fs = require('fs')
 const port = envHelper.PORTAL_PORT
 const learnerURL = envHelper.LEARNER_URL
@@ -152,8 +153,8 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
 }))
 
 // Generate telemetry fot public service
-app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
-
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -188,6 +189,9 @@ app.all('/private/service/v1/learner/*',
       }
     }
   }))
+
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 
 app.all('/private/service/v1/content/*',
   proxyUtils.verifyToken(),
@@ -235,6 +239,9 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+// healthcheck
+app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName

@@ -132,7 +132,7 @@ angular.module('playerApp')
           edata: telemetryService.impressionEventData('view', 'scroll', pageId, uri),
           context: telemetryService.getContextData(contextData),
           object: telemetryService.getObjectData(objectData),
-          tags: $rootScope.organisationIds
+          tags: _.concat([], org.sunbird.portal.channel)
         }
         telemetryService.impression(data)
       }

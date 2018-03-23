@@ -177,11 +177,16 @@ angular.module('playerApp')
       this.getFramework = function (id) {
         return restfulContentService.get(config.URL.FRAMEWORK.READ + '/' + id)
       }
+      this.getDataDrivenFormsConfig = function (req) {
+        req.rootOrgId = org.sunbird.portal.channel
+        return restfulContentService.post(config.URL.dataDrivenForms.READ, req)
+      }
 
       this.updateReqForChannelFilter = function (req) {
         if ($rootScope.content_channel_filter_type && $rootScope.content_channel_filter_type.toLowerCase() === 'self') {
+          req = req || {}
           req.filters = req.filters || {}
-          req.filters.channel = org.sunbird.portal.channel
+          req.filters.channel = _.concat([], org.sunbird.portal.channel)
         }
         return req
       }

@@ -66,16 +66,15 @@ angular.module('playerApp')
         })
       }
 
-      contentLesson.saveMetaData = function (data) {
+      contentLesson.saveMetaData = function (data, framework) {
+        contentLesson.framework = framework
         contentLesson.loader = toasterService.loader('', $rootScope.messages.stmsg.m0013)
-
         var requestBody = angular.copy(data)
-
         requestBody.mimeType = config.CreateLessonMimeType
         requestBody.createdBy = contentLesson.userId
-
         requestBody.name = requestBody.name ? requestBody.name : 'Untitled lesson'
         requestBody.contentType = requestBody.contentType ? requestBody.contentType : 'Resource'
+        requestBody.framework = contentLesson.framework
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }
@@ -91,11 +90,20 @@ angular.module('playerApp')
       }
 
       contentLesson.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId }
+        var params = { contentId: contentId, framework: contentLesson.framework }
         $state.go('ContentEditor', params)
       }
       $scope.$on('selectedConcepts', function (event, args) {
         contentLesson.data.concepts = args.selectedConcepts
+      })
+
+      var CreateLessonFromDataDrivenForm = $rootScope.$on('CreateLesson',
+        function (event, args) {
+          contentLesson.saveMetaData(args.Data, args.framework)
+        })
+
+      $scope.$on('$destroy', function () {
+        CreateLessonFromDataDrivenForm()
       })
     }
   ])
