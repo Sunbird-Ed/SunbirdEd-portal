@@ -26,8 +26,8 @@ var hcMessages = {
     FAILED_CODE: 'CASSANDRA_HEALTH_FAILED',
     FAILED_MESSAGE: 'Cassandra db is not connected'
   },
-  NAME: 'ContentService',
-  API_VERSION: '1.5'
+  NAME: 'PortalHealthCheckService',
+  API_VERSION: '1.0'
 }
 // Function return to get health check object
 function getHealthCheckObj (name, healthy, err, errMsg) {
