@@ -22,7 +22,6 @@ angular.module('playerApp')
      */
       var admin = this
       admin.searchResult = $scope.users
-      admin.badges = adminService.getBadgesList()
       /**
          * @method getOrgName
          * @desc get organizations name
@@ -71,6 +70,7 @@ angular.module('playerApp')
                     .includes('SYSTEM_ADMINISTRATION')
                 }
               }
+              user.badgeAssertions = user.badgeAssertions
               if (user.organisations) {
                 user.organisations.forEach(function (userOrg) {
                   var adminRoles = admin.currentUserRoleMap[userOrg.organisationId]
@@ -264,59 +264,6 @@ angular.module('playerApp')
             admin.selectedOrgUserRoles = organizations[0].roles
             admin.selectedOrgUserId = organizations[0].organisationId
           }, 0)
-        }
-      }
-
-      admin.assignBadgeModal = function (id) {
-        $('#assignBadge').modal({
-          onShow: function () {
-            admin.userIdentifier = id
-            admin.disableAsignButton = false
-            $timeout(function () {
-              $('#badgeDropdown').dropdown()
-            }, 100)
-          },
-          onHide: function () {
-            admin.userIdentifier = ''
-            admin.userBadges = []
-            return true
-          }
-        }).modal('show')
-      }
-
-      admin.assignBadge = function (badge, identifier) {
-        var newBadge = {
-          params: {},
-          request: {
-            badgeTypeId: badge.id,
-            receiverId: identifier
-          }
-        }
-
-        adminService.addBadges(newBadge).then(function (res) {
-          if (res.responseCode === 'OK') {
-            admin.recievedBadge.name = badge.name
-            admin.recievedBadge.userId = identifier
-            admin.newBadgeAssigned = false
-            toasterService.success(badge.name + ' assigned successfully')
-          } else {
-            toasterService.error(res.params.errmsg)
-            admin.disableAsignButton = false
-          }
-        }).catch(function () {
-          admin.disableAsignButton = false
-          toasterService.error('Some thing went wrong. please try again later..')
-        })
-      }
-      admin.getBadgeName = function (user) {
-        user.userBadgeS = []
-        if (user.badges) {
-          user.badges.forEach(function (badge) {
-            var userBadge = admin.badges.find(function (badgE) {
-              return badgE.id === badge.badgeTypeId
-            })
-            user.userBadgeS.push(userBadge)
-          })
         }
       }
       admin.getUserRoles()

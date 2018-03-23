@@ -481,6 +481,12 @@ a:active,
 a:hover {
   outline: none !important;
 }
+.primary-text-color-sunbird {
+  color: #333333 !important;
+}
+.secondary-text-color-sunbird {
+  color: #7c7b7b !important;
+}
 .ui.menu {
   font-family: 'sunbirdregularfont';
   color: #333333;
@@ -2781,6 +2787,16 @@ ol.ui.list ol li:before {
     margin-top: -300px !important;
     position: relative !important;
   }
+}
+.ui.fluid.search.dropdown img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
+.ui.label > img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
 }
 .createAnnHeaderDesc {
   font-size: small;

@@ -265,49 +265,49 @@ describe('Controller: adminController', function () {
     done()
   })
 
-  it('should call assignBadgeModal', function (done) {
-    setFixtures('<div class="ui modal" id="assignBadge"></div>')
-    spyOn(adminCtl, 'assignBadgeModal').and.callThrough()
-    adminCtl.assignBadgeModal(123)
-    expect(adminCtl.assignBadgeModal).toHaveBeenCalled()
-    timeout.flush(100)
-    done()
-  })
+  // it('should call assignBadgeModal', function (done) {
+  //   setFixtures('<div class="ui modal" id="assignBadge"></div>')
+  //   spyOn(adminCtl, 'assignBadgeModal').and.callThrough()
+  //   adminCtl.assignBadgeModal(123)
+  //   expect(adminCtl.assignBadgeModal).toHaveBeenCalled()
+  //   timeout.flush(100)
+  //   done()
+  // })
 
-  it('should assign badge to user', function (done) {
-    spyOn(adminCtl, 'assignBadge').and.callThrough()
-    spyOn(adminService, 'addBadges').and.returnValue(deferred.promise)
-    var res = { responseCode: 'OK' }
-    deferred.resolve(res)
-    adminCtl.recievedBadge = {}
-    adminCtl.assignBadge({ id: 123, name: 'abc' }, 121)
-    adminService.addBadges()
-    scope.$apply()
-    expect(toasterService.success).toHaveBeenCalled()
-    done()
-  })
-  it('should fail to assign badge to user ', function (done) {
-    spyOn(adminCtl, 'assignBadge').and.callThrough()
-    spyOn(adminService, 'addBadges').and.returnValue(deferred.promise)
-    var res = { responseCode: '' }
-    deferred.resolve(res)
-    adminCtl.disableAsignButton = ''
-    adminCtl.recievedBadge = {}
-    adminCtl.assignBadge({ id: 123, name: '' }, 0)
-    adminService.addBadges()
-    scope.$apply()
-    expect(toasterService.error).toHaveBeenCalled()
-    expect(adminCtl.disableAsignButton).toEqual(false)
-    done()
-  })
-  it('should get badge name ', function (done) {
-    spyOn(adminCtl, 'getBadgeName').and.callThrough()
-    adminCtl.badges = [{}, {}]
-    spyOn(Array.prototype, 'find').and.callThrough()
-    adminCtl.getBadgeName({ badges: [{}, {}] })
-    scope.$apply()
-    done()
-  })
+  // it('should assign badge to user', function (done) {
+  //   spyOn(adminCtl, 'assignBadge').and.callThrough()
+  //   spyOn(adminService, 'addBadges').and.returnValue(deferred.promise)
+  //   var res = { responseCode: 'OK' }
+  //   deferred.resolve(res)
+  //   adminCtl.recievedBadge = {}
+  //   adminCtl.assignBadge({ id: 123, name: 'abc' }, 121)
+  //   adminService.addBadges()
+  //   scope.$apply()
+  //   expect(toasterService.success).toHaveBeenCalled()
+  //   done()
+  // })
+  // it('should fail to assign badge to user ', function (done) {
+  //   spyOn(adminCtl, 'assignBadge').and.callThrough()
+  //   spyOn(adminService, 'addBadges').and.returnValue(deferred.promise)
+  //   var res = { responseCode: '' }
+  //   deferred.resolve(res)
+  //   adminCtl.disableAsignButton = ''
+  //   adminCtl.recievedBadge = {}
+  //   adminCtl.assignBadge({ id: 123, name: '' }, 0)
+  //   adminService.addBadges()
+  //   scope.$apply()
+  //   expect(toasterService.error).toHaveBeenCalled()
+  //   expect(adminCtl.disableAsignButton).toEqual(false)
+  //   done()
+  // })
+  // it('should get badge name ', function (done) {
+  //   spyOn(adminCtl, 'getBadgeName').and.callThrough()
+  //   adminCtl.badges = [{}, {}]
+  //   spyOn(Array.prototype, 'find').and.callThrough()
+  //   adminCtl.getBadgeName({ badges: [{}, {}] })
+  //   scope.$apply()
+  //   done()
+  // })
   it('should show modal', function (done) {
     spyOn(adminCtl, 'showModal').and.callThrough()
     adminCtl.showModal(123, 'AP')
