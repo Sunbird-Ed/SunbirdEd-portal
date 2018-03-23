@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workspaceclass } from '../../classes/workspaceclass';
-import { SearchService , UserService} from '@sunbird/core';
-import { ServerResponse, PaginationService } from '@sunbird/shared';
+import { SearchService, UserService } from '@sunbird/core';
+import { ServerResponse, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -76,6 +76,17 @@ export class DraftComponent extends Workspaceclass implements OnInit {
     pager: IPagination;
 
     /**
+    * To show toaster(error, success etc) after any API calls
+    */
+    private toasterService: ToasterService;
+
+
+    /**
+    * To call resource service which helps to use language constant
+   */
+    public resourceService: ResourceService;
+
+    /**
       * Constructor to create injected service(s) object
       Default method of Draft Component class
       * @param {SearchService} SearchService Reference of SearchService
@@ -88,12 +99,15 @@ export class DraftComponent extends Workspaceclass implements OnInit {
         public workSpaceService: WorkSpaceService,
         paginationService: PaginationService,
         activatedRoute: ActivatedRoute,
-        route: Router, userService: UserService) {
+        route: Router, userService: UserService,
+        toasterService: ToasterService, resourceService: ResourceService) {
         super(searchService, workSpaceService);
         this.paginationService = paginationService;
         this.route = route;
         this.activatedRoute = activatedRoute;
         this.userService = userService;
+        this.toasterService = toasterService;
+        this.resourceService = resourceService;
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -156,10 +170,12 @@ export class DraftComponent extends Workspaceclass implements OnInit {
                     (data: ServerResponse) => {
                         if (data.responseCode === 'OK') {
                             this.drafList = this.removeContent(this.drafList, contentIds);
+                            this.toasterService.success(this.resourceService.messages.smsg.m0006);
                         }
                     },
                     (err: ServerResponse) => {
                         this.showLoader = false;
+                        this.toasterService.success(this.resourceService.messages.fmsg.m0022);
                     }
                 );
             })

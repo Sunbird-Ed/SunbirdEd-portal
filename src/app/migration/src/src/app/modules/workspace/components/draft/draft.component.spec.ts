@@ -3,10 +3,11 @@ import { DeleteComponent } from './../../../announcement/components/delete/delet
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 
 // Import services
 import { DraftComponent } from './draft.component';
-import { SharedModule, PaginationService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -24,10 +25,10 @@ describe('DraftComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService
+        PermissionService, ResourceService, ToasterService
       ]
     })
       .compileComponents();
