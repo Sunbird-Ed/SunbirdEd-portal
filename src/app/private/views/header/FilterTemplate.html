@@ -27,7 +27,7 @@
                 </div>
               </div>
                   <!-- buttons -->
-                <div class="three wide column filter-button margin-top-15">
+                <div ng-if="dynamic.search.showFilters" class="three wide column filter-button margin-top-15">
                   <a class="searchfilterbutton ui blue tiny  button" ng-click="dynamic.search.applyFilter()">{{$root.frmelmnts.btn.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" ng-click="dynamic.search.resetFilter()">{{$root.frmelmnts.btn.reset}}</a>
                 </div>
