@@ -12,7 +12,7 @@
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
             </div>
             <!-- Badging (Certifications and Awards) -->
-            <div class="twelve wide column" ng-if="profileCtrl.badgeAssertions">
+            <div class="twelve wide column" ng-if="profileCtrl.badgeAssertions && profileCtrl.badgeAssertions.length> 0">
                 <profile-badge isshowadd="false" badgelist="profileCtrl.badgeAssertions" isprofileinfo="true"></profile-badge>
             </div>
             <div class="twelve wide column padding-top-none" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">

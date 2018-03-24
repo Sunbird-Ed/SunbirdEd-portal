@@ -11,33 +11,31 @@
     </div>
 </div>
 
-<div ng-show="contentBadge.showBadgeAssingModel">
-    <div class="ui small modal" id="badgeAssignModel">
-        <div class="header">
-            <div class="ui grid">
-                <div class="eleven wide column">
-                    <h4>{{$root.frmelmnts.lbl.markas}} '{{contentBadge.selectedBadge.name | uppercase}}'</h4>
-                </div>
-                <div class="one wide column actions">
-                    <h5 class="ui basic icon circular button deny">
-                        <i class="ui remove icon"></i>
-                    </h5>
-                </div>
+<div class="ui small modal" id="badgeAssignModel" ng-if="contentBadge.showBadgeAssingModel">
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <h4>{{$root.frmelmnts.lbl.markas}} '{{contentBadge.selectedBadge.name | uppercase}}'</h4>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
             </div>
         </div>
-        <div class="content">
-            <div class="description">
-                <h1 class="ui header">
-                    <div class="sub header primary-text-color-sunbird">
-                        {{$root.frmelmnts.lbl.badgeassignconfigmation}}
-                    </div>
-                </h1>
+    </div>
+    <div class="content">
+        <div class="description">
+            <h1 class="ui header">
+                <div class="sub header primary-text-color-sunbird">
+                    {{$root.frmelmnts.lbl.badgeassignconfigmation}}
+                </div>
+            </h1>
 
-            </div>
         </div>
-        <div class="actions">
-            <div class="ui basic blue small compact button left floated" ng-click="contentBadge.hideContentBadgeModal()">{{$root.frmelmnts.btn.cancel}}</div>
-            <div class="ui small primary compact button " ng-click="contentBadge.assignBadge(contentBadge.selectedBadge)">{{$root.frmelmnts.btn.yesiamsure}}</div>
-        </div>
+    </div>
+    <div class="actions">
+        <div class="ui basic blue small compact button left floated" ng-click="contentBadge.hideContentBadgeModal()">{{$root.frmelmnts.btn.cancel}}</div>
+        <div class="ui small primary compact button " ng-click="contentBadge.assignBadge(contentBadge.selectedBadge)">{{$root.frmelmnts.btn.yesiamsure}}</div>
     </div>
 </div>
