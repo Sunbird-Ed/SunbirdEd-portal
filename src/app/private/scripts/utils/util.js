@@ -37,7 +37,8 @@ org.sunbird.portal.telemetryInit = function () {
       channel: org.sunbird.portal.channel,
       pdata: {
         id: org.sunbird.portal.appid,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       etags: {
         app: [],

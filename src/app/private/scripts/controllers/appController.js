@@ -115,7 +115,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       permissionsService.setCurrentUserRoleMap(orgRoleMap)
       permissionsService.setCurrentUserRoles(userRoles)
       $rootScope.initializePermissionDirective = true
-      $scope.getTelemetryConfigData(profileData)
       telemetryService.init()
       $scope.setRootOrgInfo(profileData)
     }
@@ -127,17 +126,13 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $http.get('/get/envData').then(function (res) {
         org.sunbird.portal.appid = res.data.appId
         org.sunbird.portal.ekstep_env = res.data.ekstep_env
-      })
-        .catch(function () {
-          org.sunbird.portal.appid = 'sunbird.portal'
-          org.sunbird.portal.ekstep_env = 'qa'
-        })
-        .finally(function () {
-          org.sunbird.portal.init()
-          // portalTelemetryService.init()
-        })
-    }
+        org.sunbird.portal.init()
+        telemetryService.init()
+      }).catch(function () {
 
+      })
+    }
+    $scope.getTelemetryConfigData()
     $scope.setRootOrgInfo = function (profileData) {
       if (profileData.rootOrg) {
         // set Page Title

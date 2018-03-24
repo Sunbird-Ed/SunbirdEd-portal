@@ -21,7 +21,7 @@ angular.module('playerApp')
       'authtoken': undefined,
       'uid': $rootScope.userId,
       'sid': $rootScope.sessionId,
-      'batchsize': 10 || config.TELEMETRY.MAX_BATCH_SIZE,
+      'batchsize': config.TELEMETRY.MAX_BATCH_SIZE || 10,
       'host': '',
       'endpoint': config.TELEMETRY.SYNC,
       'apislug': config.URL.BASE_PREFIX + config.URL.CONTENT_PREFIX,
@@ -88,8 +88,8 @@ angular.module('playerApp')
     this.visitData = []
 
     this.setConfig = function () {
-      this.config.pdata.id = org.sunbird.portal.appid || 'org.sunbird'
-      this.config.channel = org.sunbird.portal.channel || 'sunbird'
+      this.config.pdata.id = org.sunbird.portal.appid
+      this.config.channel = org.sunbird.portal.channel
       this.config.uid = $rootScope.userId
       this.config.sid = $rootScope.sessionId
     }
