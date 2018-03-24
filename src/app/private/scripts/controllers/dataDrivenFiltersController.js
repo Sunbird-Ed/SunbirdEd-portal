@@ -59,13 +59,14 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       switch (dynamic.search.selectedSearchKey) {
       case 'Courses':
         req.subType = 'course'
+        dynamic.getChannel(req)
         break
       case 'Library':
         req.subType = 'library'
+        dynamic.getChannel(req)
         break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
-      dynamic.getChannel(req)
     })
 
     var searchKeyHandler = $rootScope.$on('DynSearchKey', function (event, args) {
@@ -79,13 +80,14 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       switch (dynamic.search.selectedSearchKey) {
       case 'Courses':
         req.subType = 'course'
+        dynamic.getChannel(req)
         break
       case 'Library':
         req.subType = 'library'
+        dynamic.getChannel(req)
         break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
-      dynamic.getChannel(req)
       // $scope.search.searchRequest(false)
     })
 
