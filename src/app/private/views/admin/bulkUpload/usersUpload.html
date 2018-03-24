@@ -66,7 +66,9 @@
             <ol class="ui list">
                 <li>{{$root.frmelmnts.instn.t0013}}</li>
                 <li>{{$root.frmelmnts.instn.t0001}}</li>
-                <li>{{$root.frmelmnts.instn.t0033}}
+                <li>{{$root.frmelmnts.instn.t00102}}</li>
+                <li>{{$root.frmelmnts.instn.t00103}}</li>
+<!--                 <li>{{$root.frmelmnts.instn.t0033}}
                     <ol>
                         <li>{{$root.frmelmnts.instn.t0034}}</li>
                         <li>{{$root.frmelmnts.instn.t0035}}</li>
@@ -88,8 +90,257 @@
                         <li>{{$root.frmelmnts.instn.t0048}}</li>
 
                     </ol>
-                </li>
+                </li> -->
             </ol>
+            <table class="ui celled padded table">
+                <thead>
+                    <tr>
+                    <th>{{$root.frmelmnts.instn.t0064}}</th>
+                    <th>{{$root.frmelmnts.instn.t0065}}</th>
+                    <th>{{$root.frmelmnts.instn.t0066}}</th>
+                    <th>{{$root.frmelmnts.instn.t0067}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>
+                    {{$root.frmelmnts.instn.t00104}}
+                  </td>
+                  <td>
+                    {{$root.frmelmnts.instn.t00105}}
+                  </td>
+                  <td>
+                    {{$root.frmelmnts.instn.t00106}}
+                  </td>
+                  <td>
+                    Mandatory
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {{$root.frmelmnts.instn.t00107}}
+                  </td>
+                  <td>
+                    {{$root.frmelmnts.instn.t00108}}
+                  </td>
+                  <td >
+                    Alphabetic Value
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    phone
+                  </td>
+                  <td>
+                    User’s phone number
+                  </td>
+                  <td>
+                    Ten digit mobile number
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    email
+                  </td>
+                  <td>
+                    User’s email ID
+                  </td>
+                  <td>
+                    Alphanumeric, standard email ID format
+                  </td>
+                  <td>
+                    Mandatory
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    userName
+                  </td>
+                  <td>
+                    Unique name assigned to the user by the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Mandatory
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    password
+                  </td>
+                  <td>
+                    Unique/common password given by the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    provider
+                  </td>
+                  <td>
+                    Channel ID shared to the system administrator by DIKSHA
+                  </td>
+                  <td>
+                    Alphanumeric</br>
+ Note: Enter values in the providercolumn and the phoneVerifiedcolumn or keep both columns blank
+                  </td>
+                  <td>
+                    Conditional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    phoneVerified
+                  </td>
+                  <td>
+                    Whether user’s phone number is verified
+                  </td>
+                  <td>
+                    TRUE, if phone number is provided</br>
+ Note: Enter values in the providercolumn and the phoneVerifiedcolumn or keep both columns blank
+                  </td>
+                  <td>
+                    Conditional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    emailVerified
+                  </td>
+                  <td>
+                    Whether user’s email ID is verified
+                  </td>
+                  <td>
+                    TRUE, if email ID is provided
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    roles
+                  </td>
+                  <td>
+                    User’s role on DIKSHA
+                  </td>
+                  <td>
+                    Select one or more of the following roles:
+                    <div class="ui bulleted list">
+                        <div class="item">CONTENT_CREATOR</div>
+                        <div class="item">CONTENT_REVIEWER</div>
+                        <div class="item">FLAG_REVIEWER</div>
+                        <div class="item">COURSE_MENTOR</div>
+                        <div class="item">COURSE_ADMIN</div>
+                        <div class="item">ORG_ADMIN</div>
+                        <div class="item">SYSTEM_ADMINISTRATION</div>
+                        <div class="item">PUBLIC</div>
+                    </div>
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    grade
+                  </td>
+                  <td>
+                    Classes taught by the user
+                  </td>
+                  <td>
+                    "Select one or more of the following grades:</br>
+ Class 1, Class 2, Class 3, Class 4, Class 5, Class 6, Class 7, Class 8, Class 9, Class 10, Kindergarten,Other"
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    position
+                  </td>
+                  <td>
+                    User’s designation in the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    position
+                  </td>
+                  <td>
+                    User’s designation in the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    position
+                  </td>
+                  <td>
+                    User’s designation in the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    position
+                  </td>
+                  <td>
+                    User’s designation in the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    position
+                  </td>
+                  <td>
+                    User’s designation in the organization
+                  </td>
+                  <td>
+                    Alphanumeric
+                  </td>
+                  <td>
+                    Optional
+                  </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
