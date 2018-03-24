@@ -243,11 +243,14 @@
 .padding-right-25 {
   padding-right: 25px !important;
 }
+.padding-left-35 {
+  padding-left: 35px !important;
+}
+.padding-right-35 {
+  padding-right: 35px !important;
+}
 .padding-topBottom-35 {
   padding: 35px 0px!important;
-}
-.padding-dail-code-segment {
-  padding: 25px 35px!important;
 }
 .padding-topBottomNone {
   padding-top: 0px!important;
@@ -486,6 +489,9 @@ a:hover {
 }
 .secondary-text-color-sunbird {
   color: #7c7b7b !important;
+}
+.font-weight-700 {
+  font-weight: 700 !important;
 }
 .ui.menu {
   font-family: 'sunbirdregularfont';
