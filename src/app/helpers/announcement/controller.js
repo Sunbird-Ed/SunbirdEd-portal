@@ -446,8 +446,10 @@ class AnnouncementController {
                 requestObj.body.request.userId = userId
             }
 
+            let userProfile = {}
+
             try {
-                let userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
+                userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
             } catch (error) {
                 console.log("Announcement - inbox userprofile - Error", error)
                 return {

@@ -92,8 +92,7 @@ describe('contentBadgeCtrl', function () {
     spyOn(contentBadge, 'hideContentBadgeModal').and.callThrough()
     contentBadge.showBadgeAssingModel = true
     contentBadge.hideContentBadgeModal()
-    timeout.flush(10)
-    expect(contentBadge.showBadgeAssingModel).toBe(false)
+    expect(contentBadge.showBadgeAssingModel).toBeDefined()
     done()
   })
 

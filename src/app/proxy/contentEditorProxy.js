@@ -5,6 +5,7 @@ const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
+const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 
@@ -66,6 +67,15 @@ module.exports = function (app) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('action/', '/')
       return require('url').parse(learnerServiceBaseUrl + originalUrl).path
+    }
+  }))
+
+  app.use('/action/data/v1/form/read', proxy(contentServiceBaseUrl, {
+    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      var originalUrl = req.originalUrl
+      originalUrl = originalUrl.replace('/action', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
     }
   }))
 
