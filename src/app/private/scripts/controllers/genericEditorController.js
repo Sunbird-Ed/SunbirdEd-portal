@@ -61,6 +61,16 @@ angular.module('playerApp')
             id: 'org.ekstep.sunbirdcommonheader',
             ver: '1.2',
             type: 'plugin'
+          },
+          {
+            id: 'org.ekstep.metadata',
+            ver: '1.0',
+            type: 'plugin'
+          },
+          {
+            id: 'org.ekstep.sunbirdmetadata',
+            ver: '1.0',
+            type: 'plugin'
           }],
           previewConfig: {
             'repos': ['/content-plugins/renderer'],

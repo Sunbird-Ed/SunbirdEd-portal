@@ -43,6 +43,16 @@ angular.module('playerApp')
               id: 'org.ekstep.sunbirdcommonheader',
               ver: '1.2',
               type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.metadata',
+              ver: '1.0',
+              type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.sunbirdmetadata',
+              ver: '1.0',
+              type: 'plugin'
             }
           ],
           dispatcher: 'local',
@@ -143,10 +153,10 @@ angular.module('playerApp')
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
                   if ($stateParams.state) {
-              $state.go($stateParams.state)
-            } else {
-              $state.go('WorkSpace.DraftContent')
-            }
+                    $state.go($stateParams.state)
+                  } else {
+                    $state.go('WorkSpace.DraftContent')
+                  }
                 })
 
         window.addEventListener('editor:metadata:edit', function (event, data) {
