@@ -127,7 +127,8 @@ var paths = {
     'dist/public/scripts/controllers/courseScheduleController.js',
     'dist/public/scripts/controllers/collectionPlayerController.js',
     'dist/public/scripts/filters/dateFilter.js',
-    'dist/public/scripts/controllers/dialCodeController.js'
+    'dist/public/scripts/controllers/dialCodeController.js',
+    'dist/public/scripts/filters/fileSize.js'
   ],
   private_bower_js: [
     'dist/thirdparty/libs/eventbus.min.js',
