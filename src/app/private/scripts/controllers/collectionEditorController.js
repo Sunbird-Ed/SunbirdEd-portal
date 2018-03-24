@@ -57,7 +57,7 @@ angular.module('playerApp')
           loadingImage: '',
           plugins: [{
             id: 'org.ekstep.sunbirdcommonheader',
-            ver: '1.1',
+            ver: '1.2',
             type: 'plugin'
           },
           {
