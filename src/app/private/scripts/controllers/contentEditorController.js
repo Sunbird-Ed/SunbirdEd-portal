@@ -41,7 +41,7 @@ angular.module('playerApp')
           plugins: [
             {
               id: 'org.ekstep.sunbirdcommonheader',
-              ver: '1.1',
+              ver: '1.2',
               type: 'plugin'
             }
           ],
@@ -142,12 +142,12 @@ angular.module('playerApp')
 
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
-            if ($stateParams.state) {
+                  if ($stateParams.state) {
               $state.go($stateParams.state)
             } else {
               $state.go('WorkSpace.DraftContent')
             }
-          })
+                })
 
         window.addEventListener('editor:metadata:edit', function (event, data) {
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta')
