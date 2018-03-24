@@ -724,7 +724,7 @@ angular.module('playerApp')
         }
       })
       .state('GenericEditor', {
-        url: '/generic/editor/:contentId/:state',
+        url: '/generic/editor/:contentId/:state/:framework',
         views: {
           mainView: {
             templateUrl: 'views/common/genericEditor.html',
@@ -733,7 +733,8 @@ angular.module('playerApp')
         },
         params: {
           contentId: null,
-          state: null
+          state: null,
+          framework: null
         },
         onEnter: function ($rootScope) {
           $rootScope.profileActive = 'active'

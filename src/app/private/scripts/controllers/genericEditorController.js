@@ -7,7 +7,7 @@ angular.module('playerApp')
       contentService, permissionsService, workSpaceUtilsService, searchService) {
       var genericEditor = this
       genericEditor.contentId = (_.isUndefined($stateParams.contentId) ||
-      _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
+        _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
       genericEditor.openGenericEditor = function () {
         $('#genericEditor').iziModal({
           title: '',
@@ -121,4 +121,15 @@ angular.module('playerApp')
           }
         }, 2000)
       }
+      searchService.getChannel().then(function (res) {
+        if (res.responseCode === 'OK') {
+          genericEditor.version = res.ver
+          genericEditor.framework = null
+          window.context.framework = res.result.channel.defaultFramework
+        } else {
+          window.context.framework = null
+        }
+      }).catch(function (error) {
+        console.log('error is ......', error)
+      })
     }])
