@@ -203,6 +203,7 @@ angular.module('playerApp')
           if (dataDrivenForm.loader.showLoader) {
             dataDrivenForm.loader.showLoader = false
           }
+          dataDrivenForm.refreshModel()
         }, 0)
       }
 
@@ -277,18 +278,18 @@ angular.module('playerApp')
                           dataDrivenForm.getAssociations(dataDrivenForm.frameworkData[field.code],
                             field.range, function (associations) {
                               dataDrivenForm.applayDependencyRules(field, associations, false)
-                              dataDrivenForm.loader.showLoader = false
                             })
                         }
                       }
                     })
                     dataDrivenForm.configureDropdowns(false, false)
                   }, 0)
+                  dataDrivenForm.refreshModel()
                   dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties)
                 }).catch(function (error) {
                   console.log('error is ......', error)
                 })
-                dataDrivenForm.loader.showLoader = false
+
                 // console.log("dataDrivenForm.formFieldProperties", dataDrivenForm.formFieldProperties)
               }
             }).catch(function (error) {
