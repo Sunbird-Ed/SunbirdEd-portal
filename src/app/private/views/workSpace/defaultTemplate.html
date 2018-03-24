@@ -1,4 +1,4 @@
-<div>
+<div ng-init="dataDrivenForm.refreshModel()">
         <div ng-if="field.inputType==='text'" ng-class="{'error': (!metaForm[field.code].$valid && dataDrivenForm.isSubmit) , 'required': field.required}">
             <div class="field" ng-class="{ 'disabled':!field.editable} ">
                 <label>{{field.name}}</label>
