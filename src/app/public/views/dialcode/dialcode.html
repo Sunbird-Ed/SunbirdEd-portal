@@ -39,8 +39,8 @@
 		<div class="ten wide column"> 
 			<div class="ui stackable four column grid dynamic-section-card ">
 		        <div class="column " ng-repeat="item in dialctrl.searchResults track by $index">
-		            <div ng-if="item.contentType!='Course'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.playContent(item)"></div>
-		            <div ng-if="item.contentType=='Course'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.openCourseView(item)"></div>
+		            <div ng-if="item.mimeType!='application/vnd.ekstep.content-collection'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.playContent(item)"></div>
+		            <div ng-if="item.mimeType=='application/vnd.ekstep.content-collection'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.openCourseView(item)"></div>
 		        </div>
 		    </div>
 		</div>
