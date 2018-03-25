@@ -26,7 +26,7 @@ export class ViewOrgTypeComponent implements OnInit {
   /**
    * Contains all the organisation type data
    */
-  orgTypes: any;
+  orgTypes: object;
 
   /**
    * To navigate to other pages
