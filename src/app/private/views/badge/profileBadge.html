@@ -3,13 +3,13 @@
     <span class="header cardsHeading">{{$root.frmelmnts.lbl.certificationAward}}</span>
   </div>
   <div class="ui items margin-top-10">
-    <div class="item" ng-repeat="badge in profileBadge.badges">
+    <div class="item" ng-repeat="badge in profileBadge.badges | orderby: 'createdDate || createdTS'">
       <img class="ui avatar image" ng-src="{{badge.image || badge.badgeClassImage}}">
       <div class="middle aligned content padding-left-10">
         <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
         <div class="description">
-            <div class="secondary-text-color-sunbird">{{badge.description | limitTo : 90}}
-                <i ng-if="badge.description && badge.description.length > 90" class="ellipsis horizontal icon" title="{{badge.description}}">
+            <div class="secondary-text-color-sunbird">{{badge.description | limitTo : 70}}
+                <i ng-if="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
                   </i>
             </div>
         </div>

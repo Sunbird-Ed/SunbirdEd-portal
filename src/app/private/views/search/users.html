@@ -37,7 +37,7 @@
             </div>
             <!-- Badging (Certifications and Awards) -->
             <div class="ui middle aligned list" ng-if="user.badgeAssertions && user.badgeAssertions.length > 0">
-                <div class="item" ng-repeat="badge in user.badgeAssertions">
+                <div class="item" ng-repeat="badge in user.badgeAssertions | orderBy:'badge.createdTS'">
                     <img class="ui avatar image" ng-src="{{badge.badgeClassImage}}">
                     <div class="content">
                         <div class="header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>

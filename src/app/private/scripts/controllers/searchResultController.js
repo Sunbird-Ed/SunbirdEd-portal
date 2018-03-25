@@ -295,6 +295,9 @@ angular.module('playerApp').controller('SearchResultController', [
             'Game'
           ]
         }
+        librarySearchReq['softConstraints'] = {
+          badgeAssertions: 1
+        }
         $scope.search.searchFn = searchService.contentSearch(librarySearchReq)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
@@ -327,7 +330,9 @@ angular.module('playerApp').controller('SearchResultController', [
           $rootScope.search.selectedOrgType = undefined
         }
         req.filters.objectType = ['user']
-
+        req['softConstraints'] = {
+          badgeAssertions: 1
+        }
         $scope.search.currentUserRoles = permissionsService.getCurrentUserRoles()
         var isSystemAdmin = $scope.search.currentUserRoles
           .includes('SYSTEM_ADMINISTRATION')
