@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
@@ -7,23 +7,34 @@ import 'rxjs/add/observable/throw';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
- * Service to manage geo explorer http calls
+ * Service to manage organisation type http calls
  */
 @Injectable()
 
 /**
- * @class GeoExplorerService to manage geo http call
+ * @class OrgTypeService to manage organisation type http call
  */
 export class OrgTypeService {
 
-   /**
-   * BehaviorSubject Containing user profile.
-   */
+  /**
+  * BehaviorSubject containing organisation listing data.
+  */
   private _orgTypeData$ = new BehaviorSubject<any>(undefined);
 
+  /**
+   * Read only observable containing organisation listing data.
+   */
   public readonly orgTypeData$: Observable<any> = this._orgTypeData$.asObservable();
 
- // orgTypeDetails: any;
+  /**
+  * To listen event after organisation type update
+  */
+  orgTypeUpdateEvent = new EventEmitter();
+
+  /**
+  * To listen event after organisation type create
+  */
+  orgTypeCreateEvent = new EventEmitter();
 
   /**
    * Contains config service reference
@@ -38,8 +49,8 @@ export class OrgTypeService {
   /**
    * Default method of class GeoExplorerService
    *
-   * @param {LearnerService} learner
-   * @param {ConfigService} config
+   * @param {LearnerService} learner Contains learner service reference
+   * @param {ConfigService} config Contains config service reference
    */
   constructor(learner: LearnerService, config: ConfigService) {
     this.config = config;
@@ -64,7 +75,7 @@ export class OrgTypeService {
   }
 
   /**
-   * Function to add organisation types
+   * Function to add organisation type
    */
   addOrgType(orgName: string): Observable<ServerResponse> {
     const option = {
@@ -75,9 +86,15 @@ export class OrgTypeService {
         }
       }
     };
-    return this.learner.post(option);
+    return this.learner.post(option).map(data => {
+      this.orgTypeCreateEvent.emit(data);
+      return data;
+    });
   }
 
+  /**
+   * Function to update organisation type
+   */
   updateOrgType(orgDetails): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ORG_TYPE.UPDATE,
@@ -85,8 +102,10 @@ export class OrgTypeService {
         'request': orgDetails
       }
     };
-    return this.learner.patch(option);
+    return this.learner.patch(option).map(data => {
+      this.orgTypeUpdateEvent.emit(orgDetails);
+      return data;
+    });
   }
 }
-
 

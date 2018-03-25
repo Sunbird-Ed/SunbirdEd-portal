@@ -7,9 +7,9 @@ import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 
 /**
- * The delete component deletes the announcement
- * which is requested by the logged in user have announcement
- * creator access
+ * This component helps to display the creation/updation popup.
+ *
+ * It also creates and updates organisation type.
  */
 @Component({
   selector: 'app-create-org-type',
@@ -17,22 +17,22 @@ import * as _ from 'lodash';
   styleUrls: ['./create-org-type.component.css']
 })
 export class CreateOrgTypeComponent implements OnInit {
+
   /**
-	 * Contains
+	 * This flag helps to identify whether a form is creation or updation.
+   * It is used to display the creation/updation form.
 	 */
   createForm = true;
 
+  /**
+	 * Creates a object of the form control
+	 */
   orgName = new FormControl();
 
   /**
-	 * Contains page number of outbox list
+	 * Contains the organisation type identifier
 	 */
-  pageNumber = 1;
-
-  /**
-   * To make get announcement by id
-   */
-  private announcementService: AnnouncementService;
+  orgTypeId: string;
 
   /**
    * To send activatedRoute.snapshot to routerNavigationService
@@ -55,7 +55,7 @@ export class CreateOrgTypeComponent implements OnInit {
   public routerNavigationService: RouterNavigationService;
 
   /**
-   * To call OrgTypeService
+   * To call OrgType Service for craeting/updating organisation type
    */
   public orgTypeService: OrgTypeService;
 
@@ -65,20 +65,17 @@ export class CreateOrgTypeComponent implements OnInit {
 	 *
 	 * Default method of DeleteComponent class
 	 *
-   * @param {AnnouncementService} announcementService Reference of AnnouncementService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
    * @param {OrgTypeService} orgTypeService Reference of OrgTypeService
 	 */
-  constructor(announcementService: AnnouncementService,
-    activatedRoute: ActivatedRoute,
+  constructor(activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
     orgTypeService: OrgTypeService) {
-    this.announcementService = announcementService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -87,9 +84,11 @@ export class CreateOrgTypeComponent implements OnInit {
   }
 
   /**
-   * This method calls the delete API with a particular announcement
-   * id and and changes the status to cancelled of that particular
-   * announcement.
+   * This method calls the add organisation type API with the organisation
+   * type name.
+   *
+   * After success or failure it is redirected to the organisation type listing page
+   * with proper messaga.
 	 */
   addOrgType(): void {
     if (this.orgName && this.orgName.value) {
@@ -108,10 +107,16 @@ export class CreateOrgTypeComponent implements OnInit {
     }
   }
 
+  /**
+   * This method calls the update organisation type API with a object of
+   * organisation type identifier and name.
+   *
+   * After success or failure it is redirected to the organisation type listing page
+   * with proper messaga.
+	 */
   updateOrgType(): void {
     if (this.orgName && this.orgName.value) {
-      // const param = {'id': this.orgTypeService.orgTypeDetails.id, 'name': this.orgName.value};
-      const param = { 'id': '', 'name': this.orgName.value };
+      const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
       this.orgTypeService.updateOrgType(param).subscribe(
         (apiResponse: ServerResponse) => {
           this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
@@ -129,7 +134,7 @@ export class CreateOrgTypeComponent implements OnInit {
 
   /**
    * This method helps to redirect to the parent component
-   * page, i.e, outbox listing page with proper page number
+   * page, i.e, view organisation type page
 	 *
 	 */
   redirect(): void {
@@ -137,40 +142,32 @@ export class CreateOrgTypeComponent implements OnInit {
   }
 
   /**
-   * This method sets the annmouncementId and pagenumber from
-   * activated route
+   * This method helps to identify that the page is creation
+   * or updation by subscribing the actiavtedRoute url.
+   *
+   * It also sets the data to the updation form by subscribing the
+   * activatedRoute param
 	 */
   ngOnInit() {
-    // if (this.orgTypeService.orgTypeDetails === 'create') {
-    //   this.createForm = true;
-    // } else if (this.orgTypeService.orgTypeDetails) {
-    //   this.createForm = false;
-    // } else {
-    //   this.redirect();
-    // }
-
-    this.orgTypeService.orgTypeData$.subscribe((val) => {
-      console.log('===', val);
-      // alert()
+    this.activatedRoute.url.subscribe(url => {
+      if (url[0].path === 'update') {
+        this.createForm = false;
+        this.orgTypeService.orgTypeData$.subscribe((orgTypeList) => {
+          this.activatedRoute.params.subscribe(params => {
+            if (orgTypeList !== undefined) {
+              _.find(orgTypeList.result.response, (o) => {
+                this.orgTypeId = params.orgId;
+                if (o.id === this.orgTypeId) {
+                  this.orgName = new FormControl(o.name);
+                }
+              });
+            }
+          });
+        });
+      } else if (url[0].path === 'create') {
+        this.createForm = true;
+      }
     });
-
-
-    // this.activatedRoute.url.subscribe(url => {
-    //   console.log(url[0].path)
-    //   if (url[0].path === 'update') {
-    //     this.createForm = false;
-    //     alert(update)
-    //    // this.orgName = new FormControl(this.orgTypeService.orgTypeDetails.name);
-    //   } else if (url[0].path === 'create') {
-    //     this.createForm = true;
-    //     alert(ct)
-    //   } else {
-    //     this.redirect();
-    //   }
-    // });
-
-
-
   }
 }
 

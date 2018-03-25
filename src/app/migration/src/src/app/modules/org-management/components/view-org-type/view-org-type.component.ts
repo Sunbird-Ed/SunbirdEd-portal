@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
 
+/**
+ * The component helps to display all the organisation types
+ * that has been added by the user having system adminstartion role
+ */
 @Component({
   selector: 'app-view-org-type',
   templateUrl: './view-org-type.component.html',
@@ -18,12 +22,15 @@ export class ViewOrgTypeComponent implements OnInit {
    * any data
 	 */
   showLoader = true;
+
+  /**
+   * Contains all the organisation type data
+   */
+  orgTypes: any;
+
   /**
    * To navigate to other pages
    */
-
-  orgTypes: any;
-
   route: Router;
 
   /**
@@ -42,12 +49,7 @@ export class ViewOrgTypeComponent implements OnInit {
   private toasterService: ToasterService;
 
   /**
-   * To get url, app configs
-   */
-  public config: ConfigService;
-
-  /**
-   * To call OrgTypeService
+   * To call OrgType Service for getting the listing
    */
   public orgTypeService: OrgTypeService;
 
@@ -60,47 +62,28 @@ export class ViewOrgTypeComponent implements OnInit {
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {ConfigService} config Reference of ConfigService
    * @param {OrgTypeService} orgTypeService Reference of OrgTypeService
 	 */
   constructor(route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    config: ConfigService,
     orgTypeService: OrgTypeService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.config = config;
     this.orgTypeService = orgTypeService;
   }
 
   /**
-   * populate org type data
+   * This method helps to display the organisation
+   * type listing data
 	 *
 	 */
   populateOrgType(): void {
-    // this.orgTypeService.getOrgTypes().subscribe(
-    //   (apiResponse: ServerResponse) => {
-
-
-    //     this.orgTypes = { ...apiResponse.result.response };
-    //     this.orgTypes = _.sortBy(this.orgTypes, function (i) { return i.name.toLowerCase(); });
-    //     this.showLoader = false;
-    //   },
-    //   err => {
-    //     this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    //     this.showLoader = false;
-    //   }
-    // );
-
-
-
     this.orgTypeService.getOrgTypes();
     this.orgTypeService.orgTypeData$.subscribe((apiResponse: ServerResponse) => {
-      console.log('+++', apiResponse);
       if (apiResponse !== undefined) {
         this.orgTypes = { ...apiResponse.result.response };
         this.orgTypes = _.sortBy(this.orgTypes, function (i) { return i.name.toLowerCase(); });
@@ -111,15 +94,35 @@ export class ViewOrgTypeComponent implements OnInit {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
       });
-
-
-
   }
 
+  /**
+   * This method calls the populateOrgType function
+   * to get the organisation listing data.
+   *
+   * It also updates the listing data when a organisation type is
+   * added or updated by subscribing the events after
+   * creation/updation od organisation types.
+	 *
+	 */
   ngOnInit() {
     this.populateOrgType();
 
-  }
+    // Update event
+    this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
+      _.each(this.orgTypes, (key, index) => {
+        if (data && data.id === key.id) {
+          this.orgTypes[index].name = data.name;
+        }
+      });
+    });
 
+    // Create event
+    this.orgTypeService.orgTypeCreateEvent.subscribe(data => {
+      if (data) {
+        this.populateOrgType();
+      }
+    });
+  }
 }
 

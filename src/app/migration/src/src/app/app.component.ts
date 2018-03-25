@@ -25,15 +25,17 @@ export class AppComponent {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
+  public courseService: CoursesService;
   /**
    * constructor
    */
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
-    public courseService: CoursesService) {
+     courseService: CoursesService) {
       this.resourceService = resourceService;
       this.permissionService = permissionService;
       this.userService = userService;
+      this.courseService = courseService;
       userService.initialize();
       permissionService.initialize();
       resourceService.initialize();

@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" (dismissed)="routerNavigationService.navigateToParentUrl(activatedRoute.snapshot);" #modal>
+<sui-modal [isClosable]="true" (dismissed)="redirect();" #modal>
     <div *ngIf="createForm" class="header">{{resourceService?.frmelmnts?.lbl?.addorgtype}}</div>
     <div *ngIf="!createForm" class="header">{{resourceService?.frmelmnts?.lbl?.updateorgtype}}</div>
     <div class="content">
