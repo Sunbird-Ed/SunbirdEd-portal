@@ -35,9 +35,10 @@ angular.module('playerApp')
           contentId: collectionEditor.contentId,
           pdata: {
             id: org.sunbird.portal.appid,
-            ver: '1.0'
+            ver: '1.0',
+            pid: 'sunbird-portal'
           },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+          tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel,
           framework: collectionEditor.framework,
           env: data.type.toLowerCase()

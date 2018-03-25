@@ -22,7 +22,7 @@ angular.module('playerApp')
             id: org.sunbird.portal.appid,
             ver: '1.0'
           },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+          tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel
         }
         // Add search criteria
