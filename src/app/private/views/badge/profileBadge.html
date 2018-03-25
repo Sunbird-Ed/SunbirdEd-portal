@@ -3,7 +3,7 @@
     <span class="header cardsHeading">{{$root.frmelmnts.lbl.certificationAward}}</span>
   </div>
   <div class="ui items margin-top-10">
-    <div class="item" ng-repeat="badge in profileBadge.badges | orderby: 'createdDate || createdTS'">
+    <div class="item" ng-repeat="badge in profileBadge.badges | orderBy: 'createdTS' || 'createdDate'">
       <img class="ui avatar image" ng-src="{{badge.image || badge.badgeClassImage}}">
       <div class="middle aligned content padding-left-10">
         <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
