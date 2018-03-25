@@ -78,6 +78,9 @@ angular.module('playerApp')
             contentId: item.identifier,
             state: state
           }
+          if (item.framework) {
+            params.framework = item.framework
+          }
           $state.go('GenericEditor', params)
         }
 
