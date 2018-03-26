@@ -73,18 +73,18 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       dynamic.searchKey = args.key
       dynamic.search.selectedSearchKey = dynamic.searchKey
       // console.log("dynamic.search.selectedSearchKey",dynamic.search.selectedSearchKey)
-      var req = {
+      dynamic.req = {
         type: 'content',
         action: 'search'
       }
       switch (dynamic.search.selectedSearchKey) {
       case 'Courses':
-        req.subType = 'course'
-        dynamic.getChannel(req)
+        dynamic.req.subType = 'course'
+        dynamic.getChannel(dynamic.req)
         break
       case 'Library':
-        req.subType = 'library'
-        dynamic.getChannel(req)
+        dynamic.req.subType = 'library'
+        dynamic.getChannel(dynamic.req)
         break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
@@ -117,12 +117,12 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     dynamic.getChannel = function (req) {
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
-          var frameworkId = res.result.channel.defaultFramework
-          searchService.getFramework(frameworkId).then(function (res) {
+          dynamic.frameworkId = res.result.channel.defaultFramework
+          searchService.getFramework(dynamic.frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
-              req.framework = frameworkId
+              dynamic.req.framework = dynamic.frameworkId
               var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              searchService.getDataDrivenFormsConfig(req).then(function (res) {
+              searchService.getDataDrivenFormsConfig(dynamic.req).then(function (res) {
                 if (res.responseCode === 'OK') {
                   dynamic.search.showFilters = true
                   dynamic.formFieldProperties = res.result.form.data.fields
@@ -371,7 +371,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
 
     dynamic.search.applyFilter = function () {
       _.forEach(dynamic.formFieldProperties, function (category) {
-        if (category.inputType === 'Term' || category.inputType === 'Select') {
+        if (category.inputType === 'select' || category.inputType === 'multiselect') {
           if (dynamic.search['selected' + category.code].length) {
             dynamic.search.filters[category.code] = dynamic.search['selected' + category.code]
           }
