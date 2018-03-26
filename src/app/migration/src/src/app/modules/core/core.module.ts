@@ -11,7 +11,7 @@ import {
 import {
   MainHeaderComponent, MainMenuComponent , SearchComponent
 } from './components';
-
+import { AuthGuard } from './guard/auth-gard.service';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import {
   exports: [MainHeaderComponent],
   providers: [
     LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService ]
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard ]
 })
 export class CoreModule {
 }

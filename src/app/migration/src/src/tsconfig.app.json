@@ -27,7 +27,10 @@
       ],
       "@sunbird/learn": [
         "app/modules/learn"
-      ]
+      ],
+      "@sunbird/workspace": [
+        "app/modules/workspace"
+      ] 
     },
     "module": "es2015",
     "types": []

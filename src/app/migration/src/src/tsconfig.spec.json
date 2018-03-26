@@ -27,6 +27,9 @@
       ],
       "@sunbird/learn": [
         "app/modules/learn"
+      ],
+      "@sunbird/workspace": [
+        "app/modules/workspace"
       ]
     },
     "module": "commonjs",

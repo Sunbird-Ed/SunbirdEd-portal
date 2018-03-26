@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "experimentalDecorators": true,
+    "allowJs": true,
     "paths": {
       "@sunbird/core": [
         "src/app/modules/core"
