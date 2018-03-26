@@ -20,7 +20,8 @@ angular.module('playerApp')
           framework: contentEditor.framework,
           pdata: {
             id: org.sunbird.portal.appid,
-            ver: '1.0'
+            ver: '1.0',
+            pid: 'sunbird-portal'
           },
           tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel

@@ -28,6 +28,7 @@ angular.module('playerApp')
           }
           configuration.context.dims = cloneDims
         }
+        configuration.context.tags = _.concat([], org.sunbird.portal.channel)
         configuration.context.app = [org.sunbird.portal.appid]
         configuration.context.partner = []
         if ($rootScope.isTocPage) {
@@ -37,7 +38,7 @@ angular.module('playerApp')
           }]
         }
         configuration.context.pdata = {
-          'id': org.sunbird.portal.appid || 'sunbird.portal',
+          'id': org.sunbird.portal.appid,
           'ver': '1.0',
           'pid': 'sunbird-portal'
         }
