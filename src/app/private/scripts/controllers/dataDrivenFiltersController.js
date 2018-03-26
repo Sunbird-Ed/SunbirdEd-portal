@@ -371,7 +371,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
 
     dynamic.search.applyFilter = function () {
       _.forEach(dynamic.formFieldProperties, function (category) {
-        if (category.inputType === 'Term' || category.inputType === 'Select') {
+        if (category.inputType === 'select') {
           if (dynamic.search['selected' + category.code].length) {
             dynamic.search.filters[category.code] = dynamic.search['selected' + category.code]
           }
