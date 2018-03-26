@@ -38,7 +38,6 @@ export class OrgManagementService {
 * @param {RequestParam} requestParam interface
 */
   upload(requestParam: RequestParam): Observable<ServerResponse> {
-    console.log('inside upload()', requestParam);
     const httpOptions = {
       data: requestParam.data,
       url: requestParam.url
@@ -46,11 +45,9 @@ export class OrgManagementService {
     return this.learnerService.post(httpOptions);
   }
   bulkUploadStatus(processId) {
-    console.log('inside bulkUploadStatus() service', processId);
     const options = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.STATUS + '/' + processId
-    }
-    console.log('url', options.url);
+    };
     return this.learnerService.get(options);
   }
 }

@@ -42,7 +42,8 @@ export class StatusComponent implements OnInit {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
-  constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder, toasterService: ToasterService, resourceService: ResourceService) {
+  constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder,
+    toasterService: ToasterService, resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -72,8 +73,7 @@ export class StatusComponent implements OnInit {
         this.showLoader = false;
         const errMsg = (err.error.params && err.error.params.errmsg) ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
         this.toasterService.error(errMsg);
-      }
-    )
+      });
   }
 
   getStatusResult(status) {

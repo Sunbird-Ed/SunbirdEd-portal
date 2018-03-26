@@ -73,7 +73,7 @@ export const mockRes = {
                             'orgType': 'Anuj 3Org',
                             'preferredLanguage': 'hindi',
                             'orgName': null,
-                            'contactDetail': "[{'address':'Bangalore','phone':'8088404715','fax':'abctest@tests.com'}]",
+                            'contactDetail': `[{'address':'Bangalore','phone':'8088404715','fax':'abctest@tests.com'}]`,
                             'provider': 'technical002',
                             'orgCode': 'orgcode12345',
                             'channel': 'channel110001',
@@ -88,7 +88,7 @@ export const mockRes = {
                             'orgType': 'Anuj Org',
                             'preferredLanguage': 'hindi',
                             'orgName': 'hello3001',
-                            'contactDetail': "[{'address':'Bangalore','phone':'8088404715','fax':'abctest@tests.com'}]",
+                            'contactDetail': `[{'address':'Bangalore','phone':'8088404715','fax':'abctest@tests.com'}]`,
                             'provider': 'technical003',
                             'orgCode': 'orgcode12345',
                             'channel': 'channel110002',
@@ -109,21 +109,21 @@ export const mockRes = {
         }
     },
     errorResponse: {
-        "id": "api.upload.status",
-        "ver": "v1",
-        "ts": "2018-03-22 10:27:32:878+0000",
-        "params": {
-            "resmsgid": null,
-            "msgid": "7752d1e7-21f4-98af-6284-5cfa3bb8a7f9",
-            "err": "INVALID_PROCESS_ID",
-            "status": "INVALID_PROCESS_ID",
-            "errmsg": "Invalid Process Id."
+        'id': 'api.upload.status',
+        'ver': 'v1',
+        'ts': '2018-03-22 10:27:32:878+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '7752d1e7-21f4-98af-6284-5cfa3bb8a7f9',
+            'err': 'INVALID_PROCESS_ID',
+            'status': 'INVALID_PROCESS_ID',
+            'errmsg': 'Invalid Process Id.'
         },
-        "responseCode": "RESOURCE_NOT_FOUND",
-        "result": {
+        'responseCode': 'RESOURCE_NOT_FOUND',
+        'result': {
         }
     },
     resourceBundle: {
-        
+
     }
-}
+};

@@ -16,7 +16,6 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 describe('OrganizationUploadComponent', () => {
   let component: OrganizationUploadComponent;
   let fixture: ComponentFixture<OrganizationUploadComponent>;
-  let input;
   let router: Router;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -39,7 +38,6 @@ describe('OrganizationUploadComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.get(Router);
-    // input = angular.
   });
 
   it('should create', () => {
@@ -66,7 +64,7 @@ describe('OrganizationUploadComponent', () => {
     ResourceService, ToasterService, HttpClient],
     (orgManagementService, resourceService, toasterService, http) => {
       // component.showLoader = false;
-      var file = [{
+      const file = [{
         name: 'organizations.csv',
         orgName: 'new org',
         isRootOrg: 'TRUE',
@@ -97,7 +95,7 @@ describe('OrganizationUploadComponent', () => {
     ResourceService, ToasterService, HttpClient],
     (orgManagementService, resourceService, toasterService, http) => {
       // component.showLoader = false;
-      var file = '';
+      const file = '';
       spyOn(component, 'uploadOrg').and.callThrough();
       spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
       component.uploadOrg(file);
@@ -113,7 +111,7 @@ describe('OrganizationUploadComponent', () => {
     }));
   it('should not call uploadOrg method', inject([ResourceService, ToasterService],
     (resourceService, toasterService) => {
-    var file = '';
+    const file = '';
     spyOn(component, 'uploadOrg').and.callThrough();
     component.uploadOrg(file);
     spyOn(toasterService, 'error').and.callThrough();

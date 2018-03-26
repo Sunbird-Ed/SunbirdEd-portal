@@ -24,7 +24,8 @@ describe('StatusComponent', () => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule],
-      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService, ResourceService, LearnerService, FormBuilder, HttpClient,
+      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService,
+        ResourceService, LearnerService, FormBuilder, HttpClient,
         { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -59,8 +60,7 @@ describe('StatusComponent', () => {
           expect(apiResponse.responseCode).toBe('OK');
           spyOn(toasterService, 'success').and.callThrough();
           // expect(component.showLoader).toBe(false);
-        }
-      )
+        });
       spyOn(resourceService, 'getResource').and.callThrough();
       fixture.detectChanges();
       expect(component).toBeTruthy();
@@ -89,8 +89,7 @@ describe('StatusComponent', () => {
           expect(component.showLoader).toBe(false);
           expect(err.params.status).toBe('INVALID_PROCESS_ID');
           expect(err.error.responseCode).toBe('RESOURCE_NOT_FOUND');
-        }
-      )
+        });
       spyOn(resourceService, 'getResource').and.callThrough();
       // spyOn(toasterService, 'error').and.callThrough();
       // expect(component.showLoader).toBe(false);

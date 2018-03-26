@@ -25,10 +25,10 @@ export const mockRes = {
             'msgid': '55402d80-917f-4f72-9f5b-2e4e7a68ce86',
             'err': 'INVALID_ORGANIZATION_DATA',
             'status': 'INVALID_ORGANIZATION_DATA',
-            'errmsg': "Given Organization Data doesn't exist in our records. Please provide a valid one"
+            'errmsg': `Given Organization Data doesn't exist in our records. Please provide a valid one`
         },
         'responseCode': 'CLIENT_ERROR',
         'result': {
         }
     }
-}
+};

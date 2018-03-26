@@ -32,7 +32,8 @@ export class BulkUploadComponent implements OnInit {
  *
  * @param {ResourceService} resourceService To call resource service which helps to use language constant
  */
-  constructor(permissionService: PermissionService, config: ConfigService, private router: Router, private route: ActivatedRoute, resourceService: ResourceService) {
+  constructor(permissionService: PermissionService, config: ConfigService, private router: Router, private route: ActivatedRoute,
+    resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.config = config;
     this.permissionService = permissionService;

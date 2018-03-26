@@ -24,7 +24,8 @@ describe('UserComponent', () => {
     TestBed.configureTestingModule({
       declarations: [UserComponent],
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule],
-      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService, ResourceService, LearnerService, FormBuilder, HttpClient,
+      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService,
+        ResourceService, LearnerService, FormBuilder, HttpClient,
         { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -78,7 +79,7 @@ describe('UserComponent', () => {
   });
   it('should call uploadUser method and return success response with processId', inject([OrgManagementService,
     ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {
-      var file = [{
+      const file = [{
         name: 'users.csv',
         firstName: 'Vaish',
         lastName: 'M',
@@ -116,7 +117,7 @@ describe('UserComponent', () => {
       spyOn(toasterService, 'success').and.callThrough();
     }));
   it('should not call uploadUser method', () => {
-    var file = '';
+    const file = '';
     spyOn(component, 'uploadUser').and.callThrough();
     component.uploadUser(file);
     expect(component.bulkUploadError).toBe(true);
@@ -129,7 +130,7 @@ describe('UserComponent', () => {
   });
   it('should call uploadUser method and return error response', inject([OrgManagementService,
     ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {
-      var file = [{
+      const file = [{
         firstName: 'Vaish',
         lastName: 'M',
         phone: '7899918811',

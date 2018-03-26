@@ -16,7 +16,8 @@ describe('BulkUploadComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BulkUploadComponent],
       imports: [RouterTestingModule, Ng2IziToastModule],
-      providers: [ResourceService, ToasterService, ConfigService, PermissionService, LearnerService, UserService, Ng2IzitoastService, HttpClient, HttpHandler],
+      providers: [ResourceService, ToasterService, ConfigService, PermissionService,
+        LearnerService, UserService, Ng2IzitoastService, HttpClient, HttpHandler],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
