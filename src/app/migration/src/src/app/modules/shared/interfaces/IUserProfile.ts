@@ -49,6 +49,7 @@ export interface UserProfile {
     userRoles?: Array<string>;
     orgRoleMap?: {[key: string]: Array<string>};
     organisationIds?: Array<string>;
+    sessionId?: string;
 }
 export interface JobProfile {
     jobName: string;

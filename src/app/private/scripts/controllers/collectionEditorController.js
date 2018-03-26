@@ -42,7 +42,7 @@ angular.module('playerApp')
           framework: collectionEditor.framework,
           env: data.type.toLowerCase()
         }
-
+        console.log("userid", $rootScope.userId);
         window.config = {
           corePluginsPackaged: true,
           modalId: 'collectionEditor',
@@ -91,6 +91,7 @@ angular.module('playerApp')
         }
         window.config.editorConfig.publishMode = false
         window.config.editorConfig.isFalgReviewer = false
+        console.log("permissionsService.getCurrentUserRoles()",permissionsService.getCurrentUserRoles());
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
             ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {

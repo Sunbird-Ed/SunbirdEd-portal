@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "izimodal@^1.5.1",
+        "scope": null,
+        "escapedName": "izimodal",
+        "name": "izimodal",
+        "rawSpec": "^1.5.1",
+        "spec": ">=1.5.1 <2.0.0",
+        "type": "range"
+      },
+      "/home/revathi/project/sunbird-portal/src/app/migration/src/src/app/modules/core/components"
+    ]
+  ],
+  "_from": "izimodal@>=1.5.1 <2.0.0",
+  "_id": "izimodal@1.5.1",
+  "_inCache": true,
+  "_location": "/izimodal",
+  "_nodeVersion": "7.9.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/izimodal-1.5.1.tgz_1506828186246_0.4190613741520792"
+  },
+  "_npmUser": {
+    "name": "dolce",
+    "email": "dolcemarcelo@gmail.com"
+  },
+  "_npmVersion": "5.4.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "izimodal@^1.5.1",
+    "scope": null,
+    "escapedName": "izimodal",
+    "name": "izimodal",
+    "rawSpec": "^1.5.1",
+    "spec": ">=1.5.1 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/izimodal/-/izimodal-1.5.1.tgz",
+  "_shasum": "a49145030d8d9edfc60dfc35ae1758e4cf8502f1",
+  "_shrinkwrap": null,
+  "_spec": "izimodal@^1.5.1",
+  "_where": "/home/revathi/project/sunbird-portal/src/app/migration/src/src/app/modules/core/components",
+  "author": {
+    "name": "Marcelo Dolce",
+    "email": "dolcemarcelo@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/dolce/iziModal/issues"
+  },
+  "dependencies": {
+    "jquery": "~2"
+  },
+  "description": "Elegant, responsive, flexible and lightweight modal plugin with jQuery.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-DqqGUd741tAqJnWZMQRgixlgtSB6tb/HhfddmlsFWE5P7sckF2SmKVyyttpAdBdN5LUzQiF/R/+IjJw0TS5oTA==",
+    "shasum": "a49145030d8d9edfc60dfc35ae1758e4cf8502f1",
+    "tarball": "https://registry.npmjs.org/izimodal/-/izimodal-1.5.1.tgz"
+  },
+  "gitHead": "ef4532a9b9e20fa5716756f7abf21d167b00584d",
+  "homepage": "https://github.com/dolce/iziModal#readme",
+  "keywords": [
+    "izimodal",
+    "jQuery",
+    "modal",
+    "lightbox",
+    "iframe",
+    "alert",
+    "javascript",
+    "js"
+  ],
+  "license": "Apache-2.0",
+  "main": "js/iziModal.js",
+  "maintainers": [
+    {
+      "name": "dolce",
+      "email": "dolcemarcelo@gmail.com"
+    }
+  ],
+  "name": "izimodal",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dolce/iziModal.git"
+  },
+  "version": "1.5.1"
+}

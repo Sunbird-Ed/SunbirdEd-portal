@@ -1,0 +1,76 @@
+<div *ngIf="!showCreateCollectionModel">
+    <sui-modal [isClosable]="true" (dismissed)="router.navigate(['/collection'])" #modal>
+        <!-- <div class="header">Create Collection</div>
+    <div class="content">
+        <p>Modal content goes here for testing</p>
+    </div>
+    <div class="actions">
+        <button class="ui red button" (click)="modal.deny()">Cancel</button>
+        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+    </div> -->
+
+
+
+
+        <div class=" ui segment margin-top-10">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">
+                            {{resourceService?.frmelmnts?.lbl?.createcollection}}
+                        </span>
+                    </div>
+                    <!-- <div class="one wide column actions">
+                            <h5 class="ui basic icon circular button deny" ng-click="collection.hideCreateCollectionModel();">
+                                <i class="ui remove icon"></i>
+                            </h5>
+                        </div> -->
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form">
+                    <div class="field">
+                        <label>
+                            {{resourceService?.frmelmnts?.lbl?.name}}
+                        </label>
+                        <div class="field">
+                            <input type="text" name="title" placeholder={{resourceService?.frmelmnts?.lbl?.name}} id="name" [(ngModel)]="collection.name"
+                                name="name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
+                            <div class="field">
+                                <input name="description" name="title" id="description" placeholder={{resourceService?.frmelmnts?.lbl?.description}} [(ngModel)]="collection.description"
+                                    name="description">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions margin-top-10">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" (click)="saveMetaData(collection)">
+                        {{resourceService?.frmelmnts?.btn?.startcreating}}
+                    </button>
+                </p>
+                <div>
+                    <label>
+                        <p class="text-align-center">
+                            {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
+                        </p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" ui segment margin-top-10" *ngIf="showLoader">
+            <app-loader></app-loader>
+        </div>
+
+    </sui-modal>
+</div>
+
+<div *ngIf="showEditor">
+    <app-collection-editor></app-collection-editor>
+</div>

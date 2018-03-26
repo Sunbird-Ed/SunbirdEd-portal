@@ -1,0 +1,10 @@
+<h5 class="ui tiny header">
+  Sorry, migration couldn't be completed successfully.
+  <br/>We recommend closing this content without saving to avoid any unwanted loss of content.
+</h5>
+<div class="actions">
+    <!-- <a class="ui green ok inverted button right floated migartion-positive-btn" ng-href="{{cancelMigrationAndRevertLink}}" onclick="location.reload();"><i class="remove icon"></i>Cancel migration and Revert to original</a>
+    <a class="ui inverted button red right floated" ng-href="{{reportIssueLink}}" onclick="location.reload();"><i class="help circle medium icon"></i>Report an issue</a> -->
+    <button class="ui green ok  button migartion-positive-btn" ng-click="previewContent(true);migration.showPostMigrationMsg =false; closeLoadScreen(true);"><i class="unhide icon"></i>Show Preview</button>
+    <button class="ui basic  cancel button" ng-click="closeLoadScreen(true);migration.showPostMigrationMsg = false;"> <i class="edit icon"></i>Edit Lesson</button>
+</div>

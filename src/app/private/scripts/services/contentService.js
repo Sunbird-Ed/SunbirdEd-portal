@@ -7,7 +7,7 @@ angular.module('playerApp')
      * @class contentService
      * @desc Service to manage content.
      * @memberOf Services
-     */
+     */ 
       /**
              * @method create
              * @desc Create a new content
@@ -26,6 +26,7 @@ angular.module('playerApp')
         req.content.organization = $rootScope.organisationNames
         req.content.createdFor = $rootScope.organisationIds
         req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName
+        console.log("request", req);
         return restfulContentService.post(config.URL.CONTENT.CREATE, req)
       }
       /**
