@@ -91,20 +91,16 @@ export class CreateOrgTypeComponent implements OnInit {
    * with proper messaga.
 	 */
   addOrgType(): void {
-    if (this.orgName && this.orgName.value) {
-      this.orgTypeService.addOrgType(this.orgName.value).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.toasterService.success(this.resourceService.messages.smsg.m0035);
-          this.redirect();
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0060);
-          this.redirect();
-        }
-      );
-    } else {
-      this.toasterService.error('Org type name is mandatory');
-    }
+    this.orgTypeService.addOrgType(this.orgName.value).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0035);
+        this.redirect();
+      },
+      err => {
+        this.toasterService.error(err.error.params.errmsg);
+        this.redirect();
+      }
+    );
   }
 
   /**
@@ -115,21 +111,17 @@ export class CreateOrgTypeComponent implements OnInit {
    * with proper messaga.
 	 */
   updateOrgType(): void {
-    if (this.orgName && this.orgName.value) {
-      const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
-      this.orgTypeService.updateOrgType(param).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
-          this.redirect();
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0060);
-          this.redirect();
-        }
-      );
-    } else {
-      this.toasterService.error('Org type name is mandatory');
-    }
+    const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
+    this.orgTypeService.updateOrgType(param).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
+        this.redirect();
+      },
+      err => {
+        this.toasterService.error(err.error.params.errmsg);
+        this.redirect();
+      }
+    );
   }
 
   /**
@@ -153,16 +145,14 @@ export class CreateOrgTypeComponent implements OnInit {
       if (url[0].path === 'update') {
         this.createForm = false;
         this.orgTypeService.orgTypeData$.subscribe((orgTypeList) => {
-          this.activatedRoute.params.subscribe(params => {
-            if (orgTypeList !== undefined) {
-              _.find(orgTypeList.result.response, (o) => {
-                this.orgTypeId = params.orgId;
-                if (o.id === this.orgTypeId) {
-                  this.orgName = new FormControl(o.name);
-                }
-              });
-            }
-          });
+          if (orgTypeList !== undefined) {
+            _.find(orgTypeList.result.response, (orgList) => {
+              this.orgTypeId = this.activatedRoute.snapshot.params.orgId;
+              if (orgList.id === this.orgTypeId) {
+                this.orgName = new FormControl(orgList.name);
+              }
+            });
+          }
         });
       } else if (url[0].path === 'create') {
         this.createForm = true;

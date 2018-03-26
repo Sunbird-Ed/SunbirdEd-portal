@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { IorgTypeData } from './../interfaces/org-type';
 
 /**
  * Service to manage organisation type http calls
@@ -19,22 +20,17 @@ export class OrgTypeService {
   /**
   * BehaviorSubject containing organisation listing data.
   */
-  private _orgTypeData$ = new BehaviorSubject<any>(undefined);
+  private _orgTypeData$ = new BehaviorSubject<IorgTypeData>(undefined);
 
   /**
    * Read only observable containing organisation listing data.
    */
-  public readonly orgTypeData$: Observable<any> = this._orgTypeData$.asObservable();
+  public readonly orgTypeData$: Observable<IorgTypeData> = this._orgTypeData$.asObservable();
 
   /**
   * To listen event after organisation type update
   */
   orgTypeUpdateEvent = new EventEmitter();
-
-  /**
-  * To listen event after organisation type create
-  */
-  orgTypeCreateEvent = new EventEmitter();
 
   /**
    * Contains config service reference
@@ -69,7 +65,7 @@ export class OrgTypeService {
         this._orgTypeData$.next(data);
       },
       (err: ServerResponse) => {
-        this._orgTypeData$.next(err);
+        this._orgTypeData$.next({ err: err});
       }
     );
   }
@@ -87,7 +83,7 @@ export class OrgTypeService {
       }
     };
     return this.learner.post(option).map(data => {
-      this.orgTypeCreateEvent.emit(data);
+      this.getOrgTypes();
       return data;
     });
   }

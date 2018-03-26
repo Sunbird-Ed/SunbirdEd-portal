@@ -83,17 +83,18 @@ export class ViewOrgTypeComponent implements OnInit {
 	 */
   populateOrgType(): void {
     this.orgTypeService.getOrgTypes();
-    this.orgTypeService.orgTypeData$.subscribe((apiResponse: ServerResponse) => {
+    this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse !== undefined) {
-        this.orgTypes = { ...apiResponse.result.response };
-        this.orgTypes = _.sortBy(this.orgTypes, function (i) { return i.name.toLowerCase(); });
-        this.showLoader = false;
+        if (apiResponse.err) {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        } else {
+          this.orgTypes = { ...apiResponse.result.response };
+          this.orgTypes = _.sortBy(this.orgTypes, function (i) { return i.name.toLowerCase(); });
+          this.showLoader = false;
+        }
       }
-    },
-      err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        this.showLoader = false;
-      });
+    });
   }
 
   /**
@@ -115,13 +116,6 @@ export class ViewOrgTypeComponent implements OnInit {
           this.orgTypes[index].name = data.name;
         }
       });
-    });
-
-    // Create event
-    this.orgTypeService.orgTypeCreateEvent.subscribe(data => {
-      if (data) {
-        this.populateOrgType();
-      }
     });
   }
 }
