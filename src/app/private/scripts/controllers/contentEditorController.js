@@ -54,6 +54,11 @@ angular.module('playerApp')
               id: 'org.ekstep.sunbirdmetadata',
               ver: '1.0',
               type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.questionset',
+              ver: '1.0',
+              type: 'plugin'
             }
           ],
           dispatcher: 'local',
