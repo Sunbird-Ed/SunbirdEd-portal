@@ -112,7 +112,16 @@ angular.module('playerApp')
       var isChrome = !!window.chrome && !!window.chrome.webstore
       if (isChrome === false) {
         homeCtrl.showBrowserMsg = true
+        if ((localStorage.getItem('#BrowserIncompatibleModel') !== 'shown')) {
+          setTimeout(function () {
+            $('#BrowserIncompatibleModel').modal({
+              onHide: function () {
+              }
+            }).modal('show')
+          }, 0)
+        }
       }
+
       homeCtrl.showBrowserIncompatibleModel = function () {
         $('#BrowserIncompatibleModel').modal({
           onHide: function () {
@@ -120,6 +129,7 @@ angular.module('playerApp')
         }).modal('show')
       }
       homeCtrl.hideModel = function () {
+        localStorage.setItem('#BrowserIncompatibleModel', 'shown')
         $('#BrowserIncompatibleModel').modal('hide')
         $('#BrowserIncompatibleModel').modal('hide others')
         $('#BrowserIncompatibleModel').modal('hide dimmer')
