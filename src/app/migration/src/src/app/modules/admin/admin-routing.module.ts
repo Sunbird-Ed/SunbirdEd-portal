@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganizationUploadComponent, UserComponent, BulkUploadComponent, TestComponent, StatusComponent } from './components/index';
+import { OrganizationUploadComponent, UserComponent, BulkUploadComponent, StatusComponent } from './components/index';
 
 const routes: Routes = [
   {
