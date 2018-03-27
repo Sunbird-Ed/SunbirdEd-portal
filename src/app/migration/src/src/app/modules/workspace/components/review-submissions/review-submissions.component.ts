@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workspaceclass } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
-import { ServerResponse, PaginationService } from '@sunbird/shared';
+import { ServerResponse, PaginationService, ConfigService , IContents} from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit {
   /**
     * To navigate to other pages
-    */
+  */
   route: Router;
 
   /**
@@ -35,7 +35,7 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   /**
    * Contains list of published course(s) of logged-in user
   */
-  reviewContent: Array<any> = [];
+  reviewContent: Array<IContents> = [];
 
   /**
    * To show / hide loader
@@ -53,9 +53,14 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   private userService: UserService;
 
   /**
-     * Contains page limit of inbox list
+    * To get url, app configs
   */
-  pageLimit = 9;
+    public config: ConfigService;
+
+  /**
+  * Contains page limit of review submission list
+  */
+  pageLimit: number;
 
   /**
     * Current page number of inbox list
@@ -77,37 +82,42 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
    * @param {UserService} UserService Reference of UserService
    * @param {PaginationService} paginationService Reference of PaginationService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+   * @param {ConfigService} config Reference of ConfigService
  */
   constructor(public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
-    route: Router, userService: UserService) {
+    route: Router, userService: UserService,
+    config: ConfigService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
+    this.config = config;
   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.fetchReviewContents();
+      this.fetchReviewContents(this.config.pageConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
   }
   /**
    * This method sets the make an api call to get all reviewContent with page No and offset
   */
-  fetchReviewContents() {
+  fetchReviewContents(limit: number, pageNumber: number) {
+    this.pageNumber = pageNumber;
+    this.pageLimit = limit;
     const searchParams = {
       status: ['Review'],
-      contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
-      objectType: 'Content',
+      contentType: this.config.pageConfig.WORKSPACE.contentType,
+      objectType: this.config.pageConfig.WORKSPACE.objectType,
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService._userid,
-      params: { lastUpdatedOn: 'desc' }
+      userId: this.userService.userid,
+      params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {

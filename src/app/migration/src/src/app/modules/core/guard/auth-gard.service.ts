@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 /**
  * Service for Route Guards to restrict the access of route
  * based on roles and permission of logedin user.
- */
+*/
 @Injectable()
 export class AuthGuard implements CanActivate {
     /**
@@ -14,24 +14,19 @@ export class AuthGuard implements CanActivate {
     */
     public currentUrl = '';
     /**
-   * reference of permissionService service.
-   */
+      * reference of permissionService service.
+    */
     public permissionService: PermissionService;
     /**
-   * reference of resourceService service.
-   */
+     * reference of resourceService service.
+    */
     public resourceService: ResourceService;
 
     /**
-    * reference of angular core  router.
-    */
-    // private router: Router;
-
-    /**
     * constructor
-    * @param {permissionService}
-    * @param {resourceService}
-    * @param {Router}
+    * @param {permissionService} permissionService Refrence of permission service to check permission
+    * @param {resourceService} resourceService Refrence of resourceService service
+    * @param {Router} route  Reference of Router
     */
     constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
         this.currentUrl = '';
@@ -67,6 +62,7 @@ export class AuthGuard implements CanActivate {
                     } else if (permissionAvailable && permissionAvailable === 'error') {
                         this.router.navigate(['home']);
                         observer.next(false);
+                        observer.complete();
                     }
                 }
             );

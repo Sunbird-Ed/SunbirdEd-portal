@@ -11,6 +11,7 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WorkSpaceService } from './services';
 import { ReviewSubmissionsComponent } from './components/review-submissions/review-submissions.component';
+import { PublishedComponent } from './components/published/published.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,7 +20,8 @@ import { ReviewSubmissionsComponent } from './components/review-submissions/revi
     SuiModule,
     FormsModule
   ],
-  declarations: [WorkspaceComponent, WorkspacesidebarComponent, CreateContentComponent, DraftComponent, ReviewSubmissionsComponent],
+  declarations: [WorkspaceComponent, WorkspacesidebarComponent,
+  CreateContentComponent, DraftComponent, ReviewSubmissionsComponent, PublishedComponent],
    providers: [WorkSpaceService]
 })
 export class WorkspaceModule { }

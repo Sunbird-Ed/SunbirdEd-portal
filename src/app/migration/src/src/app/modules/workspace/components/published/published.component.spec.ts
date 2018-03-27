@@ -1,12 +1,12 @@
-import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
+import { PublishedComponent } from './published.component';
+
 // Import services
-import { DraftComponent } from './draft.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
@@ -16,15 +16,16 @@ import { Observable } from 'rxjs/Observable';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
-import * as mockData from './draft.component.spec.data';
+import * as mockData from './published.component.spec.data';
 const testData = mockData.mockRes;
-describe('DraftComponent', () => {
-  let component: DraftComponent;
-  let fixture: ComponentFixture<DraftComponent>;
+
+describe('PublishedComponent', () => {
+  let component: PublishedComponent;
+  let fixture: ComponentFixture<PublishedComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DraftComponent],
+      declarations: [PublishedComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -35,28 +36,29 @@ describe('DraftComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DraftComponent);
+    fixture = TestBed.createComponent(PublishedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  // If search api returns more than one draft
+
+  // If search api returns more than one published
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
-    component.fetchDrafts(9, 1);
+    component.fetchPublishedContent(9, 1);
     fixture.detectChanges();
-    expect(component.draftList).toBeDefined();
-    expect(component.draftList.length).toBeGreaterThan(1);
+    expect(component.publishedContent).toBeDefined();
+    expect(component.publishedContent.length).toBeGreaterThan(1);
   }));
 
-   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
+  it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, resourceService, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
-      spyOn(component, 'deleteDraft').and.callThrough();
-      const params = {type: 'delete', contentId: 'do_2124645735080755201259'};
-      component.deleteDraft(params);
-       const DeleteParam = {
-           contentIds: ['do_2124645735080755201259']
-          };
+      spyOn(component, 'deletePublishedContent').and.callThrough();
+      const params = { type: 'delete', contentId: 'do_2124341006465925121871' };
+      component.deletePublishedContent(params);
+      const DeleteParam = {
+        contentIds: ['do_2124341006465925121871']
+      };
       workSpaceService.deleteContent(DeleteParam).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -65,17 +67,12 @@ describe('DraftComponent', () => {
       );
       fixture.detectChanges();
     }));
-
-    // if  search api's throw's error
+        // if  search api's throw's error
    it('should throw error', inject([SearchService], (searchService) => {
-     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = testData.resourceBundle.messages;
      spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.throw({}));
-     component.fetchDrafts(9, 1);
+     component.fetchPublishedContent(9, 1);
      fixture.detectChanges();
-     expect(component.draftList.length).toBeLessThanOrEqual(0);
-     expect(component.draftList.length).toEqual(0);
+     expect(component.publishedContent.length).toBeLessThanOrEqual(0);
+     expect(component.publishedContent.length).toEqual(0);
    }));
 });
-
-

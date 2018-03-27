@@ -38,13 +38,11 @@ describe('ReviewSubmissionsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+
   // If search api returns more than one review content
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
-    component.fetchReviewContents();
+    component.fetchReviewContents(9, 1);
     fixture.detectChanges();
     expect(component.reviewContent).toBeDefined();
     expect(component.reviewContent.length).toBeGreaterThan(1);
@@ -53,7 +51,7 @@ describe('ReviewSubmissionsComponent', () => {
   // if  search api's throw's error
    it('should throw error', inject([SearchService], (searchService) => {
      spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.throw({}));
-     component.fetchReviewContents();
+     component.fetchReviewContents(9 , 1);
      fixture.detectChanges();
      expect(component.reviewContent.length).toBeLessThanOrEqual(0);
      expect(component.reviewContent.length).toEqual(0);

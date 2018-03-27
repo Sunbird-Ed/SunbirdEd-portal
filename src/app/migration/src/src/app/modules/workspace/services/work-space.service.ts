@@ -29,7 +29,7 @@ export class WorkSpaceService {
     this.content = content;
     this.config = config;
   }
-  deleteContent(requestParam: DeleteParam) {
+  deleteContent(requestParam: DeleteParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.RETIRE,
       data: {
@@ -38,9 +38,7 @@ export class WorkSpaceService {
         }
       }
     };
-    return this.content.delete(option).map(data => {
-      return data;
-    });
+    return this.content.delete(option);
   }
 
 }

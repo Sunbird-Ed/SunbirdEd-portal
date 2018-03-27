@@ -2,13 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workspaceclass } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
-import { ServerResponse, PaginationService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ServerResponse, PaginationService, ConfigService, ToasterService, ResourceService, IContents } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-export interface IContext {
-    data: string;
-}
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 /**
  * The draft component search for all the drafts
@@ -22,7 +19,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 export class DraftComponent extends Workspaceclass implements OnInit {
 
     @ViewChild('modalTemplate')
-    public modalTemplate: ModalTemplate<IContext, string, string>;
+    public modalTemplate: ModalTemplate<{ data: string }, string, string>;
 
     /**
      * To navigate to other pages
@@ -42,7 +39,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
     /**
      * Contains list of published course(s) of logged-in user
     */
-    drafList: Array<any> = [];
+    draftList: Array<IContents> = [];
 
     /**
      * To show / hide loader
@@ -60,9 +57,13 @@ export class DraftComponent extends Workspaceclass implements OnInit {
     private userService: UserService;
 
     /**
+    * To get url, app configs
+    */
+    public config: ConfigService;
+    /**
        * Contains page limit of inbox list
     */
-    pageLimit = 9;
+    pageLimit: number;
 
     /**
       * Current page number of inbox list
@@ -94,13 +95,15 @@ export class DraftComponent extends Workspaceclass implements OnInit {
       * @param {Router} route Reference of Router
       * @param {PaginationService} paginationService Reference of PaginationService
       * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+      * @param {ConfigService} config Reference of ConfigService
     */
     constructor(public modalService: SuiModalService, public searchService: SearchService,
         public workSpaceService: WorkSpaceService,
         paginationService: PaginationService,
         activatedRoute: ActivatedRoute,
         route: Router, userService: UserService,
-        toasterService: ToasterService, resourceService: ResourceService) {
+        toasterService: ToasterService, resourceService: ResourceService,
+        config: ConfigService) {
         super(searchService, workSpaceService);
         this.paginationService = paginationService;
         this.route = route;
@@ -108,32 +111,35 @@ export class DraftComponent extends Workspaceclass implements OnInit {
         this.userService = userService;
         this.toasterService = toasterService;
         this.resourceService = resourceService;
+        this.config = config;
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
             this.pageNumber = Number(params.pageNumber);
-            this.fetchDrafts();
+            this.fetchDrafts(this.config.pageConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
         });
     }
     /**
      * This method sets the make an api call to get all drafts with page No and offset
      */
-    fetchDrafts() {
+    fetchDrafts(limit: number, pageNumber: number) {
+        this.pageNumber = pageNumber;
+        this.pageLimit = limit;
         const searchParams = {
             status: ['Draft'],
-            contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
-            mimeType: ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.content-collection'],
+            contentType: this.config.pageConfig.WORKSPACE.contentType,
+            mimeType: this.config.pageConfig.WORKSPACE.mimeType,
             pageNumber: this.pageNumber,
             limit: this.pageLimit,
-            userId: this.userService._userid,
-            params: { lastUpdatedOn: 'desc' }
+            userId: this.userService.userid,
+            params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
         };
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content) {
-                    this.drafList = data.result.content;
+                    this.draftList = data.result.content;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    _.forEach(this.drafList, (item, key) => {
+                    _.forEach(this.draftList, (item, key) => {
                         const action = {
                             right: {
                                 displayType: 'icon',
@@ -142,7 +148,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
                                 clickable: true
                             }
                         };
-                        this.drafList[key].action = action;
+                        this.draftList[key].action = action;
 
                     });
                     this.showLoader = false;
@@ -150,6 +156,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
             },
             (err: ServerResponse) => {
                 this.showLoader = false;
+                this.toasterService.error(this.resourceService.messages.fmsg.m0006);
             }
         );
     }
@@ -158,10 +165,9 @@ export class DraftComponent extends Workspaceclass implements OnInit {
             this.deleteConfirmModal(param.contentId);
         }
     }
-    public deleteConfirmModal(contentIds, dynamicContent: string = 'Are you sure to delete this content?') {
-        const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
+    public deleteConfirmModal(contentIds, dynamicContent: string = '') {
+        const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
         config.isClosable = true;
-        config.context = { data: dynamicContent };
         config.size = 'mini';
         this.modalService
             .open(config)
@@ -169,18 +175,17 @@ export class DraftComponent extends Workspaceclass implements OnInit {
                 this.delete(contentIds).subscribe(
                     (data: ServerResponse) => {
                         if (data.responseCode === 'OK') {
-                            this.drafList = this.removeContent(this.drafList, contentIds);
+                            this.draftList = this.removeContent(this.draftList, contentIds);
                             this.toasterService.success(this.resourceService.messages.smsg.m0006);
                         }
                     },
                     (err: ServerResponse) => {
                         this.showLoader = false;
-                        this.toasterService.success(this.resourceService.messages.fmsg.m0022);
+                        this.toasterService.error(this.resourceService.messages.fmsg.m0022);
                     }
                 );
             })
             .onDeny(result => {
-                console.log('deny callback');
             });
     }
 

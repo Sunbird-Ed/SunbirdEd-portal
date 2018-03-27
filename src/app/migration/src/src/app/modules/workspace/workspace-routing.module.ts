@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WorkspaceComponent, CreateContentComponent, DraftComponent , ReviewSubmissionsComponent} from './components/index';
+import { WorkspaceComponent, CreateContentComponent, DraftComponent ,
+  ReviewSubmissionsComponent, PublishedComponent} from './components/index';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
@@ -9,8 +10,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       { path: 'create', component: CreateContentComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
-      { path: 'review/:pageNumber', component: ReviewSubmissionsComponent }
-
+      { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
+      { path: 'published/:pageNumber', component: PublishedComponent },
+      {path: '**', redirectTo : 'create'}
     ]
   },
 ];

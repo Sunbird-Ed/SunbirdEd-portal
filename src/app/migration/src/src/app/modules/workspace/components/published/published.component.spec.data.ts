@@ -16,11 +16,13 @@ export const mockRes = {
     'result': {
       'count': 65,
       'content': [{
-        'identifier': 'do_2124339707713126401772',
-        'name': 'Test_Collection_19_mar_2018_20001'
+        'identifier': 'do_2124645801147023361261',
+        'name': 'ntitled textbook',
+        'description': 'Untitled textbook',
       }, {
-        'identifier': 'do_2124339707713126401772',
-        'name': 'Untitled Course'
+        'identifier': 'do_2124341006465925121871',
+        'name': 'Batch EnrolFeb',
+        'description': 'Test Description ',
       }]
     }
   },
@@ -31,12 +33,5 @@ export const mockRes = {
     },
     'responseCode': 'OK',
     'result': []
-  },
-  resourceBundle: {
-    'messages': {
-      'fmsg': {
-        'm0006': 'Fetching draft content failed, please try again'
-      }
-    }
   }
 };
