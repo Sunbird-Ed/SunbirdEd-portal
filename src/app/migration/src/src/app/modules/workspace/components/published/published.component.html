@@ -1,0 +1,43 @@
+<!-- Loader -->
+<div class="twelve wide column margin-top-20" *ngIf="showLoader">
+  <app-loader></app-loader>
+</div>
+
+<div class="ui grid">
+  <div class="twelve wide column">
+    <div class="ui three stackable cards">
+      <div *ngFor="let content of publishedContent">
+       <app-content-card [content]="content" (clickEvent)="deletePublishedContent($event)" ></app-content-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--pagination -->
+<div class="ui grid">
+  <div class="two wide column"></div>
+  <div class="nine wide column padding-top-none">
+    <div class="padding-bottom-10" *ngIf="publishedContent && publishedContent.length > 0 && !showLoader">
+      <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
+
+<!-- Delete confirm Modal-->
+<ng-template let-context let-modal="modal" #modalTemplate>
+    <div class="header">{{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}</div>
+    <div class="content">
+        <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
+    </div>
+    <div class="actions">
+        <button class="ui red button" (click)="modal.deny('denied')">No</button>
+        <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
+    </div>
+</ng-template>

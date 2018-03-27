@@ -11,6 +11,13 @@
     "PAGINATION": {
         "PAGE_STRIP": 5
     },
+    "WORKSPACE": {
+        "PAGE_LIMIT": 9,
+        "contentType" : ["Collection", "TextBook", "Course", "LessonPlan", "Resource"],
+        "mimeType": ["application/vnd.ekstep.ecml-archive", "application/vnd.ekstep.content-collection"],
+        "objectType" : "Content",
+        "lastUpdatedOn": "desc"
+    },
     "API": {
         "ANNOUNCEMENT": {
             "CHANNEL": "web"
