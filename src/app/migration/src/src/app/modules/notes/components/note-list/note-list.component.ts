@@ -1,15 +1,15 @@
-import { ResourceService, ToasterService } from '@sunbird/shared';
-import { NotesService } from '../../services/index';
-import { UserService, ContentService} from '@sunbird/core';
+import { ResourceService, ToasterService, FilterPipe, ServerResponse, UserData } from '@sunbird/shared';
+import { NotesService } from '../../services';
+import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { NoteFormComponent } from '../note-form/note-form.component';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-
+import { INotesListData } from '@sunbird/notes';
 /**
  * This component contains 2 sub components
- * 1)NoteForm: Provides the editor to create and update notes.
+ * 1)NoteForm: Provides an editor to create and update notes.
  * 2)DeleteNote: To delete an existing note.
  */
 
@@ -17,7 +17,7 @@ import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
   styleUrls: ['./note-list.component.css'],
-  entryComponents: [ NoteFormComponent ]
+  entryComponents: [NoteFormComponent]
 })
 export class NoteListComponent implements OnInit {
 
@@ -35,24 +35,19 @@ export class NoteListComponent implements OnInit {
   sortBy = 'desc';
 
   /**
-   * This variablles is used to cross check the response status code.
-   */
-  successResponseCode = 'OK';
-
-  /**
    * The notesList array holds the entire list of existing notes. Each
    * note is saved as an object.
    */
-  notesList: any = [];
+  notesList: Array<INotesListData>;
 
   /**
    *Stores the details of a note selected by the user.
    */
-  selectedNote: any = {};
+  selectedNote: INotesListData;
   /**
    * Stores the index of the selected note in notesList array.
    */
-  selectedIndex: number;
+  selectedIndex = 0;
   /**
    * This variable stores the search input from the search bar.
    */
@@ -61,6 +56,18 @@ export class NoteListComponent implements OnInit {
    * The course id of the selected course.
    */
   courseId: string;
+  /**
+   * The content id of the selected course.
+   */
+  contentId: string;
+  /**
+   * This variable helps in displaying and dismissing the delete modal.
+   */
+  showDelete: false;
+  /**
+   * user id from user service.
+   */
+  userId: string;
   /**
    * To get course and note params.
    */
@@ -88,29 +95,43 @@ export class NoteListComponent implements OnInit {
     public modalService: SuiModalService,
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService) {
-      this.toasterService = toasterService;
-      this.activatedRoute = activatedRoute;
-    }
+    this.toasterService = toasterService;
+    this.activatedRoute = activatedRoute;
+  }
 
   ngOnInit() {
-    /**
-     * Initializing notesList array
-     */
-    this.getAllNotes();
+    this.notesList = [];
+    this.showDelete = false;
 
     /**
      * Initializing selectedNote
     */
-    const selectedNote = this.selectedNote;
-    this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
-    this.noteService.finalNotesListData.subscribe(data => {
-      const id = data.substr(1, data.length);
-      this.notesList = this.notesList.filter(function(note) {
-        return note.id !== id;
-      } );
-    } );
+    this.noteService.updateNotesListData.subscribe(data => {
+      if (data === 0) {
+        this.selectedIndex = 0;
+        this.notesList = this.notesList.filter((note) => {
+          return note.id !== this.selectedNote.id;
+        });
+        this.notesList.unshift(this.noteService.selectedNote);
+        this.selectedNote = this.noteService.selectedNote;
+      } else {
+      this.notesList.unshift(data);
+      this.showNoteList(this.notesList[0], 0);
+      }
+    });
     this.activatedRoute.params.subscribe((params) => {
       this.courseId = params.courseId;
+      this.contentId = params.contentId;
+    });
+    /**
+    * Initializing notesList array
+    */
+   this.userService.userData$.subscribe(
+    (user: UserData) => {
+        if (user && !user.err) {
+          this.userId = user.userProfile.userId;
+          this.getAllNotes();
+        }
     });
 
   }
@@ -119,20 +140,26 @@ export class NoteListComponent implements OnInit {
    * This method calls the search API.
    * @param request contains request body.
    */
-  public searchNote(request) {
+  public getAllNotes() {
 
-    const requestBody = request;
+    const requestBody = {
+      request: {
+        filter: {
+          userid: this.userId,
+          courseid: this.courseId,
+          contentid: this.contentId
+        },
+        sort_by: {
+          updatedDate: this.sortBy
+        }
+      }
+    };
 
     this.noteService.search(requestBody).subscribe(
-      (response) => {
-        if (response && response.responseCode === this.successResponseCode) {
+      (apiResponse: ServerResponse) => {
           this.showLoader = false;
-          this.notesList = response.result.response.note;
+          this.notesList = apiResponse.result.response.note;
           this.selectedNote = this.notesList[0];
-        } else {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
-        }
       },
       (err) => {
         this.showLoader = false;
@@ -146,28 +173,29 @@ export class NoteListComponent implements OnInit {
    * and passes it on to notesService.
    * @param note The selected note from list view.
    */
-  public showNoteList(note, a) {
+  public showNoteList(note, index) {
+    this.selectedIndex = index;
     this.selectedNote = note;
-    this.noteService.selectedNote = this.selectedNote;
-    this.selectedIndex = a;
   }
 
   /**
-   * This method creates the request body for the search API call.
-  */
-  public getAllNotes() {
-    const requestData = {
-      request: {
-      filter: {
-        userid: this.userService.userid,
-        courseid: this.courseId
-      },
-      sort_by: {
-        updatedDate: this.sortBy
-      }
-    }
-  };
-   this.searchNote(requestData);
+   * This event listener recieves the receives showDeleteModal value once the
+   * delete modal is dismissed.
+   */
+  exitModal(showDeleteModal) {
+    this.showDelete = showDeleteModal;
   }
-
+  /**
+   * This event listener updates the notesList array once a note is removed.
+   */
+  finalNotesListData(noteId) {
+    this.notesList = this.notesList.filter((note) => {
+      return note.id !== noteId;
+    });
+    if (this.selectedIndex === 0) {
+      this.showNoteList(this.notesList[0], 0);
+    } else {
+      this.showNoteList(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
+    }
+  }
 }

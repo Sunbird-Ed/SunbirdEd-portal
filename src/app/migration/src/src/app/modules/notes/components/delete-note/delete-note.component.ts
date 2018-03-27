@@ -1,7 +1,8 @@
 import { NotesService } from '../../services/index';
-import { ResourceService, ToasterService } from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { INotesListData } from '@sunbird/notes';
 
 @Component({
   selector: 'app-delete-note',
@@ -10,6 +11,12 @@ import { Router } from '@angular/router';
 })
 
 export class DeleteNoteComponent {
+
+  @Input() showDeleteNoteList: boolean;
+  @Input() DeleteNote: INotesListData;
+  @Output() exitModal = new EventEmitter<boolean>();
+  @Output() finalNotesListData = new EventEmitter<string>();
+
 
   /**
    * This variable helps redirecting the user to NotesList view once
@@ -21,20 +28,16 @@ export class DeleteNoteComponent {
    */
   resourceService: ResourceService;
   /**
-   * This variablles is used to cross check the response status code.
-   */
-  successResponseCode = 'OK';
-  /**
    * This variable holds the entire array of existing notes at any point
    * in time.
    */
-  notesList: any = [];
+  notesList: INotesListData;
   /**
    * This variable helps in displaying and hiding page loader.
    * By default it is assigned a value of 'true'. This ensures that
    * the page loader is displayed the first time the page is loaded.
    */
-  showLoader = true;
+  showLoader: boolean;
   /**
    * To display toaster(if any) after each API call.
    */
@@ -62,7 +65,8 @@ export class DeleteNoteComponent {
    * This method redirects the user from the editor.
   */
   public redirect() {
-    this.route.navigate(['notes']);
+    this.showDeleteNoteList = false;
+    this.exitModal.emit(this.showDeleteNoteList);
   }
 
   /**
@@ -70,21 +74,13 @@ export class DeleteNoteComponent {
   */
   public removeNote() {
     const requestData = {
-      noteId: '/' + this.noteService.selectedNote.id
+    noteId: this.DeleteNote.id
     };
 
     this.noteService.remove(requestData).subscribe(
-      (response: any) => {
-
-        if (response && response.responseCode === this.successResponseCode) {
-          this.notesList = this.notesList.filter(function(note) {
-            return note.id !== this.noteService.selectedNote.id;
-          });
+      (apiResponse: ServerResponse) => {
           this.showLoader = false;
-        } else {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0032);
-        }
+          this.finalNotesListData.emit(this.DeleteNote.id);
   },
   (err) => {
     this.showLoader = false;

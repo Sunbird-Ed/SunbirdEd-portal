@@ -1,5 +1,6 @@
 import { FilterPipe } from './filter.pipe';
-import * as testData from './note-list-component.spec.data';
+// import * as testData from './note-list-component.spec.data';
+import * as testData from './filter-pipe.spec.data';
 import {} from 'jasmine';
 
 describe('FilterPipe', () => {

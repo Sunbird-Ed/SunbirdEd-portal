@@ -2927,3 +2927,8 @@ html {
 {
     left: 300px;
 }
+.wmd-prompt-dialog
+{
+  border: 1px solid #999;
+  background-color: #F5F5F5;
+}

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NotesService } from '../../services/index';
 import { UserService, ContentService, LearnerService } from '@sunbird/core';
@@ -27,7 +27,7 @@ describe('NoteFormComponent', () => {
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule],
       declarations: [NoteFormComponent],
       providers: [UserService, ResourceService, ToasterService, NotesService,
-        ConfigService, LearnerService, ContentService,
+        ConfigService, LearnerService, ContentService, RouterNavigationService,
          { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })
@@ -92,6 +92,9 @@ describe('NoteFormComponent', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    notesService.selectedNote = testData.selectedNote;
+    component.SelectedNote = testData.selectedNote;
+    spyOn(notesService, 'search').and.callFake(() => Observable.throw(testData.searchSuccess));
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -99,7 +102,6 @@ describe('NoteFormComponent', () => {
     component.updateNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.notesList).toBeDefined();
   });
 
   it('Should throw error from else - update API', () => {
@@ -107,7 +109,10 @@ describe('NoteFormComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
+    notesService.selectedNote = testData.selectedNote;
+    component.SelectedNote = testData.selectedNote;
     resourceService.messages = testData.resourceBundle.messages;
+    spyOn(notesService, 'search').and.callFake(() => Observable.throw(testData.searchSuccess));
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -122,7 +127,10 @@ describe('NoteFormComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
+    notesService.selectedNote = testData.selectedNote;
+    component.SelectedNote = testData.selectedNote;
     resourceService.messages = testData.resourceBundle.messages;
+    spyOn(notesService, 'search').and.callFake(() => Observable.throw(testData.searchSuccess));
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -138,10 +146,4 @@ describe('NoteFormComponent', () => {
     expect(component.noteData.note).toBe('');
   });
 
-  it('should call redirect', () => {
-    const route = TestBed.get(Router);
-    component.redirect();
-    fixture.detectChanges();
-    expect(component).toBeDefined();
-  });
 });

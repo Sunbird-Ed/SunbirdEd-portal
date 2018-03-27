@@ -1,4 +1,4 @@
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, UserData } from '@sunbird/shared';
 import { NotesService } from '../../services/index';
 import { UserService, ContentService} from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
@@ -6,7 +6,7 @@ import { NoteFormComponent } from '../note-form/note-form.component';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router} from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-
+import { INotesListData } from '@sunbird/notes';
 
 @Component({
   selector: 'app-note-card',
@@ -37,17 +37,23 @@ export class NoteCardComponent implements OnInit {
    * The notesList array holds the entire list of existing notes. Each
    * note is saved as an object.
    */
-  notesList: any = [];
+  notesList: Array<INotesListData>;
 
   /**
    *Stores the details of a note selected by the user.
    */
-  selectedNote: any = {};
+  selectedNote: INotesListData;
 
   /**
    * The course id of the selected course.
    */
   courseId: string;
+  /**
+   * The content id of the selected course.
+   */
+  contentId: string;
+
+  route: Router;
 
   /**
    * Stores the index of the selected note in notesList array.
@@ -58,6 +64,11 @@ export class NoteCardComponent implements OnInit {
    * This variable stores the search input from the search bar.
    */
   searchData: string;
+
+  /**
+   * user id from user service.
+   */
+  userId: string;
 
   /**
    * To get course and note params.
@@ -86,38 +97,58 @@ export class NoteCardComponent implements OnInit {
     public resourceService: ResourceService,
     public modalService: SuiModalService,
     activatedRoute: ActivatedRoute,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    route: Router) {
       this.toasterService = toasterService;
-      this.activatedRoute = this.activatedRoute;
+      this.activatedRoute = activatedRoute;
+      this.route = route;
     }
+
+
   ngOnInit() {
 
-    this.getAllNotes();
+    this.notesList = [];
     const selectedNote = this.selectedNote;
     this.noteService.updateNotesListData.subscribe(data => this.notesList.push(data));
     this.activatedRoute.params.subscribe((params) => {
       this.courseId = params.courseId;
+      this.contentId = params.contentId;
+    });
+
+     /**
+    * Initializing notesList array
+    */
+   this.userService.userData$.subscribe(
+    (user: UserData) => {
+        if (user && !user.err) {
+          this.userId = user.userProfile.userId;
+          this.getAllNotes();
+        }
     });
   }
 
   /**
    * To gather existing list of notes.
-   * @param request Request body.
    */
-  public searchNote(request) {
-
-    const requestBody = request;
+  public getAllNotes() {
+    const requestBody = {
+      request: {
+      filter: {
+        userid: this.userId,
+        courseid: this.courseId,
+        contentid: this.contentId
+      },
+      sort_by: {
+        updatedDate: this.sortBy
+      }
+    }
+  };
 
     this.noteService.search(requestBody).subscribe(
-      (note) => {
-        if (note && note.responseCode === this.successResponseCode) {
+      (apiResponse: ServerResponse) => {
           this.showLoader = false;
-          this.notesList = note.result.response.note;
+          this.notesList = apiResponse.result.response.note;
           this.selectedNote = this.notesList[0];
-        } else {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
-        }
       },
       (err) => {
         this.showLoader = false;
@@ -137,22 +168,8 @@ export class NoteCardComponent implements OnInit {
     this.noteService.selectedNote = this.selectedNote;
   }
 
-  /**
-   * This method creates the request body for the search API call.
-  */
-  public getAllNotes() {
-    const requestData = {
-      request: {
-      filter: {
-        userid: this.userService.userid,
-        courseid: this.courseId
-      },
-      sort_by: {
-        updatedDate: this.sortBy
-      }
-    }
-  };
-    this.searchNote(requestData);
+  public viewAllNotes() {
+    this.route.navigate([this.courseId, this.contentId, 'notes']);
   }
 
 

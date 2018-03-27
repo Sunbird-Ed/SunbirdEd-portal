@@ -1,10 +1,11 @@
 import { NotesService } from '../../services/index';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, AfterViewChecked, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { INotesListData } from '@sunbird/notes';
 
 @Component({
   selector: 'app-note-form',
@@ -25,12 +26,12 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
   /**
    * To bind the user input and modal.
    */
-  noteData: any = {};
+  noteData: INotesListData; // add interface [Changed]
   /**
    * This variable holds the entire array of existing notes at any point
    * in time.
    */
-  notesList: any = [];
+  notesList: Array<INotesListData>; // add interface [Changed]
   /**
    * This variablles is used to cross check the response status code.
    */
@@ -42,13 +43,21 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    */
   mode: string;
   /**
+   * To save noteId from params.
+   */
+  noteId: string;
+  /**
    * To get course and note params.
    */
   private activatedRoute: ActivatedRoute;
   /**
-   *Stores the details of a note selected by the user.
+   * Stores the details of a note selected by the user.
    */
-  selectedNote: any = {};
+  SelectedNote: INotesListData;
+  /**
+   * To save selectedNote's index value.
+   */
+  selectedIndex: number;
   /**
    * The course id of the selected course.
    */
@@ -58,6 +67,10 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * The content id of the selected content.
    */
   contentId: string;
+  /**
+   * To sort notes array when making a search api call.
+   */
+  sortBy = 'desc';
 
   /**
    * This variable helps in displaying and hiding page loader.
@@ -65,10 +78,15 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * the page loader is displayed the first time the page is loaded.
    */
   showLoader: boolean;
+  apiResponse: ServerResponse;
   /**
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
+  /**
+   * To navigate back to parent component
+   */
+  public routerNavigationService: RouterNavigationService;
 
 
   /**
@@ -87,20 +105,22 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
     public userService: UserService,
     public noteService: NotesService,
     activatedRoute: ActivatedRoute,
-    toasterService: ToasterService) {
+    toasterService: ToasterService,
+    routerNavigationService: RouterNavigationService) {
     this.route = route;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.activatedRoute = activatedRoute;
+    this.routerNavigationService = routerNavigationService;
     this.activatedRoute.params.subscribe((params) => {
     this.mode = params.mode;
+    this.noteId = params.noteId;
     });
   }
 
   private router: Router;
 
   ngOnInit() {
-    this.selectedNote = this.noteService.selectedNote;
     /**
      * Gathering courseId and contentId form parent params
      */
@@ -108,6 +128,39 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
       this.courseId = params.courseId;
       this.contentId = params.contentId;
     });
+    this.SelectedNote = this.noteService.selectedNote;
+    this.noteData = {};
+    if (this.noteId) {
+      const requestBody = {
+        request: {
+          filter: {
+            userid: this.userService.userid,
+            courseid: this.courseId,
+            contentid: this.contentId
+          },
+          sort_by: {
+            updatedDate: this.sortBy
+          }
+        }
+      };
+
+      this.noteService.search(requestBody).subscribe(
+        (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.notesList = apiResponse.result.response.note;
+            this.notesList = this.notesList.filter((note) => {
+              return note.id === this.noteId;
+            });
+            this.SelectedNote = this.notesList[0];
+        },
+        (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+        }
+      );
+    } else {
+    this.SelectedNote = this.noteService.selectedNote;
+    }
   }
 
   ngAfterViewInit() {
@@ -128,7 +181,7 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * This method redirects the user from the editor.
   */
   public redirect() {
-    this.route.navigate(['notes']);
+    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
   }
 
   /**
@@ -159,14 +212,10 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
       }
     };
     this.noteService.create(requestData).subscribe(
-      (response: any ) => {
-        if (response && response.responseCode === this.successResponseCode) {
+      (apiResponse: ServerResponse ) => {
         this.showLoader = false;
-      } else {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-      }
-    },
+
+  },
     (err) => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0030);
@@ -178,25 +227,19 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * This method calls the update API.
    */
   public updateNote() {
-    this.selectedNote.updatedDate = new Date().toISOString();
     const requestData = {
-      noteId: '/' + this.noteService.selectedNote.id,
+      noteId: this.noteService.selectedNote.id,
       request: {
-        note: this.selectedNote.note,
-        title: this.selectedNote.title,
-        updatedBy: this.noteService.selectedNote.userId,
-        updatedDate: this.selectedNote.updatedDate
+        note: this.SelectedNote.note,
+        title: this.SelectedNote.title,
+        updatedBy: this.noteService.selectedNote.userId
       }
     };
+    this.noteService.selectedNote = this.SelectedNote;
     this.noteService.update(requestData).subscribe(
-      (response) => {
-
-        if (response && response.responseCode === this.successResponseCode) {
+      (apiResponse: ServerResponse) => {
           this.showLoader = false;
-        } else {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0034);
-        }
+          this.SelectedNote.updatedDate = new Date().toISOString();
       },
       (err) => {
         this.showLoader = false;

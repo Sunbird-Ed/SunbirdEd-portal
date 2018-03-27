@@ -132,6 +132,91 @@ export const mockRes = {
       }
   },
 
+  selectedNote: {
+    'note': 'Note',
+    'identifier': '01236258171482931279',
+    'updatedBy': '659b011a-06ec-4107-84ad-955e16b0a48a',
+    'createdDate': '2017-10-27 11:22:28:388+0000',
+    'createdBy': '659b011a-06ec-4107-84ad-955e16b0a48a',
+    'contentId': 'do_2123208084795310081772',
+    'id': '01236258171482931279',
+    'updatedDate': '2017-10-27 11:22:28:388+0000',
+    'title': 'Test Note',
+    'userId': '659b011a-06ec-4107-84ad-955e16b0a48a'
+  },
+
+  searchSuccess: {
+    'id': 'api.note.search',
+    'ver': 'v1',
+    'ts': '2018-03-27 06:20:25:297+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': 'a1b383da-e57b-6a06-81d3-73f55bf7b0e5',
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'count': 4,
+        'note': [
+          {
+            'note': 'test3',
+            'identifier': '01246872478619238499',
+            'updatedBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'createdDate': '2018-03-26 10:43:39:666+0000',
+            'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'contentId': 'do_2123229899264573441612',
+            'updatedDate': '2018-03-26 11:34:58:927+0000',
+            'id': '01246872478619238499',
+            'title': 'test3',
+            'userId': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'courseId': 'do_212347136096788480178'
+          },
+          {
+            'note': 'test2',
+            'identifier': '0124687243577098244',
+            'updatedBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'createdDate': '2018-03-26 10:43:29:943+0000',
+            'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'contentId': 'do_2123229899264573441612',
+            'updatedDate': '2018-03-26 11:32:55:730+0000',
+            'id': '0124687243577098244',
+            'title': 'test2 update',
+            'userId': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'courseId': 'do_212347136096788480178'
+          },
+          {
+            'note': 'test',
+            'identifier': '01246874982731776011',
+            'updatedBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'createdDate': '2018-03-26 11:32:45:238+0000',
+            'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'contentId': 'do_2123229899264573441612',
+            'updatedDate': '2018-03-26 11:32:45:239+0000',
+            'id': '01246874982731776011',
+            'title': 'test 102',
+            'userId': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'courseId': 'do_212347136096788480178'
+          },
+          {
+            'note': 'test',
+            'identifier': '0124518934623928320',
+            'updatedBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'createdDate': '2018-03-02 15:48:08:029+0000',
+            'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
+            'contentId': 'do_2124518779778170881128',
+            'id': '0124518934623928320',
+            'updatedDate': '2018-03-02 15:48:30:312+0000',
+            'title': 'ૂાેૂ લદૂ ૈા ોીા ૂોકગલુ િદી ેોનાગલુ મદસાલૂ',
+            'userId': '68777b59-b28b-4aee-88d6-50d46e4c3509'
+          }
+        ]
+      }
+    }
+  },
+
   resourceBundle: {
     'messages': {
       'fmsg': {

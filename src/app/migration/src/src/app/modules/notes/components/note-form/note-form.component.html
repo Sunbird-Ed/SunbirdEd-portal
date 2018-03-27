@@ -10,15 +10,15 @@
       <textarea class="wmd-input" [(ngModel)]="noteData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
     </div>
   </div>
-  <div *ngIf= "mode === 'update'" class="header cardsHeading">{{selectedNote.title}}</div>
+  <div *ngIf= "mode === 'update'" class="header cardsHeading">{{SelectedNote.title}}</div>
   <div *ngIf= "mode === 'update'" class="content">
       <div class="ui fluid icon input">
-        <input type="text" [(ngModel)]="selectedNote.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
+        <input type="text" [(ngModel)]="SelectedNote.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
       </div>
   
       <div class="editor">
         <div id="wmd-button-bar"></div>
-        <textarea class="wmd-input" [(ngModel)]="selectedNote.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
+        <textarea class="wmd-input" [(ngModel)]="SelectedNote.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
       </div>
     </div>
   <div class="actions">

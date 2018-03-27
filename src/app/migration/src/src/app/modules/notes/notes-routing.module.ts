@@ -3,15 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 const routes: Routes = [{
-  path: 'notes',
+  path: ':courseId/:contentId/notes',
   component: NoteListComponent,
-  children: [{path: 'editor/:mode', component: NoteFormComponent},
-  {path: 'remove', component: DeleteNoteComponent},
-  {path: 'noteCard', component: NoteCardComponent,
+  children: [{path: ':mode/:noteId', component: NoteFormComponent},
+             {path: ':mode', component: NoteFormComponent}]
+},
+{
+path: ':courseId/:contentId/noteCard',
+  component: NoteCardComponent,
   children: [{path: ':mode', component: NoteFormComponent}]
-  }
-]
-}];
+}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

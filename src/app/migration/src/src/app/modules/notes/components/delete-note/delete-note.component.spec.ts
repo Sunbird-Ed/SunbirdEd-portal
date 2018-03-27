@@ -34,6 +34,7 @@ describe('DeleteNoteComponent', () => {
     fixture = TestBed.createComponent(DeleteNoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.DeleteNote = testData.userSuccess.result.response.note[0];
   });
 
   it('should create', () => {

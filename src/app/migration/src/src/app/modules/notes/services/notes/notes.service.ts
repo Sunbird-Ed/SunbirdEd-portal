@@ -2,6 +2,7 @@
 import { LearnerService } from '@sunbird/core';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
+import { INotesListData } from '@sunbird/notes';
 
 @Injectable()
 
@@ -28,7 +29,10 @@ export class NotesService {
    * An event emitter to update notesList after removing a note.
    */
   finalNotesListData: EventEmitter<any> = new EventEmitter();
-  selectedNote: any = {};
+  /**
+   * To save 'selectedNote' value from NotesList Component.
+   */
+  selectedNote: INotesListData;
 
   /**
    * API call to gather existing notes.
@@ -52,7 +56,6 @@ export class NotesService {
       data: request
     };
     return this.learnerService.post(option).map(data => {
-
       const returnObj = {
         note: request.request.note,
         userId: request.request.userId,
@@ -63,9 +66,10 @@ export class NotesService {
         updatedBy: request.request.updatedBy,
         createdDate: new Date().toISOString(),
         updatedDate: new Date().toISOString(),
-        id: request.request.id
+        id: data.result.id
       };
       this.updateNotesListData.emit(returnObj);
+      return data;
     });
   }
 
@@ -74,21 +78,23 @@ export class NotesService {
    */
   public update(request) {
     const option = {
-      url: `${this.config.urlConFig.URLS.NOTES.UPDATE}${request.noteId}`,
+      url: `${this.config.urlConFig.URLS.NOTES.UPDATE + '/'}${request.noteId}`,
       data: request
     };
-    return this.learnerService.patch(option);
-  }
+    return this.learnerService.patch(option).map( data => {
+    this.updateNotesListData.emit(0);
+    return data;
+  });
+}
 
   /**
    * API call to remove an existing note.
    */
-  public remove(request: { noteId: string }) {
+  public remove(request) {
     const option = {
-      url: `${this.config.urlConFig.URLS.NOTES.DELETE}${request.noteId}`
-    };
-    return this.learnerService.delete(option).map(data => {
-      this.finalNotesListData.emit(request.noteId);
-    });
+      url: `${this.config.urlConFig.URLS.NOTES.DELETE + '/'}${request.noteId}`,
+      data: request
+        };
+    return this.learnerService.delete(option);
   }
 }
