@@ -1,3 +1,4 @@
+import { NotesModule } from '@sunbird/notes';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { OrgManagementModule } from './modules/org-management/org-management.mod
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
+    NotesModule,
     ResourceModule,
     LearnModule,
     OrgManagementModule
