@@ -24,6 +24,12 @@
       ],
       "@sunbird/notes": [
         "app/modules/notes"
+      ],
+      "@sunbird/resource": [
+        "app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "app/modules/learn"
       ]
     },
     "module": "es2015",
