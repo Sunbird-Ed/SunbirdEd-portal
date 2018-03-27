@@ -165,7 +165,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
             this.deleteConfirmModal(param.contentId);
         }
     }
-    public deleteConfirmModal(contentIds, dynamicContent: string = '') {
+    public deleteConfirmModal(contentIds) {
         const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
         config.isClosable = true;
         config.size = 'mini';
@@ -174,10 +174,8 @@ export class DraftComponent extends Workspaceclass implements OnInit {
             .onApprove(result => {
                 this.delete(contentIds).subscribe(
                     (data: ServerResponse) => {
-                        if (data.responseCode === 'OK') {
-                            this.draftList = this.removeContent(this.draftList, contentIds);
-                            this.toasterService.success(this.resourceService.messages.smsg.m0006);
-                        }
+                        this.draftList = this.removeContent(this.draftList, contentIds);
+                        this.toasterService.success(this.resourceService.messages.smsg.m0006);
                     },
                     (err: ServerResponse) => {
                         this.showLoader = false;

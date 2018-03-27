@@ -71,8 +71,8 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
   pageNumber = 1;
 
   /**
-  * Contains returned object of the pagination service
-  * which is needed to show the pagination on inbox view
+    * Contains returned object of the pagination service
+    * which is needed to show the pagination on inbox view
   */
   pager: IPagination;
 
@@ -88,7 +88,7 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
 
   /**
   * To call resource service which helps to use language constant
- */
+  */
   public resourceService: ResourceService;
 
   /**
@@ -172,7 +172,7 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
     }
   }
 
-  public deleteConfirmModal(contentIds, dynamicContent: string = '') {
+  public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{data: string}, string, string>(this.modalTemplate);
     config.isClosable = true;
     config.size = 'mini';
@@ -181,10 +181,8 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
       .onApprove(result => {
         this.delete(contentIds).subscribe(
           (data: ServerResponse) => {
-            if (data.responseCode === 'OK') {
               this.publishedContent = this.removeContent(this.publishedContent, contentIds);
               this.toasterService.success(this.resourceService.messages.smsg.m0006);
-            }
           },
           (err: ServerResponse) => {
             this.showLoader = false;
