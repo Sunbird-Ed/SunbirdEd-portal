@@ -21,10 +21,6 @@ describe('OrgTypeService', () => {
     });
   });
 
-  it('should be created', inject([OrgTypeService], (service: OrgTypeService) => {
-    expect(service).toBeTruthy();
-  }));
-
   it('should call get org type API and get success', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
     spyOn(learnerService, 'get').and.callFake(() => Observable.of(mockRes.orgTypeSuccess));

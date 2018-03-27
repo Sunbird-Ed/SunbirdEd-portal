@@ -10,9 +10,6 @@ const routes: Routes = [
       { path: 'update/:orgId', component: CreateOrgTypeComponent },
       { path: '**', redirectTo: '' }
     ]
-  },
-  {
-    path: '**', redirectTo: 'home'
   }
 ];
 @NgModule({

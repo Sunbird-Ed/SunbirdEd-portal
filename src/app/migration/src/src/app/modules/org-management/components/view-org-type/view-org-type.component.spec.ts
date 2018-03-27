@@ -48,10 +48,6 @@ describe('ViewOrgTypeComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
-
     it('populateOrgType should return success', () => {
         const learnerService = TestBed.get(LearnerService);
         spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.orgTypeSuccess));

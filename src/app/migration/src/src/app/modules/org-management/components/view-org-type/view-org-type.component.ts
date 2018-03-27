@@ -86,7 +86,7 @@ export class ViewOrgTypeComponent implements OnInit {
     this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse && apiResponse.orgTypeData) {
         this.orgTypes = { ...apiResponse.orgTypeData.result.response };
-        this.orgTypes = _.sortBy(this.orgTypes, function (i) { return i.name.toLowerCase(); });
+        this.orgTypes = _.sortBy(this.orgTypes, function (orgTypeList) { return orgTypeList.name.toLowerCase(); });
         this.showLoader = false;
       } else if (apiResponse && apiResponse.err) {
         this.showLoader = false;

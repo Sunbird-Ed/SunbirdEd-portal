@@ -3,7 +3,6 @@ import { mockRes } from './create-org-type.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -35,7 +34,7 @@ describe('CreateOrgTypeComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
         SharedModule],
-      providers: [HttpClientModule, OrgTypeService, HttpClient,
+      providers: [HttpClientModule, OrgTypeService,
         PaginationService, ToasterService, ResourceService, LearnerService, RouterNavigationService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
@@ -49,10 +48,6 @@ describe('CreateOrgTypeComponent', () => {
     fixture = TestBed.createComponent(CreateOrgTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should call add api and get success response', inject([OrgTypeService, RouterNavigationService],
