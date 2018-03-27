@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Route, Router } from '@angular/router';
-import { OrgManagementService } from '@sunbird/core';
+import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 @Component({

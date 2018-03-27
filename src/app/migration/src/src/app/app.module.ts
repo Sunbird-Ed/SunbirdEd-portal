@@ -12,7 +12,6 @@ import { HomeModule } from '@sunbird/home';
 import { DashboardModule } from '@sunbird/dashboard';
 import { AnnouncementModule } from '@sunbird/announcement';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { AdminModule } from '@sunbird/admin';
 import { ResourceModule } from '@sunbird/resource';
 import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
@@ -35,7 +34,6 @@ import { OrgManagementModule } from './modules/org-management/org-management.mod
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
-    AdminModule,
     ResourceModule,
     LearnModule,
     WorkspaceModule,

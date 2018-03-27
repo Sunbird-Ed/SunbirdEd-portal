@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
-import { OrgManagementService } from '@sunbird/core';
+import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
