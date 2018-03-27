@@ -145,8 +145,8 @@ export class CreateOrgTypeComponent implements OnInit {
       if (url[0].path === 'update') {
         this.createForm = false;
         this.orgTypeService.orgTypeData$.subscribe((orgTypeList) => {
-          if (orgTypeList !== undefined) {
-            _.find(orgTypeList.result.response, (orgList) => {
+          if (orgTypeList && orgTypeList.orgTypeData) {
+            _.find(orgTypeList.orgTypeData.result.response, (orgList) => {
               this.orgTypeId = this.activatedRoute.snapshot.params.orgId;
               if (orgList.id === this.orgTypeId) {
                 this.orgName = new FormControl(orgList.name);

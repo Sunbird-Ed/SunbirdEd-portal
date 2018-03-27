@@ -13,7 +13,7 @@ export const mockRes = {
         'responseCode': 'OK',
         'result': {
             'response': [{
-                'name': 'orgtest2',
+                'name': 'Test org type',
                 'id': '0123602925782302725'
             }]
         }

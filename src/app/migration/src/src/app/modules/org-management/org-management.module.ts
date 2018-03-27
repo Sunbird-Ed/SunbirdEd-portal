@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OrgManagementRoutingModule } from './org-management-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService, ToasterService, RouterNavigationService, SharedModule } from '@sunbird/shared';
-import { OrgTypeService } from './services/org-type.service';
+import { OrgTypeService } from './services';
 import { CreateOrgTypeComponent, ViewOrgTypeComponent } from './components';
 import { ReactiveFormsModule } from '@angular/forms';
 

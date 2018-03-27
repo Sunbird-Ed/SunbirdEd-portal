@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { IorgTypeData } from './../interfaces/org-type';
+import { IorgTypeData } from './../../interfaces';
 
 /**
  * Service to manage organisation type http calls
@@ -62,10 +62,10 @@ export class OrgTypeService {
     };
     this.learner.get(option).subscribe(
       (data: ServerResponse) => {
-        this._orgTypeData$.next(data);
+        this._orgTypeData$.next({ orgTypeData: data, err: null });
       },
       (err: ServerResponse) => {
-        this._orgTypeData$.next({ err: err});
+        this._orgTypeData$.next({ orgTypeData: null, err: err });
       }
     );
   }

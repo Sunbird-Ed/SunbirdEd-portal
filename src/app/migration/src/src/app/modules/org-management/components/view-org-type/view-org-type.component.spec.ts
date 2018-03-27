@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,7 +30,7 @@ describe('ViewOrgTypeComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ViewOrgTypeComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
-                SuiModule, RouterTestingModule,
+                RouterTestingModule,
                 SharedModule],
             providers: [HttpClientModule, OrgTypeService, HttpClient,
                 PaginationService, ToasterService, ResourceService, LearnerService,
@@ -49,20 +48,28 @@ describe('ViewOrgTypeComponent', () => {
         fixture.detectChanges();
     });
 
-
-
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-
     it('populateOrgType should return success', () => {
-        const orgTypeService = TestBed.get(OrgTypeService);
-        // const learnerService = TestBed.get(LearnerService);
-        // spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.orgTypeSuccess));
-        orgTypeService.getOrgTypes();
-        fixture.detectChanges();
+        const learnerService = TestBed.get(LearnerService);
+        spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.orgTypeSuccess));
         component.populateOrgType();
-        fixture.detectChanges();
+        expect(component.orgTypes[0].name).toBe('Test org type');
+        expect(component.orgTypes[0].id).toBe('0123602925782302725');
+        expect(component.showLoader).toBe(false);
+    });
+
+    it('populateOrgType should return error', () => {
+        const toasterService = TestBed.get(ToasterService);
+        spyOn(toasterService, 'error').and.callThrough();
+        const resourceService = TestBed.get(ResourceService);
+        resourceService.messages = mockRes.resourceBundle.messages;
+        const learnerService = TestBed.get(LearnerService);
+        spyOn(learnerService, 'get').and.returnValue(Observable.throw(mockRes.orgTypeError));
+        component.populateOrgType();
+        expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+        expect(component.showLoader).toBe(false);
     });
 });

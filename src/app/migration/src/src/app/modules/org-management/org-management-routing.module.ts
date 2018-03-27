@@ -6,9 +6,13 @@ const routes: Routes = [
   {
     path: 'org-type', component: ViewOrgTypeComponent,
     children: [
-      { path: 'create', component: CreateOrgTypeComponent },
-      { path: 'update/:orgId', component: CreateOrgTypeComponent }
+      { path: 'create', component: CreateOrgTypeComponent},
+      { path: 'update/:orgId', component: CreateOrgTypeComponent },
+      { path: '**', redirectTo: '' }
     ]
+  },
+  {
+    path: '**', redirectTo: 'home'
   }
 ];
 @NgModule({

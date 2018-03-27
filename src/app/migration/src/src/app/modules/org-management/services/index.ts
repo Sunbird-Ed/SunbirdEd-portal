@@ -1,1 +1,1 @@
-export * from  './org-type.service';
+export * from  './org-type/org-type.service';
