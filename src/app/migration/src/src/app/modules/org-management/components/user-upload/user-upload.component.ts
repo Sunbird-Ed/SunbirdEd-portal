@@ -7,10 +7,10 @@ import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  templateUrl: './user-upload.component.html',
+  styleUrls: ['./user-upload.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   sampleUserCSV: Array<Object>;
   /**

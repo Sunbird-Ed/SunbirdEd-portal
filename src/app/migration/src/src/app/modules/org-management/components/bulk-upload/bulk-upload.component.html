@@ -1,11 +1,11 @@
 <div *ngIf='permissionService.permissionAvailable' appPermission [permission]='admin'>
   <div class="twelve wide column padding-top-none padding-bottom-15">
-    <a class="ui cursor-pointer" routerLink="uploadOrg">
+    <a class="ui cursor-pointer" routerLink="organizationUpload">
       {{resourceService?.frmelmnts?.instn?.t0015}}
     </a>
   </div>
   <div class="twelve wide column padding-top-none padding-bottom-15">
-    <a class="ui cursor-pointer" routerLink="uploadUser">
+    <a class="ui cursor-pointer" routerLink="userUpload">
       {{resourceService?.frmelmnts?.instn?.t0016}}
     </a>
   </div>

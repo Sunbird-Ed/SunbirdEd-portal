@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
-import { LearnerService } from './../learner/learner.service';
+import { LearnerService } from '@sunbird/core';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
 
@@ -22,6 +22,9 @@ export class OrgManagementService {
     this.learnerService = learnerService;
     this.configService = configService;
   }
+    /**
+ * This method is used to call upload api to upload organizations file
+ */
   public bulkOrgUpload(req): Observable<ServerResponse> {
     const httpOptions: RequestParam = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.ORGANIZATIONS_UPLOAD,
@@ -29,6 +32,9 @@ export class OrgManagementService {
     };
     return this.learnerService.post(httpOptions);
   }
+    /**
+ * This method is used to call upload api to upload users file
+ */
   public bulkUserUpload(req): Observable<ServerResponse> {
     const httpOptions: RequestParam = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.USERS_UPLOAD,
@@ -36,6 +42,9 @@ export class OrgManagementService {
     };
     return this.learnerService.post(httpOptions);
   }
+      /**
+ * This method is used to call status api to get the status of uploaded file
+ */
   bulkUploadStatus(processId) {
     const options = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.STATUS + '/' + processId

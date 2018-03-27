@@ -3,7 +3,6 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '@sunbird/core';
-import { StatusResponse } from '../../interfaces/IStatusResponse';
 
 @Component({
   selector: 'app-status',
