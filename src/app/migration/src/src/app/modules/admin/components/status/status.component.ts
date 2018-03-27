@@ -3,6 +3,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '@sunbird/core';
+import { StatusResponse } from '../../interfaces/IStatusResponse';
 
 @Component({
   selector: 'app-status',
@@ -10,9 +11,21 @@ import { OrgManagementService } from '@sunbird/core';
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent implements OnInit {
+  /**
+* Contains success status result with process id
+*/
   success: Array<any>;
+  /**
+* Contains failure status result with process id
+*/
   failure: Array<any>;
+  /**
+* Contains process id
+*/
   processId: string;
+  /**
+* Used to store the type of upload, either organization or user
+*/
   objectType: string;
   /**
 * To show toaster(error, success etc) after any API calls
@@ -22,6 +35,9 @@ export class StatusComponent implements OnInit {
 * To call admin service which helps to upload csv file
 */
   public orgManagementService: OrgManagementService;
+  /**
+ * To show/hide loader
+ */
   showLoader = false;
   /**
    * To call resource service which helps to use language constant
@@ -49,16 +65,25 @@ export class StatusComponent implements OnInit {
     this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
   }
-
+  /**
+ * This method is used to initialize the formbuilder and to validate process id form field
+ */
   ngOnInit() {
     this.statusForm = this.sbFormBuilder.group({
       processId: ['', null]
     });
   }
+  /**
+ * This method helps to redirect to the parent component
+ * page, i.e, bulk upload page
+ */
   public redirect() {
     this.processId = '';
     this.router.navigate(['bulkUpload']);
   }
+  /**
+ * This method helps to fetch bulk upload status based on the given process id
+ */
   getBulkUploadStatus(processId) {
     this.showLoader = true;
     this.orgManagementService.bulkUploadStatus(this.statusForm.value.processId).subscribe(
@@ -71,11 +96,13 @@ export class StatusComponent implements OnInit {
         this.toasterService.success(this.resourceService.messages.smsg.m0032);
       }, err => {
         this.showLoader = false;
-        const errMsg = (err.error.params && err.error.params.errmsg) ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
+        const errMsg = err.error.params.errmsg ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
         this.toasterService.error(errMsg);
       });
   }
-
+  /**
+ * This method helps to get the status result from the api
+ */
   getStatusResult(status) {
     return this[status];
   }

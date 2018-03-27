@@ -17,10 +17,25 @@ export class UserComponent implements OnInit {
 * To call admin service which helps to upload csv file
 */
   public orgManagementService: OrgManagementService;
+  /**
+* Contains process id
+*/
   processId: string;
+  /**
+* Used to display filename in html
+*/
   fileName: string;
+  /**
+* Used to show/hide error message
+*/
   bulkUploadError: boolean;
+  /**
+* Contains error message to show in html
+*/
   bulkUploadErrorMessage: string;
+  /**
+* To show/hide loader
+*/
   showLoader: boolean;
   /**
    * Upload org form name
@@ -52,7 +67,10 @@ export class UserComponent implements OnInit {
     this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
   }
-
+  /**
+ * This method initializes the user form and validates it,
+ * also defines a csv format to be downloaded
+ */
   ngOnInit() {
     this.uploadUserForm = this.sbFormBuilder.group({
       provider: ['', null],
@@ -81,11 +99,18 @@ export class UserComponent implements OnInit {
     }];
     this.showLoader = false;
   }
+  /**
+ * This method helps to redirect to the parent component
+ * page, i.e, bulk upload page
+ */
   public redirect() {
     this.fileName = '';
     this.processId = '';
     this.router.navigate(['bulkUpload']);
   }
+  /**
+ * This method helps to download a sample csv file
+ */
   public downloadSample() {
     const options = {
       fieldSeparator: ',',
@@ -96,6 +121,9 @@ export class UserComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     new Angular2Csv(this.sampleUserCSV, 'Sample_Users', options);
   }
+  /**
+ * This method helps to call uploadOrg method to upload a csv file
+ */
   openImageBrowser(inputbtn) {
     console.log('inside openImageBrowser');
     if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
@@ -107,6 +135,9 @@ export class UserComponent implements OnInit {
       this.bulkUploadErrorMessage = this.resourceService.messages.emsg.m0003;
     }
   }
+  /**
+ * This method helps to upload a csv file and return process id
+ */
   uploadUser(file) {
     const data = this.uploadUserForm.value;
     if (file[0] && file[0].name.match(/.(csv)$/i)) {
@@ -133,6 +164,9 @@ export class UserComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
   }
+  /**
+ * This method is used to show error message
+ */
   closeBulkUploadError() {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';

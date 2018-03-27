@@ -24,7 +24,6 @@ export class BulkUploadComponent implements OnInit {
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
-  public bulkOrgProcessId: boolean;
   /**
  * Constructor to create injected service(s) object
  *
@@ -38,7 +37,9 @@ export class BulkUploadComponent implements OnInit {
     this.config = config;
     this.permissionService = permissionService;
   }
-
+  /**
+ * This method is used to provide permission to show the upload links
+ */
   ngOnInit() {
     this.admin = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
   }

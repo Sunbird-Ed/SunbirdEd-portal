@@ -124,6 +124,13 @@ export const mockRes = {
         }
     },
     resourceBundle: {
-
+        'messages': {
+            'smsg': {
+                'm0032': 'Status fetched successfully'
+            },
+            'fmsg': {
+                'm0051': 'Something went wrong, please try again later...'
+            }
+        }
     }
 };

@@ -11,13 +11,16 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 })
 export class OrganizationUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  /**
+ * To show/hide loader
+ */
   showLoader = false;
   /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
   /**
- * To call resource service which helps to use language constant
+ * To call org-management service which helps to upload bulk data
  */
   public orgManagementService: OrgManagementService;
   /**
@@ -86,9 +89,15 @@ export class OrganizationUploadComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     new Angular2Csv(this.sampleOrgCSV, 'Sample_Organizations', options);
   }
+  /**
+ * This method helps to call uploadOrg method to upload a csv file
+ */
   openImageBrowser(inputbtn) {
     inputbtn.click();
   }
+  /**
+ * This method helps to upload a csv file and return process id
+ */
   uploadOrg(file) {
     if (file[0] && file[0].name.match(/.(csv)$/i)) {
       this.showLoader = true;
