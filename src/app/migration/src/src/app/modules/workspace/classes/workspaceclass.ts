@@ -4,26 +4,33 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
  * Base class for workspace module
- */
+*/
 export class Workspaceclass {
     /**
-* Constructor to create injected service(s) object
-*
-* Default method of Draft Component class
-* @param {SearchService} SearchService Reference of SearchService
- @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
-*/
-    constructor(public searchService: SearchService, public workSpaceService: WorkSpaceService ) {
-    }
+     * Refernce for search service
+    */
+    public searchService: SearchService;
+    /**
+     * Refernce for search service
+    */
+     public workSpaceService: WorkSpaceService;
 
+    /**
+    * Constructor to create injected service(s) object
+    * Default method of Draft Component class
+    * @param {SearchService} SearchService Reference of SearchService
+      @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
+    */
+    constructor(searchService: SearchService, workSpaceService: workSpaceService ) {
+        this.searchService = searchService;
+        this.workSpaceService = workSpaceService;
+    }
+    /**
+    * Search Api call
+    */
     search(searchParams) {
-        /**
-        * Search Api call
-         */
         return this.searchService.searchContentByUserId(searchParams);
-
     }
-
     /**
     * Delete  Api call .
     */

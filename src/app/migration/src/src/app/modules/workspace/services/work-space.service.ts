@@ -10,13 +10,13 @@ import { DeleteParam } from './../interfaces/delteparam';
 @Injectable()
 export class WorkSpaceService {
   /**
- * reference of config service.
- */
+  * reference of config service.
+  */
   public config: ConfigService;
 
   /**
-     * Reference of content service.
-     */
+   * Reference of content service.
+  */
   public content: ContentService;
 
   /**
@@ -24,7 +24,7 @@ export class WorkSpaceService {
     *
     * @param {ConfigService} config ConfigService reference
     * @param {HttpClient} http HttpClient reference
-    */
+  */
   constructor(config: ConfigService, content: ContentService) {
     this.content = content;
     this.config = config;

@@ -11,10 +11,7 @@ export interface SearchParam {
      * Content type - course,textbook,content
      */
     contentType?: string[];
-    /**
-     * Content concept
-     */
-    concept?: Array<object>;
+
     /**
      * Additional params - userId, lastUpdatedOn, sort etc
      */
