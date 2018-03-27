@@ -7,13 +7,13 @@ import * as _ from 'lodash';
 */
 export class Workspaceclass {
     /**
-     * Refernce for search service
+     * Reference for search service
     */
     public searchService: SearchService;
     /**
-     * Refernce for search service
+     * Reference for WorkSpaceService
     */
-     public workSpaceService: WorkSpaceService;
+    public workSpaceService: WorkSpaceService;
 
     /**
     * Constructor to create injected service(s) object
@@ -21,7 +21,7 @@ export class Workspaceclass {
     * @param {SearchService} SearchService Reference of SearchService
       @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
     */
-    constructor(searchService: SearchService, workSpaceService: workSpaceService ) {
+    constructor(searchService: SearchService, workSpaceService: WorkSpaceService ) {
         this.searchService = searchService;
         this.workSpaceService = workSpaceService;
     }
