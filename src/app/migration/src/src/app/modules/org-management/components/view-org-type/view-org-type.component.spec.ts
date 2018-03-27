@@ -72,4 +72,18 @@ describe('ViewOrgTypeComponent', () => {
         expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
         expect(component.showLoader).toBe(false);
     });
+
+
+    it('should call orgTypeUpdateEvent emitter', () => {
+        const orgTypeService = TestBed.get(OrgTypeService);
+        component.orgTypes = mockRes.orgTypeSuccess.result.response;
+        orgTypeService.orgTypeUpdateEvent.emit();
+        spyOn(orgTypeService, 'orgTypeUpdateEvent').and.callFake(() =>
+            Observable.of({ 'name': 'Test org type', 'id': '0123602925782302725' }));
+        orgTypeService.orgTypeUpdateEvent().subscribe(
+            data => {
+                expect(data.id).toEqual(component.orgTypes[0].id);
+            }
+        );
+    });
 });
