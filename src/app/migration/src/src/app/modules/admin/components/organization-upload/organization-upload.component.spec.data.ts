@@ -30,5 +30,15 @@ export const mockRes = {
         'responseCode': 'CLIENT_ERROR',
         'result': {
         }
+    },
+    resourceBundle: {
+        'messages': {
+            'stmsg': {
+                'm0080': 'Please upload file in csv formate only'
+            },
+            'smsg': {
+                'm0031': 'Organizations uploaded successfully'
+            }
+        }
     }
 };

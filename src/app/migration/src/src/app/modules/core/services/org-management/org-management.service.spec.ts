@@ -21,83 +21,70 @@ describe('OrgManagementService', () => {
   it('should be created', inject([OrgManagementService], (service: OrgManagementService) => {
     expect(service).toBeTruthy();
   }));
-  it('should call get status api and return success response', inject([OrgManagementService],
-    (orgManagementService: OrgManagementService) => {
+  it('should call get status api and return success response', inject([OrgManagementService, LearnerService],
+    (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
       const processId = '012465880638177280660';
-      spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
+      spyOn(learnerService, 'get').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
       orgManagementService.bulkUploadStatus(processId).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
     }));
-  it('should call upload method for organization and return success response',
-    inject([OrgManagementService], (orgManagementService: OrgManagementService) => {
-      const data = [{
-        name: 'organizations.csv',
-        orgName: 'new org',
-        isRootOrg: 'TRUE',
-        channel: 'channel110001',
-        externalId: 'ugc0001',
-        provider: 'technical002',
-        description: 'desc',
-        homeUrl: 'googlehomeurl',
-        orgCode: 'orgcode12345',
-        orgType: '',
-        preferredLanguage: 'hindi',
-        theme: 'goodtheme',
-        contactDetail: ''
-      }];
-      spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
-      orgManagementService.bulkOrgUpload(data).subscribe(
+  it('should call bulkOrgUpload method',
+    inject([OrgManagementService, LearnerService], (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
+      const request = {
+        data: [{
+          name: 'organizations.csv',
+          orgName: 'new org',
+          isRootOrg: 'TRUE',
+          channel: 'channel110001',
+          externalId: 'ugc0001',
+          provider: 'technical002',
+          description: 'desc',
+          homeUrl: 'googlehomeurl',
+          orgCode: 'orgcode12345',
+          orgType: '',
+          preferredLanguage: 'hindi',
+          theme: 'goodtheme',
+          contactDetail: ''
+        }]
+      };
+      const formData = new FormData();
+      formData.append('org', request[0]);
+      const fd = formData;
+      spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
+      orgManagementService.bulkOrgUpload(request).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
     }));
-  it('should call upload method for user and return success response',
-    inject([OrgManagementService], (orgManagementService: OrgManagementService) => {
-      const data = [{
-        name: 'organizations.csv',
-        orgName: 'new org',
-        isRootOrg: 'TRUE',
-        channel: 'channel110001',
-        externalId: 'ugc0001',
-        provider: 'technical002',
-        description: 'desc',
-        homeUrl: 'googlehomeurl',
-        orgCode: 'orgcode12345',
-        orgType: '',
-        preferredLanguage: 'hindi',
-        theme: 'goodtheme',
-        contactDetail: ''
-      }];
-      spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
-      orgManagementService.bulkUserUpload(data).subscribe(
-        apiResponse => {
-          // expect(apiResponse.responseCode).toBe('OK');
-        });
-      expect(orgManagementService.upload(data)).toHaveBeenCalled();
-    }));
-  it('should call get status api and return success response', inject([OrgManagementService, ConfigService],
-    (orgManagementService: OrgManagementService) => {
-      const data = [{
-        name: 'organizations.csv',
-        orgName: 'new org',
-        isRootOrg: 'TRUE',
-        channel: 'channel110001',
-        externalId: 'ugc0001',
-        provider: 'technical002',
-        description: 'desc',
-        homeUrl: 'googlehomeurl',
-        orgCode: 'orgcode12345',
-        orgType: '',
-        preferredLanguage: 'hindi',
-        theme: 'goodtheme',
-        contactDetail: ''
-      }];
-      spyOn(orgManagementService, 'upload').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
-      orgManagementService.upload(data).subscribe(
+  it('should call bulkUserUpload method',
+    inject([OrgManagementService, LearnerService], (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
+      const request = {
+        data: [{
+          name: 'organizations.csv',
+          orgName: 'new org',
+          isRootOrg: 'TRUE',
+          channel: 'channel110001',
+          externalId: 'ugc0001',
+          provider: 'technical002',
+          description: 'desc',
+          homeUrl: 'googlehomeurl',
+          orgCode: 'orgcode12345',
+          orgType: '',
+          preferredLanguage: 'hindi',
+          theme: 'goodtheme',
+          contactDetail: ''
+        }]
+      };
+      const formData = new FormData();
+      formData.append('org', request[0]);
+      const fd = formData;
+      spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
+      orgManagementService.bulkUserUpload(fd).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
+      // expect(orgManagementService.bulkUserUpload(fd)).toHaveBeenCalled();
     }));
 });

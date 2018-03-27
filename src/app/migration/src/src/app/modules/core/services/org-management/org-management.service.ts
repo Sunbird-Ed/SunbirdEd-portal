@@ -14,33 +14,25 @@ export class OrgManagementService {
 * reference of learner service.
 */
   public learnerService: LearnerService;
-
-  constructor(configService: ConfigService, learnerService: LearnerService) {
-    this.learnerService = learnerService;
-    this.configService = configService;
-  }
-  public bulkOrgUpload(req) {
-    const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.BULK.ORGANIZATIONS_UPLOAD,
-      data: req
-    };
-    return this.upload(option);
-  }
-  public bulkUserUpload(req) {
-    const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.BULK.USERS_UPLOAD,
-      data: req
-    };
-    return this.upload(option);
-  }
   /**
 * for making upload api calls
 * @param {RequestParam} requestParam interface
 */
-  upload(requestParam: RequestParam): Observable<ServerResponse> {
-    const httpOptions = {
-      data: requestParam.data,
-      url: requestParam.url
+  constructor(configService: ConfigService, learnerService: LearnerService) {
+    this.learnerService = learnerService;
+    this.configService = configService;
+  }
+  public bulkOrgUpload(req): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.ADMIN.BULK.ORGANIZATIONS_UPLOAD,
+      data: req
+    };
+    return this.learnerService.post(httpOptions);
+  }
+  public bulkUserUpload(req): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.ADMIN.BULK.USERS_UPLOAD,
+      data: req
     };
     return this.learnerService.post(httpOptions);
   }

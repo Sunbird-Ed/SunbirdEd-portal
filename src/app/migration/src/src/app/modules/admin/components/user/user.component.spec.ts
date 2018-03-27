@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -42,13 +42,14 @@ describe('UserComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should call redirect', inject([Router], (router) => {
+  it('should call redirect', () => {
+    const router = TestBed.get(Router);
     spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
     expect(component.redirect).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
-  }));
+  });
   xit('should call downloadSample method to download a csv file', () => {
     spyOn(component, 'downloadSample').and.callThrough();
     component.downloadSample();
@@ -77,45 +78,47 @@ describe('UserComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-  it('should call uploadUser method and return success response with processId', inject([OrgManagementService,
-    ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {
-      const file = [{
-        name: 'users.csv',
-        firstName: 'Vaish',
-        lastName: 'M',
-        phone: '7899918811',
-        email: 'vaish@gmail.com',
-        userName: 'vaishnavi',
-        password: 'vaish',
-        provider: '',
-        phoneVerified: '',
-        emailVerified: '',
-        roles: 'CONTENT_CREATOR',
-        position: '',
-        grade: '',
-        location: '',
-        dob: '',
-        gender: '',
-        language: '',
-        profileSummary: '',
-        subject: '',
-        user: file,
-        externalId: 5678,
-        organizationId: 9876
-      }];
-      spyOn(component, 'uploadUser').and.callThrough();
-      spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
-      component.uploadUser(file);
-      orgManagementService.bulkUserUpload().subscribe(
-        apiResponse => {
-          console.log('api', apiResponse);
-          expect(component.processId).not.toBe(null);
-          expect(component.showLoader).toBe(false);
-          expect(apiResponse.responseCode).toBe('OK');
-        });
-      spyOn(resourceService, 'getResource').and.callThrough();
-      spyOn(toasterService, 'success').and.callThrough();
-    }));
+  it('should call uploadUser method and return success response with processId', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const http = TestBed.get(HttpClient);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const file = [{
+      name: 'users.csv',
+      firstName: 'Vaish',
+      lastName: 'M',
+      phone: '7899918811',
+      email: 'vaish@gmail.com',
+      userName: 'vaishnavi',
+      password: 'vaish',
+      provider: '',
+      phoneVerified: '',
+      emailVerified: '',
+      roles: 'CONTENT_CREATOR',
+      position: '',
+      grade: '',
+      location: '',
+      dob: '',
+      gender: '',
+      language: '',
+      profileSummary: '',
+      subject: '',
+      externalId: 5678,
+      organizationId: 9876
+    }];
+    spyOn(component, 'uploadUser').and.callThrough();
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
+    component.uploadUser(file);
+    orgManagementService.bulkUserUpload().subscribe(
+      apiResponse => {
+        console.log('api', apiResponse);
+        expect(component.processId).not.toBe(null);
+        expect(component.showLoader).toBe(false);
+        expect(apiResponse.responseCode).toBe('OK');
+      });
+    spyOn(resourceService, 'getResource').and.callThrough();
+    spyOn(toasterService, 'success').and.callThrough();
+  });
   it('should not call uploadUser method', () => {
     const file = '';
     spyOn(component, 'uploadUser').and.callThrough();
@@ -128,38 +131,41 @@ describe('UserComponent', () => {
     //   }
     // )
   });
-  it('should call uploadUser method and return error response', inject([OrgManagementService,
-    ResourceService, ToasterService, HttpClient], (orgManagementService, resourceService, toasterService, http) => {
-      const file = [{
-        firstName: 'Vaish',
-        lastName: 'M',
-        phone: '7899918811',
-        email: 'vaish@gmail.com',
-        userName: 'vaishnavi',
-        password: 'vaish',
-        provider: '',
-        phoneVerified: '',
-        emailVerified: '',
-        roles: 'CONTENT_CREATOR',
-        position: '',
-        grade: '',
-        location: '',
-        dob: '',
-        gender: '',
-        language: '',
-        profileSummary: '',
-        subject: ''
-      }];
-      spyOn(component, 'uploadUser').and.callThrough();
-      spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
-      component.uploadUser(file);
-      orgManagementService.bulkUserUpload().subscribe(
-        apiResponse => {
-          expect(component.showLoader).toBe(false);
-          expect(apiResponse.responseCode).toBe('CLIENT_ERROR');
-        }
-      );
-      spyOn(resourceService, 'getResource').and.callThrough();
-      spyOn(toasterService, 'error').and.callThrough();
-    }));
+  it('should call uploadUser method and return error response', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const http = TestBed.get(HttpClient);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    const file = [{
+      firstName: 'Vaish',
+      lastName: 'M',
+      phone: '7899918811',
+      email: 'vaish@gmail.com',
+      userName: 'vaishnavi',
+      password: 'vaish',
+      provider: '',
+      phoneVerified: '',
+      emailVerified: '',
+      roles: 'CONTENT_CREATOR',
+      position: '',
+      grade: '',
+      location: '',
+      dob: '',
+      gender: '',
+      language: '',
+      profileSummary: '',
+      subject: ''
+    }];
+    spyOn(component, 'uploadUser').and.callThrough();
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
+    component.uploadUser(file);
+    orgManagementService.bulkUserUpload().subscribe(
+      apiResponse => {
+        expect(component.showLoader).toBe(false);
+        expect(apiResponse.responseCode).toBe('CLIENT_ERROR');
+      }
+    );
+    spyOn(resourceService, 'getResource').and.callThrough();
+    spyOn(toasterService, 'error').and.callThrough();
+  });
 });

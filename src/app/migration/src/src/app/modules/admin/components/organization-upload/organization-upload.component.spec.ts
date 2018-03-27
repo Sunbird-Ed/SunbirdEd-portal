@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -60,67 +60,82 @@ describe('OrganizationUploadComponent', () => {
     spyOn(component, 'openImageBrowser').and.callThrough();
     expect(component.openImageBrowser).toHaveBeenCalled();
   });
-  it('should  call uploadOrg method and return success response with process id', inject([OrgManagementService,
-    ResourceService, ToasterService, HttpClient],
-    (orgManagementService, resourceService, toasterService, http) => {
-      // component.showLoader = false;
-      const file = [{
-        name: 'organizations.csv',
-        orgName: 'new org',
-        isRootOrg: 'TRUE',
-        channel: 'channel110001',
-        externalId: 'ugc0001',
-        provider: 'technical002',
-        description: 'desc',
-        homeUrl: 'googlehomeurl',
-        orgCode: 'orgcode12345',
-        orgType: '',
-        preferredLanguage: 'hindi',
-        theme: 'goodtheme',
-        contactDetail: ''
-      }];
-      spyOn(component, 'uploadOrg').and.callThrough();
-      spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
-      component.uploadOrg(file);
-      orgManagementService.bulkOrgUpload().subscribe(
-        apiResponse => {
-          expect(apiResponse.responseCode).toBe('OK');
-          expect(component.fileName).toBeDefined();
-        });
-      spyOn(resourceService, 'getResource').and.callThrough();
-      spyOn(toasterService, 'success').and.callThrough();
-      // expect(component.showLoader).toBe(false);
-    }));
-  it('should not call uploadOrg method and return error response', inject([OrgManagementService,
-    ResourceService, ToasterService, HttpClient],
-    (orgManagementService, resourceService, toasterService, http) => {
-      // component.showLoader = false;
-      const file = '';
-      spyOn(component, 'uploadOrg').and.callThrough();
-      spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
-      component.uploadOrg(file);
-      orgManagementService.bulkOrgUpload().subscribe(
-        apiResponse => { },
-        err => {
-          expect(err.responseCode).toBe('CLIENT_ERROR');
-        });
-      expect(component.showLoader).toBe(false);
-      spyOn(resourceService, 'getResource').and.callThrough();
-      spyOn(toasterService, 'error').and.callThrough();
-      // expect(component.showLoader).toBe(false);
-    }));
-  it('should not call uploadOrg method', inject([ResourceService, ToasterService],
-    (resourceService, toasterService) => {
-    const file = '';
+  it('should  call uploadOrg method and return success response with process id', () => {
+    // component.showLoader = false;
+    const file = [{
+      name: 'organizations.csv',
+      orgName: 'new org',
+      isRootOrg: 'TRUE',
+      channel: 'channel110001',
+      externalId: 'ugc0001',
+      provider: 'technical002',
+      description: 'desc',
+      homeUrl: 'googlehomeurl',
+      orgCode: 'orgcode12345',
+      orgType: '',
+      preferredLanguage: 'hindi',
+      theme: 'goodtheme',
+      contactDetail: ''
+    }];
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const http = TestBed.get(HttpClient);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = testData.mockRes.resourceBundle.messages;
+    spyOn(component, 'uploadOrg').and.callThrough();
+    spyOn(resourceService, 'getResource').and.callThrough();
+    spyOn(toasterService, 'success').and.callThrough();
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
+    component.uploadOrg(file);
+    orgManagementService.bulkOrgUpload().subscribe(
+      apiResponse => {
+        expect(apiResponse.responseCode).toBe('OK');
+        expect(component.fileName).toBeDefined();
+        component.fileName = file[0].name;
+        component.processId = testData.mockRes.successResponse.result.processId;
+      });
+  });
+  it('should call uploadOrg method and return error response', () => {
+    const file = [{
+      name: 'users.csv',
+      firstName: 'Vaish',
+      lastName: 'M',
+      phone: '7899918811',
+      email: 'vaish@gmail.com',
+      userName: 'vaishnavi',
+      password: 'vaish',
+      provider: '',
+      phoneVerified: '',
+      emailVerified: ''
+    }];
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const http = TestBed.get(HttpClient);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = testData.mockRes.resourceBundle.messages;
+    spyOn(component, 'uploadOrg').and.callThrough();
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
+    component.uploadOrg(file);
+    orgManagementService.bulkOrgUpload().subscribe(
+      apiResponse => { },
+      err => {
+        expect(err.responseCode).toBe('CLIENT_ERROR');
+        orgManagementService.toasterService.error(err.error.params.errmsg);
+        spyOn(resourceService, 'getResource').and.callThrough();
+        spyOn(toasterService, 'error').and.callThrough();
+      });
+    expect(component.showLoader).toBe(false);
+    // expect(component.showLoader).toBe(false);
+  });
+  it('should not call uploadOrg method', () => {
+    const file = [{
+      name: 'test.png'
+    }];
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = testData.mockRes.resourceBundle.messages;
     spyOn(component, 'uploadOrg').and.callThrough();
     component.uploadOrg(file);
     spyOn(toasterService, 'error').and.callThrough();
-    // expect(component.bulkUploadError).toBe(true);
-    // orgManagementService.bulkOrgUpload().subscribe(
-    //   apiResponse => {
-    //     expect(component.showLoader).toBe(false);
-    //     expect(apiResponse.responseCode).toBe('OK');
-    //   }
-    // )
-  }));
+  });
 });

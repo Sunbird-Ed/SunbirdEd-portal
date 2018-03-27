@@ -12,7 +12,7 @@ export const mockRes = {
         },
         'responseCode': 'OK',
         'result': {
-            'processId': '01246821016410521656',
+            'processId': '012465880638177280660',
             'response': 'SUCCESS'
         }
     }

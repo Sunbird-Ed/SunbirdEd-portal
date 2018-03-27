@@ -25,10 +25,6 @@ export class OrganizationUploadComponent implements OnInit {
  */
   public config: ConfigService;
   /**
- * Upload organization access roles
- */
-  uploadOrganizations: Array<string>;
-  /**
   * Contains unique process id
   */
   processId: string;
@@ -54,7 +50,6 @@ export class OrganizationUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.uploadOrganizations = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.sampleOrgCSV = [{
       orgName: 'orgName',
       isRootOrg: 'isRootOrg',
@@ -78,6 +73,9 @@ export class OrganizationUploadComponent implements OnInit {
     this.processId = '';
     this.router.navigate(['/bulkUpload']);
   }
+  /**
+* This method helps to download a sample csv file
+*/
   public downloadSample() {
     const options = {
       fieldSeparator: ',',
@@ -89,7 +87,6 @@ export class OrganizationUploadComponent implements OnInit {
     new Angular2Csv(this.sampleOrgCSV, 'Sample_Organizations', options);
   }
   openImageBrowser(inputbtn) {
-    console.log('inside openImageBrowser');
     inputbtn.click();
   }
   uploadOrg(file) {
@@ -109,9 +106,9 @@ export class OrganizationUploadComponent implements OnInit {
           this.showLoader = false;
           this.toasterService.error(err.error.params.errmsg);
         });
-    } else {
+    } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
   }
 }

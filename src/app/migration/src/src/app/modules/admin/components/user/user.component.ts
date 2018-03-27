@@ -128,9 +128,9 @@ export class UserComponent implements OnInit {
           this.showLoader = false;
           this.toasterService.error(err.error.params.errmsg);
         });
-    } else {
+    } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
   }
   closeBulkUploadError() {
