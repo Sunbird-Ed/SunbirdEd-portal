@@ -30,6 +30,9 @@
       ],
       "@sunbird/learn": [
         "app/modules/learn"
+      ],
+      "@sunbird/org-management": [
+        "app/modules/org-management"
       ]
     },
     "module": "commonjs",
