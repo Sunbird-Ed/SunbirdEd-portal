@@ -103,12 +103,15 @@ angular.module('playerApp')
               admin.identifier = identifier
               admin.userOrganisations = orgs
               admin.selectedOrgUserRoles = []
+              admin.selectedOrgUserRolesNew = []
               $('.roleChckbox').checkbox()
             },
+            closable: false,
             onHide: function () {
               admin.userId = ''
               admin.userOrganisations = []
               admin.selectedOrgUserRoles = []
+              admin.selectedOrgUserRolesNew = []
               return true
             }
           }).modal('show')
@@ -209,16 +212,18 @@ angular.module('playerApp')
             return selectedRole !== role
           })
         } else {
-          admin.selectedOrgUserRoles.push(role)
+          admin.selectedOrgUserRolesNew.push(role)
         }
       }
       admin.updateRoles = function (identifier, orgId, roles) {
+        admin.selectedOrgUserRolesNew.forEach(function (Newroles) {
+          roles.push(Newroles)
+        } )
         var req = {
           request: {
             userId: identifier,
             organisationId: orgId,
-            roles: roles
-
+            roles: roles,
           }
         }
 
@@ -229,6 +234,7 @@ angular.module('playerApp')
               $('#changeUserRoles').modal('hide')
             })
           } else {
+            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
             $('#changeUserRoles').modal('hide', function () {
               $('#changeUserRoles').modal('hide')
             })
@@ -237,6 +243,7 @@ angular.module('playerApp')
           }
         }).catch(function (err) { // eslint-disable-line
           // profile.isError = true
+          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -245,6 +252,7 @@ angular.module('playerApp')
       admin.getUserRoles = function () {
         admin.userRolesList = []
         var roles = permissionsService.getMainRoles()
+        console.log("roles",roles)
         admin.userRoles = roles.filter(function (role) {
           return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN'
         })
