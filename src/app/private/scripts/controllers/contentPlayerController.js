@@ -88,10 +88,10 @@ angular.module('playerApp')
          * from renderer
          * Player controller dispatching the event sunbird
          */
-        /* document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
-        }) */
+        })
         /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         } */
@@ -165,6 +165,12 @@ angular.module('playerApp')
         }
 
         $scope.visibility = false
+        if (document.getElementById('contentPlayer')) {
+          document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
+                      org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
+                        event.detail.telemetryData)
+                    }, false)
+        }
       }
 
       $scope.updateContent = function (scope) {
