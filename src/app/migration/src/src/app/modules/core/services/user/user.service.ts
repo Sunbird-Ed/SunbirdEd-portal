@@ -42,91 +42,85 @@ export class UserService {
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
- constructor(config: ConfigService, learner: LearnerService) {
-   this.config = config;
-   this.learner = learner;
- }
- /**
-  * get method to fetch userid.
-  */
- get userid(): string {
-   try {
-     if (this._userid) {
-       return this._userid;
-     }
-     this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
-     this._userid = this._userid === '<%=userId%>' ? 'userId' : this._userid;
-   } catch (e) {
-     this._userid = 'userId';
-   }
-   return this._userid;
- }
 
+  constructor(config: ConfigService, learner: LearnerService) {
+    this.config = config;
+    this.learner = learner;
+  }
+  /**
+   * get method to fetch userid.
+   */
+  get userid(): string {
+    try {
+      if (this._userid) {
+        return this._userid;
+      }
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._userid = this._userid === '<%=userId%>' ? 'userId' : this._userid;
+    } catch (e) {
+      this._userid = 'userId';
+    }
+    return this._userid;
+  }
+  /**
+   * method to fetch user profile from server.
+   */
+  public getUserProfile(): void {
+    const option = {
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
+      param: this.config.urlConFig.params.userReadParam
+    };
+    this.learner.get(option).subscribe(
+      (data: ServerResponse) => {
+        this.setUserProfile(data);
+      },
+      (err: ServerResponse) => {
+        this._userData$.next({ err: err, userProfile: this._userProfile });
+      }
+    );
+  }
 
- get sessionid(): string {
-  this._sessionid = (<HTMLInputElement>document.getElementById('sessionId')).value;
-  return this._sessionid;
+  public initialize() {
+    this.getUserProfile();
+  }
+  /**
+   * method to set user profile to behavior subject.
+   */
+  private setUserProfile(res: ServerResponse) {
+    const profileData = res.result.response;
+    const orgRoleMap = {};
+    let organisationIds = [];
+    let userRoles = profileData.roles;
+    if (profileData.organisations) {
+      _.forEach(profileData.organisations, (org) => {
+        if (org.roles && _.isArray(org.roles)) {
+          userRoles = _.union(userRoles, org.roles);
+          if (org.organisationId === profileData.rootOrgId &&
+            (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
+              _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
+            profileData.rootOrgAdmin = true;
+          }
+          orgRoleMap[org.organisationId] = org.roles;
+        }
+        if (org.organisationId) {
+          organisationIds.push(org.organisationId);
+        }
+        if ( profileData.rootOrgId ) {
+          organisationIds.push(profileData.rootOrgId);
+        }
+      });
+    }
+    organisationIds = _.uniq(organisationIds);
+    this._userProfile = profileData;
+    this._userProfile.userRoles = userRoles;
+    this._userProfile.orgRoleMap = orgRoleMap;
+    this._userProfile.organisationIds = organisationIds;
+    this._userid = this._userProfile.userId;
+    this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  get userProfile() {
+    return _.cloneDeep(this._userProfile);
+  }
 }
 
 
-
- /**
-  * method to fetch user profile from server.
-  */
- public getUserProfile(): void {
-   const option = {
-     url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
-     param: this.config.urlConFig.params.userReadParam
-   };
-   this.learner.get(option).subscribe(
-     (data: ServerResponse) => {
-       this.setUserProfile(data);
-     },
-     (err: ServerResponse) => {
-       this._userData$.next({ err: err, userProfile: this._userProfile });
-     }
-   );
- }
-
- public initialize() {
-   this.getUserProfile();
- }
- /**
-  * method to set user profile to behavior subject.
-  */
- private setUserProfile(res: ServerResponse) {
-   const profileData = res.result.response;
-   const orgRoleMap = {};
-   let organisationIds = [];
-   let userRoles = profileData.roles;
-   if (profileData.organisations) {
-     _.forEach(profileData.organisations, (org) => {
-       if (org.roles && _.isArray(org.roles)) {
-         userRoles = _.union(userRoles, org.roles);
-         if (org.organisationId === profileData.rootOrgId &&
-           (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
-             _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
-           profileData.rootOrgAdmin = true;
-         }
-         orgRoleMap[org.organisationId] = org.roles;
-       }
-       if (org.organisationId) {
-         organisationIds.push(org.organisationId);
-       }
-       if ( profileData.rootOrgId ) {
-         organisationIds.push(profileData.rootOrgId);
-       }
-     });
-   }
-   organisationIds = _.uniq(organisationIds);
-   this._userProfile = profileData;
-   this._userProfile.userRoles = userRoles;
-   this._userProfile.orgRoleMap = orgRoleMap;
-   this._userProfile.organisationIds = organisationIds;
-   this._userid = this._userProfile.userId;
-   this._userData$.next({ err: null, userProfile: this._userProfile });
- }
- get userProfile() {
-   return _.cloneDeep(this._userProfile);
- }
-}

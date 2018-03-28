@@ -27,6 +27,12 @@
       ],
       "@sunbird/learn": [
         "app/modules/learn"
+      ],
+      "@sunbird/workspace": [
+        "app/modules/workspace"
+      ], 
+      "@sunbird/org-management": [
+        "app/modules/org-management"
       ]
     },
     "module": "es2015",
