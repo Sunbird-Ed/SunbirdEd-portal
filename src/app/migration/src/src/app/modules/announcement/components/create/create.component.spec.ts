@@ -64,6 +64,36 @@ describe('CreateComponent', () => {
     router = TestBed.get(Router);
   });
 
+  xit('should get resend announcement data', inject([Router, CreateService, AnnouncementService],
+    (route, createService, announcementService) => {
+      component.showResendLoader = true;
+      component.identifier = 'do_12345';
+      const response = { result: { announcement: mockRes.resendAnnouncement } };
+      const fileUploadService = TestBed.get(FileUploadService);
+      fileUploadService.uploader.addInitialFiles(mockRes.resendAnnouncement.attachments);
+      spyOn(component, 'getAnnouncementDetails').and.callThrough();
+      spyOn(component, 'setResendFormValues').and.callThrough();
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
+      spyOn(createService, 'resendAnnouncement').and.callFake(() => Observable.of(response));
+      component.getAnnouncementDetails();
+      fixture.detectChanges();
+      expect(component.getAnnouncementDetails).toHaveBeenCalled();
+      expect(createService.resendAnnouncement).toHaveBeenCalledWith(component.identifier);
+      expect(component.setResendFormValues).toHaveBeenCalledWith(response.result.announcement);
+      expect(component.enableSelectRecipientsBtn).toHaveBeenCalledWith();
+      expect(component.showResendLoader).toEqual(false);
+    }));
+
+  xit('should get announcement types', inject([Router, CreateService, AnnouncementService],
+    (route, createService, announcementService) => {
+      const data = { result: { announcementTypes: mockRes.announcementTypes } };
+      spyOn(component, 'setAnnouncementTypes').and.callThrough();
+      spyOn(createService, 'getAnnouncementTypes').and.callFake(() => Observable.of(data));
+      component.setAnnouncementTypes();
+      fixture.detectChanges();
+      expect(component.setAnnouncementTypes).toHaveBeenCalled();
+    }));
+
   it('should get already searched announcement types', inject([CreateService],
     (createService) => {
       component.announcementTypes = [];
@@ -83,6 +113,18 @@ describe('CreateComponent', () => {
       const data = component.announcementForm.value;
       expect(data.links.length).toEqual(1);
       expect(data.links.length).not.toBe(0);
+    }));
+
+  xit('It should remove link', inject([CreateService],
+    (createService) => {
+      spyOn(component, 'addNewLink').and.callThrough();
+      component.addNewLink('http://www.google.com');
+      spyOn(component, 'removeLink').and.callThrough();
+      component.removeLink(0);
+      fixture.detectChanges();
+      const data = component.announcementForm.value;
+      expect(data.links.length).toEqual(0);
+      expect(data.links.length).not.toBe(1);
     }));
 
   it('should return selected recipients', inject([],
