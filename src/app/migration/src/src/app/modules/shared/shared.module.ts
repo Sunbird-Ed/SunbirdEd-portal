@@ -9,6 +9,7 @@ import { AppLoaderComponent } from './components/app-loader/app-loader.component
 import { AnnouncementInboxCardComponent } from './components/announcement-inbox-card/announcement-inbox-card.component';
 import { DateFormatPipe } from './pipes/date-format/date-format.pipe';
 import { PageSectionComponent } from './components/page-section/page-section.component';
+import { NoResultComponent } from './components/no-result/no-result.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,10 @@ import { PageSectionComponent } from './components/page-section/page-section.com
     SlickModule,
     FormsModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent, ContentCardComponent],
-  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent, ContentCardComponent],
+  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
+  DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent],
+  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
+  PageSectionComponent, ContentCardComponent, NoResultComponent],
   providers: [ResourceService, ConfigService]
 })
 export class SharedModule { }
