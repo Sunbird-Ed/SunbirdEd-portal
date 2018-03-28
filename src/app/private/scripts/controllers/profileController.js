@@ -40,10 +40,6 @@ angular.module('playerApp')
       profile.contentSortBy = 'desc'
       profile.quantityOfContent = 4
       profile.isViewMore = true
-      profile.isAddAddress = true
-      profile.ischekedCurrent = true
-      profile.disabledCurrent = false
-      profile.disabledPermanent = false
       profile.isSameAddressTypeExist = false
       profile.fieldsToBeValidate = []
       var today = new Date()
@@ -76,7 +72,6 @@ angular.module('playerApp')
         if (userProfile && userProfile.responseCode === 'OK') {
           var profileData = angular.copy(userProfile.result.response)
           profile.user = profileData
-          profile.showAddAddress(profile.user.address)
           // temp mock data
           profile.user.profileVisibility = profileData.profileVisibility
           profile.fullName = profileData.firstName + ' ' + profileData.lastName
@@ -368,9 +363,6 @@ angular.module('playerApp')
         address.isDeleted = true
         var req = { address: [address] }
         // req.userId = $rootScope.userId;
-        if (address.addType === 'permanent') {
-          profile.disabledPermanent = false
-        }
         profile.updateUserInfo(
           req,
           'addressForm',
@@ -844,24 +836,15 @@ angular.module('playerApp')
       profile.setLimit = function (lim) {
         profile.limit = (lim <= 0) ? profile.userSkills.length : lim
       }
-      profile.showAddAddress = function (data) {
-        if (data && data.length < 2) {
-          profile.isAddAddress = true
-          var address = data.filter(function (e) {
-            return e.addType === 'current'
-          })
-          if (address.length === 0) {
-            profile.ischekedCurrent = true
-            profile.disabledPermanent = true
-            profile.disabledCurrent = false
-          } else {
-            profile.ischekedCurrent = false
-            profile.disabledCurrent = true
-            profile.disabledPermanent = false
-          }
-        } else {
-          profile.isAddAddress = false
+      profile.disableAddressOption = function(addressOption){
+        console.log
+        var address = profile.address.filter(function (e) {
+          return e.addType === addressOption
+        })
+        if(address.length>0){
+          return true
         }
+        return false
       }
 
       profile.getFieldsToValidate = function (FormName) {
