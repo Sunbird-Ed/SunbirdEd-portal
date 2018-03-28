@@ -153,20 +153,20 @@ angular.module('playerApp')
         } else if (key === 'Organisations') {
           list.forEach(function (org) {
             switch (org.status) {
-            case 0:
-              org.status = 'INACTIVE'
-              break
-            case 1:
-              org.status = 'ACTIVE'
-              break
-            case 2:
-              org.status = 'BLOCKED'
-              break
-            case 3:
-              org.status = 'RETIRED'
-              break
-            default:
-              break
+              case 0:
+                org.status = 'INACTIVE'
+                break
+              case 1:
+                org.status = 'ACTIVE'
+                break
+              case 2:
+                org.status = 'BLOCKED'
+                break
+              case 3:
+                org.status = 'RETIRED'
+                break
+              default:
+                break
             }
           })
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
@@ -218,12 +218,12 @@ angular.module('playerApp')
       admin.updateRoles = function (identifier, orgId, roles) {
         admin.selectedOrgUserRolesNew.forEach(function (Newroles) {
           roles.push(Newroles)
-        } )
+        })
         var req = {
           request: {
             userId: identifier,
             organisationId: orgId,
-            roles: roles,
+            roles: roles
           }
         }
 
@@ -234,7 +234,7 @@ angular.module('playerApp')
               $('#changeUserRoles').modal('hide')
             })
           } else {
-            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
+            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
             $('#changeUserRoles').modal('hide', function () {
               $('#changeUserRoles').modal('hide')
             })
@@ -243,7 +243,7 @@ angular.module('playerApp')
           }
         }).catch(function (err) { // eslint-disable-line
           // profile.isError = true
-          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
+          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -252,7 +252,6 @@ angular.module('playerApp')
       admin.getUserRoles = function () {
         admin.userRolesList = []
         var roles = permissionsService.getMainRoles()
-        console.log("roles",roles)
         admin.userRoles = roles.filter(function (role) {
           return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN'
         })
@@ -271,7 +270,7 @@ angular.module('playerApp')
             orgDropdown.dropdown({ allowTab: false })
             admin.selectedOrgUserRoles = organizations[0].roles
             admin.selectedOrgUserId = organizations[0].organisationId
-          }, 0)
+          }, 500)
         }
       }
       admin.getUserRoles()
