@@ -2,11 +2,11 @@
 import { collectionData } from './../../interfaces/collectionData';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { EditorService } from './../../services/editor/editor.service';
-import { Router , NavigationExtras} from '@angular/router'
-import { UserService } from '@sunbird/core';
+import { Router } from '@angular/router'
+// import { UserService } from '@sunbird/core';
 
 const fields = {
   mimeType: 'application/vnd.ekstep.content-collection',
@@ -23,7 +23,7 @@ export class CreateCollectionComponent implements OnInit {
 
   showCreateCollectionModel: boolean;
   isCollectionCreated: boolean;
-  userId: string;
+
   /**
 	 * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -45,7 +45,8 @@ export class CreateCollectionComponent implements OnInit {
   private editorService: EditorService;
   public collection = new collectionData('test', 'desc');
  
-  constructor(public modalService: SuiModalService, resourceService: ResourceService,
+  constructor(public modalService: SuiModalService, 
+    resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
     private router: Router
@@ -56,12 +57,12 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showLoader = false;
+    this.showLoader = true;
   }
   public requestBody: any;
-  submitted = false;
+  // submitted = false;
   saveMetaData(collection) {
-    this.submitted = true;
+    // this.submitted = true;
    
     this.requestBody = collection;
     this.requestBody.name = this.requestBody.name ? this.requestBody.name : "Untitled Collection"
@@ -70,6 +71,7 @@ export class CreateCollectionComponent implements OnInit {
     var requestData = {
       content: this.requestBody
     }
+    console.log("collection create", requestData);
     this.createCollection(requestData)
   }
 
@@ -105,13 +107,16 @@ export class CreateCollectionComponent implements OnInit {
     });
 
   }
+  public state: string;
   initEKStepCE(id) {    
- 
-    let navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.contentId, 'state': 'CollectionEditor' }      
-    };
-    this.router.navigate(['/collection/editor'], navigationExtras);
-    
+ this.state = "CollectionEditor";
+    // let navigationExtras: NavigationExtras = {
+    //  params: { 'contentId': this.contentId, 'state': 'CollectionEditor' }      
+    // };
+
+    this.router.navigate(['/collection/editor', this.contentId, this.state]);
+
+
   }
 
 }

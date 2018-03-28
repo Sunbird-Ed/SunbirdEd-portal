@@ -7,6 +7,8 @@ export * from './permission/permission.service';
 export * from  './course/course.service';
 export * from './search/search.service';
 export * from './announcement/announcement.service';
+export * from './page-api/page-api.service';
 export * from './user/user.mock.spec.data';
 export * from './editor/editor.service';
+
 

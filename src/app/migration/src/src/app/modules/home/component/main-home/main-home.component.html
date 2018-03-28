@@ -3,7 +3,7 @@
     <div class="ten wide column">
         <div class="row">
             <div class="twelve wide column">
-                <div *ngIf="toDoList.length > 0" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding">
+                <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding">
                     <span class="ui header HomeAccordianHeading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
                     <span class="todolabel ui red circular inline label ">{{toDoList.length}}</span>
                     <span class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"

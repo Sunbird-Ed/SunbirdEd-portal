@@ -1,5 +1,4 @@
 import { UserData } from './../../../shared/interfaces/IUserProfile';
-// import { UserService } from './../../services/user/user.service';
 
 import { Organization, OrganizatioName, Portal, appId } from './../../interfaces/org.object';
 
@@ -120,7 +119,7 @@ public modelId : any;
 
       
     this.showLoader = true;
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
 
       this.contentId = params['contentId'];
       this.state = params['state'];
@@ -165,7 +164,9 @@ public modelId : any;
       overlayColor: '',
       history: false,
       onClosed: function () {
-        this.openModel()
+        // this.openModel()
+        alert("close called");
+        $("#collectionEditor").iziModal('close');
       }
 
     });
@@ -249,6 +250,7 @@ public modelId : any;
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFalgReviewer = true
     }
+    $.fn.iziModal = iziModal;
     setTimeout(function () {
       $('#collectionEditor').iziModal('open')
     }, 100)
@@ -276,6 +278,7 @@ public modelId : any;
         if (this.validateRequest(rspData, validateModal)) {
           console.log("status of", response.result.content.status);
           this.updateModeAndStatus(response.result.content.status)
+          
           setTimeout(function () {
             $('#collectionEditor').iziModal('open')
           }, 100)
@@ -617,15 +620,12 @@ public modelId : any;
     }
   }
 
-  // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-  
-  // })
-
 
 
   openModel() {
     this.showModal = true;
-    $("#collectionEditor").iziModal('close');
+    $.fn.iziModal = iziModal;
+    
 
     
     // if (this.urlParams.name === 'CollectionEditor') {

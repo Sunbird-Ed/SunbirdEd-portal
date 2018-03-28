@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService, ServerResponse, UserProfile } from '@sunbird/shared';
+import { ContentService } from './../content/content.service';
 
 
 
@@ -12,7 +13,7 @@ import { ConfigService, ServerResponse, UserProfile } from '@sunbird/shared';
  *
  */
 @Injectable()
-export class EditorService extends DataService {
+export class EditorService {
     /**
      * base Url for content api
      */
@@ -28,6 +29,7 @@ export class EditorService extends DataService {
     /**
      * reference of lerner service.
      */
+    public contentService: ContentService
 
     public http: HttpClient;
     public creator: string;
@@ -40,9 +42,9 @@ export class EditorService extends DataService {
      * @param {ConfigService} config ConfigService reference
      * @param {HttpClient} http HttpClient reference
      */
-    constructor(config: ConfigService, http: HttpClient, user: UserService) {
-        super(http);
+    constructor(config: ConfigService, http: HttpClient, user: UserService, contentService: ContentService) {
         this.config = config;
+        this.contentService = contentService;
         this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
         this.user = user;
     }
@@ -61,10 +63,10 @@ export class EditorService extends DataService {
     create(req) {
         this.user.userData$.subscribe((data) => {
             console.log("user data: ", data);
-            req.content.sessionId = data.userProfile.sessionId;
-            req.content.userRoles = data.userProfile.userRoles;            
+            // req.content.sessionId = data.userProfile.sessionId;
+            // req.content.userRoles = data.userProfile.userRoles;            
             if (data && data.userProfile && data.userProfile.rootOrgId) {
-                this.rootOrgId = data.userProfile.rootOrgId;
+               // this.rootOrgId = data.userProfile.rootOrgId;
                  req.content.creator = data.userProfile.firstName + ' ' + data.userProfile.lastName;
                 req.content.createdBy = data.userProfile.id;
                 req.content.createdFor = data.userProfile.organisationIds;
@@ -83,7 +85,7 @@ export class EditorService extends DataService {
         };
 
         // console.log("option: ", option);
-        return this.post(option);
+        return this.contentService.post(option);
     }
 
     getById(req, qs) {
@@ -95,7 +97,7 @@ export class EditorService extends DataService {
             }
         }
         
-        return this.get(option)
+        return this.contentService.get(option)
       }
  
 }

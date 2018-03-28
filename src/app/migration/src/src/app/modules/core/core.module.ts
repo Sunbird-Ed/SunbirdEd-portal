@@ -7,13 +7,16 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, EditorService
+  UserService, LearnerService, PermissionService, AnnouncementService, 
+  BadgesService, ContentService, CoursesService, PageApiService, EditorService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent , SearchComponent, CreateCollectionComponent,
   CollectionEditorComponent
 } from './components';
+
+import { CreateContentComponent } from './components/create-content/create-content.component';
+import { ContentEditorComponent } from './components/content-editor/content-editor.component';
  
 
 @NgModule({
@@ -25,11 +28,15 @@ import {
     FormsModule
   ],
   declarations: [ MainHeaderComponent, MainMenuComponent , SearchComponent , PermissionDirective, CreateCollectionComponent,
-     CollectionEditorComponent],
+     CollectionEditorComponent,
+     
+     CreateContentComponent,
+     
+     ContentEditorComponent],
   exports: [MainHeaderComponent],
   providers: [
-    LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, EditorService ]
+    LearnerService, UserService, 
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, EditorService ]
 })
 export class CoreModule {
 }

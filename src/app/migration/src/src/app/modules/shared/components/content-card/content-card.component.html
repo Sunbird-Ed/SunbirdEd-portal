@@ -1,0 +1,51 @@
+<div class="ui link cards margin-right-20 margin-top-15">
+  <div class="card">
+    <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
+      <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
+    </div>
+    <div class="ui image ">
+      <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
+      <a class="ui black right ribbon label " *ngIf="content.resourceType == undefined">{{content.contentType || 'Course'}}</a>
+      <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">
+      <div class="cardImageText center aligned ">
+        <span class="sliderCardHeading text-cencapitalize">{{content.name || content.courseName}}</span>
+      </div>
+    </div>
+    <div class="content">
+      <div class="description" *ngIf="(content.description) && (content.description.length > 0) ">
+        {{content.description | slice:0:40}}
+        <i class="ellipsis horizontal icon" *ngIf="content.description.length >= 40" suiPopup popupText="{{content.description}}"></i>
+      </div>
+    </div>
+    <div *ngIf=" content.action" class="extra content">
+      <div *ngIf=" content.action.right" class="content.action.right" class="right floated">
+        <span *ngIf="(content.action.right.displayType != 'icon') && ( content.action.right.displayType == 'button' || content.action.right.clickable)">
+          <a>
+            <button *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}">{{content.action.right.text}}</button>
+            <button *ngIf="content.action.right.clickable" class="{{content.action.right.classes}}">{{content.action.right.text}}</button>
+          </a>
+        </span>
+        <span *ngIf="content.action.right.displayType == 'icon' ">
+            <a>
+              <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" 
+              (click)="onAction(content.identifier,content.action.right.actionType)"
+                class="{{content.action.right.classes}}">
+              </i>
+              <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>
+            </a>
+          </span>
+      </div>
+      <div *ngIf="content.action.left" class="content.action.left" class="left floated">
+        <span *ngIf="content.action.left.displayType == 'rating'">
+          <sui-rating class="courseHeader-rating star" [ngModel]="content.me_averageRating | number:0" [maximum]="5" [isReadonly]="true"></sui-rating>
+        </span>
+        <span *ngIf="content.action.left.displayType == 'icon' ">
+          <a>
+            <i *ngIf="(content.action.left.clickable) && (contnet.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
+            <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes.icon}}"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
