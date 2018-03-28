@@ -53,10 +53,10 @@
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
                     <input formControlName="title" placeholder="{{resource?.frmelmnts?.instn?.t0057}}">
                     <div class="ui pointing red basic label below " *ngIf="announcementForm.controls['title'].errors && announcementForm.controls['title'].errors.required && !announcementForm.controls['title'].pristine">
-                      Title is required
+                      {{resource?.messages?.stmsg?.m0105}}
                     </div>
                     <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['title'].errors && announcementForm.controls['title'].errors.maxlength && !announcementForm.controls['title'].pristine">
-                      Title is too long
+                      {{resource?.messages?.stmsg?.m0106}}
                     </div>
                     <section *ngIf="announcementForm.value.title.length" class="float-ContentRight">{{announcementForm.value.title.length}} / 100</section>
                   </div>
@@ -65,7 +65,7 @@
                     <div class="field">
                       <input formControlName="from" placeholder="{{resource?.frmelmnts?.lbl?.anncmntfromDesc}}">
                       <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['from'].errors && announcementForm.controls['from'].errors.required && !announcementForm.controls['from'].pristine">
-                        From is required
+                        {{resource?.messages?.stmsg?.m0107}}
                       </div>
                     </div>
                   </div>
