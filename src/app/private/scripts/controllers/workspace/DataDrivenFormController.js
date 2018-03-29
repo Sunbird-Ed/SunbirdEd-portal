@@ -267,7 +267,7 @@ angular.module('playerApp')
             dataDrivenForm.framework = null
             dataDrivenForm.framework = res.result.channel.defaultFramework
             // console.log("dataDrivenForm.framework", dataDrivenForm.framework)
-            searchService.getFramework('Center_K-12').then(function (res) {
+            searchService.getFramework(dataDrivenForm.framework).then(function (res) {
               if (res.responseCode === 'OK') {
                 dataDrivenForm.frameworkData = res.result.framework.categories
                 var categoryMasterList = _.cloneDeep(res.result.framework.categories)
