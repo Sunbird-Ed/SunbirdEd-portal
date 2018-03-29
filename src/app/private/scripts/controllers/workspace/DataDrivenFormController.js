@@ -218,7 +218,7 @@ angular.module('playerApp')
        */
       dataDrivenForm.configureDropdowns = function (labels, forceSelection) {
         // TODO: Need to remove the timeout
-    
+        setTimeout(function () {
           $('.ui.dropdown').dropdown({
             useLabels: labels,
             forceSelection: forceSelection,
@@ -228,7 +228,7 @@ angular.module('playerApp')
             dataDrivenForm.loader.showLoader = false
           }
           dataDrivenForm.refreshModel()
-
+        }, 0)
       }
 
       /** 
