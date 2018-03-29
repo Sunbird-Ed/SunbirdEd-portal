@@ -40,7 +40,7 @@ export const mockRes = {
             externalId: 5678,
             organizationId: 9876
         }]
-    }
+    },
     successBulkStatusResponse: {
         'id': 'api.org.upload',
         'ver': 'v1',
