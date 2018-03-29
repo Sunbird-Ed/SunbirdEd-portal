@@ -1948,6 +1948,9 @@ ul.fancytree-container li {
 .searchinputpublic {
   width: 30em;
 }
+.searchinput {
+  width: 600px;
+}
 @media only screen and (max-width: 1400px) {
   .searchinput {
     width: 500px;
