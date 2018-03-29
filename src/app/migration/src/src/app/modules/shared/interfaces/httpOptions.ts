@@ -6,7 +6,7 @@ export interface HttpOptions {
   /**
    * http header
   */
-    headers?: HttpHeaders | {[header: string]: string | string[]};
+    headers?: HttpHeaders | {[header: string]: string | any};
   /**
    * http params
   */
@@ -25,4 +25,5 @@ export interface HttpOptions {
    * body for delete
   */
     body?: any;
+
 }
