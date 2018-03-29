@@ -87,7 +87,7 @@ describe('OutboxComponent', () => {
                     resourceService.messages = data.messages;
                 }
             );
-            component.populateOutboxData(configService.pageConfig.OUTBOX.PAGE_LIMIT, component.pageNumber);
+            component.populateOutboxData(configService.appConfig.OUTBOX.PAGE_LIMIT, component.pageNumber);
             announcementService.getOutboxData({}).subscribe(
                 outboxResponse => { },
                 err => {
@@ -99,7 +99,7 @@ describe('OutboxComponent', () => {
             );
             fixture.detectChanges();
             expect(component.pageNumber).toBe(component.pageNumber);
-            expect(component.pageLimit).toBe(configService.pageConfig.OUTBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toBe(configService.appConfig.OUTBOX.PAGE_LIMIT);
         }));
 
     it('should call setpage method and set proper page number', inject([ConfigService, Router],
@@ -109,7 +109,7 @@ describe('OutboxComponent', () => {
             component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(3);
-            expect(component.pageLimit).toEqual(configService.pageConfig.OUTBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toEqual(configService.appConfig.OUTBOX.PAGE_LIMIT);
             expect(route.navigate).toHaveBeenCalledWith(['announcement/outbox', component.pageNumber]);
         }));
 
@@ -120,7 +120,7 @@ describe('OutboxComponent', () => {
             component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(1);
-            expect(component.pageLimit).toEqual(configService.pageConfig.OUTBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toEqual(configService.appConfig.OUTBOX.PAGE_LIMIT);
         }));
 
     it('should call announcementDeleteEvent emitter', inject([AnnouncementService],

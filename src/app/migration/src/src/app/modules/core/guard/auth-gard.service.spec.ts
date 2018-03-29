@@ -2,7 +2,7 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { AuthGuard } from './auth-gard.service';
 import { RouterModule , Router, Routes, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import { ConfigService, ResourceService, ToasterService, UserProfile, UserData } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import 'rxjs/add/operator/map';
 import { LearnerService, UserService, PermissionService } from '@sunbird/core';
