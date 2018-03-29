@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 /**
@@ -35,8 +34,7 @@ export class BulkUploadComponent implements OnInit {
  *
  * @param {ResourceService} resourceService To call resource service which helps to use language constant
  */
-  constructor(permissionService: PermissionService, config: ConfigService, private router: Router, private route: ActivatedRoute,
-    resourceService: ResourceService) {
+  constructor(permissionService: PermissionService, config: ConfigService, resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.config = config;
     this.permissionService = permissionService;
