@@ -75,7 +75,7 @@ export class OrganizationUploadComponent {
       decimalseparator: '.',
       showLabels: true
     };
-    const csv = new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
+    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file

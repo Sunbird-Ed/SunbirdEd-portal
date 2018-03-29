@@ -1,6 +1,6 @@
 import { UserService, PermissionService } from './../../services';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService, ResourceService, UserProfile, UserData} from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird/shared';
 /**
  * Main header component
  */
@@ -17,7 +17,7 @@ export class MainHeaderComponent implements OnInit {
   /**
    * user profile details.
    */
-  userProfile: UserProfile;
+  userProfile: IUserProfile;
   /**
    * Sui dropdown initiator
    */
@@ -76,7 +76,7 @@ export class MainHeaderComponent implements OnInit {
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
     this.userService.userData$.subscribe(
-      (user: UserData) => {
+      (user: IUserData) => {
           if (user && !user.err) {
             this.userProfile = user.userProfile;
           }

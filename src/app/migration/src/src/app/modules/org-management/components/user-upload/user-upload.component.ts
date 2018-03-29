@@ -108,7 +108,7 @@ export class UserUploadComponent implements OnInit {
       decimalseparator: '.',
       showLabels: true
     };
-    const csv = new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
+    const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file
