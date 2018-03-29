@@ -1,4 +1,4 @@
-import { ServerResponse, RequestParam , HttpOptions } from '@sunbird/shared';
+import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -44,12 +44,12 @@ export class DataService {
       params: requestParam.param
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-    .flatMap((data: ServerResponse) => {
-      if (data.responseCode !== 'OK') {
-        return Observable.throw(data);
-      }
-      return Observable.of(data);
-    });
+      .flatMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return Observable.throw(data);
+        }
+        return Observable.of(data);
+      });
   }
 
   /**
@@ -60,16 +60,16 @@ export class DataService {
    */
   post(requestParam: RequestParam): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
-      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions)
-    .flatMap((data: ServerResponse) => {
-      if (data.responseCode !== 'OK') {
-        return Observable.throw(data);
-      }
-      return Observable.of(data);
-    });
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions)
+      .flatMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return Observable.throw(data);
+        }
+        return Observable.of(data);
+      });
   }
 
   /**
@@ -84,12 +84,12 @@ export class DataService {
       params: requestParam.param
     };
     return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions)
-    .flatMap((data: ServerResponse) => {
-      if (data.responseCode !== 'OK') {
-        return Observable.throw(data);
-      }
-      return Observable.of(data);
-    });
+      .flatMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return Observable.throw(data);
+        }
+        return Observable.of(data);
+      });
   }
 
   /**
@@ -103,20 +103,19 @@ export class DataService {
       body: requestParam.data
     };
     return this.http.delete(this.baseUrl + requestParam.url, httpOptions)
-    .flatMap((data: ServerResponse) => {
-      if (data.responseCode !== 'OK') {
-        return Observable.throw(data);
-      }
-      return Observable.of(data);
-    });
+      .flatMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return Observable.throw(data);
+        }
+        return Observable.of(data);
+      });
   }
 
   /**
    * for preparing headers
    */
-  private getHeader(): HttpOptions['headers'] {
-    return {
-      'Content-Type': 'application/json',
+  private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+    const default_headers = {
       'Accept': 'application/json',
       'X-Consumer-ID': 'X-Consumer-ID',
       'X-Device-ID': 'X-Device-ID',
@@ -125,5 +124,10 @@ export class DataService {
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
+    if (headers) {
+      return { ...default_headers, ...headers };
+    } else {
+      return { ...default_headers };
+    }
   }
 }
