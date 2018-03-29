@@ -97,7 +97,7 @@ angular.module('playerApp')
       // open editRoles modal
       admin.showModal = function (identifier, orgs) {
         $timeout(function () {
-          $('#changeUserRoles').modal({
+          $('#changeUserRoles_' + identifier).modal({
             onShow: function () {
               admin.setDefaultSelected(orgs)
               admin.identifier = identifier
@@ -230,13 +230,13 @@ angular.module('playerApp')
         adminService.updateRoles(req).then(function (res) {
           if (res.responseCode === 'OK') {
             toasterService.success($rootScope.messages.smsg.m0028)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
           } else {
             admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
             // profile.isError = true;
             toasterService.error($rootScope.messages.fmsg.m0051)
@@ -263,14 +263,19 @@ angular.module('playerApp')
       }
 
       admin.setDefaultSelected = function (organizations) {
-        if (organizations) {
+        if (organizations && organizations.length > 0) {
           $timeout(function () {
-            var orgDropdown = $('#userOrgs').dropdown()
-            orgDropdown.dropdown('set text', organizations[0].orgName)
-            orgDropdown.dropdown({ allowTab: false })
+            var dropdownDom = $('#userOrgs_' + admin.identifier)
+            dropdownDom.dropdown()
+            if (organizations[0]['orgName']) {
+              dropdownDom.dropdown('set text', organizations[0].orgName)
+            } else {
+              dropdownDom.dropdown('set text', organizations[0].organisationId)
+            }
+            dropdownDom.dropdown({ allowTab: false })
             admin.selectedOrgUserRoles = organizations[0].roles
             admin.selectedOrgUserId = organizations[0].organisationId
-          }, 500)
+          }, 1000)
         }
       }
       admin.getUserRoles()
