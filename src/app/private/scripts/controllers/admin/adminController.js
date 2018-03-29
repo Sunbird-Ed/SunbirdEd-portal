@@ -97,7 +97,7 @@ angular.module('playerApp')
       // open editRoles modal
       admin.showModal = function (identifier, orgs) {
         $timeout(function () {
-          $('#changeUserRoles').modal({
+          $('#changeUserRoles_' + identifier).modal({
             onShow: function () {
               admin.setDefaultSelected(orgs)
               admin.identifier = identifier
@@ -153,20 +153,20 @@ angular.module('playerApp')
         } else if (key === 'Organisations') {
           list.forEach(function (org) {
             switch (org.status) {
-            case 0:
-              org.status = 'INACTIVE'
-              break
-            case 1:
-              org.status = 'ACTIVE'
-              break
-            case 2:
-              org.status = 'BLOCKED'
-              break
-            case 3:
-              org.status = 'RETIRED'
-              break
-            default:
-              break
+              case 0:
+                org.status = 'INACTIVE'
+                break
+              case 1:
+                org.status = 'ACTIVE'
+                break
+              case 2:
+                org.status = 'BLOCKED'
+                break
+              case 3:
+                org.status = 'RETIRED'
+                break
+              default:
+                break
             }
           })
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
@@ -218,32 +218,32 @@ angular.module('playerApp')
       admin.updateRoles = function (identifier, orgId, roles) {
         admin.selectedOrgUserRolesNew.forEach(function (Newroles) {
           roles.push(Newroles)
-        } )
+        })
         var req = {
           request: {
             userId: identifier,
             organisationId: orgId,
-            roles: roles,
+            roles: roles
           }
         }
 
         adminService.updateRoles(req).then(function (res) {
           if (res.responseCode === 'OK') {
             toasterService.success($rootScope.messages.smsg.m0028)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
           } else {
-            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
             // profile.isError = true;
             toasterService.error($rootScope.messages.fmsg.m0051)
           }
         }).catch(function (err) { // eslint-disable-line
           // profile.isError = true
-          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles ,admin.selectedOrgUserRolesNew)
+          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -252,7 +252,6 @@ angular.module('playerApp')
       admin.getUserRoles = function () {
         admin.userRolesList = []
         var roles = permissionsService.getMainRoles()
-        console.log("roles",roles)
         admin.userRoles = roles.filter(function (role) {
           return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN'
         })
@@ -264,14 +263,19 @@ angular.module('playerApp')
       }
 
       admin.setDefaultSelected = function (organizations) {
-        if (organizations) {
+        if (organizations && organizations.length > 0) {
           $timeout(function () {
-            var orgDropdown = $('#userOrgs').dropdown()
-            orgDropdown.dropdown('set text', organizations[0].orgName)
-            orgDropdown.dropdown({ allowTab: false })
+            var dropdownDom = $('#userOrgs_' + admin.identifier)
+            dropdownDom.dropdown()
+            if (organizations[0]['orgName']) {
+              dropdownDom.dropdown('set text', organizations[0].orgName)
+            } else {
+              dropdownDom.dropdown('set text', organizations[0].organisationId)
+            }
+            dropdownDom.dropdown({ allowTab: false })
             admin.selectedOrgUserRoles = organizations[0].roles
             admin.selectedOrgUserId = organizations[0].organisationId
-          }, 0)
+          }, 1000)
         }
       }
       admin.getUserRoles()

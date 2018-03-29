@@ -8,6 +8,37 @@ angular.module('playerApp')
       var genericEditor = this
       genericEditor.contentId = (_.isUndefined($stateParams.contentId) ||
         _.isNull($stateParams.contentId)) ? '' : $stateParams.contentId
+      genericEditor.framework = $stateParams.framework
+
+      genericEditor.setContext = function () {
+        window.context = {
+          user: {
+            id: $rootScope.userId,
+            name: $rootScope.firstName + ' ' + $rootScope.lastName,
+            orgIds: $rootScope.organisationIds
+          },
+          sid: $rootScope.sessionId,
+          contentId: genericEditor.contentId,
+          pdata: {
+            id: org.sunbird.portal.appid,
+            ver: '1.0',
+            pid: 'sunbird-portal'
+          },
+          tags: _.concat([], org.sunbird.portal.channel),
+          channel: org.sunbird.portal.channel,
+          env: 'genericeditor',
+          framework: genericEditor.framework
+        }
+
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.context.searchCriteria = searchService.updateReqForChannelFilter()
+        }
+
+        // open editor after setting context
+        genericEditor.openGenericEditor()
+      }
+
       genericEditor.openGenericEditor = function () {
         $('#genericEditor').iziModal({
           title: '',
@@ -25,29 +56,6 @@ angular.module('playerApp')
             genericEditor.openModel()
           }
         })
-
-        window.context = {
-          user: {
-            id: $rootScope.userId,
-            name: $rootScope.firstName + ' ' + $rootScope.lastName,
-            orgIds: $rootScope.organisationIds
-          },
-          sid: $rootScope.sessionId,
-          contentId: genericEditor.contentId,
-          pdata: {
-            id: org.sunbird.portal.appid,
-            ver: '1.0',
-            pid: 'sunbird-portal'
-          },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-          channel: org.sunbird.portal.channel,
-          env: 'genericeditor'
-        }
-
-        // Add search criteria
-        if (searchService.updateReqForChannelFilter()) {
-          window.context.searchCriteria = searchService.updateReqForChannelFilter()
-        }
 
         window.config = {
           corePluginsPackaged: true,
@@ -89,8 +97,6 @@ angular.module('playerApp')
         }, 100)
       }
 
-      genericEditor.openGenericEditor()
-
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
         if (fromState.name === 'GenericEditor') {
           var state = $('#genericEditor').iziModal('getState')
@@ -121,15 +127,25 @@ angular.module('playerApp')
           }
         }, 2000)
       }
-      searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          genericEditor.version = res.ver
-          genericEditor.framework = null
-          window.context.framework = res.result.channel.defaultFramework
-        } else {
-          window.context.framework = null
-        }
-      }).catch(function (error) {
-        console.log('error is ......', error)
-      })
+
+      genericEditor.getFramework = function () {
+        searchService.getChannel().then(function (res) {
+          if (res.responseCode === 'OK') {
+            window.context.framework = res.result.channel.defaultFramework
+            genericEditor.framework = res.result.channel.defaultFramework
+          } else {
+            window.context.framework = null
+          }
+          genericEditor.setContext()
+        }).catch(function (error) {
+          genericEditor.setContext()
+          console.log('error is ......', error)
+        })
+      }
+
+      if ($stateParams.framework) {
+        genericEditor.setContext()
+      } else {
+        genericEditor.getFramework()
+      }
     }])

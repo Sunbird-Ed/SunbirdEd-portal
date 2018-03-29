@@ -20,9 +20,10 @@ angular.module('playerApp')
           framework: contentEditor.framework,
           pdata: {
             id: org.sunbird.portal.appid,
-            ver: '1.0'
+            ver: '1.0',
+            pid: 'sunbird-portal'
           },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+          tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel
         }
         // Add search criteria
@@ -51,6 +52,11 @@ angular.module('playerApp')
             },
             {
               id: 'org.ekstep.sunbirdmetadata',
+              ver: '1.0',
+              type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.questionset',
               ver: '1.0',
               type: 'plugin'
             }

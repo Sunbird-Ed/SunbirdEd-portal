@@ -13,7 +13,7 @@ angular.module('playerApp')
 
       this.getProfileAddInfformElmnt = function () {
         return {
-          'languages': config.DROPDOWN.COMMON.languages,
+          'languages': config.PROFILE.languages,
           'subjects': config.DROPDOWN.COMMON.subjects,
           'grades': config.DROPDOWN.COMMON.grades
         }
