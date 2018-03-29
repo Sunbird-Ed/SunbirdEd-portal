@@ -3,9 +3,13 @@ import { CommonModule } from '@angular/common';
 import { OrgManagementRoutingModule } from './org-management-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService, ToasterService, RouterNavigationService, SharedModule } from '@sunbird/shared';
-import { OrgTypeService } from './services';
-import { CreateOrgTypeComponent, ViewOrgTypeComponent } from './components';
-import { ReactiveFormsModule } from '@angular/forms';
+import { OrgTypeService, OrgManagementService } from './services';
+import {
+  CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
+  UserUploadComponent, BulkUploadComponent, StatusComponent
+} from './components';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from '@sunbird/core';
 
 
 @NgModule({
@@ -14,10 +18,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     OrgManagementRoutingModule,
     SharedModule,
     SuiModule,
-    ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    CoreModule
   ],
-  declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent],
-  providers: [ResourceService, ToasterService, RouterNavigationService, OrgTypeService]
+  declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
+    UserUploadComponent, BulkUploadComponent, StatusComponent],
+  exports: [BulkUploadComponent],
+  providers: [ResourceService, ToasterService, RouterNavigationService, OrgTypeService, OrgManagementService]
 })
 export class OrgManagementModule { }
 

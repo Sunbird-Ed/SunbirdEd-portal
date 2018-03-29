@@ -13,14 +13,62 @@
     },
     "WORKSPACE": {
         "PAGE_LIMIT": 9,
-        "contentType" : ["Collection", "TextBook", "Course", "LessonPlan", "Resource"],
-        "mimeType": ["application/vnd.ekstep.ecml-archive", "application/vnd.ekstep.content-collection"],
-        "objectType" : "Content",
+        "contentType": [
+            "Collection",
+            "TextBook",
+            "Course",
+            "LessonPlan",
+            "Resource"
+        ],
+        "mimeType": [
+            "application/vnd.ekstep.ecml-archive",
+            "application/vnd.ekstep.content-collection"
+        ],
+        "objectType": "Content",
         "lastUpdatedOn": "desc"
     },
     "API": {
         "ANNOUNCEMENT": {
             "CHANNEL": "web"
         }
+    },
+    "ADMIN_UPLOAD": {
+        "SAMPLE_USER_CSV": [
+            {
+                "firstName": "firstName",
+                "lastName": "lastName",
+                "phone": "phone",
+                "email": "email",
+                "userName": "userName",
+                "password": "password",
+                "provider": "provider",
+                "phoneVerified": "phoneVerified",
+                "emailVerified": "emailVerified",
+                "roles": "roles",
+                "position": "position",
+                "grade": "grade",
+                "location": "location",
+                "dob": "dob",
+                "gender": "gender",
+                "language": "language",
+                "profileSummary": "profileSummary",
+                "subject": "subject"
+            }
+        ],
+        "SAMPLE_ORGANIZATION_CSV": [
+            {
+                "orgName": "orgName",
+                "isRootOrg": "isRootOrg",
+                "channel": "channel",
+                "externalId": "externalId",
+                "provider": "provider",
+                "description": "description",
+                "homeUrl": "homeUrl",
+                "orgCode": "orgCode",
+                "orgType": "orgType",
+                "preferredLanguage": "preferredLanguage",
+                "contactDetail": "contactDetail"
+            }
+        ]
     }
 }
