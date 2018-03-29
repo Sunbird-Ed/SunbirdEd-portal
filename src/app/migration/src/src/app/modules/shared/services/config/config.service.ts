@@ -29,6 +29,6 @@ export class ConfigService {
  * property containing app config
  *
  */
-pageConfig = (<any>appConfig);
+  appConfig = (<any>appConfig);
 }
 

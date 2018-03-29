@@ -4,13 +4,17 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.js",
+    "start": "ng build && mv ../dist/index.html ../dist/index.ejs",
+    "proxy": "ng serve --proxy-config proxy.config.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "ng lint",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s"
+  },
+  "nodemonConfig": {
+    "ext": "ts,html,json"
   },
   "engines": {
     "node": ">=8.9"
