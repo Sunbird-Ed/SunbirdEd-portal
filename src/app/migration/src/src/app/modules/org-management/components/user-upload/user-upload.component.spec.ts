@@ -1,31 +1,33 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { LearnerService, OrgManagementService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
+import { OrgManagementService } from '@sunbird/org-management';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { UserComponent } from './user.component';
-import * as testData from './user.component.spec.data';
+import { UserUploadComponent } from './user-upload.component';
+import * as testData from './user-upload.component.spec.data';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('UserComponent', () => {
-  let component: UserComponent;
-  let fixture: ComponentFixture<UserComponent>;
+describe('UserUploadComponent', () => {
+  let component: UserUploadComponent;
+  let fixture: ComponentFixture<UserUploadComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UserComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule],
-      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService,
-        ResourceService, LearnerService, FormBuilder, HttpClient,
+      declarations: [UserUploadComponent],
+      imports: [SharedModule, SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
+      providers: [OrgManagementService, ConfigService, ToasterService, CoreModule,
+        ResourceService, LearnerService, FormBuilder,
         { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -34,7 +36,7 @@ describe('UserComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserComponent);
+    fixture = TestBed.createComponent(UserUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -44,16 +46,13 @@ describe('UserComponent', () => {
   });
   it('should call redirect', () => {
     const router = TestBed.get(Router);
-    // spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
     expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
   });
   it('should call downloadSample method to download a csv file', () => {
-    // spyOn(component, 'downloadSample').and.callThrough();
-    component.downloadSample();
+    component.downloadSampleCSV();
     fixture.detectChanges();
-    expect(component.downloadSample).toHaveBeenCalled();
   });
   xit('should call openImageBrowser method', () => {
     component.uploadUserForm.value.provider = 1234;
@@ -61,7 +60,6 @@ describe('UserComponent', () => {
     component.uploadUserForm.value.organizationId = 98765;
     component.openImageBrowser('inputbtn');
     fixture.detectChanges();
-    // spyOn(component, 'openImageBrowser').and.callThrough();
   });
   it('should not call openImageBrowser method', () => {
     const resourceService = TestBed.get(ResourceService);
@@ -75,86 +73,29 @@ describe('UserComponent', () => {
     expect(component.showLoader).toBe(false);
     fixture.detectChanges();
   });
-  it('should call uploadUser method and return success response with processId', () => {
+  it('should call uploadUsersCSV method and return success response with processId', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
-    const file = [{
-      name: 'users.csv',
-      firstName: 'Vaish',
-      lastName: 'M',
-      phone: '7899918811',
-      email: 'vaish@gmail.com',
-      userName: 'vaishnavi',
-      password: 'vaish',
-      provider: '',
-      phoneVerified: '',
-      emailVerified: '',
-      roles: 'CONTENT_CREATOR',
-      position: '',
-      grade: '',
-      location: '',
-      dob: '',
-      gender: '',
-      language: '',
-      profileSummary: '',
-      subject: '',
-      externalId: 5678,
-      organizationId: 9876
-    }];
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    // spyOn(component, 'uploadUser').and.callThrough();
     spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.successResponse));
-    component.uploadUser(file);
-    // orgManagementService.bulkUserUpload().subscribe(
-    //   apiResponse => {
-    //     console.log('api', apiResponse);
-    //     expect(component.processId).not.toBe(null);
-    //     expect(component.showLoader).toBe(false);
-    //     expect(apiResponse.responseCode).toBe('OK');
-    //   });
-    // spyOn(resourceService, 'getResource').and.callThrough();
-    // spyOn(toasterService, 'success').and.callThrough();
+    component.uploadUsersCSV(testData.mockRes.validfile);
   });
-  it('should not call uploadUser method', () => {
-    const file = [{
-      name: 'test.png'
-    }];
+  it('should not call uploadUsersCSV method', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    // spyOn(component, 'uploadUser').and.callThrough();
-    component.uploadUser(file);
+    component.uploadUsersCSV(testData.mockRes.invalidfile);
     spyOn(toasterService, 'error').and.callThrough();
     component.bulkUploadError = true;
     expect(component.bulkUploadError).toBe(true);
   });
-  it('should call uploadUser method and return error response', () => {
+  it('should call uploadUsersCSV method and return error response', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
-    const file = [{
-      name: 'user.csv',
-      firstName: 'Vaish',
-      lastName: 'M',
-      userName: 'vaishnavi',
-      password: 'vaish',
-      subject: ''
-    }];
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    // spyOn(component, 'uploadUser').and.callThrough();
     spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
-    component.uploadUser(file);
-    // orgManagementService.bulkUserUpload().subscribe(
-    //   apiResponse => { },
-    //   err => {
-    //     component.showLoader = false;
-    //     orgManagementService.toasterService.error(err.error.params.errmsg);
-    //     spyOn(resourceService, 'getResource').and.callThrough();
-    //     spyOn(toasterService, 'error').and.callThrough();
-    //   }
-    // );
+    component.uploadUsersCSV(testData.mockRes.errorfile);
   });
 });

@@ -25,66 +25,31 @@ describe('OrgManagementService', () => {
     (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
       const processId = '012465880638177280660';
       spyOn(learnerService, 'get').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
-      orgManagementService.bulkUploadStatus(processId).subscribe(
+      orgManagementService.getBulkUploadStatus(processId).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
     }));
   it('should call bulkOrgUpload method',
     inject([OrgManagementService, LearnerService], (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
-      const request = {
-        data: [{
-          name: 'organizations.csv',
-          orgName: 'new org',
-          isRootOrg: 'TRUE',
-          channel: 'channel110001',
-          externalId: 'ugc0001',
-          provider: 'technical002',
-          description: 'desc',
-          homeUrl: 'googlehomeurl',
-          orgCode: 'orgcode12345',
-          orgType: '',
-          preferredLanguage: 'hindi',
-          theme: 'goodtheme',
-          contactDetail: ''
-        }]
-      };
       const formData = new FormData();
-      formData.append('org', request[0]);
+      formData.append('org', testData.mockRes.request[0]);
       const fd = formData;
       spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
-      orgManagementService.bulkOrgUpload(request).subscribe(
+      orgManagementService.bulkOrgUpload(testData.mockRes.request).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
     }));
   it('should call bulkUserUpload method',
     inject([OrgManagementService, LearnerService], (orgManagementService: OrgManagementService, learnerService: LearnerService) => {
-      const request = {
-        data: [{
-          name: 'organizations.csv',
-          orgName: 'new org',
-          isRootOrg: 'TRUE',
-          channel: 'channel110001',
-          externalId: 'ugc0001',
-          provider: 'technical002',
-          description: 'desc',
-          homeUrl: 'googlehomeurl',
-          orgCode: 'orgcode12345',
-          orgType: '',
-          preferredLanguage: 'hindi',
-          theme: 'goodtheme',
-          contactDetail: ''
-        }]
-      };
       const formData = new FormData();
-      formData.append('org', request[0]);
+      formData.append('org', testData.mockRes.userRequest[0]);
       const fd = formData;
       spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.mockRes.successBulkStatusResponse));
       orgManagementService.bulkUserUpload(fd).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         });
-      // expect(orgManagementService.bulkUserUpload(fd)).toHaveBeenCalled();
     }));
 });

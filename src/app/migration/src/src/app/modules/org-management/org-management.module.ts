@@ -24,6 +24,7 @@ import { CoreModule } from '@sunbird/core';
   ],
   declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
     UserUploadComponent, BulkUploadComponent, StatusComponent],
+  exports: [BulkUploadComponent],
   providers: [ResourceService, ToasterService, RouterNavigationService, OrgTypeService, OrgManagementService]
 })
 export class OrgManagementModule { }

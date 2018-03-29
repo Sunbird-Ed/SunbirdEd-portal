@@ -15,13 +15,13 @@
         <div class="six wide column">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.provider}}</label>
-            <input class="form-control" formControlName="provider" type="text" placeholder="Provider" autofocus>
+            <input formControlName="provider" type="text" placeholder="Provider" autofocus>
           </div>
         </div>
         <div class="six wide column">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.extlid}}</label>
-            <input class="form-control" formControlName="externalId" type="text" placeholder="External Id">
+            <input formControlName="externalId" type="text" placeholder="External Id">
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <div class="one field">
             <div class=" required field">
               <label>{{resourceService?.frmelmnts?.lbl?.orgid}}</label>
-              <input class="form-control" formControlName="organisationId" type="text" placeholder="OrgId">
+              <input formControlName="organisationId" type="text" placeholder="OrgId">
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@
             {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
           </button>
         </div>
-        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" (change)="uploadUser($event.target.files)" required=""
+        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" (change)="uploadUsersCSV($event.target.files)" required=""
         />
       </div>
     </div>

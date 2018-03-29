@@ -1,4 +1,38 @@
 export const mockRes = {
+    validfile: [{
+        name: 'users.csv',
+        firstName: 'Vaish',
+        lastName: 'M',
+        phone: '7899918811',
+        email: 'vaish@gmail.com',
+        userName: 'vaishnavi',
+        password: 'vaish',
+        provider: '',
+        phoneVerified: '',
+        emailVerified: '',
+        roles: 'CONTENT_CREATOR',
+        position: '',
+        grade: '',
+        location: '',
+        dob: '',
+        gender: '',
+        language: '',
+        profileSummary: '',
+        subject: '',
+        externalId: 5678,
+        organizationId: 9876
+    }],
+    invalidfile: [{
+        name: 'test.png'
+    }],
+    errorfile: [{
+        name: 'user.csv',
+        firstName: 'Vaish',
+        lastName: 'M',
+        userName: 'vaishnavi',
+        password: 'vaish',
+        subject: ''
+    }],
     successResponse: {
         'id': 'api.user.upload',
         'ver': 'v1',

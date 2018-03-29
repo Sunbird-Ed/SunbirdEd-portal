@@ -13,14 +13,6 @@ const routes: Routes = [
       { path: 'update/:orgId', component: CreateOrgTypeComponent },
       { path: '**', redirectTo: '' }
     ]
-  },
-  {
-    path: 'bulkUpload', component: BulkUploadComponent,
-    children: [
-      { path: 'organizationUpload', component: OrganizationUploadComponent },
-      { path: 'userUpload', component: UserUploadComponent },
-      { path: 'checkStatus', component: StatusComponent }
-    ]
   }
 ];
 @NgModule({

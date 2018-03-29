@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { LearnerService, OrgManagementService } from '@sunbird/core';
+import { LearnerService } from '@sunbird/core';
+import { OrgManagementService } from '@sunbird/org-management';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
@@ -53,14 +54,12 @@ describe('StatusComponent', () => {
   it('should call organization management service and get success status based on given processId', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.successResponse));
-    // spyOn(component, 'getBulkUploadStatus').and.callThrough();
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.successResponse));
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
-    component.success = testData.mockRes.successResponse.result.response[0].successResult;
+    component.statusResponse = testData.mockRes.successResponse.result.response[0];
     fixture.detectChanges();
   });
   it('should call organization management service and get failure status based on given processId', () => {
@@ -69,20 +68,18 @@ describe('StatusComponent', () => {
     const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.failureResponse));
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.failureResponse));
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
-    component.success = testData.mockRes.successResponse.result.response[0].failureResult;
+    component.statusResponse = testData.mockRes.successResponse.result.response[0];
     fixture.detectChanges();
   });
   xit('should call organization management service and get error response based on given processId', () => {
-    // component.getBulkUploadStatus('12134');
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = testData.mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.errorResponse));
     const processId = '1234';
     component.getBulkUploadStatus(processId);
     const errMsg = testData.mockRes.resourceBundle.messages.fmsg;

@@ -45,7 +45,7 @@ export class OrgManagementService {
       /**
  * This method is used to call status api to get the status of uploaded file
  */
-  bulkUploadStatus(processId) {
+  getBulkUploadStatus(processId) {
     const options = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.STATUS + '/' + processId
     };

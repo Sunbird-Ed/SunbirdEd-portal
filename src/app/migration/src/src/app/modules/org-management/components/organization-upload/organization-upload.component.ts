@@ -4,6 +4,11 @@ import { Route, Router } from '@angular/router';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
+/**
+ * This component helps to upload bulk organizations data (csv file)
+ *
+ * This component also creates a unique process id on success upload of csv file
+ */
 @Component({
   selector: 'app-organization',
   templateUrl: './organization-upload.component.html',
@@ -53,19 +58,6 @@ export class OrganizationUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sampleOrgCSV = [{
-      orgName: 'orgName',
-      isRootOrg: 'isRootOrg',
-      channel: 'channel',
-      externalId: 'externalId',
-      provider: 'provider',
-      description: 'description',
-      homeUrl: 'homeUrl',
-      orgCode: 'orgCode',
-      orgType: 'orgType',
-      preferredLanguage: 'preferredLanguage',
-      contactDetail: 'contactDetail'
-    }];
   }
   /**
  * This method helps to redirect to the parent component
@@ -87,7 +79,7 @@ export class OrganizationUploadComponent implements OnInit {
       showLabels: true
     };
     // tslint:disable-next-line:no-unused-expression
-    new Angular2Csv(this.sampleOrgCSV, 'Sample_Organizations', options);
+    new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file

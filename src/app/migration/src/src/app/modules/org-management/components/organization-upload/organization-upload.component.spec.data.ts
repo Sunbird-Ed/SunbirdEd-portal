@@ -1,4 +1,34 @@
 export const mockRes = {
+    validfile: [{
+        name: 'organizations.csv',
+        orgName: 'new org',
+        isRootOrg: 'TRUE',
+        channel: 'channel110001',
+        externalId: 'ugc0001',
+        provider: 'technical002',
+        description: 'desc',
+        homeUrl: 'googlehomeurl',
+        orgCode: 'orgcode12345',
+        orgType: '',
+        preferredLanguage: 'hindi',
+        theme: 'goodtheme',
+        contactDetail: ''
+    }],
+    invalidfile: [{
+        name: 'users.csv',
+        firstName: 'Vaish',
+        lastName: 'M',
+        phone: '7899918811',
+        email: 'vaish@gmail.com',
+        userName: 'vaishnavi',
+        password: 'vaish',
+        provider: '',
+        phoneVerified: '',
+        emailVerified: ''
+    }],
+    errorfile: [{
+        name: 'test.png'
+    }],
     successResponse: {
         'id': 'api.org.upload',
         'ver': 'v1',

@@ -16,7 +16,7 @@
         <div class="six wide column">
           <div class="field">
             <label>{{resourceService?.frmelmnts?.lbl?.processid}}</label>
-            <input type="text" class="form-control" formControlName="processId" placeholder="Process ID" autofocus>
+            <input type="text" formControlName="processId" placeholder="Process ID" autofocus>
           </div>
         </div>
         <div class="three wide column">
@@ -27,12 +27,12 @@
       <div class="ui label">
         <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
       </div>
-      <div *ngFor="let status of ['success', 'failure']">
+      <div *ngFor="let status of [statusResponse.successResult, statusResponse.failureResult]">
         <div class="margin-top-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
-          <h5 *ngIf="status === 'success'">{{resourceService?.frmelmnts?.lbl?.successres}}</h5>
-          <h5 *ngIf="status === 'failure'">{{resourceService?.frmelmnts?.lbl?.failres}}</h5>
+          <h5 *ngIf="status === statusResponse.successResult">{{resourceService?.frmelmnts?.lbl?.successres}}</h5>
+          <h5 *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.failres}}</h5>
           <table class="ui celled padded table">
-            <thead *ngIf="objectType === 'user'">
+            <thead *ngIf="statusResponse.objectType === 'user'">
               <tr>
                 <th>{{resourceService?.frmelmnts?.lbl?.firstName}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.lastName}}</th>
@@ -53,10 +53,10 @@
                 <th>{{resourceService?.frmelmnts?.lbl?.dob}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.lang}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.subject}}</th>
-                <th *ngIf="status === 'failure'">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
+                <th *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
               </tr>
             </thead>
-            <thead *ngIf="objectType === 'organisation'">
+            <thead *ngIf="statusResponse.objectType === 'organisation'">
               <tr>
                 <th>{{resourceService?.frmelmnts?.lbl?.orgId}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.orgName}}}</th>
@@ -70,11 +70,11 @@
                 <th>{{resourceService?.frmelmnts?.lbl?.orgType}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.preferredLanguage}}</th>
                 <th>{{resourceService?.frmelmnts?.lbl?.theme}}</th>
-                <th *ngIf="status === 'failure'">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
+                <th *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
               </tr>
             </thead>
-            <tbody *ngIf="objectType === 'user'">
-              <tr [ngClass]="status === 'success' ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
+            <tbody *ngIf="statusResponse.objectType === 'user'">
+              <tr [ngClass]="status === statusResponse.successResult ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
                 <td>{{ row.firstName || "empty"}}</td>
                 <td>{{ row.lastName || "empty"}}</td>
                 <td>{{ row.userId || ""}}</td>
@@ -94,10 +94,10 @@
                 <td>{{ row.dob || "empty"}}</td>
                 <td>{{ row.language || "empty"}}</td>
                 <td>{{ row.subject || "empty"}}</td>
-                <td *ngIf="status === 'failure'">{{ row.err_msg || "empty"}}</td>
+                <td *ngIf="status === statusResponse.failureResult">{{ row.err_msg || "empty"}}</td>
             </tbody>
-            <tbody *ngIf="objectType === 'organisation'">
-              <tr [ngClass]="status === 'success' ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
+            <tbody *ngIf="statusResponse.objectType === 'organisation'">
+              <tr [ngClass]="status === statusResponse.successResult ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
                 <td>{{ row.id || "empty"}}</td>
                 <td>{{ row.orgName || "empty"}}</td>
                 <td>{{ row.isRootOrg || "empty"}}</td>
@@ -110,7 +110,7 @@
                 <td>{{ row.orgType || "empty"}}</td>
                 <td>{{ row.preferredLanguage || "empty"}}</td>
                 <td>{{ row.theme || "empty"}}</td>
-                <td *ngIf="status === 'failure'">{{ row.err_msg || "empty"}}</td>
+                <td *ngIf="status === statusResponse.failureResult">{{ row.err_msg || "empty"}}</td>
             </tbody>
           </table>
         </div>

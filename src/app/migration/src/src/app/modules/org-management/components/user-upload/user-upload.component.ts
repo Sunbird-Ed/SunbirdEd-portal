@@ -1,10 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
+/**
+ * This component helps to upload bulk users data (csv file)
+ *
+ * This component also creates a unique process id on success upload of csv file
+ */
 @Component({
   selector: 'app-user',
   templateUrl: './user-upload.component.html',
@@ -12,7 +17,10 @@ import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 })
 export class UserUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
-  sampleUserCSV: Array<Object>;
+  /**
+* reference of config service.
+*/
+  public config: ConfigService;
   /**
 * To call admin service which helps to upload csv file
 */
@@ -60,12 +68,14 @@ export class UserUploadComponent implements OnInit {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
-  constructor(orgManagementService: OrgManagementService, formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
+  constructor(orgManagementService: OrgManagementService, config: ConfigService,
+    formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
     resourceService: ResourceService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
+    this.config = config;
   }
   /**
  * This method initializes the user form and validates it,
@@ -77,26 +87,6 @@ export class UserUploadComponent implements OnInit {
       externalId: ['', null],
       organisationId: ['', null]
     });
-    this.sampleUserCSV = [{
-      firstName: 'firstName',
-      lastName: 'lastName',
-      phone: 'phone',
-      email: 'email',
-      userName: 'userName',
-      password: 'password',
-      provider: 'provider',
-      phoneVerified: 'phoneVerified',
-      emailVerified: 'emailVerified',
-      roles: 'roles',
-      position: 'position',
-      grade: 'grade',
-      location: 'location',
-      dob: 'dob',
-      gender: 'gender',
-      language: 'language',
-      profileSummary: 'profileSummary',
-      subject: 'subject'
-    }];
     this.showLoader = false;
   }
   /**
@@ -111,7 +101,7 @@ export class UserUploadComponent implements OnInit {
   /**
  * This method helps to download a sample csv file
  */
-  public downloadSample() {
+  public downloadSampleCSV() {
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -119,13 +109,12 @@ export class UserUploadComponent implements OnInit {
       showLabels: true
     };
     // tslint:disable-next-line:no-unused-expression
-    new Angular2Csv(this.sampleUserCSV, 'Sample_Users', options);
+    new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file
  */
   openImageBrowser(inputbtn) {
-    console.log('inside openImageBrowser');
     if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
       this.bulkUploadError = false;
       this.bulkUploadErrorMessage = '';
@@ -138,7 +127,7 @@ export class UserUploadComponent implements OnInit {
   /**
  * This method helps to upload a csv file and return process id
  */
-  uploadUser(file) {
+  uploadUsersCSV(file) {
     const data = this.uploadUserForm.value;
     if (file[0] && file[0].name.match(/.(csv)$/i)) {
       this.showLoader = true;

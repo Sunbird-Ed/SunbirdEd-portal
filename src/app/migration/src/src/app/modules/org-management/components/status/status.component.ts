@@ -3,7 +3,12 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
+import { UserUploadStatusResponse, OrgUploadStatusResponse } from '../../index';
 
+/**
+ * This component helps to display the success/failure response given by the api based on the process id entered
+ *
+ */
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
@@ -11,21 +16,13 @@ import { OrgManagementService } from '../../services/org-management/org-manageme
 })
 export class StatusComponent implements OnInit {
   /**
-* Contains success status result with process id
+* Contains status response
 */
-  success: Array<any>;
-  /**
-* Contains failure status result with process id
-*/
-  failure: Array<any>;
+  statusResponse: UserUploadStatusResponse | OrgUploadStatusResponse;
   /**
 * Contains process id
 */
   processId: string;
-  /**
-* Used to store the type of upload, either organization or user
-*/
-  objectType: string;
   /**
 * To show toaster(error, success etc) after any API calls
 */
@@ -85,13 +82,11 @@ export class StatusComponent implements OnInit {
  */
   getBulkUploadStatus(processId) {
     this.showLoader = true;
-    this.orgManagementService.bulkUploadStatus(this.statusForm.value.processId).subscribe(
+    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId).subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
-        this.success = apiResponse.result.response[0].successResult;
-        this.failure = apiResponse.result.response[0].failureResult;
-        this.processId = apiResponse.result.response[0].processId;
-        this.objectType = apiResponse.result.response[0].objectType;
+        this.statusResponse = apiResponse.result.response[0];
+        this.processId = this.statusResponse.processId;
         this.toasterService.success(this.resourceService.messages.smsg.m0032);
       }, err => {
         this.showLoader = false;
@@ -103,6 +98,6 @@ export class StatusComponent implements OnInit {
  * This method helps to get the status result from the api
  */
   getStatusResult(status) {
-    return this[status];
+    return status;
   }
 }
