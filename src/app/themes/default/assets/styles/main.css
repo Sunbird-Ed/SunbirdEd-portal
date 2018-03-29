@@ -2784,6 +2784,12 @@ ol.ui.list ol li:before {
     margin: 0 0 0 -373px !important;
   }
 }
+@media screen and (min-height: 750px) {
+  .updateRoleModel {
+    margin-top: 60px !important;
+    margin-left: 350px !important;
+  }
+}
 .ui.fluid.search.dropdown img {
   width: 2.1666em !important;
   vertical-align: middle;
