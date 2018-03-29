@@ -106,6 +106,7 @@ angular.module('playerApp')
               admin.selectedOrgUserRolesNew = []
               $('.roleChckbox').checkbox()
             },
+            observeChanges: true,
             closable: false,
             onHide: function () {
               admin.userId = ''
