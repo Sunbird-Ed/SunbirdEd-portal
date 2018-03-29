@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workspaceclass } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
-import { ServerResponse, PaginationService, ConfigService , IContents} from '@sunbird/shared';
+import {
+  ServerResponse, PaginationService,
+  ResourceService, ConfigService, IContents, LoaderMessage, NoResultMessage
+} from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -16,7 +19,7 @@ import * as _ from 'lodash';
   templateUrl: './review-submissions.component.html',
   styleUrls: ['./review-submissions.component.css']
 })
-export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit {
+export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**
     * To navigate to other pages
   */
@@ -43,6 +46,20 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   showLoader = true;
 
   /**
+   * loader message
+  */
+  loaderMessage: LoaderMessage;
+  /**
+     * To show / hide error when no result found
+   */
+  showError = false;
+
+  /**
+   * no result  message
+  */
+  noResultMessage: NoResultMessage;
+
+  /**
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
@@ -55,7 +72,7 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   /**
     * To get url, app configs
   */
-    public config: ConfigService;
+  public config: ConfigService;
 
   /**
   * Contains page limit of review submission list
@@ -72,7 +89,10 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   * which is needed to show the pagination on inbox view
   */
   pager: IPagination;
-
+  /**
+    * To call resource service which helps to use language constant
+  */
+  public resourceService: ResourceService;
 
   /**
    * Constructor to create injected service(s) object
@@ -89,13 +109,14 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
-    config: ConfigService) {
+    config: ConfigService, resourceService: ResourceService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.config = config;
+    this.resourceService = resourceService;
   }
 
   ngOnInit() {
@@ -111,20 +132,32 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
-      status: ['Review'],
-      contentType: this.config.appConfig.WORKSPACE.contentType,
-      objectType: this.config.appConfig.WORKSPACE.objectType,
+      filters: {
+        status: ['Review'],
+        createdBy: this.userService.userid,
+        contentType: this.config.appConfig.WORKSPACE.contentType,
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService.userid,
       params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+    };
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0018,
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content) {
+        if (data.result.count && data.result.content.length > 0) {
           this.reviewContent = data.result.content;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           this.showLoader = false;
+        } else {
+          this.showError = true;
+          this.showLoader = false;
+          this.noResultMessage = {
+            'message': this.resourceService.messages.stmsg.m0008,
+            'messageText': this.resourceService.messages.stmsg.m0033
+          };
         }
       },
       (err: ServerResponse) => {

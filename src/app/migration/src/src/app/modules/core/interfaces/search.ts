@@ -50,5 +50,9 @@ export interface SearchParam {
     * page objectType
     */
    objectType?: string[];
+   /**
+    * filters param
+    */
+   filters?: string[];
 
   }

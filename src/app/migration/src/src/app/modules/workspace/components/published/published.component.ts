@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workspaceclass } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
-import { ServerResponse, ConfigService, PaginationService, IContents, ToasterService, ResourceService } from '@sunbird/shared';
+import {
+  ServerResponse, ConfigService, PaginationService,
+  IContents, ToasterService, ResourceService, LoaderMessage, NoResultMessage
+} from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -22,9 +25,9 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   templateUrl: './published.component.html',
   styleUrls: ['./published.component.css']
 })
-export class PublishedComponent extends Workspaceclass implements OnInit {
+export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
-  public modalTemplate: ModalTemplate<{data: string}, string, string>;
+  public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
     * To navigate to other pages
   */
@@ -44,12 +47,25 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
    * Contains list of published conten(s) of logged-in user
   */
   publishedContent: Array<IContents> = [];
-
   /**
-   * To show / hide loader
+     * To show / hide loader
   */
   showLoader = true;
 
+  /**
+   * loader message
+  */
+  loaderMessage: LoaderMessage;
+
+  /**
+   * To show / hide error when no result found
+  */
+  showError = false;
+
+  /**
+   * no result error message
+  */
+  noResultMessage: NoResultMessage;
   /**
     * For showing pagination on draft list
   */
@@ -132,17 +148,22 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
-      status: ['Live'],
-      contentType: this.config.appConfig.WORKSPACE.contentType,
-      objectType: this.config.appConfig.WORKSPACE.objectType,
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: this.config.appConfig.WORKSPACE.contentType,
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService.userid,
       params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+    };
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0021,
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content) {
+        if (data.result.count && data.result.content.length > 0) {
           this.publishedContent = data.result.content;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           _.forEach(this.publishedContent, (item, key) => {
@@ -158,6 +179,12 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
 
           });
           this.showLoader = false;
+        } else {
+          this.showError = true;
+          this.showLoader = false;
+          this.noResultMessage = {
+            'messageText': this.resourceService.messages.stmsg.m0022
+          };
         }
       },
       (err: ServerResponse) => {
@@ -173,16 +200,21 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
   }
 
   public deleteConfirmModal(contentIds) {
-    const config = new TemplateModalConfig<{data: string}, string, string>(this.modalTemplate);
+    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
     config.isClosable = true;
     config.size = 'mini';
     this.modalService
       .open(config)
       .onApprove(result => {
+        this.showLoader = true;
+        this.loaderMessage = {
+          'loaderMessage': this.resourceService.messages.stmsg.m0034,
+        };
         this.delete(contentIds).subscribe(
           (data: ServerResponse) => {
-              this.publishedContent = this.removeContent(this.publishedContent, contentIds);
-              this.toasterService.success(this.resourceService.messages.smsg.m0006);
+            this.showLoader = false;
+            this.publishedContent = this.removeContent(this.publishedContent, contentIds);
+            this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {
             this.showLoader = false;

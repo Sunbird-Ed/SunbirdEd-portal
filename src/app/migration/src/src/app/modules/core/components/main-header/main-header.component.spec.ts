@@ -44,7 +44,6 @@ describe('MainHeaderComponent', () => {
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     userService.initialize();
     fixture.detectChanges();
-    console.log(component);
     expect(component.userProfile).toBeTruthy();
   });
 });
