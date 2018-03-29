@@ -281,12 +281,6 @@ angular.module('playerApp')
         if (profile.fieldsToBeValidate.length) {
           isValid = formValidation.validate('#basicInfoForm', profile.fieldsToBeValidate)
           if (isValid === true) {
-            if (profile.user.phone !== profile.basicProfile.phone) {
-              basicInfo.phone = profile.user.phone
-            }
-            if (!profile.user.email) {
-              basicInfo.email = profile.user.email
-            }
             var webPages = profile.webLink()
             profile.webPages = webPages
 
@@ -300,7 +294,7 @@ angular.module('playerApp')
               $rootScope.messages.fmsg.m0039)
           } else return false
         } else {
-          if (!profile.user.firstName || !profile.user.language.length || !profile.user.phone) {
+          if (!profile.user.firstName || !profile.user.language.length) {
             toasterService.error($rootScope.messages.fmsg.m0076)
           } else {
             profile.updateUserInfo(
