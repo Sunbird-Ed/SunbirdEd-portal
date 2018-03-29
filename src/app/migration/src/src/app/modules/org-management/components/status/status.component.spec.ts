@@ -1,17 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { StatusComponent } from './status.component';
-import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import * as testData from './status.component.spec.data';
 
 describe('StatusComponent', () => {
@@ -25,23 +23,18 @@ describe('StatusComponent', () => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule],
-      providers: [Ng2IzitoastService, OrgManagementService, ConfigService, ToasterService,
-        ResourceService, LearnerService, FormBuilder, HttpClient,
+      providers: [OrgManagementService, ConfigService, ToasterService,
+        ResourceService, LearnerService, FormBuilder,
         { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(StatusComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
   it('should call redirect', () => {
     const router = TestBed.get(Router);
@@ -65,7 +58,6 @@ describe('StatusComponent', () => {
   it('should call organization management service and get failure status based on given processId', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
-    const http = TestBed.get(HttpClient);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = testData.mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(testData.mockRes.failureResponse));

@@ -3,7 +3,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
-import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -108,8 +108,7 @@ export class UserUploadComponent implements OnInit {
       decimalseparator: '.',
       showLabels: true
     };
-    // tslint:disable-next-line:no-unused-expression
-    new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
+    const csv = new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file

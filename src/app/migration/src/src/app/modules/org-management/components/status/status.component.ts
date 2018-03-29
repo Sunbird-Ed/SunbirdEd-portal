@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { OrgManagementService } from '../../services/org-management/org-management.service';
-import { UserUploadStatusResponse, OrgUploadStatusResponse } from '../../index';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { OrgManagementService } from '../../services';
+import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
 
 /**
  * This component helps to display the success/failure response given by the api based on the process id entered
@@ -18,7 +18,7 @@ export class StatusComponent implements OnInit {
   /**
 * Contains status response
 */
-  statusResponse: UserUploadStatusResponse | OrgUploadStatusResponse;
+  statusResponse: IUserUploadStatusResponse | IOrgUploadStatusResponse;
   /**
 * Contains process id
 */

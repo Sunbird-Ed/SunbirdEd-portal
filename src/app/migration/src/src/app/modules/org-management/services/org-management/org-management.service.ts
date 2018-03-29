@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs/Rx';
-
+import { Observable } from 'rxjs/Observable';
+  /**
+ * This service is used to manage bulk upload of users data or organization data.
+ * This service is also used to check status of uploaded file
+ */
 @Injectable()
 export class OrgManagementService {
   /**

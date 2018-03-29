@@ -4,28 +4,20 @@
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0015}}</span>
       </div>
-      <!-- <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="modal.deny(); redirect();">
-          <i class="ui remove icon"></i>
-        </h5>
-      </div> -->
     </div>
   </div>
   <div class="content">
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <!-- file name -->
     <h5 *ngIf="fileName">
       <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
     </h5>
-    <!-- show progress -->
     <div *ngIf="processId">
       <p class="padding-top-bottom-0">{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</p>
       <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
     </div>
     <div *ngIf="!processId && !showLoader" class="ui info message">
-      <!-- <i class="close icon"></i> -->
       <div class="header">
         {{resourceService?.frmelmnts?.scttl?.instructions}}
       </div>

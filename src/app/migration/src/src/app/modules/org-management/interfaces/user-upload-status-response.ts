@@ -1,11 +1,11 @@
 import { ServerResponse } from '@sunbird/shared';
-export interface UserUploadStatusResponse {
+export interface IUserUploadStatusResponse {
     objectType: string;
     processId: string;
-    successResult: Array<UserUploadStatusResult>;
-    failureResult: Array<UserUploadStatusResult>;
+    successResult: Array<IUserUploadStatusResult>;
+    failureResult: Array<IUserUploadStatusResult>;
 }
-export interface UserUploadStatusResult {
+export interface IUserUploadStatusResult {
     dob: string;
     email: string;
     emailVerified: string;

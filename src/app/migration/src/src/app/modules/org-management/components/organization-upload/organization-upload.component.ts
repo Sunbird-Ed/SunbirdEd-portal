@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Route, Router } from '@angular/router';
-import { OrgManagementService } from '../../services/org-management/org-management.service';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Router } from '@angular/router';
+import { OrgManagementService } from '../../services';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 /**
@@ -14,7 +14,7 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
   templateUrl: './organization-upload.component.html',
   styleUrls: ['./organization-upload.component.css']
 })
-export class OrganizationUploadComponent implements OnInit {
+export class OrganizationUploadComponent {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   /**
  * To show/hide loader
@@ -56,9 +56,6 @@ export class OrganizationUploadComponent implements OnInit {
     this.config = config;
     this.toasterService = toasterService;
   }
-
-  ngOnInit() {
-  }
   /**
  * This method helps to redirect to the parent component
  * page, i.e, bulk upload page
@@ -78,8 +75,7 @@ export class OrganizationUploadComponent implements OnInit {
       decimalseparator: '.',
       showLabels: true
     };
-    // tslint:disable-next-line:no-unused-expression
-    new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
+    const csv = new Angular2Csv(this.config.pageConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV, 'Sample_Organizations', options);
   }
   /**
  * This method helps to call uploadOrg method to upload a csv file

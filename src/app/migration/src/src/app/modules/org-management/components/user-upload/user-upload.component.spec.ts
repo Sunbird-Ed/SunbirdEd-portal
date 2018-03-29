@@ -1,18 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { LearnerService, CoreModule } from '@sunbird/core';
+import { LearnerService } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { NgForm, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { UserUploadComponent } from './user-upload.component';
 import * as testData from './user-upload.component.spec.data';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UserUploadComponent', () => {
@@ -25,8 +23,8 @@ describe('UserUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserUploadComponent],
-      imports: [SharedModule, SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [OrgManagementService, ConfigService, ToasterService, CoreModule,
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
+      providers: [OrgManagementService, ConfigService, ToasterService,
         ResourceService, LearnerService, FormBuilder,
         { provide: Router, useClass: RouterStub }
       ],
@@ -39,10 +37,6 @@ describe('UserUploadComponent', () => {
     fixture = TestBed.createComponent(UserUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
   it('should call redirect', () => {
     const router = TestBed.get(Router);

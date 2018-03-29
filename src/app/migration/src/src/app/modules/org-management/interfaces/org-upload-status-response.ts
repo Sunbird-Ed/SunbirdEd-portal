@@ -1,11 +1,11 @@
 import { ServerResponse } from '@sunbird/shared';
-export interface OrgUploadStatusResponse {
+export interface IOrgUploadStatusResponse {
     objectType: string;
     processId: string;
-    successResult: Array<OrgUploadStatusResult>;
-    failureResult: Array<OrgUploadStatusResult>;
+    successResult: Array<IOrgUploadStatusResult>;
+    failureResult: Array<IOrgUploadStatusResult>;
 }
-export interface OrgUploadStatusResult {
+export interface IOrgUploadStatusResult {
     orgName: string;
     homeUrl: string;
     orgType: string;

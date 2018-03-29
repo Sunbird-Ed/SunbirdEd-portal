@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
+/**
+* This component displays the upload links and status check link which is used to upload csv file
+*  and check the status of uploaded file
+*/
 @Component({
   selector: 'app-bulk-upload',
   templateUrl: './bulk-upload.component.html',
