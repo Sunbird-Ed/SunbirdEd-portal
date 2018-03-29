@@ -9,5 +9,6 @@ export * from './search/search.service';
 export * from './announcement/announcement.service';
 export * from './page-api/page-api.service';
 export * from './user/user.mock.spec.data';
-
+export * from './telemetry/telemetry.service';
+export * from './telemetry/telemetry.service.spec';
 
