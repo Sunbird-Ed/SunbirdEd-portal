@@ -75,6 +75,7 @@ angular.module('playerApp')
         requestBody.name = requestBody.name ? requestBody.name : 'Untitled lesson'
         requestBody.contentType = requestBody.contentType ? requestBody.contentType : 'Resource'
         requestBody.framework = contentLesson.framework
+        requestBody.concepts = contentLesson.concepts
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }
@@ -94,7 +95,7 @@ angular.module('playerApp')
         $state.go('ContentEditor', params)
       }
       $scope.$on('selectedConcepts', function (event, args) {
-        contentLesson.data.concepts = args.selectedConcepts
+        contentLesson.concepts = args.selectedConcepts
       })
 
       var CreateLessonFromDataDrivenForm = $rootScope.$on('CreateLesson',
