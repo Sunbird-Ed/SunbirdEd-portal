@@ -44,10 +44,6 @@ export class OrganizationUploadComponent {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
-  /**
-    * Contains sample organization csv format
-    */
-  sampleOrgCSV: Array<Object>;
 
   constructor(orgManagementService: OrgManagementService, toasterService: ToasterService, private router: Router,
     config: ConfigService, resourceService: ResourceService) {
