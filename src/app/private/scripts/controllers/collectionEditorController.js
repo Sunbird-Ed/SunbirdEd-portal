@@ -120,7 +120,7 @@ angular.module('playerApp')
           }
         }
         window.config.editorConfig.publishMode = false
-        window.config.editorConfig.isFalgReviewer = false
+        window.config.editorConfig.isFlagReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
             ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
@@ -128,7 +128,7 @@ angular.module('playerApp')
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
             ['FLAG_REVIEWER']).length > 0) {
-          window.config.editorConfig.isFalgReviewer = true
+          window.config.editorConfig.isFlagReviewer = true
         }
 
         var validateModal = {
