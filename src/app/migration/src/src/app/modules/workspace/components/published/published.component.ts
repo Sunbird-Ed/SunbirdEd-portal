@@ -122,7 +122,7 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.fetchPublishedContent(this.config.pageConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+      this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
   }
   /**
@@ -133,12 +133,12 @@ export class PublishedComponent extends Workspaceclass implements OnInit {
     this.pageLimit = limit;
     const searchParams = {
       status: ['Live'],
-      contentType: this.config.pageConfig.WORKSPACE.contentType,
-      objectType: this.config.pageConfig.WORKSPACE.objectType,
+      contentType: this.config.appConfig.WORKSPACE.contentType,
+      objectType: this.config.appConfig.WORKSPACE.objectType,
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
       userId: this.userService.userid,
-      params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
+      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
