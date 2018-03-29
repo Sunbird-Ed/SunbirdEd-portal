@@ -116,7 +116,7 @@ export class DraftComponent extends Workspaceclass implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
             this.pageNumber = Number(params.pageNumber);
-            this.fetchDrafts(this.config.pageConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+            this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
         });
     }
     /**
@@ -127,12 +127,12 @@ export class DraftComponent extends Workspaceclass implements OnInit {
         this.pageLimit = limit;
         const searchParams = {
             status: ['Draft'],
-            contentType: this.config.pageConfig.WORKSPACE.contentType,
-            mimeType: this.config.pageConfig.WORKSPACE.mimeType,
+            contentType: this.config.appConfig.WORKSPACE.contentType,
+            mimeType: this.config.appConfig.WORKSPACE.mimeType,
             pageNumber: this.pageNumber,
             limit: this.pageLimit,
             userId: this.userService.userid,
-            params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
+            params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {

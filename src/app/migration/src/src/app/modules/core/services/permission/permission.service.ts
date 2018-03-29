@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, ToasterService , ResourceService} from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService , ResourceService, IUserData} from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
@@ -86,6 +86,7 @@ export class PermissionService {
     this.config = config;
     this.learner = learner;
     this.userService = userService;
+    this.resourceService = resourceService;
   }
   public initialize() {
     this.getPermissionsData();
@@ -131,7 +132,7 @@ export class PermissionService {
    * @param {ServerResponse} data ConfigService reference
    */
   private setCurrentRoleActions(): void {
-    this.userService.userData$.subscribe( user => {
+    this.userService.userData$.subscribe( (user: IUserData) => {
       if (user && !user.err) {
         this.userRoles = user.userProfile.userRoles;
         _.forEach(this.userRoles,  (role) => {

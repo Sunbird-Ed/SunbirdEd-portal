@@ -167,7 +167,7 @@ export class OutboxComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.populateOutboxData(this.config.pageConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
+      this.populateOutboxData(this.config.appConfig.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
 
     this.announcementService.announcementDeleteEvent.subscribe(data => {
