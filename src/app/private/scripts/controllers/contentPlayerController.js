@@ -9,6 +9,7 @@ angular.module('playerApp')
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
       $scope.contentProgress = 0
+      $scope.telemetryEnv = ($state.current.name === 'Toc') ? 'course' : 'library'
       var count = 0
 
       $scope.getContentEditorConfig = function (data) {
@@ -78,7 +79,8 @@ angular.module('playerApp')
             previewContentIframe.contentWindow.initializePreview(configuration)
             $scope.gotoBottom()
           }
-          telemetryService.startTelemetryData($state.params.backState, $rootScope.contentId,
+
+          telemetryService.startTelemetryData($scope.telemetryEnv, $rootScope.contentId,
             $scope.contentData.contentType, '1.0', 'previewContent', 'content-read', 'play')
         }, 0)
 
@@ -141,7 +143,7 @@ angular.module('playerApp')
       }
 
       $scope.close = function () {
-        telemetryService.endTelemetryData($stateParams.backState, $rootScope.contentId, 'Resource',
+        telemetryService.endTelemetryData($scope.telemetryEnv, $rootScope.contentId, 'Resource',
           '1.0', 'previewContent', 'content-read', 'play')
         if ($scope.closeurl === 'Profile') {
           $state.go($scope.closeurl)
@@ -167,9 +169,9 @@ angular.module('playerApp')
         $scope.visibility = false
         if (document.getElementById('contentPlayer')) {
           document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
-                      org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
-                        event.detail.telemetryData)
-                    }, false)
+            org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
+              event.detail.telemetryData)
+          }, false)
         }
       }
 

@@ -58,7 +58,7 @@
             }
 
             /* -----------telemetry start event------------ */
-            telemetryService.startTelemetryData($state.params.backState, $state.params.Id,
+            telemetryService.startTelemetryData('library', $state.params.Id,
               res.result.content.contentType, cpvm.version, 'collection', 'content-read', 'play')
           } else {
             cpvm.showError($rootScope.messages.emsg.m0004)
@@ -166,7 +166,7 @@
         cpvm.showPlayer = true
       }
       cpvm.closePlayer = function (contentType) {
-        telemetryService.endTelemetryData($stateParams.backState, $state.params.Id, contentType,
+        telemetryService.endTelemetryData('library', $state.params.Id, contentType,
           cpvm.version, 'collection', 'content-read', 'play')
         if ($stateParams.backState === 'Profile') {
           $state.go($stateParams.backState)

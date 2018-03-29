@@ -280,7 +280,22 @@ angular.module('playerApp')
         onExit: function ($rootScope, telemetryService, $stateParams) {
           var pageId = $stateParams.type.toLowerCase() + '-search'
           var uri = '/search/' + $stateParams.type
-          telemetryService.impressionTelemetryData('search', '', 'search',
+          var env = 'home'
+          switch ($stateParams.type) {
+          case 'Courses':
+            env = 'course'
+            break
+          case 'Library':
+            env = 'library'
+            break
+          case 'Users':
+            env = 'profile'
+            break
+          case 'Organisations':
+            env = 'profile'
+            break
+          }
+          telemetryService.impressionTelemetryData(env, '', 'search',
             '1.0', 'pageexit', pageId, uri, '', telemetryService.getVisitData())
           $rootScope.courseActive = $rootScope.resourcesActive = ''
           $rootScope.isSearchResultsPage = false
