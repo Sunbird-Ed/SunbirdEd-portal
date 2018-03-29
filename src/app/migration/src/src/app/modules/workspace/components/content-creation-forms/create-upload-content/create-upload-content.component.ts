@@ -1,21 +1,18 @@
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-create-content',
-  templateUrl: './create-content.component.html',
-  styleUrls: ['./create-content.component.css']
+  selector: 'app-create-upload-content',
+  templateUrl: './create-upload-content.component.html',
+  styleUrls: ['./create-upload-content.component.css']
 })
-export class CreateContentComponent implements OnInit {
+export class CreateUploadContentComponent implements OnInit {
 
   /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
-
 
   /**
   * Constructor to create injected service(s) object
@@ -24,9 +21,13 @@ export class CreateContentComponent implements OnInit {
 
   * @param {ResourceService} resourceService Reference of ResourceService
  */
-  constructor(resourceService: ResourceService) {
+  constructor(resourceService: ResourceService, private router: Router) {
     this.resourceService = resourceService;
   }
+
   ngOnInit() {
   }
- }
+  goToCreate() {
+    this.router.navigate(['/workspace/content/create']);
+  }
+}

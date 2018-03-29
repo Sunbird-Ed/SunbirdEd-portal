@@ -15,6 +15,10 @@ export class UserService {
    * Contains user id
    */
   private _userid: string;
+ /**
+   * Contains session id
+   */
+  public _sessionid: string;
   /**
    * Contains user profile.
    */
@@ -58,6 +62,13 @@ export class UserService {
       this._userid = 'userId';
     }
     return this._userid;
+  }
+   /**
+   * get method to fetch sessionid.
+   */
+   get sessionid(): string {
+      this._sessionid = (<HTMLInputElement>document.getElementById('sessionId')).value;
+     return this._sessionid;
   }
   /**
    * method to fetch user profile from server.
