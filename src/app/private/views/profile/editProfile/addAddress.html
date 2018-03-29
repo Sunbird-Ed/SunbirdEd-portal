@@ -4,13 +4,13 @@
         <label for="address" class="required">{{$root.frmelmnts.lbl.seladdresstype}}</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input ng-disabled="profileCtrl.disableAddressOption('permanent')" type="radio" id="addressTypePermanent" name="addressType" value='permanent' ng-checked="false" ng-click="profileCtrl.checkAddress(profileCtrl.newAddress.addType);profileCtrl.getCheckBoxValue($event);" ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.disableAddressOption('permanent')" type="radio" id="addressTypePermanent" name="addressType" value='permanent' ng-checked="false" ng-click="profileCtrl.checkAddress(profileCtrl.newAddress.addType);" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.permanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input ng-disabled="profileCtrl.disableAddressOption('current')"  type="radio" id= "addressTypeCurrent" name="addressType" value='current' ng-checked="false" ng-click="profileCtrl.checkAddress(profileCtrl.newAddress.addType); profileCtrl.getCheckBoxValue($event);" ng-model="profileCtrl.newAddress.addType">
+                <input ng-disabled="profileCtrl.disableAddressOption('current')"  type="radio" id= "addressTypeCurrent" name="addressType" value='current' ng-checked="false" ng-click="profileCtrl.checkAddress(profileCtrl.newAddress.addType);" ng-model="profileCtrl.newAddress.addType">
                 <label>{{$root.frmelmnts.lbl.current}}</label>
             </div>
         </div>
