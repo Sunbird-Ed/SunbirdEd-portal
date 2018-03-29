@@ -123,7 +123,7 @@ angular.module('playerApp')
         window.config.editorConfig.isFalgReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
-            ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
+            ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
           window.config.editorConfig.publishMode = true
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
