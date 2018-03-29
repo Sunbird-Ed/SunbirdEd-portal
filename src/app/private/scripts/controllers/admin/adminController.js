@@ -206,13 +206,17 @@ angular.module('playerApp')
       admin.isUserRole = function (role, list) {
         return list.includes(role)
       }
-      admin.editRoles = function (role, userRoles) {
+      admin.editRoles = function (role, userRoles,$event) {
         if (userRoles.includes(role) === true) {
           admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
             return selectedRole !== role
           })
         } else {
-          admin.selectedOrgUserRolesNew.push(role)
+          if($event.target.checked=== true){
+            admin.selectedOrgUserRolesNew.push(role)
+          }else{
+            admin.selectedOrgUserRolesNew.splice(admin.selectedOrgUserRolesNew.indexOf(role))
+          }
         }
       }
       admin.updateRoles = function (identifier, orgId, roles) {

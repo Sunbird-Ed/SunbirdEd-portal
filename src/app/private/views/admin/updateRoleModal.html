@@ -27,7 +27,7 @@
 
                 <li class="orgRolesListView" ng-repeat="role in admin.userRoles">
                     <div class="ui checkbox">
-                        <input ng-disabled="admin.isUserRole(role.role,admin.selectedOrgUserRoles);" type="checkbox" value='{{role.role}}' ng-click="admin.editRoles(role.role,admin.selectedOrgUserRoles)" ng-checked="admin.isUserRole(role.role,admin.selectedOrgUserRoles);">
+                        <input id="roleCheecked" ng-disabled="admin.isUserRole(role.role,admin.selectedOrgUserRoles);" type="checkbox" value='{{role.role}}' ng-click="admin.editRoles(role.role,admin.selectedOrgUserRoles,$event)" ng-checked="admin.isUserRole(role.role,admin.selectedOrgUserRoles);">
                         <label>{{role.roleName || role.role}}</label>
                     </div>
                 </li>
