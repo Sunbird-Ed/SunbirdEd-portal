@@ -98,7 +98,7 @@ angular.module('playerApp')
               associations.push(key);
             })
           }
-        });
+        })
         callback && callback(associations)
       }
       /**
