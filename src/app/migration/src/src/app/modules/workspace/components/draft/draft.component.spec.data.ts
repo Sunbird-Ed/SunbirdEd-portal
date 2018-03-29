@@ -31,12 +31,5 @@ export const mockRes = {
     },
     'responseCode': 'OK',
     'result': []
-  },
-  resourceBundle: {
-    'messages': {
-      'fmsg': {
-        'm0006': 'Fetching draft content failed, please try again'
-      }
-    }
   }
 };

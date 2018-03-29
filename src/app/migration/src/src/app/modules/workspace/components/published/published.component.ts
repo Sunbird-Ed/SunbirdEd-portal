@@ -148,12 +148,14 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
-      status: ['Live'],
-      contentType: this.config.pageConfig.WORKSPACE.contentType,
-      objectType: this.config.pageConfig.WORKSPACE.objectType,
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: this.config.pageConfig.WORKSPACE.contentType,
+        objectType: this.config.pageConfig.WORKSPACE.objectType,
+      },
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService.userid,
       params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
@@ -180,7 +182,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
         } else {
           this.showError = true;
           this.showLoader = false;
-          this.noResultMessage  = {
+          this.noResultMessage = {
             'messageText': this.resourceService.messages.stmsg.m0022
           };
         }

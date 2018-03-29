@@ -132,12 +132,14 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
-      status: ['Review'],
-      contentType: this.config.pageConfig.WORKSPACE.contentType,
-      objectType: this.config.pageConfig.WORKSPACE.objectType,
+      filters: {
+        status: ['Review'],
+        createdBy: this.userService.userid,
+        contentType: this.config.pageConfig.WORKSPACE.contentType,
+        objectType: this.config.pageConfig.WORKSPACE.objectType,
+      },
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService.userid,
       params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
@@ -145,7 +147,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content) {
+        if (data.result.count && data.result.content.length > 0) {
           this.reviewContent = data.result.content;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           this.showLoader = false;

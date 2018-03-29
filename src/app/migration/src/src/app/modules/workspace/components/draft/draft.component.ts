@@ -60,7 +60,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
     showError = false;
 
     /**
-     * no result error message
+     * no result  message
     */
     noResultMessage: NoResultMessage;
 
@@ -144,12 +144,13 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.pageNumber = pageNumber;
         this.pageLimit = limit;
         const searchParams = {
-            status: ['Draft'],
-            contentType: this.config.pageConfig.WORKSPACE.contentType,
-            mimeType: this.config.pageConfig.WORKSPACE.mimeType,
-            pageNumber: this.pageNumber,
+            filters: {
+                status: ['Draft'],
+                createdBy: this.userService.userid,
+                contentType: this.config.pageConfig.WORKSPACE.contentType,
+                mimeType: this.config.pageConfig.WORKSPACE.mimeType,
+            },
             limit: this.pageLimit,
-            userId: this.userService.userid,
             params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {

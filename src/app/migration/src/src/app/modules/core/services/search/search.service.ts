@@ -120,4 +120,31 @@ export class SearchService {
   get searchedOrganisationList(): { content: Array<any>, count: number } {
     return this._searchedOrganisationList;
   }
+
+  /**
+   * Composit Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          sort_by: {
+            lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
+          }
+        }
+      }
+    };
+
+    return this.content.post(option)
+    .map((data: ServerResponse) => {
+      this._searchedContentList = data.result;
+      return data;
+    });
+  }
 }
