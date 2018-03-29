@@ -120,7 +120,7 @@ angular.module('playerApp')
             dependedValues = _.map(associations, function (i) { return _.pick(i, 'name','category') })
             groupdFields = _.chain(dependedValues)
             .groupBy('category')
-            .map( (name, category) => ({ name, category }))
+            .map( function(name, category) { return { 'name': name, 'category': category } })
             .value()
             dataDrivenForm.updateDropDownList(id, dependedValues)
             if (groupdFields.length) {
@@ -130,7 +130,6 @@ angular.module('playerApp')
           } else {
             dataDrivenForm.updateDropDownList(id, [])
           }
-          
           })
         }
       }
