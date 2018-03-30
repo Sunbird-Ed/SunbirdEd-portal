@@ -122,7 +122,7 @@ export class SearchService {
   }
 
   /**
-   * Composit Search.
+   * Composite Search.
    *
    * @param {SearchParam} requestParam api request data
   */
@@ -140,11 +140,6 @@ export class SearchService {
         }
       }
     };
-
-    return this.content.post(option)
-    .map((data: ServerResponse) => {
-      this._searchedContentList = data.result;
-      return data;
-    });
+    return this.content.post(option);
   }
 }

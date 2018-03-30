@@ -1,6 +1,6 @@
-export interface NoResultMessage {
+export interface INoResultMessage {
   /**
-   * error message
+   * no result  message
   */
   message?: string;
   /**

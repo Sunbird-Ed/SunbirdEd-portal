@@ -10,7 +10,7 @@
         <app-content-card [content]="content" (clickEvent)="deleteDraft($event)"></app-content-card>
       </div>
     </div>
-   <div *ngIf="showError">
+   <div *ngIf="noResult">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
@@ -18,7 +18,7 @@
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="nine wide column padding-top-none">
-    <div class="padding-bottom-10" *ngIf="draftList && draftList.length > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
+    <div class="padding-bottom-10" *ngIf="draftList && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
       <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>

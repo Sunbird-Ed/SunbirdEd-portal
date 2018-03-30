@@ -4,7 +4,7 @@ import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService,
-    ResourceService, IContents, LoaderMessage, NoResultMessage
+    ResourceService, IContents, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -52,17 +52,22 @@ export class DraftComponent extends WorkSpace implements OnInit {
     /**
      * loader message
     */
-    loaderMessage: LoaderMessage;
+    loaderMessage: ILoaderMessage;
 
     /**
-     * To show / hide error when no result found
+     * To show / hide no result message when no result found
+    */
+    noResult = false;
+
+    /**
+     * To show / hide error
     */
     showError = false;
 
     /**
      * no result  message
     */
-    noResultMessage: NoResultMessage;
+    noResultMessage: INoResultMessage;
 
     /**
       * For showing pagination on draft list
@@ -87,6 +92,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
       * Current page number of inbox list
     */
     pageNumber = 1;
+
+    /**
+      * totalCount of the list
+    */
+    totalCount: Number;
 
     /**
 	  * Contains returned object of the pagination service
@@ -141,6 +151,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method sets the make an api call to get all drafts with page No and offset
      */
     fetchDrafts(limit: number, pageNumber: number) {
+        this.showLoader = true;
         this.pageNumber = pageNumber;
         this.pageLimit = limit;
         const searchParams = {
@@ -151,6 +162,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
             },
             limit: this.pageLimit,
+            pageNumber: this.pageNumber,
             params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
@@ -160,6 +172,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content.length > 0) {
                     this.draftList = data.result.content;
+                    this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
                     _.forEach(this.draftList, (item, key) => {
                         const action = {
@@ -175,7 +188,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
                     });
                     this.showLoader = false;
                 } else {
-                    this.showError = true;
+                    this.showError = false;
+                    this.noResult = true;
                     this.showLoader = false;
                     this.noResultMessage = {
                         'message': this.resourceService.messages.stmsg.m0008,
@@ -185,6 +199,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
             },
             (err: ServerResponse) => {
                 this.showLoader = false;
+                this.noResult = false;
+                this.showError = true;
                 this.toasterService.error(this.resourceService.messages.fmsg.m0006);
             }
         );

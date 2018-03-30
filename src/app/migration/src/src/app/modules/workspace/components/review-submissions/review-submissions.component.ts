@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
 import {
-  ServerResponse, PaginationService,
-  ResourceService, ConfigService, IContents, LoaderMessage, NoResultMessage
+  ServerResponse, PaginationService, ToasterService,
+  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -48,16 +48,21 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**
    * loader message
   */
-  loaderMessage: LoaderMessage;
+  loaderMessage: ILoaderMessage;
   /**
-     * To show / hide error when no result found
+     * To show / hide error
    */
   showError = false;
 
   /**
+    * To show / hide no result message when no result found
+   */
+  noResult = false;
+
+  /**
    * no result  message
   */
-  noResultMessage: NoResultMessage;
+  noResultMessage: INoResultMessage;
 
   /**
     * For showing pagination on draft list
@@ -85,6 +90,11 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   pageNumber = 1;
 
   /**
+  * totalCount of the list
+   */
+  totalCount: Number;
+
+  /**
   * Contains returned object of the pagination service
   * which is needed to show the pagination on inbox view
   */
@@ -95,6 +105,10 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   public resourceService: ResourceService;
 
   /**
+  * To show toaster(error, success etc) after any API calls
+  */
+  private toasterService: ToasterService;
+  /**
    * Constructor to create injected service(s) object
    Default method of Review submission  Component class
    * @param {SearchService} SearchService Reference of SearchService
@@ -103,13 +117,15 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
    * @param {PaginationService} paginationService Reference of PaginationService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ConfigService} config Reference of ConfigService
+   * @param {ToasterService} toaster Reference of toasterService
  */
   constructor(public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
-    config: ConfigService, resourceService: ResourceService) {
+    config: ConfigService, resourceService: ResourceService,
+    toasterService: ToasterService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
@@ -117,6 +133,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.userService = userService;
     this.config = config;
     this.resourceService = resourceService;
+    this.toasterService = toasterService;
   }
 
   ngOnInit() {
@@ -129,6 +146,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
    * This method sets the make an api call to get all reviewContent with page No and offset
   */
   fetchReviewContents(limit: number, pageNumber: number) {
+    this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
@@ -149,11 +167,13 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.reviewContent = data.result.content;
+          this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           this.showLoader = false;
         } else {
-          this.showError = true;
+          this.showError = false;
           this.showLoader = false;
+          this.noResult = true;
           this.noResultMessage = {
             'message': this.resourceService.messages.stmsg.m0008,
             'messageText': this.resourceService.messages.stmsg.m0033
@@ -162,6 +182,9 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       },
       (err: ServerResponse) => {
         this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0012);
       }
     );
   }

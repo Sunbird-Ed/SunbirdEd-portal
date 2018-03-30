@@ -3,9 +3,10 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReviewSubmissionsComponent } from './review-submissions.component';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 
 // Import services
-import { SharedModule, PaginationService, ResourceService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ResourceService, ToasterService } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import {
   UserService, LearnerService, CoursesService, PermissionService,
@@ -18,7 +19,7 @@ const testData = mockData.mockRes;
  const resourceBundle =  {
        'messages': {
            'fmsg': {
-               'm0006': 'Fetching draft content failed, please try again'
+               'm0012': 'Fetching review content failed, please try again'
            },
            'stmsg': {
                'm0018': 'We are fetching draft content...',
@@ -34,10 +35,10 @@ describe('ReviewSubmissionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService,
+        PermissionService, ToasterService,
         {provide: ResourceService, useValue: resourceBundle}
       ]
     })

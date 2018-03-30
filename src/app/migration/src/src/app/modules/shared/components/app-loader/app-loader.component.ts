@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
-import {LoaderMessage} from '../../interfaces/loader';
+import {ILoaderMessage} from '../../interfaces/loader';
 
 /**
  * loader component
@@ -14,7 +14,7 @@ export class AppLoaderComponent implements OnInit {
   /**
    * loader message
   */
-  @Input() data: LoaderMessage;
+  @Input() data: ILoaderMessage;
   /**
    * header message
   */

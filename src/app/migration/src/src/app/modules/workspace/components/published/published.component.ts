@@ -4,7 +4,7 @@ import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService,
-  IContents, ToasterService, ResourceService, LoaderMessage, NoResultMessage
+  IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -55,17 +55,20 @@ export class PublishedComponent extends WorkSpace implements OnInit {
   /**
    * loader message
   */
-  loaderMessage: LoaderMessage;
+  loaderMessage: ILoaderMessage;
 
   /**
    * To show / hide error when no result found
   */
   showError = false;
-
   /**
-   * no result error message
+    * To show / hide no result message when no result found
   */
-  noResultMessage: NoResultMessage;
+  noResult = false;
+  /**
+   * no result  message
+  */
+  noResultMessage: INoResultMessage;
   /**
     * For showing pagination on draft list
   */
@@ -85,6 +88,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     * Current page number of inbox list
   */
   pageNumber = 1;
+  /**
+  * totalCount of the list
+   */
+  totalCount: Number;
 
   /**
     * Contains returned object of the pagination service
@@ -145,6 +152,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     * This method sets the make an api call to get all Published content with page No and offset
     */
   fetchPublishedContent(limit: number, pageNumber: number) {
+    this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
@@ -165,6 +173,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.publishedContent = data.result.content;
+          this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           _.forEach(this.publishedContent, (item, key) => {
             const action = {
@@ -180,8 +189,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           });
           this.showLoader = false;
         } else {
-          this.showError = true;
+          this.showError = false;
           this.showLoader = false;
+          this.noResult = true;
           this.noResultMessage = {
             'messageText': this.resourceService.messages.stmsg.m0022
           };
@@ -189,6 +199,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
       },
       (err: ServerResponse) => {
         this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0013);
       }
     );
   }

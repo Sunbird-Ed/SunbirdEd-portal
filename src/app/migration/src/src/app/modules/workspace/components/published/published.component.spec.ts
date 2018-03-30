@@ -25,7 +25,7 @@ describe('PublishedComponent', () => {
   const resourceBundle =  {
        'messages': {
            'fmsg': {
-               'm0021': 'We are fetching published content...'
+               'm0013': 'Fetching published content failed, please try again'
            },
            'stmsg': {
                'm0022': 'You dont  have any published content...',

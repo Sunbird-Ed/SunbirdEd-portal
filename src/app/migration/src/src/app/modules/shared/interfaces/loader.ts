@@ -1,5 +1,5 @@
 
-export interface LoaderMessage {
+export interface ILoaderMessage {
   /**
    * header message
   */
