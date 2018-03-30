@@ -3,8 +3,8 @@
 angular.module('playerApp')
   .controller('ReviewContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', function (contentService, searchService, config, $rootScope, $scope,
-      $state, toasterService, PaginationService, workSpaceUtilsService) {
+    'workSpaceUtilsService', 'telemetryService', function (contentService, searchService, config, $rootScope, $scope,
+      $state, toasterService, PaginationService, workSpaceUtilsService, telemetryService) {
       var reviewContent = this
       reviewContent.userId = $rootScope.userId
       $scope.contentPlayer = { isContentPlayerEnabled: false }
@@ -49,6 +49,7 @@ angular.module('playerApp')
             reviewContent.error.showError = false
             reviewContent.reviewContentData = res.result.content || []
             reviewContent.totalCount = res.result.count
+            reviewContent.version = res.ver
             reviewContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, reviewContent.pageLimit)
             if (reviewContent.reviewContentData.length === 0) {
@@ -81,6 +82,32 @@ angular.module('playerApp')
 
       reviewContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of review submissions.
+             */
+      reviewContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
+        telemetryService.interactTelemetryData(env, contentId, edataId, reviewContent.version, edataId, pageId)
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      reviewContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

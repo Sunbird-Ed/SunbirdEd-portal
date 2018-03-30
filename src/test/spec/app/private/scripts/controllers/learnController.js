@@ -13,14 +13,51 @@ describe('LearnCtrl', function () {
       $scope: $rootScope.$new()
     })
   }))
-  var rootScope, learnService, scope, $state, $q, deferred, learnCtrl
-  var enrolledCoursesSuccessResponse = { 'id': 'sunbird.user.courses', 'ver': '1.0', 'ts': '2017-05-13T10:49:58:600+0530', 'params': { 'resmsgid': '7c27cbf5-e299-43b0-bca7-8347f7e5abcf', 'msgid': null, 'err': null, 'status': 'success', 'errmsg': null }, 'responseCode': 'OK', 'result': { 'courses': [{ 'userId': ' user1', 'courseId': ' course1', 'name': ' course name 1', 'description': ' course description 1', 'enrolledDate': '2017-05-136 10:49:58:600+0530', 'progress': 10, 'grade': 'A', 'active': ' true', 'delta': {}, 'tocurl': 'CDN URL of the toc', 'status': '1' }, { 'userId': ' user1', 'courseId': ' course2', 'name': ' course name 2', 'description': ' course description 2', 'enrolledDate': '2017-05-136 10:49:58:600+0530', 'progress': 10, 'grade': 'A', 'active': ' true', 'delta': {}, 'tocurl': 'CDN URL of the toc', 'status': '1' }, { 'userId': ' user1', 'courseId': ' course3', 'name': ' course name 3', 'description': ' course description 3', 'enrolledDate': '2017-05-136 10:49:58:600+0530', 'progress': 10, 'grade': 'A', 'active': ' true', 'delta': {}, 'tocurl': 'CDN URL of the toc', 'status': '1' }] } }
+  var rootScope, learnService, scope, deferred, learnCtrl
+  var enrolledCoursesSuccessResponse = { 'id': 'sunbird.user.courses',
+    'ver': '1.0',
+    'ts': '2017-05-13T10:49:58:600+0530',
+    'params': { 'resmsgid': '7c27cbf5-e299-43b0-bca7-8347f7e5abcf',
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null },
+    'responseCode': 'OK',
+    'result': { 'courses': [{ 'userId': ' user1',
+      'courseId': ' course1',
+      'name': ' course name 1',
+      'description': ' course description 1',
+      'enrolledDate': '2017-05-136 10:49:58:600+0530',
+      'progress': 10,
+      'grade': 'A',
+      'active': ' true',
+      'delta': {},
+      'tocurl': 'CDN URL of the toc',
+      'status': '1' }, { 'userId': ' user1',
+      'courseId': ' course2',
+      'name': ' course name 2',
+      'description': ' course description 2',
+      'enrolledDate': '2017-05-136 10:49:58:600+0530',
+      'progress': 10,
+      'grade': 'A',
+      'active': ' true',
+      'delta': {},
+      'tocurl': 'CDN URL of the toc',
+      'status': '1' }, { 'userId': ' user1',
+      'courseId': ' course3',
+      'name': ' course name 3',
+      'description': ' course description 3',
+      'enrolledDate': '2017-05-136 10:49:58:600+0530',
+      'progress': 10,
+      'grade': 'A',
+      'active': ' true',
+      'delta': {},
+      'tocurl': 'CDN URL of the toc',
+      'status': '1' }] } }
 
-  beforeEach(inject(function ($rootScope, _$state_, _$q_, $controller, _learnService_) {
+  beforeEach(inject(function ($rootScope, _$q_, $controller, _learnService_) {
     rootScope = $rootScope
     scope = $rootScope.$new()
-    $state = _$state_
-    $q = _$q_
     deferred = _$q_.defer()
     learnService = _learnService_
     $rootScope.enrolledCourseIds = ['sdfsfsdfsdfsdfsdf']
@@ -73,5 +110,16 @@ describe('LearnCtrl', function () {
       courseId: 'sdfsfsdfsdfsdfsdf'
     }
     learnCtrl.openCourseView(item, 'sdfsd')
+  })
+
+  it('Should called lineInview method', function () {
+    var item = {
+      identifier: 'do_211321312312313132',
+      contentType: 'course'
+    }
+    spyOn(learnCtrl, 'lineInView').and.callThrough()
+    learnCtrl.lineInView(5, true, item, 'my course')
+    scope.$apply()
+    expect(learnCtrl.lineInView).toBeDefined()
   })
 })

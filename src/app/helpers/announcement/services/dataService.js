@@ -7,12 +7,13 @@ let httpWrapper = require('./httpWrapper.js')
 let HttpStatus = require('http-status-codes')
 const _ = require('lodash')
 let AppError = require('./ErrorInterface.js')
+let telemetry = require('./../telemetry/telemetryHelper')
 
 /**
  * Class which privides a services for dataService calls
  */
 class DataService {
-    /**
+  /**
      * Caller of the constructor as follows
      * Eg: let dataServiceInstance = new DataService({service:httpServiceInst})
      */
@@ -23,13 +24,13 @@ class DataService {
     this.service = service || httpWrapper
   }
 
-    /**
+  /**
      * Which is used ge the sentCount details
      * @param  {Array} locationIds  - List of location identifiers ex: ['32432','43423']
      * @param {String} token        - Optional, User access token
      * @return {Int}                - Which returns sum of userCount
      */
-  getAudience (locationIds, token) {
+  getAudience (locationIds, token, reqID) {
     return new Promise((resolve, reject) => {
       const DEFAULT_ENDPOINT = 'data/v1/notification/audience'
       let options = {
@@ -45,6 +46,7 @@ class DataService {
         },
         json: true
       }
+      telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/notification/audience')
       this.service.call(options).then((data) => {
         let locations = _.get(data, 'body.result.locations')
         resolve(_.sumBy(locations, 'userCount'))
@@ -63,7 +65,7 @@ class DataService {
    * @param {String} token  - Optional, User access token
    * @return {Object}        - Which returns the org details.
    */
-  getGeoLocations (orgIds, token) {
+  getGeoLocations (orgIds, token, reqID) {
     return new Promise((resolve, reject) => {
       try {
         const DEFAULT_ENDPOINT = 'org/v1/search'
@@ -83,6 +85,7 @@ class DataService {
           'json': true
         }
         options.headers = this.service.getRequestHeader(token)
+        telemetry.generateApiCallLogEvent(reqID, options, 'org/v1/search')
         let data = new Promise((resolve, reject) => {
           this.service.call(options).then((data) => {
             resolve(data.body.result.response)

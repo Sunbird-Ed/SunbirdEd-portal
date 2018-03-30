@@ -13,7 +13,7 @@
         </div>
         <div class="four wide column margin-top-Negative30" ng-if="toc.courseType === 'ENROLLED_COURSE'">
           <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
-          <button ng-if="toc.courseContents.length > 0 && toc.playContent" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.resumeCourse()">
+          <button ng-if="toc.courseContents.length > 0 && toc.playContent" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.resumeCourse();toc.generateInteractEvent('course',toc.courseId,'course',toc.version,'resume-course', 'course-read', toc.objRollup)">
             RESUME COURSE <i class="caret right icon"></i>
           </button>
         </div>

@@ -1,0 +1,82 @@
+<div class="ui raised segment annGridPadding cursor-pointer margin-bottom-10" [ngClass]="{'announcementCardLeftBorder':announcement.read  === false}">
+  <div>
+    <p class="ui grey label annType" *ngIf="announcement.type">
+      {{announcement.type | uppercase}}
+    </p>
+  </div>
+  <div class="header announcementHomeCard-header">
+    <span class="header">
+      {{announcement.title}}
+    </span>
+  </div>
+  <div>
+    <p class="annOrgName">
+      {{announcement.from}}
+    </p>
+  </div>
+  <div class="padding-top-5">
+    <span class=" announcement-description">
+      {{announcement.description | slice:0:180}}
+    </span>
+    <span *ngIf="announcement.description.length > 180">
+      ...
+      <span class="announcementBlueText">
+        {{resourceService.frmelmnts?.lbl?.anncmntreadmore}}
+      </span>
+    </span>
+  </div>
+  <div class="padding-top-20" *ngIf="announcement.links && announcement.links.length > 0">
+    <div *ngFor="let links of announcement.links ;  let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
+      <div *ngIf="first">
+        <i class="linkify icon opacity04">
+        </i>
+        <span class="cursor-pointer annUrlLinks">
+          {{links | slice:0:70}}
+          <span *ngIf="links.length > 70">
+            ...
+          </span>
+        </span>
+      </div>
+      <div *ngIf="last">
+        <span class="margin-left-30 annLinksAttachmentsMore annSmallText" *ngIf="announcement.links && (announcement.links.length - 1) > 0">
+          {{announcement.links.length - 1}} more weblink(s)
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="padding-top-10" *ngIf="announcement.attachments && announcement.attachments.length > 0">
+    <div *ngFor="let attachment of announcement.attachments; let first = first; let last = last; let i = index" [ngClass]="{ first: first , last: last}">
+      <div *ngIf="first">
+        <i class="file text outline icon opacity04">
+        </i>
+        <span class=" annAttachment cursor-pointer">
+          {{attachment.name | slice:0:30}}
+        </span>
+        <span class="annLinksAttachmentsMore">
+          <small [ngSwitch]="attachment.mimetype">
+            <span *ngSwitchCase="'application/png'">(PNG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'application/pdf'">(PDF, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'application/jpeg'">(JPEG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'application/jpg'">(JPEG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'image/png'">(PNG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'image/jpeg'">(JPEG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchCase="'image/jpg'">(JPEG, {{attachment.size | uppercase}})</span>
+            <span *ngSwitchDefault>({{attachment.size | uppercase}})</span>
+          </small>
+        </span>
+      </div>
+      <div *ngIf="last">
+        <span class="margin-left-30 announcement-description annSmallText" *ngIf="(announcement.attachments.length - 1) > 0">
+          {{announcement.attachments.length - 1}} more attachment(s)
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="ui divider">
+  </div>
+  <div>
+    <span class="annCreatedDate">
+      {{resourceService.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcement.createdDate | dateFormat}}
+    </span>
+  </div>
+</div>

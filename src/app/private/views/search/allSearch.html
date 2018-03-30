@@ -8,9 +8,9 @@
         </h5>
     </div>
     <div class="ui stackable four column grid dynamic-section-card ">
-        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index" ng-init="$last && search.loadRating() ">
-            <div ng-if="item.contentType!='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.playContent(item)"></div>
-            <div ng-if="item.contentType=='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.openCourseView(item)"></div>
+        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index" ng-init="$last && search.loadRating()" in-view="$root.lineInView($index, $inview, item, 'Search all')" in-view-options="{ throttle: 1000 }">
+            <div ng-if="item.contentType!='Course'" ng-include="'views/common/ratingCard.html'" ng-click="$root.search.playContent(item)"></div>
+            <div ng-if="item.contentType=='Course'" ng-include="'views/common/ratingCard.html'" ng-click="$root.search.openCourseView(item)"></div>
         </div>
     </div>
 </div>

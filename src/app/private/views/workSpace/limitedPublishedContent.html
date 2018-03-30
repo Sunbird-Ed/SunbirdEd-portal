@@ -3,8 +3,8 @@
         <div ng-init="limitedPublishedContent.getlimitedpublishedContent();contentModelSetBackLink();">
             <div ng-if="!limitedPublishedContent.loader.showLoader ">
                 <div class="ui three stackable cards " ng-if="limitedPublishedContent.limitedpublishedContentData.length> 0">
-                    <div class="card" ng-repeat="item in limitedPublishedContent.limitedpublishedContentData track by $index" ng-init="$last && limitedPublishedContent.initTocPopup()">
-                        <div class="image imageInCardsResponsive" ng-click="limitedPublishedContent.openContentPlayer(item) ">
+                    <div class="card" ng-repeat="item in limitedPublishedContent.limitedpublishedContentData track by $index" ng-init="$last && limitedPublishedContent.initTocPopup()" in-view="limitedPublishedContent.lineInView($index, $inview, item, 'LimitedPublishedContent')" in-view-options="{ throttle: 1000 }">
+                        <div class="image imageInCardsResponsive" ng-click="limitedPublishedContent.openContentPlayer(item); limitedPublishedContent.generateInteractEvent(item.contentType,item.identifier)">
                             <div class="ui fluid image mouse-pointer">
                                 <span class="ui black left ribbon label">{{item.contentType}}</span>
                                 <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
@@ -12,9 +12,9 @@
                             <div class="cardImageText center aligned mouse-pointer">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;
-                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15" 
-                                    data-content="{{item.name}}" data-position="top center"> 
-                                    </i> 
+                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15"
+                                    data-content="{{item.name}}" data-position="top center">
+                                    </i>
                                 </span>
                             </div>
                         </div>

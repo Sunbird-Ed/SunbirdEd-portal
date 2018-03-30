@@ -1,5 +1,5 @@
 <div ng-if="$root.search.selectedSearchKey=='Users' && admin.searchResult" ng-init="admin.addOrgNameToOrganizations();admin.getUserRoles()" class="ui divided searchListInfo items">
-    <div class="item userSearchCardHover " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}">
+    <div class="item userSearchCardHover " ng-repeat="user in admin.searchResult" ng-init="admin.recievedBadge={}" in-view="$root.lineInView($index, $inview, user, 'Users')" in-view-options="{ throttle: 1000 }">
         <div class="ui tiny image userSearchImage " ng-init="admin.getBadgeName(user);admin.newBadgeAssigned=true;user.hideBadge=false">
             <img ng-src="{{user.avatar|| '/common/images/user_logo.png'}} ">
         </div>
@@ -12,19 +12,19 @@
               </span>
                 <!-- delete user -->
                 <span>
-                <i class="trash outline icon trashIcon-fontSize"  
+                <i class="trash outline icon trashIcon-fontSize"
                 ng-click="admin.showdeleteModal(user.identifier,user.firstName,user.lastName);">
                   </i>
               <span>
             </a>
                 <!-- assign badge user -->
              <a class="float-ContentRight"
-              ng-if="!user.userBadgeS.length && user.status===1 && user.isEditableProfile" 
+              ng-if="!user.userBadgeS.length && user.status===1 && user.isEditableProfile"
               ng-hide="user.hideBadge"
               sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN">
                 <img class="ui mini image badgeIconAlignment" ng-src="/common/images/badgeblue.png"
                 ng-click="admin.assignBadgeModal(user.identifier);">
-            </a> 
+            </a>
             <!-- organization Name -->
           <div class="meta ">
             <span class="cinema ">

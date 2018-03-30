@@ -3,9 +3,10 @@
 angular.module('playerApp')
   .controller('BatchController', ['$rootScope', '$timeout', '$state', '$scope', '$stateParams',
     'batchService', '$filter', 'permissionsService', 'toasterService', 'courseService',
-    'learnService', '$window', 'userService',
+    'learnService', '$window', 'userService', 'telemetryService',
     function ($rootScope, $timeout, $state, $scope, $stateParams, batchService, $filter,
-      permissionsService, toasterService, courseService, learnService, $window, userService) {
+      permissionsService, toasterService, courseService, learnService, $window, userService,
+      telemetryService) {
       var batch = this
       batch.userList = []
       batch.menterList = []

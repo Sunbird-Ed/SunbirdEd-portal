@@ -5,7 +5,7 @@
                 <span class="ui header">{{$root.frmelmnts.lbl.chkuploadsts}}</span>
             </div>
             <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
+                <h5 class="ui basic icon circular button deny" ng-click="$root.generateInteractEvent('profile','','closeUploadStatus','1.0','closeUploadStatus','profile-upload-status')">
                     <i class="ui remove icon"></i>
                 </h5>
             </div>
@@ -37,12 +37,12 @@
                     <h5 ng-if="status === 'success'">{{$root.frmelmnts.lbl.successres}}</h5>
                     <h5 ng-if="status === 'failure'">{{$root.frmelmnts.lbl.failres}}</h5>
                     <table class="ui celled padded table">
-                        <thead ng-if="admin.bulkUploadStatus[status][0].userName">
+                        <thead ng-if="admin.bulkUploadStatus.objectType === 'user'">
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.firstName}}</th>
                                 <th>{{$root.frmelmnts.lbl.lastName}}</th>
-                                <th>{{$root.frmelmnts.lbl.userID}}</th> 
-                                <th>{{$root.frmelmnts.lbl.rootOrg}}</th> 
+                                <th>{{$root.frmelmnts.lbl.userID}}</th>
+                                <th>{{$root.frmelmnts.lbl.rootOrg}}</th>
                                 <th>{{$root.frmelmnts.lbl.regOrg}}</th>
                                 <th>{{$root.frmelmnts.lbl.countryCode}}</th>
                                 <th>{{$root.frmelmnts.lbl.phone}}</th>
@@ -61,13 +61,13 @@
                                 <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
                             </tr>
                         </thead>
-                        <thead ng-if="admin.bulkUploadStatus[status][0].orgName">
+                        <thead ng-if="admin.bulkUploadStatus.objectType === 'organisation'">
                             <tr>
                                 <th>{{$root.frmelmnts.lbl.orgId}}</th>
                                 <th>{{$root.frmelmnts.lbl.orgName}}</th>
                                 <th>{{$root.frmelmnts.lbl.isRootOrg}}</th>
-                                <th>{{$root.frmelmnts.lbl.channel}}</th> 
-                                <th>{{$root.frmelmnts.lbl.externalId}}</th> 
+                                <th>{{$root.frmelmnts.lbl.channel}}</th>
+                                <th>{{$root.frmelmnts.lbl.externalId}}</th>
                                 <th>{{$root.frmelmnts.lbl.provider}}</th>
                                 <th>{{$root.frmelmnts.lbl.description}}</th>
                                 <th>{{$root.frmelmnts.lbl.homeUrl }}</th>
@@ -78,12 +78,12 @@
                                 <th ng-if="status === 'failure'">{{$root.frmelmnts.lbl.errorMessage}}</th>
                             </tr>
                         </thead>
-                        <tbody ng-if="admin.bulkUploadStatus[status][0].userName">
+                        <tbody ng-if="admin.bulkUploadStatus.objectType === 'user'">
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.firstName || "empty"}}</td>
                                 <td>{{ row.lastName || "empty"}}</td>
-                                <td>{{ row.userId || ""}}</td> 
-                                <td>{{ row.rootOrgId || ""}}</td> 
+                                <td>{{ row.userId || ""}}</td>
+                                <td>{{ row.rootOrgId || ""}}</td>
                                 <td>{{ row.regOrgId || ""}}</td>
                                 <td>{{ row.countryCode || ""}}</td>
                                 <td>{{ row.phone || "empty"}}</td>
@@ -101,13 +101,13 @@
                                 <td>{{ row.subject || "empty"}}</td>
                                 <td ng-if="status === 'failure'">{{ row.err_msg || "empty"}}</td>
                         </tbody>
-                        <tbody ng-if="admin.bulkUploadStatus[status][0].orgName">
+                        <tbody ng-if="admin.bulkUploadStatus.objectType === 'organisation'">
                             <tr ng-class="status === 'success' ? 'positive' : 'error'" ng-repeat="row in admin.bulkUploadStatus[status]">
                                 <td>{{ row.id || "empty"}}</td>
                                 <td>{{ row.orgName || "empty"}}</td>
                                 <td>{{ row.isRootOrg || "empty"}}</td>
-                                <td>{{ row.channel || ""}}</td> 
-                                <td>{{ row.externalId || ""}}</td> 
+                                <td>{{ row.channel || ""}}</td>
+                                <td>{{ row.externalId || ""}}</td>
                                 <td>{{ row.provider || ""}}</td>
                                 <td>{{ row.description || ""}}</td>
                                 <td>{{ row.homeUrl || "empty"}}</td>
@@ -126,7 +126,7 @@
         <div class="ui grid">
             <div class="twelve wide column" ng-if="!admin.bulkUploadStatus.processId">
                 <button ng-disabled="!admin.processID" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" class="ui primary left floated button"
-                    ng-click="admin.getBulkUloadStatus(admin.processID)">
+                    ng-click="admin.getBulkUloadStatus(admin.processID); $root.generateInteractEvent('profile','','uploadStatus','1.0','uploadStatus','profile-upload-status')">
                     {{$root.frmelmnts.btn.chksts}}</button>
             </div>
         </div>
