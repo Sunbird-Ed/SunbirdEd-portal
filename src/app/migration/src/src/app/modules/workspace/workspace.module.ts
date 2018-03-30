@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WorkSpaceService } from './services';
 import { ReviewSubmissionsComponent } from './components/review-submissions/review-submissions.component';
 import { PublishedComponent } from './components/published/published.component';
+import { UploadedComponent } from './components/uploaded/uploaded.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +22,8 @@ import { PublishedComponent } from './components/published/published.component';
     FormsModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
-  CreateContentComponent, DraftComponent, ReviewSubmissionsComponent, PublishedComponent],
-   providers: [WorkSpaceService]
+    CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
+    PublishedComponent, UploadedComponent],
+  providers: [WorkSpaceService]
 })
 export class WorkspaceModule { }
