@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
-import {ILoaderMessage} from '../../interfaces/loader';
+import {ILoaderMessage} from '../../interfaces';
 
 /**
  * loader component
