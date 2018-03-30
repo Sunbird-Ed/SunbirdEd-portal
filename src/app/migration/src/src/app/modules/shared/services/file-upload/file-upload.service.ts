@@ -81,8 +81,8 @@ export class FileUploadService {
       },
       fileValidation: {
         itemLimit: 10,
-        sizeLimit: this.config.pageConfig.ANNOUNCEMENT.FILEUPLOAD.MAXFILESIZETOUPLOAD,
-        allowedExtensions: this.config.pageConfig.ANNOUNCEMENT.FILEUPLOAD.ALLOWEDFILEEXTENSION,
+        sizeLimit: this.config.appConfig.ANNOUNCEMENT.FILEUPLOAD.MAXFILESIZETOUPLOAD,
+        allowedExtensions: this.config.appConfig.ANNOUNCEMENT.FILEUPLOAD.ALLOWEDFILEEXTENSION,
         stopOnFirstInvalidFile: false
       },
       containerName: 'attachments/announcement'
