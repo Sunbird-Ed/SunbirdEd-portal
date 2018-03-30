@@ -25,11 +25,13 @@ import { CollectionEditorComponent } from './components/create-editors/collectio
     WorkspaceRoutingModule,
     SharedModule,
     SuiModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
   CreateContentComponent, DraftComponent, ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateCourseComponent,
-  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent, CreateUploadContentComponent, CollectionEditorComponent],
+  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent, CreateUploadContentComponent,
+   CollectionEditorComponent],
    providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }

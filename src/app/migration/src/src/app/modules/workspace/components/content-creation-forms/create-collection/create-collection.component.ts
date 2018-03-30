@@ -1,6 +1,7 @@
+import { IUserData } from './../../../../shared/interfaces/userProfile';
 
 import { UserService } from '@sunbird/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 import { collectionDataInterface } from './../../../interfaces/collection.data.interface';
 import { SuiModule } from 'ng2-semantic-ui/dist';
@@ -9,10 +10,6 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { EditorService } from './../../../services/editor.service';
-
-
-import { UserData } from './../../../../shared/interfaces/IUserProfile';
-
 
 // const fields = {
 //   mimeType: 'application/vnd.ekstep.content-collection',
@@ -25,6 +22,7 @@ import { UserData } from './../../../../shared/interfaces/IUserProfile';
   styleUrls: ['./create-collection.component.css']
 })
 export class CreateCollectionComponent implements OnInit {
+
   isCollectionCreated: boolean;
 
   /**
@@ -34,15 +32,14 @@ export class CreateCollectionComponent implements OnInit {
    * any data
 	 */
   showLoader = true;
-  showModal = true;
   /**
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
-   /**
-    * To call resource service which helps to use language constant
-    */
-    public userService: UserService;
+  /**
+   * To call resource service which helps to use language constant
+   */
+  public userService: UserService;
   /**
     * To call resource service which helps to use language constant
     */
@@ -50,6 +47,8 @@ export class CreateCollectionComponent implements OnInit {
   /**
    * To make inbox API calls
    */
+  public userForm: FormGroup;
+
   private editorService: EditorService;
   public state: string;
   public type: string;
@@ -66,31 +65,39 @@ export class CreateCollectionComponent implements OnInit {
     toasterService: ToasterService,
     editorService: EditorService,
     private router: Router,
-    userService: UserService
+    userService: UserService,
+    public formBuilder: FormBuilder
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.editorService = editorService;
     this.userService = userService;
+
+    this.userForm = this.formBuilder.group({
+      name: '',
+      description: ''
+    });
   }
 
   ngOnInit() {
     this.userService.userData$.subscribe(
-      (user: UserData) => {
+      (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
           console.log(' user profile s', this.userProfile);
         }
-  });
+      });
+      this.showLoader = false;
   }
 
 
 
-  saveMetaData(collection) {
+  saveMetaData(userFormData) {
     this.showLoader = true;
-    this.requestBody = collection;
+    this.requestBody = userFormData;
     this.requestBody = {
-     name : this.requestBody.name ? this.requestBody.name : 'Untitled Collection',
+      name: this.requestBody.name ? this.requestBody.name : 'Untitled Collection',
+      description: this.requestBody.description,
       creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
       createdBy: this.userProfile.id,
       organisationIds: this.userProfile.organisationIds,
@@ -108,39 +115,28 @@ export class CreateCollectionComponent implements OnInit {
 
 
   createCollection(requestData) {
-      this.editorService.create(requestData).subscribe(res => {
-      if (res && res.responseCode === 'OK') {
-        this.isCollectionCreated = true;
-        this.showLoader = false;
-
-        this.contentId = res.result.content_id;
-        console.log('content id ', this.contentId);
-        this.showEditor = true;
-        this.showLoader = false;
-        // this.showCreateCollectionModel = true;
-        this.initEKStepCE(res.result.content_id);
-      } else {
-        console.log('error');
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0010);
-      }
+    this.editorService.create(requestData).subscribe(res => {
+      this.isCollectionCreated = true;
+      this.showLoader = false;
+      this.contentId = res.result.content_id;
+      console.log('content id ', this.contentId);
+      this.initEKStepCE(res.result.content_id);
     }, err => {
       console.log('error');
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0010);
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
 
   }
 
   initEKStepCE(id) {
     this.type = 'CollectionEditor';
-    this.state = '';
-    this.framework = 'frmwork';
+    this.state = '',
+      this.framework = 'frmwork';
     this.router.navigate(['/workspace/content/edit/collection', this.contentId, this.type, this.state, this.framework]);
   }
 
-   goToCreate() {
-      this.router.navigate(['/workspace/content/create']);
+  goToCreate() {
+    this.router.navigate(['/workspace/content/create']);
   }
-  }
+}
 

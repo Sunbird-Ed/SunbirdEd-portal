@@ -1,5 +1,5 @@
- <sui-modal [isClosable]="true"  (dismissed)="goToCreate(); " #modal *ngIf="!isCollectionCreated" >
-          <div class=" ui segment margin-top-10">
+ <sui-modal [isClosable]="true"  (dismissed)="goToCreate(); " #modal >
+          <div class=" ui segment margin-top-10" *ngIf="!isCollectionCreated">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -10,22 +10,22 @@
                 </div>
             </div>
             <div class="content">
-                <form class="ui form">
+                <form class="ui form"  [formGroup]="userForm">
                     <div class="field">
                         <label>
                             {{resourceService?.frmelmnts?.lbl?.name}}
                         </label>
                         <div class="field">
-                            <input type="text"  placeholder={{resourceService?.frmelmnts?.lbl?.name}} id="name" [(ngModel)]="collection.name"
-                                name="name">
+                            <input type="text"  placeholder={{resourceService?.frmelmnts?.lbl?.name}} formControlName="name"
+                               >
                         </div>
                     </div>
                     <div class="field">
                         <div class="field">
                             <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
                             <div class="field">
-                                <input name="description"  id="description" placeholder={{resourceService?.frmelmnts?.lbl?.description}} [(ngModel)]="collection.description"
-                                    name="description">
+                                <input name="description" placeholder={{resourceService?.frmelmnts?.lbl?.description}} formControlName="description"
+                                   >
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="actions margin-top-10">
                 <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" (click)="saveMetaData(collection); modal.deny();">
+                    <button class="ui primary text-align-center icon button" (click)="saveMetaData(userForm.value); modal.deny();">
                         {{resourceService?.frmelmnts?.btn?.startcreating}}
                     </button>
                 </p>
@@ -46,7 +46,4 @@
                 </div>
             </div>
         </div>
-     
-
  </sui-modal>
-    

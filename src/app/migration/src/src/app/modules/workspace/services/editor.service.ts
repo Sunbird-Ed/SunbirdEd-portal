@@ -1,9 +1,10 @@
-import { ContentService, UserService } from '@sunbird/core';
+import { ContentService } from '@sunbird/core';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { ConfigService, ServerResponse, UserProfile } from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { cleanSession } from 'selenium-webdriver/safari';
 
 
 /**
@@ -21,10 +22,6 @@ export class EditorService {
      */
     public config: ConfigService;
     /**
-   reference of userService
-   */
-    public user: UserService;
-    /**
      * reference of lerner service.
      */
     public contentService: ContentService;
@@ -40,48 +37,25 @@ export class EditorService {
      * @param {ConfigService} config ConfigService reference
      * @param {HttpClient} http HttpClient reference
      */
-    constructor(config: ConfigService, http: HttpClient, user: UserService, contentService: ContentService) {
+    constructor(config: ConfigService, http: HttpClient, contentService: ContentService) {
         this.config = config;
         this.contentService = contentService;
         this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
-        this.user = user;
     }
 
-
-    userDetails() {
-        this.user.userData$.subscribe((data) => {
-            // console.log("editor service", data);
-            return data;
-        }),
-        // tslint:disable-next-line:no-unused-expression
-        err => {
-            console.log(err, 'Error in user details fetching');
-        };
-    }
 
     create(req) {
+        console.log('req', req);
             const option = {
             url: this.config.urlConFig.URLS.CONTENT.CREATE,
             data: {
                 'request': req
             }
-
         };
 
-        // console.log("option: ", option);
         return this.contentService.post(option);
     }
 
-    getById(req, qs) {
-        const option = {
-            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId,
-            data: {
-                req : req,
-                qs: qs
-            }
-        };
-
-        return this.contentService.get(option);
-      }
-
 }
+
+
