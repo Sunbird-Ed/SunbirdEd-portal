@@ -1,4 +1,4 @@
-import { WorkSpaceService } from './../services/work-space.service';
+import { WorkSpaceService } from './../services';
 import { SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
