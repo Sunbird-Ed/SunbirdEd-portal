@@ -1,0 +1,36 @@
+{
+    "COMMON": {
+        "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu","Urdu"],
+        "lessonTypes": [
+            "Story", "Worksheet"
+        ],
+        "subjects": ["Assamese", "Bengali", "Biology", "Chemistry", "Economics", "English", "Environmental Studies", "Geography", "Gujarati", "Hindi", "History", "Kannada", "Malayalam", "Marathi", "Mathematics", "Nepali", "Oriya", "Physics", "Political Science", "Punjabi", "Sanskrit", "Tamil", "Telugu", "Urdu"],
+        "grades": [
+            "Kindergarten",
+            "Grade 1",
+            "Grade 2",
+            "Grade 3",
+            "Grade 4",
+            "Grade 5",
+            "Grade 6",
+            "Grade 7",
+            "Grade 8",
+            "Grade 9",
+            "Grade 10",
+            "Grade 11",
+            "Grade 12",
+            "Other"
+        ],
+        "audiences": [
+            "Learner", "Instructor"
+        ],
+        "ageGroup": [
+            "<5", "5-6", "6-7", "7-8", "8-10", ">10", "Other"
+        ],
+        "medium": [
+            "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
+        ],
+        "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
+        "orgType": ["technical"]
+    }
+}

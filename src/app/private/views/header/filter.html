@@ -10,12 +10,11 @@
                         <div class="twelve wide column title">
                             <div class="ui grid">
                                 <div class="ten wide column">
-                                    <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i> <span class="ShowFilterTitle" >{{$root.frmelmnts.lbl.filters}}</span>
+                                    <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i> <span class="ShowFilterTitle" ng-click="$root.generateInteractEvent('filter','','filter','1.0','filter-content','filter-content')">{{$root.frmelmnts.lbl.filters}}</span>
                                     <i id='filterIcon' class="dropdown icon"></i>
                                 </div>
                             </div>
                         </div>
-
                         <div class="twelve wide column content">
                             <div class="twelve wide column content margin-bottom-15">
                                 <span class="padded chip margin-top--5" ng-if='$root.search.selectedBoard.length > 0'>
@@ -201,11 +200,10 @@
                                 <div apply-script class="ui inline dropdown search-dropdown" id="multi-select-sort">
                                     <div class="text"></div>
                                     <i  class="dropdown icon"></i>
-                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting()">
+                                    <select ng-options="sortingOption.field as sortingOption.name for sortingOption in $root.search.sortingOptions" ng-model="$root.search.sortByOption" ng-change="$root.search.applySorting(); $root.generateInteractEvent('sort', '', $root.search.sortByOption, '1.0', 'sort-content', 'sort-content')">
                                         <option value=""></option>
                                     </select>
                                 </div>
-
                                 <i alt="{{$root.frmelmnts.alt.sortby}}" class="link" ng-if="!!$root.search.sortByOption && $root.search.sortByOption.length > 0" ng-class="{'sort content ascending icon':($root.search.sortIcon===true),'sort content descending icon':($root.search.sortIcon===false)}" ng-click="$root.search.sortIcon=!$root.search.sortIcon;$root.search.applySorting()"></i>
                             </div>
                         </div>

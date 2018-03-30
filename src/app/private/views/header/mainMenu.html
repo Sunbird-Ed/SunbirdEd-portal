@@ -1,15 +1,15 @@
-<a class="item"  ui-sref="Home" href="home"  ng-class="homeActive">
+<a class="item"  href="/migration/home" >
     {{$root.frmelmnts.tab.home}}
     </a>
-<a class="item" ui-sref="Courses" href="learn" ng-class="courseActive">
+<a class="item" ui-sref="Courses" href="learn" ng-class="courseActive" ng-click="$root.generateInteractEvent('course', '', 'course', '1.0', 'course', 'course')">
     {{$root.frmelmnts.tab.courses}}
     </a>
-<a class="item" ui-sref="Resources" href="resources" ng-class="resourcesActive">
+<a class="item" ui-sref="Resources" href="resources" ng-class="resourcesActive" ng-click="$root.generateInteractEvent('library', '', 'library', '1.0', 'library', 'library')">
       {{$root.frmelmnts.tab.resources}}
     </a>
-<a class="item" href="#" ui-sref-active="active" ui-sref="Community">
+<a class="item" href="#" ui-sref-active="active" ui-sref="Community" ng-click="$root.generateInteractEvent('groups', '', 'groups', '1.0', 'groups', 'groups')">
       {{$root.frmelmnts.tab.community}}
     </a>
-<a class="item" href="#" ui-sref="Profile" ng-class="profileActive">
+<a class="item" href="#" ui-sref="Profile" ng-class="profileActive" ng-click="$root.generateInteractEvent('profile', '', 'user', '1.0', 'profile', 'profile')">
       {{$root.frmelmnts.tab.profile}}
     </a>

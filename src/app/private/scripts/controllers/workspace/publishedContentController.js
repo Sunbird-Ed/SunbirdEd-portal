@@ -3,8 +3,9 @@
 angular.module('playerApp')
   .controller('PublishedContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
-    'PaginationService', function (contentService, searchService, config, $rootScope, $state,
-      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+    'PaginationService', 'telemetryService', function (contentService, searchService, config,
+      $rootScope, $state, toasterService, $scope, workSpaceUtilsService, $timeout,
+      PaginationService, telemetryService) {
       var publishedContent = this
       publishedContent.userId = $rootScope.userId
       publishedContent.status = ['Live']
@@ -53,6 +54,7 @@ angular.module('playerApp')
             publishedContent.publishedContentData = res.result.content || []
             publishedContent.totalCount = res.result.count
             publishedContent.pageNumber = pageNumber
+            publishedContent.version = res.ver
             if (publishedContent.publishedContentData.length === 0) {
               publishedContent.error = showErrorMessage(true,
                 $rootScope.messages.stmsg.m0022,
@@ -63,6 +65,8 @@ angular.module('playerApp')
             publishedContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0013)
           }
+          /* publishedContent.generateImpressionEvent('view', 'scroll', 'workspace-content-published',
+            '/content/published') */
         }).catch(function () {
           publishedContent.error.showError = false
           publishedContent.loader.showLoader = false
@@ -131,6 +135,32 @@ angular.module('playerApp')
 
       publishedContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of published content.
+             */
+      publishedContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
+        telemetryService.interactTelemetryData(env, contentId, edataId, publishedContent.version, edataId, pageId)
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      publishedContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

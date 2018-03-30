@@ -1,0 +1,61 @@
+import { ContentService } from '@sunbird/core';
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { cleanSession } from 'selenium-webdriver/safari';
+
+
+/**
+ * Service to provides CRUD methods to make content api request by extending DataService.
+ *
+ */
+@Injectable()
+export class EditorService {
+    /**
+     * base Url for content api
+     */
+    baseUrl: string;
+    /**
+     * reference of config service.
+     */
+    public config: ConfigService;
+    /**
+     * reference of lerner service.
+     */
+    public contentService: ContentService;
+
+    public http: HttpClient;
+    public creator: string;
+    public createdBy: string;
+    public createdFor: string;
+    public organization: string;
+
+    /**
+     * constructor
+     * @param {ConfigService} config ConfigService reference
+     * @param {HttpClient} http HttpClient reference
+     */
+    constructor(config: ConfigService, http: HttpClient, contentService: ContentService) {
+        this.config = config;
+        this.contentService = contentService;
+        this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
+    }
+
+
+    create(req) {
+        console.log('req', req);
+            const option = {
+            url: this.config.urlConFig.URLS.CONTENT.CREATE,
+            data: {
+                'request': req
+            }
+        };
+
+        return this.contentService.post(option);
+    }
+
+}
+
+

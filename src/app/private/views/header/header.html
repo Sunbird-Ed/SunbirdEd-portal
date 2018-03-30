@@ -25,11 +25,11 @@
             <div class="menu">
                 <div class="item headerDropdownProfile" ng-if="firstName">{{firstName}}&nbsp;{{lastName}}</div>
                 <div ng-if="firstName" class="ui divider"></div>
-                <a class="item" href="#" ui-sref-active="active" ui-sref="Profile">{{$root.frmelmnts.lnk.profile}}</a>
-                <a class="item" href="#" ui-sref-active="active" ui-sref="orgDashboard" ng-if="initializePermissionDirective && organisationIds[0]" sb-permissions permission-only="ORG_ADMIN,SYSTEM_ADMINISTRATION">{{$root.frmelmnts.lnk.dashboard}}</a>
-                <a class="item" href="#" ui-sref-active="active" ui-sref="announcementOutbox" ng-if="initializePermissionDirective" sb-permissions permission-only="ANNOUNCEMENT_SENDER">{{$root.frmelmnts.lnk.announcement}}</a>
-                <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER,COURSE_MENTOR">{{$root.frmelmnts.lnk.workSpace}}</a>
-                <a class="item" ng-class="myActivityMenuActive" href="#" sb-permissions permission-only="CONTENT_CREATOR" ng-if="initializePermissionDirective" ui-sref="MyActivity">{{$root.frmelmnts.lnk.myactivity}}</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="Profile" ng-click="$root.generateInteractEvent('profile','','user','1.0','profile','profile-read')">{{$root.frmelmnts.lnk.profile}}</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="orgDashboard" ng-if="initializePermissionDirective && organisationIds[0]" sb-permissions permission-only="ORG_ADMIN,SYSTEM_ADMINISTRATION" ng-click="$root.generateInteractEvent('profile','','dashboard','1.0','admin-dashboard','profile-organization-dashboard')">{{$root.frmelmnts.lnk.dashboard}}</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="announcementOutbox" ng-if="initializePermissionDirective" sb-permissions permission-only="ANNOUNCEMENT_SENDER" ng-click="$root.generateInteractEvent('announcement','','announcement','1.0','announcement','announcement-read')">{{$root.frmelmnts.lnk.announcement}}</a>
+                <a class="item" href="#" ui-sref-active="active" ui-sref="WorkSpace" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER,COURSE_MENTOR" ng-click="$root.generateInteractEvent('workspace','','workspace','1.0','workspace','workspace-read')">{{$root.frmelmnts.lnk.workSpace}}</a>
+                <a class="item" ng-class="myActivityMenuActive" href="#" sb-permissions permission-only="CONTENT_CREATOR" ng-if="initializePermissionDirective" ui-sref="MyActivity" ng-click="$root.generateInteractEvent('user-management','','myactivity','1.0','profile-course-creator-dashboard','myactivity')">{{$root.frmelmnts.lnk.myactivity}}</a>
                 <a class="item" href="#" sb-permissions permission-only="SYSTEM_ADMINISTRATION" ui-sref="Setup">Setup</a>
                 <a class="item" ng-click="logout();">{{$root.frmelmnts.lnk.logout}}</a>
             </div>

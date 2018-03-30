@@ -164,7 +164,7 @@ angular.module('playerApp')
       }
 
       this.getChannel = function (channel) {
-        channel = channel || $rootScope.rootOrgId
+        channel = channel || org.sunbird.portal.channel
         return restfulContentService.get(config.URL.CHANNEL.READ + '/' + channel)
       }
 
