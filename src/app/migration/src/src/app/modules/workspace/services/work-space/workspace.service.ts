@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
-import { DeleteParam } from './../interfaces/delteparam';
+import { IDeleteParam } from '../../interfaces/delteparam';
 
 @Injectable()
 export class WorkSpaceService {
@@ -29,7 +29,7 @@ export class WorkSpaceService {
     this.content = content;
     this.config = config;
   }
-  deleteContent(requestParam: DeleteParam): Observable<ServerResponse> {
+  deleteContent(requestParam: IDeleteParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.RETIRE,
       data: {

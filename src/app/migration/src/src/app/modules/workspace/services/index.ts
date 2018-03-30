@@ -1,4 +1,4 @@
-export * from './work-space.service';
+export * from './work-space/workspace.service';
 
 
 

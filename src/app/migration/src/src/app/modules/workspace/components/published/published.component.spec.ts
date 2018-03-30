@@ -22,14 +22,29 @@ const testData = mockData.mockRes;
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
   let fixture: ComponentFixture<PublishedComponent>;
-
+  const resourceBundle =  {
+       'messages': {
+           'fmsg': {
+               'm0013': 'Fetching published content failed, please try again'
+           },
+           'stmsg': {
+               'm0022': 'You dont  have any published content...',
+               'm0008': 'no-results',
+               'm0034': 'We are deleting the content...'
+          },
+          'smsg': {
+            'm0006': 'Content deleted successfully...'
+          }
+       }
+   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService, ResourceService, ToasterService
+        PermissionService, ResourceService, ToasterService,
+        {provide: ResourceService, useValue: resourceBundle}
       ]
     })
       .compileComponents();
@@ -43,7 +58,7 @@ describe('PublishedComponent', () => {
 
   // If search api returns more than one published
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
     component.fetchPublishedContent(9, 1);
     fixture.detectChanges();
     expect(component.publishedContent).toBeDefined();
@@ -69,7 +84,7 @@ describe('PublishedComponent', () => {
     }));
         // if  search api's throw's error
    it('should throw error', inject([SearchService], (searchService) => {
-     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.throw({}));
+     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
      component.fetchPublishedContent(9, 1);
      fixture.detectChanges();
      expect(component.publishedContent.length).toBeLessThanOrEqual(0);

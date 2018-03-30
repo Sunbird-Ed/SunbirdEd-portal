@@ -1,14 +1,17 @@
 <!-- Loader -->
 <div class="twelve wide column margin-top-20" *ngIf="showLoader">
-  <app-loader></app-loader>
+  <app-loader [data] ="loaderMessage"></app-loader>
 </div>
 
-<div class="ui grid">
+<div class="ui grid" *ngIf="!showLoader">
   <div class="twelve wide column">
     <div class="ui three stackable cards">
       <div *ngFor="let content of publishedContent">
        <app-content-card [content]="content" (clickEvent)="deletePublishedContent($event)" ></app-content-card>
       </div>
+    </div>
+    <div *ngIf="noResult">
+      <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
 </div>
@@ -17,7 +20,7 @@
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="nine wide column padding-top-none">
-    <div class="padding-bottom-10" *ngIf="publishedContent && publishedContent.length > 0 && !showLoader">
+    <div class="padding-bottom-10" *ngIf="publishedContent && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
       <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
