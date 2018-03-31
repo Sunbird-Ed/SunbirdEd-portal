@@ -1,16 +1,13 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { ResourceService, FileUploadService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
-import { IGeoLocationDetails } from './../../interfaces';
-import { IAnnouncementDetails, IAttachementType } from '@sunbird/announcement';
+import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 
 /**
@@ -97,11 +94,6 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   showAnnouncementForm = true;
 
-  /**
-   * Config to get geo component
-   */
-  geoConfig = { geo: { adaptor: 'SERVICE', service: 'geoService' } };
-
   /*
    * Contains resource service ref
    */
@@ -138,14 +130,19 @@ export class CreateComponent implements OnInit, OnDestroy {
   public user: UserService;
 
   /**
+   * To get url, app configs
+   */
+  public config: ConfigService;
+  /**
    * Default method of classs CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
+   * @param {ConfigService} config Reference of ConfigService
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef) {
+    private elRef: ElementRef, config: ConfigService) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -154,6 +151,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
     this.user = user;
+    this.config = config;
   }
 
   /**

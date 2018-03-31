@@ -41,6 +41,12 @@
                 "pdf",
                 "jpg"
             ]
+        },
+        "GEOCONFIG": {
+            "geo": {
+                "adaptor": "SERVICE",
+                "service": "geoService"
+            }
         }
     }
 }

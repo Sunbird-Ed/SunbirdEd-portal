@@ -1,11 +1,11 @@
-import { WorkSpaceService } from './../services/work-space.service';
+import { WorkSpaceService } from './../services';
 import { SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
  * Base class for workspace module
 */
-export class Workspaceclass {
+export class WorkSpace {
     /**
      * Reference for search service
     */
@@ -29,7 +29,7 @@ export class Workspaceclass {
     * Search Api call
     */
     search(searchParams) {
-        return this.searchService.searchContentByUserId(searchParams);
+        return this.searchService.compositeSearch(searchParams);
     }
     /**
     * Delete  Api call .

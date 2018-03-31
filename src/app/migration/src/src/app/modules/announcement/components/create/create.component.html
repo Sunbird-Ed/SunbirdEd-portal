@@ -132,7 +132,7 @@
         </div>
         <!-- GEO explorer -->
         <div *ngIf="stepNumber === 2">
-          <app-geo-explorer [geoConfig]="geoConfig" [populateSelectedItem]="recipientsList"></app-geo-explorer>
+          <app-geo-explorer [geoConfig]="config.appConfig.ANNOUNCEMENT.GEOCONFIG" [populateSelectedItem]="recipientsList"></app-geo-explorer>
         </div>
         <!-- Preview announcement -->
         <div *ngIf="stepNumber === 3" class="ui list ui grid">
