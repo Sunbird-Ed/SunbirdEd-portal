@@ -38,6 +38,7 @@ angular.module('playerApp')
             .dropdown()
           $('#createSlideShowModal').modal({
             allowMultiple: true,
+            observeChanges: true,
             onHide: function () {
               contentLesson.clearCreateSlideShowData()
               if (!contentLesson.slideShowCreated) {
