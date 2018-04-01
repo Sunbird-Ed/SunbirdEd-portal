@@ -58,6 +58,11 @@ export class UploadedComponent extends WorkSpace implements OnInit {
   showError = false;
 
   /**
+   * To show / hide no result message when no result found
+  */
+  noResult = false;
+
+  /**
    * no result  message
   */
   noResultMessage: INoResultMessage;
@@ -85,6 +90,11 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     * Current page number of inbox list
   */
   pageNumber = 1;
+
+  /**
+    * totalCount of the list
+  */
+  totalCount: Number;
 
   /**
   * Contains returned object of the pagination service
@@ -139,6 +149,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
      * This method sets the make an api call to get all uploaded content with page No and offset
      */
   fetchUploaded(limit: number, pageNumber: number) {
+    this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
@@ -160,6 +171,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.uploaded = data.result.content;
+          this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           _.forEach(this.uploaded, (item, key) => {
             const action = {
@@ -176,7 +188,8 @@ export class UploadedComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           console.log('>>>', this.uploaded);
         } else {
-          this.showError = true;
+          this.showError = false;
+          this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
             'message': this.resourceService.messages.stmsg.m0008,
@@ -186,6 +199,8 @@ export class UploadedComponent extends WorkSpace implements OnInit {
       },
       (err: ServerResponse) => {
         this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0014);
       }
     );
@@ -222,5 +237,21 @@ export class UploadedComponent extends WorkSpace implements OnInit {
       })
       .onDeny(result => {
       });
+  }
+  /**
+   * This method helps to navigate to different pages.
+   * If page number is less than 1 or page number is greater than total number
+   * of pages is less which is not possible, then it returns.
+	 *
+	 * @param {number} page Variable to know which page has been clicked
+	 *
+	 * @example navigateToPage(1)
+	 */
+  navigateToPage(page: number): undefined | void {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
+    this.pageNumber = page;
+    this.route.navigate(['workspace/content/uploaded', this.pageNumber]);
   }
 }
