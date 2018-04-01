@@ -31,6 +31,7 @@ angular.module('playerApp')
           $('#subjectDropDown').dropdown()
           $('#gradeDropDown').dropdown()
           $('#createLessonPlanModal').modal({
+            observeChanges: true,
             onHide: function () {
               lessonPlan.data = {}
               if (!lessonPlan.isLessonPlanCreated) {
