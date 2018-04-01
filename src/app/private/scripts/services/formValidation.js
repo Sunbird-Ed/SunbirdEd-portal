@@ -59,7 +59,7 @@ angular.module('playerApp')
       {
         fieldName: 'designation',
         optional: true,
-        type: 'regExp[^[A-z ]{2,50}$]',
+        type: 'regExp[^[A-z. ]{2,50}$]',
         prompt: $rootScope.messages.stmsg.m0103
       },
       {
@@ -86,13 +86,13 @@ angular.module('playerApp')
     var basicInfoFields = [
       {
         fieldName: 'firstName',
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
+        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s.]*$]',
         prompt: $rootScope.messages.stmsg.m0066
       },
       {
         fieldName: 'lastName',
         optional: true,
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
+        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s.]*$]',
         prompt: $rootScope.messages.stmsg.m0066
       },
       {

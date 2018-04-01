@@ -14,17 +14,17 @@
     </div>
 
     <div class="two fields">
-        <div class="required field" ng-class="{'disabled':true}">
+        <div class="required field">
             <label>{{$root.frmelmnts.lbl.phone}} </label>
             <div class="ui input right icon">
-                <input type="text" name="phone" placeholder="{{$root.frmelmnts.prmpt.enterphoneno}}" ng-model="profileCtrl.user.phone">
+                <input type="text" name="phone" placeholder="{{$root.frmelmnts.prmpt.enterphoneno}}" ng-model="profileCtrl.user.phone" ng-disabled = "true">
                 <profile-visibility  top="'true'"   update="'true'" field="'phone'"></profile-visibility>
             </div>
         </div>
-        <div class=" required  field" ng-class="{'disabled':true}">
+        <div class=" required  field" >
             <label>{{$root.frmelmnts.lbl.email}}</label>
             <div class="ui input right icon">
-                <input type="email" name="email" ng-model="profileCtrl.user.email">
+                <input type="email" name="email" ng-model="profileCtrl.user.email" ng-disabled = "true">
                 <profile-visibility  top="'true'"   update="'true'" field="'email'"></profile-visibility>
             </div>
         </div>
