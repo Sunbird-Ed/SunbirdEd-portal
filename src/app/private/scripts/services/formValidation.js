@@ -13,23 +13,23 @@ angular.module('playerApp')
       {
         fieldName: 'addLine1',
         optional: false,
-        type: 'regExp[^[#.0-9A-Za-z\\s, ]{1,50}$]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0063
       },
       {
         fieldName: 'addLine2',
         optional: true,
-        type: 'regExp[^[0-9A-Za-z\\s ]{1,50}$]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0100
       },
-      { fieldName: 'city', optional: false, type: 'regExp[^[A-z ]{1,35}$]', prompt: $rootScope.messages.stmsg.m0097 },
-      { fieldName: 'state', optional: true, type: 'regExp[^[A-z ]{1,35}$]', prompt: $rootScope.messages.stmsg.m0098 },
+      { fieldName: 'city', optional: false, type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0097 },
+      { fieldName: 'state', optional: true, type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0098 },
       { fieldName: 'country', optional: true, type: 'regExp[^[A-z ]{1,35}$]', prompt: $rootScope.messages.stmsg.m0099 },
       { fieldName: 'pinCode', optional: true, type: 'regExp[^[0-9]{6}$]', prompt: $rootScope.messages.stmsg.m0065 }
     ]
     var educationFields = [
-      { fieldName: 'degree', type: 'regExp[^[A-z ]{1,35}$]', prompt: $rootScope.messages.stmsg.m0062 },
-      { fieldName: 'institute', type: 'regExp[^[A-z ]{1,100}$]', prompt: $rootScope.messages.stmsg.m0070 },
+      { fieldName: 'degree', type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0062 },
+      { fieldName: 'institute', type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0070 },
       {
         fieldName: 'yearop',
         optional: true,
@@ -44,22 +44,22 @@ angular.module('playerApp')
       {
         fieldName: 'grade',
         optional: true,
-        type: 'regExp[/^A-?|[BCD][+-]?|[AW]?F$/]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0104
       },
       {
         fieldName: 'board',
         optional: true,
-        type: 'regExp[^[A-z ]{1,100}$]'
+        type: 'regExp[.*?]'
       }
     ]
     var jobProfileFields = [
-      { fieldName: 'jobName', type: 'regExp[^[A-z ]{2,100}$]', prompt: $rootScope.messages.stmsg.m0072 },
-      { fieldName: 'org', type: 'regExp[^[A-z ]{2,50}$]', prompt: $rootScope.messages.stmsg.m0073 },
+      { fieldName: 'jobName', type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0072 },
+      { fieldName: 'org', type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0073 },
       {
         fieldName: 'designation',
         optional: true,
-        type: 'regExp[^[A-z ]{2,50}$]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0103
       },
       {
@@ -86,13 +86,13 @@ angular.module('playerApp')
     var basicInfoFields = [
       {
         fieldName: 'firstName',
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0066
       },
       {
         fieldName: 'lastName',
         optional: true,
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*$]',
+        type: 'regExp[.*?]',
         prompt: $rootScope.messages.stmsg.m0066
       },
       {
