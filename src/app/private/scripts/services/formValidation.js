@@ -86,21 +86,13 @@ angular.module('playerApp')
     var basicInfoFields = [
       {
         fieldName: 'firstName',
-<<<<<<< HEAD
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s.]*$]',
-=======
         type: 'regExp[.*?]',
->>>>>>> 0664944ef8e04dbee4a695082f9541b866a96d15
         prompt: $rootScope.messages.stmsg.m0066
       },
       {
         fieldName: 'lastName',
         optional: true,
-<<<<<<< HEAD
-        type: 'regExp[^[0-9]*[A-Za-z\\s][0-9A-Za-z\\s.]*$]',
-=======
         type: 'regExp[.*?]',
->>>>>>> 0664944ef8e04dbee4a695082f9541b866a96d15
         prompt: $rootScope.messages.stmsg.m0066
       },
       {
