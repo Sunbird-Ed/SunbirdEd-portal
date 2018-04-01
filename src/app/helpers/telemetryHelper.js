@@ -6,7 +6,7 @@ const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const envHelper = require('./environmentVariablesHelper.js')
 const contentURL = envHelper.CONTENT_URL
-const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
+const apiToken = envHelper.PORTAL_API_AUTH_TOKEN
 const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
@@ -274,7 +274,10 @@ module.exports = {
       req.session['sessionEvents'].push(JSON.parse(req.body.event))
       if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
-          req.session['sessionEvents'] = err ? req.session['sessionEvents'] : []
+          if (err) {
+            console.log('telemetry sync error from  portal', err)
+          }
+          req.session['sessionEvents'] = []
           req.session.save()
         })
       }
@@ -308,7 +311,7 @@ module.exports = {
       url: contentURL + 'data/v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + apiToken
       },
       body: data,
       json: true

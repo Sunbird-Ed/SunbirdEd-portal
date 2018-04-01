@@ -9,13 +9,24 @@ angular.module('playerApp')
      * @memberOf Services
      */
   .service('telemetryService', ['$rootScope', 'config', '$window', function ($rootScope, config, $window) {
+    this.context = []
+    this.configData = {}
+    this.visitData = []
+    this.config = {}
+    this.getConfigData = function (key) {
+      if (this.configData[key]) {
+        return this.getConfigData[key]
+      } else {
+        return this.config[key]
+      }
+    }
     this.config = {
       'pdata': {
         'id': org.sunbird.portal.appid || 'sunbird.portal',
         'ver': '1.0',
         'pid': 'sunbird-portal'
       },
-      'env': 'Home',
+      'env': this.getConfigData('env') || 'Home',
       'channel': org.sunbird.portal.channel || 'sunbird',
       'did': undefined,
       'authtoken': undefined,
@@ -83,10 +94,6 @@ angular.module('playerApp')
       location: 'add-current-location'
     }
 
-    this.context = []
-    this.configData = {}
-    this.visitData = []
-
     this.setConfig = function () {
       this.config.pdata.id = org.sunbird.portal.appid
       this.config.channel = org.sunbird.portal.channel
@@ -113,7 +120,7 @@ angular.module('playerApp')
       EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -124,7 +131,7 @@ angular.module('playerApp')
     this.end = function (data) {
       console.log('Portal end event')
       var context = this.context.pop()
-      EkTelemetry.end(data.edata, { context: context, tags: data.tags }) // eslint-disable-line no-undef
+      EkTelemetry.end(data.edata, { context: context, tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel) }) // eslint-disable-line no-undef
       EkTelemetry.resetContext(context) // eslint-disable-line no-undef
     }
 
@@ -136,7 +143,7 @@ angular.module('playerApp')
       EkTelemetry.impression(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -148,7 +155,7 @@ angular.module('playerApp')
       EkTelemetry.interact(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -160,7 +167,7 @@ angular.module('playerApp')
       EkTelemetry.log(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -172,7 +179,7 @@ angular.module('playerApp')
       EkTelemetry.error(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -184,7 +191,7 @@ angular.module('playerApp')
       EkTelemetry.share(data.edata, { // eslint-disable-line no-undef
         context: data.context,
         object: data.object,
-        tags: data.tags
+        tags: _.compact(data.tags) || _.concat([], org.sunbird.portal.channel)
       })
     }
 
@@ -399,14 +406,6 @@ angular.module('playerApp')
         */
     this.setConfigData = function (key, value) {
       this.configData[key] = value
-    }
-
-    this.getConfigData = function (key) {
-      if (this.configData[key]) {
-        return this.configData[key]
-      } else {
-        return this.config[key]
-      }
     }
 
     this.interactTelemetryData = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
