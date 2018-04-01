@@ -91,7 +91,7 @@ describe('InboxComponent', () => {
                     resourceService.messages = data.messages;
                 }
             );
-            component.populateInboxData(configService.appConfig.INBOX.PAGE_LIMIT, component.pageNumber);
+            component.populateInboxData(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, component.pageNumber);
             announcementService.getInboxData({}).subscribe(
                 inboxResponse => { },
                 err => {
@@ -103,7 +103,7 @@ describe('InboxComponent', () => {
             );
             fixture.detectChanges();
             expect(component.pageNumber).toBe(component.pageNumber);
-            expect(component.pageLimit).toBe(configService.appConfig.INBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toBe(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
         }));
 
     it('should call setpage method and set proper page number', inject([ConfigService, Router],
@@ -113,7 +113,7 @@ describe('InboxComponent', () => {
             component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(3);
-            expect(component.pageLimit).toEqual(configService.appConfig.INBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toEqual(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
             expect(route.navigate).toHaveBeenCalledWith(['announcement/inbox', component.pageNumber]);
         }));
 
@@ -124,7 +124,7 @@ describe('InboxComponent', () => {
             component.navigateToPage(3);
             fixture.detectChanges();
             expect(component.pageNumber).toEqual(1);
-            expect(component.pageLimit).toEqual(configService.appConfig.INBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toEqual(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
         }));
 
     it('should call read api and get success response', inject([AnnouncementService, ConfigService],
@@ -138,7 +138,7 @@ describe('InboxComponent', () => {
             );
             fixture.detectChanges();
             expect(component.pageNumber).toBe(1);
-            expect(component.pageLimit).toBe(configService.appConfig.INBOX.PAGE_LIMIT);
+            expect(component.pageLimit).toBe(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
             expect(component.inboxData.count).toBe(1173);
         }));
 });
