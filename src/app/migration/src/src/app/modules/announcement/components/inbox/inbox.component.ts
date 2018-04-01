@@ -197,7 +197,7 @@ export class InboxComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.populateInboxData(this.config.appConfig.INBOX.PAGE_LIMIT, this.pageNumber);
+      this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
   }
 }
