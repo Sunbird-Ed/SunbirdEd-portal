@@ -502,7 +502,7 @@ angular.module('playerApp')
             controller: 'ContentLessonController as contentLesson'
           }
         },
-        onEnter: function ($rootScope) {
+        onEnter: function ($rootScope, telemetryService) {
           telemetryService.setConfigData('env', 'workspace')
           $rootScope.profileActive = 'active'
         },
