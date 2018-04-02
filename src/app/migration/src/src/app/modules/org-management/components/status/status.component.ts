@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';

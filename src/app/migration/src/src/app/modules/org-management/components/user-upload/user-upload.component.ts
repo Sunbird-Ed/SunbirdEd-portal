@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
