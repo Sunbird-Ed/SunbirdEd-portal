@@ -47,6 +47,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     dynamic.dropdownId = []
     dynamic.dropdownValue = []
     dynamic.search.showFilters = false
+    dynamic.applyFilterOnly = false
 
     // search select dropdown changes
     var selectedsearchKeyHandler = $rootScope.$on('DynsetSearchKey', function (event, args) {
@@ -92,7 +93,9 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     })
 
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
-      $scope.search.initSearch()
+      if(dynamic.applyFilterOnly === false){
+        $scope.search.initSearch()
+      }
     })
 
     dynamic.search.selectFilter =
@@ -109,10 +112,6 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
           }
         }, 0)
       }
-
-    dynamic.doFilter = function () {
-      dynamic.isSearchPage = true
-    }
 
     dynamic.getChannel = function (req) {
       searchService.getChannel().then(function (res) {
@@ -206,6 +205,9 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       }
     }
     $scope.search.initSearch = function () {
+      if($state.current.name === 'Search'){
+        dynamic.isSearchPage = true
+      }
       var searchParams = $stateParams
       dynamic.search.selectedSearchKey = dynamic.searchKey || searchParams.type
       dynamic.search.searchKeyword = dynamic.search.searchKeyword || searchParams.query
@@ -288,7 +290,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         delete req.filters.name
       }
       if ($rootScope.search.selectedSearchKey === 'Courses') {
-        // $scope.search.searchFn = searchService.courseSearch(req)
+        $scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
         var librarySearchReq = JSON.parse(JSON.stringify(req))
@@ -303,7 +305,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
             'Game'
           ]
         }
-        // $scope.search.searchFn = searchService.contentSearch(librarySearchReq)
+        $scope.search.searchFn = searchService.contentSearch(librarySearchReq)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else {
@@ -372,6 +374,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     }
 
     dynamic.search.applyFilter = function () {
+      dynamic.applyFilterOnly = true
       _.forEach(dynamic.formFieldProperties, function (category) {
         if (category.inputType === 'select' || category.inputType === 'multiselect') {
           if (dynamic.search['selected' + category.code].length) {
