@@ -22,24 +22,9 @@
         {{resourceService?.frmelmnts?.scttl?.instructions}}
       </div>
       <ol class="ui list">
-        <li>{{resourceService?.frmelmnts?.instn?.t0013}}</li>
-        <li>{{resourceService?.frmelmnts?.instn?.t0002}}</li>
-        <li>{{resourceService?.frmelmnts?.instn?.t0007}}</li>
-        <li>{{resourceService?.frmelmnts?.instn?.t0021}}</li>
-        <li>{{resourceService?.frmelmnts?.instn?.t0022}}
-          <ol>
-            <li>{{resourceService?.frmelmnts?.instn?.t0023}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0024}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0025}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0026}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0027}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0028}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0029}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0030}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0031}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0032}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0049}}</li>
-            <li>{{resourceService?.frmelmnts?.instn?.t0050}}</li>
+        <li *ngFor="let instn of orgUploadInstructions">{{instn?.instructions}}
+          <ol *ngIf="instn.subinstructions">
+            <li *ngFor="let subinstn of instn.subinstructions">{{subinstn?.instructions}}</li>
           </ol>
         </li>
       </ol>

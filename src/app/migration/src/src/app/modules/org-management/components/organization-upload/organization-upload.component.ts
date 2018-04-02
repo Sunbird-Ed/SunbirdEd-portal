@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { OrgManagementService } from '../../services';
@@ -14,12 +14,16 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
   templateUrl: './organization-upload.component.html',
   styleUrls: ['./organization-upload.component.css']
 })
-export class OrganizationUploadComponent {
+export class OrganizationUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   /**
  * To show/hide loader
  */
   showLoader = false;
+  /**
+* contains upload instructions in an array
+*/
+  orgUploadInstructions: Array<any>;
   /**
    * To call resource service which helps to use language constant
    */
@@ -44,13 +48,37 @@ export class OrganizationUploadComponent {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
-
   constructor(orgManagementService: OrgManagementService, toasterService: ToasterService, private router: Router,
     config: ConfigService, resourceService: ResourceService) {
     this.orgManagementService = orgManagementService;
     this.resourceService = resourceService;
     this.config = config;
     this.toasterService = toasterService;
+  }
+  ngOnInit() {
+    this.orgUploadInstructions = [
+      { instructions: this.resourceService.frmelmnts.instn.t0013 },
+      { instructions: this.resourceService.frmelmnts.instn.t0002 },
+      { instructions: this.resourceService.frmelmnts.instn.t0007 },
+      { instructions: this.resourceService.frmelmnts.instn.t0021 },
+      {
+        instructions: this.resourceService.frmelmnts.instn.t0022,
+        subinstructions: [
+          { instructions: this.resourceService.frmelmnts.instn.t0023 },
+          { instructions: this.resourceService.frmelmnts.instn.t0024 },
+          { instructions: this.resourceService.frmelmnts.instn.t0025 },
+          { instructions: this.resourceService.frmelmnts.instn.t0026 },
+          { instructions: this.resourceService.frmelmnts.instn.t0027 },
+          { instructions: this.resourceService.frmelmnts.instn.t0028 },
+          { instructions: this.resourceService.frmelmnts.instn.t0029 },
+          { instructions: this.resourceService.frmelmnts.instn.t0030 },
+          { instructions: this.resourceService.frmelmnts.instn.t0031 },
+          { instructions: this.resourceService.frmelmnts.instn.t0032 },
+          { instructions: this.resourceService.frmelmnts.instn.t0049 },
+          { instructions: this.resourceService.frmelmnts.instn.t0050 }
+        ]
+      }
+    ];
   }
   /**
  * This method helps to redirect to the parent component

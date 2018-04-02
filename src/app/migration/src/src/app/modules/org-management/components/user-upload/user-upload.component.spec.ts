@@ -19,6 +19,35 @@ describe('UserUploadComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const ResourceData = {
+    'frmelmnts': {
+      'instn': {
+        't0013': 'Download the csv file for reference',
+        't0001': 'You can add or upload details of up to 199 users at a time in one csv file',
+        't0033': 'The following columns are mandatory:',
+        't0034': `FirstName: The user's first name`,
+        't0035': `Email: The user's verified email ID`,
+        't0036': `UserName: The unique name assigned to the user by the organization.
+        Ensure that no two users of the same organization have the same username.`,
+        't0037': 'Password: Unique or common password given by organization',
+        't0038': `All other columns are optional. These columns include information about the user such as:`,
+        't0039': 'Phone',
+        't0040': `Role: User's role on DIKSHA. Examples for this column:
+        CONTENT_CREATOR, CONTENT_REVIEWER, FLAG_REVIEWER, COURSE_MENTOR, ORG_ADMIN, SYSTEM_ADMINISTRATION, COURSE_ADMIN, COURSE_CREATOR`,
+        't0041': `Grade: Classes taught by the user`,
+        't0042': `Location: User's place of location of the user`,
+        't0043': `DOB: User's date of birth, the value should be entered in DD-MM-YYYY format`,
+        't0044': `Gender: User's gender`,
+        't0045': `Language: User's language preferences. Examples: English, Gujarati, Hindi, Kannada, Marathi, Punjabi, Tamil, Telugu`,
+        't0046': `Profile summary: User's profile summary`,
+        't0047': `Subjects: Taught by the user. Examples: Assamese, Bengali, Hindi,
+        Kannada, Malayalam, Oriya, Punjabi, Tamil, Telugu, Biology, Chemistry, Physics,
+         Mathematics, Environmental Studies, Geography, History, Political Science, Economics, Sanskrit, Gujarati, Marathi, Nepali`,
+        't0048': `Columns titled emailVerified, phoneVerified and provider are conditionally mandatory.
+        Value for emailVerified and phoneVerified should be True, if details are provided for provider`
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +55,8 @@ describe('UserUploadComponent', () => {
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
       providers: [OrgManagementService, ConfigService, ToasterService,
         ResourceService, LearnerService, FormBuilder,
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: ResourceService, useValue: ResourceData }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

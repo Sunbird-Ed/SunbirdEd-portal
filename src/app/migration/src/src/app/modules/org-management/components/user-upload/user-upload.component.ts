@@ -22,6 +22,10 @@ export class UserUploadComponent implements OnInit {
 */
   public config: ConfigService;
   /**
+* contains upload instructions in an array
+*/
+  userUploadInstructions: Array<any>;
+  /**
 * To call admin service which helps to upload csv file
 */
   public orgManagementService: OrgManagementService;
@@ -87,6 +91,32 @@ export class UserUploadComponent implements OnInit {
       externalId: ['', null],
       organisationId: ['', null]
     });
+    this.userUploadInstructions = [
+      { instructions: this.resourceService.frmelmnts.instn.t0013 },
+      { instructions: this.resourceService.frmelmnts.instn.t0001 },
+      {
+        instructions: this.resourceService.frmelmnts.instn.t0033,
+        subinstructions: [
+          { instructions: this.resourceService.frmelmnts.instn.t0034 },
+          { instructions: this.resourceService.frmelmnts.instn.t0035 },
+          { instructions: this.resourceService.frmelmnts.instn.t0036 },
+          { instructions: this.resourceService.frmelmnts.instn.t0037 }
+        ]
+      },
+      {
+        instructions: this.resourceService.frmelmnts.instn.t0038,
+        subinstructions: [
+          { instructions: this.resourceService.frmelmnts.instn.t0039 },
+          { instructions: this.resourceService.frmelmnts.instn.t0040 },
+          { instructions: this.resourceService.frmelmnts.instn.t0041 },
+          { instructions: this.resourceService.frmelmnts.instn.t0042 },
+          { instructions: this.resourceService.frmelmnts.instn.t0043 },
+          { instructions: this.resourceService.frmelmnts.instn.t0044 },
+          { instructions: this.resourceService.frmelmnts.instn.t0045 },
+          { instructions: this.resourceService.frmelmnts.instn.t0046 },
+          { instructions: this.resourceService.frmelmnts.instn.t0047 },
+          { instructions: this.resourceService.frmelmnts.instn.t0048 }]
+      }];
     this.showLoader = false;
   }
   /**
@@ -111,8 +141,8 @@ export class UserUploadComponent implements OnInit {
     const csv = new Angular2Csv(this.config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV, 'Sample_Users', options);
   }
   /**
- * This method helps to call uploadOrg method to upload a csv file
- */
+  * This method helps to call uploadOrg method to upload a csv file
+  */
   openImageBrowser(inputbtn) {
     if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
       this.bulkUploadError = false;
@@ -124,8 +154,8 @@ export class UserUploadComponent implements OnInit {
     }
   }
   /**
- * This method helps to upload a csv file and return process id
- */
+  * This method helps to upload a csv file and return process id
+  */
   uploadUsersCSV(file) {
     const data = this.uploadUserForm.value;
     if (file[0] && file[0].name.match(/.(csv)$/i)) {
@@ -153,8 +183,8 @@ export class UserUploadComponent implements OnInit {
     }
   }
   /**
- * This method is used to show error message
- */
+  * This method is used to show error message
+  */
   closeBulkUploadError() {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
