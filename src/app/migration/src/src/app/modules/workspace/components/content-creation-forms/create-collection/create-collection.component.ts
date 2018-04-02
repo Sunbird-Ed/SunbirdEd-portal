@@ -1,5 +1,3 @@
-import { IUserData } from './../../../../shared/interfaces/userProfile';
-
 import { UserService } from '@sunbird/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
@@ -7,14 +5,10 @@ import { collectionDataInterface } from './../../../interfaces/collection.data.i
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import { EditorService } from './../../../services/editor.service';
+import { EditorService } from './../../../services/editors/editor.service';
 
-// const fields = {
-//   mimeType: 'application/vnd.ekstep.content-collection',
-//   contentType: 'Collection'
-// };
 
 @Component({
   selector: 'app-create-collection',
