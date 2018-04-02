@@ -57,6 +57,9 @@ export class AuthGuard implements CanActivate {
                                 this.router.navigate(['home']);
                                 observer.next(false);
                             }
+                        } else {
+                            this.router.navigate(['home']);
+                            observer.next(false);
                         }
                         observer.complete();
                     } else if (permissionAvailable && permissionAvailable === 'error') {

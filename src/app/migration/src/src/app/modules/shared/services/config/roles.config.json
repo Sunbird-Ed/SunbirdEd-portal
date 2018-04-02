@@ -18,7 +18,8 @@
     },
      "ROLES":{
         "announcement": ["ANNOUNCEMENT_SENDER"],
-        "workspace":["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR"]   
+        "workspace":["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR"],
+        "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"]
     }
 
 }
