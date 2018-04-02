@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, UserProfile, UserData } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -11,38 +11,39 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 */
 @Injectable()
 export class UserService {
+  /**
+   * Contains user id
+   */
+  private _userid: string;
  /**
-  * Contains user id
-  */
- public _userid: string;
-
- public _sessionid: string;
- /**
-  * Contains user profile.
-  */
- private _userProfile: UserProfile;
- /**
-  * BehaviorSubject Containing user profile.
-  */
- private _userData$ = new BehaviorSubject<UserData>(undefined);
- /**
-  * Read only observable Containing user profile.
-  */
- public readonly userData$: Observable<UserData> = this._userData$.asObservable();
- /**
-  * reference of config service.
-  */
- public config: ConfigService;
- /**
-  * reference of lerner service.
-  */
- public learner: LearnerService;
- /**
-  * constructor
-  * @param {ConfigService} config ConfigService reference
-  * @param {LearnerService} learner LearnerService reference
-  */
-
+   * Contains session id
+   */
+  public _sessionId: string;
+  /**
+   * Contains user profile.
+   */
+  private _userProfile: IUserProfile;
+  /**
+   * BehaviorSubject Containing user profile.
+   */
+  private _userData$ = new BehaviorSubject<IUserData>(undefined);
+  /**
+   * Read only observable Containing user profile.
+   */
+  public readonly userData$: Observable<IUserData> = this._userData$.asObservable();
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+  /**
+   * reference of lerner service.
+   */
+  public learner: LearnerService;
+  /**
+   * constructor
+   * @param {ConfigService} config ConfigService reference
+   * @param {LearnerService} learner LearnerService reference
+   */
   constructor(config: ConfigService, learner: LearnerService) {
     this.config = config;
     this.learner = learner;
@@ -51,16 +52,13 @@ export class UserService {
    * get method to fetch userid.
    */
   get userid(): string {
-    try {
-      if (this._userid) {
-        return this._userid;
-      }
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
-      this._userid = this._userid === '<%=userId%>' ? 'userId' : this._userid;
-    } catch (e) {
-      this._userid = 'userId';
-    }
     return this._userid;
+  }
+   /**
+   * get method to fetch sessionid.
+   */
+   get sessionId(): string {
+     return this._sessionId;
   }
   /**
    * method to fetch user profile from server.
@@ -82,6 +80,13 @@ export class UserService {
 
   public initialize() {
     this.getUserProfile();
+    // try {
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+    // } catch (e) {
+    //   this._userid = 'userId';
+    //   this._sessionId = 'sessionId';
+    // }
   }
   /**
    * method to set user profile to behavior subject.
