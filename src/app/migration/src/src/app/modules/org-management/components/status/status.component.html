@@ -1,0 +1,129 @@
+<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.chkuploadsts}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <form *ngIf="!processId && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
+      <h4>{{resourceService?.frmelmnts?.instn?.t0011}}</h4>
+      <div class="ui grid">
+        <div class="six wide column">
+          <div class="field">
+            <label>{{resourceService?.frmelmnts?.lbl?.processid}}</label>
+            <input type="text" formControlName="processId" placeholder="Process ID" autofocus>
+          </div>
+        </div>
+        <div class="three wide column">
+        </div>
+      </div>
+    </form>
+    <div *ngIf="processId">
+      <div class="ui label">
+        <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
+      </div>
+      <div *ngFor="let status of [statusResponse.successResult, statusResponse.failureResult]">
+        <div class="margin-top-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
+          <h5 *ngIf="status === statusResponse.successResult">{{resourceService?.frmelmnts?.lbl?.successres}}</h5>
+          <h5 *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.failres}}</h5>
+          <table class="ui celled padded table">
+            <thead *ngIf="statusResponse.objectType === 'user'">
+              <tr>
+                <th>{{resourceService?.frmelmnts?.lbl?.firstName}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.lastName}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.userID}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.rootOrg}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.regOrg}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.countryCode}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.phone}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.email}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.password}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.provider}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.phoneVerfied}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.emailVerfied}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.roles}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.position}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.grade}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.location}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.dob}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.lang}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.subject}}</th>
+                <th *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
+              </tr>
+            </thead>
+            <thead *ngIf="statusResponse.objectType === 'organisation'">
+              <tr>
+                <th>{{resourceService?.frmelmnts?.lbl?.orgId}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.orgName}}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.isRootOrg}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.channel}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.externalId}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.provider}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.description}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.homeUrl}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.orgCode}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.orgType}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.preferredLanguage}}</th>
+                <th>{{resourceService?.frmelmnts?.lbl?.theme}}</th>
+                <th *ngIf="status === statusResponse.failureResult">{{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="statusResponse.objectType === 'user'">
+              <tr [ngClass]="status === statusResponse.successResult ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
+                <td>{{ row.firstName || "empty"}}</td>
+                <td>{{ row.lastName || "empty"}}</td>
+                <td>{{ row.userId || ""}}</td>
+                <td>{{ row.rootOrgId || ""}}</td>
+                <td>{{ row.regOrgId || ""}}</td>
+                <td>{{ row.countryCode || ""}}</td>
+                <td>{{ row.phone || "empty"}}</td>
+                <td>{{ row.email || "empty"}}</td>
+                <td>{{ row.password || "empty"}}</td>
+                <td>{{ row.provider || "empty"}}</td>
+                <td>{{ row.phoneVerified || "empty"}}</td>
+                <td>{{ row.emailVerified || "empty"}}</td>
+                <td>{{ row.roles || "empty"}}</td>
+                <td>{{ row.position || "empty"}}</td>
+                <td>{{ row.grade || "empty"}}</td>
+                <td>{{ row.location || "empty"}}</td>
+                <td>{{ row.dob || "empty"}}</td>
+                <td>{{ row.language || "empty"}}</td>
+                <td>{{ row.subject || "empty"}}</td>
+                <td *ngIf="status === statusResponse.failureResult">{{ row.err_msg || "empty"}}</td>
+            </tbody>
+            <tbody *ngIf="statusResponse.objectType === 'organisation'">
+              <tr [ngClass]="status === statusResponse.successResult ? 'positive' : 'error'" *ngFor="let row of getStatusResult(status)">
+                <td>{{ row.id || "empty"}}</td>
+                <td>{{ row.orgName || "empty"}}</td>
+                <td>{{ row.isRootOrg || "empty"}}</td>
+                <td>{{ row.channel || ""}}</td>
+                <td>{{ row.externalId || ""}}</td>
+                <td>{{ row.provider || ""}}</td>
+                <td>{{ row.description || ""}}</td>
+                <td>{{ row.homeUrl || "empty"}}</td>
+                <td>{{ row.orgCode || "empty"}}</td>
+                <td>{{ row.orgType || "empty"}}</td>
+                <td>{{ row.preferredLanguage || "empty"}}</td>
+                <td>{{ row.theme || "empty"}}</td>
+                <td *ngIf="status === statusResponse.failureResult">{{ row.err_msg || "empty"}}</td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grid">
+      <div *ngIf="!processId" class="twelve wide column">
+        <button [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
+          (click)="getBulkUploadStatus(statusForm.value)">
+          {{resourceService?.frmelmnts?.btn?.chksts}}</button>
+      </div>
+    </div>
+  </div>
+</sui-modal>

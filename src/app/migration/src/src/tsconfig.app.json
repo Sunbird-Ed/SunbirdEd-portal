@@ -5,7 +5,7 @@
     "baseUrl": "./",
     "paths": {
       "@sunbird/core": [
-          "app/modules/core"
+        "app/modules/core"
       ],
       "@sunbird/community": [
         "app/modules/community"
@@ -24,6 +24,9 @@
       ],
       "@sunbird/notes": [
         "app/modules/notes"
+      ],
+      "@sunbird/admin": [
+        "app/modules/admin"
       ],
       "@sunbird/resource": [
         "app/modules/resource"

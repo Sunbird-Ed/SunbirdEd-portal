@@ -16,7 +16,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ResourceModule } from '@sunbird/resource';
 import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
-import { OrgManagementModule } from './modules/org-management/org-management.module';
+import { OrgManagementModule } from '@sunbird/org-management';
 
 @NgModule({
   declarations: [
