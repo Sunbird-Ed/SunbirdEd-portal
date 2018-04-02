@@ -40,7 +40,6 @@ describe('StatusComponent', () => {
     spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
-    expect(component.redirect).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
   });
   it('should call organization management service and get success status based on given processId', () => {

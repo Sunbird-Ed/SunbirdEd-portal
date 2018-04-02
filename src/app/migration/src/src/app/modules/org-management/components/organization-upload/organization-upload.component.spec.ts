@@ -15,7 +15,6 @@ import { By } from '@angular/platform-browser';
 describe('OrganizationUploadComponent', () => {
   let component: OrganizationUploadComponent;
   let fixture: ComponentFixture<OrganizationUploadComponent>;
-  let router: Router;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -59,11 +58,12 @@ describe('OrganizationUploadComponent', () => {
     fixture = TestBed.createComponent(OrganizationUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.get(Router);
   });
   it('should call redirect', () => {
+    const router = TestBed.get(Router);
     component.redirect();
     fixture.detectChanges();
+    expect(router.navigate).toHaveBeenCalledWith(['/bulkUpload']);
   });
   it('should call downloadSample method and download a sample csv file', () => {
     component.downloadSample();
