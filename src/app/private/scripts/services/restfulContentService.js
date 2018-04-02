@@ -41,11 +41,9 @@ angular.module('playerApp')
           env: telemetryService.getConfigData('env'),
           rollup: telemetryService.getRollUpData($rootScope.organisationIds)
         }
-        var message = telemetryService.getConfigData('message')
+        var message = telemetryService.getConfigData('message') || 'api call to content service'
         var edata = {
           edata: telemetryService.logEventData('api_call', 'INFO', message, ''),
-          contentId: '',
-          contentVer: '1.0',
           context: telemetryService.getContextData(contextData),
           tags: _.concat([], org.sunbird.portal.channel)
         }

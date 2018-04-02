@@ -10,7 +10,9 @@ angular.module('playerApp')
      */
   .service('telemetryService', ['$rootScope', 'config', '$window', function ($rootScope, config, $window) {
     this.context = []
-    this.configData = {}
+    this.configData = {
+      message: 'api call default message'
+    }
     this.visitData = []
     this.config = {}
     this.getConfigData = function (key) {

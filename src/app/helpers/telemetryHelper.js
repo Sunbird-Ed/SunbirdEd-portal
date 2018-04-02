@@ -11,10 +11,12 @@ const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
+const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
+telemtryEventConfig['pdata']['id'] = appId
 module.exports = {
   /**
    * This function helps to get user spec
@@ -101,7 +103,7 @@ module.exports = {
     console.log('logSSOEndEvent')
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
-    const actor = telemetry.getActorData(payload.sub, 'user')
+    const actor = telemetry.getActorData(payload['sub'], 'user')
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     telemetry.end({
       edata: edata,
