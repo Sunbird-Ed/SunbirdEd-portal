@@ -5,7 +5,7 @@ import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent
 } from './components';
-import { ConfigService, ResourceService, FileUploadService } from './services';
+import { ConfigService, ResourceService, FileUploadService, ToasterService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe } from './pipes';
@@ -19,8 +19,7 @@ import { DateFormatPipe, DateFilterXtimeAgoPipe } from './pipes';
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
-    DateFilterXtimeAgoPipe, PageSectionComponent, ContentCardComponent,
-    NoResultComponent],
-  providers: [ResourceService, ConfigService, FileUploadService]
+    DateFilterXtimeAgoPipe, PageSectionComponent, ContentCardComponent, NoResultComponent],
+  providers: [ResourceService, ConfigService, FileUploadService, ToasterService]
 })
 export class SharedModule { }

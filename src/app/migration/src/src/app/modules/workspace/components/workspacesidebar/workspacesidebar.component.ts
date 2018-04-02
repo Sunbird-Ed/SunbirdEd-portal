@@ -73,13 +73,13 @@ export class WorkspacesidebarComponent implements OnInit {
 
   ngOnInit() {
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
-    this.inreviewRole = this.config.rolesConfig.workSpacRole.inreviewRole;
-    this.publishedRole = this.config.rolesConfig.workSpacRole.publishedRole;
-    this.alluploadsRole = this.config.rolesConfig.workSpacRole.alluploadsRole;
-    this.upForReviewRole = this.config.rolesConfig.workSpacRole.upForReviewRole;
-    this.coursebacthesRole = this.config.rolesConfig.workSpacRole.coursebacthesRole;
-    this.flaggedRole = this.config.rolesConfig.workSpacRole.flaggedRole;
-    this.limitedPublishingRole = this.config.rolesConfig.workSpacRole.limitedPublishingRole;
+    this.inreviewRole = this.config.rolesConfig.workSpaceRole.inreviewRole;
+    this.publishedRole = this.config.rolesConfig.workSpaceRole.publishedRole;
+    this.alluploadsRole = this.config.rolesConfig.workSpaceRole.alluploadsRole;
+    this.upForReviewRole = this.config.rolesConfig.workSpaceRole.upForReviewRole;
+    this.coursebacthesRole = this.config.rolesConfig.workSpaceRole.coursebacthesRole;
+    this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
+    this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
     console.log(this.draftRole);
   }
 

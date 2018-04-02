@@ -7,19 +7,19 @@
   <a class="item" [routerLink]="['create']" routerLinkActive="active">
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
-  <a class="item" [routerLink]="['draft',1]" routerLinkActive="active">
+  <a *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'draftRole' class="item" [routerLink]="['draft',1]" routerLinkActive="active">
        {{resourceService?.frmelmnts?.snav?.draft}}
     </a>
-  <a class="item" [routerLink]="['review',1]" routerLinkActive="active">
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'inreviewRole' [routerLink]="['review',1]" routerLinkActive="active">
     {{resourceService?.frmelmnts?.snav?.inreview}}
   </a>
-  <a class="item" [routerLink]="['published',1]" routerLinkActive="active">
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'publishedRole' [routerLink]="['published',1]" routerLinkActive="active">
     {{resourceService?.frmelmnts?.snav?.published}}
   </a>
-  <a class="item" [routerLink]="['uploaded',1]" routerLinkActive="active">
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'alluploadsRole' [routerLink]="['uploaded',1]" routerLinkActive="active">
     {{resourceService?.frmelmnts?.snav?.alluploads}}
   </a>
-  <a class="item" [routerLink]="['upForReview',1]" routerLinkActive="active">
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'upForReviewRole' [routerLink]="['upForReview',1]" routerLinkActive="active">
     {{resourceService?.frmelmnts?.snav?.upForReview}}
   </a>
   <a class="item">
