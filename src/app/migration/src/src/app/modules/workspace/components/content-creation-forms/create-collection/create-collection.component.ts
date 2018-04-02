@@ -1,13 +1,12 @@
 import { UserService } from '@sunbird/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-
-import { collectionDataInterface } from './../../../interfaces/collection.data.interface';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import { EditorService } from './../../../services/editors/editor.service';
+import { EditorService } from './../../../services';
 
 
 @Component({
@@ -41,57 +40,53 @@ export class CreateCollectionComponent implements OnInit {
   /**
    * To make inbox API calls
    */
-  public userForm: FormGroup;
-
   private editorService: EditorService;
-  public state: string;
-  public type: string;
-  public framework: string;
-  public showEditor: boolean;
-  public contentId: any;
-  public requestBody: any;
-  public userProfile: any;
 
+  /**
+   * userProfile is of type userprofile interface
+   */
+  public userProfile: IUserProfile;
 
-  public collection = new collectionDataInterface('', '');
+  public userForm: FormGroup;
+  public formBuilder: FormBuilder;
+
   constructor(public modalService: SuiModalService,
     resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
     private router: Router,
     userService: UserService,
-    public formBuilder: FormBuilder
+    formBuilder: FormBuilder
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.editorService = editorService;
     this.userService = userService;
-
-    this.userForm = this.formBuilder.group({
-      name: '',
-      description: ''
-    });
+    this.formBuilder = formBuilder;
   }
 
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = user.userProfile;
+         this.userProfile = user.userProfile;
           console.log(' user profile s', this.userProfile);
         }
       });
     this.showLoader = false;
+    this.userForm = this.formBuilder.group({
+      name: '',
+      description: ''
+    });
   }
 
 
 
-  saveMetaData(userFormData) {
+  saveMetaData(userForm) {
     this.showLoader = true;
-    this.requestBody = userFormData;
-    this.requestBody = {
-      name: this.requestBody.name ? this.requestBody.name : 'Untitled Collection',
-      description: this.requestBody.description,
+      const requestBody = {
+      name: userForm.name ? userForm.name : 'Untitled Collection',
+      description: userForm.description,
       creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
       createdBy: this.userProfile.id,
       organisationIds: this.userProfile.organisationIds,
@@ -102,7 +97,7 @@ export class CreateCollectionComponent implements OnInit {
     };
 
     const requestData = {
-      content: this.requestBody
+      content: requestBody
     };
     this.createCollection(requestData);
   }
@@ -112,9 +107,10 @@ export class CreateCollectionComponent implements OnInit {
     this.editorService.create(requestData).subscribe(res => {
       this.isCollectionCreated = true;
       this.showLoader = false;
-      this.contentId = res.result.content_id;
-      console.log('content id ', this.contentId);
-      this.initEKStepCE(res.result.content_id);
+      const type = 'CollectionEditor';
+      const state = '';
+      const framework = 'framework';
+      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
     }, err => {
       console.log('error');
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -122,12 +118,6 @@ export class CreateCollectionComponent implements OnInit {
 
   }
 
-  initEKStepCE(id) {
-    this.type = 'CollectionEditor';
-    this.state = '',
-      this.framework = 'frmwork';
-    this.router.navigate(['/workspace/content/edit/collection', this.contentId, this.type, this.state, this.framework]);
-  }
 
   goToCreate() {
     this.router.navigate(['/workspace/content/create']);

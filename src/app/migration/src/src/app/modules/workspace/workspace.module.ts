@@ -8,7 +8,7 @@ import { CreateContentComponent } from './components/create-content/create-conte
 import { DraftComponent } from './components/draft/draft.component';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { WorkSpaceService, EditorService } from './services';
 import { ReviewSubmissionsComponent } from './components/review-submissions/review-submissions.component';
 import { PublishedComponent } from './components/published/published.component';

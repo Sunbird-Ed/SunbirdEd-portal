@@ -1,11 +1,13 @@
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateUploadContentComponent, CreateStudyMaterialComponent,
   CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent
-} from './components/index';
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+
 const routes: Routes = [
   {
     path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],

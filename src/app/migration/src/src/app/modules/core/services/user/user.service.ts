@@ -18,7 +18,7 @@ export class UserService {
  /**
    * Contains session id
    */
-  public _sessionid: string;
+  public _sessionId: string;
   /**
    * Contains user profile.
    */
@@ -52,22 +52,13 @@ export class UserService {
    * get method to fetch userid.
    */
   get userid(): string {
-    if (this._userid) {
-      return this._userid;
-    }
-    try {
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
-    } catch (e) {
-      this._userid = 'userId';
-    }
     return this._userid;
   }
    /**
-   * get method to fetch sessionid.
+   * get method to fetch sessionId.
    */
-   get sessionid(): string {
-      this._sessionid = (<HTMLInputElement>document.getElementById('sessionId')).value;
-     return this._sessionid;
+   get sessionId(): string {
+     return this._sessionId;
   }
   /**
    * method to fetch user profile from server.
@@ -88,6 +79,10 @@ export class UserService {
   }
 
   public initialize() {
+    try {
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+    } catch {}
     this.getUserProfile();
   }
   /**
