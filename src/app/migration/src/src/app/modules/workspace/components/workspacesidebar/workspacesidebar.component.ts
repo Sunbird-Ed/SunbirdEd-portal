@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, PermissionService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService } from '@sunbird/shared';
+import { PermissionService } from '@sunbird/core';
 
 /**
  * The Workspace side  component shows the sidebar for workspace
@@ -24,9 +25,38 @@ export class WorkspacesidebarComponent implements OnInit {
   */
   public config: ConfigService;
   /**
-   * Workspace access roles
-   */
+   * Draft  access roles
+  */
   draftRole: Array<string>;
+  /**
+    * inreviewRole   access roles
+  */
+  inreviewRole: Array<string>;
+  /**
+ * publishedRole  access roles
+ */
+  publishedRole: Array<string>;
+  /**
+  * alluploadsRole  access roles
+  */
+  alluploadsRole: Array<string>;
+  /**
+  * upForReviewRole  access roles
+  */
+  upForReviewRole: Array<string>;
+  /**
+  * coursebacthesRole  access roles
+ */
+  coursebacthesRole: Array<string>;
+  /**
+    * flaggedRole  access roles
+  */
+  flaggedRole: Array<string>;
+
+  /**
+    * flaggedRole  access roles
+  */
+  limitedPublishingRole: Array<string>;
 
   /**
   * Constructor to create injected service(s) object
@@ -35,13 +65,21 @@ export class WorkspacesidebarComponent implements OnInit {
      * @param {PermissionService} permissionService Reference of PermissionService
      * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(resourceService: ResourceService, permissionService: PermissionService) {
+  constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
+    this.config = config;
   }
 
   ngOnInit() {
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
+    this.inreviewRole = this.config.rolesConfig.workSpacRole.inreviewRole;
+    this.publishedRole = this.config.rolesConfig.workSpacRole.publishedRole;
+    this.alluploadsRole = this.config.rolesConfig.workSpacRole.alluploadsRole;
+    this.upForReviewRole = this.config.rolesConfig.workSpacRole.upForReviewRole;
+    this.coursebacthesRole = this.config.rolesConfig.workSpacRole.coursebacthesRole;
+    this.flaggedRole = this.config.rolesConfig.workSpacRole.flaggedRole;
+    this.limitedPublishingRole = this.config.rolesConfig.workSpacRole.limitedPublishingRole;
     console.log(this.draftRole);
   }
 

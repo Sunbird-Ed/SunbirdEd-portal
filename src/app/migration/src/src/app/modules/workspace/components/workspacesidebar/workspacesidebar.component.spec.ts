@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import { ResourceService, ConfigService, PermissionService} from '@sunbird/shared';
+import { ResourceService, ConfigService} from '@sunbird/shared';
+import { PermissionService  } from '@sunbird/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
