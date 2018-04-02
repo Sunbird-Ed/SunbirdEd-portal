@@ -18,7 +18,7 @@ export class UserService {
  /**
    * Contains session id
    */
-  public _sessionId: string;
+  private _sessionId: string;
   /**
    * Contains root org id
    */
