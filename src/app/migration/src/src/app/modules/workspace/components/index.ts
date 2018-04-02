@@ -5,5 +5,6 @@ export * from './draft/draft.component';
 export * from './published/published.component';
 export * from './review-submissions/review-submissions.component';
 export * from './uploaded/uploaded.component';
+export * from './up-for-review/up-for-review.component';
 
 

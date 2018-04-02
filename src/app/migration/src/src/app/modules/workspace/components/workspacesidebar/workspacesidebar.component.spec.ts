@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import { ResourceService, ConfigService} from '@sunbird/shared';
+import { PermissionService  } from '@sunbird/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
@@ -11,7 +12,7 @@ describe('WorkspacesidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
-      providers: [ResourceService, ConfigService],
+      providers: [ResourceService, ConfigService, PermissionService],
       imports: [RouterTestingModule, HttpClientTestingModule]
     })
     .compileComponents();

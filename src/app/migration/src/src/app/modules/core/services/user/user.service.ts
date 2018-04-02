@@ -34,6 +34,7 @@ export class UserService {
   /**
    * reference of config service.
    */
+
   public config: ConfigService;
   /**
    * reference of lerner service.
@@ -109,6 +110,7 @@ export class UserService {
           organisationIds.push(profileData.rootOrgId);
         }
       });
+      this.setRoleOrgMap(profileData);
     }
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
@@ -118,6 +120,29 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  /**
+    * method to set setRoleOrgMap.
+  */
+  private setRoleOrgMap(profile) {
+    let  roles = [];
+    const roleOrgMap = {};
+    _.forEach(profile.organisations, function (org) {
+      roles = roles.concat(org.roles);
+    });
+    roles = _.uniq(roles);
+    _.forEach(roles, function (role) {
+      _.forEach(profile.organisations, function (org) {
+        roleOrgMap[role] = roleOrgMap[role] || [];
+        if (_.indexOf(org.roles, role) > -1) { }
+        roleOrgMap[role].push(org.organisationId);
+      });
+    });
+    this._userProfile = profile;
+    this._userProfile.roleOrgMap = roleOrgMap;
+  }
+  get RoleOrgMap () {
+    return _.cloneDeep(this._userProfile.roleOrgMap);
   }
   get userProfile() {
     return _.cloneDeep(this._userProfile);

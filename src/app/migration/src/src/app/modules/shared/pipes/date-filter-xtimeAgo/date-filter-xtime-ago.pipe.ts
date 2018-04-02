@@ -7,9 +7,9 @@ const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default 
  *
  */
 @Pipe({
-  name: 'dateFormat'
+  name: 'dateFilterXtimeAgo'
 })
-export class DateFormatPipe implements PipeTransform {
+export class DateFilterXtimeAgoPipe implements PipeTransform {
   /**
    * To create date format pipe
    *
@@ -18,8 +18,8 @@ export class DateFormatPipe implements PipeTransform {
    *
    */
   transform(value: Date | moment.Moment | string | number, format: string): string {
-    console.log(format);
-    return momentConstructor(value).format(format);
+      const local = moment(value).local().format('YYYY-MM-DD HH:mm:ss');
+      return moment(local).fromNow();
   }
 
 }
