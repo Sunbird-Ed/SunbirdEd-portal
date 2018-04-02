@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WorkspaceComponent, CreateContentComponent, DraftComponent ,
-  ReviewSubmissionsComponent, PublishedComponent} from './components/index';
+import {
+  WorkspaceComponent, CreateContentComponent, DraftComponent,
+  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
@@ -12,7 +14,8 @@ const routes: Routes = [
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
-      {path: '**', redirectTo : 'create'}
+      { path: 'uploaded/:pageNumber', component: UploadedComponent },
+      { path: '**', redirectTo: 'create' }
     ]
   },
 ];
