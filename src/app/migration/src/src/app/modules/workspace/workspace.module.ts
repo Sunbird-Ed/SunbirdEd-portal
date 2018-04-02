@@ -13,6 +13,7 @@ import { WorkSpaceService } from './services';
 import { ReviewSubmissionsComponent } from './components/review-submissions/review-submissions.component';
 import { PublishedComponent } from './components/published/published.component';
 import { UploadedComponent } from './components/uploaded/uploaded.component';
+import { UpForReviewComponent } from './components/up-for-review/up-for-review.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +24,7 @@ import { UploadedComponent } from './components/uploaded/uploaded.component';
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent],
+    PublishedComponent, UploadedComponent, UpForReviewComponent],
   providers: [WorkSpaceService]
 })
 export class WorkspaceModule { }
