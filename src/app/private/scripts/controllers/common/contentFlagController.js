@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentFlagController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', '$scope',
+    '$rootScope', 'toasterService', '$scope', 'telemetryService',
     function (contentService, $timeout, $state,
-      config, $rootScope, toasterService, $scope) {
+      config, $rootScope, toasterService, $scope, telemetryService) {
       var contentFlag = this
       contentFlag.showContentFlagModal = false
       contentFlag.userId = $rootScope.userId
@@ -14,16 +14,20 @@ angular.module('playerApp')
       contentFlag.contentVersionKey = $scope.versionkey
       contentFlag.reasons = [{
         name: 'Inappropriate content',
+        value: 'Inappropriate Content',
         description: 'Hateful, harmful or explicit lesson that is inappropriate for young learners'
       }, {
         name: 'Copyright violation',
+        value: 'Copyright Violation',
         description: 'Uses copyrighted work without permission'
       }, {
         name: 'Privacy violation',
+        value: 'Privacy Violation',
         description: 'Collects sensitive data or personal information about users, such as name' +
         '\n address, photo or other personally identifiable information'
       }, {
-        name: 'Other'
+        name: 'Other',
+        value: 'Other'
       }]
 
       contentFlag.reasonDescription = {
@@ -40,6 +44,8 @@ angular.module('playerApp')
 
       contentFlag.initializeModal = function () {
         contentFlag.showContentFlagModal = true
+        telemetryService.interactTelemetryData($scope.type, $scope.contentid, $scope.type,
+          $rootScope.version, $scope.type + '-flag', $scope.type + '-read')
         $timeout(function () {
           $('#contentFlagModal').modal({
             onShow: function () {

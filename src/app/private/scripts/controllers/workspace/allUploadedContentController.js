@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .controller('AllUploadedContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
-    'PaginationService',
+    'PaginationService', 'telemetryService',
     function (contentService, searchService, config, $rootScope, $state,
-      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var allUploadedContent = this
       allUploadedContent.userId = $rootScope.userId
       allUploadedContent.contentStatus = ['Draft']
@@ -55,6 +55,7 @@ angular.module('playerApp')
             allUploadedContent.error.showError = false
             allUploadedContent.totalCount = res.result.count
             allUploadedContent.pageNumber = pageNumber
+            allUploadedContent.version = res.ver
             allUploadedContent.allUploadedContentData = res.result.content || []
             allUploadedContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, allUploadedContent.pageLimit)
@@ -68,6 +69,7 @@ angular.module('playerApp')
             allUploadedContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0014)
           }
+          /* allUploadedContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upload', '/content/uploaded') */
         }).catch(function () {
           allUploadedContent.error.showError = false
           allUploadedContent.loader.showLoader = false
@@ -108,6 +110,7 @@ angular.module('playerApp')
           if (res && res.responseCode === 'OK') {
             allUploadedContent.loader.showLoader = false
             allUploadedContent.selectedContentItem = []
+            allUploadedContent.version = res.ver
             toasterService.success($rootScope.messages.smsg.m0006)
             allUploadedContent.allUploadedContentData = workSpaceUtilsService
               .removeContentLocal(allUploadedContent.allUploadedContentData, requestData)
@@ -136,6 +139,32 @@ angular.module('playerApp')
 
       allUploadedContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      /**
+             * This function call to generate telemetry
+             * on click of alluploded content.
+             */
+      allUploadedContent.generateInteractEvent = function (edataId, pageId, contentId, env) {
+        telemetryService.interactTelemetryData(env, contentId, edataId, allUploadedContent.version, edataId, pageId)
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      allUploadedContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

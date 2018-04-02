@@ -1,0 +1,14 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect();" #modal>
+    <div *ngIf="createForm" class="header">{{resourceService?.frmelmnts?.lbl?.addorgtype}}</div>
+    <div *ngIf="!createForm" class="header">{{resourceService?.frmelmnts?.lbl?.updateorgtype}}</div>
+    <div class="content">
+        <div class="ui fluid icon input">
+            <input class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
+        </div>
+    </div>
+    <div class="actions">
+        <div *ngIf="createForm" class="ui primary approve button" (click)="modal.deny();addOrgType()"> {{resourceService?.frmelmnts?.btn?.add}}</div>
+        <div *ngIf="!createForm" class="ui primary approve button" (click)="modal.deny();updateOrgType()"> {{resourceService?.frmelmnts?.btn?.update}}</div>
+        <div class="ui negative cancel button" (click)="modal.deny()">{{resourceService?.frmelmnts?.btn?.cancel}}</div>
+    </div>
+</sui-modal>

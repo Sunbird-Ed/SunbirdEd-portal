@@ -5,13 +5,13 @@
         <label for="address">{{$root.frmelmnts.lbl.seladdresstype}}</label>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='permanent' ng-checked="address.addType==='permanent'" ng-model="address.addType">
+                <input type="radio" name="addressType" value='permanent' ng-checked="address.addType==='permanent'" ng-click="profileCtrl.checkAddress(address.addType);" ng-model="address.addType">
                 <label> {{$root.frmelmnts.lbl.permanent}}</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox">
-                <input type="radio" name="addressType" value='current' ng-checked="address.addType==='current'" ng-model="address.addType">
+                <input type="radio" name="addressType" value='current' ng-checked="address.addType==='current'" ng-click="profileCtrl.checkAddress(address.addType);" ng-model="address.addType">
                 <label>{{$root.frmelmnts.lbl.current}}</label>
             </div>
         </div>
@@ -25,7 +25,7 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.addressline2}}</label>
-            <input type="text" name="" ng-model="address.addressLine2">
+            <input type="text" name="addLine2" ng-model="address.addressLine2">
         </div>
     </div>
     <div class="two fields">
@@ -35,13 +35,13 @@
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.state}}</label>
-            <input type="text" name="" ng-model="address.state">
+            <input type="text" name="state" ng-model="address.state">
         </div>
     </div>
     <div class="two fields">
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.country}}</label>
-            <input type="text" name="" ng-model="address.country">
+            <input type="text" name="country" ng-model="address.country">
         </div>
         <div class="  field">
             <label>{{$root.frmelmnts.lbl.pincode}}</label>

@@ -32,7 +32,7 @@
         </div>
     </div>
   </div>
-  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId, coursecreatedby: batch.coursecreatedby})" ng-show="batch.isMentor">
+  <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId, coursecreatedby: batch.coursecreatedby})" ng-show="batch.isMentor" ng-click="$root.generateInteractEvent('batch',batch.courseId,'create-batch','1.0','add-batch','batch-add')">
     <a><i class="add icon"></i>Create Batch</a>
   </div>
 </div>

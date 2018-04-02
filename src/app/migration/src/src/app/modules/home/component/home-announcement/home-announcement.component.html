@@ -1,0 +1,25 @@
+<div>
+  <div class="ui grid">
+    <div class="nine wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+      <div class="ui">
+        <div class="text dashBoardSectionHeading padding-top-10  margin-bottom-10">{{resourceService.frmelmnts?.lbl?.anncmntinboxannmsg}}</div>
+      </div>
+    </div>
+    <div class="three wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+      <a class="ui right floated announcementSeeAllLink float-ContentRight" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+  </div>
+  <div class=" margin-bottom-10" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
+    <div *ngFor="let announcement of announcementlist.announcements">
+      <div (click)="readAnnouncement(announcement.id, announcement.read); announcementService.announcementDetailsObject = announcement; announcement.read=true;"
+        [routerLink]="['view/' + announcement.id]">
+        <app-announcement-inbox-card [announcement]="announcement"></app-announcement-inbox-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

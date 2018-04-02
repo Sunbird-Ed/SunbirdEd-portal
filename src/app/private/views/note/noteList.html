@@ -10,7 +10,7 @@
                     <div class="twelve wide column">
                         <div class="addnotes ui container container-with-button padding-left-right-0">
                             <span class="ui header">{{$root.frmelmnts.lbl.mynotes}}</span>
-                            <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote;"></i>
+                            <i class=" circular icon margin-left-right-10 link" ng-class="!noteList.add.showCreateNote ? 'plus' : 'remove'" ng-click="noteList.add.showCreateNote = !noteList.add.showCreateNote; $root.generateInteractEvent('note',noteCard.courseId,'viewAllCourseNote','1.0','create-note','note-create')"></i>
                             <div class="notesearch right-floated">
                                 <div class="ui icon input">
                                     <input type="text" ng-model="noteList.searchData.text" placeholder={{$root.frmelmnts.intxt.t0001}} title={{$root.frmelmnts.lbl.search}} />
@@ -57,8 +57,8 @@
                                 <div class="content notelistrightscroll padding-top-10">
                                     <div class="ui row margin-right-15">
                                         <div class="right-floated padding-top-10">
-                                            <i class="large edit icon cursor-pointer" title={{$root.frmelmnts.lbl.edit}} ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData);"></i>
-                                            <i class="right-floated large trash outline icon cursor-pointer" title={{$root.frmelmnts.lbl.delete}} ng-click="noteList.openRemoveNoteModel(noteList.selectedNoteData.id);"></i>
+                                            <i class="large edit icon cursor-pointer" title={{$root.frmelmnts.lbl.edit}} ng-click="noteList.update.showUpdateNote = !noteList.update.showUpdateNote; noteList.updateNoteData(noteList.selectedNoteData); $root.generateInteractEvent('note',noteList.courseId,'viewAllCourseNote','1.0','edit-note','note-edit')"></i>
+                                            <i class="right-floated large trash outline icon cursor-pointer" title={{$root.frmelmnts.lbl.delete}} ng-click="noteList.openRemoveNoteModel(noteList.selectedNoteData.id); $root.generateInteractEvent('note',noteList.courseId,'viewAllCourseNote','1.0','delete-note','note-delete')"></i>
                                         </div>
 
                                         <span class="ui small header notedecheader mouse-pointer"> {{ noteList.selectedNoteData.title}}

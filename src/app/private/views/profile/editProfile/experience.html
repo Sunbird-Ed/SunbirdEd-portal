@@ -7,7 +7,7 @@
         </div>
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.designation}}</label>
-            <input type="text" name="" ng-model="experience.role">
+            <input type="text" name="designation" ng-model="experience.role">
         </div>
     </div>
     <div class="two fields">
@@ -19,7 +19,7 @@
         <div class=" field">
             <label>{{$root.frmelmnts.lbl.subjectstaught}}</label>
             <div class="field" ng-init="profileCtrl.setEditSubject('editSubjects',$index,experience.subject)">
-                <select class="ui fluid dropdown editSubjects" multiple="" id="{{'editSubjects'+$index}}" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
+                <select name="subjectstaught" class="ui fluid dropdown editSubjects" multiple="" id="{{'editSubjects'+$index}}" ng-selected=true ng-model="experience.subject" ng-value="option.value" ng-options=" subject for subject in ::profileCtrl.subjects">
                 </select>
             </div>
 
@@ -46,7 +46,7 @@
             <div ng-init="profileCtrl.setEditStart('rangeStart',$index,experience.joiningDate)" class="ui calendar rangeStart" id="{{'rangeStart'+$index}}">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="experience.joiningDate">
+                    <input name="joiningDate" type="text" ng-model="experience.joiningDate">
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
             <div ng-init="profileCtrl.setEditEnd('rangeEnd',$index,experience.endDate)" class="ui calendar rangeEnd " id="{{'rangeEnd'+$index}}">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" ng-model="experience.endDate">
+                    <input name="endDate" type="text" ng-model="experience.endDate">
                 </div>
             </div>
         </div>

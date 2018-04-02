@@ -1,0 +1,8 @@
+<sui-modal [isClosable]="true" (dismissed)="routerNavigationService.navigateToParentUrl(activatedRoute.snapshot);" #modal>
+  <div class="content annDetailsFormScroller">
+      <div class="ui tweleve wide column margin-bottom-20" *ngIf="showLoader">
+          <app-loader></app-loader>
+        </div>
+    <app-details [announcementDetails]="announcementDetails"></app-details>
+  </div>
+</sui-modal>

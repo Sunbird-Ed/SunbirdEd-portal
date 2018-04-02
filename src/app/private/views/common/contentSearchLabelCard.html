@@ -1,8 +1,8 @@
 <div class="ui link cards">
     <div class="sliderCards ui card margin-right-20 margin-top-15">
         <div class="image imageInCardsResponsive">
-            <a class="ui black right ribbon label ng-binding" ng-if="item.resourceType.length > 0">{{item.resourceType}}</a>
-            <a class="ui black right ribbon label ng-binding" ng-if = "item.resourceType == undefined">{{item.contentType}}</a>
+            <a class="ui black right ribbon label ng-binding" ng-if="item.resourceType">{{item.resourceType}}</a>
+            <a class="ui black right ribbon label ng-binding" ng-if = "!item.resourceType">{{item.contentType}}</a>
             <div ng-if="item.leafNodesCount && item.progress > 0" class="ui tiny progress course-progress progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}">
                 <div class="bar"></div>
             </div>
