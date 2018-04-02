@@ -83,7 +83,7 @@ export class UserUploadComponent implements OnInit {
   }
   /**
  * This method initializes the user form and validates it,
- * also defines a csv format to be downloaded
+ * also defines array of instructions to be displayed
  */
   ngOnInit() {
     this.uploadUserForm = this.sbFormBuilder.group({

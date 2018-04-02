@@ -55,6 +55,9 @@ export class OrganizationUploadComponent implements OnInit {
     this.config = config;
     this.toasterService = toasterService;
   }
+  /**
+* This method defines array of instructions to be displayed
+*/
   ngOnInit() {
     this.orgUploadInstructions = [
       { instructions: this.resourceService.frmelmnts.instn.t0013 },
