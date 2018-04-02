@@ -114,6 +114,6 @@ export class HomeAnnouncementComponent implements OnInit {
    * This method calls the populateHomeInboxData to show inbox list.
 	 */
   ngOnInit() {
-    this.populateHomeInboxData(this.config.appConfig.HOME.PAGE_LIMIT, this.pageNumber);
+    this.populateHomeInboxData(this.config.appConfig.ANNOUNCEMENT.HOME.PAGE_LIMIT, this.pageNumber);
   }
 }

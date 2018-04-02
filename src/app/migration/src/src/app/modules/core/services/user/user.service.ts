@@ -16,6 +16,10 @@ export class UserService {
    */
   private _userid: string;
   /**
+   * Contains root org id
+   */
+  public _rootOrgId: string;
+  /**
    * Contains user profile.
    */
   private _userProfile: IUserProfile;
@@ -91,7 +95,6 @@ export class UserService {
       _.forEach(profileData.organisations, (org) => {
         if (org.roles && _.isArray(org.roles)) {
           userRoles = _.union(userRoles, org.roles);
-          console.log('organisationIdorganisationIdorganisationIdorganisationId', org.organisationId, profileData.rootOrgId);
           if (org.organisationId === profileData.rootOrgId &&
             (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
               _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
@@ -113,9 +116,14 @@ export class UserService {
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
+    this._rootOrgId = this._userProfile.rootOrgId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   get userProfile() {
     return _.cloneDeep(this._userProfile);
+  }
+
+  get rootOrgId() {
+    return this._rootOrgId;
   }
 }

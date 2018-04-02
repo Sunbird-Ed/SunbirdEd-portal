@@ -1,3 +1,3 @@
-export interface DeleteParam {
+export interface IDeleteParam {
   contentIds ?: string[];
 }

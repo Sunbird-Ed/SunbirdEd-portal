@@ -2,7 +2,7 @@
   <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <div class="ui grid">
+      <div class="ui grid margin-top-10">
         <div class="nine wide column">
           <div class="ui">
             <div class="text dashBoardSectionHeading padding-top-10">
@@ -11,7 +11,7 @@
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
           <div class="ui float-ContentRight">
-            <button class="ui primary basic button announcementButton">
+            <button class="ui primary basic button announcementButton" [routerLink]="['../../create/1']">
               <span class="announcementButtonText">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
             </button>
           </div>
@@ -88,7 +88,7 @@
                 <td>{{item.metrics.read ? item.metrics.read : "N/A"}}</td>
                 <td class="cursor-pointer announcementRedText" [routerLink]="['delete/' + item.id]" *ngIf="item.status === 'active'">
                   <i class="icon trash"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxdelete}}</td>
-                <td (click)="getResend(item.id, item.title);" *ngIf="item.status == 'cancelled'" class="cursor-pointer announcementBlueText">
+                <td [routerLink]="['../../resend/' + item.id + '/1']" *ngIf="item.status == 'cancelled'" class="cursor-pointer announcementBlueText">
                   <i class="external share icon"></i>{{resourceService?.frmelmnts?.lbl?.anncmntoutboxresend}}</td>
               </tr>
             </tbody>
