@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, PermissionService, ConfigService } from '@sunbird/shared';
 
 /**
  * The Workspace side  component shows the sidebar for workspace
@@ -16,17 +16,33 @@ export class WorkspacesidebarComponent implements OnInit {
    */
   public resourceService: ResourceService;
   /**
-  * Constructor to create injected service(s) object
-  *
-  * Default method of DeleteComponent class
+   * reference of permissionService service.
+  */
+  public permissionService: PermissionService;
+  /**
+   * reference of config service.
+  */
+  public config: ConfigService;
+  /**
+   * Workspace access roles
+   */
+  draftRole: Array<string>;
 
-  * @param {ResourceService} resourceService Reference of ResourceService
- */
-  constructor(resourceService: ResourceService) {
+  /**
+  * Constructor to create injected service(s) object
+     Default method of Draft Component class
+     * @param {ResourceService} resourceService Reference of ResourceService
+     * @param {PermissionService} permissionService Reference of PermissionService
+     * @param {ConfigService} config Reference of ConfigService
+  */
+  constructor(resourceService: ResourceService, permissionService: PermissionService) {
     this.resourceService = resourceService;
+    this.permissionService = permissionService;
   }
 
   ngOnInit() {
+    this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
+    console.log(this.draftRole);
   }
 
 }
