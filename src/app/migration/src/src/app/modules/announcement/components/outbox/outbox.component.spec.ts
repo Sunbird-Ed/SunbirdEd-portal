@@ -45,7 +45,7 @@ describe('OutboxComponent', () => {
         })
             .compileComponents();
     }));
- 
+
     beforeEach(() => {
         fixture = TestBed.createComponent(OutboxComponent);
         component = fixture.componentInstance;

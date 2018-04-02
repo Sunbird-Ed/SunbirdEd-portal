@@ -81,7 +81,7 @@ export class CreateCollectionComponent implements OnInit {
           console.log(' user profile s', this.userProfile);
         }
       });
-      this.showLoader = false;
+    this.showLoader = false;
   }
 
 
