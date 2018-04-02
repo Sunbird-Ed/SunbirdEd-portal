@@ -125,7 +125,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
               searchService.getDataDrivenFormsConfig(dynamic.req).then(function (res) {
                 if (res.responseCode === 'OK') {
                   dynamic.search.showFilters = true
-                  dynamic.formFieldProperties = res.result.form.data.fields
+                  dynamic.formFieldProperties = res.result.form.data.fields  
                   _.forEach(dynamic.formFieldProperties, function (category) {
                     dynamic.search['selected' + category.code] = []
                   })
@@ -286,7 +286,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         delete req.filters.name
       }
       if ($rootScope.search.selectedSearchKey === 'Courses') {
-        $scope.search.searchFn = searchService.courseSearch(req)
+        //$scope.search.searchFn = searchService.courseSearch(req)
         $scope.search.resultType = 'course'
       } else if ($rootScope.search.selectedSearchKey === 'Library') {
         var librarySearchReq = JSON.parse(JSON.stringify(req))
@@ -301,7 +301,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
             'Game'
           ]
         }
-        $scope.search.searchFn = searchService.contentSearch(librarySearchReq)
+        //$scope.search.searchFn = searchService.contentSearch(librarySearchReq)
         $scope.search.resultType = 'content'
         req.filters.objectType = ['Content']
       } else {
