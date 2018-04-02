@@ -103,7 +103,7 @@ module.exports = {
     console.log('logSSOEndEvent')
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
-    const actor = telemetry.getActorData(payload.sub, 'user')
+    const actor = telemetry.getActorData(payload['sub'], 'user')
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     telemetry.end({
       edata: edata,
