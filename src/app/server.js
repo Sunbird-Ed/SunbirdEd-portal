@@ -33,6 +33,9 @@ const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
+const Telemetry = require('sb_telemetry_util')
+const telemetry = new Telemetry()
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
@@ -96,7 +99,7 @@ if (defaultTenant) {
 }
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
-
+app.use(express.static(path.join(__dirname, 'migration/dist'), { extensions: ['ejs'], index: false }))
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
@@ -107,6 +110,9 @@ app.use('/private/index', function (req, res, next) {
   res.header('Pragma', 'no-cache')
   next()
 })
+
+// Mobile redirection to app
+require('./helpers/mobileRedirectHelper.js')(app)
 
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
@@ -120,6 +126,9 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
+
+// Generate telemetry fot public service
+app.all('/public/service/*', telemetryHelper.generateTelemetryForProxy)
 
 app.all('/public/service/v1/learner/*', proxy(learnerURL, {
   proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
@@ -141,6 +150,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
     }
   }
 }))
+
+// Generate telemetry fot public service
+app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
 
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
@@ -194,6 +206,57 @@ app.all('/private/service/v1/content/*',
     }
   }))
 
+app.post('/learner/content/v1/media/upload',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(learnerURL + '/content/v1/media/upload').path
+    },
+    userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+      let data = JSON.parse(proxyResData.toString('utf8'))
+      if (data.responseCode === 'OK') {
+        data.success = true
+      }
+      return JSON.stringify(data)
+    }
+  }))
+
+app.all('/learner/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
+      }
+    }
+  }))
+
+app.all('/content/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(contentURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(contentURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(contentURL + urlParam).path
+      }
+    }
+  }))
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
 
@@ -208,6 +271,15 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(path.join(__dirname, 'private', 'index.ejs'))
+})
+
+app.all('/migration/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
+  res.locals.userId = req.kauth.grant.access_token.content.sub
+  res.locals.sessionId = req.sessionID
+  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.render(path.join(__dirname, 'migration/dist', 'index.ejs'))
 })
 
 app.get('/get/envData', keycloak.protect(), function (req, res) {
@@ -240,6 +312,10 @@ app.all('/:tenantName', function (req, res) {
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
 
+// Resource bundles apis
+
+app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 // redirect to home if nothing found
 app.all('*', function (req, res) {
   res.redirect('/')
@@ -250,6 +326,10 @@ app.all('*', function (req, res) {
  */
 keycloak.authenticated = function (request) {
   async.series({
+    getPermissionData: function (callback) {
+      permissionsHelper.getPermissions(request)
+      callback()
+    },
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
     },
@@ -272,11 +352,8 @@ keycloak.deauthenticated = function (request) {
   delete request.session['orgs']
   if (request.session) {
     request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
-      if (err) {} // nothing to do
-      // remove session data
-      delete request.session.sessionEvents
-    })
+    telemetryHelper.logSessionEnd(request)
+    delete request.session.sessionEvents
   }
 }
 
@@ -295,3 +372,33 @@ resourcesBundlesHelper.buildResources(function (err, result) {
 exports.close = function () {
   portal.server.close()
 }
+
+// Telemetry initialization
+const telemetryConfig = {
+  pdata: {id: appId, ver: telemtryEventConfig.pdata.ver},
+  method: 'POST',
+  batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
+  endpoint: telemtryEventConfig.endpoint,
+  host: contentURL,
+  authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+}
+
+telemetry.init(telemetryConfig)
+
+// Handle Telemetry data on server close
+function exitHandler (options, err) {
+  console.log('Exit', options, err)
+  telemetry.syncOnExit(function (err, res) {
+    if (err) {
+      process.exit()
+    } else {
+      process.exit()
+    }
+  })
+}
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler)
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler)

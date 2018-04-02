@@ -1,14 +1,13 @@
 language: node_js
 node_js:
-    - "6"
+    - "8"
 
 before_script:
-    - npm install -g bower
-    - npm install -g gulp-cli
-    - cd src
+    - npm install -g @angular/cli
+    - cd src/app/migration/src/
     - npm install
-    - bower cache clean
-    - bower install --force
-
+    - ng build --prod
+    - ng lint
 script:
-    - gulp test
+    - ng test --watch=false
+

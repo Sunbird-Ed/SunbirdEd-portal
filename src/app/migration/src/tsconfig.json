@@ -1,0 +1,52 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "paths": {
+      "@sunbird/core": [
+        "src/app/modules/core"
+      ],
+      "@sunbird/community": [
+        "src/app/modules/community"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "app/modules/home"
+      ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
+      "@sunbird/announcement": [
+        "app/modules/announcement"
+      ],
+      "@sunbird/resource": [
+        "app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "app/modules/learn"
+      ],
+      "@sunbird/org-management": [
+        "app/modules/org-management"
+      ]
+    },
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  },
+  "exclude": [
+    "**/*.spec.data.ts"
+  ]
+}

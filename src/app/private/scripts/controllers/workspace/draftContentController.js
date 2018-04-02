@@ -3,9 +3,9 @@
 angular.module('playerApp')
   .controller('DraftContentController', ['contentService', 'searchService', 'config',
     '$rootScope', '$state', 'toasterService', '$scope', 'workSpaceUtilsService', '$timeout',
-    'PaginationService',
+    'PaginationService', 'telemetryService',
     function (contentService, searchService, config, $rootScope, $state,
-      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService) {
+      toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var draftContent = this
       draftContent.userId = $rootScope.userId
       draftContent.status = ['Draft']
@@ -61,6 +61,7 @@ angular.module('playerApp')
             draftContent.error.showError = false
             draftContent.totalCount = res.result.count
             draftContent.pageNumber = pageNumber
+            draftContent.version = res.ver
             draftContent.draftContentData = res.result.content || []
             draftContent.pager = PaginationService.GetPager(res.result.count,
               pageNumber, draftContent.pageLimit)
@@ -69,6 +70,8 @@ angular.module('playerApp')
                 $rootScope.messages.stmsg.m0012,
                 $rootScope.messages.stmsg.m0008)
             }
+            /* telemetryService.impressionTelemetryData('workspace', '', 'draftContent',
+            res.ver, 'scroll', 'workspace-content-draft', '/content/draft', '') */
           } else {
             draftContent.loader.showLoader = false
             draftContent.error.showError = false
@@ -138,6 +141,24 @@ angular.module('playerApp')
 
       draftContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      draftContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'course',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

@@ -1,8 +1,8 @@
 <div class="ui raised segment " ng-init="profileCtrl.basicProfileForm=false">
     <div class="header announcementCard-header ">
         <span class="header cardsHeading "> {{$root.frmelmnts.lbl.addlInfo}}</span>
-        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=true">{{$root.frmelmnts.btn.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);">{{$root.frmelmnts.btn.close}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=true; profileCtrl.generateInteractEvent('editBasicInfo')">{{$root.frmelmnts.btn.edit}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.basicProfileForm" ng-click="profileCtrl.basicProfileForm=false;profileCtrl.user=profileCtrl.getProfileObject(profileCtrl.basicProfile);profileCtrl.generateInteractEvent('closeBasicInfo')">{{$root.frmelmnts.btn.close}}</a>
 
     </div>
     <div class="profileitems profile-des ui relaxed aligned list " ng-if="!profileCtrl.basicProfileForm && profileCtrl.basicProfile">
@@ -42,8 +42,8 @@
         <div class="item ">
             <div class="right floated content ">
                 <span>
-                    <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}} 
-                            <span ng-show="!$last">,</span>
+                    <span ng-repeat="lan in profileCtrl.basicProfile.language | orderBy:'toString()'">{{lan}}
+                            <span ng-show="!$last">, </span>
                     </span>
                 </span>
             </div>
@@ -54,7 +54,7 @@
         <div class="item ">
             <div class="right floated content ">
                 <span ng-repeat="sub in profileCtrl.basicProfile.subject | orderBy:'toString()'">{{sub}}
-                        <span ng-show="!$last">,</span>
+                        <span ng-show="!$last">, </span>
                 </span>
 
             </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="item ">
             <div class="right floated content ">
-                <span><span ng-repeat="grade in profileCtrl.basicProfile.grade">{{grade}}<span ng-show="!$last">,</span></span>
+                <span><span ng-repeat="grade in profileCtrl.basicProfile.grade">{{grade}}<span ng-show="!$last">, </span></span>
                 </span>
             </div>
             <div class="iniformationcontent content ">
@@ -95,7 +95,7 @@
             href="{{profileCtrl.basicProfile.socialMedia.blog.url}}" target="_blank">
             <i class="large book icon"></i>
         </a>
-            
+
         </div>
         <div class="iniformationcontent content ">
             {{$root.frmelmnts.lbl.socialmedia}}

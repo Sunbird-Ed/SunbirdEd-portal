@@ -2,10 +2,11 @@
 
 angular.module('playerApp')
   .controller('UpForReviewContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$scope', '$state', 'toasterService', 'PaginationService',
-    'workSpaceUtilsService', '$timeout', 'configService', 'permissionsService',
-    function (contentService, searchService, config, $rootScope, $scope, $state, toasterService,
-      PaginationService, workSpaceUtilsService, $timeout, configService, permissionsService) {
+    '$rootScope', '$scope', '$state', '$timeout', 'toasterService', 'PaginationService',
+    'workSpaceUtilsService', 'configService', 'permissionsService', 'telemetryService',
+    function (contentService, searchService, config, $rootScope, $scope, $state, $timeout,
+      toasterService, PaginationService, workSpaceUtilsService, configService, permissionsService,
+      telemetryService) {
       var upForReviewContent = this
       upForReviewContent.filterDropDown = configService.getWorkspaceUpforReviewdrpdwn()
       upForReviewContent.userId = $rootScope.userId
@@ -199,6 +200,7 @@ angular.module('playerApp')
             upForReviewContent.loader.showLoader = false
             upForReviewContent.error.showError = false
             upForReviewContent.upForReviewContentData = []
+            upForReviewContent.version = res.ver
             if (res.result.content) {
               upForReviewContent.upForReviewContentData = res.result.content
             }
@@ -215,6 +217,8 @@ angular.module('playerApp')
             upForReviewContent.error.showError = false
             toasterService.error($rootScope.messages.fmsg.m0021)
           }
+          /* upForReviewContent.generateImpressionEvent('view', 'scroll', 'workspace-content-upforreview',
+            '/content/upForReview') */
         }).catch(function () {
           upForReviewContent.loader.showLoader = false
           upForReviewContent.error.showError = false
@@ -237,6 +241,16 @@ angular.module('playerApp')
         $('.cardTitleEllipse').popup({inline: true})
       }
 
+      /**
+             * This function call to generate telemetry
+             * on click of review content.
+             */
+
+      upForReviewContent.generateInteractEvent = function (objType, objId) {
+        telemetryService.interactTelemetryData('workspace', objId, objType,
+          upForReviewContent.version, objType, 'workspace-content-upforreview')
+      }
+
       upForReviewContent.search.getSelectedContentTypeValue = function (contentTypes, selectedContentType) {
         var ct = _.filter(contentTypes, function (contentType) {
           return contentType.key === selectedContentType
@@ -252,19 +266,35 @@ angular.module('playerApp')
         upForReviewContent.search.selectedGrades = angular.copy(upForReviewContent.search.appliedGrades)
 
         upForReviewContent.hideFilterPopup = true
-        $timeout(function () {
-          $('#showFilterButton')
-            .popup({
-              popup: $('#showFilterPopup'),
-              on: 'click',
-              position: 'bottom right',
-              color: '#4183c4'
-            })
-        }, 0)
+        $('#showFilterButton')
+          .popup({
+            popup: $('#showFilterPopup'),
+            on: 'click',
+            position: 'bottom right',
+            color: '#4183c4'
+          })
       }
 
       upForReviewContent.hideFilter = function () {
         upForReviewContent.hideFilterPopup = false
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      upForReviewContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

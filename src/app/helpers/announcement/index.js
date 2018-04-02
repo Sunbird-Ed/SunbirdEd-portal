@@ -13,6 +13,8 @@ let dateFormat = require('dateformat')
 let uuidv1 = require('uuid/v1')
 let await = require('asyncawait/await')
 let async = require('asyncawait/async')
+let telemetry = require('./telemetry/telemetryHelper')
+
 const CREATE_ROLE = 'ANNOUNCEMENT_SENDER'
 const API_ID_BASE = 'api.plugin.announcement'
 const API_IDS = {
@@ -53,6 +55,10 @@ function sendSuccessResponse(res, id, result, code = HttpStatus.OK) {
         'responseCode': 'OK',
         'result': result
     })
+    //Flush telemetry event
+    telemetry.generateApiAccessLogEvent(res.reqID)
+    //Delete telemetry data for that reqID
+    telemetry.deleteTelemetryData(res.reqID)
     res.end()
 }
 
@@ -61,7 +67,7 @@ function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) 
     let responseCode = getErrorCode(httpCode)
 
     res.status(httpCode)
-    res.send({
+    const resp = {
         'id': API_ID_BASE + '.' + id,
         'ver': API_VERSION,
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo', true),
@@ -74,7 +80,12 @@ function sendErrorResponse(res, id, message, httpCode = HttpStatus.BAD_REQUEST) 
         },
         'responseCode': responseCode,
         'result': {}
-    })
+    }
+    res.send(resp)
+    //Flush telemetry event
+    telemetry.generateErrorEvent(res.reqID, responseCode, message, resp)
+    //Delete telemetry data for that reqID
+    telemetry.deleteTelemetryData(res.reqID)
     res.end()
 }
 
@@ -118,7 +129,7 @@ function validateRoles() {
         let authUserToken = _.get(requestObj, 'kauth.grant.access_token.token') || _.get(requestObj, "headers['x-authenticated-user-token']")
         try {
             var tokenDetails = await (announcementController.__getTokenDetails(authUserToken))
-            let userProfile = await (announcementController.__getUserProfile(authUserToken))
+            let userProfile = await (announcementController.__getUserProfile(authUserToken, requestObj.reqID))
             if(userProfile){
                 var isAuthorized = isCreateRolePresent(userProfile, config.sourceid);
                 if (isAuthorized) {
@@ -162,8 +173,34 @@ function validate() {
     });
 }
 
+/**
+ * This function helps to store telemetry data in map, once telemetry event flush we deleted that data
+ * We using uuid to store data
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function storeTelemetryData(req, res, next) {
+    const id = uuidv1()
+    req.reqID = id
+    res.reqID = id
+    var rspObj = {
+        path: req.route.path,
+        startTime: new Date(),
+        method: req.method
+    }
+    const telemetryData = {
+        params: telemetry.getParamsDataForLogEvent(rspObj),
+        context: telemetry.getTelemetryContextData(req),
+        actor: telemetry.getTelemetryActorData(req),
+        tags: telemetry.getTags(req)
+    }
+    telemetry.storeTelemetryData(id, telemetryData)
+    next()
+}
+
 module.exports = function(keycloak) {
-        router.post('/create', (requestObj, responseObj, next) => {
+        router.post('/create', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.create}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -182,7 +219,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.get('/get/:id', (requestObj, responseObj, next) => {
+        router.get('/get/:id', storeTelemetryData, (requestObj, responseObj, next) => {
             announcementController.getAnnouncementById(requestObj)
                 .then((data) => {
                     sendSuccessResponse(responseObj, API_IDS.getbyid, data, HttpStatus.OK)
@@ -192,7 +229,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.delete('/cancel', (requestObj, responseObj, next) => {
+        router.delete('/cancel', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.cancel}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -210,7 +247,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.post('/user/inbox', (requestObj, responseObj, next) => {
+        router.post('/user/inbox', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.userinbox}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -223,7 +260,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.post('/user/outbox', (requestObj, responseObj, next) => {
+        router.post('/user/outbox', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.useroutbox}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -236,7 +273,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.post('/definitions', (requestObj, responseObj, next) => {
+        router.post('/definitions', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.definitions}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -254,7 +291,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.post('/received', (requestObj, responseObj, next) => {
+        router.post('/received', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.received}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -267,7 +304,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.post('/read', (requestObj, responseObj, next) => {
+        router.post('/read', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.read}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -280,7 +317,7 @@ module.exports = function(keycloak) {
                 })
         })
 
-        router.get('/resend/:announcementId', (requestObj, responseObj, next) => {
+        router.get('/resend/:announcementId', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.getresend}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {
@@ -294,7 +331,7 @@ module.exports = function(keycloak) {
 
         })
 
-        router.post('/resend', (requestObj, responseObj, next) => {
+        router.post('/resend', storeTelemetryData, (requestObj, responseObj, next) => {
             let config = {apiid: API_IDS.resend}
             validate()(requestObj, responseObj, next, keycloak, config)
         }, (requestObj, responseObj, next) => {

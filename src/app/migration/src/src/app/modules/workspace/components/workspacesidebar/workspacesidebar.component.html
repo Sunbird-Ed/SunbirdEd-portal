@@ -1,0 +1,34 @@
+<h4 class="workspaceicon ui header sectionHeading margin-top-10"><i class="database icon"></i>
+  <span>
+      {{resourceService?.frmelmnts?.scttl?.myworkspace}}
+    </span>
+</h4>
+<div class="publicmenusection ui secondary vertical menu">
+  <a class="item" [routerLink]="['create']" routerLinkActive="active">
+      {{resourceService?.frmelmnts?.snav?.start}}
+    </a>
+  <a class="item" [routerLink]="['draft',1]" routerLinkActive="active">
+       {{resourceService?.frmelmnts?.snav?.draft}}
+    </a>
+  <a class="item" [routerLink]="['review',1]" routerLinkActive="active">
+    {{resourceService?.frmelmnts?.snav?.inreview}}
+  </a>
+  <a class="item" [routerLink]="['published',1]" routerLinkActive="active">
+    {{resourceService?.frmelmnts?.snav?.published}}
+  </a>
+  <a class="item">
+    {{resourceService?.frmelmnts?.snav?.alluploads}}
+  </a>
+  <a class="item">
+    {{resourceService?.frmelmnts?.snav?.upForReview}}
+  </a>
+  <a class="item">
+    {{resourceService?.frmelmnts?.snav?.coursebacthes}}
+  </a>
+  <a class="item">
+    {{resourceService?.frmelmnts?.snav?.flagged}}
+  </a>
+  <a class="item">
+   {{resourceService?.frmelmnts?.snav?.limitedPublishing}}
+  </a>
+</div>

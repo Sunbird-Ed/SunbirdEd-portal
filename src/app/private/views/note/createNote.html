@@ -5,8 +5,8 @@
     <div class="editor">
         <pagedown-editor content="metaData.note" show-preview="false" placeholder={{$root.frmelmnts.lbl.description}} insert-image="noteList.insertImage()"></pagedown-editor>
     </div>
-    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteList.createNote(metaData)" ng-disabled="!metaData.title || !metaData.note" tabindex="3">{{$root.frmelmnts.btn.save}}</button>
-    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="metaData.title = ''; metaData.note = '';"  tabindex="4">{{$root.frmelmnts.btn.clear}}</button>
+    <button class="ui primary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="noteList.createNote(metaData); $root.generateInteractEvent('note',noteCard.courseId,'viewAllCourseNote','1.0','create-note','note-create')" ng-disabled="!metaData.title || !metaData.note" tabindex="3">{{$root.frmelmnts.btn.save}}</button>
+    <button class="ui secondary right floated button margin-bottom-15 margin-top-10" type="submit" ng-click="metaData.title = ''; metaData.note = ''; $root.generateInteractEvent('note',noteCard.courseId,'viewAllCourseNote','1.0','clear-note','note-clear')"  tabindex="4">{{$root.frmelmnts.btn.clear}}</button>
 </div>
 <div ng-if="noteList.createApi.loader.showLoader">
     <app-loader data="{{noteList.createApi.loader}}"></app-loader>

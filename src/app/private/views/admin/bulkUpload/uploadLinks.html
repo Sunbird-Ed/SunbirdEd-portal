@@ -1,15 +1,15 @@
  <div class="twelve wide column padding-top-none ">
-    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.orgBulkUpload()">
+    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.orgBulkUpload();$root.generateInteractEvent('profile','','uploadOrganizations','1.0','uploadOrganizations','profile-upload-org')">
         {{$root.frmelmnts.instn.t0015}}
         </a>
   </div>
   <div class="twelve wide column padding-top-none ">
-    <a class="ui  cursor-pointer" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.userBulkUpload()">
+    <a class="ui  cursor-pointer" sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click="admin.userBulkUpload(); $root.generateInteractEvent('profile','','uploadUsers','1.0','uploadUsers','profile-upload-users')">
             {{$root.frmelmnts.instn.t0016}}
         </a>
   </div>
   <div class="twelve wide column padding-top-none ">
-    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click=" admin.statusBulkUpload()">
+    <a class="ui cursor-pointer " sb-permissions permission-only="SYSTEM_ADMINISTRATION,ORG_ADMIN" ng-click=" admin.statusBulkUpload(); $root.generateInteractEvent('profile','','checkUploadStatus','1.0','checkUploadStatus','profile-upload-status')">
           {{$root.frmelmnts.lbl.chkuploadsts}}
         </a>
   </div>

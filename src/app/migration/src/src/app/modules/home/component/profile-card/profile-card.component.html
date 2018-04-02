@@ -1,0 +1,32 @@
+<div class="ui cards">
+    <div class="sliderCards profilUpdateCards ui link card margin-right-20 margin-top-15 margin-left-10 link">
+        <div class="course-progress ui tiny progress  progressBar-margin orange">
+            <sui-progress class="top attached  active" [value]="profile.value" [maximum]="100"></sui-progress>
+        </div>
+        <div class="profileUpdateCardPadding">
+            <div class="profile">
+                <div class="profileCard-circular-image light small blue margin-right-20">
+                    <div class="profpic">
+                        <img class="ui circular floated image" src="{{ profile.image || '/assets/common/images/user_logo.png' }}"
+                        />
+                    </div>
+                </div>
+                <div class="padding-top-20 padding-left-10 content profileUpdateCardContentHeight">
+                    <div class="profileUpdateCardHeading">{{resourceService.messages?.stmsg?.m0060}}</div>
+                    <div *ngFor="let field of profile.missingFields | slice:0:2 ;  let first = first; let last = last" [ngClass]="{ first: first, last: last }"
+                        class="padding-top-5 profileUpdateCardSubDesc">
+                        {{first ? 'Add ' + field + ( profile.missingFields.length > 1 ? '' : '' ) : field + (last ? ' now' : '') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sliderCards content CardcontentTopPadding">
+            <button class="ui blue basic right floated button margin-top-10">{{resourceService.frmelmnts?.btn?.update}}</button>
+            <div class="padding-top-10 sliderCardDesc">
+                <span class="description profileUpdateCardSubDesc">Your profile is
+                    <span class="completness">{{profile.value}}</span>%
+                    <br> complete</span>
+            </div>
+        </div>
+    </div>
+</div>

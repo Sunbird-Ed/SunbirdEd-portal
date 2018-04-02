@@ -1,5 +1,5 @@
 <div class="ui divided searchListInfo items">
-    <div class="item userSearchCardHover " ng-repeat="org in admin.searchResult" ng-if="$root.search.selectedSearchKey=='Organisations'">
+    <div class="item userSearchCardHover " ng-repeat="org in admin.searchResult" ng-if="$root.search.selectedSearchKey=='Organisations'" in-view="$root.lineInView($index, $inview, org, 'Organizations')" in-view-options="{ throttle: 1000 }">
         <div class="ui tiny image userSearchImage ">
             <img ng-src="{{org.imgUrl|| '/common/images/userOrganization.png'}} ">
         </div>

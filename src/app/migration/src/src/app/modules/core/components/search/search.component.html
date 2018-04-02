@@ -1,0 +1,31 @@
+<div>
+    <div class="ui fluid icon input left action" id="search-input-container">
+        <div class="searchdropdown ui basic floating dropdown button" suiDropdown [(isOpen)]="isOpen" apply-script id="headerSearch">
+            <div class="text">All</div>
+            <i class="dropdown icon"></i>
+            <div class="menu" suiDropdownMenu> 
+                <div class="item" >All</div>
+                <div class="item" >Courses</div>
+                <div class="item" >Library</div>
+                <div class="item" >Organization</div>
+                <div class="item" >Users</div>
+            </div>
+        </div>
+        <div class="searchfilterinput ui search">
+            <div class="searchicon ui icon input ">
+                <input type="text" id="keyword" name="filter_search" 
+                    title="Search" class="searchinput"   />
+                <i class="circular search link icon" ></i>
+            </div>
+<!--             <div id="search-suggestions" ng-if="$root.search.autosuggest_data.length > 0" class="ui fluid results transition visible dropdown-menu-list">
+                <div>
+                    <a class="result" ng-repeat="item in $root.search.autosuggest_data" ng-click='$root.search.setSearchText(item.name)'>
+                        <div class="content">
+                            <div class="title">{{item.name}}</div>
+                        </div>
+                    </a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

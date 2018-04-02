@@ -1,0 +1,128 @@
+<div class="ui grid " [hidden]="showLoader">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="ui grid margin-top-20">
+      <div class="nine wide column">
+        <!-- If user is member of only one organization -->
+        <span class="dashBoardSectionHeading" *ngIf="myOrganizations && myOrganizations.length === 1">
+          <i class="bar chart icon"></i> &nbsp; {{myOrganizations[0].orgName}}
+        </span>
+        <!-- If user is member of multiple organization -->
+        <div class="ui dropdown" suiDropdown *ngIf="myOrganizations && myOrganizations.length > 1">
+          <span class="dashBoardSectionHeading padding-right-10">
+            <i class="bar chart icon"></i>
+          </span>
+          <div class="text dashBoardSectionHeading">{{SelectedOrg || resourceService?.frmelmnts?.lbl?.dashboardselectorg}}</div>
+          <span class="dashBoardSectionHeading">
+            <i class="dropdown icon"></i>
+          </span>
+          <div class="menu" suiDropdownMenu>
+            <div class="item" [ngClass]="{'active': organization.identifier === identifier }" *ngFor="let organization of myOrganizations"
+              (click)="onAfterOrgChange(organization.identifier, organization.orgName);">
+              {{organization.orgName}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Dataset types - Creation, Consumption -->
+      <div class="right floated three wide column padding-right-dropdown padding-right-10" *ngIf="identifier && myOrganizations && myOrganizations.length > 0">
+        <div class="ui dropdown float-ContentRight" suiDropdown>
+          <div class="text dashBoardSectionHeading">
+            {{datasetType === 'creation' ? resourceService?.frmelmnts?.lbl?.creationdataset : resourceService?.frmelmnts?.lbl?.consumptiondataset}}
+          </div>
+          <span class="dashBoardSectionHeading">
+            <i class="dropdown icon"></i>
+          </span>
+          <div class="menu" suiDropdownMenu>
+            <div class="active item" [ngClass]="{'active': datasetType === 'creation' }" (click)="onAfterDatasetChange('creation'); SelectedDataSet = 'Creation'">Creation</div>
+            <div class="item" [ngClass]="{'active': datasetType === 'consumption' }" (click)="onAfterDatasetChange('consumption'); SelectedDataSet = 'Consumption'">Consumption</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Filters -->
+    <div class="ui grid" *ngIf="identifier">
+      <div class="twelve wide column" *ngIf="myOrganizations && myOrganizations.length > 0">
+        <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">
+          {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
+        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">
+          {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
+        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">
+          {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
+        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+    <div *ngIf="myOrganizations && myOrganizations.length > 0">
+      <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+        <div class="header">
+          {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
+        </div>
+        {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselecteddesc}}
+      </div>
+    </div>
+    <div *ngIf="showLoader" class="margin-top-20">
+      <app-loader></app-loader>
+    </div>
+    <div *ngIf="showDashboard && myOrganizations && myOrganizations.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
+      <div class="consumption-data-holder margin-top-20">
+        <div class="ui grid">
+          <div class="four wide column" *ngFor="let block of blockData">
+            <div class="ui card adminDashboardCard">
+              <div class="content center aligned">
+                <div class="meta ">{{block.name}}</div>
+                <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
+        <div class="column">
+          <div class="regular slider padding-top-30 course-graph-holder">
+            <div *ngFor="let block of graphData;let graphIndex = index;">
+              <div [hidden]="showGraph === graphIndex">
+                <div class="ui segment">
+                  <canvas baseChart width="300" height="90" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                    [colors]="block.chartColors" [legend]="true" [chartType]="chartType">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+            <div class="corse-graph-navigation-btn" *ngIf="graphData && graphData.length-1 > 0">
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
+                <i class="left arrow icon"></i>
+              </button>
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+                <i class="right arrow icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Download-->
+      <div class="twelve wide column margin-top-20" *ngIf="graphData && graphData.length > 0">
+        <p class="text-align-right dashBoardCardText">
+          {{resourceService?.frmelmnts?.instn?.t0058}}
+          <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline padding-left-10"
+            (click)="downloadReport();">{{resourceService?.frmelmnts?.instn?.t0059}}</a>
+        </p>
+      </div>
+      <div *ngIf="showDownloadSuccessModal">
+        <sui-modal [isClosable]="true" (dismissed)="showDownloadSuccessModal = false" #modal>
+          <div class="header">
+            <div class="ui grid">
+              <div class="eleven wide column">
+                <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
+          </div>
+        </sui-modal>
+      </div>
+    </div>
+  </div>
+</div>

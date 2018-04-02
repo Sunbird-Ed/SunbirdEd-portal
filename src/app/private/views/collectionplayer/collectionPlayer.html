@@ -30,13 +30,13 @@
                             </span>
                         </div>
                         <div class="two wide column">
-                            <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" ng-click="cpvm.closePlayer()">
+                            <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" ng-click="cpvm.closePlayer(cpvm.courseHierachy.contentType)">
                                 <i class="ui remove icon"></i>
                             </h5>
                         </div>
                     </div>
                 </div>
-                <div class="row margin-auto padding-top-none" ng-if="cpvm.courseHierachy.identifier" ng-show="cpvm.closeUrl !== 'Profile' && 
+                <div class="row margin-auto padding-top-none" ng-if="cpvm.courseHierachy.identifier" ng-show="cpvm.closeUrl !== 'Profile' &&
                 !(cpvm.courseHierachy.status === 'Unlisted' || cpvm.courseHierachy.status === 'Processing')">
                     <div class="twelve wide column">
                         <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{cpvm.courseHierachy.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;

@@ -3,18 +3,18 @@
         <div ng-init="draftContent.getDraftContent();contentModelSetBackLink();">
             <div ng-if="!draftContent.loader.showLoader">
                 <div class="ui three stackable cards" ng-if="draftContent.draftContentData.length > 0">
-                    <div class="card" ng-repeat="item in draftContent.draftContentData track by $index">
+                    <div class="card" ng-repeat="item in draftContent.draftContentData track by $index" in-view="draftContent.lineInView($index, $inview, item, 'Drafts')" in-view-options="{ throttle: 1000 }">
                         <div class="image imageInCardsResponsive" ng-click="draftContent.openContentEditor(item)" ng-init="$last && draftContent.initTocPopup()">
                             <div class="ui fluid image mouse-pointer">
-                                <span class="ui black right ribbon label">{{item.contentType}}</span>
+                            <span class="ui black right ribbon label">{{item.contentType}}</span>
                                 <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
                             </div>
                             <div class="cardImageText center aligned mouse-pointer">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;
-                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15" 
-                                    data-content="{{item.name}}" data-position="top center"> 
-                                    </i> 
+                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15"
+                                    data-content="{{item.name}}" data-position="top center">
+                                    </i>
                                 </span>
                             </div>
                         </div>

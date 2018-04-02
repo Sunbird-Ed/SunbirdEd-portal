@@ -3,7 +3,7 @@
         <div ng-init="publishedContent.getPublishedContent();contentModelSetBackLink();">
             <div ng-if="!publishedContent.loader.showLoader ">
                 <div class="ui three stackable cards " ng-if="publishedContent.publishedContentData.length> 0">
-                    <div class="card" ng-repeat="item in publishedContent.publishedContentData track by $index">
+                    <div class="card" ng-repeat="item in publishedContent.publishedContentData track by $index" in-view="publishedContent.lineInView($index, $inview, item, 'PublishedContent')" in-view-options="{ throttle: 1000 }">
                         <div class="image imageInCardsResponsive" ng-click="publishedContent.openContentPlayer(item)" ng-init="$last && publishedContent.initTocPopup()">
                             <div class="ui fluid image mouse-pointer">
                                 <span class="ui black left ribbon label">{{item.contentType}}</span>
@@ -12,8 +12,8 @@
                             <div class="cardImageText center aligned mouse-pointer">
                                 <span class="sliderCardHeading text-cencapitalize ">
                                     {{ item.name | limitTo: 15 }}&nbsp;
-                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15" 
-                                    data-content="{{item.name}}" data-position="top center"> 
+                                    <i class="ellipsis horizontal icon link cardTitleEllipse" ng-show="item.name.length>= 15"
+                                    data-content="{{item.name}}" data-position="top center">
                                     </i>
                                 </span>
                             </div>

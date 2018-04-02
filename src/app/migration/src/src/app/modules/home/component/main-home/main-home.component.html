@@ -1,0 +1,62 @@
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="row">
+            <div class="twelve wide column">
+                <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding">
+                    <span class="ui header HomeAccordianHeading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
+                    <span class="todolabel ui red circular inline label ">{{toDoList.length}}</span>
+                    <span class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
+                        popupInverted>
+                        <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add angle down icon down-arrow-accordion float-ContentRight"
+                            (click)="collapse = !collapse"></i>
+                    </span>
+                    <div class="ui active homePage" [suiCollapse]="collapse">
+                        <div class="regular slider padding-top-10">
+                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+                                <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
+                                    <div *ngIf="item.type === 'profile'">
+                                        <a href="/private/index#!/profile">
+                                            <app-profile-card [profile]="item"></app-profile-card>
+                                        </a>
+                                    </div>
+                                    <div *ngIf=" item.type !== 'profile'">
+                                        <a href="/private/index#!/course/{{item.courseId}}/no">
+                                            <app-action-card [enrolledCourses]="item"></app-action-card>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ngx-slick>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column" *ngIf="showLoader">
+                <app-loader [data]='loaderMessage'></app-loader>
+            </div>
+        </div>
+        <br>
+        <div class="ui grid">
+            <div class="row">
+                <div class="eight wide column">
+                    <div>
+                        <app-home-announcement></app-home-announcement>
+                    </div>
+                    <div>
+                        <app-home-feed-card></app-home-feed-card>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <div>
+                        <app-notification></app-notification>
+                    </div>
+                    <br>
+                    <div>
+                        <app-home-calendar-card></app-home-calendar-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
