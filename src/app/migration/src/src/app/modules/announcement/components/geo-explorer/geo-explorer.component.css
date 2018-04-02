@@ -4,3 +4,21 @@
 .margin-left-5 {
     margin-left: 5px;
 }
+.search-location-icon {
+   margin-top: 2%;
+}
+  
+.component_items {
+    padding: 1%;
+}
+  
+.items-area {
+   height: 200px;
+   overflow-y: auto;
+}
+  
+.checkBox-element {
+   margin-top: 10px;
+   margin-left: 10px
+}
+  
