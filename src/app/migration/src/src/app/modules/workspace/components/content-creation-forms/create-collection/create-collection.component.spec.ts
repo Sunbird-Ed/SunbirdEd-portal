@@ -21,7 +21,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse } from '
 
 import { Router } from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import { EditorService } from './../../../services/editor.service';
+import { EditorService } from './../../../services/editors/editor.service';
 import { LearnerService } from './../../../../core/services/learner/learner.service';
 import { ContentService } from '@sunbird/core';
 
