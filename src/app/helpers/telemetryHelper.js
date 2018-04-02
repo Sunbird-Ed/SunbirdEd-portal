@@ -5,7 +5,6 @@ const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const envHelper = require('./environmentVariablesHelper.js')
-const contentURL = envHelper.CONTENT_URL
 const apiToken = envHelper.PORTAL_API_AUTH_TOKEN
 const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
@@ -310,7 +309,7 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: contentURL + 'data/v1/telemetry',
+      url: envHelper.content_Service_Local_BaseUrl + '/v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + apiToken
