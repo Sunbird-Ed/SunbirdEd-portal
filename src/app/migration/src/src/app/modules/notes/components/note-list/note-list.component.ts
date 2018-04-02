@@ -1,4 +1,4 @@
-import { ResourceService, ToasterService, FilterPipe, ServerResponse, UserData } from '@sunbird/shared';
+import { ResourceService, ToasterService, FilterPipe, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
@@ -97,6 +97,7 @@ export class NoteListComponent implements OnInit {
     toasterService: ToasterService) {
     this.toasterService = toasterService;
     this.activatedRoute = activatedRoute;
+    this.userService = userService;
   }
 
   ngOnInit() {
@@ -126,13 +127,9 @@ export class NoteListComponent implements OnInit {
     /**
     * Initializing notesList array
     */
-   this.userService.userData$.subscribe(
-    (user: UserData) => {
-        if (user && !user.err) {
-          this.userId = user.userProfile.userId;
-          this.getAllNotes();
-        }
-    });
+
+    this.userId = this.userService.userid;
+    this.getAllNotes();
 
   }
 

@@ -1,3 +1,4 @@
+import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -6,9 +7,8 @@ import { MainHeaderComponent } from './main-header.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { UserService, LearnerService , PermissionService} from '@sunbird/core';
-import * as mockData from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-const mockUserData = mockData.mockRes;
+
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
@@ -41,10 +41,9 @@ describe('MainHeaderComponent', () => {
   it('should subscribe to user service', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     userService.initialize();
     fixture.detectChanges();
-    console.log(component);
     expect(component.userProfile).toBeTruthy();
   });
 });

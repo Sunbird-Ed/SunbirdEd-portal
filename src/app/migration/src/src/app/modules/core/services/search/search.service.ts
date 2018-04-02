@@ -2,44 +2,15 @@ import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
+import {SearchParam} from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 /**
- * Interface
- */
-interface SearchParam {
-
-  /**
-   * Content status
-   */
-  status?: string[];
-
-  /**
-   * Content type - course,textbook,content
-   */
-  contentType?: string[];
-
-  /**
-   * Additional params - userId, lastUpdatedOn, sort etc
-   */
-  params?: any;
-
-  /**
-   * Organization ids
-   */
-  orgid?: string[];
-}
-
-/**
  * Service to search content
  */
 @Injectable()
-
-/**
- * @class SearchService
- */
 export class SearchService {
   /**
    * Contains searched content list
@@ -92,8 +63,12 @@ export class SearchService {
           filters: {
             status: requestParam.status || ['Live'],
             createdBy: requestParam.params.userId ? requestParam.params.userId : this.user.userid,
-            contentType: requestParam.contentType || ['Course']
+            contentType: requestParam.contentType || ['Course'],
+            mimeType: requestParam.mimeType,
+            objectType: requestParam.objectType
           },
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
           sort_by: {
             lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
           }
@@ -144,5 +119,27 @@ export class SearchService {
    */
   get searchedOrganisationList(): { content: Array<any>, count: number } {
     return this._searchedOrganisationList;
+  }
+
+  /**
+   * Composite Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          sort_by: {
+            lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
+          }
+        }
+      }
+    };
+    return this.content.post(option);
   }
 }

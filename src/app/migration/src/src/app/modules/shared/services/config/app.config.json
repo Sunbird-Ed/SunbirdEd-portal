@@ -1,19 +1,52 @@
 {
-    "HOME": {
-        "PAGE_LIMIT": 2
+    "WORKSPACE": {
+        "PAGE_LIMIT": 9,
+        "contentType": [
+            "Collection",
+            "TextBook",
+            "Course",
+            "LessonPlan",
+            "Resource"
+        ],
+        "mimeType": [
+            "application/vnd.ekstep.ecml-archive",
+            "application/vnd.ekstep.content-collection"
+        ],
+        "objectType": "Content",
+        "lastUpdatedOn": "desc"
     },
-    "OUTBOX": {
-        "PAGE_LIMIT": 25
-    },
-    "INBOX": {
-        "PAGE_LIMIT": 10
-    },
-    "PAGINATION": {
-        "PAGE_STRIP": 5
-    },
-    "API": {
-        "ANNOUNCEMENT": {
-            "CHANNEL": "web"
+    "ANNOUNCEMENT": {
+        "HOME": {
+            "PAGE_LIMIT": 2
+        },
+        "OUTBOX": {
+            "PAGE_LIMIT": 25
+        },
+        "INBOX": {
+            "PAGE_LIMIT": 10
+        },
+        "PAGINATION": {
+            "PAGE_STRIP": 5
+        },
+        "API": {
+            "ANNOUNCEMENT": {
+                "CHANNEL": "web"
+            }
+        },
+        "FILEUPLOAD": {
+            "MAXFILESIZETOUPLOAD": 1024000,
+            "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
+            "ALLOWEDFILEEXTENSION": [
+                "png",
+                "pdf",
+                "jpg"
+            ]
+        },
+        "GEOCONFIG": {
+            "geo": {
+                "adaptor": "SERVICE",
+                "service": "geoService"
+            }
         }
     }
 }
