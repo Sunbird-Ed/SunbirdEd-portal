@@ -255,11 +255,15 @@ angular.module('playerApp').controller('SearchResultController', [
       var req = {
         query: $rootScope.search.searchKeyword,
         filters: $rootScope.search.filters,
-        sort_by: $rootScope.search.sortBy,
+
         offset: (pageNumber - 1) * $rootScope.search.pageLimit,
         limit: $rootScope.search.pageLimit
 
       }
+      if (_.keys($rootScope.search.sortBy)[0] !== 'null') {
+        req.sort_by = $rootScope.search.sortBy
+      }
+
       if (!$scope.search.autoSuggest || $scope.search.autoSuggest === false) {
         if (!$rootScope.search.loader) {
           $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
