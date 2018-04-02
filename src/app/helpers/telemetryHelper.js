@@ -11,10 +11,12 @@ const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
+const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
+telemtryEventConfig['pdata']['id'] = appId
 module.exports = {
   /**
    * This function helps to get user spec
