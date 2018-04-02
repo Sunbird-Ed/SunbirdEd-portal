@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
-import { GeoLocationDetails } from './../../interfaces/geoLocationDetails';
+import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';
 
 /**
@@ -27,6 +27,8 @@ export class GeoExplorerComponent implements OnInit {
    */
   @Input() geoConfig: object;
 
+  @Input() populateSelectedItem: any;
+
   /**
    * keyname to validate config
    */
@@ -40,12 +42,12 @@ export class GeoExplorerComponent implements OnInit {
   /**
    * Contains list of locations
    */
-  locationList: Array<GeoLocationDetails>;
+  locationList: Array<IGeoLocationDetails>;
 
   /**
    * Contains list of checked items
    */
-  selectedItems: Array<GeoLocationDetails>;
+  selectedItems: Array<IGeoLocationDetails>;
 
   /**
    * Show loader
@@ -76,37 +78,44 @@ export class GeoExplorerComponent implements OnInit {
   constructor(user: UserService, geo: GeoExplorerService) {
     this.geo = geo;
     this.user = user;
+    this.selectedItems = [];
   }
 
   /**
    * Function to validate adaptor / config.
    */
   validateAdaptor() {
-    const adaptor = this.geoConfig[this.keyName] && this.geoConfig[this.keyName].adaptor ? this.geoConfig[this.keyName].adaptor : '';
-    if (adaptor) {
-      switch (adaptor.toUpperCase()) {
-        case 'SERVICE':
-          this.initializeServiceAdopter();
-          break;
-        default:
-          this.showError = true;
-          console.warn('Invalid adaptor');
+    if (this.geoConfig !== undefined) {
+      const adaptor = this.geoConfig[this.keyName] && this.geoConfig[this.keyName].adaptor ? this.geoConfig[this.keyName].adaptor : '';
+      if (adaptor) {
+        switch (adaptor.toUpperCase()) {
+          case 'SERVICE':
+            this.initializeServiceAdopter();
+            break;
+          default:
+            this.showError = true;
+            console.warn('Invalid adaptor');
+        }
+      } else {
+        this.showError = true;
+        console.warn('Invalid adaptor');
       }
-    } else {
-      this.showError = true;
-      console.warn('Invalid adaptor');
     }
   }
 
   /**
    * Function to populate selected location
-   *
-   * @param {string[]} locationIds location id list
    */
-  populateItems(locationIds: string[]) {
-    if (this.locationList && this.locationList.length) {
+  populateItems() {
+    let id;
+    if (typeof this.populateSelectedItem === 'object') {
+      if (this.populateSelectedItem[0] && this.populateSelectedItem[0].id) {
+        id = _.map(this.populateSelectedItem, 'id');
+      } else {
+        id = this.populateSelectedItem;
+      }
       _.forEach(this.locationList, (item) => {
-        if (locationIds.indexOf(item.id) !== -1) {
+        if (id.indexOf(item.id) !== -1) {
           item.selected = true;
           this.selectedItems.push(item);
         }
@@ -119,30 +128,37 @@ export class GeoExplorerComponent implements OnInit {
    * It will make api call to get location(s)
    */
   initializeServiceAdopter() {
-    const params = { rootOrgId: this.rootOrgId };
-    // Make api call to get location(s)
-    this.geo.getLocations(params).subscribe(
-      (data: ServerResponse) => {
-        if (data.result.response) {
-          this.locationList = data.result.response;
+    if (this.geo.locationList) {
+      this.locationList = [...this.geo.locationList];
+      this.populateItems();
+      this.showLoader = false;
+    } else {
+      const params = { rootOrgId: this.rootOrgId };
+      // Make api call to get location(s)
+      this.geo.getLocations(params).subscribe(
+        (data: ServerResponse) => {
+          if (data.result.response) {
+            this.locationList = (data.result.response);
+            this.populateItems();
+          }
+          this.showLoader = false;
+        },
+        (error: ServerResponse) => {
+          this.showLoader = false;
+          this.showError = true;
         }
-        this.showLoader = false;
-      },
-      error => {
-        this.showLoader = false;
-        this.showError = true;
-      }
-    );
+      );
+    }
   }
 
   /**
    * Function to set / reset selected items
    *
    * @param {boolean} event true / false
-   * @param {object} item selected location details
+   * @param {IGeoLocationDetails} item selected location details
    * @param {string} id location id
    */
-  checkAndUncheckItem(event: boolean, item: GeoLocationDetails, id: string) {
+  toggle(event: boolean, item: IGeoLocationDetails, id: string) {
     if (event) {
       this.selectedItems.push(item);
     } else {
@@ -156,13 +172,7 @@ export class GeoExplorerComponent implements OnInit {
    * Angular life cycle hook
    */
   ngOnInit() {
-    this.user.userData$.subscribe(data => {
-      if (data && data.userProfile && data.userProfile.rootOrgId) {
-        this.rootOrgId = data.userProfile.rootOrgId;
-        this.validateAdaptor();
-      } else {
-        console.log('Root org id not found');
-      }
-    });
+    this.rootOrgId = this.user.rootOrgId;
+    this.validateAdaptor();
   }
 }

@@ -20,6 +20,10 @@ export class UserService {
    */
   public _sessionId: string;
   /**
+   * Contains root org id
+   */
+  public _rootOrgId: string;
+  /**
    * Contains user profile.
    */
   private _userProfile: IUserProfile;
@@ -118,9 +122,14 @@ export class UserService {
     this._userProfile.orgRoleMap = orgRoleMap;
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
+    this._rootOrgId = this._userProfile.rootOrgId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   get userProfile() {
     return _.cloneDeep(this._userProfile);
+  }
+
+  get rootOrgId() {
+    return this._rootOrgId;
   }
 }

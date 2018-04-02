@@ -8,7 +8,7 @@
       <div class="grouped fields">
         <div *ngFor="let item of locationList">
           <div class="field component_items padding-right-none">
-            <sui-checkbox [(ngModel)]="item.selected" name="item.location" (ngModelChange)="checkAndUncheckItem($event, item, item.id);">{{item.location}}</sui-checkbox>
+            <sui-checkbox [(ngModel)]="item.selected" name="item.location" (ngModelChange)="toggle($event, item, item.id);">{{item.location}}</sui-checkbox>
             <span *ngIf="item.userCount && item.userCount === null || item.userCount === 0">(0 users)</span>
             <span *ngIf="item.userCount && item.userCount !== null">({{item.userCount}} users)</span>
           </div>

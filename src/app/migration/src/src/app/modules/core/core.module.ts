@@ -9,7 +9,7 @@ import {
   BadgesService, ContentService, CoursesService, PageApiService
 } from './services';
 import {
-  MainHeaderComponent, MainMenuComponent , SearchComponent
+  MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 
@@ -20,11 +20,11 @@ import { AuthGuard } from './guard/auth-gard.service';
     SharedModule,
     RouterModule
   ],
-  declarations: [ MainHeaderComponent, MainMenuComponent , SearchComponent , PermissionDirective],
-  exports: [MainHeaderComponent],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
+  exports: [MainHeaderComponent, PermissionDirective],
   providers: [
     LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard ]
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard]
 })
 export class CoreModule {
 }
