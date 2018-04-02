@@ -1,0 +1,51 @@
+<sui-modal class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0015}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <h5 *ngIf="fileName">
+      <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
+    </h5>
+    <div *ngIf="processId">
+      <p class="padding-top-bottom-0">{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</p>
+      <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
+    </div>
+    <div *ngIf="!processId && !showLoader" class="ui info message">
+      <div class="header">
+        {{resourceService?.frmelmnts?.scttl?.instructions}}
+      </div>
+      <ol class="ui list">
+        <li *ngFor="let instn of orgUploadInstructions">{{instn?.instructions}}
+          <ol *ngIf="instn.subinstructions">
+            <li *ngFor="let subinstn of instn.subinstructions">{{subinstn?.instructions}}</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grid">
+      <div class="four wide column">
+        <button class="ui left floated button" (click)="downloadSample()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
+      </div>
+      <div class="four wide column">
+      </div>
+      <div class="four wide column">
+        <div>
+          <button [disabled]="processId" class="ui primary right floated button" (click)="openImageBrowser(inputbtn)">
+            {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
+          </button>
+        </div>
+        <input #inputbtn type="file" style='display:none' accept=".csv" id="uploadorgscsv" (change)="uploadOrg($event.target.files)" autofocus required=""
+        />
+      </div>
+    </div>
+  </div>
+</sui-modal>

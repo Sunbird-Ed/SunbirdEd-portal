@@ -1,0 +1,88 @@
+<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0016}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <form *ngIf="!processId && !showLoader" class="ui form" id="bulkUsers" [formGroup]="uploadUserForm">
+      <div class="ui grid" *ngIf="!processId">
+        <div class="six wide column">
+          <div class="required field">
+            <label>{{resourceService?.frmelmnts?.lbl?.provider}}</label>
+            <input formControlName="provider" type="text" placeholder="Provider" autofocus>
+          </div>
+        </div>
+        <div class="six wide column">
+          <div class="required field">
+            <label>{{resourceService?.frmelmnts?.lbl?.extlid}}</label>
+            <input formControlName="externalId" type="text" placeholder="External Id">
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!processId" class="ui horizontal divider margin-top-40">
+        Or
+      </div>
+      <div class="ui grid" *ngIf="!processId">
+        <div class="six wide column">
+          <div class="one field">
+            <div class=" required field">
+              <label>{{resourceService?.frmelmnts?.lbl?.orgid}}</label>
+              <input formControlName="organisationId" type="text" placeholder="OrgId">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="ui negative message" *ngIf="bulkUploadError">
+      <i class="close icon" (click)="closeBulkUploadError()"></i>
+      <p>{{bulkUploadErrorMessage}}</p>
+    </div>
+    <h5 *ngIf="fileName">
+      <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
+    </h5>
+    <div *ngIf="processId">
+      <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
+      <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
+    </div>
+    <div *ngIf="!processId && !showLoader" class="ui horizontal divider margin-top-40">
+
+    </div>
+    <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui info message">
+      <div class="header">
+        {{resourceService?.frmelmnts?.scttl?.instructions}}
+      </div>
+      <ol class="ui list">
+        <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
+          <ol *ngIf="instn.subinstructions">
+            <li *ngFor="let subinstn of instn.subinstructions">{{subinstn.instructions}}</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grid">
+      <div class="four wide column">
+        <button class="ui left floated button" (click)="downloadSampleCSV()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
+      </div>
+      <div class="four wide column">
+      </div>
+      <div class="four wide column">
+        <div>
+          <button [disabled]="processId" class="ui primary right floated button" (click)="openImageBrowser(inputbtn)">
+            {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+          </button>
+        </div>
+        <input #inputbtn type="file" style='display:none' accept=".csv" class="content-input ui small" id="uploadUsrsCSV" (change)="uploadUsersCSV($event.target.files)"
+          required="" />
+      </div>
+    </div>
+  </div>
+</sui-modal>
