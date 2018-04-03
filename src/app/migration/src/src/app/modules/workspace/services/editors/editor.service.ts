@@ -37,7 +37,10 @@ export class EditorService {
         this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
     }
 
-
+/**
+ * Create content Id for the editor
+ * @param req
+ */
     create(req) {
         console.log('req', req);
             const option = {

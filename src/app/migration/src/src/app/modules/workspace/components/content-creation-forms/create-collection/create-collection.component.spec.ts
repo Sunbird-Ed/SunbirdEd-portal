@@ -1,3 +1,4 @@
+import { ISubscription } from 'rxjs/Subscription';
 
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
@@ -11,10 +12,11 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
-import {mockRes} from './create-collection.component.spec.data';
+import { mockRes } from './create-collection.component.spec.data';
+import { componentFactoryName } from '@angular/compiler';
 
 describe('CreateCollectionComponent', () => {
   let component: CreateCollectionComponent;
@@ -46,48 +48,33 @@ describe('CreateCollectionComponent', () => {
   });
 
 
-  it('should call savemeta method', inject([EditorService, UserService], (editorService, userService) => {
-
-    const collection = { name: 'firstname', desc: 'short_Desc' };
-    userService._userData$.next({ err: null, userProfile: mockRes.userMockData});
-
-
-    component.saveMetaData(collection);
-    component.createCollection(mockRes.requestBody);
-    fixture.detectChanges();
-
-  }));
-
-
   it('should call createCollection method', inject([EditorService, UserService, Router], (editorService, userService, router) => {
-    spyOn(editorService, 'create').and.callFake(() => Observable.of(mockRes.createCollectionData));
-    component.createCollection(mockRes.requestBody);
-    fixture.detectChanges();
-    expect(component.isCollectionCreated).toBeTruthy();
+    userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
+
+    spyOn(editorService, 'create').and.returnValue(Observable.of(mockRes.createCollectionData));
+    component.createCollection();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'CollectionEditor', '', 'framework']);
   }));
 
+  it('should call createCollection method', inject([EditorService, UserService, Router, ToasterService, ResourceService],
+    (editorService, userService, router, toasterService, resourceService) => {
 
-  it('should call create api and get error response', inject([EditorService, ToasterService, ResourceService],
-    (editorService, toasterService, resourceService, http, route) => {
       resourceService.messages = mockRes.resourceBundle.messages;
-        spyOn(toasterService, 'error').and.callThrough();
-        spyOn(editorService, 'create').and.callFake(() => Observable.throw(mockRes.errResponseData));
 
-        component.createCollection(mockRes.errBody);
+      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
 
-        expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+      spyOn(editorService, 'create').and.returnValue(Observable.throw(mockRes.errResponseData));
+      spyOn(toasterService, 'error').and.callThrough();
+      component.createCollection();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
 
     }));
 
 
-  it('test routing', inject([ Router], (router) => {
+  it('test routing', inject([Router], (router) => {
     component.goToCreate();
     expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
   }));
 
 });
-
-
-

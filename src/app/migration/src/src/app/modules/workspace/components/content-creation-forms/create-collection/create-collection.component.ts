@@ -14,9 +14,11 @@ import { EditorService } from './../../../services';
   templateUrl: './create-collection.component.html',
   styleUrls: ['./create-collection.component.css']
 })
-export class CreateCollectionComponent implements OnInit {
 
-  isCollectionCreated: boolean;
+/**
+ * Component to create collection editor id
+ * * */
+export class CreateCollectionComponent implements OnInit {
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -45,7 +47,7 @@ export class CreateCollectionComponent implements OnInit {
   /**
    * userProfile is of type userprofile interface
    */
-  public userProfile: IUserProfile;
+  public userProfile: any;
 
   public userForm: FormGroup;
   public formBuilder: FormBuilder;
@@ -66,11 +68,13 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   ngOnInit() {
+    /***
+     * Call User service to get user data
+     */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
          this.userProfile = user.userProfile;
-          console.log(' user profile s', this.userProfile);
         }
       });
     this.showLoader = false;
@@ -81,12 +85,14 @@ export class CreateCollectionComponent implements OnInit {
   }
 
 
-
-  saveMetaData(userForm) {
+/**
+ * Call GenerateData() to get requestBody data
+ */
+  generateData() {
     this.showLoader = true;
       const requestBody = {
-      name: userForm.name ? userForm.name : 'Untitled Collection',
-      description: userForm.description,
+      name: this.userForm.value.name ? this.userForm.value.name : 'Untitled Collection',
+      description: this.userForm.value.description,
       creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
       createdBy: this.userProfile.id,
       organisationIds: this.userProfile.organisationIds,
@@ -95,24 +101,21 @@ export class CreateCollectionComponent implements OnInit {
       mimeType: 'application/vnd.ekstep.content-collection',
       contentType: 'Collection'
     };
-
-    const requestData = {
-      content: requestBody
-    };
-    this.createCollection(requestData);
+    return requestBody;
   }
 
-
-  createCollection(requestData) {
+// Create colletion crates the content Id
+  createCollection() {
+   const requestData = {
+      content: this.generateData()
+    };
     this.editorService.create(requestData).subscribe(res => {
-      this.isCollectionCreated = true;
       this.showLoader = false;
       const type = 'CollectionEditor';
       const state = '';
       const framework = 'framework';
       this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
     }, err => {
-      console.log('error');
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
 
@@ -123,4 +126,3 @@ export class CreateCollectionComponent implements OnInit {
     this.router.navigate(['/workspace/content/create']);
   }
 }
-
