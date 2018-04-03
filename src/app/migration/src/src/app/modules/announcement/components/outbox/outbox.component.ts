@@ -31,6 +31,12 @@ export class OutboxComponent implements OnInit {
   showLoader = true;
 
   /**
+	 * This variable hepls to show and hide warning div
+   * when get outbox API fails
+	 */
+  showWarningDiv = false;
+
+  /**
 	 * Contains page limit of outbox list
 	 */
   pageLimit: number;
@@ -138,6 +144,7 @@ export class OutboxComponent implements OnInit {
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
+        this.showWarningDiv = true;
       }
     );
   }
