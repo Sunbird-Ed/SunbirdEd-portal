@@ -95,8 +95,8 @@
           "OUTBOX_LIST":"/user/outbox",
           "INBOX_LIST":"/user/inbox",
           "CREATE":"/create",
-          "GET_BY_ID":"/get/",
-          "RESEND":"/resend/",
+          "GET_BY_ID":"/get",
+          "RESEND":"/resend",
           "DEFINITIONS" : "/definitions",
           "READ" : "/read",
           "RECEIVED":"/received",
@@ -111,6 +111,8 @@
         "GEO_EXPLORER":{
             "LOCATION_READ": "org/v1/location/read/"
         },
-        "CONTENT_COLLECTION":"application/vnd.ekstep.content-collection"
+        "CONTENT_COLLECTION":"application/vnd.ekstep.content-collection",
+        "LOCATION_READ": "org/v1/location/read"
+        }
     }
 }
