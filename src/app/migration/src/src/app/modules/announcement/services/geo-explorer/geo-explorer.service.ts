@@ -52,7 +52,7 @@ export class GeoExplorerService {
    */
   getLocations(param: GeoHttpParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.GEO_EXPLORER.LOCATION_READ + param.rootOrgId + '?type=organisation'
+      url: this.config.urlConFig.URLS.GEO_EXPLORER.LOCATION_READ + '/' + param.rootOrgId + '?type=organisation'
     };
 
     return this.learner.get(option)
