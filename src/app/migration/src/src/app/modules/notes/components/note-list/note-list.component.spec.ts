@@ -2,7 +2,7 @@ import { Routes, RouterModule, ActivatedRoute } from '@angular/router';
 import { NoteFormComponent } from './../note-form/note-form.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, ConfigService, FilterPipe } from '@sunbird/shared';
-import { NotesService } from '../../services/index';
+import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, ContentService, LearnerService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';

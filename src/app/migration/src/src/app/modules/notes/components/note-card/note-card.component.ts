@@ -1,5 +1,5 @@
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { NotesService } from '../../services/index';
+import { NotesService } from '../../services';
 import { UserService, ContentService} from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { NoteFormComponent } from '../note-form/note-form.component';

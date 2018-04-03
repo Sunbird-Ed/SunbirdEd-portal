@@ -1,4 +1,4 @@
-import { NotesService } from '../../services/index';
+import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';

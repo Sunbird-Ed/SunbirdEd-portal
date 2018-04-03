@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NotesService } from '../../services/index';
+import { NotesService } from '../../services';
 import { UserService, ContentService, LearnerService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';

@@ -1,4 +1,4 @@
-import { NotesService } from '../../services/index';
+import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
