@@ -11,3 +11,5 @@
 /src/app/migration/dist
 /src/app/migration/src/documentation
 /src/app/migration/src/coverage
+/extensible-framework/node_modules
+/extensible-framework/plugins/**/node_modules

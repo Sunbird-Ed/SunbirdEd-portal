@@ -103,6 +103,8 @@ app.use(express.static(path.join(__dirname, 'migration/dist'), { extensions: ['e
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
+app.use('/discussions/v1', bodyParser.urlencoded({ extended: false }),
+  bodyParser.json({ limit: '10mb' }), require('./helpers/discussion-poc')(keycloak))
 
 // Discussion routing
 app.use('/discussions/v1', bodyParser.urlencoded({ extended: false }),
