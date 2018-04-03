@@ -16,6 +16,7 @@ import {
   CollectionEditorComponent
 
 } from './components';
+import { ContentEditorComponent } from './components/create-editors/content-editor/content-editor.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +30,8 @@ import {
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
     CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent, CreateUploadContentComponent,
-     CollectionEditorComponent],
+     CollectionEditorComponent,
+     ContentEditorComponent],
 
   providers: [WorkSpaceService, EditorService]
 })

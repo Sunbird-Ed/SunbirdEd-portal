@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateUploadContentComponent, CreateStudyMaterialComponent,
-  CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent
+  CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent
 } from './components';
 
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -24,6 +24,7 @@ const routes: Routes = [
         ]
       },
       {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      {path: 'edit/content/:contentId', component: ContentEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
