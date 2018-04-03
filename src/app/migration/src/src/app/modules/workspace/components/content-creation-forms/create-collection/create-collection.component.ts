@@ -102,7 +102,7 @@ export class CreateCollectionComponent implements OnInit {
 
 
 /**
- * Generate data for the requestBody to call create function
+ * requestBody is returned of type object
  */
 generateData() {
   this.showLoader = true;
@@ -125,7 +125,7 @@ generateData() {
 
 
   /***
-   *   Create colletion creates the content Id
+   *   Create colletion creates the content Id and navigate
    * */
   createCollection() {
    const requestData = {
@@ -144,7 +144,7 @@ generateData() {
   }
 
 /****
- * Redirect to workspace create section
+ * Redirects to workspace create section
  */
   goToCreate() {
     this.router.navigate(['/workspace/content/create']);

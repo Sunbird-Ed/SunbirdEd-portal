@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CreateCollectionComponent } from './create-collection.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
@@ -26,7 +28,8 @@ describe('CreateCollectionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateCollectionComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule,
+        SuiModule, ReactiveFormsModule],
       providers: [EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
         { provide: Router, useClass: RouterStub }
