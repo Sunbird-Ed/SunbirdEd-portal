@@ -2,12 +2,20 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { CoursesService, UserService } from '@sunbird/core';
 import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
+import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Ng2DeviceService } from 'ng2-device-detector';
+import { SuiModule } from 'ng2-semantic-ui';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
  * 2)ActionCard: It displays enrolled courses details.
  * 3)HomeAnnouncement: It displays announcement inbox details.
  */
+@Injectable()
+export class WindowService {
+  public window = window;
+}
 @Component({
   selector: 'app-main-home',
   templateUrl: './main-home.component.html',
@@ -48,7 +56,20 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   * Slider setting to display number of cards on the slider.
   */
   slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
+   /**
+  * show browser Msg.
+  */
+  showBrowserMsg = false;
+    /**
+  * go get browser infp.
+  */
+  deviceInfo = null;
+      /**
+  * show browser model.
+  */
+  showBrowserMsgModel = false;
   /**
+   *
    * The "constructor"
    *
    * @param {ResourceService} resourceService Reference of resourceService.
@@ -57,7 +78,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(resourceService: ResourceService,
-    userService: UserService, courseService: CoursesService, toasterService: ToasterService) {
+    userService: UserService, courseService: CoursesService, toasterService: ToasterService, private deviceService: Ng2DeviceService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
@@ -118,6 +139,21 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.populateUserProfile();
     this.populateEnrolledCourse();
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+    console.log(this.deviceInfo.browser);
+    if (this.deviceInfo.browser !== 'chrome') {
+      this.showBrowserMsg = true;
+      if ((localStorage.getItem('#BrowserIncompatibleModel') !== 'shown')) {
+        this.showBrowserMsgModel = true;
+    }
+  }
+}
+ /**
+   *HideBrowserMsgModel hides browser model and stores value in local storage
+   */
+  HideBrowserMsgModel() {
+    this.showBrowserMsgModel = false;
+    localStorage.setItem('#BrowserIncompatibleModel', 'shown');
   }
   /**
    *ngOnDestroy unsubscribe the subscription
