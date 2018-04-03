@@ -1,10 +1,11 @@
-import { UserService } from '@sunbird/core';
+
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import { UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { EditorService } from './../../../services';
 

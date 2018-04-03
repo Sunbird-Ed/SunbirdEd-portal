@@ -1,7 +1,3 @@
-import { EditorService } from './../../../services/editors/editor.service';
-
-import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
-
 import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -11,7 +7,9 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService, PermissionService} from '@sunbird/core';
 import { Router } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
+import { EditorService } from './../../../services/editors/editor.service';
 
+import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
 import { ActivatedRoute } from '@angular/router';
 
 declare let window: CustomWindow;
@@ -86,6 +84,10 @@ public modelId: any;
 
   ngOnInit() {
     console.log('collection editor');
+
+        /***
+     * Call User service to get user data
+     */
 
     this.userService.userData$.subscribe(
       (user: IUserData) => {
