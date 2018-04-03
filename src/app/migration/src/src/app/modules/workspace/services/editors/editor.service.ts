@@ -1,9 +1,8 @@
 import { ContentService } from '@sunbird/core';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { cleanSession } from 'selenium-webdriver/safari';
+
 
 
 /**
