@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PermissionService } from './../services';
-import { ConfigService, ResourceService, UserProfile, UserData } from '@sunbird/shared';
+import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 /**
  * Service for Route Guards to restrict the access of route
@@ -57,6 +57,9 @@ export class AuthGuard implements CanActivate {
                                 this.router.navigate(['home']);
                                 observer.next(false);
                             }
+                        } else {
+                            this.router.navigate(['home']);
+                            observer.next(false);
                         }
                         observer.complete();
                     } else if (permissionAvailable && permissionAvailable === 'error') {

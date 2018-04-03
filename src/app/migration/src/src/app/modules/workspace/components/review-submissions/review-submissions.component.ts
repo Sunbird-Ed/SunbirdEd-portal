@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workspaceclass } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
-import { ServerResponse, PaginationService, ConfigService , IContents} from '@sunbird/shared';
+import {
+  ServerResponse, PaginationService, ToasterService,
+  ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage
+} from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -16,7 +19,7 @@ import * as _ from 'lodash';
   templateUrl: './review-submissions.component.html',
   styleUrls: ['./review-submissions.component.css']
 })
-export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit {
+export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**
     * To navigate to other pages
   */
@@ -43,6 +46,25 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   showLoader = true;
 
   /**
+   * loader message
+  */
+  loaderMessage: ILoaderMessage;
+  /**
+     * To show / hide error
+   */
+  showError = false;
+
+  /**
+    * To show / hide no result message when no result found
+   */
+  noResult = false;
+
+  /**
+   * no result  message
+  */
+  noResultMessage: INoResultMessage;
+
+  /**
     * For showing pagination on draft list
   */
   private paginationService: PaginationService;
@@ -55,7 +77,7 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   /**
     * To get url, app configs
   */
-    public config: ConfigService;
+  public config: ConfigService;
 
   /**
   * Contains page limit of review submission list
@@ -68,12 +90,24 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
   pageNumber = 1;
 
   /**
+  * totalCount of the list
+   */
+  totalCount: Number;
+
+  /**
   * Contains returned object of the pagination service
   * which is needed to show the pagination on inbox view
   */
   pager: IPagination;
+  /**
+    * To call resource service which helps to use language constant
+  */
+  public resourceService: ResourceService;
 
-
+  /**
+  * To show toaster(error, success etc) after any API calls
+  */
+  private toasterService: ToasterService;
   /**
    * Constructor to create injected service(s) object
    Default method of Review submission  Component class
@@ -83,52 +117,74 @@ export class ReviewSubmissionsComponent extends Workspaceclass implements OnInit
    * @param {PaginationService} paginationService Reference of PaginationService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ConfigService} config Reference of ConfigService
+   * @param {ToasterService} toaster Reference of toasterService
  */
   constructor(public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
-    config: ConfigService) {
+    config: ConfigService, resourceService: ResourceService,
+    toasterService: ToasterService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.config = config;
+    this.resourceService = resourceService;
+    this.toasterService = toasterService;
   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.fetchReviewContents(this.config.pageConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+      this.fetchReviewContents(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
   }
   /**
    * This method sets the make an api call to get all reviewContent with page No and offset
   */
   fetchReviewContents(limit: number, pageNumber: number) {
+    this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
-      status: ['Review'],
-      contentType: this.config.pageConfig.WORKSPACE.contentType,
-      objectType: this.config.pageConfig.WORKSPACE.objectType,
+      filters: {
+        status: ['Review'],
+        createdBy: this.userService.userid,
+        contentType: this.config.appConfig.WORKSPACE.contentType,
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
       pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      userId: this.userService.userid,
-      params: { lastUpdatedOn: this.config.pageConfig.WORKSPACE.lastUpdatedOn }
+      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+    };
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0018,
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content) {
+        if (data.result.count && data.result.content.length > 0) {
           this.reviewContent = data.result.content;
+          this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           this.showLoader = false;
+        } else {
+          this.showError = false;
+          this.showLoader = false;
+          this.noResult = true;
+          this.noResultMessage = {
+            'message': this.resourceService.messages.stmsg.m0008,
+            'messageText': this.resourceService.messages.stmsg.m0033
+          };
         }
       },
       (err: ServerResponse) => {
         this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0012);
       }
     );
   }

@@ -1,11 +1,15 @@
-import { ServerResponse } from '@sunbird/shared';
-export interface UserProfile {
+import { ServerResponse } from './serverResponse';
+export interface IUserData {
+    err: ServerResponse;
+    userProfile: IUserProfile;
+}
+export interface IUserProfile {
     missingFields?: Array<string>;
     lastName: string;
     webPages: Array<{type: string, url: string}>;
     tcStatus: any;
     loginId: string;
-    education: Array<Education>;
+    education: Array<IEducation>;
     gender: string;
     regOrgId: string;
     subject: Array<string>;
@@ -13,9 +17,9 @@ export interface UserProfile {
     language: Array<string>;
     updatedDate: string;
     completeness: number | string;
-    skills: Array<Skill>;
+    skills: Array<ISkill>;
     isDeleted: boolean | any;
-    organisations: Array<Organization>;
+    organisations: Array<IOrganization>;
     provider: string;
     countryCode: string;
     id: string;
@@ -26,8 +30,8 @@ export interface UserProfile {
     profileVisibility: any;
     thumbnail: any;
     updatedBy: string;
-    address: Array<Address>;
-    jobProfile: Array<JobProfile>;
+    address: Array<IAddress>;
+    jobProfile: Array<IJobProfile>;
     profileSummary: string;
     tcUpdatedDate: string;
     avatar: string;
@@ -50,7 +54,7 @@ export interface UserProfile {
     orgRoleMap?: {[key: string]: Array<string>};
     organisationIds?: Array<string>;
 }
-export interface JobProfile {
+export interface IJobProfile {
     jobName: string;
     orgName: string;
     role: string;
@@ -73,7 +77,7 @@ export interface JobProfile {
     isRejected: boolean | any;
     id: string;
 }
-export interface Address {
+export interface IAddress {
     country: string;
     updatedBy: string;
     city: string;
@@ -89,7 +93,7 @@ export interface Address {
     id: string;
     state: string;
 }
-export interface Organization {
+export interface IOrganization {
     organisationId: string;
     updatedBy: string;
     addedByName: string;
@@ -107,7 +111,7 @@ export interface Organization {
     orgjoindate: string;
     orgLeftDate: string;
 }
-export interface Education {
+export interface IEducation {
     updatedBy: string;
     yearOfPassing: number | string;
     degree: string;
@@ -126,7 +130,7 @@ export interface Education {
     id: string;
 }
 
-export interface Skill {
+export interface ISkill {
     skillName: string;
     addedAt: string;
     endorsersList: Array<{endorseDate: string, userId: string}>;
@@ -136,7 +140,4 @@ export interface Skill {
     skillNameToLowercase: string;
     userId: string;
 }
-export interface UserData {
-    err: ServerResponse;
-    userProfile: UserProfile;
-}
+
