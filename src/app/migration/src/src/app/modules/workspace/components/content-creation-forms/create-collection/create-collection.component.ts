@@ -117,7 +117,7 @@ export class CreateCollectionComponent implements OnInit {
       const framework = 'framework';
       this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
     }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0010);
     });
 
   }

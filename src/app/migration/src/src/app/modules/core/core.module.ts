@@ -8,14 +8,12 @@ import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService, EditorService
+  BadgesService, ContentService, CoursesService, PageApiService,
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
 
-import { CreateContentComponent } from './components/create-content/create-content.component';
-import { ContentEditorComponent } from './components/content-editor/content-editor.component';
 
 import { AuthGuard } from './guard/auth-gard.service';
 
