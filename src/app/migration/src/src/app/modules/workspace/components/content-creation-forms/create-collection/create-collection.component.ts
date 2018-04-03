@@ -1,8 +1,5 @@
 import { UserService } from '@sunbird/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -39,6 +36,10 @@ export class CreateCollectionComponent implements OnInit {
     * To call resource service which helps to use language constant
     */
   public resourceService: ResourceService;
+    /**
+   * Contains config service reference
+   */
+  public config: ConfigService;
   /**
    * To make inbox API calls
    */
@@ -47,24 +48,39 @@ export class CreateCollectionComponent implements OnInit {
   /**
    * userProfile is of type userprofile interface
    */
-  public userProfile: any;
-
+  public userProfile: IUserProfile;
+/**
+ * userForm name creation
+ */
   public userForm: FormGroup;
+  /***
+   * Contains reference of FormBuilder
+   */
   public formBuilder: FormBuilder;
-
-  constructor(public modalService: SuiModalService,
+ /**
+   * Default method of classs CreateCollectionComponent
+   *
+   * @param {ResourceService} resourceService To get language constant
+   * @param {EditorService} editorService To provide the api services
+   * @param {ConfigService} config Reference of ConfigService
+   * @param {UserService} userService Reference of userService
+   * @param {Router} router for the navigation
+   */
+  constructor(
     resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
     private router: Router,
     userService: UserService,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    config: ConfigService
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.editorService = editorService;
     this.userService = userService;
     this.formBuilder = formBuilder;
+    this.config = config;
   }
 
   ngOnInit() {
@@ -86,25 +102,31 @@ export class CreateCollectionComponent implements OnInit {
 
 
 /**
- * Call GenerateData() to get requestBody data
+ * Generate data for the requestBody to call create function
  */
-  generateData() {
-    this.showLoader = true;
-      const requestBody = {
-      name: this.userForm.value.name ? this.userForm.value.name : 'Untitled Collection',
-      description: this.userForm.value.description,
-      creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
-      createdBy: this.userProfile.id,
-      organisationIds: this.userProfile.organisationIds,
-      createdFor: this.userProfile.organisationIds,
-      userRoles: this.userProfile.userRoles,
-      mimeType: 'application/vnd.ekstep.content-collection',
-      contentType: 'Collection'
-    };
-    return requestBody;
-  }
+generateData() {
+  this.showLoader = true;
+  const collectionConfig = {
+    mimeType: this.config.urlConFig.URLS.CONTENT_COLLECTION,
+    contentType: 'Collection'
+  };
+  const user = {
+    name: this.userForm.value.name ? this.userForm.value.name : 'Untitled Collection',
+    description: this.userForm.value.description,
+    creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+    createdBy: this.userProfile.id,
+    organisation: [],
+    createdFor: this.userProfile.organisationIds
+  };
 
-// Create colletion crates the content Id
+  const requestBody = {...user, ...collectionConfig};
+  return requestBody;
+}
+
+
+  /***
+   *   Create colletion creates the content Id
+   * */
   createCollection() {
    const requestData = {
       content: this.generateData()
@@ -121,7 +143,9 @@ export class CreateCollectionComponent implements OnInit {
 
   }
 
-
+/****
+ * Redirect to workspace create section
+ */
   goToCreate() {
     this.router.navigate(['/workspace/content/create']);
   }
