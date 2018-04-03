@@ -11,8 +11,7 @@ import {
   BadgesService, ContentService, CoursesService, PageApiService, EditorService
 } from './services';
 import {
-  MainHeaderComponent, MainMenuComponent , SearchComponent, CreateCollectionComponent,
-  CollectionEditorComponent
+  MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
 
 import { CreateContentComponent } from './components/create-content/create-content.component';
@@ -28,17 +27,11 @@ import { AuthGuard } from './guard/auth-gard.service';
     RouterModule,
     FormsModule
   ],
-  declarations: [ MainHeaderComponent, MainMenuComponent , SearchComponent , PermissionDirective, CreateCollectionComponent,
-     CollectionEditorComponent,
-
-     CreateContentComponent,
-
-     ContentEditorComponent],
-  exports: [MainHeaderComponent],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
+  exports: [MainHeaderComponent, PermissionDirective],
   providers: [
     LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, EditorService , AuthGuard]
-
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard]
 })
 export class CoreModule {
 }
