@@ -1,7 +1,6 @@
 import { ContentService } from '@sunbird/core';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { cleanSession } from 'selenium-webdriver/safari';
@@ -26,24 +25,22 @@ export class EditorService {
      */
     public contentService: ContentService;
 
-    public http: HttpClient;
-    public creator: string;
-    public createdBy: string;
-    public createdFor: string;
-    public organization: string;
 
     /**
      * constructor
      * @param {ConfigService} config ConfigService reference
      * @param {HttpClient} http HttpClient reference
      */
-    constructor(config: ConfigService, http: HttpClient, contentService: ContentService) {
+    constructor(config: ConfigService, contentService: ContentService) {
         this.config = config;
         this.contentService = contentService;
         this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
     }
 
-
+/**
+ * Create content Id for the editor
+ * @param req
+ */
     create(req) {
         console.log('req', req);
             const option = {
@@ -56,6 +53,17 @@ export class EditorService {
         return this.contentService.post(option);
     }
 
+    getById(req, qs) {
+        const option = {
+            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId,
+            data: {
+                req : req,
+                qs: qs
+            }
+        };
+
+        return this.contentService.get(option);
+      }
 }
 
 

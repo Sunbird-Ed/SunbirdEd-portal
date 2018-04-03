@@ -1,3 +1,8 @@
-<p>
-  collection-editor works!
-</p>
+<div id="collectionEditor"></div>
+
+<div *ngIf="showModal">
+
+  <div class=" ui segment margin-top-10" id="modalCollectionEditor" *ngIf="showLoader">
+    <app-loader></app-loader>
+  </div>
+</div>

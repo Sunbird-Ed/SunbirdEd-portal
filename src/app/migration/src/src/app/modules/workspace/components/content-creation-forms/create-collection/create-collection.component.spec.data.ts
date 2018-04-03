@@ -69,86 +69,10 @@ export const mockRes = {
 
         'lastName': 'User',
         'loginId': 'ntptest102',
-        'education': [
-          {
-            'updatedBy': null,
-            'yearOfPassing': 0,
-            'degree': 'hhj',
-            'updatedDate': null,
-            'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'addressId': null,
-            'duration': null,
-            'courseName': null,
-            'createdDate': '2017-11-30 13:19:47:276+0000',
-            'isDeleted': null,
-            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'boardOrUniversity': '',
-            'grade': '',
-            'percentage': null,
-            'name': 'g',
-            'id': '0123867019537448963'
-          },
-          {
-            'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'yearOfPassing': 2000,
-            'degree': 'ahd',
-            'updatedDate': '2017-12-06 13:52:13:291+0000',
-            'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'addressId': null,
-            'duration': null,
-            'courseName': null,
-            'createdDate': '2017-12-06 13:50:59:915+0000',
-            'isDeleted': null,
-            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'boardOrUniversity': '',
-            'grade': 'F',
-            'percentage': 999,
-            'name': 'djd',
-            'id': '0123909651904757763'
-          }
-        ],
-        'gender': 'female',
         'regOrgId': '0123653943740170242',
-        'subject': [
-          'Gujarati',
-          'Kannada'
-        ],
         'roles': [
           'public'
         ],
-        'language': [
-          'Bengali'
-        ],
-        'updatedDate': '2018-02-21 08:54:46:436+0000',
-        'completeness': 88,
-        'organisations': [
-          {
-            'organisationId': '0123653943740170242',
-            'updatedBy': null,
-            'addedByName': null,
-            'addedBy': null,
-            'roles': [
-              'CONTENT_CREATION',
-              'PUBLIC'
-            ],
-            'approvedBy': null,
-            'updatedDate': null,
-            'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'approvaldate': null,
-            'isDeleted': false,
-            'isRejected': null,
-            'id': '01236539426110668816',
-            'position': 'ASD',
-            'isApproved': null,
-            'orgjoindate': '2017-10-31 10:47:04:732+0000',
-            'orgLeftDate': null
-          }
-        ],
-        'provider': null,
-        'countryCode': null,
-        'id': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-        'tempPassword': null,
-        'email': 'us********@testss.com',
         'rootOrg': {
           'dateTime': null,
           'preferredLanguage': 'English',
@@ -186,47 +110,6 @@ export const mockRes = {
           'status': null
         },
         'identifier': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-        'profileVisibility': {
-          'skills': 'private',
-          'address': 'private',
-          'profileSummary': 'private'
-        },
-        'thumbnail': null,
-        'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-        'address': [
-          {
-            'country': 'dsfg',
-            'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'city': 'dsf',
-            'updatedDate': '2018-02-21 08:54:46:451+0000',
-            'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'zipcode': '560015',
-            'addType': 'current',
-            'createdDate': '2018-01-28 17:31:11:677+0000',
-            'isDeleted': null,
-            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'addressLine1': 'sadf',
-            'addressLine2': 'sdf',
-            'id': '01242858643843481618',
-            'state': 'dsfff'
-          },
-          {
-            'country': 'zxc',
-            'updatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'city': 'dszfx',
-            'updatedDate': '2018-02-21 08:54:46:515+0000',
-            'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'zipcode': '560017',
-            'addType': 'current',
-            'createdDate': '2018-01-28 17:30:35:711+0000',
-            'isDeleted': null,
-            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'addressLine1': 'sdsf',
-            'addressLine2': 'sdf',
-            'id': '01242858632795750422',
-            'state': 'ds'
-          }
-        ],
         'profileSummary': 'asdd',
         'tcUpdatedDate': null,
         'avatar': 'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
@@ -237,14 +120,6 @@ export const mockRes = {
         'firstName': 'Cretation',
         'lastLoginTime': 1519809987692,
         'createdDate': '2017-10-31 10:47:04:723+0000',
-        'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45',
-        'phone': '******4412',
-        'dob': null,
-        'grade': [
-          'Grade 2'
-        ],
-        'currentLoginTime': null,
-        'location': '',
-        'status': 1
-      }
+        'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
+        }
 };

@@ -18,7 +18,7 @@ export class UserService {
  /**
    * Contains session id
    */
-  public _sessionId: string;
+  private _sessionId: string;
   /**
    * Contains root org id
    */
@@ -59,7 +59,7 @@ export class UserService {
     return this._userid;
   }
    /**
-   * get method to fetch sessionid.
+   * get method to fetch sessionId.
    */
    get sessionId(): string {
      return this._sessionId;
@@ -83,6 +83,10 @@ export class UserService {
   }
 
   public initialize() {
+    try {
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+    } catch {}
     this.getUserProfile();
     // try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
