@@ -1,5 +1,3 @@
-import { ISubscription } from 'rxjs/Subscription';
-
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
