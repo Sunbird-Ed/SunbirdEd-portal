@@ -52,7 +52,7 @@
       <app-loader></app-loader>
     </div>
   </div>
-  <div class="ui grid" *ngIf="outboxData && outboxData.announcements.length === 0 && !showLoader">
+  <div class="ui grid" *ngIf="(outboxData && outboxData.announcements.length === 0) || showWarningDiv && !showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui warning message">
