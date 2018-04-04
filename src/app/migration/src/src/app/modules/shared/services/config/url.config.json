@@ -110,6 +110,10 @@
         },
         "GEO_EXPLORER":{
             "LOCATION_READ": "org/v1/location/read/"
+        },
+        "TELEMETRY":{
+            "SYNC": "data/v1/telemetry"
         }
+
     }
 }

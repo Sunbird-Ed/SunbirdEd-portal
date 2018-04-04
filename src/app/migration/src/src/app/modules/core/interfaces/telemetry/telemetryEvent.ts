@@ -1,4 +1,4 @@
-export interface  IStartEventData  {
+export interface IStartEventData {
     'type': String,
     'mode': String,
     'duration'?: String,
@@ -6,7 +6,47 @@ export interface  IStartEventData  {
     'uaspec': Object
 };
 
-export interface  ITelemetryContextData {
+export interface IImpressionEventData {
+    'type': String,
+    'subtype'?: String,
+    'pageid': String,
+    'uri': String,
+    'visits'?: Object
+};
+export interface IInteractEventData {
+    'type': String,
+    'subtype'?: String,
+    'id': String,
+    'pageid'?: String,
+    'target'?: String,
+    'plugin'?: String,
+    'extra'?: Object
+};
+
+export interface IShareEventData {
+    'type': String,
+    'dir': String,
+    'items': Array<Object>
+};
+
+export interface IErrorEventData {
+    'err': String,
+    'errType': String,
+    'stacktrace': String,
+    'pageid'?: String,
+    'object'?: String,
+    'plugin'?: String
+};
+
+export interface IEndEventData {
+    'type': String,
+    'mode'?: String,
+    'duration': String,
+    'pageid'?: String,
+    'summary'?: Array<Object>
+};
+
+export interface ITelemetryContextData {
     'channel': String,
     'pdata'?: Object,
     'env': String,
@@ -14,14 +54,15 @@ export interface  ITelemetryContextData {
     'did'?: String,
     'cdata'?: Array<Object>,
     'rollup'?: Object
-}
+};
 
-export interface  TelemetryObject {
+export interface TelemetryObject {
     "id": String,
     "type": String,
     "ver"?: String,
     "rollup": Object
-}
+};
+
 type TelemetryEventOptions = {
     'context'?: ITelemetryContextData,
     'object'?: TelemetryObject,
@@ -30,10 +71,10 @@ type TelemetryEventOptions = {
 
 
 export interface ITelemetryEvent {
-    'edata': IStartEventData ,
-    'contentId': String,
-    'contentVer': String,
+    'edata': IStartEventData | IImpressionEventData | IInteractEventData | IShareEventData | IErrorEventData | IEndEventData,
+    'contentId'?: String,
+    'contentVer'?: String,
     'options': TelemetryEventOptions
-}
+};
 
 
