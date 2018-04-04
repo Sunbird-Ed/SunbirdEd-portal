@@ -28,7 +28,7 @@
         "../node_modules/izitoast/dist/js/iziToast.min.js",
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/slick-carousel/slick/slick.js",
-        "../../../thirdparty/libs/telemetry.min.js",
+        "assets/common/js/telemetry.min.js",
         "../node_modules/fine-uploader/fine-uploader/fine-uploader.min.js"
       ],
       "environmentSource": "environments/environment.ts",

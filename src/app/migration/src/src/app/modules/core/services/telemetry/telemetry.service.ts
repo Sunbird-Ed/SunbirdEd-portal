@@ -19,7 +19,7 @@ export class TelemetryService {
   public userSession: any;
   public contextList: Array<Object>;
   public telemetryLibUtilService: TelemetryLibUtilService;
-  public  organisationIds: Array<String>;
+  public organisationIds: Array<String>;
 
   /**
    *  To get url, app configs.
@@ -53,20 +53,20 @@ export class TelemetryService {
     this.contextList = [];
   }
   public initialize() {
-    console.log('Initialize telemetry')
-    EkTelemetry.initialize(this.telemetry) // eslint-disable-line no-undef
+    console.log('Initialize telemetry');
+    EkTelemetry.initialize(this.telemetry);
   }
 
   public startTelemetry(startEventInput: IStartEventInput) {
-    let contextData = this.getEventContext(startEventInput);
-    let eventObject = this.getEventObject(startEventInput);
-    let startEventData: IStartEventData = {
+    const contextData = this.getEventContext(startEventInput);
+    const eventObject = this.getEventObject(startEventInput);
+    const startEventData: IStartEventData = {
       type: startEventInput.contentType,
       mode: startEventInput.mode,
       pageid: startEventInput.pageId,
       uaspec: this.getUserAgentSpec()
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': startEventData,
       'contentId': startEventInput.objectId,
       'contentVer': startEventInput.objectVersion,
@@ -77,22 +77,22 @@ export class TelemetryService {
       }
     };
     if (iTelemetryEvent.options.context) {
-      this.contextList.push(iTelemetryEvent.options.context)
+      this.contextList.push(iTelemetryEvent.options.context);
     }
     this.telemetryLibUtilService.startEvent(iTelemetryEvent, this.telemetry);
   }
 
   public impression(impressionEventInput: IImpressionEventInput) {
-    let contextData = this.getEventContext(impressionEventInput);
-    let eventObject = this.getEventObject(impressionEventInput);
-    let impressionEventData: IImpressionEventData = {
+    const contextData = this.getEventContext(impressionEventInput);
+    const eventObject = this.getEventObject(impressionEventInput);
+    const impressionEventData: IImpressionEventData = {
       type: 'view',
       subtype: impressionEventInput.subType,
       pageid: impressionEventInput.pageId,
       uri: impressionEventInput.uri,
       visits: impressionEventInput.visits
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': impressionEventData,
       'options': {
         'context': contextData,
@@ -105,15 +105,15 @@ export class TelemetryService {
   }
 
   public interact(iInteractEventInput: IInteractEventInput) {
-    let contextData = this.getEventContext(iInteractEventInput);
-    let eventObject = this.getEventObject(iInteractEventInput);
-    let interactEventData: IInteractEventData = {
+    const contextData = this.getEventContext(iInteractEventInput);
+    const eventObject = this.getEventObject(iInteractEventInput);
+    const interactEventData: IInteractEventData = {
       'type': 'CLICK',
       'subtype': '',
       'id': iInteractEventInput.edataId,
       'pageid': iInteractEventInput.pageId
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': interactEventData,
       'options': {
         'context': contextData,
@@ -125,9 +125,9 @@ export class TelemetryService {
     this.telemetryLibUtilService.interactEvent(iTelemetryEvent, this.telemetry);
   }
   public share(iShareEventInput: IShareEventInput) {
-    let contextData = this.getEventContext(iShareEventInput);
-    let eventObject = this.getEventObject(iShareEventInput);
-    let shareEventData: IShareEventData = {
+    const contextData = this.getEventContext(iShareEventInput);
+    const eventObject = this.getEventObject(iShareEventInput);
+    const shareEventData: IShareEventData = {
       'dir': 'Out',
       'type': 'Link',
       'items': [{
@@ -136,7 +136,7 @@ export class TelemetryService {
         'ver': iShareEventInput.objectVersion
       }]
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': shareEventData,
       'options': {
         'context': contextData,
@@ -148,15 +148,15 @@ export class TelemetryService {
   }
 
   public error(iErrorEventInput: IErrorEventInput) {
-    let contextData = this.getEventContext(iErrorEventInput);
-    let eventObject = this.getEventObject(iErrorEventInput);
-    let errorEventData: IErrorEventData = {
+    const contextData = this.getEventContext(iErrorEventInput);
+    const eventObject = this.getEventObject(iErrorEventInput);
+    const errorEventData: IErrorEventData = {
       'err': iErrorEventInput.errCode,
       'errType': iErrorEventInput.errType,
       'pageid': iErrorEventInput.pageId,
       'stacktrace': iErrorEventInput.stacktrace
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': errorEventData,
       'options': {
         'context': contextData,
@@ -168,16 +168,16 @@ export class TelemetryService {
   }
 
   public endTelemetry(iEndEventInput: IEndEventInput) {
-    let contextData = this.getEventContext(iEndEventInput);
-    let eventObject = this.getEventObject(iEndEventInput);
-    let endEventData: IEndEventData = {
+    const contextData = this.getEventContext(iEndEventInput);
+    const eventObject = this.getEventObject(iEndEventInput);
+    const endEventData: IEndEventData = {
       'type': iEndEventInput.type,
       'duration': iEndEventInput.duration,
       'mode': iEndEventInput.mode,
       'pageid': iEndEventInput.pageId,
       'summary': iEndEventInput.summary
     };
-    let iTelemetryEvent: ITelemetryEvent = {
+    const iTelemetryEvent: ITelemetryEvent = {
       'edata': endEventData,
       'options': {
         'context': contextData,
@@ -190,7 +190,7 @@ export class TelemetryService {
 
 
   public getEventObject(eventInput: any) {
-    let eventObjectData: TelemetryObject = {
+    const eventObjectData: TelemetryObject = {
       'id': eventInput.objectId,
       'type': eventInput.objectType,
       'ver': eventInput.objectVersion,
@@ -199,7 +199,7 @@ export class TelemetryService {
     return eventObjectData;
   }
   public getEventContext(eventInput: any) {
-    let eventContextData: ITelemetryContextData = {
+    const eventContextData: ITelemetryContextData = {
       channel: this.telemetry.channel,
       pdata: this.telemetry.pdata,
       env: eventInput.env || this.telemetry.env,
@@ -215,17 +215,17 @@ export class TelemetryService {
           * return rollup object
           */
   public getRollUpData(data) {
-    var rollUp = {}
-    var i = 1
-    data = data || []
+    const rollUp = {};
+    let i = 1;
+    data = data || [];
 
     if (data.constructor === Array) {
       data.forEach(function (element) {
-        rollUp['l' + i] = element
-        i += 1
-      })
+        rollUp['l' + i] = element;
+        i += 1;
+      });
     }
-    return rollUp
+    return rollUp;
   }
   public getUserAgentSpec() {
     return {
@@ -234,20 +234,21 @@ export class TelemetryService {
       'system': '',
       'platform': window.navigator.platform,
       'raw': window.navigator.userAgent
-    }
+    };
   }
 
   private setConfigData() {
     this.telemetry.uid = this.userSession.userId;
     this.telemetry.sid = (<HTMLInputElement>document.getElementById('sessionId')).value;
-    let rootOrg = (this.userSession.rootOrg && !_.isUndefined(this.userSession.rootOrg.hashTagId)) ? this.userSession.rootOrg.hashTagId : 'sunbird'; //eslint-disable-line
-    this.telemetry.channel = rootOrg
-    let organisationIds = []
+    const rootOrg = (this.userSession.rootOrg &&
+      !_.isUndefined(this.userSession.rootOrg.hashTagId)) ? this.userSession.rootOrg.hashTagId : 'sunbird';
+    this.telemetry.channel = rootOrg;
+    const organisationIds = [];
     _.forEach(this.userSession.organisations, function (org) {
       if (org.organisationId) {
-        organisationIds.push(org.organisationId)
+        organisationIds.push(org.organisationId);
       }
-    })
+    });
     this.organisationIds = organisationIds;
 
   }
