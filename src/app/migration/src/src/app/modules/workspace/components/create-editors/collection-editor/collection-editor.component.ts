@@ -143,7 +143,7 @@ public modelId: any;
      console.log('urlParams', urlParams);
     this.openCollectionEditor(urlParams);
   }
-
+ 
 
   openCollectionEditor(urlParams) {
 

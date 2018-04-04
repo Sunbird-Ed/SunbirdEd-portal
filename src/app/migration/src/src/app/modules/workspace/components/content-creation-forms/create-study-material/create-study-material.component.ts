@@ -96,7 +96,7 @@ export class CreateStudyMaterialComponent implements OnInit {
    */
   generateData() {
     // const mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
-    const mimetype = 'application/vnd.ekstep.content-collection';
+    const mimetype = 'application/vnd.ekstep.ecml-archive';
     const requestBody = {
       createdBy: this.userProfile.userId,
       createdFor: this.userProfile.organisationIds,
@@ -106,7 +106,7 @@ export class CreateStudyMaterialComponent implements OnInit {
       // gradeLevel: ['Grade 5'],
 
       name: this.userProfile.name ? this.userProfile.name : 'Untitled lesson',
-      contentType: this.userProfile.contentType ? this.userProfile.contentType : 'Course',
+      contentType: this.userProfile.contentType ? this.userProfile.contentType : 'Resource',
       // if ( {this.userProfile.language} === true ) {
       // language: [this.userProfile.language],
       // }
@@ -120,6 +120,7 @@ export class CreateStudyMaterialComponent implements OnInit {
   // Create colletion crates the content Id
   createContent() {
 
+    const state = 'state';
     const requestData = {
       content: this.generateData()
     };
@@ -134,16 +135,13 @@ export class CreateStudyMaterialComponent implements OnInit {
 
         console.log('content id in ', res.result.content_id);
 
-        this.router.navigate(['/workspace/content/edit/content', res.result.content_id]);
-       
-
+        this.router.navigate(['/workspace/content/edit/content', res.result.content_id, state]);
       } else {
         console.log('error');
         this.toasterService.error(this.resourceService.messages.emsg.m0010);
       }
     }, err => {
       console.log('error');
-      
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
     });
 
