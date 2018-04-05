@@ -54,8 +54,10 @@ export class EditorService {
     }
 
     getById(req, qs) {
+        console.log('req', req);
+        console.log('qs', qs);
         const option = {
-            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId,
+            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode,
             data: {
                 req : req,
                 qs: qs

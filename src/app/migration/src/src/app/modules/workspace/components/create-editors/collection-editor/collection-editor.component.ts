@@ -99,7 +99,7 @@ public modelId: any;
 
 
 
-            this.context = {
+            const context = {
               name : this.requestBody.firstName + ' ' + this.requestBody.lastName,
               desc: 'descr',
               userId: this.requestBody.userId,

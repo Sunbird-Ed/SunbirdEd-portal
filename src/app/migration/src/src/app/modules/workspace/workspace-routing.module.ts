@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateUploadContentComponent, CreateStudyMaterialComponent,
-  CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent
+  CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent,
+  GenericEditorComponent
 } from './components';
 
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -16,7 +17,7 @@ const routes: Routes = [
         path: 'create', component: CreateContentComponent,
         children: [
           { path: 'textbook', component: CreateTextbookComponent },
-          { path: 'uploadcontent', component: CreateUploadContentComponent },
+          // { path: 'uploadcontent', component: CreateUploadContentComponent },
           { path: 'course', component: CreateCourseComponent },
           { path: 'studymaterial', component: CreateStudyMaterialComponent },
           { path: 'collection', component: CreateCollectionComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
         ]
       },
       {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      {path: 'edit/content/:contentId/:state', component: ContentEditorComponent },
+      {path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
+      {path: 'edit/generic', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },

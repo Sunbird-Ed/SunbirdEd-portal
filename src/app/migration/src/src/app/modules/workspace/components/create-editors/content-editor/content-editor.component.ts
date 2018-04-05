@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
@@ -47,8 +47,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
 
   public userProfile: any;
 
+public contentId: string;
 
-
+public state: string;
   /**
     * reference of UserService service.
     */
@@ -57,13 +58,15 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
   */
   userService: UserService;
 
-  constructor(resourceService: ResourceService,
+  constructor(
+    resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     config: ConfigService,
-    userService: UserService) {
+    userService: UserService
+  ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.editorService = editorService;
@@ -79,41 +82,37 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
+     this.userService.userData$.subscribe(
+       (user: IUserData) => {
+         if (user && !user.err) {
+           this.userProfile = user.userProfile;
           console.log(' user profile s', this.userProfile);
 
-          // this.context = {
-          //   name:  this.userProfile.firstName + ' ' +  this.userProfile.lastName,
-          //   desc: 'descr',
-          //   userId: this.requestBody.userId,
-          //   organisationIds: this.requestBody.organisationIds,
-          //   createdFor: this.requestBody.organisationIds,
-          //   userRoles: this.requestBody.userRoles,
-          //   mimeType: 'application/vnd.ekstep.content-collection',
-          //   contentType: 'Collection',
-          //   sessionId: '4535345345345345'
-          // };
-
-        }
+          }
       });
+      this.activatedRoute.params.subscribe((params) => {
 
-
-    this.showLoader = true;
+        this.contentId = params['contentId'];
+        this.state = params['state'];
+  
+      });
+      this.getContentData();
+this.initfn();
+    // this.showLoader = true;
 
   }
 
 
   ngAfterViewInit() {
-    console.log('izi before');
     $.fn.iziModal = iziModal;
-
+    setTimeout(function () {
+      $('#contentEditor').iziModal('open');
+    }, 100);
     $('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/assets/editors/collection-editor/index.html',
+      iframeURL: '/assets/editors/content-editor/index.html',
+
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -123,74 +122,160 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       overlayColor: '',
       history: false,
       onClosed: function () {
-        // this.openModel()
-        alert('close called');
-        $('#collectionEditor').iziModal('close');
+        this.openModel();
       }
     });
-    console.log('izi aafeter');
   }
 
   openContentEditor() {
-    this.activatedRoute.params.subscribe((params) => {
+   
 
-      const contentId = params['contentId'];
-      const state = params['state'];
-
-      // $('#contentEditor').iziModal('open');
-
-      // window.context = {
-      //   user: {
-      //     id: this.userProfile.userId,
-      //     name: this.userProfile.firstName + ' ' +  this.userProfile.lastName,
-      //   },
-      //   sid: '23423423423423424',
-      //   contentId: contentId,
-      //   pdata: {
-      //     id: org.sunbird.portal.appid,
-      //     ver: '1.0'
-      //   },
-      //   etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-      //   channel: org.sunbird.portal.channel
-      // };
-      // window.config = {
-      //   baseURL: '',
-      //   modalId: 'contentEditor',
-      //   apislug: '/action',
-      //   alertOnUnload: true,
-      //   // headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
-      //   aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
-      //                 org.sunbird.portal.ekstep_env + '/', 'https://ekstep-public-' +
-      //                 org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
-      //   plugins: [
-      //     {
-      //       id: 'org.ekstep.sunbirdcommonheader',
-      //       ver: '1.1',
-      //       type: 'plugin'
-      //     }
-      //   ],
-      //   dispatcher: 'local',
-      //   localDispatcherEndpoint: '/content-editor/telemetry',
-      //   showHelp: false,
-      //   previewConfig: {
-      //     repos: ['/content-plugins/renderer'],
-      //     plugins: [{
-      //       id: 'org.sunbird.player.endpage',
-      //       ver: 1.0,
-      //       type: 'plugin'
-      //     }],
-      //     showEndPage: false
-      //   }
-      // };
+      window.context = {
+        user: {
+          id: this.userProfile.userId,
+          name: this.userProfile.firstName + ' ' +  this.userProfile.lastName,
+        },
+        sid: '23423423423423424',
+        contentId: this.contentId,
+        pdata: {
+          id: org.sunbird.portal.appid,
+          ver: '1.0'
+        },
+        etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+        channel: org.sunbird.portal.channel
+      };
 
 
 
+      window.config = {
+        baseURL: '',
+        modalId: 'contentEditor',
+        apislug: '/action',
+        alertOnUnload: true,
+        headerLogo: '',
+        aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
+                      org.sunbird.portal.ekstep_env + '/', 'https://ekstep-public-' +
+                      org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
+        plugins: [
+          {
+            id: 'org.ekstep.sunbirdcommonheader',
+            ver: '1.1',
+            type: 'plugin'
+          }
+        ],
+        dispatcher: 'local',
+        localDispatcherEndpoint: '/content-editor/telemetry',
+        showHelp: false,
+        previewConfig: {
+          repos: ['/content-plugins/renderer'],
+          plugins: [{
+            id: 'org.sunbird.player.endpage',
+            ver: 1.0,
+            type: 'plugin'
+          }],
+          showEndPage: false
+        }
+      };
+  }
+
+  //
+  // tslint:disable-next-line:member-ordering
 
 
+  checkContentAccess (reqData, validateData) {
+    const status = reqData.status;
+    const createdBy = reqData.createdBy;
+    const state = reqData.state;
+    const userId = reqData.userId;
+    const validateDataStatus = validateData.status;
+    if (reqData.mimeType === validateData.mimeType) {
+      const isStatus = _.indexOf(validateDataStatus, status) > -1;
+      const isState = _.indexOf(validateData.state, state) > -1;
+      if (isStatus && isState && createdBy !== userId) {
+        return true;
+      } else if (isStatus && isState && createdBy === userId) {
+        return true;
+      } else if (isStatus && createdBy === userId) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
 
+  getContentData () {
+    const state = null;
+    const req = { contentId: this.contentId };
+    const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
 
+    const validateModal  = {
+      'state': ['UpForReviewContent', 'ReviewContent', 'PublishedContent', 'LimitedPublishedContent'],
+       'status': ['Review', 'Draft', 'Live', 'Unlisted'],
+      //  'mimeType': this.config.CreateLessonMimeType
+      'minmeType': 'application/vnd.ekstep.ecml-archive'
 
+     };
 
+    this.editorService.getById(req, qs).subscribe((response) => {
+
+      if (response && response.responseCode === 'OK') {
+        const rspData = response.result.content;
+        rspData.state = state;
+        rspData.userId = this.userProfile.userId;
+
+        // if (this.checkContentAccess(rspData, validateModal)) {
+        //   this.openContentEditor();
+        // } else {
+        //   this.toasterService.error(this.resourceService.messages.emsg.m0004);
+        //  this.router.navigate(['home']);
+        // }
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
+        this.router.navigate(['home']);
+      }
     });
   }
+
+  initfn () {
+    org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
+      function () {
+        if (this.state) {
+          this.router.navigate([this.state]);
+        } else {
+          this.router.navigate(['draft']);
+        }
+      });
+
+    org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
+            function (event, data) {
+              if (this.state) {
+                this.router.navigate([this.state]);
+              } else {
+                this.router.navigate(['draft']);
+              }
+            });
+
+
+
+    window.addEventListener('editor:metadata:edit', (event) => {
+      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
+    });
+
+    window.addEventListener('editor:window:close', (event) => {
+      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
+    });
+
+    window.addEventListener('editor:content:review', (event) => {
+      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
+        this.contentId);
+    });
+  }
+
+
+
+
+  openModel() {
+
+  }
+
 }

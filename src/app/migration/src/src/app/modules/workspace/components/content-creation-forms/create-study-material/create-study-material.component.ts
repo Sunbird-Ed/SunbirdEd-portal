@@ -51,6 +51,8 @@ export class CreateStudyMaterialComponent implements OnInit {
   public userForm: FormGroup;
   public formBuilder: FormBuilder;
 
+  // public medium: Array<any> = [];
+
   constructor(public modalService: SuiModalService,
     resourceService: ResourceService,
     toasterService: ToasterService,
@@ -79,6 +81,13 @@ export class CreateStudyMaterialComponent implements OnInit {
         }
       });
     this.showLoader = false;
+    const medium = ['KAR', 'TN', 'AP'];
+    const subjects = this.config.dropDownConfig.COMMON.subjects;
+    // this.grades = this.config.dropDownConfig.COMMON.grades;
+    // this.medium = this.config.dropDownConfig.COMMON.medium;
+    // this.boards = this.config.dropDownConfig.COMMON.boards;
+    // this.resourceType = this.config.dropDownConfig.COMMON.resourceType;
+    // this.mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
     this.userForm = this.formBuilder.group({
       name: '',
       boards: '',
@@ -135,7 +144,7 @@ export class CreateStudyMaterialComponent implements OnInit {
 
         console.log('content id in ', res.result.content_id);
 
-        this.router.navigate(['/workspace/content/edit/content', res.result.content_id, state]);
+        this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state]);
       } else {
         console.log('error');
         this.toasterService.error(this.resourceService.messages.emsg.m0010);
