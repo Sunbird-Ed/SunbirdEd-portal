@@ -106,20 +106,18 @@ export class CreateCollectionComponent implements OnInit {
  */
 generateData() {
   this.showLoader = true;
-  const collectionConfig = {
-    mimeType: this.config.urlConFig.URLS.CONTENT_COLLECTION,
-    contentType: 'Collection'
-  };
-  const user = {
+
+  const requestBody = {
     name: this.userForm.value.name ? this.userForm.value.name : 'Untitled Collection',
     description: this.userForm.value.description,
     creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
     createdBy: this.userProfile.id,
     organisation: [],
-    createdFor: this.userProfile.organisationIds
+    createdFor: this.userProfile.organisationIds,
+    mimeType: this.config.urlConFig.URLS.CONTENT_COLLECTION,
+    contentType: 'Collection'
   };
 
-  const requestBody = {...user, ...collectionConfig};
   return requestBody;
 }
 
