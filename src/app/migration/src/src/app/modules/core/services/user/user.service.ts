@@ -15,6 +15,10 @@ export class UserService {
    * Contains user id
    */
   private _userid: string;
+ /**
+   * Contains session id
+   */
+  private _sessionId: string;
   /**
    * Contains root org id
    */
@@ -52,15 +56,13 @@ export class UserService {
    * get method to fetch userid.
    */
   get userid(): string {
-    if (this._userid) {
-      return this._userid;
-    }
-    try {
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
-    } catch (e) {
-      this._userid = 'userId';
-    }
     return this._userid;
+  }
+   /**
+   * get method to fetch sessionId.
+   */
+   get sessionId(): string {
+     return this._sessionId;
   }
   /**
    * method to fetch user profile from server.
@@ -81,6 +83,10 @@ export class UserService {
   }
 
   public initialize() {
+    try {
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+    } catch {}
     this.getUserProfile();
   }
   /**

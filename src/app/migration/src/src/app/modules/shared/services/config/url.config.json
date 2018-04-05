@@ -4,7 +4,7 @@
             "fields": "completeness,missingFields,lastLoginTime"
         }
     },
-    "URLS": {
+    "URLS": {        
         "LEARNER_PREFIX": "/learner/",
         "CONTENT_PREFIX": "/content/",
         "ANNOUNCEMENT_PREFIX": "/announcement/v1",
@@ -109,7 +109,9 @@
             "READ":"framework/v1/read"
         },
         "GEO_EXPLORER":{
-            "LOCATION_READ": "org/v1/location/read"
+            "LOCATION_READ": "org/v1/location/read/"
+        },
+        "CONTENT_COLLECTION":"application/vnd.ekstep.content-collection",
+        "LOCATION_READ": "org/v1/location/read"
         }
     }
-}
