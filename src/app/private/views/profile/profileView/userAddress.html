@@ -31,7 +31,7 @@
             <div class=" ui " ng-repeat="address in profileCtrl.address track by $index " ng-include=" 'views/profile/editProfile/address.html' "></div>
             <div class="ui warning message " ng-if="profileCtrl.isSameAddressTypeExist ">
                 <i class="close icon "></i>
-                <p>You selected both address types are same, please change any one.</p>
+                <p>{{$root.messages.imsg.m0030}}</p>
             </div>
             <button ng-hide="profileCtrl.isSameAddressTypeExist" class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address); profileCtrl.generateInteractEvent('profile-update-address', 'profile-read','1.0')">{{$root.frmelmnts.btn.save}}</button>
         </div>

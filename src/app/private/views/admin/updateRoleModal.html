@@ -15,14 +15,14 @@
     <div class="scrolling content">
         <div class="ui selection dropdown  margin-left-10" id="userOrgs_{{user.identifier}}" ng-init="admin.setDefaultSelected(admin.userOrganisations)">
             <i class="dropdown icon"></i>
-            <div class="default text">Select Org</div>
+            <div class="default text">{{$root.frmelmnts.lbl.selectorg}}</div>
             <div class="menu">
                 <div class="item" ng-repeat="org in admin.userOrganisations" ng-click="admin.selectedIrg(org.organisationId);admin.selectedOrgUserRoles=org.roles;admin.selectedOrgUserId=org.organisationId"
                     value="{{org.organisationId}}">{{org.orgName || org.organisationId}}</div>
             </div>
         </div>
 
-        <div class="ui form margin-top-40" ng-if="admin.selectedOrgUserRoles">
+        <div class="ui form margin-top-40" ng-if="admin.selectedOrgUserRoles" >
             <ul class="selectOrgRoles">
 
                 <li class="orgRolesListView" ng-repeat="role in admin.userRoles">
