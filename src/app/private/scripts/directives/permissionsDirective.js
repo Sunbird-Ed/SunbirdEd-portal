@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('playerApp')
-  .directive('sbPermissions', ['permissionsService', function (permissionsService) {
+  .directive('sbPermissions', ['permissionsService', '$rootScope', function (permissionsService, $rootScope) {
     return {
       restrict: 'A',
       scope: {},
@@ -10,6 +10,9 @@ angular.module('playerApp')
           if (!permissionsService.checkRolesPermissions(
             attrs.permissionOnly.split(','), true)) {
             element.remove()
+            $rootScope.$broadcast('permissionOnlyViewUpdated', {'action': 'removed', 'element': element, 'attrs': attrs})
+          } else {
+            $rootScope.$broadcast('permissionOnlyViewUpdated', {'action': 'notRemoved', 'element': element, 'attrs': attrs})
           }
         }
         if (attrs.permissionExcept) {

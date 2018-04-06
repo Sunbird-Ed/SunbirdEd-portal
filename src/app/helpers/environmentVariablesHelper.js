@@ -34,7 +34,7 @@ let envVariables = {
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   CONTENT_CHANNEL_FILTER_TYPE: env.sunbird_content_channel_filter_type || 'all',
   learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
-  content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
+  content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content_service_content_service:5000',
   MOBILE_APP_URL: env.sunbird_mobile_app_url || 'http://www.sunbird.org'
 }
 

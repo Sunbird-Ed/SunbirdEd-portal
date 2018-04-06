@@ -47,6 +47,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     dynamic.dropdownId = []
     dynamic.dropdownValue = []
     dynamic.search.showFilters = false
+    dynamic.applyFilterOnly = false
 
     // search select dropdown changes
     var selectedsearchKeyHandler = $rootScope.$on('DynsetSearchKey', function (event, args) {
@@ -57,14 +58,14 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         action: 'search'
       }
       switch (dynamic.search.selectedSearchKey) {
-      case 'Courses':
-        req.subType = 'course'
-        dynamic.getChannel(req)
-        break
-      case 'Library':
-        req.subType = 'library'
-        dynamic.getChannel(req)
-        break
+        case 'Courses':
+          req.subType = 'course'
+          dynamic.getChannel(req)
+          break
+        case 'Library':
+          req.subType = 'library'
+          dynamic.getChannel(req)
+          break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
     })
@@ -78,21 +79,23 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         action: 'search'
       }
       switch (dynamic.search.selectedSearchKey) {
-      case 'Courses':
-        dynamic.req.subType = 'course'
-        dynamic.getChannel(dynamic.req)
-        break
-      case 'Library':
-        dynamic.req.subType = 'library'
-        dynamic.getChannel(dynamic.req)
-        break
+        case 'Courses':
+          dynamic.req.subType = 'course'
+          dynamic.getChannel(dynamic.req)
+          break
+        case 'Library':
+          dynamic.req.subType = 'library'
+          dynamic.getChannel(dynamic.req)
+          break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
       // $scope.search.searchRequest(false)
     })
 
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
-      $scope.search.initSearch()
+      if(dynamic.applyFilterOnly === false){
+        $scope.search.initSearch()
+      }
     })
 
     dynamic.search.selectFilter =
@@ -109,10 +112,6 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
           }
         }, 0)
       }
-
-    dynamic.doFilter = function () {
-      dynamic.isSearchPage = true
-    }
 
     dynamic.getChannel = function (req) {
       searchService.getChannel().then(function (res) {
@@ -206,6 +205,9 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       }
     }
     $scope.search.initSearch = function () {
+      if($state.current.name === 'Search'){
+        dynamic.isSearchPage = true
+      }
       var searchParams = $stateParams
       dynamic.search.selectedSearchKey = dynamic.searchKey || searchParams.type
       dynamic.search.searchKeyword = dynamic.search.searchKeyword || searchParams.query
@@ -244,8 +246,10 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
               type: $rootScope.search.selectedSearchKey,
               query: $rootScope.search.searchKeyword,
               filters: btoa(JSON.stringify(dynamic.search.filters)),
-              sort: btoa(JSON.stringify(dynamic.search.sortBy)),
               autoSuggestSearch: $rootScope.search.searchFromSuggestion || false
+            }
+            if (_.keys(dynamic.search.sortBy)[0] !== 'null') {
+              searchParams.sort = btoa(JSON.stringify(dynamic.search.sortBy))
             }
             $rootScope.searchTelemetryId = 'search-' + $rootScope.search.selectedSearchKey.toLowerCase()
             $rootScope.searchTelemetryPageid = $rootScope.search.selectedSearchKey.toLowerCase() + '-search'
@@ -370,6 +374,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
     }
 
     dynamic.search.applyFilter = function () {
+      dynamic.applyFilterOnly = true
       _.forEach(dynamic.formFieldProperties, function (category) {
         if (category.inputType === 'select' || category.inputType === 'multiselect') {
           if (dynamic.search['selected' + category.code].length) {
@@ -380,7 +385,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
 
       dynamic.search.filters.concepts = dynamic.search.selectedConcepts
       dynamic.search.filters.contentType = dynamic.search.selectedContentType
-      $rootScope.generateInteractEvent('filter', 'filter-content', 'content', 'filter')
+      // $rootScope.generateInteractEvent('filter', 'filter-content', 'content', 'filter')
       $rootScope.isSearchResultsPage = false
       $scope.search.searchRequest()
     }
@@ -399,7 +404,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       dynamic.isSearchPage = true
       $scope.search.searchRequest()
       // $state.go(dynamic.search.selectedSearchKey);
-      $rootScope.generateInteractEvent('resetFilter', 'resetfilter-content', 'content', 'resetFilter')
+      // $rootScope.generateInteractEvent('resetFilter', 'resetfilter-content', 'content', 'resetFilter')
     }
     dynamic.search.applySorting = function () {
       var sortByField = dynamic.search.sortByOption

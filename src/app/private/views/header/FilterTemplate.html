@@ -1,4 +1,4 @@
-<div ng-init="dynamic.getChannel()">
+<div>
   <div class="ui divider header-search-filters-divider"></div>
   <div class="filtercolumn ui grid">
     <div class="one wide column">
@@ -11,7 +11,7 @@
               <div class="ui grid">
                 <div class="ten wide column">
                   <i alt="{{$root.frmelmnts.alt.filter}}" class="icon filter"></i>
-                  <span class="ShowFilterTitle" ng-click="$root.generateInteractEvent('filter','','filter','1.0','filter-content','filter-content'); dynamic.doFilter() ">{{$root.frmelmnts.lbl.filters}}</span>
+                  <span class="ShowFilterTitle" ng-click="$root.generateInteractEvent('filter','','filter','1.0','filter-content','filter-content');">{{$root.frmelmnts.lbl.filters}}</span>
                   <i id='filterIcon' class="dropdown icon"></i>
                 </div>
               </div>

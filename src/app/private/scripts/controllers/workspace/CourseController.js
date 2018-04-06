@@ -22,6 +22,7 @@ angular.module('playerApp')
         course.showCreateCourseModal = true
         $timeout(function () {
           $('#createCourseModal').modal({
+            observeChanges: true,
             onHide: function () {
               course.data = {}
               if (!course.isCourseCreated) {

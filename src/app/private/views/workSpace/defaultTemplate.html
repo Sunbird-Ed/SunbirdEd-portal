@@ -1,54 +1,54 @@
-<div ng-init="dataDrivenForm.refreshModel()">
-        <div ng-if="field.inputType==='text'" ng-class="{'error': (!metaForm[field.code].$valid && dataDrivenForm.isSubmit) , 'required': field.required}">
-            <div class="field" ng-class="{ 'disabled':!field.editable} ">
-                <label>{{field.name}}</label>
-            <input id="{{field.code}}" name="{{field.code}}" type="text" placeholder="{{field.placeholder}}" ng-model="dataDrivenForm.data[field.code]" ng-required="{{field.required}} "
-                ng-pattern="field.validation.regex['value']" ng-maxlength="{{field.validation.max[ 'value']}}" ng-keyup="dataDrivenForm.updateErrorMessage()"/>
-            </div>
-            <div ng-show="!metaForm[field.code].$valid  && dataDrivenForm.isSubmit" class="ui pointing red basic label ">
-                    {{validation[field.code].errorMessage || DEFAULT_ERROR_MESSAGE}}
-                </div>
-        </div>
-        <div ng-if="field.inputType==='select' && field.code!='year' ">
-            <div class="field" ng-class="{ 'disabled':!field.editable} ">
-                    <label >{{field.name}}</label>
-                    <select id="{{field.code}}" class="ui search dropdown placeholder-padding"
-                    ng-model="dataDrivenForm.data[field.code]" ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, 'field':field, value:dataDrivenForm.data[field.code]})">
-                        <option value="">Select</option>
-                        <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>
-                    </select>
-                </div>
-        </div>
-        <div ng-if="field.inputType==='multiSelect'">
-                <div class="field" ng-class="{ 'disabled':!field.editable} ">
-                        <label>{{field.name}}</label>
-            <select id="{{field.code}}" multiple="" class="ui search dropdown placeholder-padding"
-                ng-class="{{field.code}}" ng-model="dataDrivenForm.data[field.code]" ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, field:field, value:dataDrivenForm.data[field.code]}) ">
-                <option value="">Select</option>
-                <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>
-            </select>
-            </div>
-        </div>
-        <div ng-if="field.code==='year'">
-                <div class="field" ng-class="{ 'disabled':!field.editable} ">
-                        <label>{{field.name}}</label>
-                        <select name="year" class="ui fluid search selection  dropdown" id="{{field.code}}" ng-options=" year for year in dataDrivenForm.years | orderBy" ng-model="dataDrivenForm.data[field.code]">
-                        <option value="">{{field.name}}</option>
-                    </select>
-                </div>
-        </div>
-        <div ng-if="field.code==='concept'">
-        <div class="field" ng-if="$root.concepts" ng-class="{ 'disabled':!field.editable} ">
-                <label>{{field.name}}</label>
-                <concept-picker selected-concepts="[]"></concept-picker>
-            </div>
-            </div>
-            <div ng-if="field.code==='resourcetype'">
-            <div class="field" ng-class="{ 'disabled':!field.editable} ">
-                <label>{{$root.frmelmnts.lbl.resourcetype}}</label>
-                <select name="resourceType" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in dataDrivenForm.resourceType" ng-model="dataDrivenForm.data[field.code]">
-                    <option value="">{{field.name}}</option>
-                </select>
-            </div>
-        </div>
+<div ng-if="field.inputType==='text'" ng-class="{'error': (!metaForm[field.code].$valid && dataDrivenForm.isSubmit) , 'required': field.required}">
+    <div class="field" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{field.name}}</label>
+        <input id="{{field.code}}" name="{{field.code}}" type="text" placeholder="{{field.placeholder}}" ng-model="dataDrivenForm.data[field.code]"
+            ng-required="{{field.required}} " ng-pattern="field.validation.regex['value']" ng-maxlength="{{field.validation.max[ 'value']}}"
+            ng-keyup="dataDrivenForm.updateErrorMessage()" />
     </div>
+    <div ng-show="!metaForm[field.code].$valid  && dataDrivenForm.isSubmit" class="ui pointing red basic label ">
+        {{validation[field.code].errorMessage || DEFAULT_ERROR_MESSAGE}}
+    </div>
+</div>
+<div ng-if="field.inputType==='select' && field.code!='year' ">
+    <div class="field" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{field.name}}</label>
+        <select id="{{field.code}}" class="ui search dropdown placeholder-padding" ng-model="dataDrivenForm.data[field.code]" ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, 'field':field, value:dataDrivenForm.data[field.code]})">
+            <option value="">Select</option>
+            <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>
+        </select>
+    </div>
+</div>
+<div ng-if="field.inputType==='multiSelect'">
+    <div class="field" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{field.name}}</label>
+        <select id="{{field.code}}" multiple="" class="ui search dropdown placeholder-padding" ng-class="{{field.code}}" ng-model="dataDrivenForm.data[field.code]"
+            ng-change="dataDrivenForm.dispatchEvent( 'editor:form:change', {index:$index, field:field, value:dataDrivenForm.data[field.code]}) ">
+            <option value="">Select</option>
+            <option value="{{category.name}}" ng-repeat="category in dataDrivenForm.categoryList[field.code]">{{category.name}}</option>
+        </select>
+    </div>
+</div>
+<div ng-if="field.code==='year'">
+    <div class="field" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{field.name}}</label>
+        <select name="year" class="ui fluid search selection  dropdown" id="{{field.code}}" ng-options=" year for year in dataDrivenForm.years | orderBy"
+            ng-model="dataDrivenForm.data[field.code]">
+            <option value="">{{field.name}}</option>
+        </select>
+    </div>
+</div>
+<div ng-if="field.code==='concept'">
+    <div class="field" ng-if="$root.concepts" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{field.name}}</label>
+        <concept-picker selected-concepts="[]"></concept-picker>
+    </div>
+</div>
+<div ng-if="field.code==='resourcetype'">
+    <div class="field" ng-class="{ 'disabled':!field.editable} ">
+        <label>{{$root.frmelmnts.lbl.resourcetype}}</label>
+        <select name="resourceType" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in dataDrivenForm.resourceType"
+            ng-model="dataDrivenForm.data[field.code]">
+            <option value="">{{field.name}}</option>
+        </select>
+    </div>
+</div>

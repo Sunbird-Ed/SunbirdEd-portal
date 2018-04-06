@@ -255,11 +255,15 @@ angular.module('playerApp').controller('SearchResultController', [
       var req = {
         query: $rootScope.search.searchKeyword,
         filters: $rootScope.search.filters,
-        sort_by: $rootScope.search.sortBy,
+
         offset: (pageNumber - 1) * $rootScope.search.pageLimit,
         limit: $rootScope.search.pageLimit
 
       }
+      if (_.keys($rootScope.search.sortBy)[0] !== 'null') {
+        req.sort_by = $rootScope.search.sortBy
+      }
+
       if (!$scope.search.autoSuggest || $scope.search.autoSuggest === false) {
         if (!$rootScope.search.loader) {
           $rootScope.search.loader = toasterService.loader('', $rootScope.messages.stmsg.m0005)
@@ -442,7 +446,7 @@ angular.module('playerApp').controller('SearchResultController', [
         $rootScope.search.filters.concepts = $rootScope.search.selectedConcepts
         $rootScope.search.filters.contentType = $rootScope.search.selectedContentType
       }
-      $rootScope.generateInteractEvent('filter', 'filter-content', 'content', 'filter')
+      // $rootScope.generateInteractEvent('filter', 'filter-content', 'content', 'filter')
       $rootScope.isSearchResultsPage = false
       $scope.search.searchRequest()
     }
@@ -463,7 +467,7 @@ angular.module('playerApp').controller('SearchResultController', [
       $rootScope.search.selectedOrgType = []
       $scope.search.searchRequest()
       // $state.go($rootScope.search.selectedSearchKey);
-      $rootScope.generateInteractEvent('resetFilter', 'resetfilter-content', 'content', 'resetFilter')
+      // $rootScope.generateInteractEvent('resetFilter', 'resetfilter-content', 'content', 'resetFilter')
     }
     $rootScope.search.applySorting = function () {
       var sortByField = $rootScope.search.sortByOption

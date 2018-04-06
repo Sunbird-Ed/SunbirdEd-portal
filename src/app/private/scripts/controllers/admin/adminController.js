@@ -106,6 +106,7 @@ angular.module('playerApp')
               admin.selectedOrgUserRolesNew = []
               $('.roleChckbox').checkbox()
             },
+            observeChanges: true,
             closable: false,
             onHide: function () {
               admin.userId = ''
@@ -206,18 +207,32 @@ angular.module('playerApp')
       admin.isUserRole = function (role, list) {
         return list.includes(role)
       }
-      admin.editRoles = function (role, userRoles) {
+      admin.editRoles = function (role, userRoles, $event) {
         if (userRoles.includes(role) === true) {
           admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
             return selectedRole !== role
           })
         } else {
-          admin.selectedOrgUserRolesNew.push(role)
+          if ($event.target.checked === true) {
+            admin.selectedOrgUserRolesNew.push(role)
+          } else {
+            admin.selectedOrgUserRolesNew.splice(admin.selectedOrgUserRolesNew.indexOf(role))
+          }
         }
       }
       admin.updateRoles = function (identifier, orgId, roles) {
         admin.selectedOrgUserRolesNew.forEach(function (Newroles) {
           roles.push(Newroles)
+        })
+        var mainRole = []
+        var mainRolesCollections = _.clone(permissionsService.getMainRoles())
+        _.forEach(mainRolesCollections, function (value, key) {
+          mainRole.push(value.role)
+        })
+        var sendingRoles = _.clone(roles)
+        var removalRoles = _.difference(sendingRoles, mainRole)
+        _.remove(roles, function (role) {
+          return _.indexOf(removalRoles, role) !== -1
         })
         var req = {
           request: {
