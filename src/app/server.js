@@ -116,6 +116,10 @@ app.use('/private/index', function (req, res, next) {
 require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/', function (req, res) {
+  if (req.session['deauthenticated']) {
+    res.clearCookie('connect.sid', {path: '/'})
+    delete req.session['deauthenticated']
+  }
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
@@ -307,6 +311,7 @@ keycloak.deauthenticated = function (request) {
     telemetryHelper.logSessionEnd(request)
     delete request.session.sessionEvents
   }
+  request.session['deauthenticated'] = true
 }
 
 resourcesBundlesHelper.buildResources(function (err, result) {
