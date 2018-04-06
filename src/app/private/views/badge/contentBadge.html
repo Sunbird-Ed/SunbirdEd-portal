@@ -1,6 +1,6 @@
 <div class="ui grid" ng-init="contentBadge.getAllBadges()">
     <div class="six wide column">
-        <div class="ui blue labels" ng-if="contentBadge.selectedBadgeList.length>0">
+        <div class="ui blue labels" ng-if="contentBadge.selectedBadgeList.length > 0">
             <div class="ui label margin-right-10" ng-repeat="selectedbadge in contentBadge.selectedBadgeList">{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}</div>
         </div>
     </div>

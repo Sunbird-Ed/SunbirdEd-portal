@@ -569,6 +569,10 @@
                     }
                   ]
             }
+        },
+        "PROFILE": {
+            "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu","Urdu", "Assamese"]
         }
+
     }
 }

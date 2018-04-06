@@ -125,6 +125,8 @@ angular.module('playerApp')
           }
           batchService.create(request).then(function (response) {
             if (response && response.responseCode === 'OK') {
+              telemetryService.startTelemetryData('course', response.result.batchId, 'batch', '1.0', 'batch',
+          'batch-create', 'create')
               if (data.users && data.users.length > 0) {
                 var userRequest = {
                   request: {

@@ -97,18 +97,22 @@ angular.module('playerApp')
       // open editRoles modal
       admin.showModal = function (identifier, orgs) {
         $timeout(function () {
-          $('#changeUserRoles').modal({
+          $('#changeUserRoles_' + identifier).modal({
             onShow: function () {
               admin.setDefaultSelected(orgs)
               admin.identifier = identifier
               admin.userOrganisations = orgs
               admin.selectedOrgUserRoles = []
+              admin.selectedOrgUserRolesNew = []
               $('.roleChckbox').checkbox()
             },
+            observeChanges: true,
+            closable: false,
             onHide: function () {
               admin.userId = ''
               admin.userOrganisations = []
               admin.selectedOrgUserRoles = []
+              admin.selectedOrgUserRolesNew = []
               return true
             }
           }).modal('show')
@@ -150,20 +154,20 @@ angular.module('playerApp')
         } else if (key === 'Organisations') {
           list.forEach(function (org) {
             switch (org.status) {
-            case 0:
-              org.status = 'INACTIVE'
-              break
-            case 1:
-              org.status = 'ACTIVE'
-              break
-            case 2:
-              org.status = 'BLOCKED'
-              break
-            case 3:
-              org.status = 'RETIRED'
-              break
-            default:
-              break
+              case 0:
+                org.status = 'INACTIVE'
+                break
+              case 1:
+                org.status = 'ACTIVE'
+                break
+              case 2:
+                org.status = 'BLOCKED'
+                break
+              case 3:
+                org.status = 'RETIRED'
+                break
+              default:
+                break
             }
           })
           var orgNullReplacedToEmpty = JSON.stringify(list).replace(/null/g, '""')
@@ -203,40 +207,58 @@ angular.module('playerApp')
       admin.isUserRole = function (role, list) {
         return list.includes(role)
       }
-      admin.editRoles = function (role, userRoles) {
+      admin.editRoles = function (role, userRoles, $event) {
         if (userRoles.includes(role) === true) {
           admin.selectedOrgUserRoles = admin.selectedOrgUserRoles.filter(function (selectedRole) {
             return selectedRole !== role
           })
         } else {
-          admin.selectedOrgUserRoles.push(role)
+          if ($event.target.checked === true) {
+            admin.selectedOrgUserRolesNew.push(role)
+          } else {
+            admin.selectedOrgUserRolesNew.splice(admin.selectedOrgUserRolesNew.indexOf(role))
+          }
         }
       }
       admin.updateRoles = function (identifier, orgId, roles) {
+        admin.selectedOrgUserRolesNew.forEach(function (Newroles) {
+          roles.push(Newroles)
+        })
+        var mainRole = []
+        var mainRolesCollections = _.clone(permissionsService.getMainRoles())
+        _.forEach(mainRolesCollections, function (value, key) {
+          mainRole.push(value.role)
+        })
+        var sendingRoles = _.clone(roles)
+        var removalRoles = _.difference(sendingRoles, mainRole)
+        _.remove(roles, function (role) {
+          return _.indexOf(removalRoles, role) !== -1
+        })
         var req = {
           request: {
             userId: identifier,
             organisationId: orgId,
             roles: roles
-
           }
         }
 
         adminService.updateRoles(req).then(function (res) {
           if (res.responseCode === 'OK') {
             toasterService.success($rootScope.messages.smsg.m0028)
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
           } else {
-            $('#changeUserRoles').modal('hide', function () {
-              $('#changeUserRoles').modal('hide')
+            admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
+            $('#changeUserRoles_' + identifier).modal('hide', function () {
+              $('#changeUserRoles_' + identifier).modal('hide')
             })
             // profile.isError = true;
             toasterService.error($rootScope.messages.fmsg.m0051)
           }
         }).catch(function (err) { // eslint-disable-line
           // profile.isError = true
+          admin.selectedOrgUserRoles = _.difference(admin.selectedOrgUserRoles, admin.selectedOrgUserRolesNew)
           toasterService.error($rootScope.messages.fmsg.m0051)
         })
       }
@@ -256,14 +278,19 @@ angular.module('playerApp')
       }
 
       admin.setDefaultSelected = function (organizations) {
-        if (organizations) {
+        if (organizations && organizations.length > 0) {
           $timeout(function () {
-            var orgDropdown = $('#userOrgs').dropdown()
-            orgDropdown.dropdown('set text', organizations[0].orgName)
-            orgDropdown.dropdown({ allowTab: false })
+            var dropdownDom = $('#userOrgs_' + admin.identifier)
+            dropdownDom.dropdown()
+            if (organizations[0]['orgName']) {
+              dropdownDom.dropdown('set text', organizations[0].orgName)
+            } else {
+              dropdownDom.dropdown('set text', organizations[0].organisationId)
+            }
+            dropdownDom.dropdown({ allowTab: false })
             admin.selectedOrgUserRoles = organizations[0].roles
             admin.selectedOrgUserId = organizations[0].organisationId
-          }, 0)
+          }, 1000)
         }
       }
       admin.getUserRoles()

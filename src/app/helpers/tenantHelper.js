@@ -6,7 +6,9 @@ const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
+const appId = envHelper.APPID
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 
 module.exports = {

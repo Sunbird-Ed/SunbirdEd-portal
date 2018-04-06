@@ -28,15 +28,18 @@ angular.module('playerApp')
         telemetryService.impressionTelemetryData('workspace', '', 'textbook', '1.0', 'scroll',
           'workspace-create-textbook', '/create/textbook')
         $timeout(function () {
-          $('#createTextBookModal').modal({
+          $('#createTextBookModal')
+          .modal({
+            observeChanges: true,
             onHide: function () {
               textbook.data = {}
               if (!textbook.isTextBookCreated) {
                 $state.go('WorkSpace.ContentCreation')
               }
             }
-          }).modal('show')
-        }, 10)
+          })
+          .modal('show')
+        })
       }
 
       textbook.createContent = function (requestData) {

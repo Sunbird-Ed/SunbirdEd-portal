@@ -20,7 +20,7 @@ angular.module('playerApp')
       dataDrivenForm.isSubmit = false
 
       /**
-   * 
+   *
    * @description                     -
    * @param {Object} configurations   - Field configurations
    * @param {String} key              - Field uniq code
@@ -66,67 +66,90 @@ angular.module('playerApp')
       dataDrivenForm.updateForm = function (object) {
         if (object.field.range) {
           dataDrivenForm.getAssociations(object.value, object.field.range, function (associations) {
-            dataDrivenForm.applayDependencyRules(object.field, associations, true)
+            dataDrivenForm.applyDependencyRules(object.field, associations, true)
           })
         }
       }
 
-      /** 
+      /**
      * @description                    - Which is used to get the association object by mapping key and range object
      * @param {String | Array} keys    - To the associactio object for particular key's
      * @param {Object} range           - Which refers to framework terms/range object
      */
       dataDrivenForm.getAssociations = function (keys, range, callback) {
+        var names = []
         var associations = []
-        var values = _.filter(range, function (res) { return _.includes(keys, res.name) })
-        _.forEach(values, function (key, value) {
-          if (key.associations) {
-            _.forEach(key.associations, function (key, value) {
+        var filteredAssociations = []
+        if (_.isString(keys)) {
+          names.push(keys)
+        } else {
+          names = keys
+        }
+        _.filter(range, function (res) {
+          _.forEach(names, function (value, key) {
+            if (res.name === value) {
+              filteredAssociations.push(res)
+            }
+          })
+        })
+        _.forEach(filteredAssociations, function (val, index) {
+          if (val.associations) {
+            _.forEach(val.associations, function (key, value) {
               associations.push(key)
             })
           }
         })
         callback && callback(associations)
       }
-
       /**
-     * @description                    - Which is used to resolve the dependency. 
+     * @description                    - Which is used to resolve the dependency.
      * @param {Object} field           - Which field need need to get change.
      * @param {Object} associations    - Association values of the respective field.
      * @param {Boolean} resetSelected  - @default true Which defines while resolving the dependency dropdown
      *                                   Should reset the selected values of the field or not
      */
-      dataDrivenForm.applayDependencyRules = function (field, associations, resetSelected) {
+      dataDrivenForm.applyDependencyRules = function (field, associations, resetSelected) {
         // reset the depended field first
         // Update the depended field with associated value
         // Currently, supported only for the dropdown values
         var dependedValues
+        var groupdFields
         if (field.depends && field.depends.length) {
           _.forEach(field.depends, function (id) {
             resetSelected && dataDrivenForm.resetSelectedField(id)
-            dependedValues = _.map(associations, function (i) { return _.pick(i, 'name') })
+            dependedValues = _.map(associations, function (i) { return _.pick(i, 'name', 'category') })
+            groupdFields = _.chain(dependedValues)
+            .groupBy('category')
+            .map(function (name, category) { return { 'name': name, 'category': category } })
+            .value()
             dataDrivenForm.updateDropDownList(id, dependedValues)
+            if (groupdFields.length) {
+              _.forEach(groupdFields, function (value, key) {
+                dataDrivenForm.updateDropDownList(value.category, _.map(value.name, function (i) { return _.pick(i, 'name') }))
+              })
+            } else {
+              dataDrivenForm.updateDropDownList(id, [])
+            }
           })
         }
       }
-
       /**
-     * @description            - Which updates the drop down value list 
+     * @description            - Which updates the drop down value list
      *                         - If the specified values are empty then drop down will get update with master list
      * @param {Object} field   - Field which is need to update.
      * @param {Object} values  - Values for the field
      */
       dataDrivenForm.updateDropDownList = function (fieldCode, values) {
         if (values.length) {
-          dataDrivenForm.categoryList[fieldCode] = values
+          dataDrivenForm.categoryList[fieldCode] = _.unionBy(values, 'name')
         } else {
           dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties, fieldCode)
         }
       }
 
-      /** 
+      /**
      * @description         - Which is used to restore the dropdown slected value.
-     * @param {String} id   - To restore the specific dropdown field value 
+     * @param {String} id   - To restore the specific dropdown field value
      */
       dataDrivenForm.resetSelectedField = function (id) {
         setTimeout(function () {
@@ -144,21 +167,21 @@ angular.module('playerApp')
 
         if ($scope.metaForm.$valid) {
           switch ($state.current.name) {
-          case 'CreateTextbook':
-            $rootScope.$broadcast('CreateTextbook', { Data: data, framework: dataDrivenForm.framework })
-            break
-          case 'CreateCourse':
-            $rootScope.$broadcast('CreateCourse', { Data: data, framework: dataDrivenForm.framework })
-            break
-          case 'CreateCollection':
-            $rootScope.$broadcast('CreateCollection', { Data: data, framework: dataDrivenForm.framework })
-            break
-          case 'CreateLesson':
-            $rootScope.$broadcast('CreateLesson', { Data: data, framework: dataDrivenForm.framework })
-            break
-          case 'CreateLessonPlan':
-            $rootScope.$broadcast('CreateLessonPlan', { Data: data, framework: dataDrivenForm.framework })
-            break
+            case 'CreateTextbook':
+              $rootScope.$broadcast('CreateTextbook', { Data: data, framework: dataDrivenForm.framework })
+              break
+            case 'CreateCourse':
+              $rootScope.$broadcast('CreateCourse', { Data: data, framework: dataDrivenForm.framework })
+              break
+            case 'CreateCollection':
+              $rootScope.$broadcast('CreateCollection', { Data: data, framework: dataDrivenForm.framework })
+              break
+            case 'CreateLesson':
+              $rootScope.$broadcast('CreateLesson', { Data: data, framework: dataDrivenForm.framework })
+              break
+            case 'CreateLessonPlan':
+              $rootScope.$broadcast('CreateLessonPlan', { Data: data, framework: dataDrivenForm.framework })
+              break
           }
         }
         // console.log("data", data)
@@ -170,17 +193,17 @@ angular.module('playerApp')
           if ($scope.metaForm[value.code] && $scope.metaForm[value.code].$invalid) {
             $scope.validation[value.code] = {}
             switch (_.keys($scope.metaForm[value.code].$error)[0]) {
-            case 'pattern': // When input validation of type is regex
-              $scope.validation[value.code]['errorMessage'] = value.validation.regex.message
-              break
-            case 'required': // When input validation of type is required
-              $scope.validation[value.code]['errorMessage'] = 'Plese Input a value'
-              break
-            case 'maxlength': // When input validation of type is max
-              $scope.validation[value.code]['errorMessage'] = value.validation.max.message
-              break
-            default:
-              $scope.validation[value.code]['errorMessage'] = 'Invalid Input'
+              case 'pattern': // When input validation of type is regex
+                $scope.validation[value.code]['errorMessage'] = value.validation.regex.message
+                break
+              case 'required': // When input validation of type is required
+                $scope.validation[value.code]['errorMessage'] = 'Plese Input a value'
+                break
+              case 'maxlength': // When input validation of type is max
+                $scope.validation[value.code]['errorMessage'] = value.validation.max.message
+                break
+              default:
+                $scope.validation[value.code]['errorMessage'] = 'Invalid Input'
             }
           }
         })
@@ -188,26 +211,26 @@ angular.module('playerApp')
 
       /**
        * @description                      - Which is used to configure the symantic ui drop down
-       *                                     to enable/disable the force selection field and multiSelect fields with tags format 
+       *                                     to enable/disable the force selection field and multiSelect fields with tags format
        *
        * @param {Boolean} labels           - @default false Which defines the MultiSelect should be tag format design or not
        * @param {Boolean} forceSelection   - @default false Which defines the force selection should enalbe or not
        */
       dataDrivenForm.configureDropdowns = function (labels, forceSelection) {
         // TODO: Need to remove the timeout
-        setTimeout(function () {
+        $timeout(function () {
           $('.ui.dropdown').dropdown({
             useLabels: labels,
-            forceSelection: forceSelection
+            forceSelection: forceSelection,
+            direction: 'downward'
           })
           if (dataDrivenForm.loader.showLoader) {
             dataDrivenForm.loader.showLoader = false
           }
-          dataDrivenForm.refreshModel()
-        }, 0)
+        }, 1000)
       }
 
-      /** 
+      /**
        * @description - Initialization of the controller
        *              - Which partions the fixedLayout and dynamic layout section fields
        */
@@ -220,21 +243,21 @@ angular.module('playerApp')
           action: 'create'
         }
         switch ($state.current.name) {
-        case 'CreateTextbook':
-          req.subType = 'textbook'
-          break
-        case 'CreateCourse':
-          req.subType = 'course'
-          break
-        case 'CreateCollection':
-          req.subType = 'collection'
-          break
-        case 'CreateLesson':
-          req.subType = 'resource'
-          break
-        case 'CreateLessonPlan':
-          req.subType = 'lessonplan'
-          break
+          case 'CreateTextbook':
+            req.subType = 'textbook'
+            break
+          case 'CreateCourse':
+            req.subType = 'course'
+            break
+          case 'CreateCollection':
+            req.subType = 'collection'
+            break
+          case 'CreateLesson':
+            req.subType = 'resource'
+            break
+          case 'CreateLessonPlan':
+            req.subType = 'lessonplan'
+            break
         }
 
         searchService.getChannel().then(function (res) {
@@ -277,14 +300,13 @@ angular.module('playerApp')
                         if (field.depends && field.depends.length) {
                           dataDrivenForm.getAssociations(dataDrivenForm.frameworkData[field.code],
                             field.range, function (associations) {
-                              dataDrivenForm.applayDependencyRules(field, associations, false)
+                              dataDrivenForm.applyDependencyRules(field, associations, false)
                             })
                         }
                       }
                     })
                     dataDrivenForm.configureDropdowns(false, false)
                   }, 0)
-                  dataDrivenForm.refreshModel()
                   dataDrivenForm.mapMasterCategoryList(dataDrivenForm.formFieldProperties)
                 }).catch(function (error) {
                   console.log('error is ......', error)
@@ -299,16 +321,6 @@ angular.module('playerApp')
         }).catch(function (error) {
           console.log('error is ......', error)
         })
-      }
-
-      dataDrivenForm.refreshModel = function () {
-        $timeout(function () {
-          $('#createTextBookModal').modal('refresh')
-          $('#createCourseModal').modal('refresh')
-          $('#createSlideShowModal').modal('refresh')
-          $('#createCollectionModel').modal('refresh')
-          $('#createLessonPlanModal').modal('refresh')
-        }, 0)
       }
     }
   ])

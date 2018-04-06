@@ -28,6 +28,7 @@ angular.module('playerApp')
           }
           configuration.context.dims = cloneDims
         }
+        configuration.context.tags = _.concat([], org.sunbird.portal.channel)
         configuration.context.app = [org.sunbird.portal.appid]
         configuration.context.partner = []
         if ($rootScope.isTocPage) {
@@ -37,7 +38,7 @@ angular.module('playerApp')
           }]
         }
         configuration.context.pdata = {
-          'id': org.sunbird.portal.appid || 'sunbird.portal',
+          'id': org.sunbird.portal.appid,
           'ver': '1.0',
           'pid': 'sunbird-portal'
         }
@@ -87,10 +88,10 @@ angular.module('playerApp')
          * from renderer
          * Player controller dispatching the event sunbird
          */
-        /* document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
-        }) */
+        })
         /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         } */
@@ -164,6 +165,12 @@ angular.module('playerApp')
         }
 
         $scope.visibility = false
+        if (document.getElementById('contentPlayer')) {
+          document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
+                      org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
+                        event.detail.telemetryData)
+                    }, false)
+        }
       }
 
       $scope.updateContent = function (scope) {

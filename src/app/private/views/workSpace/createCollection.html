@@ -17,6 +17,16 @@
             </div>
             <div ng-include="'views/workSpace/ContentCreationTemplate.html'">
             </div>
+            <h4 class="text-align-center margin-top-10">
+                    {{$root.frmelmnts.lbl.collectionfillater}}
+            </h4>
+            <div>
+                <label>
+                    <p class="text-align-center margin-bottom-20">
+                        {{$root.frmelmnts.lbl.agreeandproceedtext}}
+                    </p>
+                </label>
+            </div>
         </div>
         <div class=" ui segment margin-top-10" ng-if="collection.loader.showLoader">
             <app-loader data="{{collection.loader}}"></app-loader>

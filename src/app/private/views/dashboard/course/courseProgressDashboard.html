@@ -58,7 +58,7 @@
 						<td class="ui orange header text-font" ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
 						<td class="ui red header text-font" ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
 						<td>{{student.userName}}
-					  		<br>Last login: {{student.lastAccessTime | dateFilterWithMDY}}
+					  		<br ng-if="student.lastAccessTime">Last access time: {{student.lastAccessTime | dateFilterWithMDY}}
 						</td>
 						<td>{{student.batchEndsOn | dateFilterWithMDY}}</td>
 						<td>{{student.org}}</td>

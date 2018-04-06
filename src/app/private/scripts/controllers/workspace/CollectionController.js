@@ -16,6 +16,7 @@ angular.module('playerApp')
         collection.showCreateCollectionModel = true
         $timeout(function () {
           $('#createCollectionModel').modal({
+            observeChanges: true,
             onHide: function () {
               collection.data = {}
               if (!collection.isCollectionCreated) {

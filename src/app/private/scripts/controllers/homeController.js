@@ -6,7 +6,7 @@ angular.module('playerApp')
     function ($state, learnService, $rootScope,
       sessionService, toasterService, telemetryService) {
       var homeCtrl = this
-
+      homeCtrl.showBrowserMsg = false
       homeCtrl.loadCarousel = function () {
         $('.ui .progress .course-progress').progress()
         $('.ui.rating')
@@ -65,21 +65,23 @@ angular.module('playerApp')
       // hide recommended temporarily
       // homeCtrl.otherSection();
       homeCtrl.openCourseView = function (course, courseType) {
-      // courseId = 'do_112265805439688704113';
+        // courseId = 'do_112265805439688704113';
         var showLectureView = 'no'
         if ($rootScope.enrolledCourseIds[course.courseId || course.identifier]) {
           showLectureView = 'no'
         } else {
           showLectureView = 'yes'
         }
-        var params = { courseType: courseType,
+        var params = {
+          courseType: courseType,
           courseId: course.courseId || course.identifier,
           lectureView: showLectureView,
           progress: course.progress,
           total: course.total,
           courseRecordId: course.id,
           courseName: course.courseName || course.name,
-          lastReadContentId: course.lastReadContentId }
+          lastReadContentId: course.lastReadContentId
+        }
         sessionService.setSessionData('COURSE_PARAMS', params)
         $state.go('Toc', params)
       }
@@ -106,5 +108,30 @@ angular.module('playerApp')
         }
         console.log('----------', inviewLogs)
         telemetryService.setVisitData(inviewLogs)
+      }
+      var isChrome = !!window.chrome && !!window.chrome.webstore
+      if (isChrome === false) {
+        homeCtrl.showBrowserMsg = true
+        if ((localStorage.getItem('#BrowserIncompatibleModel') !== 'shown')) {
+          setTimeout(function () {
+            $('#BrowserIncompatibleModel').modal({
+              onHide: function () {
+              }
+            }).modal('show')
+          }, 0)
+        }
+      }
+
+      homeCtrl.showBrowserIncompatibleModel = function () {
+        $('#BrowserIncompatibleModel').modal({
+          onHide: function () {
+          }
+        }).modal('show')
+      }
+      homeCtrl.hideModel = function () {
+        localStorage.setItem('#BrowserIncompatibleModel', 'shown')
+        $('#BrowserIncompatibleModel').modal('hide')
+        $('#BrowserIncompatibleModel').modal('hide others')
+        $('#BrowserIncompatibleModel').modal('hide dimmer')
       }
     }])

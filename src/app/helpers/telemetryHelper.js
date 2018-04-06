@@ -5,16 +5,17 @@ const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const envHelper = require('./environmentVariablesHelper.js')
-const contentURL = envHelper.CONTENT_URL
-const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
+const apiToken = envHelper.PORTAL_API_AUTH_TOKEN
 const md5 = require('js-md5')
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
+const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
+telemtryEventConfig['pdata']['id'] = appId
 module.exports = {
   /**
    * This function helps to get user spec
@@ -101,7 +102,7 @@ module.exports = {
     console.log('logSSOEndEvent')
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
-    const actor = telemetry.getActorData(payload.sub, 'user')
+    const actor = telemetry.getActorData(payload['sub'], 'user')
     var channel = req.session.rootOrghashTagId || md5('sunbird')
     telemetry.end({
       edata: edata,
@@ -274,7 +275,10 @@ module.exports = {
       req.session['sessionEvents'].push(JSON.parse(req.body.event))
       if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
-          req.session['sessionEvents'] = err ? req.session['sessionEvents'] : []
+          if (err) {
+            console.log('telemetry sync error from  portal', err)
+          }
+          req.session['sessionEvents'] = []
           req.session.save()
         })
       }
@@ -305,10 +309,10 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: contentURL + 'data/v1/telemetry',
+      url: envHelper.content_Service_Local_BaseUrl + '/v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + apiToken
       },
       body: data,
       json: true

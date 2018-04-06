@@ -35,9 +35,10 @@ angular.module('playerApp')
           contentId: collectionEditor.contentId,
           pdata: {
             id: org.sunbird.portal.appid,
-            ver: '1.0'
+            ver: '1.0',
+            pid: 'sunbird-portal'
           },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+          tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel,
           framework: collectionEditor.framework,
           env: data.type.toLowerCase()
@@ -119,15 +120,15 @@ angular.module('playerApp')
           }
         }
         window.config.editorConfig.publishMode = false
-        window.config.editorConfig.isFalgReviewer = false
+        window.config.editorConfig.isFlagReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
-            ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
+            ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
           window.config.editorConfig.publishMode = true
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
             ['FLAG_REVIEWER']).length > 0) {
-          window.config.editorConfig.isFalgReviewer = true
+          window.config.editorConfig.isFlagReviewer = true
         }
 
         var validateModal = {

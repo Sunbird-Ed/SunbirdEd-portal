@@ -3,7 +3,7 @@
         <span class="header cardsHeading">{{$root.frmelmnts.lbl.address}} </span>
         <a class="addeditprofile" ng-if='$root.privateProfileFields'><profile-visibility   update="'true'" field="'address'"></profile-visibility></a>
         <a class="addeditprofile cursor-pointer" ng-if="!profileCtrl.addressForm && profileCtrl.address.length" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=false; profileCtrl.generateInteractEvent('editAddress')">{{$root.frmelmnts.btn.edit}}</a>
-        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.isAddAddress && !profileCtrl.addressForm" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={}; profileCtrl.generateInteractEvent('addAddress')">{{$root.frmelmnts.btn.add}}</a>
+        <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.address && profileCtrl.address.length < 2 && !profileCtrl.addressForm" ng-click="profileCtrl.addressForm=true ;profileCtrl.isNewAddress=true ;profileCtrl.newAddress={}; profileCtrl.generateInteractEvent('addAddress')">{{$root.frmelmnts.btn.add}}</a>
         <a class="addeditprofile cursor-pointer" ng-if="profileCtrl.addressForm" ng-click="profileCtrl.addressForm=false;profileCtrl.address=profileCtrl.getProfileObject(profileCtrl.user.address); profileCtrl.generateInteractEvent('closeAddress')">{{$root.frmelmnts.btn.close}}</a>
     </div>
     <div ng-if="!profileCtrl.addressForm" class="profileitems ui relaxed divided items">
