@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import {
   ITelemetry, ITelemetryEvent
 } from './../../interfaces';
@@ -6,6 +7,10 @@ import {
 export class TelemetryLibUtilService {
   constructor() {
 
+  }
+  public initEvent(telemetry: ITelemetry) {
+    console.log('Initialize telemetry');
+    EkTelemetry.initialize(telemetry);
   }
   public startEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
     EkTelemetry.start(telemetry, iTelemetryEvent.contentId, iTelemetryEvent.contentVer,

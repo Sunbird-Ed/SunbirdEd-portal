@@ -53,8 +53,7 @@ export class TelemetryService {
     this.contextList = [];
   }
   public initialize() {
-    console.log('Initialize telemetry');
-    EkTelemetry.initialize(this.telemetry);
+    this.telemetryLibUtilService.initEvent(this.telemetry);
   }
 
   public startTelemetry(startEventInput: IStartEventInput) {

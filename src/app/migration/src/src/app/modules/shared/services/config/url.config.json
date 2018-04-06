@@ -109,11 +109,12 @@
       "READ": "framework/v1/read"
     },
     "GEO_EXPLORER": {
-      "LOCATION_READ": "org/v1/location/read"
+      "LOCATION_READ": "org/v1/location/read/"
     },
+    "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
+    "LOCATION_READ": "org/v1/location/read",
     "TELEMETRY": {
       "SYNC": "data/v1/telemetry"
     }
-
   }
 }

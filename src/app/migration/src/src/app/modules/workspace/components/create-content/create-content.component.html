@@ -1,0 +1,79 @@
+<div>
+    <div class="ui grid">
+        <div class="twelve wide column ">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="textbook">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon '></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.textbook}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.textbookdescription}}</p>
+                </div>
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="course">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon'></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.course}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.coursedescription}}</p>
+                </div>
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="studymaterial">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text icon'></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.lesson}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
+                </div>
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="collection">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon folder open outline icon'></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.collection}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.collectiondescription}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="twelve wide column ">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="lessonplan">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon file text outline icon'></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.lessonplan}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessonplandescription}}</p>
+                </div>
+                <div class="three wide column">
+                    <div class="ui link card workspacecontent" routerLink="uploadcontent">
+                        <div class="content">
+                            <div class="textcontent">
+                                <i class='my-icon upload icon'></i>
+                                <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>
