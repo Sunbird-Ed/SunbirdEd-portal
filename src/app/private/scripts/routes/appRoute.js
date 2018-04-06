@@ -102,7 +102,8 @@ angular.module('playerApp')
           $rootScope.courseActive = 'active'
           routeHelperService.loadRouteConfig('CourseNote', $stateParams)
           telemetryService.setConfigData('env', 'course')
-          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate', 'note-list', '/course/note/' + $stateParams.courseId, '', telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate',
+           'note-list', '/course/note/' + $stateParams.courseId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -122,7 +123,8 @@ angular.module('playerApp')
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('ContentNote', $stateParams)
           telemetryService.setConfigData('env', 'library')
-          telemetryService.impressionTelemetryData('resource', $stateParams.contentId, 'resource', '', 'Paginate', 'note-list', '/course/resource/' + $stateParams.contentId, '', telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('resource', $stateParams.contentId, 'resource', '', 'Paginate',
+           'note-list', '/course/resource/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -142,7 +144,8 @@ angular.module('playerApp')
           $rootScope.isNotePage = true
           $rootScope.courseActive = 'active'
           telemetryService.setConfigData('env', 'course')
-          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate', 'note-list', '/note/resource/' + $stateParams.courseId + $stateParams.contentId, [$stateParams.courseId, $stateParams.contentId], telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate',
+            'note-list', '/note/resource/' + $stateParams.courseId + $stateParams.contentId, [$stateParams.courseId, $stateParams.contentId], telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -251,7 +254,8 @@ angular.module('playerApp')
           $rootScope.isPlayerPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Player', $stateParams)
-          telemetryService.impressionTelemetryData('content', $stateParams.courseId, 'content', '', 'Paginate', 'content-read', '/content/' + $stateParams.contentId, '', telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('content', $stateParams.courseId, 'content', '', 'Paginate',
+           'content-read', '/content/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
