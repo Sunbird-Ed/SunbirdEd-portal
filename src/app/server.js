@@ -117,7 +117,7 @@ require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/', function (req, res) {
   if (req.session['deauthenticated']) {
-    res.clearCookie('connect.sid', {path: '/'})
+    res.cookie('connect.sid', '', { expires: new Date() })
     delete req.session['deauthenticated']
   }
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
