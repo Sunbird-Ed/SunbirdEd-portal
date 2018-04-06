@@ -117,6 +117,9 @@ require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/', function (req, res) {
   if (req.session['deauthenticated']) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
+    res.header('Expires', '-1')
+    res.header('Pragma', 'no-cache')
     res.cookie('connect.sid', '', { expires: new Date() })
     delete req.session['deauthenticated']
   }
