@@ -103,7 +103,7 @@ angular.module('playerApp')
           routeHelperService.loadRouteConfig('CourseNote', $stateParams)
           telemetryService.setConfigData('env', 'course')
           telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate',
-           'note-list', '/course/note/' + $stateParams.courseId, '', telemetryService.getVisitData())
+            'note-list', '/course/note/' + $stateParams.courseId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -124,7 +124,7 @@ angular.module('playerApp')
           routeHelperService.loadRouteConfig('ContentNote', $stateParams)
           telemetryService.setConfigData('env', 'library')
           telemetryService.impressionTelemetryData('resource', $stateParams.contentId, 'resource', '', 'Paginate',
-           'note-list', '/course/resource/' + $stateParams.contentId, '', telemetryService.getVisitData())
+            'note-list', '/course/resource/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -144,8 +144,9 @@ angular.module('playerApp')
           $rootScope.isNotePage = true
           $rootScope.courseActive = 'active'
           telemetryService.setConfigData('env', 'course')
-          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate',
-            'note-list', '/note/resource/' + $stateParams.courseId + $stateParams.contentId, [$stateParams.courseId, $stateParams.contentId], telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '',
+            'Paginate', 'note-list', '/note/resource/' + $stateParams.courseId + $stateParams.contentId,
+            [$stateParams.courseId, $stateParams.contentId], telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -254,8 +255,8 @@ angular.module('playerApp')
           $rootScope.isPlayerPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Player', $stateParams)
-          telemetryService.impressionTelemetryData('content', $stateParams.courseId, 'content', '', 'Paginate',
-           'content-read', '/content/' + $stateParams.contentId, '', telemetryService.getVisitData())
+          telemetryService.impressionTelemetryData('content', $stateParams.courseId, 'content', '',
+            'Paginate', 'content-read', '/content/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
@@ -939,65 +940,65 @@ angular.module('playerApp')
         window.localStorage.setItem('previousURl', JSON.stringify({ name: fromState.name, params: fromParams }))
       }
       switch (toState.name) {
-        case 'WorkSpace':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'WorkSpace.ContentCreation':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'CreateLesson':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'ContentEditor':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CreateTextbook':
-          routeHelperService.checkStateAccess(config.WORKSPACE.CREATE.BOOK.ROLES, false, event)
-          break
-        case 'CreateCollection':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CreateCourse':
-          routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
-          break
-        case 'CollectionEditor':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'PreviewContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
-          break
-        case 'WorkSpace.UpForReviewContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE.UP_FOR_REVIEW.ROLES, false, event)
-          break
-        case 'WorkSpace.FlaggedContent':
-          routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event)
-          break
-        case 'orgDashboard':
-          routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
-          break
-        case 'announcementOutbox':
-          routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
-          break
-        case 'WorkSpace.DraftContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE.DRAFT.ROLES, false, event)
-          break
-        case 'WorkSpace.ReviewContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE.REVIEW.ROLES, false, event)
-          break
-        case 'WorkSpace.PublishedContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE.PUBLISHED.ROLES, false, event)
-          break
-        case 'WorkSpace.AllUploadedContent':
-          routeHelperService.checkStateAccess(config.WORKSPACE.ALL_UPLOADS.ROLES, false, event)
-          break
-        case 'WorkSpace.BatchList':
-          routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event)
-          break
-        case 'MyActivity':
-          routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event)
-          break
-        default:
-          break
+      case 'WorkSpace':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'WorkSpace.ContentCreation':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'CreateLesson':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'ContentEditor':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CreateTextbook':
+        routeHelperService.checkStateAccess(config.WORKSPACE.CREATE.BOOK.ROLES, false, event)
+        break
+      case 'CreateCollection':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CreateCourse':
+        routeHelperService.checkStateAccess(config.COMMON_ROLES_CHECK, false, event)
+        break
+      case 'CollectionEditor':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'PreviewContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE_ACCESS_ROLES, false, event)
+        break
+      case 'WorkSpace.UpForReviewContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE.UP_FOR_REVIEW.ROLES, false, event)
+        break
+      case 'WorkSpace.FlaggedContent':
+        routeHelperService.checkStateAccess(['FLAG_REVIEWER'], false, event)
+        break
+      case 'orgDashboard':
+        routeHelperService.checkStateAccess(['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'], false, event)
+        break
+      case 'announcementOutbox':
+        routeHelperService.checkStateAccess(['ANNOUNCEMENT_SENDER'], false, event)
+        break
+      case 'WorkSpace.DraftContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE.DRAFT.ROLES, false, event)
+        break
+      case 'WorkSpace.ReviewContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE.REVIEW.ROLES, false, event)
+        break
+      case 'WorkSpace.PublishedContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE.PUBLISHED.ROLES, false, event)
+        break
+      case 'WorkSpace.AllUploadedContent':
+        routeHelperService.checkStateAccess(config.WORKSPACE.ALL_UPLOADS.ROLES, false, event)
+        break
+      case 'WorkSpace.BatchList':
+        routeHelperService.checkStateAccess(['COURSE_MENTOR'], false, event)
+        break
+      case 'MyActivity':
+        routeHelperService.checkStateAccess(['CONTENT_CREATOR'], false, event)
+        break
+      default:
+        break
       }
     })
   })
