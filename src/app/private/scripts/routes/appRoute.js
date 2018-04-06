@@ -102,6 +102,7 @@ angular.module('playerApp')
           $rootScope.courseActive = 'active'
           routeHelperService.loadRouteConfig('CourseNote', $stateParams)
           telemetryService.setConfigData('env', 'course')
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate', 'note-list', '/course/note/' + $stateParams.courseId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -121,6 +122,7 @@ angular.module('playerApp')
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('ContentNote', $stateParams)
           telemetryService.setConfigData('env', 'library')
+          telemetryService.impressionTelemetryData('resource', $stateParams.contentId, 'resource', '', 'Paginate', 'note-list', '/course/resource/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -140,6 +142,7 @@ angular.module('playerApp')
           $rootScope.isNotePage = true
           $rootScope.courseActive = 'active'
           telemetryService.setConfigData('env', 'course')
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course', '', 'Paginate', 'note-list', '/note/resource/' + $stateParams.courseId + $stateParams.contentId, [$stateParams.courseId, $stateParams.contentId], telemetryService.getVisitData())
         },
         onExit: function ($rootScope) {
           $rootScope.isNotePage = false
@@ -159,6 +162,24 @@ angular.module('playerApp')
           $rootScope.courseActive = 'active'
           routeHelperService.loadRouteConfig('Toc', $stateParams)
           telemetryService.setConfigData('env', 'course')
+          var url = '/course/' + $stateParams.courseId
+          var contextData = {
+            env: 'course',
+            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+          }
+          var objectData = {
+            id: $stateParams.courseId,
+            type: 'course',
+            ver: '',
+            rollup: telemetryService.getRollUpData('')
+          }
+          var data = {
+            edata: telemetryService.impressionEventData('view', 'scroll', 'course-read', url),
+            context: telemetryService.getContextData(contextData),
+            object: telemetryService.getObjectData(objectData),
+            tags: _.concat([], org.sunbird.portal.channel)
+          }
+          telemetryService.impression(data)
         },
         onExit: function ($rootScope, dataService, telemetryService) {
           $rootScope.isTocPage = false
@@ -226,10 +247,11 @@ angular.module('playerApp')
           contentId: null,
           contentName: null
         },
-        onEnter: function ($rootScope, $stateParams, routeHelperService) {
+        onEnter: function ($rootScope, $stateParams, routeHelperService, telemetryService) {
           $rootScope.isPlayerPage = true
           $rootScope.resourcesActive = 'active'
           routeHelperService.loadRouteConfig('Player', $stateParams)
+          telemetryService.impressionTelemetryData('content', $stateParams.courseId, 'content', '', 'Paginate', 'content-read', '/content/' + $stateParams.contentId, '', telemetryService.getVisitData())
         },
         onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
@@ -314,7 +336,7 @@ angular.module('playerApp')
           telemetryService.setConfigData('env', 'course')
           $rootScope.isTocPage = true
           $rootScope.courseActive = 'active'
-          var url = '/private/index#!/course/' + $stateParams.courseId
+          var url = '/course/' + $stateParams.courseId
           var contextData = {
             env: 'course',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
@@ -666,6 +688,8 @@ angular.module('playerApp')
           $rootScope.isPlayerPage = true
           telemetryService.setConfigData('env', 'dashboard')
           routeHelperService.loadRouteConfig('orgDashboard', null)
+          telemetryService.impressionTelemetryData('orgDashboard', '', 'org-dashboard',
+            '', 'Paginate', 'org-dashboard', '/org-dashboard', '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -806,6 +830,8 @@ angular.module('playerApp')
           telemetryService.setConfigData('env', 'profile')
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('PublicProfile', $stateParams)
+          telemetryService.impressionTelemetryData('public-profile', $stateParams.userId, 'public-profile',
+            '', 'Paginate', 'public-profile', '/profile/' + $stateParams.userName + '/' + $stateParams.userId, '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -842,6 +868,8 @@ angular.module('playerApp')
         onEnter: function (routeHelperService, telemetryService) {
           telemetryService.setConfigData('env', 'org-management')
           routeHelperService.loadRouteConfig('Setup', null)
+          telemetryService.impressionTelemetryData('org-management', '', 'org-management',
+            '', 'Paginate', 'setup', '/setup', '', '')
         }
 
       })
