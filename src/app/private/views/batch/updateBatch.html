@@ -3,7 +3,7 @@
         <div class="header">
             <div class="ui grid">
                 <div class="eleven wide column">
-                    <span class="ui header">Update Batch Details</span>
+                    <span class="ui header">{{$root.frmelmnts.intxt.t0007}}</span>
                 </div>
                 <div class="one wide column actions">
                     <h5 class="ui basic icon circular button deny">
@@ -32,13 +32,13 @@
                         <div class="field">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required>
-                                <label>Invite-only</label>
+                                <label>{{$root.frmelmnts.lbl.inviteonly}}</label>
                             </div>
                         </div>
                         <div class="field" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                             <div class="ui radio checkbox">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required>
-                                <label>Open</label>
+                                <label>{{$root.frmelmnts.lbl.open}}</label>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors" ng-class="batchUpdate.isUserSearch === 2 ? 'loading' : undefined">
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Start searching by name</div>
+                            <div class="default text">{{$root.frmelmnts.lbl.startserachingname}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
                                     <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
@@ -86,7 +86,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Select User</div>
+                            <div class="default text">{{$root.frmelmnts.intxt.t0009}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
                                     <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -119,13 +119,13 @@
                         <div class="field">
                             <div class="ui read-only radio checkbox">
                                 <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
-                                <label>Invite-only</label>
+                                <label>{{$root.frmelmnts.lbl.inviteonly}}</label>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
-                                <label>Open</label>
+                                <label>{{$root.frmelmnts.lbl.open}}</label>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors">
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Start searching by name</div>
+                            <div class="default text">{{$root.frmelmnts.intxt.t0007}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
                                     <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
@@ -173,7 +173,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Select User</div>
+                            <div class="default text">{{$root.frmelmnts.intxt.t0009}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
                                     <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -206,13 +206,13 @@
                         <div class="field">
                             <div class="ui read-only radio checkbox">
                                 <input type="radio" name="enrollmentType" value='invite-only' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
-                                <label>Invite-only</label>
+                                <label>{{$root.frmelmnts.lbl.inviteonly}}</label>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui read-only radio checkbox" ng-show="batchUpdate.coursecreatedby == batchUpdate.userId">
                                 <input type="radio" name="enrollmentType" value='open' ng-model="batchUpdate.batchData.enrollmentType" required disabled="true">
-                                <label>Open</label>
+                                <label>{{$root.frmelmnts.lbl.open}}</label>
                             </div>
                         </div>
                     </div>
@@ -242,7 +242,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown " id="mentors" ng-class="batchUpdate.isUserSearch === 2 ? 'loading' : undefined">
                             <input type="hidden" name="mentors" ng-init="" ng-model="batchUpdate.mentors" id="mentorSelList">
                             <i class="dropdown icon "></i>
-                            <div class="default text">Start searching by name</div>
+                            <div class="default text">{{$root.frmelmnts.intxt.t0008}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batchUpdate.menterList">
                                     <img class="ui mini avatar image" ng-src="{{mentor.avatar || '/common/images/user_logo.png'}}">{{mentor.name}}{{mentor.otherDetail}}
@@ -261,7 +261,7 @@
                         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users" ng-class="batchUpdate.isUserSearch === 1 ? 'loading' : undefined">
                             <input type="hidden" name="users" ng-init="" id="userSelList" ng-model="batchUpdate.users">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Select User</div>
+                            <div class="default text">{{$root.frmelmnts.intxt.t0009}}</div>
                             <div class="menu">
                                 <div class="item" data-value="{{user.id}}" ng-repeat="user in batchUpdate.userList">
                                     <img class="ui mini avatar image" ng-src="{{user.avatar || '/common/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -279,8 +279,8 @@
             </form>
         </div>
         <div class="actions" ng-hide="batchUpdate.batchData.status == 2">
-            <div class="ui secondary button" ng-click='batchUpdate.clearForm()'>Clear</div>
-            <div class="ui primary button" ng-click="batchUpdate.submitted = true; batchUpdate.updateBatchDetails(batchUpdate.batchData)">Update</div>
+            <div class="ui secondary button" ng-click='batchUpdate.clearForm()'>{{$root.frmelmnts.btn.clear}}</div>
+            <div class="ui primary button" ng-click="batchUpdate.submitted = true; batchUpdate.updateBatchDetails(batchUpdate.batchData)">{{$root.frmelmnts.btn.update}}</div></div>
         </div>
     </div>
 </div>

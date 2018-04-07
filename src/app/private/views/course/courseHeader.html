@@ -13,13 +13,13 @@
         </div>
         <div class="four wide column">
             <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-top-Negative30">
-                <span ng-if="toc.courseTotal"><p class="text-align-center">Your Progress {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
+                <span ng-if="toc.courseTotal"><p class="text-align-center">{{$root.messages.stmsg.m0110}} {{(toc.courseProgress * 100 / toc.courseTotal)| number: 0 || 0}}%</p></span>
                 <button ng-if="toc.courseContents.length > 0 && toc.playContent" class="fluid blue right floated  ui button courseHeaderButton margin-top-0" ng-click="toc.resumeCourse();toc.generateInteractEvent('course',toc.courseId,'course',toc.version,'resume-course', 'course-read', toc.objRollup)">
-                  RESUME COURSE <i class="caret right icon"></i>
+                {{$root.frmelmnts.btn.resumecourse}} <i class="caret right icon"></i>
                 </button>
             </div>
             <div ng-if="toc.isCourseMentor" >
-               <button class="blue right floated ui button courseHeaderButton margin-top-10" ng-click="toc.showCourseDashboard = 'true'">VIEW COURSE STATS</button>
+               <button class="blue right floated ui button courseHeaderButton margin-top-10" ng-click="toc.showCourseDashboard = 'true'">{{$root.frmelmnts.btn.viewcoursestats}}</button>
             </div>
         </div>
       </div>
