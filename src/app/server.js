@@ -113,19 +113,13 @@ app.use('/private/index', function (req, res, next) {
 })
 
 app.all('/logoff', function (req, res) {
+  res.cookie('connect.sid', '', { expires: new Date() })
   res.redirect('/logout')
 })
 // Mobile redirection to app
 require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/', function (req, res) {
-  // if (req.session['deauthenticated']) {
-  //   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
-  //   res.header('Expires', '-1')
-  //   res.header('Pragma', 'no-cache')
-  //   res.cookie('connect.sid', '', { expires: new Date() })
-  //   delete req.session['deauthenticated']
-  // }
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
@@ -317,7 +311,6 @@ keycloak.deauthenticated = function (request) {
     telemetryHelper.logSessionEnd(request)
     delete request.session.sessionEvents
   }
-  request.session['deauthenticated'] = true
 }
 
 resourcesBundlesHelper.buildResources(function (err, result) {
