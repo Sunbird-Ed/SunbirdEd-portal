@@ -50,16 +50,16 @@
             <div class="twelve wide column">
                 <div class="margin-top-20 ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding"> Summary </span>
+                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.scttl.summary}}</span>
                     </div>
                     <div class="description" ng-init="publicProfile.readMore = false">
                         <p ng-if="!publicProfile.readMore">
                             {{publicProfile.user.profileSummary | limitTo: 120 }} &nbsp;
                             <span class="ui cardsKnowMore mouse-pointer" ng-if="publicProfile.user.profileSummary.length > 120 && publicProfile.readMore === false"
-                                ng-click="publicProfile.readMore = !publicProfile.readMore;"> ... Read More</span>
+                                ng-click="publicProfile.readMore = !publicProfile.readMore;">{{$root.frmelmnts.lbl.readmore}}</span>
                         </p>
                         <p ng-if="publicProfile.readMore"> {{publicProfile.user.profileSummary}}&nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">Read Less ...</span>
+                            <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
                         </p>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment margin-bottom-0">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading">Skill Tags</span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}}</span>
                     </div>
                     <div class="profileitems profile-des ui relaxed aligned list">
                         <div class="item " ng-repeat="skill in publicProfile.userSkills | orderBy:'-addedAt' |limitTo:publicProfile.limit">
@@ -167,13 +167,13 @@
                 <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
                     <div class="active item addSkillMoreBtn">
                         <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true" ng-if="publicProfile.userSkills.length > publicProfile.limit">
-                            VIEW MORE
+                            {{$root.frmelmnts.btn.viewmore}}
                             <span>
                                 <i class="chevron down icon"></i>
                             </span>
                         </a>
                         <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false" ng-if="publicProfile.isViewMore">
-                            VIEW LESS
+                           {{$root.frmelmnts.btn.viewless}}
                             <span>
                                 <i class="chevron up icon"></i>
                             </span>
@@ -189,7 +189,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment ">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading "> Basic Profile</span>
+                        <span class="header cardsHeading ">{{$root.frmelmnts.scttl.basicprofile}}</span>
                     </div>
                     <div class="profileitems profile-des ui relaxed aligned list ">
                         <div class="item ">

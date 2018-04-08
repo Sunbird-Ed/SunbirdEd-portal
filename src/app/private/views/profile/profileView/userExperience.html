@@ -30,7 +30,7 @@
             <div class=" ui " ng-repeat="experience in profileCtrl.experience track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
             <div class="ui warning message " ng-if="profileCtrl.isCurrentJobExist ">
                 <i class="close icon "></i>
-                <p>You already have a current job, please change that to not a current job</p>
+                <p>{{$root.messages.imsg.m0031}}</p>
             </div>
             <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui primary button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience); profileCtrl.generateInteractEvent('profile-update-experience', 'profile-read', '1.0')">{{$root.frmelmnts.btn.save}}</button>
         </div>

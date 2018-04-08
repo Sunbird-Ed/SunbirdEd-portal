@@ -12,7 +12,7 @@
 			<div class="ui fluid search selection dropdown" id="myCoursesListFilter">
 				<input type="hidden" name="course">
 				<i class="dropdown icon"></i>
-				<div class="default text" id="selectCourse">Select Course To See Dashboard</div>
+				<div class="default text" id="selectCourse">{{$root.frmelmnts.intxt.t0010}}</div>
 					<div class="menu">
 						<div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}" ng-click="courseDashboard.onAfterCourseChange(course.identifier);$root.count = 0" data-value="{{course.identifier}}" ng-init="$last && courseDashboard.initDropdwon()">
 						<img class="ui circular image mini" ng-src=" {{course.appIcon ? course.appIcon : '/common/images/default.png'}} ">{{course.name}}

@@ -1,9 +1,9 @@
 <div class="rightSideSectionCards ui card">
   <div class="header batchCardAlign">
-    <span class="header headerBatchCard">Batches</span>
+    <span class="header headerBatchCard">{{$root.frmelmnts.lbl.batches}}</span>
     <a>
       <div class="ui dropdown batchCardDropDown">
-        <div class="text">Ongoing</div>
+        <div class="text">{{$root.frmelmnts.lbl.ongoing}}</div>
         <i class="dropdown icon"></i>
         <select ng-options="option.value as option.name for option in batch.statusOptions" ng-model="batch.status" ng-change="batch.getCouserBatchesList()" id="batchStatusOptions">
         </select>
@@ -15,7 +15,7 @@
         <div class="ui divided list">
             <div class="item padding-top-10" ng-repeat="batchdata in batch.batchList track by $index">
                 <i class="write icon float-ContentRight cursor-pointer" ng-click="batch.showUpdateBatchModal(batchdata, batch.coursecreatedby)" ng-show="batch.isMentor"></i>
-                <button class="ui right floated blue basic button enrollBtn" ng-click="batch.showBatchDetails(batchdata)" ng-show="!batch.isMentor">Enroll</button>
+                <button class="ui right floated blue basic button enrollBtn" ng-click="batch.showBatchDetails(batchdata)" ng-show="!batch.isMentor">{{$root.frmelmnts.btn.enroll}}</button>
                 <i class="calendar outline icon"></i>
                 <div class="content padding-bottom-15">
                     <span class="header padding-bottom-5">
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId, coursecreatedby: batch.coursecreatedby})" ng-show="batch.isMentor" ng-click="$root.generateInteractEvent('batch',batch.courseId,'create-batch','1.0','add-batch','batch-add')">
-    <a><i class="add icon"></i>Create Batch</a>
+    <a><i class="add icon"></i>{{$root.frmelmnts.lbl.createbatch}}</a>
   </div>
 </div>
 <batch-details></batch-details>

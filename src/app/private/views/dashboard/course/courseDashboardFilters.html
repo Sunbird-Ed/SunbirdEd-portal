@@ -16,7 +16,7 @@
     <div class="ui fluid search selection dropdown" id="myCoursesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
-        <div class="default text" id="selectCourse">Select Course To See Dashboard</div>
+        <div class="default text" id="selectCourse">{{$root.frmelmnts.intxt.t0010}}</div>
         <div class="menu">
             <div class="item" ng-repeat="course in courseDashboard.myCoursesList" title="{{course.courseName}}" ng-click="courseDashboard.onAfterCourseChange(course.identifier, course.name)" data-value="{{course.identifier}}" ng-init="$last && courseDashboard.initDropdwon()">
                 <img class="ui circular image mini" ng-src=" {{course.courseLogoUrl ? course.courseLogoUrl : '/common/images/default.png'}} ">{{course.name}}</div>
@@ -36,7 +36,7 @@
     <div class="ui fluid search selection dropdown" id="myBatchesListFilter">
         <input type="hidden" name="course">
         <i class="dropdown icon"></i>
-        <div class="default text" id="selectCourse">Select Batch To See Dashboard</div>
+        <div class="default text" id="selectCourse">{{$root.frmelmnts.intxt.t0010}}</div>
         <div class="menu">
             <div class="item" ng-repeat="course in courseDashboard.myBatches" title="{{course.name}}" ng-click="courseDashboard.onAfterBatchChange(course.id, course.name)" data-value="{{course.id}}" ng-init="$last && courseDashboard.initDropdwon()">{{course.name}}</div>
         </div>
@@ -53,10 +53,10 @@
 <div class="ui grid margin-top-10" ng-if="!courseDashboard.showError" ng-hide="courseDashboard.isMultipleCourses">
     <div class="six wide column">
         <div class="ui text menu float-ContentLeft padding-top-10">
-            <span class="dashBoardMenuItem cursor-pointer active" data-timeperiod="7d" data-timeperiod-text="7 days" ng-class="{active:courseDashboard.filterTimePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="14d" data-timeperiod-text="14 days" ng-class="{active:courseDashboard.filterTimePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="5w" data-timeperiod-text="5 weeks" ng-class="{active:courseDashboard.filterTimePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="dashBoardMenuItem cursor-pointer" ng-hide="courseDashboard.dataset == 'consumption'" data-timeperiod="fromBegining" data-timeperiod-text="from begining" ng-class="{active:courseDashboard.filterTimePeriod === 'fromBegining'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">FROM BEGINING</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="dashBoardMenuItem cursor-pointer active" data-timeperiod="7d" data-timeperiod-text="7 days" ng-class="{active:courseDashboard.filterTimePeriod === '7d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.frmelmnts.lbl.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="14d" data-timeperiod-text="14 days" ng-class="{active:courseDashboard.filterTimePeriod === '14d'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.frmelmnts.lbl.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="dashBoardMenuItem cursor-pointer" data-timeperiod="5w" data-timeperiod-text="5 weeks" ng-class="{active:courseDashboard.filterTimePeriod === '5w'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.frmelmnts.lbl.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="dashBoardMenuItem cursor-pointer" ng-hide="courseDashboard.dataset == 'consumption'" data-timeperiod="fromBegining" data-timeperiod-text="from begining" ng-class="{active:courseDashboard.filterTimePeriod === 'fromBegining'}" ng-click="courseDashboard.onAfterFilterChange($event.target)">{{$root.frmelmnts.lbl.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     <div class="two wide column"></div>

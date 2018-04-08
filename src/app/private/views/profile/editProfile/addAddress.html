@@ -50,7 +50,7 @@
     </div>
     <div class="ui warning message " ng-if="profileCtrl.isSameAddressTypeExist ">
         <i class="close icon "></i>
-        <p>This address type is exist, please change.</p>
+        <p>{{$root.messages.emsg.m0011}}</p>
     </div>
     <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress); profileCtrl.generateInteractEvent('address')">{{$root.frmelmnts.btn.save}}</button>
 

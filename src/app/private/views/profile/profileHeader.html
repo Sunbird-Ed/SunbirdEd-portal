@@ -25,7 +25,7 @@
                                     ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
                                     </a>
                                     </br>
-                                    <div class="ui label profile-headerLabelCard" ng-if="profileCtrl.lastLoginTime"> Last login time: {{profileCtrl.lastLoginTime | date:'medium'}}</div>
+                                    <div class="ui label profile-headerLabelCard" ng-if="profileCtrl.lastLoginTime"> {{$root.frmelmnts.lbl.lastlogintime}}: {{profileCtrl.lastLoginTime | date:'medium'}}</div>
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="ui grid">
             <div class="two wide column padding-top-none">
-            <div class="profileImageSizeText">Max upload size 4MB</div>
+            <div class="profileImageSizeText">{{$root.messages.imsg.m0032}}</div>
             </div>
         </div>
     </div>

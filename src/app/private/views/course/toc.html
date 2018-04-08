@@ -11,20 +11,20 @@
                                 <div class='nine wide column'>
                                     <div class="ui header">
                                         <span class="content courseStructureHeading">
-                                            About the course
+                                            {{$root.frmelmnts.lbl.aboutthecourse}}
                                         </span>
                                         <div class="margin-top-10 " ng-init="toc.readMore = false">
                                             <p ng-if="!toc.readMore" class="courseStructureDesc"> {{ toc.courseHierarchy.description | limitTo: 200 }}&nbsp;
-                                                <span class="ui cardsKnowMore mouse-pointer" ng-if="toc.courseHierarchy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">Read More ...</span>
+                                                <span class="ui cardsKnowMore mouse-pointer" ng-if="toc.courseHierarchy.description.length > 200 && toc.readMore === false" ng-click="toc.readMore = !toc.readMore;">{{$root.frmelmnts.lbl.readmore}}</span>
                                             </p>
                                             <p ng-if="toc.readMore" class="courseStructureDesc"> {{ toc.courseHierarchy.description}}&nbsp;
-                                                <span class="ui cardsKnowMore mouse-pointer" ng-click="toc.readMore = false;">Read Less ...</span>
+                                                <span class="ui cardsKnowMore mouse-pointer" ng-click="toc.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="ui header">
                                         <b class="content courseStructureHeading">
-                                            Course Structure
+                                            {{$root.frmelmnts.lbl.coursestructure}}
                                         </b>
                                     </div>
                                     <div ng-include="'views/course/lectureView.html'"></div> `
@@ -36,7 +36,7 @@
                                     <div ng-show="toc.batchDetailsShow">
                                         <div class="rightSideSectionCards ui card">
                                             <div class="content">
-                                                <div class="header">Batch Details</div>
+                                                <div class="header">{{$root.frmelmnts.lbl.batchdetails}}</div>
                                             </div>
                                             <div class="content">
                                                 <div class="header">{{toc.selectedBatchInfo.name}}</div>
@@ -46,10 +46,11 @@
                                             </div>
                                             <div class="selectedBatchContent extra content">
                                                 <span class="right floated">
-                                                    {{toc.selectedParticipants}} Learners
+                                                    {{toc.selectedParticipants}}
+                                                    {{$root.frmelmnts.lbl.learners}}
                                                 </span>
                                                 <span>
-                                                    {{toc.selectedBatchInfo.mentors.length}} Mentors
+                                                    {{toc.selectedBatchInfo.mentors.length}} {{$root.frmelmnts.lbl.mentors}}
                                                 </span>
                                             </div>
                                         </div>
@@ -66,9 +67,9 @@
                                     <br>
                                     <!--                                    <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>-->
                                     <div class="courseupdate">
-                                        <b>Course created on: {{toc.courseHierarchy.createdOn | dateFilterWithMDY}}</b>
+                                        <b>{{$root.frmelmnts.lbl.coursecreatedon}}: {{toc.courseHierarchy.createdOn | dateFilterWithMDY}}</b>
                                         <br>
-                                        <b>Updated on: {{toc.courseHierarchy.lastUpdatedOn | dateFilterWithMDY}}</b>
+                                        <b>{{$root.frmelmnts.lbl.updatedon}}: {{toc.courseHierarchy.lastUpdatedOn | dateFilterWithMDY}}</b>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +90,7 @@
                                     <div class="three wide column ">
                                         <button class="ui blue button left floated  fluid  tocbutton" ng-click="toc.openContent(toc.prevPlaylistItem, 'prev')" ng-disabled="(toc.prevPlaylistItem < 0)">
                                             <div class="toc-left-nav-btn-content">
-                                                <h4 class=" font-white"><< PREVIOUS</h4>
+                                                <h4 class=" font-white"><< {{$root.frmelmnts.btn.previous}}</h4>
                                                 <p class=" font-white">{{toc.previousPlayListName}}</p>
                                             </div>
                                         </button>
@@ -104,7 +105,8 @@
                                     <div class="three wide column ">
                                         <button class="ui blue button right floated  fluid" ng-click="toc.openContent(toc.nextPlaylistItem, 'next')" ng-disabled="(!toc.nextPlaylistItem)">
                                             <div class="toc-right-nav-btn-content">
-                                                <h4 class=" font-white">NEXT >></h4>
+                                                <h4 class=" font-white">{{$root.frmelmnts.btn.next}} >>
+                                                </h4>
                                                 <p class=" font-white">{{toc.nextPlayListName}}</p>
                                             </div>
                                         </button>
