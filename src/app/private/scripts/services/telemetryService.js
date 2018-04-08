@@ -380,6 +380,9 @@ angular.module('playerApp')
       if (data.rollup && Object.keys(data.rollup).length > 0) {
         object.rollup = data.rollup
       }
+      if (data.section) {
+        object.section = data.section
+      }
       return JSON.parse(JSON.stringify(object))
     }
 

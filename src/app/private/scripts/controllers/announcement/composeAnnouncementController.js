@@ -203,6 +203,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
       composeAnn.hideSendBtn = true
+      composeAnn.endTelemetry()
       announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction)
         .then(function (apiResponse) {
           composeAnn.hideSendBtn = false
@@ -217,8 +218,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             }).modal('show')
           }
           $rootScope.userIdHashTag = null
-          telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
-            'announcement-create', '')
+
           $state.go('announcementOutbox')
         }, function (err) {
           composeAnn.isMetaModified = true
@@ -366,12 +366,12 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
           telemetryService.startTelemetryData('announcement', $stateParams.announcementId, 'announcement',
-            '1.0', 'announcement', 'announcement-create', '')
+            '1.0', 'announcement', 'announcement-resend', 'resend')
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
           composeAnn.announcement.hideDate = true
           telemetryService.startTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
-            'announcement-create', '')
+            'announcement-create', 'create')
         }
       }
       if (composeAnn.stepNumber === 1) {
@@ -513,9 +513,25 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.onApproveConfirmationModal = function () {
       composeAnn.isApprove = true
       composeAnn.refreshFormValues()
+      composeAnn.endTelemetry()
       composeAnn.hideModel('announcementCancelModal')
       $state.go('announcementOutbox')
       return true
+    }
+
+    /**
+         * @method endTelemetry
+         * @desc - end the telemtry event
+         * @memberOf Controllers.composeAnnouncementCtrl
+         */
+    composeAnn.endTelemetry = function () {
+      if (composeAnn.editAction) {
+        telemetryService.endTelemetryData('announcement', $stateParams.announcementId, 'announcement', '1.0', 'announcement',
+          'announcement-resend', 'resend')
+      } else {
+        telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
+          'announcement-create', 'create')
+      }
     }
   }
 ])

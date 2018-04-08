@@ -236,6 +236,22 @@ angular.module('playerApp')
       }
 
       upForReviewContent.openContentPlayer = function (item) {
+        var uri = '/workspace/content/upForReview'
+        var contextData = {
+          env: 'workSpace',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var visitData = {
+          objid: item.identifier,
+          objtype: 'workspace',
+          section: 'upforreview content'
+        }
+        var data = {
+          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-upforreview', uri, visitData),
+          context: telemetryService.getContextData(contextData),
+          tags: _.concat([], org.sunbird.portal.channel)
+        }
+        telemetryService.impression(data)
         workSpaceUtilsService.openContentPlayer(item, $state.current.name)
       }
 

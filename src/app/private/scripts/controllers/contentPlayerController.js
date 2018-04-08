@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
-    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', 'telemetryService', '$window',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', '$window',
     function ($state, $scope, contentService, $timeout, $stateParams, config, $rootScope,
-      $location, $anchorScroll, toasterService, telemetryService, $window) {
+      $location, $anchorScroll, toasterService, $window) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
@@ -79,9 +79,6 @@ angular.module('playerApp')
             previewContentIframe.contentWindow.initializePreview(configuration)
             $scope.gotoBottom()
           }
-
-          telemetryService.startTelemetryData($scope.telemetryEnv, $rootScope.contentId,
-            $scope.contentData.contentType, '1.0', 'previewContent', 'content-read', 'play')
         }, 0)
 
         /**
@@ -143,8 +140,6 @@ angular.module('playerApp')
       }
 
       $scope.close = function () {
-        telemetryService.endTelemetryData($scope.telemetryEnv, $rootScope.contentId, 'Resource',
-          '1.0', 'previewContent', 'content-read', 'play')
         if ($scope.closeurl === 'Profile') {
           $state.go($scope.closeurl)
           return

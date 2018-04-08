@@ -78,6 +78,22 @@ angular.module('playerApp')
       }
 
       allUploadedContent.openContentEditor = function (item) {
+        var uri = '/workspace/content/uploaded'
+        var contextData = {
+          env: 'workSpace',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var visitData = {
+          objid: item.identifier,
+          objtype: 'workspace',
+          section: 'uploaded content'
+        }
+        var data = {
+          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-uploaded', uri, visitData),
+          context: telemetryService.getContextData(contextData),
+          tags: _.concat([], org.sunbird.portal.channel)
+        }
+        telemetryService.impression(data)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 

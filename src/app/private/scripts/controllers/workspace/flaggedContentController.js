@@ -74,6 +74,22 @@ angular.module('playerApp')
       }
 
       flaggedContent.openContentPlayer = function (item) {
+        var uri = '/workspace/content/flagged'
+        var contextData = {
+          env: 'workSpace',
+          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
+        }
+        var visitData = {
+          objid: item.identifier,
+          objtype: 'workspace',
+          section: 'flagged content'
+        }
+        var data = {
+          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-flagged', uri, visitData),
+          context: telemetryService.getContextData(contextData),
+          tags: _.concat([], org.sunbird.portal.channel)
+        }
+        telemetryService.impression(data)
         workSpaceUtilsService.openContentPlayer(item, $state.current.name)
       }
 
