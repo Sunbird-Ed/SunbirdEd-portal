@@ -119,9 +119,9 @@ angular.module('playerApp')
             resetSelected && dataDrivenForm.resetSelectedField(id)
             dependedValues = _.map(associations, function (i) { return _.pick(i, 'name', 'category') })
             groupdFields = _.chain(dependedValues)
-            .groupBy('category')
-            .map(function (name, category) { return { 'name': name, 'category': category } })
-            .value()
+              .groupBy('category')
+              .map(function (name, category) { return { 'name': name, 'category': category } })
+              .value()
             dataDrivenForm.updateDropDownList(id, dependedValues)
             if (groupdFields.length) {
               _.forEach(groupdFields, function (value, key) {
@@ -167,21 +167,21 @@ angular.module('playerApp')
 
         if ($scope.metaForm.$valid) {
           switch ($state.current.name) {
-            case 'CreateTextbook':
-              $rootScope.$broadcast('CreateTextbook', { Data: data, framework: dataDrivenForm.framework })
-              break
-            case 'CreateCourse':
-              $rootScope.$broadcast('CreateCourse', { Data: data, framework: dataDrivenForm.framework })
-              break
-            case 'CreateCollection':
-              $rootScope.$broadcast('CreateCollection', { Data: data, framework: dataDrivenForm.framework })
-              break
-            case 'CreateLesson':
-              $rootScope.$broadcast('CreateLesson', { Data: data, framework: dataDrivenForm.framework })
-              break
-            case 'CreateLessonPlan':
-              $rootScope.$broadcast('CreateLessonPlan', { Data: data, framework: dataDrivenForm.framework })
-              break
+          case 'CreateTextbook':
+            $rootScope.$broadcast('CreateTextbook', { Data: data, framework: dataDrivenForm.framework })
+            break
+          case 'CreateCourse':
+            $rootScope.$broadcast('CreateCourse', { Data: data, framework: dataDrivenForm.framework })
+            break
+          case 'CreateCollection':
+            $rootScope.$broadcast('CreateCollection', { Data: data, framework: dataDrivenForm.framework })
+            break
+          case 'CreateLesson':
+            $rootScope.$broadcast('CreateLesson', { Data: data, framework: dataDrivenForm.framework })
+            break
+          case 'CreateLessonPlan':
+            $rootScope.$broadcast('CreateLessonPlan', { Data: data, framework: dataDrivenForm.framework })
+            break
           }
         }
         // console.log("data", data)
@@ -193,17 +193,17 @@ angular.module('playerApp')
           if ($scope.metaForm[value.code] && $scope.metaForm[value.code].$invalid) {
             $scope.validation[value.code] = {}
             switch (_.keys($scope.metaForm[value.code].$error)[0]) {
-              case 'pattern': // When input validation of type is regex
-                $scope.validation[value.code]['errorMessage'] = value.validation.regex.message
-                break
-              case 'required': // When input validation of type is required
-                $scope.validation[value.code]['errorMessage'] = 'Plese Input a value'
-                break
-              case 'maxlength': // When input validation of type is max
-                $scope.validation[value.code]['errorMessage'] = value.validation.max.message
-                break
-              default:
-                $scope.validation[value.code]['errorMessage'] = 'Invalid Input'
+            case 'pattern': // When input validation of type is regex
+              $scope.validation[value.code]['errorMessage'] = value.validation.regex.message
+              break
+            case 'required': // When input validation of type is required
+              $scope.validation[value.code]['errorMessage'] = 'Plese Input a value'
+              break
+            case 'maxlength': // When input validation of type is max
+              $scope.validation[value.code]['errorMessage'] = value.validation.max.message
+              break
+            default:
+              $scope.validation[value.code]['errorMessage'] = 'Invalid Input'
             }
           }
         })
@@ -243,21 +243,21 @@ angular.module('playerApp')
           action: 'create'
         }
         switch ($state.current.name) {
-          case 'CreateTextbook':
-            req.subType = 'textbook'
-            break
-          case 'CreateCourse':
-            req.subType = 'course'
-            break
-          case 'CreateCollection':
-            req.subType = 'collection'
-            break
-          case 'CreateLesson':
-            req.subType = 'resource'
-            break
-          case 'CreateLessonPlan':
-            req.subType = 'lessonplan'
-            break
+        case 'CreateTextbook':
+          req.subType = 'textbook'
+          break
+        case 'CreateCourse':
+          req.subType = 'course'
+          break
+        case 'CreateCollection':
+          req.subType = 'collection'
+          break
+        case 'CreateLesson':
+          req.subType = 'resource'
+          break
+        case 'CreateLessonPlan':
+          req.subType = 'lessonplan'
+          break
         }
 
         searchService.getChannel().then(function (res) {

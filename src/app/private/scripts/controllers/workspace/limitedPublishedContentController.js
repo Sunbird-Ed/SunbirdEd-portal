@@ -83,7 +83,8 @@ angular.module('playerApp')
           section: 'limited publish content'
         }
         var data = {
-          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-limitedpublish', uri, visitData),
+          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-limitedpublish',
+            uri, visitData),
           context: telemetryService.getContextData(contextData),
           tags: _.concat([], org.sunbird.portal.channel)
         }

@@ -526,8 +526,8 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          */
     composeAnn.endTelemetry = function () {
       if (composeAnn.editAction) {
-        telemetryService.endTelemetryData('announcement', $stateParams.announcementId, 'announcement', '1.0', 'announcement',
-          'announcement-resend', 'resend')
+        telemetryService.endTelemetryData('announcement', $stateParams.announcementId, 'announcement', '1.0',
+          'announcement', 'announcement-resend', 'resend')
       } else {
         telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
           'announcement-create', 'create')

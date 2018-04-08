@@ -247,7 +247,8 @@ angular.module('playerApp')
           section: 'upforreview content'
         }
         var data = {
-          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-upforreview', uri, visitData),
+          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-upforreview',
+            uri, visitData),
           context: telemetryService.getContextData(contextData),
           tags: _.concat([], org.sunbird.portal.channel)
         }
