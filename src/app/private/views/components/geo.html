@@ -12,6 +12,6 @@
             <span ng-if="item.userCount && item.userCount !== null">({{item.userCount}}  users)</span>
             </br>
         </div>
-    <div ng-show="!($ctrl.items| filter:search).length">No Location Found</div>
+    <div ng-show="!($ctrl.items| filter:search).length">{{$root.messages.stmsg.m0113}}</div>
   </div>
 </div>

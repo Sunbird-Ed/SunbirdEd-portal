@@ -3,7 +3,7 @@
         <div class="header">
             <div class="ui grid">
                 <div class="eleven wide column">
-                    <span class="ui header">Create New Batch</span>
+                    <span class="ui header">{{$root.frmelmnts.lbl.createnewbatch}}</span>
                 </div>
                 <div class="one wide column actions">
                     <h5 class="ui basic icon circular button deny">
@@ -31,13 +31,13 @@
                     <div class="field">
                         <div class="ui radio checkbox">
                             <input type="radio" name="enrollmentType" value='invite-only' ng-model="batch.data.enrollmentType" required checked>
-                            <label>Invite-only</label>
+                            <label>{{$root.frmelmnts.lbl.inviteonly}}</label>
                         </div>
                     </div>
                     <div class="field" ng-show="batch.coursecreatedby == batch.userId">
                         <div class="ui radio checkbox">
                             <input type="radio" name="enrollmentType" value='open' ng-model="batch.data.enrollmentType" required>
-                            <label>Open</label>
+                            <label>{{$root.frmelmnts.lbl.open}}</label>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         ng-class="batch.isUserSearch === 2 ? 'loading' : undefined">
                         <input rows="1" type="hidden" name="mentors" ng-init="" ng-model="batch.data.mentors" id="mentorSelList">
                         <i class="dropdown icon"></i>
-                        <div class="default text">Select batch mentors</div>
+                        <div class="default text">{{$root.frmelmnts.intxt.t0005}}</div>
                         <div class="menu">
                             <div class="item" data-value="{{mentor.id}}" ng-repeat="mentor in batch.menterList">
                                 <img class="ui mini avatar image" ng-src="/common/images/user_logo.png">{{mentor.name}}{{mentor.otherDetail}}
@@ -81,7 +81,7 @@
                         ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
                         <input rows="1" type="hidden" name="users" id="userSelList" ng-init="" ng-model="batch.data.users">
                         <i class="dropdown icon"></i>
-                        <div class="default text">Select batch members</div>
+                        <div class="default text">{{$root.frmelmnts.intxt.t0006}}</div>
                         <div class="menu">
                             <div class="item" data-value="{{user.id}}" ng-repeat="user in batch.userList">
                                 <img class="ui mini avatar image" ng-src="/common/images/user_logo.png"> {{user.name}}{{user.otherDetail}}
@@ -92,8 +92,8 @@
             </form>
         </div>
         <div class="actions">
-            <div class="ui secondary button" ng-click="batch.clearBatchData()">Clear</div>
-            <div class="ui primary button" ng-click="batch.submitted = true; batch.addBatch(batch.data)">Create</div>
+            <div class="ui secondary button" ng-click="batch.clearBatchData()">{{$root.frmelmnts.btn.clear}}</div>
+            <div class="ui primary button" ng-click="batch.submitted = true; batch.addBatch(batch.data)">{{$root.frmelmnts.btn.create}}</div>
         </div>
     </div>
 </div>

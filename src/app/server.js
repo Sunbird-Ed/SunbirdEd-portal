@@ -112,6 +112,10 @@ app.use('/private/index', function (req, res, next) {
   next()
 })
 
+app.all('/logoff', function (req, res) {
+  res.cookie('connect.sid', '', { expires: new Date() })
+  res.redirect('/logout')
+})
 // Mobile redirection to app
 require('./helpers/mobileAppHelper.js')(app)
 
