@@ -9,7 +9,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipe, SharedModule } from '@sunbird/shared';
 import { MarkdownModule } from 'ngx-md';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComponent } from './components/index';
+import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComponent } from './components';
 
 @NgModule({
   imports: [

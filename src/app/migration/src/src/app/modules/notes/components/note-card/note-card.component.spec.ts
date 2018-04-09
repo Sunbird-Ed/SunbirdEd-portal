@@ -9,12 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import * as mockData from '../note-list/note-list-component.spec.data';
+import { response } from '../note-list/note-list-component.spec.data';
 import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
-const testData = mockData.mockRes;
 
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
@@ -47,18 +46,14 @@ describe('NoteCardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('Should subscribe to note service while collecting existing notes', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const noteService = TestBed.get(NotesService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(noteService, 'search').and.returnValue(Observable.of(testData.responseSuccess));
+    spyOn(noteService, 'search').and.returnValue(Observable.of(response.responseSuccess));
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -71,11 +66,11 @@ describe('NoteCardComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = testData.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
+    resourceService.messages = response.resourceBundle.messages;
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(testData.responseFailed));
+    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

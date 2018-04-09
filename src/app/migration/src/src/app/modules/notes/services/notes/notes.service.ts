@@ -10,7 +10,9 @@ export class NotesService {
   /**
    * To get url and app config.
    */
-  public config: ConfigService;
+  config: ConfigService;
+
+  learnerService: LearnerService;
 
   /**
    * The constructor
@@ -18,8 +20,9 @@ export class NotesService {
    * @param {ConfigService} config Reference of ConfigService
    */
 
-  constructor(public learnerService: LearnerService, config: ConfigService) {
+  constructor(learnerService: LearnerService, config: ConfigService) {
     this.config = config;
+    this.learnerService = learnerService;
   }
   /**
    * An event emitter to update notesList after creating a note.

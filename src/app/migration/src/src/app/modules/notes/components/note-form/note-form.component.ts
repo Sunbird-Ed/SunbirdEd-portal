@@ -7,6 +7,10 @@ import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { INotesListData } from '@sunbird/notes';
 
+/**
+ * This component provides the editor popup to create and update notes.
+ */
+
 @Component({
   selector: 'app-note-form',
   templateUrl: './note-form.component.html',
@@ -26,12 +30,12 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
   /**
    * To bind the user input and modal.
    */
-  noteData: INotesListData; // add interface [Changed]
+  noteData: INotesListData = {};
   /**
    * This variable holds the entire array of existing notes at any point
    * in time.
    */
-  notesList: Array<INotesListData>; // add interface [Changed]
+  notesList: Array<INotesListData>;
   /**
    * This variablles is used to cross check the response status code.
    */
@@ -78,6 +82,9 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * the page loader is displayed the first time the page is loaded.
    */
   showLoader: boolean;
+  /**
+   * Reference of apiResponse.
+   */
   apiResponse: ServerResponse;
   /**
    * To display toaster(if any) after each API call.
@@ -87,6 +94,14 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
+  /**
+   * Reference of user service.
+   */
+  userService: UserService;
+  /**
+   * Reference of notes service.
+   */
+  noteService: NotesService;
 
 
   /**
@@ -98,15 +113,18 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * @param {ResourceService} resourceService Reference of resourceService.
    * @param {NotesService} notesService Reference of notesService.
    * @param {ActivatedRoute} activatedRoute Reference of activatedRoute.
+   * @param {RouterNavigationService} routerNavigationService Reference of activatedRoute.
    */
 
   constructor(route: Router,
     resourceService: ResourceService,
-    public userService: UserService,
-    public noteService: NotesService,
+    userService: UserService,
+    noteService: NotesService,
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService) {
+    this.noteService = noteService;
+    this.userService = userService;
     this.route = route;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -118,8 +136,9 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private router: Router;
-
+  /**
+   * To initialize noteData and gather course and content ids.
+   */
   ngOnInit() {
     /**
      * Gathering courseId and contentId form parent params
@@ -129,7 +148,6 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
       this.contentId = params.contentId;
     });
     this.SelectedNote = this.noteService.selectedNote;
-    this.noteData = {};
     if (this.noteId) {
       const requestBody = {
         request: {
@@ -163,6 +181,9 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * To convert markdown inputs in the editor to html format.
+   */
   ngAfterViewInit() {
     const converter1 = Markdown.getSanitizingConverter();
     converter1.hooks.chain('preBlockGamut', function (text, rbg) {
@@ -205,10 +226,7 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
         courseId: this.courseId,
         contentId: this.contentId,
         createdBy: this.userService.userid,
-        updatedBy: this.userService.userid,
-        createdDate: {},
-        updatedDate: {},
-        id: {}
+        updatedBy: this.userService.userid
       }
     };
     this.noteService.create(requestData).subscribe(

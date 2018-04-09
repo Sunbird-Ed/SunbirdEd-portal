@@ -1,4 +1,4 @@
-import { NoteListComponent, NoteFormComponent, DeleteNoteComponent, NoteCardComponent } from './components/index';
+import { NoteListComponent, NoteFormComponent, DeleteNoteComponent, NoteCardComponent } from './components';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 

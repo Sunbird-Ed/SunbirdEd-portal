@@ -1,11 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import * as mockData from './notes-service.spec.data';
+import { response } from './notes-service.spec.data';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotesService } from './notes.service';
 import { UserService, ContentService, LearnerService } from '@sunbird/core';
-const testData = mockData.mockRes;
 
 describe('NotesService', () => {
   beforeEach(() => {
@@ -15,15 +14,12 @@ describe('NotesService', () => {
     });
   });
 
-  it('should be created', inject([NotesService], (service: NotesService) => {
-    expect(service).toBeTruthy();
-  }));
 
   it('Should make search API call', () => {
     const learnerService = TestBed.get(LearnerService);
     const service = TestBed.get(NotesService);
     const param = { request: { userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e', courseid: 'do_2123229899264573441612' } };
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'post').and.callFake(() => Observable.of(response.userSuccess));
     const apiRes = service.search(param);
     expect(learnerService.post).toHaveBeenCalled();
   });
@@ -45,7 +41,7 @@ describe('NotesService', () => {
         id: {}
       }
     };
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'post').and.callFake(() => Observable.of(response.userSuccess));
     service.create(param);
     expect(learnerService.post).toHaveBeenCalled();
   });
@@ -61,7 +57,7 @@ describe('NotesService', () => {
       updatedBy: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
       updatedDate: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
     } };
-    spyOn(learnerService, 'patch').and.callFake(() => Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'patch').and.callFake(() => Observable.of(response.userSuccess));
     const apiRes = service.update(param);
     expect(learnerService.patch).toHaveBeenCalled();
   });
@@ -70,7 +66,7 @@ describe('NotesService', () => {
     const learnerService = TestBed.get(LearnerService);
     const service = TestBed.get(NotesService);
     const param = { noteId: '012455264743841792211' };
-    spyOn(learnerService, 'delete').and.callFake(() => Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'delete').and.callFake(() => Observable.of(response.userSuccess));
     const apiRes = service.remove(param);
     expect(learnerService.delete).toHaveBeenCalled();
   });

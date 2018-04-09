@@ -38,7 +38,7 @@ export class NoteListComponent implements OnInit {
    * The notesList array holds the entire list of existing notes. Each
    * note is saved as an object.
    */
-  notesList: Array<INotesListData>;
+  notesList: Array<INotesListData> = [];
 
   /**
    *Stores the details of a note selected by the user.
@@ -76,32 +76,61 @@ export class NoteListComponent implements OnInit {
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
+  /**
+   * Reference of notes service.
+   */
+  noteService: NotesService;
+  /**
+   * Reference of user service.
+   */
+  userService: UserService;
+  /**
+   * Reference of content service.
+   */
+  contentService: ContentService;
+  /**
+   * Reference of resource service.
+   */
+  resourceService: ResourceService;
+  /**
+   * Reference of modal service.
+   */
+  modalService: SuiModalService;
 
   /**
    * The constructor
    *
-   * @param {ToasterService} iziToast Reference of toasterService.
+   * @param {ToasterService} toasterService Reference of toasterService.
    * @param {UserService} userService Reference of userService.
    * @param {ContentService} contentService Reference of contentService.
    * @param {ResourceService} resourceService Reference of resourceService.
    * @param {SuiModalService} modalService Reference of modalService.
-   * @param {NotesService} notesService Reference of notesService.
+   * @param {NotesService} noteService Reference of notesService.
+   * @param {ActivatedRoute} activatedRoute Reference of activatedRoute.
    */
 
-  constructor(public noteService: NotesService,
-    public userService: UserService,
-    public contentService: ContentService,
-    public resourceService: ResourceService,
-    public modalService: SuiModalService,
+  constructor(noteService: NotesService,
+    userService: UserService,
+    contentService: ContentService,
+    resourceService: ResourceService,
+    modalService: SuiModalService,
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService) {
     this.toasterService = toasterService;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
-  }
+    this.noteService = noteService;
+    this.contentService = contentService;
+    this.resourceService = resourceService;
+    this.modalService = modalService;
 
+  }
+  /**
+   * To initialize notesList and showDelete.
+   * Listens to updateNotesListData event as well.
+   */
   ngOnInit() {
-    this.notesList = [];
+
     this.showDelete = false;
 
     /**
@@ -116,8 +145,8 @@ export class NoteListComponent implements OnInit {
         this.notesList.unshift(this.noteService.selectedNote);
         this.selectedNote = this.noteService.selectedNote;
       } else {
-      this.notesList.unshift(data);
-      this.showNoteList(this.notesList[0], 0);
+        this.notesList.unshift(data);
+        this.showNoteList(this.notesList[0], 0);
       }
     });
     this.activatedRoute.params.subscribe((params) => {
@@ -154,9 +183,9 @@ export class NoteListComponent implements OnInit {
 
     this.noteService.search(requestBody).subscribe(
       (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          this.notesList = apiResponse.result.response.note;
-          this.selectedNote = this.notesList[0];
+        this.showLoader = false;
+        this.notesList = apiResponse.result.response.note;
+        this.selectedNote = this.notesList[0];
       },
       (err) => {
         this.showLoader = false;
@@ -169,6 +198,7 @@ export class NoteListComponent implements OnInit {
    * This method sets the value of a selected note to the variable 'selectedNote'
    * and passes it on to notesService.
    * @param note The selected note from list view.
+   * @param index The index of the selectedNote.
    */
   public showNoteList(note, index) {
     this.selectedIndex = index;

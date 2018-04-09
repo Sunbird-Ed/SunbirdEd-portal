@@ -1,4 +1,4 @@
-export const mockRes = {
+export const response = {
 userSuccess: {
     'id': 'api.note.search',
     'ver': 'v1',

@@ -9,12 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import * as mockData from './note-list-component.spec.data';
+import { response } from './note-list-component.spec.data';
 import { NoteListComponent } from './note-list.component';
 import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TimeAgoPipe } from 'time-ago-pipe';
-const testData = mockData.mockRes;
 
 describe('NoteListComponent', () => {
   let component: NoteListComponent;
@@ -38,18 +37,15 @@ describe('NoteListComponent', () => {
     });
   }));
 
-  it('Should create', () => {
-    expect(component).toBeTruthy();
-  });
 
   it('Should subscribe to note service while collecting existing notes', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(notesService, 'search').and.returnValue(Observable.of(testData.responseSuccess));
+    spyOn(notesService, 'search').and.returnValue(Observable.of(response.responseSuccess));
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -62,14 +58,30 @@ describe('NoteListComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = testData.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
+    resourceService.messages = response.resourceBundle.messages;
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(testData.responseFailed));
+    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
+
+  it('Should assign values to selectedIndex and selectedNote', () => {
+    component.showNoteList(response.userSuccess.result.response.note[0], 0);
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(response.userSuccess.result.response.note[0]);
+
+  });
+
+  it('Should refresh the values of selectedIndex and selectedNote once a note is deleted', () => {
+    component.notesList = response.userSuccess.result.response.note;
+    component.finalNotesListData('01245874638382694454');
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(component.notesList[0]);
+
+  });
+
 
 });

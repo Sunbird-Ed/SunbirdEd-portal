@@ -4,6 +4,10 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { INotesListData } from '@sunbird/notes';
 
+/**
+ * This component helps in deleting a selected note.
+ */
+
 @Component({
   selector: 'app-delete-note',
   templateUrl: './delete-note.component.html',
@@ -11,16 +15,27 @@ import { INotesListData } from '@sunbird/notes';
 })
 
 export class DeleteNoteComponent {
-
+  /**
+   * This variable is used to hide/display delete pop up.
+   */
   @Input() showDeleteNoteList: boolean;
+  /**
+   * This variable contains the details of the note to be deleted.
+   */
   @Input() DeleteNote: INotesListData;
+  /**
+   * An event emitter that emits the delete-popup status.
+   */
   @Output() exitModal = new EventEmitter<boolean>();
+  /**
+   * An event emiiter to update the notesList.
+   */
   @Output() finalNotesListData = new EventEmitter<string>();
 
 
   /**
    * This variable helps redirecting the user to NotesList view once
-   * a note is created or updated.
+   * a note is deleted.
    */
   route: Router;
   /**
@@ -42,23 +57,28 @@ export class DeleteNoteComponent {
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
+  /**
+   * To remove the selected note.
+   */
+  noteService: NotesService;
 
   /**
    * The constructor
    *
-   * @param {ToasterService} iziToast Reference of toasterService.
-   * @param {ContentService} contentService Reference of contentService.
+   * @param {ToasterService} toasterService Reference of toasterService.
    * @param {ResourceService} resourceService Reference of resourceService.
-   * @param {NotesService} notesService Reference of notesService.
+   * @param {NotesService} noteService Reference of notesService.
+   * @param {Router} route Reference of route.
    */
 
   constructor(route: Router,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    public noteService: NotesService) {
+    noteService: NotesService) {
     this.route = route;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.noteService = noteService;
    }
 
   /**

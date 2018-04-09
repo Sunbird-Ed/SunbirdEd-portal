@@ -8,6 +8,10 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INotesListData } from '@sunbird/notes';
 
+/**
+ * This component holds the note card widget.
+ */
+
 @Component({
   selector: 'app-note-card',
   templateUrl: './note-card.component.html',
@@ -52,38 +56,59 @@ export class NoteCardComponent implements OnInit {
    * The content id of the selected course.
    */
   contentId: string;
-
+  /**
+   * This variable helps redirecting the user to NotesList view once
+   * a note is created or updated.
+   */
   route: Router;
-
   /**
    * Stores the index of the selected note in notesList array.
    */
   selectedIndex: number;
-
   /**
    * This variable stores the search input from the search bar.
    */
   searchData: string;
-
   /**
    * user id from user service.
    */
   userId: string;
-
   /**
    * To get course and note params.
    */
   private activatedRoute: ActivatedRoute;
-
   /**
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
+  /**
+   * To create or update a note.
+   */
+  noteService: NotesService;
+  /**
+   * To retrieve user details.
+   */
+  userService: UserService;
+  /**
+   * Reference of content service.
+   */
+  contentService: ContentService;
+  /**
+   * Reference of resource service.
+   */
+
+  resourceService: ResourceService;
+  /**
+   * Reference of modal service.
+   */
+
+  modalService: SuiModalService;
+
 
   /**
    * The constructor
    *
-   * @param {ToasterService} iziToast Reference of toasterService.
+   * @param {ToasterService} toasterService Reference of toasterService.
    * @param {UserService} userService Reference of userService.
    * @param {ContentService} contentService Reference of contentService.
    * @param {ResourceService} resourceService Reference of resourceService.
@@ -91,11 +116,11 @@ export class NoteCardComponent implements OnInit {
    * @param {NotesService} notesService Reference of notesService.
    */
 
-  constructor(public noteService: NotesService,
-    public userService: UserService,
-    public contentService: ContentService,
-    public resourceService: ResourceService,
-    public modalService: SuiModalService,
+  constructor(noteService: NotesService,
+    userService: UserService,
+    contentService: ContentService,
+    resourceService: ResourceService,
+    modalService: SuiModalService,
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService,
     route: Router) {
@@ -103,9 +128,16 @@ export class NoteCardComponent implements OnInit {
       this.activatedRoute = activatedRoute;
       this.userService = userService;
       this.route = route;
+      this.noteService = noteService;
+      this.userService = userService;
+      this.contentService = contentService;
+      this.resourceService = resourceService;
+      this.modalService = modalService;
     }
 
-
+  /**
+   * Initializing notesList and selectedNote values.
+   */
   ngOnInit() {
 
     this.notesList = [];
@@ -166,6 +198,9 @@ export class NoteCardComponent implements OnInit {
     this.noteService.selectedNote = this.selectedNote;
   }
 
+  /**
+   * This method redirects the user to notesList view.
+   */
   public viewAllNotes() {
     this.route.navigate([this.courseId, this.contentId, 'notes']);
   }

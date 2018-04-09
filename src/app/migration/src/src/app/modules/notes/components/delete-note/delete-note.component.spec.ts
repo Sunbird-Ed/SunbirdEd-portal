@@ -8,9 +8,8 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import * as mockData from './delete-note-component.spec.data';
+import { response } from './delete-note-component.spec.data';
 import { DeleteNoteComponent } from './delete-note.component';
-const testData = mockData.mockRes;
 
 describe('DeleteNoteComponent', () => {
   let component: DeleteNoteComponent;
@@ -34,12 +33,9 @@ describe('DeleteNoteComponent', () => {
     fixture = TestBed.createComponent(DeleteNoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.DeleteNote = testData.userSuccess.result.response.note[0];
+    component.DeleteNote = response.userSuccess.result.response.note[0];
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 
   it('Should subscribe to note service while deleting a note', () => {
     const noteService = TestBed.get(NotesService);
@@ -47,10 +43,10 @@ describe('DeleteNoteComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(noteService, 'remove').and.returnValue(Observable.of(testData.deleteSuccess));
+    spyOn(noteService, 'remove').and.returnValue(Observable.of(response.deleteSuccess));
     component.removeNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -62,11 +58,11 @@ describe('DeleteNoteComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = testData.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
+    resourceService.messages = response.resourceBundle.messages;
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(noteService, 'remove').and.returnValue(Observable.of(testData.deleteFailed));
+    spyOn(noteService, 'remove').and.returnValue(Observable.of(response.deleteFailed));
     component.removeNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -78,11 +74,11 @@ describe('DeleteNoteComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = testData.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess));
+    resourceService.messages = response.resourceBundle.messages;
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
-    spyOn(noteService, 'remove').and.callFake(() => Observable.throw(testData.deleteFailed));
+    spyOn(noteService, 'remove').and.callFake(() => Observable.throw(response.deleteFailed));
     component.removeNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
