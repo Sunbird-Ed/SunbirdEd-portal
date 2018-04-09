@@ -29,16 +29,16 @@ angular.module('playerApp')
           'workspace-create-textbook', '/create/textbook')
         $timeout(function () {
           $('#createTextBookModal')
-          .modal({
-            observeChanges: true,
-            onHide: function () {
-              textbook.data = {}
-              if (!textbook.isTextBookCreated) {
-                $state.go('WorkSpace.ContentCreation')
+            .modal({
+              observeChanges: true,
+              onHide: function () {
+                textbook.data = {}
+                if (!textbook.isTextBookCreated) {
+                  $state.go('WorkSpace.ContentCreation')
+                }
               }
-            }
-          })
-          .modal('show')
+            })
+            .modal('show')
         })
       }
 

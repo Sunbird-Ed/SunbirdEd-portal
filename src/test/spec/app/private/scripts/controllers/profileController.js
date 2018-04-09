@@ -299,29 +299,29 @@ describe('Controller: ProfileController', function () {
     expect(profileCtrl.updateUserInfo).toHaveBeenCalled()
     done()
   })
-  it('should show add a new address link ', function (done) {
-    spyOn(profileCtrl, 'processProfileData').and.callThrough()
-    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
-    profileCtrl.address = []
-    scope.$apply()
-    expect(profileCtrl.isAddAddress).toBe(true)
-    done()
-  })
+  // it('should show add a new address link ', function (done) {
+  //   spyOn(profileCtrl, 'processProfileData').and.callThrough()
+  //   spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+  //   profileCtrl.address = []
+  //   scope.$apply()
+  //   expect(profileCtrl.isAddAddress).toBe(true)
+  //   done()
+  // })
 
-  it('should not show add a new address link ', function (done) {
-    spyOn(profileCtrl, 'processProfileData').and.callThrough()
-    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
-    profileCtrl.showAddAddress(userProfile.result.response.address)
-    expect(profileCtrl.isAddAddress).toBe(false)
-    done()
-  })
-  it('should Permanent radio button  checked by default', function (done) {
-    spyOn(profileCtrl, 'processProfileData').and.callThrough()
-    spyOn(profileCtrl, 'showAddAddress').and.callThrough()
-    profileCtrl.showAddAddress(isPermanentChecked.result.response.address)
-    expect(profileCtrl.ischekedCurrent).toBe(false)
-    done()
-  })
+  // it('should not show add a new address link ', function (done) {
+  //   spyOn(profileCtrl, 'processProfileData').and.callThrough()
+  //   spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+  //   profileCtrl.showAddAddress(userProfile.result.response.address)
+  //   expect(profileCtrl.isAddAddress).toBe(false)
+  //   done()
+  // })
+  // it('should Permanent radio button  checked by default', function (done) {
+  //   spyOn(profileCtrl, 'processProfileData').and.callThrough()
+  //   spyOn(profileCtrl, 'showAddAddress').and.callThrough()
+  //   profileCtrl.showAddAddress(isPermanentChecked.result.response.address)
+  //   expect(profileCtrl.ischekedCurrent).toBe(false)
+  //   done()
+  // })
   it('should not validate new address values ', function (done) {
     spyOn(profileCtrl, 'addAddress').and.callThrough()
     spyOn(profileCtrl, 'getFieldsToValidate').and.returnValue(['firstName', 'lastNmae'])
