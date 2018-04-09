@@ -3,6 +3,8 @@ export interface IInteractEventInput {
     'objectId': String;
     'objectType': String;
     'objectVersion': String;
+    'type': String;
+    'subType': String;
     'edataId': String;
     'pageId': String;
     'rollup'?: Object;

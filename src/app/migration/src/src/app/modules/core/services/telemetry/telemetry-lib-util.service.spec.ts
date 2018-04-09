@@ -19,16 +19,16 @@ describe('TelemetryLibUtilService', () => {
   }));
   it('should call initalize telemetry function', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
+      expect(telemetryLibUtilService).toBeTruthy();
       spyOn(EkTelemetry, 'initialize').and.callThrough();
       const apiRes = telemetryLibUtilService.initEvent(mockData.mockRes.telemetry);
-      expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.initialize).toHaveBeenCalled();
     }));
   it('should call telemetry start event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
+      expect(telemetryLibUtilService).toBeTruthy();
       spyOn(EkTelemetry, 'start').and.callThrough();
       const apiRes = telemetryLibUtilService.startEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
-      expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.start).toHaveBeenCalled();
     }));
   it('should call telemetry impression event', inject([TelemetryLibUtilService],

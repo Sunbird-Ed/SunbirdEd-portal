@@ -23,10 +23,9 @@ describe('TelemetryService', () => {
     it('should initalize telemetry', inject([TelemetryService, UserService, TelemetryLibUtilService,
         ConfigService, LearnerService], (telemetryService: TelemetryService, userService: UserService,
             telemetryLibUtilService: TelemetryLibUtilService, config: ConfigService) => {
-
+            expect(telemetryService).toBeTruthy();
             spyOn(telemetryLibUtilService, 'initEvent').and.callFake(() => Observable.of({}));
             const apiRes = telemetryService.initialize();
-            expect(telemetryService).toBeTruthy();
             expect(telemetryLibUtilService.initEvent).toHaveBeenCalled();
         }));
     it('should start telemetry', inject([TelemetryService, UserService, TelemetryLibUtilService,

@@ -9,6 +9,7 @@ export const mockRes = {
         'mode': 'create'
     },
     impressionInputData: {
+        'type':'create',
         'env': 'announcement',
         'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
         'objectType': 'announcement',
@@ -23,10 +24,14 @@ export const mockRes = {
         'objectType': 'announcement',
         'objectVersion': '1.0',
         'edataId': '123456',
-        'pageId': 'announcement-create'
+        'pageId': 'announcement-create',
+        'type':'click',
+        'subType':''
     },
     shareEventData: {
         'env': 'announcement',
+        'dir': 'out',
+        'type': 'link',
         'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
         'objectType': 'announcement',
         'objectVersion': '1.0'

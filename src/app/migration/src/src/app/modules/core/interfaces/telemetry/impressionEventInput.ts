@@ -3,6 +3,7 @@ export interface IImpressionEventInput {
     'objectId'?: String;
     'objectType'?: String;
     'objectVersion'?: String;
+    'type': String;
     'subType'?: String;
     'pageId': String;
     'uri': String;
