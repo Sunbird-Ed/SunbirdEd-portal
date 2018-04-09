@@ -28,12 +28,12 @@ export class TelemetryService {
   private userService: UserService;
 
   /**
-  * variable used to store user data subscription data and 
+  * variable used to store user data subscription data and
   * used to unsubsribe after loading user profile
   */
   private userDataSubscription: any;
 
-  /** 
+  /**
   * Object used to store user session details like userId,org info etc
   */
   public userSession: any;
@@ -48,12 +48,12 @@ export class TelemetryService {
   */
   public telemetryLibUtilService: TelemetryLibUtilService;
 
-  /** 
+  /**
    *  Array to store id's of user orgs
    */
   public organisationIds: Array<String>;
 
-  /** 
+  /**
    *  To get url, app configs.
    */
   private config: ConfigService;
@@ -190,9 +190,9 @@ export class TelemetryService {
   }
 
   /**
-   * function to prepare telemetry event data 
-   * @param eventInput 
-   * @param eventData 
+   * function to prepare telemetry event data
+   * @param eventInput
+   * @param eventData
    * @returns iTelemetryEvent 'ITelemetryEvent' reference
    */
   public getEventData(eventInput: any, eventData: any) {
@@ -214,7 +214,7 @@ export class TelemetryService {
 
   /**
    * function to prepare telemetry event object
-   * @param eventInput 
+   * @param eventInput
    * @returns eventObjectData 'TelemetryObject' reference
    */
   public getEventObject(eventInput: any) {
@@ -229,7 +229,7 @@ export class TelemetryService {
 
   /**
    * function to prepare telemetry event context object
-   * @param eventInput 
+   * @param eventInput
    * @returns eventContextData 'ITelemetryContextData' reference
    */
   public getEventContext(eventInput: any) {
