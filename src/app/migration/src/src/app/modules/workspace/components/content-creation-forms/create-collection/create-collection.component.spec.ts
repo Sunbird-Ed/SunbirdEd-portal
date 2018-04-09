@@ -1,22 +1,20 @@
-import { ISubscription } from 'rxjs/Subscription';
-
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CreateCollectionComponent } from './create-collection.component';
-import { FormGroup, FormBuilder } from '@angular/forms';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 import { ResourceService, ConfigService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { mockRes } from './create-collection.component.spec.data';
-import { componentFactoryName } from '@angular/compiler';
+
 
 describe('CreateCollectionComponent', () => {
   let component: CreateCollectionComponent;

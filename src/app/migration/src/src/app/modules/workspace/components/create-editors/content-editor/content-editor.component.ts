@@ -1,3 +1,5 @@
+
+import { CustomWindow } from './../../../interfaces/custom.window';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -6,13 +8,16 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
 import { UserService, PermissionService } from '@sunbird/core';
 import { Router } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
+
+
 import { EditorService } from './../../../services/editors/editor.service';
 
-import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
+// import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
 import { ActivatedRoute } from '@angular/router';
+import { AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
+declare var jQuery: any;
 
 declare let window: CustomWindow;
 
@@ -24,7 +29,7 @@ declare let sunbird: any;
   templateUrl: './content-editor.component.html',
   styleUrls: ['./content-editor.component.css']
 })
-export class ContentEditorComponent implements OnInit, AfterViewInit {
+export class ContentEditorComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   /**
 * To show toaster(error, success etc) after any API calls
@@ -50,6 +55,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
 public contentId: string;
 
 public state: string;
+
+private  rspData: any;
   /**
     * reference of UserService service.
     */
@@ -94,7 +101,6 @@ public state: string;
 
         this.contentId = params['contentId'];
         this.state = params['state'];
-  
       });
       this.getContentData();
 this.initfn();
@@ -104,11 +110,12 @@ this.initfn();
 
 
   ngAfterViewInit() {
-    $.fn.iziModal = iziModal;
+    console.log('afterviewinit initiated');
+    jQuery.fn.iziModal = iziModal;
     setTimeout(function () {
-      $('#contentEditor').iziModal('open');
+      jQuery('#contentEditor').iziModal('open');
     }, 100);
-    $('#contentEditor').iziModal({
+    jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
       iframeURL: '/assets/editors/content-editor/index.html',
@@ -126,10 +133,24 @@ this.initfn();
       }
     });
   }
+ngAfterViewChecked() {
+  
+//   setTimeout(() => {
+//     console.log('afterviewinitchecked initiated');
+//       $.fn.iziModal = iziModal;
+//     $('#contentEditor').iziModal({
+//       onClosed: function () {
+//         $('#contentEditor').iziModal('close');
+//       }
+//     });
+// }, 0);
 
-  openContentEditor() {
-   
-
+}
+  openContentEditor () {
+    jQuery.fn.iziModal = iziModal;
+    setTimeout(function () {
+      jQuery('#contentEditor').iziModal('open');
+    }, 100);
       window.context = {
         user: {
           id: this.userProfile.userId,
@@ -191,11 +212,11 @@ this.initfn();
     if (reqData.mimeType === validateData.mimeType) {
       const isStatus = _.indexOf(validateDataStatus, status) > -1;
       const isState = _.indexOf(validateData.state, state) > -1;
-      if (isStatus && isState && createdBy !== userId) {
+      if (isStatus && isState && createdBy !== this.userProfile.userId) {
         return true;
-      } else if (isStatus && isState && createdBy === userId) {
+      } else if (isStatus && isState && createdBy ===  this.userProfile.userId) {
         return true;
-      } else if (isStatus && createdBy === userId) {
+      } else if (isStatus && createdBy === this.userProfile.userId) {
         return true;
       }
       return false;
@@ -217,58 +238,59 @@ this.initfn();
      };
 
     this.editorService.getById(req, qs).subscribe((response) => {
-
       if (response && response.responseCode === 'OK') {
-        const rspData = response.result.content;
-        rspData.state = state;
-        rspData.userId = this.userProfile.userId;
+        this.rspData = response.result.content;
+        this.rspData.state = state;
+        this.rspData.userId = this.userProfile.userId;
 
-        // if (this.checkContentAccess(rspData, validateModal)) {
-        //   this.openContentEditor();
-        // } else {
+        if (this.checkContentAccess(this.rspData, validateModal)) {
+          this.openContentEditor();
+        } else {
+          this.openContentEditor();
         //   this.toasterService.error(this.resourceService.messages.emsg.m0004);
         //  this.router.navigate(['home']);
-        // }
-      } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        this.router.navigate(['home']);
+        }
+      // } else {
+      //   this.toasterService.error(this.resourceService.messages.emsg.m0004);
+      //   this.router.navigate(['home']);
       }
-    });
+    }
+  );
   }
 
   initfn () {
-    org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
-      function () {
-        if (this.state) {
-          this.router.navigate([this.state]);
-        } else {
-          this.router.navigate(['draft']);
-        }
-      });
+    // org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
+    //   function () {
+    //     if (this.state) {
+    //       this.router.navigate([this.state]);
+    //     } else {
+    //       this.router.navigate(['draft']);
+    //     }
+    //   });
 
-    org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
-            function (event, data) {
-              if (this.state) {
-                this.router.navigate([this.state]);
-              } else {
-                this.router.navigate(['draft']);
-              }
-            });
+    // org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
+    //         function (event, data) {
+    //           if (this.state) {
+    //             this.router.navigate([this.state]);
+    //           } else {
+    //             this.router.navigate(['draft']);
+    //           }
+    //         });
 
 
 
-    window.addEventListener('editor:metadata:edit', (event) => {
-      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
-    });
+    // window.addEventListener('editor:metadata:edit', (event) => {
+    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
+    // });
 
-    window.addEventListener('editor:window:close', (event) => {
-      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
-    });
+    // window.addEventListener('editor:window:close', (event) => {
+    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
+    // });
 
-    window.addEventListener('editor:content:review', (event) => {
-      org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
-        this.contentId);
-    });
+    // window.addEventListener('editor:content:review', (event) => {
+    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
+    //     this.contentId);
+    // });
   }
 
 

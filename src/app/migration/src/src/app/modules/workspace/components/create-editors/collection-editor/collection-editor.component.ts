@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
@@ -11,6 +12,8 @@ import { EditorService } from './../../../services/editors/editor.service';
 
 import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
 import { ActivatedRoute } from '@angular/router';
+
+declare var jQuery: any;
 
 declare let window: CustomWindow;
 declare let org: any;
@@ -45,72 +48,53 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 public contentId: string;
 public context: any;
 public userSubscription: any;
+/**
+ * user profile details.
+ */
 public userProfile: any;
 public requestBody: any;
 public showModal: boolean;
 public state: string;
 public type: string;
-public modelId: any;
-  /**
-    * reference of UserService service.
-    */
-  /**
-  * user profile details.
-  */
-  userService: UserService;
 
+  /**
+   * reference of UserService service.
+  */
+
+  userService: UserService;
   constructor(resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-     userService: UserService) {
+    userService: UserService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.editorService = editorService;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
-
-
-    // console.log("console",this.userService);
-
-
     }
 
-  // @Input('contentId') contentId: string;
-  // @Input('requestBody') context: any;
 
 
 
   ngOnInit() {
-    console.log('collection editor');
-
-        /***
+    /**
      * Call User service to get user data
      */
-
     this.userService.userData$.subscribe(
       (user: IUserData) => {
           if (user && !user.err) {
             this.userProfile = user.userProfile;
             console.log(' user profile s', this.userProfile);
-            this.requestBody = this.userProfile;
-            console.log('requestBody\'s', this.requestBody);
 
-
-
-            const context = {
-              name : this.requestBody.firstName + ' ' + this.requestBody.lastName,
-              desc: 'descr',
-              userId: this.requestBody.userId,
-              organisationIds : this.requestBody.organisationIds,
-              createdFor: this.requestBody.organisationIds,
-              userRoles: this.requestBody.userRoles,
+            this.requestBody = {
+              name : this.userProfile.firstName + ' ' + this.userProfile.lastName,
               mimeType: 'application/vnd.ekstep.content-collection',
               contentType: 'Collection',
               sessionId: '4535345345345345'
             };
-            console.log('requestBody\'s userID', this.context.userId);
+
           }
       });
 
@@ -122,59 +106,66 @@ public modelId: any;
       this.state = params['state'];
       this.type = params['type'];
       this.framework = params['framework'];
+      console.log('state', this.state);
+      console.log('type', this.type);
+      console.log('contentId', this.contentId);
+      console.log('framework', this.framework);
 
     });
-     console.log('requestBody', this.context);
-     console.log('contentId', this.contentId);
-     console.log('state', this.state);
-    // this.context = this.userProfile;
-    // console.log("this.profile", this.userProfile);
+     console.log('requestBody', this.requestBody);
 
+    // this.openCollectionEditor();
 
   }
   ngAfterViewInit() {
-    const urlParams = {
-      contentId: this.contentId,
-      state: this.state,
-      framework: this.framework,
-      type: this.type,
-      context: this.context
-    };
-     console.log('urlParams', urlParams);
-    this.openCollectionEditor(urlParams);
+    this.openCollectionEditor();
   }
- 
 
-  openCollectionEditor(urlParams) {
 
+  openCollectionEditor() {
+    console.log('ths.type', this.type);
     // Initialise imported function as jQuery function
-    this.showLoader = false;
-    $.fn.iziModal = iziModal;
-    $('#collectionEditor').iziModal({
+    jQuery.fn.iziModal = iziModal;
+    jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
       iframeURL: '/assets/editors/collection-editor/index.html',
       navigateArrows: false,
-      fullscreen: true,
+      fullscreen: false,
       openFullscreen: true,
       closeOnEscape: false,
       overlayClose: false,
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosed: function () {
-        // this.openModel()
-        alert('close called');
-        $('#collectionEditor').iziModal('close');
+      onClosing: function( ) {
+
+          const state = jQuery('#collectionEditor').iziModal('getState');
+          console.log('state in openModal', state);
+            if (state === 'closing') {
+              if (document.getElementById('collectionEditor')) {
+                document.getElementById('collectionEditor').remove();
+                this.router.navigate(['workspace/content/create']);
+              }
+
+            }
+
+        // this.router.navigate(['workspace/content']);
+        // document.getElementById('collectionEditor').remove();
       }
+      // onClosed: function () {
+      //   this.openModel();
+      //   alert('close called');
+      //   jQuery('#collectionEditor').iziModal('close');
+      // }
 
     });
 
 
     window.context = {
       user: {
-        id: this.context.userId,
-        name: this.context.name
+        id: this.userProfile.userId,
+        name: this.userProfile.name
       },
       // sid: this.context.sessionId,
       sid: 'JwdwhKL6j_4-c3INzsMqA2g7NOoxXAAI',
@@ -186,7 +177,7 @@ public modelId: any;
       etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
       channel: org.sunbird.portal.channel,
       framework: this.framework,
-      env: this.context.contentType.toLowerCase()
+      env: this.requestBody.contentType.toLowerCase()
 
     };
 
@@ -196,7 +187,6 @@ public modelId: any;
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
-      // headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
       headerLogo: '',
       loadingImage: '',
       plugins: [{
@@ -215,7 +205,7 @@ public modelId: any;
         contentStatus: 'draft',
         rules: {
           levels: 7,
-          objectTypes: this.getTreeNodes(this.context.contentType)
+          objectTypes: this.getTreeNodes(this.requestBody.contentType)
         },
         defaultTemplate: {}
       },
@@ -228,9 +218,10 @@ public modelId: any;
         }],
         showEndPage: false
       },
-      editorType: this.context.contentType
+      editorType: this.requestBody.contentType
     };
-    if (this.context.contentType.toLowerCase() === 'textbook') {
+
+    if (this.requestBody.contentType.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
         ver: '1.0',
@@ -240,30 +231,30 @@ public modelId: any;
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFalgReviewer = false;
     if (this.state === 'WorkSpace.UpForReviewContent' &&
-      _.intersection(this.context.userRoles,
+      _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
       console.log('role assign', window.config.editorConfig.publishMode);
     } else if (this.state === 'WorkSpace.FlaggedContent' &&
-      _.intersection(this.context.userRoles,
+      _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFalgReviewer = true;
     }
-    $.fn.iziModal = iziModal;
+    // $.fn.iziModal = iziModal;
     setTimeout(function () {
-      $('#collectionEditor').iziModal('open');
+      jQuery('#collectionEditor').iziModal('open');
     }, 100);
 
     const validateModal = {
-      state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
-        'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent', 'LimitedPublishedContent'],
+      state: ['UpForReviewContent', 'ReviewContent',
+        'PublishedContent', 'FlaggedContent', 'LimitedPublishedContent'],
       status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
       mimeType: 'application/vnd.ekstep.content-collection'
     };
 
     const req = { contentId: this.contentId };
     const qs = { fields: 'userId,status,mimeType', mode: 'edit' };
-    if (this.state === 'WorkSpace.FlaggedContent') {
+    if (this.state === 'FlaggedContent') {
       delete qs.mode;
     }
 
@@ -272,21 +263,45 @@ public modelId: any;
       if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = 'CreateCollection';
-        rspData.userId = this.context.userId;
+        rspData.userId = this.userProfile.userId;
 
         if (this.validateRequest(rspData, validateModal)) {
           console.log('status of', response.result.content.status);
           this.updateModeAndStatus(response.result.content.status);
-
-          setTimeout(function () {
-            $('#collectionEditor').iziModal('open');
-          }, 100);
+          // $.fn.iziModal = iziModal;
+          // setTimeout(function () {
+          //   jQuery('#collectionEditor').iziModal('open');
+          // }, 100);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
-          this.router.navigate(['collection']);
+          // this.router.navigate(['/collection']);
         }
       }
     });
+  }
+
+  openModel() {
+    console.log('openmodal called');
+
+
+    setTimeout(function () {
+
+      if (document.getElementById('collectionEditor')) {
+        document.getElementById('collectionEditor').remove();
+      }
+      if (document.getElementById('modalCollectionEditor')) {
+        document.getElementById('modalCollectionEditor').remove();
+      }
+      // this.showModal = false
+      console.log('this.urlParams.state', this.urlParams.state);
+      if (this.urlParams.state) {
+
+        this.route.navigate('collection');
+      } else {
+        this.route.navigate('collection');
+        this.route.navigate('draft/1');
+      }
+    }, 2000);
   }
 
   validateRequest(reqData, validateData) {
@@ -297,7 +312,9 @@ public modelId: any;
     const validateDataStatus = validateData.status;
     if (reqData.mimeType === validateData.mimeType) {
       const isStatus = _.indexOf(validateDataStatus, status) > -1;
+      console.log('isStatus', isStatus);
       const isState = _.indexOf(validateData.state, state) > -1;
+      console.log('isState', isState);
       if (isStatus && isState && createdBy !== userId) {
         return true;
       } else if (isStatus && isState && createdBy === userId) {
@@ -621,41 +638,6 @@ public modelId: any;
 
 
 
-  openModel() {
-    this.showModal = true;
-    $.fn.iziModal = iziModal;
 
-
-
-    // if (this.urlParams.name === 'CollectionEditor') {
-    //   var state = $('#collectionEditor').iziModal('getState')
-    //   if (state === 'opened') {
-    //     if (document.getElementById('collectionEditor')) {
-    //       document.getElementById('collectionEditor').remove()
-    //     }
-    //   }
-    // }
-    // $('#modalCollectionEditor').modal('show')
-
-    // setTimeout(function () {
-
-    //   if (document.getElementById('collectionEditor')) {
-    //     document.getElementById('collectionEditor').remove()
-    //   }
-    //   if (document.getElementById('modalCollectionEditor')) {
-    //     document.getElementById('modalCollectionEditor').remove()
-    //   }
-    //   this.showModal = false
-    //   console.log("this.urlParams.state", this.urlParams.state);
-    //   if (this.urlParams.state) {
-
-    //     this.route.navigate('collection');
-    //   }
-    //    else {
-    //     this.route.navigate('collection');
-    //     // this.route.navigate('draftContent');
-    //   }
-    // }, 2000)
-  }
 
 }

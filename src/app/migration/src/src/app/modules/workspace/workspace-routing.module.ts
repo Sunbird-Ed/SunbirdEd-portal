@@ -37,7 +37,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes),
+    RouterModule.forRoot(
+      routes,
+    { enableTracing: true } // <-- debugging purposes only
+  )],
   exports: [RouterModule]
 })
 export class WorkspaceRoutingModule { }

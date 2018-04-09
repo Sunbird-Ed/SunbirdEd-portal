@@ -51,7 +51,15 @@ export class CreateStudyMaterialComponent implements OnInit {
   public userForm: FormGroup;
   public formBuilder: FormBuilder;
 
-  // public medium: Array<any> = [];
+  public boards: Array<any> = [];
+
+  public grades: Array<any> = [];
+
+  public medium: Array<any> = [];
+
+  public resourceType: Array<any> = [];
+
+  public subjects: Array<any> = [];
 
   constructor(public modalService: SuiModalService,
     resourceService: ResourceService,
@@ -81,18 +89,17 @@ export class CreateStudyMaterialComponent implements OnInit {
         }
       });
     this.showLoader = false;
-    const medium = ['KAR', 'TN', 'AP'];
-    const subjects = this.config.dropDownConfig.COMMON.subjects;
-    // this.grades = this.config.dropDownConfig.COMMON.grades;
-    // this.medium = this.config.dropDownConfig.COMMON.medium;
-    // this.boards = this.config.dropDownConfig.COMMON.boards;
-    // this.resourceType = this.config.dropDownConfig.COMMON.resourceType;
-    // this.mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
+   this.subjects = this.config.dropDownConfig.COMMON.subjects;
+    this.grades = this.config.dropDownConfig.COMMON.grades;
+    this.medium = this.config.dropDownConfig.COMMON.medium;
+    this.boards = this.config.dropDownConfig.COMMON.boards;
+    this.resourceType = this.config.dropDownConfig.COMMON.resourceType;
+    const mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
     this.userForm = this.formBuilder.group({
       name: '',
       boards: '',
       medium: '',
-      subject: '',
+      subjects: '',
       gradeLevel: '',
       resourceType: ''
     });
@@ -112,10 +119,11 @@ export class CreateStudyMaterialComponent implements OnInit {
       mimeType: mimetype,
       creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
 
-      // gradeLevel: ['Grade 5'],
+      gradeLevel: this.userForm.value.gradeLevel ? this.userForm.value.gradeLevel : ['Grade 5'],
 
-      name: this.userProfile.name ? this.userProfile.name : 'Untitled lesson',
+      name: this.userForm.value.name ? this.userForm.value.name : 'Untitled lesson',
       contentType: this.userProfile.contentType ? this.userProfile.contentType : 'Resource',
+
       // if ( {this.userProfile.language} === true ) {
       // language: [this.userProfile.language],
       // }

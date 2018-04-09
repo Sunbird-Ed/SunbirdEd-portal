@@ -1,3 +1,4 @@
+import { IUserProfile } from './../../../../shared/interfaces/userProfile';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -9,10 +10,7 @@ import { Router } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
 import { EditorService } from './../../../services/editors/editor.service';
 
-import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
-import { ActivatedRoute } from '@angular/router';
-
-
+declare var jQuery: any;
 
 declare let window: CustomWindow;
 declare let org: any;
@@ -43,9 +41,11 @@ private editorService: EditorService;
   */
   userService: UserService;
 
-  public userProfile: any;
+  public userProfile: IUserProfile;
 
-  constructor() { }
+  constructor( userService: UserService) {
+    this.userService = userService;
+   }
 
   ngOnInit() {
     this.userService.userData$.subscribe(
@@ -63,12 +63,12 @@ private editorService: EditorService;
   }
   callModal() {
 
-    $.fn.iziModal = iziModal;
+    jQuery.fn.iziModal = iziModal;
     setTimeout(function () {
-      $('#genericEditor').iziModal('open');
+      jQuery('#genericEditor').iziModal('open');
     }, 100);
 
-    $('#genericEditor').iziModal({
+    jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
       iframeURL: '/assets/editors/generic-editor/index.html',
@@ -76,16 +76,32 @@ private editorService: EditorService;
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
-      closeOnEscape: false,
+      closeOnEscape: true,
       overlayClose: false,
       overlay: false,
       overlayColor: '',
       history: false,
+      closeButton: true,
+    appendTo: 'body', // or false
+    appendToOverlay: 'body',
+
+    onResize: function(modal) { console.log(modal.onResize); },
+    onOpening: function(modal) {console.log(modal.onOpening); },
+    onOpened: function(modal) {console.log(modal.onOpened); },
+    onClosing: function(modal) {console.log('closing'); this.openModel(); },
+
+    afterRender: function() {},
+      onFullscreen: function (modal) {
+        console.log(modal.isFullscreen);
+    },
       onClosed: function () {
-        // this.openModel()
+        console.log('closed called');
+        this.openModel();
       }
 
     });
+
+
 
     window.context = {
       user: {
@@ -103,6 +119,7 @@ private editorService: EditorService;
       channel: org.sunbird.portal.channel,
       env: 'genericeditor'
     };
+
 
     window.config = {
       corePluginsPackaged: true,
@@ -128,5 +145,18 @@ private editorService: EditorService;
       }
 
     };
+  }
+  openModel() {
+
+ console.log('close called in generic');
+    setTimeout(() => {
+     if (document.getElementById('genericEditor')) {
+       document.getElementById('genericEditor').remove();
+     }
+     if (document.getElementById('modalGenericEditor')) {
+       document.getElementById('modalGenericEditor').remove();
+     }
+
+ }, 0);
   }
 }

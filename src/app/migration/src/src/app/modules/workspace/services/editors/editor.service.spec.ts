@@ -1,13 +1,7 @@
 
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-// Import NG testing module(s)
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-// Import services
-// Rxjs
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-
 import { EditorService } from './editor.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
