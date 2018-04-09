@@ -110,7 +110,7 @@ export class FileUploadService {
       validation: options.fileValidation,
       messages: {
         sizeError: '{file} ' + options.fileSizeErrorText + ' ' +
-          options.sizeLimit / (1000 * 1024) + ' MB.',
+          options.fileValidation.sizeLimit / (1000 * 1024) + ' MB.',
         tooManyItemsError: 'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'
       },
       failedUploadTextDisplay: options.failedUploadTextDisplay,

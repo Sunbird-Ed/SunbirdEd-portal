@@ -1,0 +1,47 @@
+<sui-modal [isClosable]="true" (dismissed)="goToCreate(); " #modal>
+    <div class=" ui segment margin-top-10">
+        <div class=" margin-bottom-15">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    <span class="ui header">
+                        {{resourceService?.frmelmnts?.lbl?.createcollection}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <form class="ui form" [formGroup]="userForm">
+                <div class="field">
+                    <label>
+                        {{resourceService?.frmelmnts?.lbl?.name}}
+                    </label>
+                    <div class="field">
+                        <input type="text" placeholder={{resourceService?.frmelmnts?.lbl?.name}} formControlName="name">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="field">
+                        <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
+                        <div class="field">
+                            <input name="description" placeholder={{resourceService?.frmelmnts?.lbl?.description}} formControlName="description">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions margin-top-10">
+            <p class="text-align-center padding-top-20">
+                <button class="ui primary text-align-center icon button" (click)="createCollection(); modal.deny();">
+                    {{resourceService?.frmelmnts?.btn?.startcreating}}
+                </button>
+            </p>
+            <div>
+                <label>
+                    <p class="text-align-center">
+                        {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
+                    </p>
+                </label>
+            </div>
+        </div>
+    </div>
+</sui-modal>

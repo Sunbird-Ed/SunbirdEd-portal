@@ -38,7 +38,7 @@ export class FileUploaderComponent implements OnInit {
   ngOnInit() {
     const options = {
       containerName: 'attachments/announcement',
-      fileSizeErrorText: 'this.resourceService.messages.emsg.m0007'
+      fileSizeErrorText: this.resourceService.messages.emsg.m0007
     };
     this.fileUploadService.initilizeFileUploader(options);
   }
