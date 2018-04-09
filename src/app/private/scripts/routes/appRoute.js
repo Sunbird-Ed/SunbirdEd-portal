@@ -435,20 +435,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function ($rootScope, telemetryService) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/draft'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-draft', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-draft',
+              uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       })
       .state('WorkSpace.ReviewContent', {
@@ -460,19 +460,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/review'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-inreview', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-inreview', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
         }
       })
       .state('WorkSpace.PublishedContent', {
@@ -484,20 +485,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/published'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-published', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-published', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       })
       .state('WorkSpace.AllUploadedContent', {
@@ -509,20 +510,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/uploaded'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-uploaded', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-uploaded', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       })
       .state('WorkSpace.UpForReviewContent', {
@@ -534,20 +535,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/upForReview'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-upforreview', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-upforreview', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       })
       .state('WorkSpace.FlaggedContent', {
@@ -559,20 +560,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/content/flagged'
           var contextData = {
             env: 'workSpace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-flagged', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-flagged', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       })
       .state('CreateLesson', {
@@ -821,20 +822,20 @@ angular.module('playerApp')
           }
         },
         onEnter: function (telemetryService, $rootScope) {
+        },
+        onExit: function ($rootScope, telemetryService) {
           var uri = '/workspace/batches'
           var contextData = {
             env: 'workspace',
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', '', 'workspace-course-batch', uri),
+            edata: telemetryService.impressionEventData('list', '',
+              'workspace-course-batch', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
           telemetryService.impression(data)
-        },
-        onExit: function ($rootScope, telemetryService) {
-
         }
       }).state('CreateBatch', {
         url: '/create/batch/:courseId',
@@ -855,7 +856,7 @@ angular.module('playerApp')
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-read', 'batches'),
+            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-read', '/create/batch'),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }
@@ -1010,7 +1011,8 @@ angular.module('playerApp')
             rollup: telemetryService.getRollUpData($rootScope.organisationIds)
           }
           var data = {
-            edata: telemetryService.impressionEventData('list', 'scroll', 'workspace-content-limitedpublish', uri),
+            edata: telemetryService.impressionEventData('list', 'scroll',
+              'workspace-content-limitedpublish', uri, telemetryService.getVisitData()),
             context: telemetryService.getContextData(contextData),
             tags: _.concat([], org.sunbird.portal.channel)
           }

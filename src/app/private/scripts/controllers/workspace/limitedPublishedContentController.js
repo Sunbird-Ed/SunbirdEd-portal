@@ -73,22 +73,13 @@ angular.module('playerApp')
 
       lpContent.openContentPlayer = function (item) {
         var uri = '/workspace/content/limited/publish'
-        var contextData = {
-          env: 'workSpace',
-          rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-        }
         var visitData = {
           objid: item.identifier,
           objtype: 'workspace',
           section: 'limited publish content'
         }
-        var data = {
-          edata: telemetryService.impressionEventData('view', 'scroll', 'workspace-content-limitedpublish',
-            uri, visitData),
-          context: telemetryService.getContextData(contextData),
-          tags: _.concat([], org.sunbird.portal.channel)
-        }
-        telemetryService.impression(data)
+        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
+          'scroll', 'workspace-content-limitedpublish', uri, '', visitData)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 
