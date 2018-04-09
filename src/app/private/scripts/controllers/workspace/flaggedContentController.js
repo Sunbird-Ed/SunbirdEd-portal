@@ -74,14 +74,6 @@ angular.module('playerApp')
       }
 
       flaggedContent.openContentPlayer = function (item) {
-        var uri = '/workspace/content/flagged'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'flagged content'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
-          'scroll', 'workspace-content-flagged', uri, '', visitData)
         workSpaceUtilsService.openContentPlayer(item, $state.current.name)
       }
 

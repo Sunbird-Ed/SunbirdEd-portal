@@ -85,14 +85,6 @@ angular.module('playerApp')
       }
 
       draftContent.openContentEditor = function (item) {
-        var uri = '/workspace/content/draft'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'draft content'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content',
-          '1.0', 'scroll', 'workspace-content-draft', uri, '', visitData)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 

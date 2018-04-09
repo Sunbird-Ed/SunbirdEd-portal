@@ -72,14 +72,6 @@ angular.module('playerApp')
       }
 
       lpContent.openContentPlayer = function (item) {
-        var uri = '/workspace/content/limited/publish'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'limited publish content'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
-          'scroll', 'workspace-content-limitedpublish', uri, '', visitData)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 

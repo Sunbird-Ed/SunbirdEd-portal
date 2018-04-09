@@ -70,14 +70,6 @@ angular.module('playerApp')
       }
 
       reviewContent.openContentPlayer = function (item) {
-        var uri = '/workspace/content/review'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'review submission'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
-          'scroll', 'workspace-content-inreview', uri, '', visitData)
         workSpaceUtilsService.openContentPlayer(item, $state.current.name)
       }
 

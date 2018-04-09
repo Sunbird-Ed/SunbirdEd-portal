@@ -78,14 +78,6 @@ angular.module('playerApp')
       }
 
       allUploadedContent.openContentEditor = function (item) {
-        var uri = '/workspace/content/uploaded'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'uploaded content'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
-          'scroll', 'workspace-content-uploaded', uri, '', visitData)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 

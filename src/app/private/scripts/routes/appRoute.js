@@ -848,19 +848,10 @@ angular.module('playerApp')
         params: {
           coursecreatedby: null
         },
-        onEnter: function ($rootScope, telemetryService) {
+        onEnter: function ($rootScope, telemetryService, $stateParams) {
           $rootScope.profileActive = 'active'
-          telemetryService.setConfigData('env', 'course')
-          var contextData = {
-            env: 'course',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-read', '/create/batch'),
-            context: telemetryService.getContextData(contextData),
-            tags: _.concat([], org.sunbird.portal.channel)
-          }
-          telemetryService.impression(data)
+          telemetryService.impressionTelemetryData('course', $stateParams.courseId, 'course',
+            '1.0', 'scroll', 'batch-create', '/create/batch', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -876,19 +867,10 @@ angular.module('playerApp')
         params: {
           coursecreatedby: null
         },
-        onEnter: function ($rootScope, telemetryService) {
+        onEnter: function ($rootScope, telemetryService, $stateParams) {
           $rootScope.profileActive = 'active'
-          telemetryService.setConfigData('env', 'course')
-          var contextData = {
-            env: 'course',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var data = {
-            edata: telemetryService.impressionEventData('view', 'scroll', 'batch-edit', '/update/batch/'),
-            context: telemetryService.getContextData(contextData),
-            tags: _.concat([], org.sunbird.portal.channel)
-          }
-          telemetryService.impression(data)
+          telemetryService.impressionTelemetryData('course', $stateParams.batchId, 'batch',
+            '1.0', 'scroll', 'batch-edit', '/update/batch', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''

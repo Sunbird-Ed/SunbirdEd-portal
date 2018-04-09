@@ -75,14 +75,6 @@ angular.module('playerApp')
       }
 
       publishedContent.openContentPlayer = function (item) {
-        var uri = '/workspace/content/published'
-        var visitData = {
-          objid: item.identifier,
-          objtype: 'workspace',
-          section: 'published content'
-        }
-        telemetryService.impressionTelemetryData('workSpace', item.identifier, 'content', '1.0',
-          'scroll', 'workspace-content-published', uri, '', visitData)
         workSpaceUtilsService.openContentEditor(item, $state.current.name)
       }
 
