@@ -16,19 +16,19 @@ export class TelemetryLibUtilService {
     EkTelemetry.start(telemetry, iTelemetryEvent.contentId, iTelemetryEvent.contentVer,
       iTelemetryEvent.edata, iTelemetryEvent.options);
   }
-  public impressionEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
+  public impressionEvent(iTelemetryEvent: ITelemetryEvent) {
     EkTelemetry.impression(iTelemetryEvent.edata, iTelemetryEvent.options);
   }
-  public interactEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
+  public interactEvent(iTelemetryEvent: ITelemetryEvent) {
     EkTelemetry.interact(iTelemetryEvent.edata, iTelemetryEvent.options);
   }
-  public shareEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
+  public shareEvent(iTelemetryEvent: ITelemetryEvent) {
     EkTelemetry.share(iTelemetryEvent.edata, iTelemetryEvent.options);
   }
-  public errorEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
+  public errorEvent(iTelemetryEvent: ITelemetryEvent) {
     EkTelemetry.error(iTelemetryEvent.edata, iTelemetryEvent.options);
   }
-  public endEvent(iTelemetryEvent: ITelemetryEvent, telemetry: ITelemetry) {
+  public endEvent(iTelemetryEvent: ITelemetryEvent) {
     EkTelemetry.end(iTelemetryEvent.edata, iTelemetryEvent.options);
   }
 }
