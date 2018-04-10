@@ -16,9 +16,11 @@ angular.module('playerApp')
         params: {
           page: '1'
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService, telemetryService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('announcementOutbox', null)
+          telemetryService.impressionTelemetryData('announcement', '', '',
+            '', 'Paginate', 'announcement-outbox', '/announcement/outbox/list', '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -36,9 +38,11 @@ angular.module('playerApp')
           announcementName: null,
           pageId: null
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService, telemetryService) {
           $rootScope.profileActive = 'active'
           routeHelperService.loadRouteConfig('announcementDetails', null)
+          telemetryService.impressionTelemetryData('announcement', $stateParams.announcementId, 'announcement-details',
+            '1.0', 'Paginate', 'announcement-details', '/announcement/' + $stateParams.announcementId, '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -55,9 +59,11 @@ angular.module('playerApp')
         params: {
           page: '1'
         },
-        onEnter: function ($stateParams, $rootScope, routeHelperService) {
+        onEnter: function ($stateParams, $rootScope, routeHelperService, telemetryService) {
           $rootScope.homeActive = 'active'
           routeHelperService.loadRouteConfig('announcementInbox', null)
+          telemetryService.impressionTelemetryData('announcement', '', '',
+            '', 'Paginate', 'announcement-inbox', '/announcement/inbox/list', '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.homeActive = ''
@@ -78,7 +84,7 @@ angular.module('playerApp')
           telemetryPageId: 'annoucement_form_details',
           telemetryPageType: 'form'
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, userService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, userService, telemetryService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
@@ -94,6 +100,8 @@ angular.module('playerApp')
           } else {
             routeHelperService.loadRouteConfig('announcementCreate', null)
           }
+          telemetryService.impressionTelemetryData('announcement', '', '',
+            '', 'Paginate', 'announcement-create', '/announcement/create/' + $stateParams.stepNumber, '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
@@ -115,7 +123,7 @@ angular.module('playerApp')
           telemetryPageType: 'form',
           telemetryAnnTitle: null
         },
-        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, userService) {
+        onEnter: function ($stateParams, $rootScope, $state, routeHelperService, userService, telemetryService) {
           var stepNumber = parseInt($stateParams.stepNumber)
           var announcement = $stateParams.announcement
           $rootScope.userIdHashTag = $rootScope.userIdHashTag || userService.getUserHash($rootScope.userId)
@@ -130,6 +138,9 @@ angular.module('playerApp')
           } else {
             routeHelperService.loadRouteConfig('announcementResend', null)
           }
+          telemetryService.impressionTelemetryData('announcement', $stateParams.announcementId, 'announcement',
+            '', 'Paginate', 'announcement-resend', '/announcement/resend/' + $stateParams.announcementId + '/' +
+            $stateParams.stepNumber, '', '')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''

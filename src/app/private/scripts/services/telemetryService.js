@@ -25,7 +25,7 @@ angular.module('playerApp')
     this.config = {
       'pdata': {
         'id': org.sunbird.portal.appid || 'sunbird.portal',
-        'ver': '1.0',
+        'ver': '1.5.1',
         'pid': 'sunbird-portal'
       },
       'env': this.getConfigData('env') || 'Home',
@@ -117,7 +117,6 @@ angular.module('playerApp')
          * data object have these properties {'edata', 'contentId', 'contentVer', 'context', 'object', 'tags'}
          */
     this.start = function (data) {
-      console.log('Portal Start event', data)
       if (data.context) { this.context.push(data.context) }
       EkTelemetry.start(this.config, data.contentId, data.contentVer, data.edata, { // eslint-disable-line no-undef
         context: data.context,
@@ -441,14 +440,15 @@ angular.module('playerApp')
         env: env,
         rollup: this.getRollUpData($rootScope.organisationIds)
       }
-
-      var objectData = {
-        id: objId,
-        type: objType,
-        ver: objVer,
-        rollup: this.getRollUpData(objRollup)
+      var objectData = {}
+      if (objId && objId.length > 0) {
+        objectData = {
+          id: objId,
+          type: objType,
+          ver: objVer,
+          rollup: this.getRollUpData(objRollup)
+        }
       }
-
       var data = {
         edata: this.impressionEventData('view', subtype, pageId, uri, visit),
         context: this.getContextData(contextData),
