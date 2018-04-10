@@ -45,6 +45,8 @@ module.exports = {
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
+    context.did = req.session.deviceId
+    // console.log('inside logSessionStart', req.session.deviceId)
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
     telemetry.start({
