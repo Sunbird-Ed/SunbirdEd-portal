@@ -440,14 +440,16 @@ angular.module('playerApp')
         env: env,
         rollup: this.getRollUpData($rootScope.organisationIds)
       }
-
-      var objectData = {
-        id: objId,
-        type: objType,
-        ver: objVer,
-        rollup: this.getRollUpData(objRollup)
+      var objectData = {}
+      if (objId && objId.length > 0) {
+        objectData = {
+          id: objId,
+          type: objType,
+          ver: objVer,
+          rollup: this.getRollUpData(objRollup)
+        }
       }
-
+      console.log(uri)
       var data = {
         edata: this.impressionEventData('view', subtype, pageId, uri, visit),
         context: this.getContextData(contextData),
