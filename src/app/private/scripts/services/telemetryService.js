@@ -449,7 +449,6 @@ angular.module('playerApp')
           rollup: this.getRollUpData(objRollup)
         }
       }
-      console.log(uri)
       var data = {
         edata: this.impressionEventData('view', subtype, pageId, uri, visit),
         context: this.getContextData(contextData),
