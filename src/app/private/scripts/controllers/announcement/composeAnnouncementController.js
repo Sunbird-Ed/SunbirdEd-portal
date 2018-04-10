@@ -366,12 +366,12 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
           telemetryService.startTelemetryData('announcement', $stateParams.announcementId, 'announcement',
-            '1.0', 'announcement', 'announcement-resend', 'resend')
+            '1.0', 'workflow', 'announcement-resend', 'edit')
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
           composeAnn.announcement.hideDate = true
-          telemetryService.startTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
-            'announcement-create', 'create')
+          telemetryService.startTelemetryData('announcement', '', 'announcement', '1.0', 'workflow',
+            'announcement-create', 'edit')
         }
       }
       if (composeAnn.stepNumber === 1) {
@@ -527,10 +527,10 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.endTelemetry = function () {
       if (composeAnn.editAction) {
         telemetryService.endTelemetryData('announcement', $stateParams.announcementId, 'announcement', '1.0',
-          'announcement', 'announcement-resend', 'resend')
+          'workflow', 'announcement-resend', 'edit')
       } else {
-        telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'announcement',
-          'announcement-create', 'create')
+        telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'workflow',
+          'announcement-create', 'edit')
       }
     }
   }

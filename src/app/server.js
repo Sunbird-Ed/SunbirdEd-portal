@@ -37,7 +37,7 @@ const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
-
+const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
 let memoryStore = null
@@ -91,6 +91,7 @@ app.all('/public', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -123,6 +124,7 @@ app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -237,6 +239,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.logSession = req.session.logSession
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'private', 'index.ejs'))
 })
 
@@ -344,8 +347,8 @@ keycloak.deauthenticated = function (request) {
 }
 
 resourcesBundlesHelper.buildResources(function (err, result) {
-  if (!process.env.sunbird_appid) {
-    console.error('please set sunbird_appid environment variable which is telemetry producer id')
+  if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
+    console.error('please set environment variable sunbird_environment, sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
   }
   console.log('building resource bundles ......')
