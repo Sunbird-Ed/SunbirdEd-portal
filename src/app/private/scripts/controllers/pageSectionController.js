@@ -17,8 +17,6 @@ angular.module('playerApp')
         $state.go('Player', params)
         telemetryService.interactTelemetryData($scope.type, item.identifier, item.contentType,
           $rootScope.version, $scope.type, $scope.type + '-read')
-        telemetryService.startTelemetryData($scope.type, item.identifier, item.contentType,
-          $rootScope.version, item.contentType, $scope.type + '-read', 'play')
       }
 
       section.openCourseView = function (course) {
