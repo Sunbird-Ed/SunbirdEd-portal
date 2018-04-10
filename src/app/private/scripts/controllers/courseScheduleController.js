@@ -330,7 +330,7 @@ angular.module('playerApp')
         toc.showCourseDashboard = false
         // trigger course concumption telemetry-start event when first content is started
         if (toc.isTelemtryStarted === false) {
-          telemetryService.startTelemetryData('course', toc.courseId, 'course', '1.0', 'course',
+          telemetryService.startTelemetryData('course', toc.courseId, 'course', '1.0', 'player',
             'course-read', 'play')
           toc.isTelemtryStarted = true
           // save to service to trigger telemetry end event on exit

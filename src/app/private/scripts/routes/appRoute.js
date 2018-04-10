@@ -185,30 +185,15 @@ angular.module('playerApp')
           }
           telemetryService.impression(data)
         },
-        onExit: function ($rootScope, dataService, telemetryService) {
+        onExit: function ($rootScope, dataService, telemetryService, $stateParams) {
           $rootScope.isTocPage = false
           $rootScope.courseActive = ''
           dataService.setData('contentStateInit', false)
           dataService.setData('isTrackingEnabled', false)
           if (dataService.getData('isTelemtryStarted') === true) {
             dataService.setData('isTelemtryStarted', false)
-            var contextData = {
-              env: 'course',
-              rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-            }
-
-            var objectData = {
-              id: $rootScope.courseId,
-              type: 'course',
-              ver: '1.0'
-            }
-            var data = {
-              edata: telemetryService.endEventData('course', 'course-read', 'play'),
-              context: telemetryService.getContextData(contextData),
-              object: telemetryService.getObjectData(objectData),
-              tags: _.concat([], org.sunbird.portal.channel)
-            }
-            telemetryService.end(data)
+            telemetryService.endTelemetryData('course', $stateParams.courseId, 'course', '1.0', 'player',
+              'course-read', 'play')
           }
         }
       })
@@ -264,24 +249,6 @@ angular.module('playerApp')
         onExit: function ($rootScope, telemetryService) {
           $rootScope.isPlayerPage = false
           $rootScope.resourcesActive = ''
-          var contextData = {
-            env: 'library',
-            rollup: telemetryService.getRollUpData($rootScope.organisationIds)
-          }
-          var objRollup = [$rootScope.courseId]
-          var objectData = {
-            id: $rootScope.courseId,
-            type: $rootScope.contentType,
-            ver: '1.0',
-            rollup: telemetryService.getRollUpData(objRollup)
-          }
-          var data = {
-            edata: telemetryService.endEventData('library', 'library-read', 'play'),
-            context: telemetryService.getContextData(contextData),
-            object: telemetryService.getObjectData(objectData),
-            tags: _.concat([], org.sunbird.portal.channel)
-          }
-          telemetryService.end(data)
         }
       })
       .state('Search', {
