@@ -236,6 +236,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.sessionId = req.sessionID
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.logSession = req.session.logSession
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
   res.locals.producerId = producerId
@@ -248,6 +249,15 @@ app.get('/get/envData', keycloak.protect(), function (req, res) {
   res.end()
 })
 
+app.get('/v1/user/session/start/:deviceId', function (req, res) {
+  if (req.session.logSession === false) {
+    req.session.deviceId = req.params.deviceId
+    telemetryHelper.logSessionStart(req)
+    req.session.logSession = true
+  }
+  res.status(200)
+  res.end()
+})
 // tenant Api's
 app.get('/v1/tenant/info', tenantHelper.getInfo)
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
@@ -284,6 +294,7 @@ app.all('*', function (req, res) {
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function (request) {
+  request.session.logSession = false
   async.series({
     getPermissionData: function (callback) {
       permissionsHelper.getPermissions(request)
@@ -294,9 +305,6 @@ keycloak.authenticated = function (request) {
     },
     updateLoginTime: function (callback) {
       userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
     }
   }, function (err, results) {
     if (err) {
