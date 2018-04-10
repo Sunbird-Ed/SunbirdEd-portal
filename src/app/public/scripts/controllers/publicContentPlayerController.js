@@ -22,7 +22,7 @@ angular.module('loginApp')
           type: 'course'
         }]
         configuration.context.pdata = {
-          'id': 'sunbird.portal',
+          'id': $('#producerId').attr('value'),
           'ver': '1.0',
           'pid': 'sunbird-portal'
         }
@@ -31,6 +31,8 @@ angular.module('loginApp')
         configuration.config.repos = config.ekstep_CP_config.config.repos
         configuration.metadata = $scope.contentData
         configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ? {} : data.body
+        configuration.config.overlay = config.ekstep_CP_config.config.overlay || {}
+        configuration.config.overlay.showUser = false
         return configuration
       }
 
