@@ -314,8 +314,8 @@ keycloak.deauthenticated = function (request) {
 }
 
 resourcesBundlesHelper.buildResources(function (err, result) {
-  if (!process.env.sunbird_appid) {
-    console.error('please set sunbird_appid environment variable which is telemetry producer id')
+  if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
+    console.error('please set environment variable sunbird_environment, sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
   }
   console.log('building resource bundles ......')
