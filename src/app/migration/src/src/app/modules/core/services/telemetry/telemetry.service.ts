@@ -126,7 +126,7 @@ export class TelemetryService {
       uri: impressionEventInput.uri,
       visits: impressionEventInput.visits
     };
-    this.telemetryLibUtilService.impressionEvent(this.getEventData(impressionEventInput, impressionEventData), this.telemetry);
+    this.telemetryLibUtilService.impressionEvent(this.getEventData(impressionEventInput, impressionEventData));
   }
 
   /**
@@ -140,7 +140,7 @@ export class TelemetryService {
       id: iInteractEventInput.edataId,
       pageid: iInteractEventInput.pageId
     };
-    this.telemetryLibUtilService.interactEvent(this.getEventData(iInteractEventInput, interactEventData), this.telemetry);
+    this.telemetryLibUtilService.interactEvent(this.getEventData(iInteractEventInput, interactEventData));
   }
 
   /**
@@ -157,7 +157,7 @@ export class TelemetryService {
         ver: iShareEventInput.objectVersion
       }]
     };
-    this.telemetryLibUtilService.shareEvent(this.getEventData(iShareEventInput, shareEventData), this.telemetry);
+    this.telemetryLibUtilService.shareEvent(this.getEventData(iShareEventInput, shareEventData));
   }
 
   /**
@@ -171,7 +171,7 @@ export class TelemetryService {
       pageid: iErrorEventInput.pageId,
       stacktrace: iErrorEventInput.stacktrace
     };
-    this.telemetryLibUtilService.errorEvent(this.getEventData(iErrorEventInput, errorEventData), this.telemetry);
+    this.telemetryLibUtilService.errorEvent(this.getEventData(iErrorEventInput, errorEventData));
   }
 
   /**
@@ -186,7 +186,7 @@ export class TelemetryService {
       pageid: iEndEventInput.pageId,
       summary: iEndEventInput.summary
     };
-    this.telemetryLibUtilService.endEvent(this.getEventData(iEndEventInput, endEventData), this.telemetry);
+    this.telemetryLibUtilService.endEvent(this.getEventData(iEndEventInput, endEventData));
   }
 
   /**
