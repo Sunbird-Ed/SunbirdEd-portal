@@ -54,6 +54,7 @@ describe('Controller: adminController', function () {
       $state: $state
 
     })
+    adminCtl.selectedOrgUserRolesNew = []
     scope.users = [{ name: 'abc', roles: ['a', 'b'], organisations: [{ id: 123 }] }]
     adminCtl.searchResult = scope.users
     $rootScope.search = { selectedSearchKey: 'Users' }
@@ -335,7 +336,7 @@ describe('Controller: adminController', function () {
     spyOn(adminCtl, 'editRoles').and.callThrough()
     spyOn(Array.prototype, 'includes').and.callThrough()
     adminCtl.selectedOrgUserRoles = []
-    adminCtl.editRoles('abc', [])
+    adminCtl.editRoles('abc', [], {'target': {'checked': true}})
     done()
   })
 

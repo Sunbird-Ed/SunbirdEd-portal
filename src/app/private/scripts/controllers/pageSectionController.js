@@ -43,8 +43,6 @@ angular.module('playerApp')
         $state.go('Toc', params)
         telemetryService.interactTelemetryData($scope.type, courseId, courseType, $rootScope.version,
           $scope.type, $scope.type + '-read')
-        telemetryService.startTelemetryData($scope.type, courseId, courseType,
-          $rootScope.version, courseType, $scope.type + '-read', 'play')
       }
 
       section.sections = function () {
