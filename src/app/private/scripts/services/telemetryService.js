@@ -25,7 +25,7 @@ angular.module('playerApp')
     this.config = {
       'pdata': {
         'id': org.sunbird.portal.appid || 'sunbird.portal',
-        'ver': '1.5',
+        'ver': '1.5.1',
         'pid': 'sunbird-portal'
       },
       'env': this.getConfigData('env') || 'Home',
