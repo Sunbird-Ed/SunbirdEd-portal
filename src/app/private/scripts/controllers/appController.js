@@ -122,13 +122,11 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $scope.setRootOrgInfo(profileData)
     }
     $scope.logSessionStartEvent = function () {
-      // console.log('inside logSessionStart', EkTelemetry.fingerPrintId)
       if ($rootScope.logSession === 'false') {
-        $http.get('/telemetry/v1/logSessionStartEvent/' + EkTelemetry.fingerPrintId).then(function (res) {
+        $http.get('/v1/user/session/start/' + EkTelemetry.fingerPrintId).then(function (res) {
         }).catch(function () {
         })
       } else {
-        // console.log('Session logged')
       }
     }
 

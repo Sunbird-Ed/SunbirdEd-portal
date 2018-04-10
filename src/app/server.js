@@ -249,29 +249,10 @@ app.get('/get/envData', keycloak.protect(), function (req, res) {
   res.end()
 })
 
-app.get('/telemetry/v1/logSessionStartEvent/:deviceId', function (req, res) {
-  // console.log('--- deviceId', req.params.deviceId)
+app.get('/v1/user/session/start/:deviceId', function (req, res) {
   if (req.session.logSession === false) {
     req.session.deviceId = req.params.deviceId
-    async.series({
-      getPermissionData: function (callback) {
-        permissionsHelper.getPermissions(req)
-        callback()
-      },
-      getUserData: function (callback) {
-        permissionsHelper.getCurrentUserRoles(req, callback)
-      },
-      updateLoginTime: function (callback) {
-        userHelper.updateLoginTime(req, callback)
-      },
-      logSession: function (callback) {
-        telemetryHelper.logSessionStart(req, callback)
-      }
-    }, function (err, results) {
-      if (err) {
-        console.log('err', err)
-      }
-    })
+    telemetryHelper.logSessionStart(req)
     req.session.logSession = true
   }
   res.status(200)
@@ -314,25 +295,22 @@ app.all('*', function (req, res) {
  */
 keycloak.authenticated = function (request) {
   request.session.logSession = false
-  // async.series({
-  //   getPermissionData: function (callback) {
-  //     permissionsHelper.getPermissions(request)
-  //     callback()
-  //   },
-  //   getUserData: function (callback) {
-  //     permissionsHelper.getCurrentUserRoles(request, callback)
-  //   },
-  //   updateLoginTime: function (callback) {
-  //     userHelper.updateLoginTime(request, callback)
-  //   },
-  //   logSession: function (callback) {
-  //     telemetryHelper.logSessionStart(request, callback)
-  //   }
-  // }, function (err, results) {
-  //   if (err) {
-  //     console.log('err', err)
-  //   }
-  // })
+  async.series({
+    getPermissionData: function (callback) {
+      permissionsHelper.getPermissions(request)
+      callback()
+    },
+    getUserData: function (callback) {
+      permissionsHelper.getCurrentUserRoles(request, callback)
+    },
+    updateLoginTime: function (callback) {
+      userHelper.updateLoginTime(request, callback)
+    }
+  }, function (err, results) {
+    if (err) {
+      console.log('err', err)
+    }
+  })
 }
 
 keycloak.deauthenticated = function (request) {

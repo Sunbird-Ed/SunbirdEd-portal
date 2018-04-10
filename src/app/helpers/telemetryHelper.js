@@ -34,7 +34,7 @@ module.exports = {
   /**
    * this function helps to generate session start event
    */
-  logSessionStart: function (req, callback) {
+  logSessionStart: function (req) {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
     var channel = req.session.rootOrghashTagId || md5('sunbird')
@@ -46,7 +46,6 @@ module.exports = {
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
     context.did = req.session.deviceId
-    // console.log('inside logSessionStart', req.session.deviceId)
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
     telemetry.start({
@@ -55,7 +54,6 @@ module.exports = {
       actor: actor,
       tags: _.concat([], channel)
     })
-    return callback()
   },
 
   /**
@@ -64,9 +62,15 @@ module.exports = {
   logSessionEnd: function (req) {
     const edata = telemetry.endEventData('session')
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
+    var dims = _.clone(req.session.orgs || [])
     var channel = req.session.rootOrghashTagId || md5('sunbird')
+    const context = telemetry.getContextData({ channel: channel, env: 'user' })
+    context.sid = req.sessionID
+    context.did = req.session.deviceId
+    context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,
+      context: context,
       actor: actor,
       tags: _.concat([], channel)
     })
