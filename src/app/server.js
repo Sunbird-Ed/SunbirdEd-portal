@@ -319,9 +319,15 @@ keycloak.deauthenticated = function (request) {
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    request.session.sessionEvents = request.session.sessionEvents || []
     telemetryHelper.logSessionEnd(request)
-    delete request.session.sessionEvents
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
+      delete request.session.sessionEvents
+      delete request.session['deviceId']
+    })
   }
 }
 
