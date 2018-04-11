@@ -104,5 +104,13 @@ describe('TelemetryService', () => {
             expect(telemetryService).toBeTruthy();
             expect(userAgent).toBeDefined();
         }));
+    it('should trigger log event', inject([TelemetryService, UserService, TelemetryLibUtilService,
+        ConfigService, LearnerService], (telemetryService: TelemetryService, userService: UserService,
+            telemetryLibUtilService: TelemetryLibUtilService, config: ConfigService) => {
+            spyOn(telemetryLibUtilService, 'logEvent').and.callFake(() => Observable.of({}));
+            const apiRes = telemetryService.logTelemetry(mockData.mockRes.logEventData);
+            expect(telemetryService).toBeTruthy();
+            expect(telemetryLibUtilService.logEvent).toHaveBeenCalled();
+        }));
 
 });

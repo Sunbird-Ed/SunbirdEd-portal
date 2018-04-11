@@ -6,3 +6,4 @@ export * from './interactEventInput';
 export * from './shareEventInput';
 export * from './errorEventInput';
 export * from './endEventInput';
+export * from './logEventInput';

@@ -34,36 +34,43 @@ describe('TelemetryLibUtilService', () => {
   it('should call telemetry impression event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
       spyOn(EkTelemetry, 'impression').and.callThrough();
-      const apiRes = telemetryLibUtilService.impressionEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
+      const apiRes = telemetryLibUtilService.impressionEvent(mockData.mockRes.telemetryEvent);
       expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.impression).toHaveBeenCalled();
     }));
   it('should call telemetry interact event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
       spyOn(EkTelemetry, 'interact').and.callThrough();
-      const apiRes = telemetryLibUtilService.interactEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
+      const apiRes = telemetryLibUtilService.interactEvent(mockData.mockRes.telemetryEvent);
       expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.interact).toHaveBeenCalled();
     }));
   it('should call telemetry share event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
       spyOn(EkTelemetry, 'share').and.callThrough();
-      const apiRes = telemetryLibUtilService.shareEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
+      const apiRes = telemetryLibUtilService.shareEvent(mockData.mockRes.telemetryEvent);
       expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.share).toHaveBeenCalled();
     }));
   it('should call telemetry error event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
       spyOn(EkTelemetry, 'error').and.callThrough();
-      const apiRes = telemetryLibUtilService.errorEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
+      const apiRes = telemetryLibUtilService.errorEvent(mockData.mockRes.telemetryEvent);
       expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.error).toHaveBeenCalled();
     }));
   it('should call telemetry end event', inject([TelemetryLibUtilService],
     (telemetryLibUtilService: TelemetryLibUtilService) => {
       spyOn(EkTelemetry, 'end').and.callThrough();
-      const apiRes = telemetryLibUtilService.endEvent(mockData.mockRes.telemetryEvent, mockData.mockRes.telemetry);
+      const apiRes = telemetryLibUtilService.endEvent(mockData.mockRes.telemetryEvent);
       expect(telemetryLibUtilService).toBeTruthy();
       expect(EkTelemetry.end).toHaveBeenCalled();
+    }));
+  it('should call telemetry log event', inject([TelemetryLibUtilService],
+    (telemetryLibUtilService: TelemetryLibUtilService) => {
+      spyOn(EkTelemetry, 'log').and.callThrough();
+      const apiRes = telemetryLibUtilService.logEvent(mockData.mockRes.telemetryEvent);
+      expect(telemetryLibUtilService).toBeTruthy();
+      expect(EkTelemetry.log).toHaveBeenCalled();
     }));
 });

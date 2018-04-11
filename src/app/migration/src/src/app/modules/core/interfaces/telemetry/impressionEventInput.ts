@@ -1,7 +1,11 @@
 export interface IImpressionEventInput {
-    "type": String;
-    "level": String;
-    "message": "";
-    "pageid": "";
-    "params": [{"key":"value"}] 
+    'env': String;
+    'objectId': String;
+    'objectType': String;
+    'objectVersion': String;
+    'type': String;
+    'subType': String;
+    'uri': String;
+    'pageId': String;
+    'visits'?: Array<Object>;
 }

@@ -28,7 +28,7 @@ export class AppComponent {
   public courseService: CoursesService;
 
   /**
-   * reference of TelemetryService 
+   * reference of TelemetryService
    */
   public telemetryService: TelemetryService;
   /**
@@ -55,6 +55,6 @@ export class AppComponent {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }))
+    document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
   }
 }

@@ -41,6 +41,12 @@ export interface IEndEventData {
     'pageid'?: String;
     'summary'?: Array<Object>;
 }
+export interface ILogEventData {
+    'type': String;
+    'level': String;
+    'message': String;
+    'params': Array<Object>;
+}
 export interface ITelemetryContextData {
     'channel': String;
     'pdata'?: Object;
@@ -62,7 +68,8 @@ export interface TelemetryEventOptions {
     'tags'?: Array<String>;
 }
 export interface ITelemetryEvent {
-    'edata': IStartEventData | IImpressionEventData | IInteractEventData | IShareEventData | IErrorEventData | IEndEventData;
+    'edata': IStartEventData | IImpressionEventData | IInteractEventData | IShareEventData
+    | IErrorEventData | IEndEventData | ILogEventData;
     'contentId'?: String;
     'contentVer'?: String;
     'options': TelemetryEventOptions;

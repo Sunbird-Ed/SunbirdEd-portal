@@ -3,7 +3,7 @@ export interface IStartEventInput {
     'objectId': String;
     'objectType': String;
     'objectVersion': String;
-    'contentType': String;
+    'type': String;
     'pageId': String;
     'mode': String;
     'cdata'?: Array<Object>;

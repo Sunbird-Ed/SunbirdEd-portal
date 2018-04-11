@@ -4,6 +4,7 @@ export const mockRes = {
         'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
         'objectType': 'announcement',
         'objectVersion': '1.0',
+        'type': 'workflow',
         'contentType': 'announcement',
         'pageId': 'announcement-create',
         'mode': 'create'
@@ -55,6 +56,12 @@ export const mockRes = {
         'type': 'announcement',
         'mode': 'announcement',
         'summary': []
+    },
+    logEventData: {
+        'env': 'announcement',
+        'type': 'api_call',
+        'level': '1',
+        'message': 'api to load inbox'
     },
     userSessionData: {
         'userId': '99733cb8-588a-42af-8161-57e783351a0e'

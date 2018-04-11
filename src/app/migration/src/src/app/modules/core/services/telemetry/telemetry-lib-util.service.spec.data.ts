@@ -26,8 +26,8 @@ export const mockRes = {
 
         },
         'edata': {
-            'type': 'annoluncement',
-            'mode': 'annoluncement',
+            'type': 'announcement',
+            'mode': 'announcement',
             'pageid': 'annoluncement-create',
             'uaspec': {}
         }

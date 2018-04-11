@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import {
   ITelemetry, ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventData, IImpressionEventData, IInteractEventData, IEndEventData,
-  IShareEventData, IErrorEventData, IStartEventInput, IImpressionEventInput,
-  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput
+  IShareEventData, IErrorEventData, ILogEventData, IStartEventInput, IImpressionEventInput,
+  IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput
 } from './../../interfaces';
 import { UserService } from './../user/user.service';
 import { TelemetryLibUtilService } from './telemetry-lib-util.service';
@@ -106,7 +106,7 @@ export class TelemetryService {
    */
   public startTelemetry(startEventInput: IStartEventInput) {
     const startEventData: IStartEventData = {
-      type: startEventInput.contentType,
+      type: startEventInput.type,
       mode: startEventInput.mode,
       pageid: startEventInput.pageId,
       uaspec: this.getUserAgentSpec()
@@ -187,6 +187,20 @@ export class TelemetryService {
       summary: iEndEventInput.summary
     };
     this.telemetryLibUtilService.endEvent(this.getEventData(iEndEventInput, endEventData));
+  }
+
+  /**
+ * service method to trigger log event telemetry
+ * @param iLogEventInput 'ILogEventInput' reference
+ */
+  public logTelemetry(iLogEventInput: ILogEventInput) {
+    const logEventData: ILogEventData = {
+      level: iLogEventInput.level,
+      type: iLogEventInput.type,
+      message: iLogEventInput.message,
+      params: iLogEventInput.params
+    };
+    this.telemetryLibUtilService.logEvent(this.getEventData(iLogEventInput, logEventData));
   }
 
   /**
