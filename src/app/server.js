@@ -39,6 +39,7 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
+const contentServiceLocalUrl = envHelper.content_Service_Local_BaseUrl
 
 let memoryStore = null
 
@@ -350,7 +351,7 @@ const telemetryConfig = {
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
   endpoint: telemtryEventConfig.endpoint,
-  host: contentURL,
+  host: contentServiceLocalUrl,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
 
