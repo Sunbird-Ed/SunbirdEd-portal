@@ -317,9 +317,7 @@ function endSession (request, response, next) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
-  console.log('endSession', request.session)
   if (request.session) {
-    console.log('endSession')
     telemetryHelper.logSessionEnd(request)
     telemetry.syncOnExit(function (err, res) { // sync on session end
       if (err) {
