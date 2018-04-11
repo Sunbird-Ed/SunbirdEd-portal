@@ -534,7 +534,6 @@ angular.module('playerApp').controller('SearchResultController', [
           index: index
         })
       }
-      console.log('----------', $rootScope.inviewLogs)
       telemetryService.setVisitData($rootScope.inviewLogs)
     }
   }])
