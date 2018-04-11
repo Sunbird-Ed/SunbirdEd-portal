@@ -30,11 +30,6 @@ angular.module('playerApp')
           framework: genericEditor.framework
         }
 
-        // Add search criteria
-        if (searchService.updateReqForChannelFilter()) {
-          window.context.searchCriteria = searchService.updateReqForChannelFilter()
-        }
-
         // open editor after setting context
         genericEditor.openGenericEditor()
       }
@@ -90,6 +85,10 @@ angular.module('playerApp')
             showEndPage: false
           }
 
+        }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.config.searchCriteria = searchService.updateReqForChannelFilter()
         }
 
         $timeout(function () {
