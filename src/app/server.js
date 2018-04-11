@@ -114,7 +114,7 @@ app.use('/private/index', function (req, res, next) {
   next()
 })
 
-app.all('/logoff', function (req, res) {
+app.all('/logoff', endSession, function (req, res) {
   res.cookie('connect.sid', '', { expires: new Date() })
   res.redirect('/logout')
 })
@@ -312,6 +312,23 @@ keycloak.authenticated = function (request) {
       console.log('err', err)
     }
   })
+}
+function endSession (request, response, next) {
+  delete request.session['roles']
+  delete request.session['rootOrgId']
+  delete request.session['orgs']
+  if (request.session) {
+    telemetryHelper.logSessionEnd(request)
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
+      delete request.session.sessionEvents
+      delete request.session['deviceId']
+    })
+  }
+  next()
 }
 
 keycloak.deauthenticated = function (request) {
