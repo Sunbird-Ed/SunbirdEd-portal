@@ -131,6 +131,9 @@ let PERMISSIONS_HELPER = {
                 }
               })
             }
+            reqObj.session.orgs = _.uniq(reqObj.session.orgs)
+            reqObj.session.roles = _.uniq(reqObj.session.roles)
+
             if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
               reqObj.session.rootOrgId = body.result.response.rootOrg.id
               reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
