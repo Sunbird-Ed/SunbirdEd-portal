@@ -357,7 +357,7 @@ const telemetryConfig = {
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
   endpoint: telemtryEventConfig.endpoint,
-  host: contentServiceLocalUrl,
+  host: contentURL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
 
