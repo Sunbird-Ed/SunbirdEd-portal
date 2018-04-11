@@ -80,7 +80,6 @@ angular.module('playerApp')
             index: index
           })
         }
-        console.log('----------', inviewLogs)
         $rootScope.$broadcast('mycoursesVisit', inviewLogs)
         telemetryService.setVisitData(inviewLogs)
       }

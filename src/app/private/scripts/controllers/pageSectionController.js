@@ -168,7 +168,6 @@ angular.module('playerApp')
         var obj = _.filter(inviewLogs, function (o) {
           return o.objid === item.identifier
         })
-        console.log('@@@@--------@@@', $rootScope.visitData)
         var visiblity = angular.element('#' + pageSectionId + '_' + item.identifier).attr('aria-hidden')
         if (inview === true && obj.length === 0 && visiblity === 'false') {
           inviewLogs.push({
@@ -182,7 +181,6 @@ angular.module('playerApp')
           // inviewLogs.concat($rootScope.visitData)
           inviewLogs = _.union(inviewLogs, $rootScope.visitData)
         }
-        console.log('----------', inviewLogs)
         telemetryService.setVisitData(inviewLogs)
       }
     }])

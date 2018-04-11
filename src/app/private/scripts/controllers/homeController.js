@@ -106,7 +106,6 @@ angular.module('playerApp')
             index: index
           })
         }
-        console.log('----------', inviewLogs)
         telemetryService.setVisitData(inviewLogs)
       }
       var isChrome = !!window.chrome && !!window.chrome.webstore
