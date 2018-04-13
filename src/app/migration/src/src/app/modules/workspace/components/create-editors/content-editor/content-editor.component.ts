@@ -162,6 +162,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
         ver: '1.0'
       },
       etags: { app: [], partner: [], dims: this.userService.dims },
+      framework: 'NCF',
       channel: this.userProfile.rootOrgId
     };
 
@@ -181,7 +182,17 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.1',
+          ver: '1.2',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.sunbirdmetadata',
+          ver: '1.0',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.metadata',
+          ver: '1.0',
           type: 'plugin'
         }
       ],
