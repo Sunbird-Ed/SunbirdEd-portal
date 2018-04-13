@@ -113,5 +113,8 @@
         },
         "CONTENT_COLLECTION":"application/vnd.ekstep.content-collection",
         "LOCATION_READ": "org/v1/location/read"
-        }
+        },
+    "CONTENT_CONST" :{
+    "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
+    }
     }

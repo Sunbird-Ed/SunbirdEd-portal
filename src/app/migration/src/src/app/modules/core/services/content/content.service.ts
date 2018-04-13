@@ -32,3 +32,4 @@ export class ContentService extends DataService {
     this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
   }
 }
+

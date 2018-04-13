@@ -5,19 +5,21 @@ import { Observable } from 'rxjs/Observable';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpClient } from '@angular/common/http';
+
 /**
- * Service to fetch user details from server
- *
- */
+* Service to fetch user details from server
+*
+*/
 @Injectable()
 export class UserService {
   /**
    * Contains user id
    */
   private _userid: string;
- /**
-   * Contains session id
-   */
+  /**
+    * Contains session id
+    */
   private _sessionId: string;
   /**
    * Contains root org id
@@ -43,12 +45,21 @@ export class UserService {
    * reference of lerner service.
    */
   public learner: LearnerService;
+
+  public _appId: string;
+
+  public channel: string;
+
+  public dims: Array<string> = [];
+
+  public _env: string;
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {LearnerService} learner LearnerService reference
    */
-  constructor(config: ConfigService, learner: LearnerService) {
+  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient) {
     this.config = config;
     this.learner = learner;
   }
@@ -58,11 +69,11 @@ export class UserService {
   get userid(): string {
     return this._userid;
   }
-   /**
-   * get method to fetch sessionId.
-   */
-   get sessionId(): string {
-     return this._sessionId;
+  /**
+  * get method to fetch sessionId.
+  */
+  get sessionId(): string {
+    return this._sessionId;
   }
   /**
    * method to fetch user profile from server.
@@ -81,13 +92,43 @@ export class UserService {
       }
     );
   }
+  /**
+    * method to fetch appId and Ekstep_env from server.
+    */
+  public getAppidEnv(): void {
+    const url = `get/envData`;
+    this.http.get(url).subscribe(res => {
+      this._appId = res['appId'];
+      this._env = res['ekstep_env'];
+    });
+  }
+
+  /**
+   * get method to fetch appId.
+   */
+  get appId(): any {
+    return this._appId;
+  }
+  /**
+   * get method to fetch Ekstep_env.
+   */
+  get env(): any {
+    return this._env;
+  }
+
 
   public initialize() {
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
-    } catch {}
+
+    } catch { }
     this.getUserProfile();
+    this.getAppidEnv();
+    // } catch (e) {
+    //   this._userid = 'userId';
+    //   this._sessionId = 'sessionId';
+    // }
   }
   /**
    * method to set user profile to behavior subject.
@@ -111,11 +152,16 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
-        if ( profileData.rootOrgId ) {
+        if (profileData.rootOrgId) {
           organisationIds.push(profileData.rootOrgId);
         }
       });
     }
+    const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
+    this.channel = rootOrg;
+    this.dims = _.concat(organisationIds, this.channel);
+
+
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;
@@ -133,3 +179,5 @@ export class UserService {
     return this._rootOrgId;
   }
 }
+
+

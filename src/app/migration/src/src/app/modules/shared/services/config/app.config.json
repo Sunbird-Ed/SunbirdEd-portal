@@ -13,7 +13,15 @@
             "application/vnd.ekstep.content-collection"
         ],
         "objectType": "Content",
-        "lastUpdatedOn": "desc"
+        "lastUpdatedOn": "desc",
+        "collectionState": ["UpForReviewContent", "ReviewContent",
+        "PublishedContent", "FlaggedContent", "LimitedPublishedContent"],
+        "collectionStatus": ["Review", "Draft", "Live", "Flagged", "Unlisted"],
+        "mimeCollection": "application/vnd.ekstep.content-collection",
+        "editorQS": "createdBy,status,mimeType",
+        "MODE": "edit",
+        "contentState": ["UpForReviewContent", "ReviewContent", "PublishedContent", "LimitedPublishedContent"],
+        "contentStatus": ["Review", "Draft", "Live", "Unlisted"]
     },
     "ANNOUNCEMENT": {
         "HOME": {

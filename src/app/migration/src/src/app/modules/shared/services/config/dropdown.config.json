@@ -31,6 +31,35 @@
             "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
         ],
         "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
-        "orgType": ["technical"]
+        "orgType": ["technical"],
+        "resourceType": [ 
+                    "(Annual / Half-yearly / Semester) Examination",
+                    "Academic calendar",
+                    "Activity",
+                    "Article",
+                    "Benchmark assessment",
+                    "Book",
+                    "Classroom assessments",
+                    "Course",
+                    "Daily test",
+                    "Diagnostic",
+                    "E-resources for Professional Development",
+                    "Game",
+                    "Learning / Study material",
+                    "Lesson plan",
+                    "Micro practice videos",
+                    "Puzzle",
+                    "Quiz",
+                    "Reference material",
+                    "Reflective journals",
+                    "Simulation",
+                    "Story",
+                    "Summative exam",
+                    "Teaching resources",
+                    "Timed worksheets",
+                    "Unit plan",
+                    "Worksheet" 
+                ]
+             
     }
-}
+} 

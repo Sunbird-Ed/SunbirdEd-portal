@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="/templates/ja_social_ii/favicon.ico" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- inject:css -->
+    <link rel="stylesheet" href="styles/external.min.css">
+    <link rel="stylesheet" href="styles/style.min.css">
+    <!-- endinject -->
+</head>
+
+<body class="ui fluid container">
+    <!-- End of localhost only code-->
+    <div id="thumbnailCanvasContainer" style="display: none;"></div>
+    <div ng-app="editorApp" class="maincontainer" ng-strict-di>
+        <div ng-controller="popupController as $ctrl" id="popuptemplate"></div>
+        <div ng-controller="MainCtrl" id="editorContainer" class="wrapper">
+            <div ng-show="showAppLoadScreen" class="ui active inverted dimmer">
+                <div class="load-screen-container" ng-cloak>
+                    <table class="ui very basic collapsing loading table" style="margin-left: auto;margin-right: auto;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="message in appLoadMessage">
+                                <td>
+                                    <i ng-if="message.status && message.error" class="square outline big icon"></i>
+                                    <i ng-if="message.status && !message.error" class="checkmark box big icon"></i>
+                                    <div ng-if="!message.status" class="ui active small inline loader"></div>
+                                </td>
+                                <td>
+                                    <h5 ng-bind="message.message"></h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="onLoadCustomMessage.show" ng-include="'templates/appLoadScreenMessage.html'"></div>
+                    <div ng-show="migration.showPostMigrationMsg" class="migartion-message-container">
+                        <div ng-show="migration.showMigrationSuccess" ng-include="'templates/migrationSuccessMsg.html'"></div>
+                        <div ng-show="migration.showMigrationError" ng-include="'templates/migrationErrorMsg.html'"></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="header in headers" ng-include="header.templateURL"></div>
+            <div class="ui grid toolbar" id="toolbar">
+                <div class="ui nine wide column" style="padding-top:0!important;">
+                    <div class="ui icon menu" style="height: 38px;  display: flex; align-items: center;">
+                        <span class="tool" ng-repeat="menu in menus" ng-include="'templates/toolbar.html'"></span>
+                        <span ng-repeat="menu in contextMenus" ng-if="menu.state === 'SHOW'" ng-include="'templates/toolbar.html'" class="at-context-menu tool"></span>
+                    </div>
+                </div>
+                <div class="ui three wide column" style="padding-top:0!important;">
+                    <div class="ui icon menu sidebar-menu" style="height: 38px; display: flex; align-items: center;">
+                        <span ng-repeat="menu in sidebarMenus" ng-if="menu.state == 'SHOW'" ng-include="'templates/toolbar.html'" class="at-config-menu tool"></span>
+                    </div>
+                </div>
+            </div>
+            <div ng-include="'templates/deleteStageDialog.html'"></div>
+            <div id="mainContainerGrid" class="ui grid bottom attached celled">
+                <div class="row">
+                    <div class="ui column scrollable-slides">
+                        <div ng-repeat="stage in stages track by $index" ng-class="stage.isSelected ? 'thumbnail-container selected-slide' : 'thumbnail-container'">
+                            <div class="ui centered card segment thumbnail">
+                                <span class="stage-number">{{$index+1}}</span>
+                                <div ng-class="stage.isSelected ? 'ui fluid image selected-slide-image' : 'ui fluid image'">
+                                    <div class="ui blue ribbon label thumbnail-ribbon" ng-if="stage.isSelected">
+                                        <i class="fa fa-trash" ng-click="fireEvent(stage.ondelete)" style="margin-right:15px; cursor: pointer;"></i>
+                                        <i class="icon-duplicate link" ng-click="fireEvent(stage.duplicate)" style="cursor: pointer;"></i>
+                                    </div>
+                                    <img data-id="{{stage.id}}" src="{{stage.thumbnail}}" x-lvl-draggable="true" x-lvl-drop-target="true" x-on-drop="onStageDragDrop(dragEl, dropEl)" ng-click="fireEvent(stage.getOnClick())" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="superwrapper" class="ui seven wide column canvas-column">
+                        <div id="canvas-wrapper" style="position:absolute; width:720px; height: 405px; left:0; right:0; margin:auto; box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34,36,38,.12), 0 2px 10px 0 rgba(34,36,38,.15);">
+                            <canvas id="canvas" class="ui card centered raised" width="720px" height="405px" style="margin: 0; border-radius: 0px; background: none"></canvas>
+                        </div>
+                        <div id="geniecontrols" ng-if="showGenieControls"></div>
+                        <div class="row" style="position:relative; top: 415px;">
+                            <div ng-include="'templates/attachmentHolder.html'"></div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="ui form">
+                                <textarea class="content-teacher-comments" rows="2" placeholder="Teacher Instructions..."></textarea>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    <div class="ui three wide right floated column sidebar-column">
+                        <div class="sidebar-holder">
+                            <div ng-repeat="sidebar in registeredCategories">
+                                <div ng-show="(configCategory.selected == sidebar.id && sidebar.state == 'SHOW')">
+                                    <div ng-include="sidebar.templateURL"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="objectPointer" class="hover-effect" style="display: none;"></div>
+    <!-- message for unsupported screen start -->
+    <div class="unsupported-resolution">
+        <div class="message-container">
+            <div class="ui icon negative message">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="content">
+                    <div class="header">
+                        Unsupported resolution
+                    </div>
+                    <p id="ngdialog1-aria-describedby" tabindex="-1">
+                        Resolution below 1024px is not supported, please switch to a higher resolution display.
+                        <!-- <div class="ui primary button">
+                            Save
+                        </div> -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- message for unsupported screen end -->
+    <!-- inject:js -->
+    <script src="scripts/external.min.js"></script>
+    <script src="scripts/script.min.js"></script>
+    <!-- endinject -->
+</body>
+
+</html>

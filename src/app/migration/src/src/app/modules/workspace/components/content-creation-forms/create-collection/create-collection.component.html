@@ -1,5 +1,5 @@
-<sui-modal [isClosable]="true" (dismissed)="goToCreate(); " #modal>
-    <div class=" ui segment margin-top-10">
+<sui-modal [isClosable]="true" (dismissed)="goToCreate(); " #modalCollection>
+    <div class=" ui segment margin-top-10" *ngIf="!showLoader">
         <div class=" margin-bottom-15">
             <div class="ui grid">
                 <div class="eleven wide column">
@@ -31,7 +31,7 @@
         </div>
         <div class="actions margin-top-10">
             <p class="text-align-center padding-top-20">
-                <button class="ui primary text-align-center icon button" (click)="createCollection(); modal.deny();">
+                <button class="ui primary text-align-center icon button" (click)="createCollection(modalCollection);">
                     {{resourceService?.frmelmnts?.btn?.startcreating}}
                 </button>
             </p>
@@ -44,4 +44,7 @@
             </div>
         </div>
     </div>
+    <div class="ui segment margin-top-10" *ngIf="showLoader">
+        <app-loader [data] = "loaderMessage"></app-loader>
+      </div>
 </sui-modal>

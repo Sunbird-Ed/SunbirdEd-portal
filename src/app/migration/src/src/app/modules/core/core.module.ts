@@ -1,16 +1,20 @@
+
 import { PermissionDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
+import { FormsModule } from '@angular/forms';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService
+  BadgesService, ContentService, CoursesService, PageApiService,
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
+
+
 import { AuthGuard } from './guard/auth-gard.service';
 
 @NgModule({
@@ -18,7 +22,8 @@ import { AuthGuard } from './guard/auth-gard.service';
     CommonModule,
     SuiModule,
     SharedModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
   exports: [MainHeaderComponent, PermissionDirective],

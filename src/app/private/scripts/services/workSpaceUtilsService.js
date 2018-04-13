@@ -196,6 +196,7 @@ angular.module('playerApp')
      * @instance
      */
         this.hideRemoveModel = function (modelId) {
+          alert("in workSpaceUtilsService");
           $(modelId).modal('hide')
           $(modelId).modal('hide all')
           $(modelId).modal('hide other')
