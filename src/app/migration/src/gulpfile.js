@@ -10,14 +10,14 @@ gulp.task('default', function () {
   console.log('Gulp download content editor task!')
   download(content_editor)
     .pipe(decompress())
-    .pipe(gulp.dest('thirdparty/editors/content-editor'))
+    .pipe(gulp.dest('src/thirdparty/editors/content-editor'))
 
   download(collection_editor)
     .pipe(decompress())
-    .pipe(gulp.dest('thirdparty/editors/collection-editor'))
+    .pipe(gulp.dest('src/thirdparty/editors/collection-editor'))
 
   download(generic_editor)
     .pipe(decompress())
-    .pipe(gulp.dest('thirdparty/editors/generic-editor'))
+    .pipe(gulp.dest('src/thirdparty/editors/generic-editor'))
 })
 
