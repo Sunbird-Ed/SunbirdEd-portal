@@ -15,5 +15,13 @@ export const mockRes = {
            'content_id': 'do_2124708548063559681134',
            'versionKey': '1522321143354'
         }
-     }
+     },
+     req: {
+     contentId: 'do_2124791869184655361855'
+     },
+     qs: {
+        fields : 'createdBy,status,mimeType',
+        mode : 'edit'
+      }
+
 };

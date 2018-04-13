@@ -60,8 +60,8 @@ export const mockRes = {
     },
     resourceBundle: {
         'messages': {
-          'emsg': {
-              'm0005': 'Something went wrong, please try in some time...'
+          'fmsg': {
+              'm0010': 'Something went wrong, please try in some time...'
           }
       }
       },

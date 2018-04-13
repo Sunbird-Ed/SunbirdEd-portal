@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
@@ -9,13 +9,14 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   templateUrl: './create-content.component.html',
   styleUrls: ['./create-content.component.css']
 })
-export class CreateContentComponent {
+export class CreateContentComponent implements OnInit {
 
   /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
 
+  public showLoader: boolean;
 
   /**
   * Constructor to create injected service(s) object
@@ -27,5 +28,9 @@ export class CreateContentComponent {
   constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;
   }
+  ngOnInit() {
+   this.showLoader = false;
+}
+
 
  }
