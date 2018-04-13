@@ -26,10 +26,7 @@ angular.module('playerApp')
           tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel
         }
-        // Add search criteria
-        if (searchService.updateReqForChannelFilter()) {
-          window.context.searchCriteria = searchService.updateReqForChannelFilter()
-        }
+
         window.config = {
           baseURL: '',
           modalId: 'contentEditor',
@@ -74,6 +71,11 @@ angular.module('playerApp')
             showEndPage: false
           }
         }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.config.searchCriteria = searchService.updateReqForChannelFilter()
+        }
+
         $('#contentEditor').iziModal({
           title: '',
           iframe: true,

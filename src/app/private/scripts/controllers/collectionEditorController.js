@@ -43,10 +43,6 @@ angular.module('playerApp')
           framework: collectionEditor.framework,
           env: data.type.toLowerCase()
         }
-        // Add search criteria
-        if (searchService.updateReqForChannelFilter()) {
-          window.context.searchCriteria = searchService.updateReqForChannelFilter()
-        }
 
         window.config = {
           corePluginsPackaged: true,
@@ -96,6 +92,10 @@ angular.module('playerApp')
             showEndPage: false
           },
           editorType: data.type
+        }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.config.searchCriteria = searchService.updateReqForChannelFilter()
         }
         if (data.type.toLowerCase() === 'textbook') {
           window.config.plugins.push({
