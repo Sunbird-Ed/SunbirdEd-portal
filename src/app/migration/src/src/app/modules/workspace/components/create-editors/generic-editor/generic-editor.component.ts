@@ -92,7 +92,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/assets/editors/generic-editor/index.html',
+      iframeURL: '/thirdparty/editors/generic-editor/index.html',
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,

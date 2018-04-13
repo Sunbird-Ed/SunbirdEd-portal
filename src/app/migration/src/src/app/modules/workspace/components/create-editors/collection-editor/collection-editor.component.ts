@@ -140,7 +140,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/assets/editors/collection-editor/index.html',
+      iframeURL: '/thirdparty/editors/collection-editor/index.html',
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
