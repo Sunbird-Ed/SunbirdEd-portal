@@ -60,6 +60,7 @@ angular.module('playerApp')
           alertOnUnload: true,
           headerLogo: !_.isUndefined($rootScope.orgLogo) ? $rootScope.orgLogo : '',
           loadingImage: '',
+          extContWhitelistedDomains: $rootScope.extContWhitelistedDomains,
           plugins: [{
             id: 'org.ekstep.sunbirdcommonheader',
             ver: '1.2',

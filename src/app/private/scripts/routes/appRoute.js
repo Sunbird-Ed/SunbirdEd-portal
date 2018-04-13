@@ -31,6 +31,17 @@ angular.module('playerApp')
           $rootScope.homeActive = ''
         }
       })
+      .state('Redirect', {
+        url: '/redirect',
+        views: {
+          mainView: {
+            templateUrl: '/views/redirect/redirectURL.html',
+            controller: 'redirectURLController as redirectURL'
+          }
+        },
+        onEnter: function () {
+        }
+      })
       .state('UserContent', {
         url: '/content',
         views: {

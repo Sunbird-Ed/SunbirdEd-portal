@@ -510,7 +510,8 @@
             "ecml": "application/vnd.ekstep.ecml-archive",
             "ePub": "application/epub",
             "h5p": "application/vnd.ekstep.h5p-archive",
-            "webm": "video/webm"
+            "webm": "video/webm",
+            "externalURL":"text/x-url"
         },
         "ERROR":{
             "PROFILE_IMAGE_UPLOAD": {
