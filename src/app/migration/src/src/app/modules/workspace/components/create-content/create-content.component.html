@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!showLoader">
     <div class="ui grid">
         <div class="twelve wide column ">
             <div class="ui grid">
@@ -76,4 +76,5 @@
         </div>
     </div>
 </div>
+<app-loader *ngIf="showLoader"></app-loader>
 <router-outlet></router-outlet>

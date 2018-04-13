@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" (dismissed)="router.navigate(['/content'])" #modal>
+<sui-modal [isClosable]="true" (dismissed)="goToCreate()" #modal>
     <div>
         <div class=" ui segment margin-top-10" id="createSlideShowModal">
             <div class=" margin-bottom-15">
@@ -86,7 +86,7 @@
 
                         </div>
                     </div>
-                </form>{{userForm.value | json}}
+                </form>
             </div>
             <div class="actions">
                 <p class="text-align-center padding-top-20">

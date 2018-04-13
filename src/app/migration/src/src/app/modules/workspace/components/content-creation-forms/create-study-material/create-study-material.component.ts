@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui/dist';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
@@ -46,22 +45,49 @@ export class CreateStudyMaterialComponent implements OnInit {
   /**
    * userProfile is of type userprofile interface
    */
-  public userProfile: any;
-
+  /**
+   * userProfile is of type userprofile interface
+   */
+  public userProfile: IUserProfile;
+/**
+ * userForm name creation
+ */
   public userForm: FormGroup;
+  /***
+   * Contains reference of FormBuilder
+   */
   public formBuilder: FormBuilder;
-
+/**
+ * Form field boards
+ */
   public boards: Array<any> = [];
-
+/**
+ * Form field grades
+ */
   public grades: Array<any> = [];
-
+/**
+ * Form field medium
+ */
   public medium: Array<any> = [];
-
+/**
+ * Form field resourceType
+ */
   public resourceType: Array<any> = [];
-
+/**
+ * Form field subjects
+ */
   public subjects: Array<any> = [];
+ /**
+   * Default method of classs CreateCollectionComponent
+   *
+   * @param {ResourceService} resourceService To get language constant
+   * @param {EditorService} editorService To provide the api services
+   * @param {ConfigService} config Reference of ConfigService
+   * @param {UserService} userService Reference of userService
+   * @param {Router} router for the navigation
+   */
 
-  constructor(public modalService: SuiModalService,
+  constructor(
     resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
@@ -82,19 +108,20 @@ export class CreateStudyMaterialComponent implements OnInit {
     /***
      * Call User service to get user data
      */
+    this.showLoader = true;
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
         }
       });
-    this.showLoader = false;
-   this.subjects = this.config.dropDownConfig.COMMON.subjects;
+
+    this.subjects = this.config.dropDownConfig.COMMON.subjects;
     this.grades = this.config.dropDownConfig.COMMON.grades;
     this.medium = this.config.dropDownConfig.COMMON.medium;
     this.boards = this.config.dropDownConfig.COMMON.boards;
     this.resourceType = this.config.dropDownConfig.COMMON.resourceType;
-    const mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
+    const mimetype = this.config.urlConFig.CONTENT_CONST.CREATE_LESSON;
     this.userForm = this.formBuilder.group({
       name: '',
       boards: '',
@@ -103,7 +130,9 @@ export class CreateStudyMaterialComponent implements OnInit {
       gradeLevel: '',
       resourceType: ''
     });
-
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
   }
 
 
@@ -111,60 +140,43 @@ export class CreateStudyMaterialComponent implements OnInit {
    * Call GenerateData() to get requestBody data
    */
   generateData() {
-    // const mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
-    const mimetype = 'application/vnd.ekstep.ecml-archive';
+    const mimetype = this.config.urlConFig.CONTENT_CONST.CREATE_LESSON;
+    const contentType = 'Resource';
     const requestBody = {
       createdBy: this.userProfile.userId,
       createdFor: this.userProfile.organisationIds,
       mimeType: mimetype,
       creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
-
-      gradeLevel: this.userForm.value.gradeLevel ? this.userForm.value.gradeLevel : ['Grade 5'],
-
       name: this.userForm.value.name ? this.userForm.value.name : 'Untitled lesson',
-      contentType: this.userProfile.contentType ? this.userProfile.contentType : 'Resource',
-
-      // if ( {this.userProfile.language} === true ) {
-      // language: [this.userProfile.language],
-      // }
+      contentType: contentType,
       organization: []
     };
     return requestBody;
-
-
   }
 
-  // Create colletion crates the content Id
+  /**
+  *  Create colletion creates the content Id
+  */
   createContent() {
-
     const state = 'state';
     const requestData = {
       content: this.generateData()
     };
-
-    this.showLoader = true;
-    // this.loader = toasterService.loader('', $rootScope.messages.stmsg.m0016)
     this.editorService.create(requestData).subscribe(res => {
-      console.log('res of createcontent', res);
-
+      this.showLoader = true;
       if (res && res.responseCode === 'OK') {
-        console.log('Response res', res);
-
-        console.log('content id in ', res.result.content_id);
-
         this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state]);
       } else {
-        console.log('error');
         this.toasterService.error(this.resourceService.messages.emsg.m0010);
       }
     }, err => {
-      console.log('error');
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
     });
-
-
   }
 
+  /****
+   * Redirects to workspace create section
+   */
   goToCreate() {
     this.router.navigate(['/workspace/content/create']);
   }

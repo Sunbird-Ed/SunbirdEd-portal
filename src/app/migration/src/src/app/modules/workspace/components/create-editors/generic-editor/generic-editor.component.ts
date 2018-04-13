@@ -1,78 +1,98 @@
-import { IUserProfile } from './../../../../shared/interfaces/userProfile';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
-import * as $ from 'jquery';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
-import { UserService, PermissionService } from '@sunbird/core';
-import { Router } from '@angular/router';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import { UserService } from '@sunbird/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
 import { EditorService } from './../../../services/editors/editor.service';
 
 declare var jQuery: any;
-
 declare let window: CustomWindow;
-declare let org: any;
-declare let sunbird: any;
-
 
 @Component({
   selector: 'app-generic-editor',
   templateUrl: './generic-editor.component.html',
   styleUrls: ['./generic-editor.component.css']
 })
+
+/**
+ * Component Launches the Generic Editor in a IFrame Modal
+ */
 export class GenericEditorComponent implements OnInit, AfterViewInit {
 
   /**
 * To show toaster(error, success etc) after any API calls
 */
-private toasterService: ToasterService;
-/**
-  * To call resource service which helps to use language constant
-  */
-public resourceService: ResourceService;
-/**
- * To make inbox API calls
- */
-private editorService: EditorService;
+  private toasterService: ToasterService;
+  /**
+    * To call resource service which helps to use language constant
+    */
+  public resourceService: ResourceService;
+  /**
+   * To make inbox API calls
+   */
+  private editorService: EditorService;
   /**
   * user profile details.
   */
   userService: UserService;
 
+  public contentId: string;
+
   public userProfile: IUserProfile;
 
-  constructor( userService: UserService) {
+  /**
+ * To navigate to other pages
+ */
+  private router: Router;
+
+  public showModal: boolean;
+  /**
+   * To send activatedRoute.snapshot to router navigation
+   * service for redirection to draft  component
+  */
+  private activatedRoute: ActivatedRoute;
+
+  constructor(userService: UserService, router: Router, public _zone: NgZone,
+    activatedRoute: ActivatedRoute) {
     this.userService = userService;
-   }
+    this.router = router;
+    this.activatedRoute = activatedRoute;
+  }
 
   ngOnInit() {
+   /**
+    * Call User service to get user data
+    */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-         console.log(' user profile s', this.userProfile);
-
-         }
-     });
+        }
+      });
+    this.activatedRoute.params.subscribe((params) => {
+      this.contentId = params['contentId'];
+    });
   }
 
   ngAfterViewInit() {
-    this.callModal();
+    /**
+     * Launch the generic editor after window load
+     */
+    this.openGenericEditor();
   }
-  callModal() {
-
+  /**
+   *Launch Genreic Editor in the modal
+   */
+  openGenericEditor() {
     jQuery.fn.iziModal = iziModal;
-    setTimeout(function () {
-      jQuery('#genericEditor').iziModal('open');
-    }, 100);
+    const self = this;
 
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
       iframeURL: '/assets/editors/generic-editor/index.html',
-
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -82,52 +102,47 @@ private editorService: EditorService;
       overlayColor: '',
       history: false,
       closeButton: true,
-    appendTo: 'body', // or false
-    appendToOverlay: 'body',
-
-    onResize: function(modal) { console.log(modal.onResize); },
-    onOpening: function(modal) {console.log(modal.onOpening); },
-    onOpened: function(modal) {console.log(modal.onOpened); },
-    onClosing: function(modal) {console.log('closing'); this.openModel(); },
-
-    afterRender: function() {},
-      onFullscreen: function (modal) {
-        console.log(modal.isFullscreen);
-    },
-      onClosed: function () {
-        console.log('closed called');
-        this.openModel();
+      onClosing: function () {
+        self._zone.run(() => {
+          self.closeModal();
+        });
       }
-
     });
 
+    setTimeout(function () {
+      jQuery('#genericEditor').iziModal('open');
+    }, 100);
 
-
+/**
+ * Assign the values to window context
+ */
     window.context = {
       user: {
-        id: this.userProfile.userId,
-        name: this.userProfile.firstName + ' ' +  this.userProfile.lastName,
+        id: this.userService.userid,
+        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
         orgIds: this.userProfile.organisationIds
       },
-      // sid: $rootScope.sessionId,
-      // contentId: this.contentId,
+      sid: this.userService.sessionId,
+      contentId: this.contentId,
       pdata: {
-        id: org.sunbird.portal.appid,
+        id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-      channel: org.sunbird.portal.channel,
+      etags: { app: [], partner: [], dims: this.userService.dims },
+      channel: this.userService.channel,
       env: 'genericeditor'
     };
 
-
+/**
+ * Assign the values to window config
+ */
     window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo:  '',
+      headerLogo: '',
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
@@ -146,17 +161,21 @@ private editorService: EditorService;
 
     };
   }
-  openModel() {
-
- console.log('close called in generic');
+  /**
+  * Re directed to the workspace on close of modal
+  */
+  closeModal() {
+    this.showModal = true;
     setTimeout(() => {
-     if (document.getElementById('genericEditor')) {
-       document.getElementById('genericEditor').remove();
-     }
-     if (document.getElementById('modalGenericEditor')) {
-       document.getElementById('modalGenericEditor').remove();
-     }
+      this.navigateToCreate();
+    }, 1000);
+  }
 
- }, 0);
+  navigateToCreate() {
+    if (document.getElementById('genericEditor')) {
+      document.getElementById('genericEditor').remove();
+    }
+    this.router.navigate(['workspace/content']);
+    this.showModal = false;
   }
 }

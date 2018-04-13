@@ -1,23 +1,15 @@
-
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
-import { UserService, PermissionService} from '@sunbird/core';
-import { Router } from '@angular/router';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import { UserService } from '@sunbird/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services/editors/editor.service';
-
-import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
-import { ActivatedRoute } from '@angular/router';
-
+import { EditorService } from './../../../services';
 declare var jQuery: any;
-
 declare let window: CustomWindow;
-declare let org: any;
-declare let sunbird: any;
 
 
 @Component({
@@ -27,8 +19,20 @@ declare let sunbird: any;
 })
 
 
-
+/**
+ * Component Launches the collection Editor in a IFrame Modal
+ */
 export class CollectionEditorComponent implements OnInit, AfterViewInit {
+  /**
+ * To navigate to other pages
+ */
+  route: Router;
+
+  /**
+   * To send activatedRoute.snapshot to router navigation
+   * service for redirection to create component
+  */
+  private activatedRoute: ActivatedRoute;
   /**
 * To show toaster(error, success etc) after any API calls
 */
@@ -38,45 +42,66 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     */
   public resourceService: ResourceService;
   /**
+  * To get url, app configs
+  */
+  public config: ConfigService;
+  /**
    * To make inbox API calls
    */
   private editorService: EditorService;
-  public framework: any;
-  public userDetails: any;
-  public urlParams: any;
-  public showLoader: boolean;
-public contentId: string;
-public context: any;
-public userSubscription: any;
-/**
- * user profile details.
- */
-public userProfile: any;
-public requestBody: any;
-public showModal: boolean;
-public state: string;
-public type: string;
-
+  /**
+   * user profile details.
+   */
+  public userProfile: IUserProfile;
+  /**
+  * contentId for editor
+  */
+  public contentId: string;
+  /**
+  * state for editor
+  */
+  public state: string;
+  /**
+  * type for editor
+  */
+  public type: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
   /**
    * reference of UserService service.
   */
-
   userService: UserService;
+  /**
+   * Show Modal for loader
+   */
+  public showModal: boolean;
+  /**
+  * Default method of classs CollectionEditorComponent
+  *
+  * @param {ResourceService} resourceService To get language constant
+  * @param {EditorService} editorService To provide the api services
+  * @param {ConfigService} config Reference of ConfigService
+  * @param {UserService} userService Reference of userService
+  * @param {Router} route for the navigation
+  * @param {ActivatedRoute} activatedRoute for getting params
+  */
   constructor(resourceService: ResourceService,
     toasterService: ToasterService,
     editorService: EditorService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    userService: UserService) {
+    activatedRoute: ActivatedRoute,
+    route: Router,
+    userService: UserService, public _zone: NgZone,
+    config: ConfigService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.route = route;
     this.editorService = editorService;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
-    }
-
-
-
+    this.config = config;
+  }
 
   ngOnInit() {
     /**
@@ -84,48 +109,34 @@ public type: string;
      */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
-          if (user && !user.err) {
-            this.userProfile = user.userProfile;
-            console.log(' user profile s', this.userProfile);
-
-            this.requestBody = {
-              name : this.userProfile.firstName + ' ' + this.userProfile.lastName,
-              mimeType: 'application/vnd.ekstep.content-collection',
-              contentType: 'Collection',
-              sessionId: '4535345345345345'
-            };
-
-          }
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+        }
       });
-
-
-    this.showLoader = true;
+    /**
+   * Subscribe acrivated route to read params data
+   */
     this.activatedRoute.params.subscribe((params) => {
-
       this.contentId = params['contentId'];
       this.state = params['state'];
       this.type = params['type'];
       this.framework = params['framework'];
-      console.log('state', this.state);
-      console.log('type', this.type);
-      console.log('contentId', this.contentId);
-      console.log('framework', this.framework);
-
     });
-     console.log('requestBody', this.requestBody);
-
-    // this.openCollectionEditor();
-
   }
+
   ngAfterViewInit() {
+    /**
+     * Create the collection editor
+     */
     this.openCollectionEditor();
   }
 
-
+  /**
+   * Modal is launched in iframe for Collection Editor
+   */
   openCollectionEditor() {
-    console.log('ths.type', this.type);
-    // Initialise imported function as jQuery function
     jQuery.fn.iziModal = iziModal;
+    const self = this;
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
@@ -138,49 +149,36 @@ public type: string;
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosing: function( ) {
-
-          const state = jQuery('#collectionEditor').iziModal('getState');
-          console.log('state in openModal', state);
-            if (state === 'closing') {
-              if (document.getElementById('collectionEditor')) {
-                document.getElementById('collectionEditor').remove();
-                this.router.navigate(['workspace/content/create']);
-              }
-
-            }
-
-        // this.router.navigate(['workspace/content']);
-        // document.getElementById('collectionEditor').remove();
+      onClosing: function () {
+        self._zone.run(() => {
+          self.closeModal();
+        });
       }
-      // onClosed: function () {
-      //   this.openModel();
-      //   alert('close called');
-      //   jQuery('#collectionEditor').iziModal('close');
-      // }
-
     });
 
-
+    /**
+     * Assign the values to window context
+     */
     window.context = {
       user: {
-        id: this.userProfile.userId,
-        name: this.userProfile.name
+        id: this.userService.userid,
+        name: this.userProfile.firstName + ' ' + this.userProfile.lastName
       },
-      // sid: this.context.sessionId,
-      sid: 'JwdwhKL6j_4-c3INzsMqA2g7NOoxXAAI',
+      sid: this.userService.sessionId,
       contentId: this.contentId,
       pdata: {
-        id: org.sunbird.portal.appid,
+        id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-      channel: org.sunbird.portal.channel,
+      etags: { app: [], partner: [], dims: this.userService.dims },
+      channel: this.userService.channel,
       framework: this.framework,
-      env: this.requestBody.contentType.toLowerCase()
+      env: this.type.toLowerCase()
 
     };
-
+    /**
+     * Assign the values to window config
+     */
     window.config = {
       corePluginsPackaged: true,
       modalId: 'collectionEditor',
@@ -205,7 +203,7 @@ public type: string;
         contentStatus: 'draft',
         rules: {
           levels: 7,
-          objectTypes: this.getTreeNodes(this.requestBody.contentType)
+          objectTypes: this.getTreeNodes(this.type)
         },
         defaultTemplate: {}
       },
@@ -218,10 +216,10 @@ public type: string;
         }],
         showEndPage: false
       },
-      editorType: this.requestBody.contentType
+      editorType: this.type
     };
 
-    if (this.requestBody.contentType.toLowerCase() === 'textbook') {
+    if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
         ver: '1.0',
@@ -230,80 +228,72 @@ public type: string;
     }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFalgReviewer = false;
-    if (this.state === 'WorkSpace.UpForReviewContent' &&
+    if (this.state === 'UpForReviewContent' &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
-      console.log('role assign', window.config.editorConfig.publishMode);
-    } else if (this.state === 'WorkSpace.FlaggedContent' &&
+    } else if (this.state === 'FlaggedContent' &&
       _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFalgReviewer = true;
     }
-    // $.fn.iziModal = iziModal;
     setTimeout(function () {
       jQuery('#collectionEditor').iziModal('open');
     }, 100);
 
     const validateModal = {
-      state: ['UpForReviewContent', 'ReviewContent',
-        'PublishedContent', 'FlaggedContent', 'LimitedPublishedContent'],
-      status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
-      mimeType: 'application/vnd.ekstep.content-collection'
+      state: this.config.appConfig.WORKSPACE.collectionState,
+      status: this.config.appConfig.WORKSPACE.collectionStatus,
+      mimeType: this.config.appConfig.WORKSPACE.mimeCollection
     };
 
     const req = { contentId: this.contentId };
-    const qs = { fields: 'userId,status,mimeType', mode: 'edit' };
+    const qs = { fields: this.config.appConfig.WORKSPACE.editorQS, mode: this.config.appConfig.WORKSPACE.MODE };
     if (this.state === 'FlaggedContent') {
       delete qs.mode;
     }
-
+    /**
+     * Call API to launch the Collection Editor in the modal
+     */
     this.editorService.getById(req, qs).subscribe(response => {
-      console.log('resp', response);
       if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = 'CreateCollection';
         rspData.userId = this.userProfile.userId;
-
         if (this.validateRequest(rspData, validateModal)) {
-          console.log('status of', response.result.content.status);
           this.updateModeAndStatus(response.result.content.status);
-          // $.fn.iziModal = iziModal;
-          // setTimeout(function () {
-          //   jQuery('#collectionEditor').iziModal('open');
-          // }, 100);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
-          // this.router.navigate(['/collection']);
         }
       }
     });
   }
 
-  openModel() {
-    console.log('openmodal called');
 
-
-    setTimeout(function () {
-
-      if (document.getElementById('collectionEditor')) {
-        document.getElementById('collectionEditor').remove();
-      }
-      if (document.getElementById('modalCollectionEditor')) {
-        document.getElementById('modalCollectionEditor').remove();
-      }
-      // this.showModal = false
-      console.log('this.urlParams.state', this.urlParams.state);
-      if (this.urlParams.state) {
-
-        this.route.navigate('collection');
-      } else {
-        this.route.navigate('collection');
-        this.route.navigate('draft/1');
-      }
-    }, 2000);
+  /**
+   * Re directed to the draft on close of modal
+   */
+  closeModal() {
+    this.showModal = true;
+    setTimeout(() => {
+      this.navigateToDraft();
+    }, 1000);
   }
 
+  navigateToDraft() {
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
+    this.route.navigate(['workspace/content/draft/1']);
+    this.showModal = false;
+  }
+
+
+  /**
+   *Validate the request
+   * @param reqData user, state, status validation
+   * @param validateData default data in the Object ValidateData
+   */
   validateRequest(reqData, validateData) {
     const status = reqData.status;
     const createdBy = reqData.createdBy;
@@ -312,9 +302,7 @@ public type: string;
     const validateDataStatus = validateData.status;
     if (reqData.mimeType === validateData.mimeType) {
       const isStatus = _.indexOf(validateDataStatus, status) > -1;
-      console.log('isStatus', isStatus);
       const isState = _.indexOf(validateData.state, state) > -1;
-      console.log('isState', isState);
       if (isStatus && isState && createdBy !== userId) {
         return true;
       } else if (isStatus && isState && createdBy === userId) {
@@ -327,7 +315,32 @@ public type: string;
     return false;
   }
 
-
+  /**
+ * Update status and mode to the window
+ * @param status to check status and assign to the window config
+ */
+  updateModeAndStatus(status) {
+    if (status.toLowerCase() === 'draft') {
+      window.config.editorConfig.mode = 'Edit';
+      window.config.editorConfig.contentStatus = 'draft';
+    }
+    if (status.toLowerCase() === 'review') {
+      window.config.editorConfig.mode = 'Read';
+      window.config.editorConfig.contentStatus = 'draft';
+    }
+    if (status.toLowerCase() === 'live') {
+      window.config.editorConfig.mode = 'Edit';
+      window.config.editorConfig.contentStatus = 'live';
+    }
+    if (status.toLowerCase() === 'flagged') {
+      window.config.editorConfig.mode = 'Read';
+      window.config.editorConfig.contentStatus = 'flagged';
+    }
+  }
+  /**
+   * to assign the value to Editor Config
+   * @param type of the content created
+   */
   getTreeNodes(type) {
     const editorConfig = [];
     switch (type) {
@@ -616,28 +629,4 @@ public type: string;
         return editorConfig;
     }
   }
-
-  updateModeAndStatus(status) {
-    if (status.toLowerCase() === 'draft') {
-      window.config.editorConfig.mode = 'Edit';
-      window.config.editorConfig.contentStatus = 'draft';
-    }
-    if (status.toLowerCase() === 'review') {
-      window.config.editorConfig.mode = 'Read';
-      window.config.editorConfig.contentStatus = 'draft';
-    }
-    if (status.toLowerCase() === 'live') {
-      window.config.editorConfig.mode = 'Edit';
-      window.config.editorConfig.contentStatus = 'live';
-    }
-    if (status.toLowerCase() === 'flagged') {
-      window.config.editorConfig.mode = 'Read';
-      window.config.editorConfig.contentStatus = 'flagged';
-    }
-  }
-
-
-
-
-
 }

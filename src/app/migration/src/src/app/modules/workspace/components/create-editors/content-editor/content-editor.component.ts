@@ -1,39 +1,31 @@
-
 import { CustomWindow } from './../../../interfaces/custom.window';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, Renderer2 } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, PermissionService } from '@sunbird/core';
-import { Router } from '@angular/router';
-
-
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
-
-// import { IappId, IPortal, IOrganizatioName, IOrganization } from './../../../interfaces/org.object';
-import { ActivatedRoute } from '@angular/router';
-import { AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
 declare var jQuery: any;
-
 declare let window: CustomWindow;
-
-declare let org: any;
-declare let sunbird: any;
 
 @Component({
   selector: 'app-content-editor',
   templateUrl: './content-editor.component.html',
   styleUrls: ['./content-editor.component.css']
 })
-export class ContentEditorComponent implements OnInit, AfterViewInit, AfterViewChecked {
+
+/**
+ * Component Launches the Content Editor in a IFrame Modal
+ */
+export class ContentEditorComponent implements OnInit, AfterViewInit {
 
   /**
-* To show toaster(error, success etc) after any API calls
-*/
+  * To show toaster(error, success etc) after any API calls
+  */
   private toasterService: ToasterService;
   /**
     * To call resource service which helps to use language constant
@@ -44,27 +36,39 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, AfterViewC
    */
   private editorService: EditorService;
   /**
-     * reference of config service.
-     */
+   * reference of config service.
+   */
   public config: ConfigService;
-
-  public showLoader: boolean;
-
-  public userProfile: any;
-
-public contentId: string;
-
-public state: string;
-
-private  rspData: any;
   /**
-    * reference of UserService service.
-    */
+   * user profile details.
+   */
+  public userProfile: IUserProfile;
   /**
-  * user profile details.
-  */
+   * Content id for editor
+   */
+  public contentId: string;
+  /**
+   * state of the content
+   */
+  public state: string;
+  /**
+   * reference of UserService service.
+   */
   userService: UserService;
 
+  public showModal: boolean;
+
+  /**
+  * Default method of classs ContentEditorComponent
+  *
+  * @param {ResourceService} resourceService To get language constant
+  * @param {EditorService} editorService To provide the api services
+  * @param {ConfigService} config Reference of ConfigService
+  * @param {UserService} userService Reference of userService
+  * @param {Router} route for the navigation
+  * @param {ActivatedRoute} activatedRoute for getting params
+  *  @param {NgZone} _zone for angular function inside jQuery
+  */
   constructor(
     resourceService: ResourceService,
     toasterService: ToasterService,
@@ -72,7 +76,8 @@ private  rspData: any;
     private activatedRoute: ActivatedRoute,
     private router: Router,
     config: ConfigService,
-    userService: UserService
+    userService: UserService, public _zone: NgZone,
+    private renderer: Renderer2
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -80,41 +85,44 @@ private  rspData: any;
     this.config = config;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
-
-    const mimetype = this.config.dropDownConfig.CONTENT_CONST.CreateLessonMimeType;
-    // console.log("console",this.userService);
-
-
   }
 
 
   ngOnInit() {
-     this.userService.userData$.subscribe(
-       (user: IUserData) => {
-         if (user && !user.err) {
-           this.userProfile = user.userProfile;
-          console.log(' user profile s', this.userProfile);
-
-          }
+    /**
+    * Call User service to get user data
+    */
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+        }
       });
-      this.activatedRoute.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
+      this.contentId = params['contentId'];
+      this.state = params['state'];
+    });
 
-        this.contentId = params['contentId'];
-        this.state = params['state'];
-      });
-      this.getContentData();
-this.initfn();
-    // this.showLoader = true;
+    this.renderer.listen('window', 'editor:metadata:edit', () => {
+      this.closeModal();
+    });
 
+    this.renderer.listen('window', 'editor:window:close', () => {
+      this.closeModal();
+    });
+
+    this.renderer.listen( 'window' , 'editor:content:review', () => {
+      this.closeModal();
+    });
   }
 
 
   ngAfterViewInit() {
-    console.log('afterviewinit initiated');
+     /**
+     * Launch the generic editor after window load
+     */
+    const self = this;
     jQuery.fn.iziModal = iziModal;
-    setTimeout(function () {
-      jQuery('#contentEditor').iziModal('open');
-    }, 100);
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
@@ -128,82 +136,76 @@ this.initfn();
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosed: function () {
-        this.openModel();
+      onClosing: function () {
+        self._zone.run(() => {
+          self.closeModal();
+        });
       }
     });
+    this.getContentData();
   }
-ngAfterViewChecked() {
-  
-//   setTimeout(() => {
-//     console.log('afterviewinitchecked initiated');
-//       $.fn.iziModal = iziModal;
-//     $('#contentEditor').iziModal({
-//       onClosed: function () {
-//         $('#contentEditor').iziModal('close');
-//       }
-//     });
-// }, 0);
 
-}
-  openContentEditor () {
-    jQuery.fn.iziModal = iziModal;
-    setTimeout(function () {
-      jQuery('#contentEditor').iziModal('open');
-    }, 100);
-      window.context = {
-        user: {
-          id: this.userProfile.userId,
-          name: this.userProfile.firstName + ' ' +  this.userProfile.lastName,
-        },
-        sid: '23423423423423424',
-        contentId: this.contentId,
-        pdata: {
-          id: org.sunbird.portal.appid,
-          ver: '1.0'
-        },
-        etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
-        channel: org.sunbird.portal.channel
-      };
+  /**
+   * Launch the content editor in Iframe Modal window
+   */
+  openContentEditor() {
+    jQuery('#contentEditor').iziModal('open');
+    window.context = {
+      user: {
+        id: this.userProfile.userId,
+        name: this.userProfile.firstName + ' ' + this.userProfile.lastName,
+      },
+      sid: this.userService.sessionId,
+      contentId: this.contentId,
+      pdata: {
+        id: this.userProfile.appId,
+        ver: '1.0'
+      },
+      etags: { app: [], partner: [], dims: this.userService.dims },
+      channel: this.userProfile.rootOrgId
+    };
 
 
-
-      window.config = {
-        baseURL: '',
-        modalId: 'contentEditor',
-        apislug: '/action',
-        alertOnUnload: true,
-        headerLogo: '',
-        aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
-                      org.sunbird.portal.ekstep_env + '/', 'https://ekstep-public-' +
-                      org.sunbird.portal.ekstep_env + '.s3-ap-south-1.amazonaws.com/'],
-        plugins: [
-          {
-            id: 'org.ekstep.sunbirdcommonheader',
-            ver: '1.1',
-            type: 'plugin'
-          }
-        ],
-        dispatcher: 'local',
-        localDispatcherEndpoint: '/content-editor/telemetry',
-        showHelp: false,
-        previewConfig: {
-          repos: ['/content-plugins/renderer'],
-          plugins: [{
-            id: 'org.sunbird.player.endpage',
-            ver: 1.0,
-            type: 'plugin'
-          }],
-          showEndPage: false
+/**
+ * Window config
+ */
+    window.config = {
+      baseURL: '',
+      modalId: 'contentEditor',
+      apislug: '/action',
+      alertOnUnload: true,
+      headerLogo: '',
+      aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
+        this.userProfile.env + '/', 'https://ekstep-public-' +
+        this.userProfile.env + '.s3-ap-south-1.amazonaws.com/'],
+      plugins: [
+        {
+          id: 'org.ekstep.sunbirdcommonheader',
+          ver: '1.1',
+          type: 'plugin'
         }
-      };
+      ],
+      dispatcher: 'local',
+      localDispatcherEndpoint: '/content-editor/telemetry',
+      showHelp: false,
+      previewConfig: {
+        repos: ['/content-plugins/renderer'],
+        plugins: [{
+          id: 'org.sunbird.player.endpage',
+          ver: 1.0,
+          type: 'plugin'
+        }],
+        showEndPage: false
+      }
+    };
   }
 
-  //
-  // tslint:disable-next-line:member-ordering
-
-
-  checkContentAccess (reqData, validateData) {
+/**
+ * Checking the permission using state, status and userId
+ * @param reqData user, state, status validation
+ * @param validateData default data in the Object ValidateData
+ */
+  checkContentAccess(reqData, validateData) {
     const status = reqData.status;
     const createdBy = reqData.createdBy;
     const state = reqData.state;
@@ -214,7 +216,7 @@ ngAfterViewChecked() {
       const isState = _.indexOf(validateData.state, state) > -1;
       if (isStatus && isState && createdBy !== this.userProfile.userId) {
         return true;
-      } else if (isStatus && isState && createdBy ===  this.userProfile.userId) {
+      } else if (isStatus && isState && createdBy === this.userProfile.userId) {
         return true;
       } else if (isStatus && createdBy === this.userProfile.userId) {
         return true;
@@ -224,80 +226,48 @@ ngAfterViewChecked() {
     return false;
   }
 
-  getContentData () {
-    const state = null;
+  /**
+   * Check the Access and Launch the content Editor
+   */
+  getContentData() {
+    const state = 'UpForReviewContent';
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
-
-    const validateModal  = {
-      'state': ['UpForReviewContent', 'ReviewContent', 'PublishedContent', 'LimitedPublishedContent'],
-       'status': ['Review', 'Draft', 'Live', 'Unlisted'],
-      //  'mimeType': this.config.CreateLessonMimeType
-      'minmeType': 'application/vnd.ekstep.ecml-archive'
-
-     };
-
+    const validateModal = {
+      'state': this.config.appConfig.WORKSPACE.contentState,
+      'status': this.config.appConfig.WORKSPACE.contentStatus,
+      'mimeType': this.config.urlConFig.CONTENT_CONST.CREATE_LESSON
+    };
     this.editorService.getById(req, qs).subscribe((response) => {
       if (response && response.responseCode === 'OK') {
-        this.rspData = response.result.content;
-        this.rspData.state = state;
-        this.rspData.userId = this.userProfile.userId;
+        const rspData = response.result.content;
+        rspData.state = state;
+        rspData.userId = this.userProfile.userId;
 
-        if (this.checkContentAccess(this.rspData, validateModal)) {
+        if (this.checkContentAccess(rspData, validateModal)) {
           this.openContentEditor();
         } else {
-          this.openContentEditor();
-        //   this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        //  this.router.navigate(['home']);
+          this.toasterService.error(this.resourceService.messages.emsg.m0004);
         }
-      // } else {
-      //   this.toasterService.error(this.resourceService.messages.emsg.m0004);
-      //   this.router.navigate(['home']);
       }
     }
-  );
+    );
+  }
+  /**
+   * Re directed to the draft on close of modal
+   */
+  closeModal() {
+    this.showModal = true;
+    setTimeout(() => {
+     this.navigateToDraft();
+    }, 1000);
   }
 
-  initfn () {
-    // org.sunbird.portal.eventManager.addEventListener('sunbird:portal:editor:close',
-    //   function () {
-    //     if (this.state) {
-    //       this.router.navigate([this.state]);
-    //     } else {
-    //       this.router.navigate(['draft']);
-    //     }
-    //   });
-
-    // org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
-    //         function (event, data) {
-    //           if (this.state) {
-    //             this.router.navigate([this.state]);
-    //           } else {
-    //             this.router.navigate(['draft']);
-    //           }
-    //         });
-
-
-
-    // window.addEventListener('editor:metadata:edit', (event) => {
-    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta');
-    // });
-
-    // window.addEventListener('editor:window:close', (event) => {
-    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:close');
-    // });
-
-    // window.addEventListener('editor:content:review', (event) => {
-    //   org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:content:review',
-    //     this.contentId);
-    // });
+navigateToDraft() {
+  if (document.getElementById('contentEditor')) {
+    document.getElementById('contentEditor').remove();
+   }
+   this.router.navigate(['workspace/content/draft/1']);
+   this.showModal = false;
   }
-
-
-
-
-  openModel() {
-
-  }
-
 }

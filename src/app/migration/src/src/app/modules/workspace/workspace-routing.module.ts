@@ -4,7 +4,7 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateUploadContentComponent, CreateStudyMaterialComponent,
   CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent
+  GenericEditorComponent, UploadedComponent
 } from './components';
 
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -17,7 +17,7 @@ const routes: Routes = [
         path: 'create', component: CreateContentComponent,
         children: [
           { path: 'textbook', component: CreateTextbookComponent },
-          // { path: 'uploadcontent', component: CreateUploadContentComponent },
+          { path: 'uploadcontent', component: CreateUploadContentComponent },
           { path: 'course', component: CreateCourseComponent },
           { path: 'studymaterial', component: CreateStudyMaterialComponent },
           { path: 'collection', component: CreateCollectionComponent },
@@ -30,18 +30,14 @@ const routes: Routes = [
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
-      // { path: 'uploaded/:pageNumber', component: UploadedComponent },
+      { path: 'uploaded/:pageNumber', component: UploadedComponent },
       { path: '**', redirectTo: 'create' }
     ]
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes),
-    RouterModule.forRoot(
-      routes,
-    { enableTracing: true } // <-- debugging purposes only
-  )],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class WorkspaceRoutingModule { }

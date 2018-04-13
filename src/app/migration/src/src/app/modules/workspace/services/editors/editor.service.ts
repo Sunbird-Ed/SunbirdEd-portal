@@ -38,28 +38,24 @@ export class EditorService {
      * Create content Id for the editor
      * @param req
      */
-    create(req) {
+    create(req): Observable<ServerResponse> {
         const option = {
             url: this.config.urlConFig.URLS.CONTENT.CREATE,
             data: {
                 'request': req
             }
         };
-
         return this.contentService.post(option);
     }
-
-    getById(req, qs) {
+/**
+ *Create Editor and assign parameters
+ */
+    getById(req, qs): Observable<ServerResponse> {
         console.log('req', req);
         console.log('qs', qs);
         const option = {
-            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode,
-            data: {
-                req : req,
-                qs: qs
-            }
+            url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode
         };
-
         return this.contentService.get(option);
       }
 }
