@@ -8,15 +8,15 @@ const generic_editor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/art
 
 gulp.task('default', function () {
   console.log('Gulp download content editor task!')
-  download(contentEditor)
+  download(content_editor)
     .pipe(decompress())
     .pipe(gulp.dest('thirdparty/editors/content-editor'))
 
-  download(collectionEditor)
+  download(collection_editor)
     .pipe(decompress())
     .pipe(gulp.dest('thirdparty/editors/collection-editor'))
 
-  download(genericEditor)
+  download(generic_editor)
     .pipe(decompress())
     .pipe(gulp.dest('thirdparty/editors/generic-editor'))
 })
