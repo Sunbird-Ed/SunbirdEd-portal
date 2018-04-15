@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
-  UpForReviewComponent
+  BatchListComponent, UpdateBatchComponent
 } from './components/index';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
@@ -16,7 +16,8 @@ const routes: Routes = [
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
       { path: 'uploaded/:pageNumber', component: UploadedComponent },
-      { path: 'upForReview/:pageNumber', component: UpForReviewComponent },
+      { path: 'batches/:pageNumber', component: BatchListComponent },
+      { path: 'update/batch/:batchId', component: UpdateBatchComponent },
       { path: '**', redirectTo: 'create' }
     ]
   },

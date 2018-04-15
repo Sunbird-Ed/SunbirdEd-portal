@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { WorkspaceRoutingModule } from './workspace-routing.module';
-import { WorkspacesidebarComponent } from './components/workspacesidebar/workspacesidebar.component';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WorkSpaceService } from './services';
+import { WorkSpaceService, BatchService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
-  UpForReviewComponent
+  WorkspacesidebarComponent, BatchListComponent,
+  BatchCardComponent, UpdateBatchComponent
 } from './components';
 @NgModule({
   imports: [
@@ -20,11 +19,13 @@ import {
     SharedModule,
     SuiModule,
     CoreModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent, UpForReviewComponent],
-  providers: [WorkSpaceService]
+    PublishedComponent, UploadedComponent, BatchListComponent,
+    BatchCardComponent, UpdateBatchComponent],
+  providers: [WorkSpaceService, BatchService]
 })
 export class WorkspaceModule { }

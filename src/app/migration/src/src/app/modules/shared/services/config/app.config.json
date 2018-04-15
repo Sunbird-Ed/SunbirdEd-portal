@@ -13,7 +13,10 @@
             "application/vnd.ekstep.content-collection"
         ],
         "objectType": "Content",
-        "lastUpdatedOn": "desc"
+        "lastUpdatedOn": "desc",
+        "createdOn": "asc",
+        "createdDate" : "desc",
+        "name": "asc"
     },
     "ANNOUNCEMENT": {
         "HOME": {

@@ -1,29 +1,31 @@
-import { WorkSpace } from './../../classes/workspaceclass';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage,
-  DateFilterXtimeAgoPipe
+  ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
+import { Ibatch } from './../../interfaces/batch';
+import { IStatusOption } from './../../interfaces/statusoption';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 /**
- * The upforReview component search for all the upforreview content
+ * The batch list component
 */
 
 @Component({
-  selector: 'app-up-for-review',
-  templateUrl: './up-for-review.component.html',
-  styleUrls: ['./up-for-review.component.css']
+  selector: 'app-batch-list',
+  templateUrl: './batch-list.component.html',
+  styleUrls: ['./batch-list.component.css']
 })
-export class UpForReviewComponent extends WorkSpace implements OnInit {
+export class BatchListComponent extends WorkSpace implements OnInit {
+
   /**
-     * To navigate to other pages
-     */
+  * To navigate to other pages
+  */
   route: Router;
 
   /**
@@ -37,9 +39,17 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   */
   contentIds: string;
   /**
-   * Contains list of published course(s) of logged-in user
+   * Status option
   */
-  upForReviewContentData: Array<IContents> = [];
+  statusOptions: Array<IStatusOption> = [];
+  /**
+   * Contains list of batchList  of logged-in user
+  */
+  batchList: Array<Ibatch> = [];
+  /**
+    status for preselection;
+  */
+  status: any;
 
   /**
    * To show / hide loader
@@ -137,51 +147,87 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.statusOptions = [
+      { name: 'Ongoing Batches', value: 1 },
+      { name: 'Upcoming Batches', value: 0 },
+      { name: 'Previous Batches', value: 2 }
+    ];
+    this.status = this.statusOptions[0].value;
   }
-
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+      this.fetchBatchList(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
     });
   }
 
   /**
-  * This method sets the make an api call to get all UpForReviewContent with page No and offset
+    * This method sets the make an api call to get all batch with page No and offset
   */
-  fecthUpForReviewContent(limit: number, pageNumber: number) {
+  fetchBatchList(limit: number, pageNumber: number) {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const searchParams = {
       filters: {
-        status: ['Review'],
-        createdFor: this.userService.RoleOrgMap && this.userService.RoleOrgMap['CONTENT_REVIEWER'],
-        createdBy: {'!=': this.userService.userid},
-        contentType: this.config.appConfig.WORKSPACE.contentType,
-        objectType: this.config.appConfig.WORKSPACE.objectType,
+        status: this.status.toString(),
+        createdFor: this.userService.RoleOrgMap && this.userService.RoleOrgMap['COURSE_MENTOR'],
+        createdBy: this.userService.userid
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      params: { createdDate: this.config.appConfig.WORKSPACE.createdDate }
     };
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0032,
+      'loaderMessage': this.resourceService.messages.stmsg.m0108,
     };
-    this.search(searchParams).subscribe(
+    this.getBatches(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
-          this.upForReviewContentData = data.result.content;
-          this.totalCount = data.result.count;
-          this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
+        if (data.result.response.count && data.result.response.content.length > 0) {
+          let userList = [];
+          const participants = [];
+          const userNames = [];
+          this.batchList = data.result.response.content;
+          this.totalCount = data.result.response.count;
+          this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
+          _.forEach(this.batchList, (item, key) => {
+            participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
+            userList.push(item.createdBy);
+            this.batchList[key].label = participants;
+          });
+          userList = _.compact(_.uniq(userList));
+          const req = {
+            filters: { identifier: userList }
+          };
+          this.UserList(req).subscribe(
+            (res: ServerResponse) => {
+              if (res.result.response.count && res.result.response.content.length > 0) {
+                this.showLoader = false;
+                _.forEach(res.result.response.content, function (val, key) {
+                  userNames[val.identifier] = val.firstName + ' ' + val.lastName;
+                });
+              } else {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+              }
+            },
+            (err: ServerResponse) => {
+              this.showLoader = false;
+              this.noResult = false;
+              this.showError = true;
+              this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+            }
+          );
+          _.forEach(this.batchList, (item, key) => {
+            this.batchList[key].userNames = userNames;
+          });
           this.showLoader = false;
         } else {
           this.showError = false;
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0033
+            'message': this.resourceService.messages.stmsg.m0020,
+            'messageText': this.resourceService.messages.stmsg.m0008
           };
         }
       },
@@ -189,25 +235,26 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         this.showLoader = false;
         this.noResult = false;
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0021);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
     );
   }
 
   /**
-   * This method helps to navigate to different pages.
-   * If page number is less than 1 or page number is greater than total number
-   * of pages is less which is not possible, then it returns.
-	 *
-	 * @param {number} page Variable to know which page has been clicked
-	 *
-	 * @example navigateToPage(1)
-	 */
+ * This method helps to navigate to different pages.
+ * If page number is less than 1 or page number is greater than total number
+ * of pages is less which is not possible, then it returns.
+ *
+ * @param {number} page Variable to know which page has been clicked
+ *
+ * @example navigateToPage(1)
+ */
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/upForReview', this.pageNumber]);
+    this.route.navigate(['workspace/content/batches', this.pageNumber]);
   }
 }
+

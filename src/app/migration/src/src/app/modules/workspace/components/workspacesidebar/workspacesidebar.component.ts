@@ -80,7 +80,6 @@ export class WorkspacesidebarComponent implements OnInit {
     this.coursebacthesRole = this.config.rolesConfig.workSpaceRole.coursebacthesRole;
     this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
     this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
-    console.log(this.draftRole);
   }
 
 }

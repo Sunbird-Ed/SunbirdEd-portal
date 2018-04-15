@@ -1,8 +1,9 @@
+import { LearnerService } from './../learner/learner.service';
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import {SearchParam} from '@sunbird/core';
+import { SearchParam } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -38,16 +39,23 @@ export class SearchService {
   public config: ConfigService;
 
   /**
+   * Reference of learner service
+   */
+  public learner: LearnerService;
+  /**
    * Default method of OrganisationService class
    *
    * @param {UserService} user user service reference
    * @param {ContentService} content content service reference
    * @param {ConfigService} config config service reference
+   * @param {LearnerService} config learner service reference
    */
-  constructor(user: UserService, content: ContentService, config: ConfigService) {
+  constructor(user: UserService, content: ContentService,
+    config: ConfigService, learner: LearnerService) {
     this.user = user;
     this.content = content;
     this.config = config;
+    this.learner = learner;
   }
 
   /**
@@ -77,10 +85,10 @@ export class SearchService {
     };
 
     return this.content.post(option)
-    .map((data: ServerResponse) => {
-      this._searchedContentList = data.result;
-      return data;
-    });
+      .map((data: ServerResponse) => {
+        this._searchedContentList = data.result;
+        return data;
+      });
   }
 
   /**
@@ -108,10 +116,10 @@ export class SearchService {
     };
 
     return this.content.post(option)
-    .map((data: ServerResponse) => {
-      this._searchedOrganisationList = data.result.response;
-      return data;
-    });
+      .map((data: ServerResponse) => {
+        this._searchedOrganisationList = data.result.response;
+        return data;
+      });
   }
 
   /**
@@ -127,6 +135,20 @@ export class SearchService {
    * @param {SearchParam} requestParam api request data
   */
   compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    let sort_by = {};
+    if (requestParam.params.lastUpdatedOn) {
+      sort_by = {
+        lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
+      };
+    } else if (requestParam.params.name ) {
+      sort_by = {
+        name: requestParam.params.name
+      };
+    } else {
+      sort_by = {
+        createdOn: 'asc'
+      };
+    }
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
       data: {
@@ -134,12 +156,44 @@ export class SearchService {
           filters: requestParam.filters,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
-          sort_by: {
-            lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
-          }
+          query: requestParam.query,
+          sort_by: sort_by
         }
       }
     };
     return this.content.post(option);
+  }
+  /**
+   * Batch Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          sort_by: {
+            createdDate: requestParam.params.createdDate || 'desc'
+          }
+        }
+      }
+    };
+    return this.learner.post(option);
+  }
+
+  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters
+        }
+      }
+    };
+    return this.learner.post(option);
   }
 }
