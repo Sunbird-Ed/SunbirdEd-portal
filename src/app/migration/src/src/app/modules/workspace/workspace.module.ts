@@ -25,7 +25,7 @@ import {
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent,BatchListComponent, BatchCardComponent, CreateTextbookComponent,
+    PublishedComponent, UploadedComponent, BatchListComponent, BatchCardComponent, CreateTextbookComponent,
     CreateCourseComponent, UpdateBatchComponent, CreateStudyMaterialComponent,
     CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent],
