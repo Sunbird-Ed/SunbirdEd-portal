@@ -11,7 +11,7 @@ import {
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, WorkspacesidebarComponent, BatchListComponent,
   BatchCardComponent, UpdateBatchComponent, CreateTextbookComponent, CreateCourseComponent,
   CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
 } from './components';
 @NgModule({
   imports: [
@@ -25,7 +25,7 @@ import {
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent, BatchCardComponent, CreateTextbookComponent,
+    PublishedComponent, UploadedComponent,BatchListComponent, BatchCardComponent, CreateTextbookComponent,
     CreateCourseComponent, UpdateBatchComponent, CreateStudyMaterialComponent,
     CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent],
