@@ -1,7 +1,8 @@
-import { UserService } from '@sunbird/core';
+
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, ILoaderMessage } from '@sunbird/shared';
+import { UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { EditorService } from './../../../services';
 
@@ -23,7 +24,11 @@ export class CreateCollectionComponent implements OnInit {
    * to a page the loader should be displayed before showing
    * any data
 	 */
-  showLoader = true;
+  showLoader = false;
+   /**
+    * loader message
+    */
+    loaderMessage: ILoaderMessage;
   /**
   * To show toaster(error, success etc) after any API calls
   */
@@ -41,7 +46,7 @@ export class CreateCollectionComponent implements OnInit {
    */
   public config: ConfigService;
   /**
-   * To make inbox API calls
+   * To make editors API calls
    */
   private editorService: EditorService;
 
@@ -93,11 +98,13 @@ export class CreateCollectionComponent implements OnInit {
          this.userProfile = user.userProfile;
         }
       });
-    this.showLoader = false;
     this.userForm = this.formBuilder.group({
       name: '',
       description: ''
     });
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
   }
 
 
@@ -125,18 +132,22 @@ generateData() {
   /***
    *   Create colletion creates the content Id and navigate
    * */
-  createCollection() {
+  createCollection(modalCollection) {
+    this.showLoader = true;
    const requestData = {
       content: this.generateData()
     };
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0016,
+  };
     this.editorService.create(requestData).subscribe(res => {
       this.showLoader = false;
-      const type = 'CollectionEditor';
-      const state = '';
+      const type = 'Collection';
       const framework = 'framework';
-      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
+      modalCollection.approve();
+      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, framework]);
     }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0010);
     });
 
   }

@@ -15,10 +15,6 @@ describe('EditorService', () => {
     });
   });
 
-  it('should be created', inject([EditorService], (service: EditorService) => {
-    expect(service).toBeTruthy();
-  }));
-
   it('should call Content service post function', inject([EditorService, ContentService, ConfigService], (service: EditorService,
     configService, contentService) => {
     const option = {
@@ -28,6 +24,17 @@ describe('EditorService', () => {
       }
     };
      const response = service.create(mockRes.createCollectionData);
+    expect(response).toBeTruthy();
+    expect(response).toBeDefined();
+
+  }));
+
+  it('should call Content service get function', inject([EditorService, ContentService, ConfigService], (service: EditorService,
+    configService, contentService) => {
+    const option = {
+      url: '/content/content/v1/read/do_2124788044789760001782?fields=createdBy,status,mimeType&mode=edit'
+    };
+     const response = service.getById(mockRes.req, mockRes.qs);
     expect(response).toBeTruthy();
     expect(response).toBeDefined();
 

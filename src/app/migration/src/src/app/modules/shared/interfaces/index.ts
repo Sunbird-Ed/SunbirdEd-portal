@@ -8,4 +8,5 @@ export * from './content';
 export * from './action';
 export * from './noresult';
 export * from './loader';
+export * from './appIdEnv';
 
