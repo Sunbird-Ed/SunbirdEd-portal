@@ -1,24 +1,18 @@
 import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, TestBed, inject, tick} from '@angular/core/testing';
 import { CollectionEditorComponent } from './collection-editor.component';
-import { Component, OnInit, AfterViewInit, NgZone, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 
-import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-
-import { RouterTestingModule } from '@angular/router/testing';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
-
-
-
 
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
@@ -31,7 +25,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule ],
+      imports: [HttpClientTestingModule, Ng2IziToastModule],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
@@ -48,6 +42,8 @@ describe('CollectionEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionEditorComponent);
     component = fixture.componentInstance;
+
+
   });
 
   it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
@@ -58,14 +54,18 @@ describe('CollectionEditorComponent', () => {
 
     spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
     component.openCollectionEditor();
+
     const rspData = mockRes.successResult.result.content;
     component.validateRequest(rspData, mockRes.validateModal);
 
+    const status = 'draft';
     component.updateModeAndStatus('draft');
     component.updateModeAndStatus('live');
-    component.updateModeAndStatus('review');
     component.updateModeAndStatus('flagged');
 
+
+    component.getTreeNodes('Course');
+    expect( component.getTreeNodes).not.toBeUndefined();
   }));
 
 
@@ -81,8 +81,7 @@ describe('CollectionEditorComponent', () => {
       spyOn(toasterService, 'error').and.callThrough();
       component.openCollectionEditor();
       const rspData = mockRes.errorResult.result.content;
-
-    component.validateRequest(rspData, mockRes.validateModal);
+      component.validateRequest(rspData, mockRes.validateModal);
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
 
     }));

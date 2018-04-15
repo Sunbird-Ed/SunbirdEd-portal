@@ -158,17 +158,13 @@ export class CreateStudyMaterialComponent implements OnInit {
   *  Create colletion creates the content Id
   */
   createContent() {
-    const state = 'state';
+    const state = 'Draft';
     const requestData = {
       content: this.generateData()
     };
     this.editorService.create(requestData).subscribe(res => {
       this.showLoader = true;
-      if (res && res.responseCode === 'OK') {
         this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state]);
-      } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0010);
-      }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
     });

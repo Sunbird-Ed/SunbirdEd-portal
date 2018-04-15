@@ -51,8 +51,6 @@ export class EditorService {
  *Create Editor and assign parameters
  */
     getById(req, qs): Observable<ServerResponse> {
-        console.log('req', req);
-        console.log('qs', qs);
         const option = {
             url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode
         };

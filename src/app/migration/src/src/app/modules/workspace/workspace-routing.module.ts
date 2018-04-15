@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
-  ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateUploadContentComponent, CreateStudyMaterialComponent,
+  ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateStudyMaterialComponent,
   CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent
 } from './components';
@@ -18,14 +18,13 @@ const routes: Routes = [
         path: 'create', component: CreateContentComponent,
         children: [
           { path: 'textbook', component: CreateTextbookComponent },
-          { path: 'uploadcontent', component: CreateUploadContentComponent },
           { path: 'course', component: CreateCourseComponent },
           { path: 'studymaterial', component: CreateStudyMaterialComponent },
           { path: 'collection', component: CreateCollectionComponent },
           { path: 'lessonplan', component: CreateLessonPlanComponent }
         ]
       },
-      {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      {path: 'edit/collection/:contentId/:type/:framework', component: CollectionEditorComponent },
       {path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
       {path: 'edit/generic', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },

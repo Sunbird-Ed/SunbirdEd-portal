@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
+import { ConfigService, ToasterService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -47,7 +47,7 @@ export class UserService {
   /**
  * Reference of appId
  */
-  public _appId: string;
+  private _appId: string;
   /**
    * Reference of channel
    */
@@ -59,15 +59,27 @@ export class UserService {
   /**
    * Reference of Ekstep_env
    */
-  public _env: string;
+  private _env: string;
+    /**
+  * To show toaster(error, success etc) after any API calls
+  */
+  private toasterService: ToasterService;
+  /**
+    * To call resource service which helps to use language constant
+    */
+  public resourceService: ResourceService;
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {LearnerService} learner LearnerService reference
    */
-  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient) {
+  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient,
+    resourceService: ResourceService,
+    toasterService: ToasterService) {
     this.config = config;
     this.learner = learner;
+    this.resourceService = resourceService;
+    this.toasterService = toasterService;
   }
   /**
    * get method to fetch userid.
@@ -102,23 +114,27 @@ export class UserService {
     * method to fetch appId and Ekstep_env from server.
     */
     public getAppidEnv(): void {
-      const url = `get/envData`;
-      this.http.get(url).subscribe(res => {
-        this._appId = res['appId'];
-        this._env = res['ekstep_env'];
+      const url = this.config.appConfig.APPID_EKSTEPENV;
+      this.http.get(url)
+      .catch((error: any) => {
+            return Observable.throw(this.toasterService.error(this.resourceService.messages.emsg.m0005));
+      })
+      .subscribe((res: IAppIdEnv) => {
+        this._appId = res.appId;
+        this._env = res.ekstep_env;
       });
-    }
+  }
 
     /**
      * get method to fetch appId.
      */
-    get appId(): any {
+    get appId(): string {
       return this._appId;
     }
     /**
      * get method to fetch Ekstep_env.
      */
-    get env(): any {
+    get env(): string {
       return this._env;
     }
 
@@ -157,6 +173,9 @@ export class UserService {
         }
       });
     }
+    const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
+    this.channel = rootOrg;
+    this.dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;

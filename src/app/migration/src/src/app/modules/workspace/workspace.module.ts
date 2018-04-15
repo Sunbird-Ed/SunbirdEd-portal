@@ -11,7 +11,7 @@ import { WorkSpaceService, EditorService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
-  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent, CreateUploadContentComponent,
+  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
 
 } from './components';
@@ -27,7 +27,7 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
-    CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent, CreateUploadContentComponent,
+    CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
     CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent],
   providers: [WorkSpaceService, EditorService]
 })

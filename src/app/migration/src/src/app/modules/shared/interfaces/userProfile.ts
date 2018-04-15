@@ -53,8 +53,6 @@ export interface IUserProfile {
     userRoles?: Array<string>;
     orgRoleMap?: {[key: string]: Array<string>};
     organisationIds?: Array<string>;
-    appId: string;
-    env: string;
 }
 export interface IJobProfile {
     jobName: string;

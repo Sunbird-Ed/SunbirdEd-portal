@@ -143,10 +143,9 @@ generateData() {
     this.editorService.create(requestData).subscribe(res => {
       this.showLoader = false;
       const type = 'Collection';
-      const state = 'state';
       const framework = 'framework';
       modalCollection.approve();
-      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
+      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, framework]);
     }, err => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0010);
     });

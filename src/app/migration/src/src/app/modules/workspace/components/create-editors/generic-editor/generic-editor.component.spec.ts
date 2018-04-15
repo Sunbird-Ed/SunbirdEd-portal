@@ -1,7 +1,7 @@
 
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { GenericEditorComponent } from './generic-editor.component';
-import { Component, OnInit, AfterViewInit, NgZone, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';

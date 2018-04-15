@@ -6,7 +6,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
+import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -118,7 +118,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
    */
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
-      this.state = params['state'];
       this.type = params['type'];
       this.framework = params['framework'];
     });
@@ -242,13 +241,13 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     }, 100);
 
     const validateModal = {
-      state: this.config.appConfig.WORKSPACE.collectionState,
-      status: this.config.appConfig.WORKSPACE.collectionStatus,
-      mimeType: this.config.appConfig.WORKSPACE.mimeCollection
+      state: this.config.appConfig.EDITOR_CONFIG.collectionState,
+      status: this.config.appConfig.EDITOR_CONFIG.collectionStatus,
+      mimeType: this.config.appConfig.EDITOR_CONFIG.mimeCollection
     };
 
     const req = { contentId: this.contentId };
-    const qs = { fields: this.config.appConfig.WORKSPACE.editorQS, mode: this.config.appConfig.WORKSPACE.MODE };
+    const qs = { fields: this.config.appConfig.EDITOR_CONFIG.editorQS, mode: this.config.appConfig.EDITOR_CONFIG.MODE };
     if (this.state === 'FlaggedContent') {
       delete qs.mode;
     }
@@ -281,9 +280,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToDraft() {
-    if (document.getElementById('collectionEditor')) {
-      document.getElementById('collectionEditor').remove();
-    }
+    // if (document.getElementById('collectionEditor')) {
+    //   document.getElementById('collectionEditor').remove();
+    // }
     this.route.navigate(['workspace/content/draft/1']);
     this.showModal = false;
   }

@@ -1,5 +1,5 @@
-import { CustomWindow } from './../../../interfaces/custom.window';
-import { Component, OnInit, AfterViewInit, NgZone, Renderer2 } from '@angular/core';
+import { CustomWindow } from './../../../interfaces';
+import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
@@ -158,7 +158,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       sid: this.userService.sessionId,
       contentId: this.contentId,
       pdata: {
-        id: this.userProfile.appId,
+        id: this.userService.appId,
         ver: '1.0'
       },
       etags: { app: [], partner: [], dims: this.userService.dims },
@@ -177,8 +177,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       alertOnUnload: true,
       headerLogo: '',
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
-        this.userProfile.env + '/', 'https://ekstep-public-' +
-        this.userProfile.env + '.s3-ap-south-1.amazonaws.com/'],
+        this.userService.env + '/', 'https://ekstep-public-' +
+        this.userService.env + '.s3-ap-south-1.amazonaws.com/'],
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
@@ -245,8 +245,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
-      'state': this.config.appConfig.WORKSPACE.contentState,
-      'status': this.config.appConfig.WORKSPACE.contentStatus,
+      'state': this.config.appConfig.EDITOR_CONFIG.contentState,
+      'status': this.config.appConfig.EDITOR_CONFIG.contentStatus,
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {

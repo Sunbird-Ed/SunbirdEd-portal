@@ -5,7 +5,6 @@ export * from './workspace/workspace.component';
 export * from './workspacesidebar/workspacesidebar.component';
 export * from './create-content/create-content.component';
 export * from './content-creation-forms/create-textbook/create-textbook.component';
-export * from './content-creation-forms/create-upload-content/create-upload-content.component';
 export * from './content-creation-forms/create-study-material/create-study-material.component';
 export *  from './content-creation-forms/create-lesson-plan/create-lesson-plan.component';
 export * from './content-creation-forms/create-course/create-course.component';

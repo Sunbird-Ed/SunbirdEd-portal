@@ -38,7 +38,7 @@ export const mockRes = {
         'result': {
             'content': {
                 'identifier': 'do_21247940906829414411032',
-                'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c35099',
+                'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c35090',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
                 'languageCode': 'en',
                 'status': 'Review',

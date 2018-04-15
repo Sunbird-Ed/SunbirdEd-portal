@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { ContentEditorComponent } from './content-editor.component';
-import { Component, OnInit, AfterViewInit, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
@@ -26,7 +25,7 @@ describe('ContentEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
@@ -67,12 +66,11 @@ describe('ContentEditorComponent', () => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
       fixture.detectChanges();
       spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.errorResult));
-      component.getContentData();
       spyOn(toasterService, 'error').and.callThrough();
+      component.getContentData();
       const rspData = mockRes.errorResult.result.content;
       component.checkContentAccess(rspData, mockRes.validateModal);
-      component.checkContentAccess(mockRes.successStateResult.result.content, mockRes.validateModal);
-      // expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
     }));
 
 
