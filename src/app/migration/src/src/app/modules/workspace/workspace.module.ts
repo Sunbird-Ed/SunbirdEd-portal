@@ -5,12 +5,13 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WorkSpaceService, BatchService } from './services';
+import { WorkSpaceService, BatchService , EditorService} from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
-  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
-  WorkspacesidebarComponent, BatchListComponent,
-  BatchCardComponent, UpdateBatchComponent
+  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, WorkspacesidebarComponent, BatchListComponent,
+  BatchCardComponent, UpdateBatchComponent, CreateTextbookComponent, CreateCourseComponent,
+  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
 } from './components';
 @NgModule({
   imports: [
@@ -24,8 +25,10 @@ import {
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent, BatchListComponent,
-    BatchCardComponent, UpdateBatchComponent],
-  providers: [WorkSpaceService, BatchService]
+    PublishedComponent, UploadedComponent, BatchCardComponent, CreateTextbookComponent,
+    CreateCourseComponent, UpdateBatchComponent, CreateStudyMaterialComponent,
+    CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent,
+    ContentEditorComponent, GenericEditorComponent],
+  providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }

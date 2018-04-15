@@ -2846,6 +2846,22 @@ body {
 html {
   height: 100%;
 }
-
+iframe.iziModal-iframe {
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999;
+  position: relative;
+  border: none;
+}
+.iziModal-wrap {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  width: 100% !important;
+  height: 100% !important;
+  right: 0;
+  left: 0;
+  bottom: 0;
+} 
 
 

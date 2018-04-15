@@ -18,6 +18,20 @@
         "createdDate" : "desc",
         "name": "asc"
     },
+    "EDITOR_CONFIG":{
+        "collectionState": ["UpForReviewContent", "ReviewContent",
+        "PublishedContent", "FlaggedContent", "LimitedPublishedContent"],
+        "collectionStatus": ["Review", "Draft", "Live", "Flagged", "Unlisted"],
+        "mimeCollection": "application/vnd.ekstep.content-collection",
+        "editorQS": "createdBy,status,mimeType",
+        "MODE": "edit",
+        "contentState": ["UpForReviewContent", "ReviewContent", "PublishedContent", "LimitedPublishedContent"],
+        "contentStatus": ["Review", "Draft", "Live", "Unlisted"]
+    },
+    "CONTENT_CONST": {
+            "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
+            },
+    "APPID_EKSTEPENV": "get/envData",
     "ANNOUNCEMENT": {
         "HOME": {
             "PAGE_LIMIT": 2
