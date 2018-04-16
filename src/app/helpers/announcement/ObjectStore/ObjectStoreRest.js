@@ -5,6 +5,7 @@ let ObjectStore = require('./ObjectStore.js')
 let envVariables = require('../../environmentVariablesHelper.js')
 let AppError = require('../services/ErrorInterface.js')
 let HttpStatus = require('http-status-codes')
+let telemetry = require('./../telemetry/telemetryHelper')
 
 class ObjectStoreRest extends ObjectStore {
 
@@ -31,15 +32,15 @@ class ObjectStoreRest extends ObjectStore {
     /**
      * Which is used to create a announcemet.
      * @param  {object} data        - Query object which is used to interact with casandra/elastic search.
-     *
+     * @param  {String} reqID       - Request ID for generate telemetry
      * @return {object}             - Response object.
      */
-    createObject(data) {
-        return this.__createObject()(data)
+    createObject(data, reqID) {
+        return this.__createObject()(data, reqID)
     }
 
     __createObject() {
-        return async((data) => {
+        return async((data, reqID) => {
             try {
                 let validation = await (this.model.validateModel(data.values))
                 if (!validation.isValid) throw {
@@ -59,11 +60,18 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
+                console.log("Announcement - create object - Request", JSON.stringify(options))
+
+                //Generate api call event
+                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/create')
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - create object - Response", result)
                 return {
                     data: _.get(result, 'body.result'),
                 }
             } catch (error) {
+                console.log("Announcement - create object - Error", error)
                 throw error
             }
         })
@@ -98,14 +106,19 @@ class ObjectStoreRest extends ObjectStore {
                         json: true
                     }
                     options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
-                    
+                    console.log("Announcement - find object - Request", JSON.stringify(options))
+
+                    telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/search')
                     let result = await (this.service.call(options))
+
+                    console.log("Announcement - find object - Response", result)
                     return _.get(result, 'body.result.response.count') > 0 ? {
                         data: _.get(result, 'body.result.response')
                     } : {
                         data: []
                     }
                 } catch (error) {
+                    console.log("Announcement - find object - Error", error)
                     throw error
                 }
             })
@@ -144,11 +157,17 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
+
+                console.log("Announcement - update object - Request", JSON.stringify(options))
+                telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/update')
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - find object - Response", result)
                 return {
                     data: result
                 }
             } catch (error) {
+                console.log("Announcement - find object - Error", error)
                 throw error
             }
         })
@@ -157,15 +176,15 @@ class ObjectStoreRest extends ObjectStore {
     /**
      * To fetch metrics data from elastic search.
      * @param  {Object} query       - Query object which is need to interact with elastic search.
-     *
+     * @param {String} reqID        - Request ID to generate telemetry
      * @return {Object}             - Response object.
      */
-    getMetrics(query) {
-        return this.__getMetrics()(query)
+    getMetrics(query, reqID) {
+        return this.__getMetrics()(query, reqID)
     }
 
     __getMetrics() {
-        return async((query) => {
+        return async((query, reqID) => {
             try {
                 let options = {
                     method: 'POST',
@@ -179,8 +198,13 @@ class ObjectStoreRest extends ObjectStore {
                     json: true,
                 }
                 options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
+
+                console.log("Announcement - get metrics - Request", JSON.stringify(options))
+                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/metrics')
                 
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - get metrics - Response", result)
                 let response = _.get(result, 'body.responseCode') === 'OK' ? {
                                         data: _.get(result, 'body.result.response')
                                     } : false
@@ -205,6 +229,7 @@ class ObjectStoreRest extends ObjectStore {
 
                 return metricsData
             } catch (error) {
+                console.log("Announcement - get metrics - Error", error)
                 throw error
             }
         })

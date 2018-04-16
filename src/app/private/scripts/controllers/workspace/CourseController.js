@@ -2,8 +2,8 @@
 
 angular.module('playerApp')
   .controller('CourseController', ['contentService', '$timeout', '$state', 'config', '$rootScope',
-    'toasterService', function (contentService, $timeout, $state, config, $rootScope,
-      toasterService) {
+    'toasterService', '$scope', function (contentService, $timeout, $state, config, $rootScope,
+      toasterService, $scope) {
       var course = this
       course.showCreateCourseModal = false
       course.isCourseCreated = false
@@ -22,6 +22,7 @@ angular.module('playerApp')
         course.showCreateCourseModal = true
         $timeout(function () {
           $('#createCourseModal').modal({
+            observeChanges: true,
             onHide: function () {
               course.data = {}
               if (!course.isCourseCreated) {
@@ -51,13 +52,14 @@ angular.module('playerApp')
         })
       }
 
-      course.saveMetaData = function (data) {
+      course.saveMetaData = function (data, framework) {
+        course.framework = framework
         var requestBody = angular.copy(data)
         requestBody.name = requestBody.name ? requestBody.name : course.defaultName
         requestBody.mimeType = course.mimeType
         requestBody.createdBy = course.userId
         requestBody.contentType = course.contentType
-
+        requestBody.framework = course.framework
         var requestData = {
           content: requestBody
         }
@@ -65,7 +67,16 @@ angular.module('playerApp')
       }
 
       course.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'Course' }
+        var params = { contentId: contentId, type: 'Course', framework: course.framework }
         $state.go('CollectionEditor', params)
       }
+
+      var CreateCourseFromDataDrivenForm = $rootScope.$on('CreateCourse',
+        function (event, args) {
+          course.saveMetaData(args.Data, args.framework)
+        })
+
+      $scope.$on('$destroy', function () {
+        CreateCourseFromDataDrivenForm()
+      })
     }])

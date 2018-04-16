@@ -1,14 +1,15 @@
 'use strict'
 
 angular.module('playerApp')
-  .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    'contentService', '$timeout', '$stateParams', 'config', '$rootScope', '$location', '$anchorScroll',
-    'toasterService', function (playerTelemetryUtilsService, $state, $scope, contentService,
-      $timeout, $stateParams, config, $rootScope, $location, $anchorScroll, toasterService) {
+  .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', '$window',
+    function ($state, $scope, contentService, $timeout, $stateParams, config, $rootScope,
+      $location, $anchorScroll, toasterService, $window) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
       $scope.contentProgress = 0
+      $scope.telemetryEnv = ($state.current.name === 'Toc') ? 'course' : 'library'
       var count = 0
 
       $scope.getContentEditorConfig = function (data) {
@@ -28,6 +29,7 @@ angular.module('playerApp')
           }
           configuration.context.dims = cloneDims
         }
+        configuration.context.tags = _.concat([], org.sunbird.portal.channel)
         configuration.context.app = [org.sunbird.portal.appid]
         configuration.context.partner = []
         if ($rootScope.isTocPage) {
@@ -36,11 +38,18 @@ angular.module('playerApp')
             type: 'course'
           }]
         }
+        configuration.context.pdata = {
+          'id': org.sunbird.portal.appid,
+          'ver': '1.0',
+          'pid': 'sunbird-portal'
+        }
         configuration.config = config.ekstep_CP_config.config
         configuration.config.plugins = config.ekstep_CP_config.config.plugins
         configuration.config.repos = config.ekstep_CP_config.config.repos
         configuration.metadata = $scope.contentData
         configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ? {} : data.body
+        configuration.config.overlay = config.ekstep_CP_config.config.overlay || {}
+        configuration.config.overlay.showUser = false
         return configuration
       }
 
@@ -84,9 +93,9 @@ angular.module('playerApp')
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
         })
-        window.onbeforeunload = function (e) { // eslint-disable-line
+        /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
-        }
+        } */
       }
 
       function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
@@ -103,7 +112,7 @@ angular.module('playerApp')
       function getContent (contentId) {
         var req = { contentId: contentId }
         var qs = {
-          fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
+          fields: 'body,editorState,templateId,languageCode,template,' +
                         'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
                         'domain,code,visibility,createdBy,description,language,mediaType,' +
                         'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
@@ -118,8 +127,8 @@ angular.module('playerApp')
             } else {
               if (!count) {
                 count += 1
-                toasterService.warning($rootScope.messages.imsg.m0018)
-                $state.go('Home')
+                toasterService.warning($rootScope.messages.imsg.m0027)
+                $window.history.back()
               }
             }
           } else {
@@ -155,7 +164,6 @@ angular.module('playerApp')
         }
 
         $scope.visibility = false
-        playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         if (document.getElementById('contentPlayer')) {
           document.getElementById('contentPlayer').removeEventListener('renderer:telemetry:event', function () {
             org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',

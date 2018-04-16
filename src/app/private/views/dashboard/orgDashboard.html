@@ -7,7 +7,7 @@
           <span class="dashBoardSectionHeading" ng-show="dashboardData.orgIds.length === 1"><i class="bar chart icon"></i> &nbsp;  {{dashboardData.orgName}}</span>
           <div class="ui dropdown" id="dashboardMenu" ng-show="dashboardData.orgIds.length > 1">
             <span class="dashBoardSectionHeading padding-right-10"><i class="bar chart icon"></i></span>
-            <div class="text dashBoardSectionHeading">Select Organization</div>
+            <div class="text dashBoardSectionHeading">{{$root.frmelmnts.lbl.selectorganization}}</div>
             <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
             <div class="menu">
               <div class="item" data-dataset="consumption" ng-repeat="item in dashboardData.orgDetails" ng-init="dashboardData.initDropdwon()" ng-click="dashboardData.onAfterOrgChange(item.organisationId)">{{item.orgName}}</div>
@@ -16,11 +16,11 @@
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10" ng-hide="dashboardData.showOrgWarningDiv">
           <div class="ui dropdown float-ContentRight" id="dropdownMenu">
-            <div class="text dashBoardSectionHeading">Creation</div>
+            <div class="text dashBoardSectionHeading">{{$root.frmelmnts.intxt.t0011}}</div>
             <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
             <div class="menu">
-              <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation'); $root.count = 0" data-dataset="creation">Creation</div>
-              <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption'); $root.count = 0" data-dataset="consumption">Consumption</div>
+              <div class="active item" ng-click="dashboardData.onAfterDatasetChange('creation'); $root.count = 0" data-dataset="creation">{{$root.frmelmnts.intxt.t0011}}</div>
+              <div class="item" ng-click="dashboardData.onAfterDatasetChange('consumption'); $root.count = 0" data-dataset="consumption">{{$root.frmelmnts.intxt.t0012}}</div>
             </div>
           </div>
         </div>
@@ -33,18 +33,18 @@
       <div class="one wide column"></div>
       <div class="ten wide column">
         <div class="ui grid column margin-bottom-20" ng-if="dashboardData.showOrgWarningDiv == false">
-          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">LAST 7 DAYS</span>
-          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">LAST 14 DAYS</span>
-          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">LAST 5 WEEKS</span>
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('7d')" ng-class="{'active' : dashboardData.timePeriod === '7d'}">{{$root.frmelmnts.lbl.dashboardsevendaysfilter}}</span>
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('14d')" id="14d" ng-class="{'active' : dashboardData.timePeriod === '14d'}">{{$root.frmelmnts.lbl.dashboardfourteendaysfilter}}</span>
+          <span class="dashBoardMenuItem cursor-pointer" ng-click="dashboardData.onAfterFilterChange('5w')" id="5w" ng-class="{'active' : dashboardData.timePeriod === '5w'}">{{$root.frmelmnts.lbl.dashboardfiveweeksfilter}}</span>
         </div>
         <div class="tweleve wide column" ng-if="dashboardData.showLoader">
           <app-loader></app-loader>
         </div>
         <div class="ui warning message tweleve wide column" ng-show="dashboardData.showOrgWarningDiv">
           <div class="header">
-            No organization selected!
+            {{$root.messages.imsg.m0029}}
           </div>
-          Please select a organization from the above list
+            {{$root.frmelmnts.instn.t0064}}
         </div>
         <div class="ui grid" ng-show="dashboardData.showDataDiv">
           <div class="four wide column" ng-repeat="item in dashboardData.numericStatArray">

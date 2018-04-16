@@ -2,8 +2,9 @@
 
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
-    'courseService', '$rootScope', '$stateParams', 'toasterService',
-    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService) {
+    'courseService', '$rootScope', '$stateParams', 'toasterService', 'telemetryService', '$window',
+    function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService,
+      telemetryService, $window) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -36,6 +37,7 @@
         courseService.courseHierarchy($state.params.Id).then(function (res) {
           if (res && res.responseCode === 'OK') {
             cpvm.loader.showLoader = false
+            cpvm.version = res.ver
             if (res.result.content.status === 'Live' || res.result.content.status === 'Unlisted') {
               res.result.content.children = _.sortBy(res.result.content.children,
                 ['index'])
@@ -51,8 +53,13 @@
               cpvm.applyAccordion()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0018)
-              $state.go('Home')
+              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
             }
+
+            // /* -----------telemetry start event------------ */
+            // telemetryService.startTelemetryData('library', $state.params.Id,
+            //   res.result.content.contentType, cpvm.version, 'collection', 'content-read', 'play')
           } else {
             cpvm.showError($rootScope.messages.emsg.m0004)
           }
@@ -158,7 +165,9 @@
         cpvm.contentId = item.identifier
         cpvm.showPlayer = true
       }
-      cpvm.closePlayer = function () {
+      cpvm.closePlayer = function (contentType) {
+        // telemetryService.endTelemetryData('library', $state.params.Id, contentType,
+        //   cpvm.version, 'collection', 'content-read', 'play')
         if ($stateParams.backState === 'Profile') {
           $state.go($stateParams.backState)
           return
@@ -169,6 +178,15 @@
           }, 0)
         } else {
           $state.go('Resources')
+        }
+      }
+
+      cpvm.isShowBadgeAssign = function (contentData) {
+        switch (contentData.contentType) {
+        case 'TextBook':
+          return true
+        default:
+          return false
         }
       }
       cpvm.loadData()

@@ -22,11 +22,11 @@
         <div class="ui action input shareContent width-100" id="buttonPopUp">
             <input type="text" id="copyLinkData" name="title" readonly ng-model="contentShare.link" />
             <button class="ui basic primary button" ng-click="contentShare.copyLink()" id="copyLinkButton">
-                COPY LINK
-              </button>
+                {{$root.frmelmnts.btn.copylink}}
+            </button>
         </div>
         <div class="ui custom popup contentSharing top center transition hidden" id="LinkCopiedToClipboard" data-position="ui top center">
-            Link copied to clipboard
+           {{$root.messages.stmsg.m0106}}
         </div>
     </div>
     <div class="actions margin-top-20 ">

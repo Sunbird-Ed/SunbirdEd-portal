@@ -13,68 +13,17 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
-                <form class="ui form" ng-init="contentLesson.data = {}">
-                    <div class="field">
-                        <label>{{$root.frmelmnts.lbl.name}}</label>
-                        <div class="field">
-                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="contentLesson.data.name">
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>{{$root.frmelmnts.lbl.curriculum}}</label>
-                            <select name="board" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" board for board in contentLesson.boards" ng-model="contentLesson.data.board">
-                                <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>{{$root.frmelmnts.lbl.medium}}</label>
-                            <select name="medium" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" medium for medium in contentLesson.mediums" ng-model="contentLesson.data.language">
-                                <option value="">{{$root.frmelmnts.lbl.medium}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>{{$root.frmelmnts.lbl.subject}}</label>
-                            <select name="subject" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" subject for subject in contentLesson.subjects" ng-model="contentLesson.data.subject">
-                                <option value="">{{$root.frmelmnts.lbl.subject}}</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>{{$root.frmelmnts.lbl.class}}</label>
-                            <select name="grades" multiple="" class="ui fluid search selection dropdown multiSelectDropDown" ng-options=" grade for grade in contentLesson.grades" ng-model="contentLesson.data.gradeLevel" s>
-                                <option value="">{{$root.frmelmnts.lbl.class}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field" ng-if="$root.concepts">
-                            <label>{{$root.frmelmnts.lbl.concept}}</label>
-                            <concept-picker selected-concepts="[]"></concept-picker>
-                        </div>
-                        <div class="field">
-                            <label>{{$root.frmelmnts.lbl.resourcetype}}</label>
-                            <select name="resourceType" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in contentLesson.resourceType" ng-model="contentLesson.data.resourceType">
-                                <option value="">{{$root.frmelmnts.lbl.resourcetype}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
+            <div ng-include="'views/workSpace/ContentCreationTemplate.html'">
             </div>
-            <div class="actions">
-                <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="contentLesson.saveMetaData(contentLesson.data)" ng-disabled="contentLesson.loader.showLoader">
-                        {{$root.frmelmnts.btn.startcreating}}
-                    </button>
-                </p>
-                <h4 class="text-align-center">{{$root.frmelmnts.lbl.lessonfillater}}</h4>
-                <div>
-                    <label>
-                        <p class="text-align-center">{{$root.frmelmnts.lbl.agreeandproceedtext}}</p>
-                    </label>
-                </div>
+            <h4 class="text-align-center margin-top-10">
+                    {{$root.frmelmnts.lbl.lessonfillater}}
+            </h4>
+            <div>
+                <label>
+                    <p class="text-align-center margin-bottom-20">
+                        {{$root.frmelmnts.lbl.agreeandproceedtext}}
+                    </p>
+                </label>
             </div>
         </div>
         <div class=" ui segment margin-top-10" ng-if="contentLesson.loader.showLoader">

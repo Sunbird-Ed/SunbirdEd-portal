@@ -5,8 +5,8 @@
             <div class="ui link cards popular-section" ng-repeat="pageSection in section.page">
                 <h4 class="ui header card-section-header sectionHeading" ng-if="pageSection.contents && pageSection.contents.length > 0">{{pageSection.name}}
                     <span class="ui red circular inline label">{{pageSection.contents.length}}</span></h4>
-                <div class="regular slider " ng-if="pageSection.contents.length > 0">
-                    <div ng-repeat="item in pageSection.contents track by $index" add-slick ng-init="$last && $root.loadProgress()">
+                <div class="regular slider" ng-if="pageSection.contents.length > 0">
+                    <div ng-repeat="item in pageSection.contents track by $index" in-view="$root.lineInView($index, $inview, item, pageSection.name, pageSection.id)" in-view-options="{ throttle: 1000}" add-slick ng-init="$last && $root.loadProgress()" id="{{pageSection.id + '_' + item.identifier}}">
                         <div ng-if="pageSection.sectionDataType=='content'" ng-include=" 'views/common/ratingCard.html'" ng-click="section.playContent(item)"></div>
                         <div ng-if="pageSection.sectionDataType=='course'" ng-include=" 'views/common/ratingCard.html'" ng-click="section.openCourseView(item)"></div>
                     </div>

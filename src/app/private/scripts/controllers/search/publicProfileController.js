@@ -64,7 +64,6 @@ angular.module('playerApp') // add those all values
                   .includes(currentUserId)
               })
             }
-
             publicProfile.userSkills = userSkills
           } else {
             toasterService.error($rootScope.messages.fmsg.m0005)

@@ -20,6 +20,7 @@ const publicServicehelper = require('./helpers/publicServiceHelper.js')
 const userHelper = require('./helpers/userHelper.js')
 const resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
+const healthService = require('./helpers/healthCheckService.js')
 const fs = require('fs')
 const port = envHelper.PORTAL_PORT
 const learnerURL = envHelper.LEARNER_URL
@@ -33,8 +34,12 @@ const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
-
+const Telemetry = require('sb_telemetry_util')
+const telemetry = new Telemetry()
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
+const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
+const contentServiceLocalUrl = envHelper.content_Service_Local_BaseUrl
 
 let memoryStore = null
 
@@ -87,6 +92,7 @@ app.all('/public', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -108,10 +114,18 @@ app.use('/private/index', function (req, res, next) {
   next()
 })
 
+app.all('/logoff', endSession, function (req, res) {
+  res.cookie('connect.sid', '', { expires: new Date() })
+  res.redirect('/logout')
+})
+// Mobile redirection to app
+require('./helpers/mobileAppHelper.js')(app)
+
 app.all('/', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -120,6 +134,9 @@ app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
 
 app.all('/collection-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
+
+// Generate telemetry fot public service
+app.all('/public/service/*', telemetryHelper.generateTelemetryForProxy)
 
 app.all('/public/service/v1/learner/*', proxy(learnerURL, {
   proxyReqOptDecorator: proxyUtils.decoratePublicRequestHeaders(),
@@ -142,6 +159,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
+// Generate telemetry fot public service
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 app.post('/private/service/v1/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -177,6 +197,17 @@ app.all('/private/service/v1/learner/*',
     }
   }))
 
+app.all('/private/service/v1/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
+
+app.all('/private/service/v1/content/data/v1/telemetry',
+  proxy(envHelper.content_Service_Local_BaseUrl, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
+    }
+  }))
 app.all('/private/service/v1/content/*',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -206,7 +237,10 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.sessionId = req.sessionID
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.logSession = req.session.logSession
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
+  res.locals.producerId = producerId
   res.render(path.join(__dirname, 'private', 'index.ejs'))
 })
 
@@ -216,12 +250,24 @@ app.get('/get/envData', keycloak.protect(), function (req, res) {
   res.end()
 })
 
+app.get('/v1/user/session/start/:deviceId', function (req, res) {
+  if (req.session.logSession === false) {
+    req.session.deviceId = req.params.deviceId
+    telemetryHelper.logSessionStart(req)
+    req.session.logSession = true
+  }
+  res.status(200)
+  res.end()
+})
 // tenant Api's
 app.get('/v1/tenant/info', tenantHelper.getInfo)
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+// healthcheck
+app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
@@ -249,15 +295,17 @@ app.all('*', function (req, res) {
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function (request) {
+  request.session.logSession = false
   async.series({
+    getPermissionData: function (callback) {
+      permissionsHelper.getPermissions(request)
+      callback()
+    },
     getUserData: function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
     },
     updateLoginTime: function (callback) {
       userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
     }
   }, function (err, results) {
     if (err) {
@@ -265,22 +313,46 @@ keycloak.authenticated = function (request) {
     }
   })
 }
+function endSession (request, response, next) {
+  delete request.session['roles']
+  delete request.session['rootOrgId']
+  delete request.session['orgs']
+  if (request.session) {
+    telemetryHelper.logSessionEnd(request)
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
+      delete request.session.sessionEvents
+      delete request.session['deviceId']
+    })
+  }
+  next()
+}
 
 keycloak.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    request.session.sessionEvents = request.session.sessionEvents || []
-    telemetryHelper.sendTelemetry(request, request.session.sessionEvents, function (err, status) {
-      if (err) {} // nothing to do
-      // remove session data
+    telemetryHelper.logSessionEnd(request)
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
       delete request.session.sessionEvents
+      delete request.session['deviceId']
     })
   }
 }
 
 resourcesBundlesHelper.buildResources(function (err, result) {
+  if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
+    console.error('please set environment variable sunbird_environment, sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+    process.exit(1)
+  }
   console.log('building resource bundles ......')
   if (err) {
     throw err
@@ -295,3 +367,33 @@ resourcesBundlesHelper.buildResources(function (err, result) {
 exports.close = function () {
   portal.server.close()
 }
+
+// Telemetry initialization
+const telemetryConfig = {
+  pdata: {id: appId, ver: telemtryEventConfig.pdata.ver},
+  method: 'POST',
+  batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
+  endpoint: telemtryEventConfig.endpoint,
+  host: contentURL,
+  authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+}
+
+telemetry.init(telemetryConfig)
+
+// Handle Telemetry data on server close
+function exitHandler (options, err) {
+  console.log('Exit', options, err)
+  telemetry.syncOnExit(function (err, res) {
+    if (err) {
+      process.exit()
+    } else {
+      process.exit()
+    }
+  })
+}
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler)
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler)

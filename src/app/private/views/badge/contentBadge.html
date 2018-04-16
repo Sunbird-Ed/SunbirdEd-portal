@@ -1,0 +1,41 @@
+<div class="ui grid" ng-init="contentBadge.getAllBadges()">
+    <div class="six wide column">
+        <div class="ui blue labels" ng-if="contentBadge.selectedBadgeList.length > 0">
+            <div class="ui label margin-right-10" ng-repeat="selectedbadge in contentBadge.selectedBadgeList">{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}</div>
+        </div>
+    </div>
+    <div class="six wide column margin-top-0 text-align-right" ng-if="contentBadge.allBadgeList && contentBadge.allBadgeList.length > 0">
+        <sapn>{{$root.frmelmnts.lbl.markas}}:</sapn>
+        <button class="ui small basic primary compact button margin-left-10" ng-repeat="badge in contentBadge.allBadgeList" ng-click="contentBadge.initializeModal(badge)">{{badge.name | uppercase}}</button>
+
+    </div>
+</div>
+
+<div class="ui small modal" id="badgeAssignModel" ng-if="contentBadge.showBadgeAssingModel">
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <h4>{{$root.frmelmnts.lbl.markas}} '{{contentBadge.selectedBadge.name | uppercase}}'</h4>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="description">
+            <h1 class="ui header">
+                <div class="sub header primary-text-color-sunbird">
+                    {{$root.frmelmnts.lbl.badgeassignconfigmation}}
+                </div>
+            </h1>
+
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui basic blue small compact button left floated" ng-click="contentBadge.hideContentBadgeModal()">{{$root.frmelmnts.btn.cancel}}</div>
+        <div class="ui small primary compact button " ng-click="contentBadge.assignBadge(contentBadge.selectedBadge)">{{$root.frmelmnts.btn.yesiamsure}}</div>
+    </div>
+</div>

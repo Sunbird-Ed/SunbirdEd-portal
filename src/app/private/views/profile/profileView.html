@@ -3,8 +3,6 @@
         <div class="ui grid">
             <div class="twelve wide column padding-bottom-none" ng-include=" 'views/profile/profileView/userDescription.html' ">
             </div>
-            <div class="twelve wide column padding-bottom-none" ng-include=" 'views/profile/profileView/userBadges.html' ">
-            </div>
             <div class="twelve wide column padding-top-none" ng-include="'views/profile/profileView/userExperience.html'">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userAddress.html' ">
@@ -12,6 +10,10 @@
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userEducation.html' ">
             </div>
             <div class="twelve wide column" ng-include=" 'views/profile/profileView/userSkills.html' ">
+            </div>
+            <!-- Badging (Certifications and Awards) -->
+            <div class="twelve wide column" ng-if="profileCtrl.badgeAssertions && profileCtrl.badgeAssertions.length> 0">
+                <profile-badge isshowadd="false" badgelist="profileCtrl.badgeAssertions" isprofileinfo="true"></profile-badge>
             </div>
             <div class="twelve wide column padding-top-none" ng-include=" 'views/profile/profileView/userBasicInfo.html' ">
             </div>
@@ -38,7 +40,7 @@
                         </div>
                         <div class="item" ng-repeat="field in $root.profileMissingFields | limitTo:3">
                             <div class="iniformationcontent content">
-                                <a ng-click="profileCtrl.updateAction(field)">
+                                <a ng-click="profileCtrl.updateAction(field); profileCtrl.generateInteractEvent(field)">
                                     <h5 class="ui blue header profileUpdateAddDetails">+ Add {{$root.frmelmnts.lbl[field] || field}}</h5>
                                 </a>
                             </div>
@@ -46,8 +48,8 @@
                     </div>
                 </div>
             </div>
-            <div class="twelve wide column" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER,COURSE_MENTOR">
-                <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace ">
+            <div class="twelve wide column" ng-if="initializePermissionDirective" sb-permissions permission-only="CONTENT_CREATOR,CONTENT_CREATION,CONTENT_REVIEWER,CONTENT_REVIEW,FLAG_REVIEWER,COURSE_MENTOR,BOOK_CREATOR,BOOK_REVIEWER">
+                <div class="workspacebutton workspacecontentProfile ui link card " ui-sref="WorkSpace " ng-click="$root.generateInteractEvent('workspace','', 'workspace','1.0','workspace', 'workspace-read')">
                     <div class="content ">
                         <div class="WorkSpaceTextContent ">
                             <i class='my-icon database icon '></i>
@@ -63,7 +65,7 @@
                         <span class="addeditprofile">{{profileCtrl.contentList.length}} {{$root.frmelmnts.lbl.contents}}</span>
                     </div>
                     <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
-                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item)">
+                        <div class="item" ng-repeat="item in profileCtrl.contentList track by $index" ng-click="profileCtrl.openContentPlayer(item); $root.generateInteractEvent('profile',item.identifier,item.contentType,'1.0','contribution-list','profile-read')">
                             <img class="ui avatar image " ng-src="{{profileCtrl.getContentLogo(item)}}">
                             <div class="content ">
                                 <a class=" header ">{{item.name}}</a>

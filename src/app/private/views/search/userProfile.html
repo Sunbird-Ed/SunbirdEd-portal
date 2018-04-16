@@ -50,16 +50,16 @@
             <div class="twelve wide column">
                 <div class="margin-top-20 ui raised segment">
                     <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding"> Summary </span>
+                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.scttl.summary}}</span>
                     </div>
                     <div class="description" ng-init="publicProfile.readMore = false">
                         <p ng-if="!publicProfile.readMore">
                             {{publicProfile.user.profileSummary | limitTo: 120 }} &nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" 
-                            ng-if="publicProfile.user.profileSummary.length > 120 && publicProfile.readMore === false" ng-click="publicProfile.readMore = !publicProfile.readMore;"> ... Read More</span>
+                            <span class="ui cardsKnowMore mouse-pointer" ng-if="publicProfile.user.profileSummary.length > 120 && publicProfile.readMore === false"
+                                ng-click="publicProfile.readMore = !publicProfile.readMore;">{{$root.frmelmnts.lbl.readmore}}</span>
                         </p>
                         <p ng-if="publicProfile.readMore"> {{publicProfile.user.profileSummary}}&nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">Read Less ...</span>
+                            <span class="ui cardsKnowMore mouse-pointer" ng-click="publicProfile.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
                         </p>
                     </div>
                 </div>
@@ -74,9 +74,11 @@
                             <img class="ui avatar image" ng-src="/common/images/location.png">
                             <div class="content">
                                 <p class=" header">{{address.addType}}</p>
-                                <div class="description"> {{address.addressLine1}}<span ng-if="address.addressLine2"> , </span>{{address.addressLine2}}
+                                <div class="description"> {{address.addressLine1}}
+                                    <span ng-if="address.addressLine2"> , </span>{{address.addressLine2}}
 
-                                    <p>{{address.city}}<span ng-if="address.state"> , </span>{{address.state}}
+                                    <p>{{address.city}}
+                                        <span ng-if="address.state"> , </span>{{address.state}}
                                         <span ng-if="address.country">, </span>{{address.country}}
                                         <span ng-if="address.zipcode">, </span>{{address.zipcode}}</p>
                                 </div>
@@ -96,12 +98,18 @@
                             <img class="ui avatar image" ng-src="/common/images/businessman.png">
                             <div class="content ">
                                 <a class=" header ">{{experience.jobName}}</a>
-                                <div class="description ">{{experience.role}}<span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} : <span><span ng-repeat="sub in experience.subject ">{{sub}}<span ng-if="!$last ">, </span></span>
+                                <div class="description ">{{experience.role}}
+                                    <span ng-if="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
+                                    <p class="margin-bottom-0 " ng-if="experience.subject.length ">{{$root.frmelmnts.lbl.subjectstaught}} :
+                                        <span>
+                                            <span ng-repeat="sub in experience.subject ">{{sub}}
+                                                <span ng-if="!$last ">, </span>
+                                            </span>
                                         </span>
                                     </p>
                                     <p ng-if="experience.joiningDate ">{{$root.frmelmnts.lbl.tcfrom}} : {{experience.joiningDate}} &nbsp;
-                                        <span ng-if="experience.endDate ">, &nbsp;{{$root.frmelmnts.lbl.tcto}} : {{experience.endDate}}</span></p>
+                                        <span ng-if="experience.endDate ">, &nbsp;{{$root.frmelmnts.lbl.tcto}} : {{experience.endDate}}</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -120,9 +128,12 @@
                             <img class="ui avatar image" ng-src="/common/images/businessman.png">
                             <div class="content">
                                 <a class=" header">{{education.degree}}</a>
-                                <div class="description"> {{education.yearOfPassing}}<span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
+                                <div class="description"> {{education.yearOfPassing}}
+                                    <span ng-if="education.percentage">,&nbsp</span>{{education.percentage}}
                                     <br/>
-                                    <p>{{education.grade}}<span ng-if="education.name && education.grade">,&nbsp</span>{{education.name}}<span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
+                                    <p>{{education.grade}}
+                                        <span ng-if="education.name && education.grade">,&nbsp</span>{{education.name}}
+                                        <span ng-if="education.boardOrUniversity">,&nbsp</span>{{education.boardOrUniversity}}
 
                                 </div>
                             </div>
@@ -134,7 +145,7 @@
             <div class="twelve wide column">
                 <div class="ui raised segment margin-bottom-0">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading">Skill Tags</span>
+                        <span class="header cardsHeading">{{$root.frmelmnts.lbl.skillTags}}</span>
                     </div>
                     <div class="profileitems profile-des ui relaxed aligned list">
                         <div class="item " ng-repeat="skill in publicProfile.userSkills | orderBy:'-addedAt' |limitTo:publicProfile.limit">
@@ -147,7 +158,7 @@
                             </div>
                             <div ng-if="skill.isEndorsable" class="ui circular labels float-ContentRight ">
                                 <a class="ui basic label" ng-click="publicProfile.endorsement(skill.skillName)">
-                                +1
+                                    +1
                                 </a>
                             </div>
                         </div>
@@ -156,21 +167,29 @@
                 <div class="ui bottom attached tabular menu userSkillMore ng-scope " ng-if="publicProfile.userSkills.length > publicProfile.defaultLimit">
                     <div class="active item addSkillMoreBtn">
                         <a ng-click="publicProfile.setLimit(publicProfile.resetLimit);publicProfile.isViewMore=true" ng-if="publicProfile.userSkills.length > publicProfile.limit">
-                        VIEW MORE
-                             <span ><i class="chevron down icon"></i> </span>
-                         </a>
+                            {{$root.frmelmnts.btn.viewmore}}
+                            <span>
+                                <i class="chevron down icon"></i>
+                            </span>
+                        </a>
                         <a ng-click="publicProfile.setLimit(publicProfile.defaultLimit);publicProfile.isViewMore=false" ng-if="publicProfile.isViewMore">
-                            VIEW LESS
-                            <span ><i class="chevron up icon"></i> </span>
+                           {{$root.frmelmnts.btn.viewless}}
+                            <span>
+                                <i class="chevron up icon"></i>
+                            </span>
                         </a>
                     </div>
                 </div>
+            </div>
+            <!-- Badging (Certifications and Awards) -->
+            <div class="twelve wide column" ng-if="publicProfile.user && publicProfile.user.badgeAssertions && publicProfile.user.badgeAssertions.length > 0">
+                <profile-badge isshowadd="false" badgelist="publicProfile.user.badgeAssertions" isprofileinfo="true"></profile-badge>
             </div>
             <!-- aditional information -->
             <div class="twelve wide column">
                 <div class="ui raised segment ">
                     <div class="header announcementCard-header ">
-                        <span class="header cardsHeading "> Basic Profile</span>
+                        <span class="header cardsHeading ">{{$root.frmelmnts.scttl.basicprofile}}</span>
                     </div>
                     <div class="profileitems profile-des ui relaxed aligned list ">
                         <div class="item ">
@@ -184,7 +203,9 @@
                         <div class="item ">
                             <div class="right floated content ">
                                 <span ng-repeat="grade in publicProfile.user.grade">
-                  <span>{{grade}}<span ng-if=!$last>,</span></span>
+                                    <span>{{grade}}
+                                        <span ng-if=!$last>,</span>
+                                    </span>
                             </div>
                             <div class="iniformationcontent content ">
                                 {{$root.frmelmnts.lbl.grades}}
@@ -209,7 +230,7 @@
                         </div>
                         <div class="item ">
                             <div class="right floated content" ng-if="publicProfile.user.subject">
-                                    {{publicProfile.user.subject.join(', ')}}
+                                {{publicProfile.user.subject.join(', ')}}
                             </div>
                             <div class="iniformationcontent content ">
                                 {{$root.frmelmnts.lbl.subjects}}
@@ -223,10 +244,10 @@
                                 {{$root.frmelmnts.lbl.language}}
                             </div>
                         </div>
-          </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="one wide column"></div>
+    <div class="one wide column"></div>
 </div>

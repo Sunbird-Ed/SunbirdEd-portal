@@ -1,0 +1,72 @@
+{
+  "endpoint": "data/v1/telemetry",
+  "pdata": {
+    "ver": "0.0.1"
+  },
+  "default_username": "public",
+  "default_userid": "public",
+  "default_did": "sunbird-portal",
+  "env": "portal-backend",
+  "learnerServiceEnv": "learner-service",
+  "contentServiceEnv": "content-service",
+  "URL": {
+    "data/v1/role/read": {
+      "title": "Read role",
+      "category": "readrole",
+      "url": "data/v1/role/read",
+      "message": "Calling role read api to get permisions",
+      "env": "user"
+    },
+    "user/v1/read": {
+      "title": "Read user profile",
+      "category": "userread",
+      "url": "user/v1/read",
+      "message": "Calling get user profile",
+      "env": "user"
+    },
+    "user/v1/update/logintime": {
+      "title": "Update user login time",
+      "category": "logintimeupdate",
+      "url": "user/v1/update/logintime",
+      "message": "Calling update login time for user",
+      "env": "user"
+    },
+    "org/v1/search": {
+      "title": "Org search",
+      "category": "orgsearch",
+      "url": "org/v1/search",
+      "message": "Calling org search",
+      "env": "org"
+    },
+    "test": {
+      "title": "echo test",
+      "category": "test",
+      "url": "test",
+      "message": "Calling echo test api",
+      "env": "sso"
+    },
+    "user/v1/profile/read": {
+      "title": "Get user profile",
+      "category": "profileread",
+      "url": "user/v1/profile/read",
+      "message": "Calling get user profile",
+      "env": "user"
+    },
+    "user/v1/create": {
+      "title": "Create user profile",
+      "category": "createuser",
+      "url": "user/v1/create",
+      "message": "Calling create user",
+      "env": "user"
+    },
+    "tenant/info": {
+      "title": "tenant info",
+      "category": "tenantinfo",
+      "url": "tenant/info",
+      "message": "Called tenant info",
+      "env": "tenant"
+    }
+  }
+
+
+}

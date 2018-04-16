@@ -1,11 +1,10 @@
 'use strict'
 
 angular.module('loginApp')
-  .controller('contentPlayerCtrl', ['playerTelemetryUtilsService', '$state', '$scope',
-    '$timeout', '$stateParams', '$rootScope', 'config', 'contentService',
-    'toasterService', '$location', '$anchorScroll',
-    function (playerTelemetryUtilsService, $state, $scope,
-      $timeout, $stateParams, $rootScope, config, contentService, toasterService, $location, $anchorScroll) {
+  .controller('contentPlayerCtrl', ['$state', '$scope', '$timeout', '$stateParams', '$rootScope',
+    'config', 'contentService', 'toasterService', '$location', '$anchorScroll',
+    function ($state, $scope, $timeout, $stateParams, $rootScope, config, contentService,
+      toasterService, $location, $anchorScroll) {
       $scope.isHeader = $scope.isheader
       $scope.isClose = $scope.isclose
       $scope.showModalInLectureView = true
@@ -22,11 +21,18 @@ angular.module('loginApp')
           id: $stateParams.courseId,
           type: 'course'
         }]
+        configuration.context.pdata = {
+          'id': $('#producerId').attr('value'),
+          'ver': '1.0',
+          'pid': 'sunbird-portal'
+        }
         configuration.config = config.ekstep_CP_config.config
         configuration.config.plugins = config.ekstep_CP_config.config.plugins
         configuration.config.repos = config.ekstep_CP_config.config.repos
         configuration.metadata = $scope.contentData
         configuration.data = $scope.contentData.mimeType !== config.MIME_TYPE.ecml ? {} : data.body
+        configuration.config.overlay = config.ekstep_CP_config.config.overlay || {}
+        configuration.config.overlay.showUser = false
         return configuration
       }
 

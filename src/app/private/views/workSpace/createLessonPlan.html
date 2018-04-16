@@ -15,70 +15,17 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
-                <form class="ui form" ng-init="lessonPlan.data = {}">
-                    <div class="field">
-                        <label>
-                            {{$root.frmelmnts.lbl.name}}
-                        </label>
-                        <div class="field">
-                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="lessonPlan.data.name">
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>
-                                {{$root.frmelmnts.lbl.curriculum}}
-                            </label>
-                            <select name="board" class="ui fluid search selection dropdown" id="boardDropDown" ng-options=" board for board in lessonPlan.boards" ng-model="lessonPlan.data.board">
-                                <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>
-                                {{$root.frmelmnts.lbl.medium}}
-                            </label>
-                            <select name="medium" class="ui fluid search selection dropdown" id="mediumDropDown" ng-options=" medium for medium in lessonPlan.mediums" ng-model="lessonPlan.data.language">
-                                <option value="">{{$root.frmelmnts.lbl.medium}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>
-                                {{$root.frmelmnts.lbl.subject}}
-                            </label>
-                            <select name="subject" class="ui fluid search selection dropdown" id="subjectDropDown" ng-options=" subject for subject in lessonPlan.subjects" ng-model="lessonPlan.data.subject">
-                                <option value="">{{$root.frmelmnts.lbl.subject}}</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>
-                                {{$root.frmelmnts.lbl.class}}
-                            </label>
-                            <select name="grades" multiple="" class="ui fluid search selection dropdown" id="gradeDropDown" ng-options=" grade for grade in lessonPlan.grades" ng-model="lessonPlan.data.gradeLevel" s>
-                                <option value="">{{$root.frmelmnts.lbl.class}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
+            <div ng-include="'views/workSpace/ContentCreationTemplate.html'">
             </div>
-            <div class="actions">
-                <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="lessonPlan.saveMetaData(lessonPlan.data)" ng-disabled="lessonPlan.loader.showLoader">
-                        {{$root.frmelmnts.btn.startcreating}}
-                    </button>
-                </p>
-                <h4 class="text-align-center">
+            <h4 class="text-align-center margin-top-10">
                     {{$root.frmelmnts.lbl.lpfilllater}}
-                </h4>
-                <div>
-                    <label>
-                        <p class="text-align-center">
-                            {{$root.frmelmnts.lbl.agreeandproceedtext}}
-                        </p>
-                    </label>
-                </div>
+            </h4>
+            <div>
+                <label>
+                    <p class="text-align-center margin-bottom-20">
+                        {{$root.frmelmnts.lbl.agreeandproceedtext}}
+                    </p>
+                </label>
             </div>
         </div>
         <div class=" ui segment margin-top-10" ng-if="lessonPlan.loader.showLoader">

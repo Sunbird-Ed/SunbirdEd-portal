@@ -2,9 +2,10 @@
 
 angular.module('playerApp')
   .controller('FlaggedContentController', ['contentService', 'searchService', 'config',
-    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService', 'permissionsService',
-    function (contentService, searchService, config, $rootScope, $state, toasterService,
-      PaginationService, workSpaceUtilsService, permissionsService) {
+    '$rootScope', '$state', 'toasterService', 'PaginationService', 'workSpaceUtilsService',
+    'permissionsService', 'telemetryService', function (contentService, searchService, config,
+      $rootScope, $state, toasterService, PaginationService, workSpaceUtilsService,
+      permissionsService, telemetryService) {
       var flaggedContent = this
       flaggedContent.userId = $rootScope.userId
       flaggedContent.contentStatus = ['Flagged']
@@ -85,6 +86,30 @@ angular.module('playerApp')
 
       flaggedContent.initTocPopup = function () {
         $('.cardTitleEllipse').popup({inline: true})
+      }
+
+      // telemetry interact event
+      flaggedContent.generateInteractEvent = function (objtype, contentId) {
+        telemetryService.interactTelemetryData('workspace', contentId, objtype, '1.0',
+          'flaggedContent', 'workspace-flagged-content')
+      }
+
+      // telemetry visit spec
+      var inviewLogs = []
+      flaggedContent.lineInView = function (index, inview, item, section) {
+        var obj = _.filter(inviewLogs, function (o) {
+          return o.objid === item.identifier
+        })
+        if (inview === true && obj.length === 0) {
+          inviewLogs.push({
+            objid: item.identifier,
+            objtype: item.contentType || 'workspace',
+            section: section,
+            index: index
+          })
+        }
+        console.log('------', inviewLogs)
+        telemetryService.setVisitData(inviewLogs)
       }
     }
   ])

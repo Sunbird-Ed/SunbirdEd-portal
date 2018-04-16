@@ -148,5 +148,26 @@ describe('Controller: TextBookController', function () {
       var response = searchService.getFramework().$$state.value
       expect(response.result).not.toBe(undefined)
     })
+
+    xit('Should call getAssociations', function () {
+      spyOn(textBookController, 'getAssociations').and.callThrough()
+      textBookController.getAssociations('textbook', 'fdss')
+      scope.$apply()
+      expect(textBookController.getAssociations).toBeDefined()
+    })
+
+    xit('Should call updatedDependentCategory', function () {
+      spyOn(textBookController, 'updatedDependentCategory').and.callThrough()
+      textBookController.updatedDependentCategory(10, 'story')
+      scope.$apply()
+      expect(textBookController.updatedDependentCategory).toBeDefined()
+    })
+
+    xit('Should call getTemsByindex', function () {
+      spyOn(textBookController, 'getTemsByindex').and.callThrough()
+      textBookController.getTemsByindex(8)
+      scope.$apply()
+      expect(textBookController.getTemsByindex).toBeDefined()
+    })
   })
 })

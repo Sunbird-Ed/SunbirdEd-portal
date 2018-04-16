@@ -1,0 +1,13 @@
+<div>
+    <div class="ui fluid icon input left action" id="search-input-container">
+        <div class="searchdropdown ui basic floating dropdown button" apply-script id="headerSearch" >
+            <div class="text">{{dailcode}}</div>
+        </div>
+        <div class="searchfilterinput ui search">
+            <div class="searchicon ui icon input ">
+                <input type="text" id="keyword" name="search" ng-model="$root.search.searchKeyword" placeholder="search" title="Search" class="searchinput"/>
+                <i class="circular search link icon" ng-click="search.searchRequest();"></i>
+            </div>
+        </div>
+    </div>
+</div>

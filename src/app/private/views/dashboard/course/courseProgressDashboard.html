@@ -53,19 +53,19 @@
 				<tbody>
 				  	<tr ng-repeat="student in courseDashboard.dashboarData | orderBy:courseDashboard.orderByField:courseDashboard.reverseSort | filter:courseDashboard.searchUser">
 						<!-- If course progress is 100%-->
-						<td ng-if="student.progress === 100">Done</td>
+						<td ng-if="student.progress === 100">{{$root.messages.stmsg.m0111}}</td>
 						<td class="ui green header text-font" ng-if="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
 						<td class="ui orange header text-font" ng-if="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
 						<td class="ui red header text-font" ng-if="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
 						<td>{{student.userName}}
-					  		<br>Last login: {{student.lastAccessTime | dateFilterWithMDY}}
+					  		<br/> <span ng-if="student.lastAccessTime">Last access time: {{student.lastAccessTime | dateFilterWithMDY}}</span>
 						</td>
 						<td>{{student.batchEndsOn | dateFilterWithMDY}}</td>
 						<td>{{student.org}}</td>
 						<td>{{student.enrolledOn | dateFilterWithMDY}}</td>
 				  	</tr>
 				  	<tr ng-show="courseDashboard.dashboarData.length == 0">
-						<td id="noRecordsFound">No data found</td>
+						<td id="noRecordsFound">{{$root.messages.imsg.m0028}}</td>
 				  	</tr>
 				</tbody>
 	  		</table>

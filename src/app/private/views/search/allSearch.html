@@ -1,16 +1,16 @@
 <div ng-if="!$root.search.loader.showLoader && !$root.search.error.showError&&$root.search.searchResult.content.length">
     <div class=" ui clearing segment content-player-header search-content-header">
         <div class="ui left floated header margin-auto ">
-            <p class="serch-allresult">Showing results {{$root.search.searchResultKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchResultKeyword? '"'+$root.search.searchResultKeyword+'"': ''}}  in "{{$root.search.selectedSearchKey }}"</span></p>
+            <p class="serch-allresult">{{$root.frmelmnts.lbl.showingresults}} {{$root.search.searchResultKeyword? 'for ': ''}}<span class="lower-case">{{$root.search.searchResultKeyword? '"'+$root.search.searchResultKeyword+'"': ''}}  {{$root.frmelmnts.lbl.in}} "{{$root.search.selectedSearchKey }}"</span></p>
         </div>
         <h5 class="ui right floated basic icon circular button " ng-click="$root.search.close()">
             <i class="ui remove icon "></i>
         </h5>
     </div>
     <div class="ui stackable four column grid dynamic-section-card ">
-        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index" ng-init="$last && search.loadRating() ">
-            <div ng-if="item.contentType!='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.playContent(item)"></div>
-            <div ng-if="item.contentType=='Course'" ng-include=" 'views/common/ratingCard.html'" ng-click="$root.search.openCourseView(item)"></div>
+        <div class="column " ng-repeat="item in $root.search.searchResult.content track by $index" ng-init="$last && search.loadRating()" in-view="$root.lineInView($index, $inview, item, 'Search all')" in-view-options="{ throttle: 1000 }">
+            <div ng-if="item.contentType!='Course'" ng-include="'views/common/ratingCard.html'" ng-click="$root.search.playContent(item)"></div>
+            <div ng-if="item.contentType=='Course'" ng-include="'views/common/ratingCard.html'" ng-click="$root.search.openCourseView(item)"></div>
         </div>
     </div>
 </div>

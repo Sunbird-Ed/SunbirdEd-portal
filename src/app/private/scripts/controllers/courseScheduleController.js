@@ -3,11 +3,12 @@
 angular.module('playerApp')
   .controller('courseScheduleCtrl', ['$rootScope', '$stateParams', 'courseService', 'toasterService',
     '$timeout', 'contentStateService', '$scope', '$location', 'batchService', 'dataService', 'sessionService',
-    '$anchorScroll', 'permissionsService', '$state',
+    '$anchorScroll', 'permissionsService', '$state', 'telemetryService', '$window',
     function ($rootScope, $stateParams, courseService, toasterService, $timeout, contentStateService,
-      $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService, $state) {
+      $scope, $location, batchService, dataService, sessionService, $anchorScroll, permissionsService,
+      $state, telemetryService, $window) {
       var toc = this
-
+      toc.isTelemtryStarted = false
       toc.getCourseToc = function () {
         toc.loader = toasterService.loader('', $rootScope.messages.stmsg.m0003)
         courseService.courseHierarchy(toc.courseId).then(function (res) {
@@ -18,6 +19,7 @@ angular.module('playerApp')
               // fetch all avaliable contents from course data
               toc.courseContents = toc.getCourseContents(res.result.content, [])
               toc.courseTotal = toc.courseContents.length
+              toc.version = res.ver
               toc.contentCountByType = _.countBy(toc.courseContents, 'mimeType')
               // if enrolled course then load batch details also after content status
               if (toc.courseType === 'ENROLLED_COURSE') {
@@ -29,8 +31,10 @@ angular.module('playerApp')
                 toc.courseHierarchy = res.result.content
               }
             } else {
-              toasterService.warning($rootScope.messages.imsg.m0019)
-              $state.go('Home')
+              toc.loader.showLoader = false
+              toasterService.warning($rootScope.messages.imsg.m0026)
+              var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
+              $state.go(previousState.name, previousState.params)
               return
             }
           } else {
@@ -270,6 +274,10 @@ angular.module('playerApp')
             // url hash value which can be used to resume content on page reload
             toc.hashId = ('tocPlayer/' + contentId + '/' + toc.itemIndex)
             // move target focus to player
+
+            // generate telemetry interact event//
+            toc.objRollup = [contentId]
+
             toc.scrollToPlayer()
             toc.updateBreadCrumbs()
           }
@@ -320,12 +328,21 @@ angular.module('playerApp')
 
       toc.resumeCourse = function () {
         toc.showCourseDashboard = false
+        // trigger course concumption telemetry-start event when first content is started
+        if (toc.isTelemtryStarted === false) {
+          telemetryService.startTelemetryData('course', toc.courseId, 'course', '1.0', 'player',
+            'course-read', 'play')
+          toc.isTelemtryStarted = true
+          // save to service to trigger telemetry end event on exit
+          dataService.setData('isTelemtryStarted', true)
+        }
         if (toc.courseContents.length > 0) {
           // if current page is TOC then load 'contentID' through Url Hash or lastReadContentId value.Else play first content by default
           if ($rootScope.isTocPage) {
             if ($location.hash().indexOf('tocPlayer') < 0) {
               var lastReadContentId = $stateParams.lastReadContentId || toc.courseContents[0].identifier
               toc.openContent(lastReadContentId)
+              toc.objRollup = [lastReadContentId]
             } else {
               var currentHash = $location.hash().toString().split('/')
               toc.openContent(currentHash[1])
@@ -372,5 +389,10 @@ angular.module('playerApp')
 
       // Restore default values onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
+
+      /* ---telemetry-interact-event-- */
+      toc.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+        telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
+      }
     }
   ])

@@ -1,6 +1,6 @@
 <div ng-init="textbook.initializeModal()">
     <div class="ui modal" id="createTextBookModal" ng-if="textbook.showCreateTextBookModal">
-        <div class=" ui segment margin-top-10" ng-show="!textbook.loader.showLoader">
+        <div class="ui segment margin-top-10" ng-show="!textbook.loader.showLoader">
             <div class=" margin-bottom-15">
                 <div class="ui grid">
                     <div class="eleven wide column">
@@ -14,83 +14,19 @@
                         </h5>
                     </div>
                 </div>
+            </div >
+            <div ng-include="'views/workSpace/ContentCreationTemplate.html'">
             </div>
-            <div class="content">
-                <form class="ui form" ng-init="textbook.data = {}">
-                    <div class="field">
-                        <label>
-                            {{$root.frmelmnts.lbl.name}}
-                        </label>
-                        <div class="field">
-                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="textbook.data.name">
-                        </div>
-                        <div class="three fields">
-                            <div class="field">
-                                <label for="category1">{{textbook.category1.name}}</label>
-                                <select id="textbookmeta-category-1" class="ui search dropdown placeholder-padding textbookmeta-category-1" ng-model="textbook.data[textbook.category1.code]" ng-change="textbook.updatedDependentCategory('1', textbook.data[textbook.category1.code]); generateTelemetry({type: 'change', subtype: 'select', target: category1.name})">
-                                    <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category1.terms">{{category.name}}</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label for="category2">{{textbook.category2.name}}</label>
-                                <select id="textbookmeta-category-2" class="ui search dropdown textbookmeta-category-2" ng-model="textbook.data[textbook.category2.code]" multiple="" ng-change="textbook.updatedDependentCategory('2', textbook.data[textbook.category2.code]); generateTelemetry({type: 'change', subtype: 'select', target: category2.name})">
-                                    <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category2.terms">{{category.name}}</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label for="category3">{{textbook.category3.name}}</label>
-                                <select id="textbookmeta-category-3" class="ui search dropdown placeholder-padding textbookmeta-category-3" ng-model="textbook.data[textbook.category3.code]" ng-change="textbook.updatedDependentCategory('3', textbook.data[textbook.category3.code]); generateTelemetry({type: 'change', subtype: 'select', target: category3.name})">
-                                    <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category3.terms">{{category.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="three fields">
-                            <div class="field">
-                                <label for="category4">{{textbook.category4.name}}</label>
-                                <select id="textbookmeta-category-4" class="ui search dropdown placeholder-padding textbookmeta-category-4" ng-model="textbook.data[textbook.category4.code]" ng-change="textbook.updatedDependentCategory('4', textbook.data[textbook.category4.code]); generateTelemetry({type: 'change', subtype: 'select', target: category4.name})">
-                                    <option value="">Select</option>
-                                    <option value="{{category.name}}" ng-repeat="category in textbook.category4.terms">{{category.name}}</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                    <label>
-                                    {{$root.frmelmnts.lbl.publisher}}
-                                </label>
-                                    <div class="field">
-                                        <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.publisher}} ng-model="textbook.data.publisher">
-                                    </div>
-                                </div>
-                            <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.year}}
-                            </label>
-                                <select name="year" class="ui fluid search selection  dropdown" id="yearDropDown" ng-options=" year for year in textbook.years" ng-model="textbook.data.year">
-                                <option value="">{{$root.frmelmnts.lbl.year}}</option>
-                            </select>
-                            </div>
-                        </div>
-                </form>
-                </div>
-                <div class="actions">
-                    <p class="text-align-center padding-top-20">
-                        <button class="ui primary text-align-center icon button" ng-click="textbook.saveMetaData(textbook.data)" ng-disabled="textbook.loader.showLoader">
-                        {{$root.frmelmnts.btn.startcreating}}
-                    </button>
+            <h4 class="text-align-center margin-top-10">
+                    {{$root.frmelmnts.lbl.bookfillater}}
+            </h4>
+            <div>
+                <label>
+                    <p class="text-align-center margin-bottom-20">
+                        {{$root.frmelmnts.lbl.agreeandproceedtext}}
                     </p>
-                    <h4 class="text-align-center">
-                        {{$root.frmelmnts.lbl.bookfillater}}
-                    </h4>
-                    <div>
-                        <label>
-                        <p class="text-align-center">
-                            {{$root.frmelmnts.lbl.agreeandproceedtext}}
-                        </p>
-                    </label>
-                    </div>
-                </div>
+                </label>
+            </div>
             </div>
             <div class=" ui segment margin-top-10" ng-if="textbook.loader.showLoader">
                 <app-loader data="{{textbook.loader}}"></app-loader>

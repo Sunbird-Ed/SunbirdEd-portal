@@ -24,14 +24,22 @@ class HttpWrapper {
         let token = options.token || ''
         options.headers = options.headers || this.getRequestHeader(token)
 
+        console.log('Announcement - Httpwrapper - Request', options)
+
         webService(options, (error, response, body) => {
           if (error || response.statusCode >= 400) {
-            reject(new AppError({message: 'Internal Server Error', status: HttpStatus.INTERNAL_SERVER_ERROR}))
+            console.log('Announcement - Httpwrapper - Call Error', error)
+            console.log('Announcement - Httpwrapper - Call ErrorResponse', response)
+
+            const msg = response && response.params ? response.params.errmsg : 'Internal Server Error'
+            const statusCode = response.statusCode ? response.statusCode : HttpStatus.INTERNAL_SERVER_ERROR
+            reject(new AppError({message: msg, status: statusCode}))
           } else {
             resolve({ response, body })
           }
         })
       } catch (error) {
+        console.log('Announcement - Httpwrapper - Error', error)
         reject(new AppError({message: 'Unable to fetch from server!', status: HttpStatus.INTERNAL_SERVER_ERROR}))
       }
     })

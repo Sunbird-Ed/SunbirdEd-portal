@@ -1,0 +1,27 @@
+<script>
+    $('.ui.star.rating')
+  .rating("disable")
+</script>
+
+<div class="ui link cards">
+    <div class="sliderCards ui card margin-top-15">
+        <div class="image imageInCardsResponsive">
+            <div ng-if="item.leafNodesCount && item.progress > 0" class="ui tiny progress course-progress progressBar-margin orange" data-value="{{item.progress}}" data-total="{{item.leafNodesCount}}">
+                <div class="bar"></div>
+            </div>
+            <img ng-src=" {{item.appIcon ? item.appIcon : '/common/images/default.png'}} ">
+            <div class="cardImageText center aligned ">
+                <span class="sliderCardHeading text-cencapitalize">{{item.name || item.courseName}}</span>
+            </div>
+        </div>
+        <div class="sliderCards content padding-bottom-none">
+            <div class="courseHeader-rating ui star rating disabled" 
+            data-rating="item.me_totalRatings" data-max-rating="5">
+           </div><span ng-if='item.me_totalRatings' class="meta">{{item.me_totalRatings}} ({{item.me_totalRatings}} ratings)</span>
+           <span ng-if='!item.me_totalRatings' class="meta">0/5 (0 ratings)</span>
+            <div ng-if='item.size' class="sliderCardDesc fixedRatingCard padding-top-5 class="meta">
+                Size: {{item.size | Filesize}}
+            </div>
+        </div>
+    </div>
+</div>

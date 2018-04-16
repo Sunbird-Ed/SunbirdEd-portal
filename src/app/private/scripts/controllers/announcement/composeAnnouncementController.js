@@ -1,9 +1,8 @@
 'use strict'
 angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope', '$scope', '$state',
   '$stateParams', '$timeout', 'config', 'toasterService', 'fileUpload', 'AnnouncementModel',
-  'announcementAdapter', 'portalTelemetryService',
-  function ($rootScope, $scope, $state, $stateParams, $timeout, config, toasterService, fileUpload,
-    AnnouncementModel, announcementAdapter, portalTelemetryService) {
+  'announcementAdapter', 'telemetryService', function ($rootScope, $scope, $state, $stateParams,
+    $timeout, config, toasterService, fileUpload, AnnouncementModel, announcementAdapter, telemetryService) {
     var composeAnn = this
     composeAnn.targetIds = []
     composeAnn.disableBtn = true
@@ -194,7 +193,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
          * @memberOf Controllers.composeAnnouncementCtrl
          */
     composeAnn.saveAnnouncement = function () {
-      var url = ''
+      var url = '' // eslint-disable-line no-unused-vars
       if (composeAnn.editAction) {
         url = '/private/index#!/announcement/resend/' + $stateParams.announcementId +
                     '/4'
@@ -204,18 +203,11 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       composeAnn.isMetaModifiedSteps = true
       composeAnn.announcement.target.geo.ids = _.map(composeAnn.announcement.selTar, 'id')
       composeAnn.hideSendBtn = true
+      composeAnn.endTelemetry()
       announcementAdapter.createAnnouncement(composeAnn.announcement, composeAnn.editAction)
         .then(function (apiResponse) {
           composeAnn.hideSendBtn = false
           composeAnn.hideModel('createAnnouncementModal')
-          portalTelemetryService.fireAnnouncementImpressions({
-            env: 'community.announcements',
-            type: 'view',
-            pageid: 'announcement_form_complete',
-            id: '',
-            name: '',
-            url: url
-          }, $rootScope.userIdHashTag)
           if (composeAnn.editAction) {
             $('#announcementResendModal').modal({
               closable: false
@@ -226,6 +218,7 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
             }).modal('show')
           }
           $rootScope.userIdHashTag = null
+
           $state.go('announcementOutbox')
         }, function (err) {
           composeAnn.isMetaModified = true
@@ -372,9 +365,13 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
       if (composeAnn.stepNumber === 1 && composeAnn.announcement === null) {
         if (composeAnn.editAction) {
           composeAnn.getResend($stateParams.announcementId)
+          telemetryService.startTelemetryData('announcement', $stateParams.announcementId, 'announcement',
+            '1.0', 'workflow', 'announcement-resend', 'edit')
         } else {
           composeAnn.announcement = new AnnouncementModel.Announcement({})
           composeAnn.announcement.hideDate = true
+          telemetryService.startTelemetryData('announcement', '', 'announcement', '1.0', 'workflow',
+            'announcement-create', 'edit')
         }
       }
       if (composeAnn.stepNumber === 1) {
@@ -516,9 +513,25 @@ angular.module('playerApp').controller('composeAnnouncementCtrl', ['$rootScope',
     composeAnn.onApproveConfirmationModal = function () {
       composeAnn.isApprove = true
       composeAnn.refreshFormValues()
+      composeAnn.endTelemetry()
       composeAnn.hideModel('announcementCancelModal')
       $state.go('announcementOutbox')
       return true
+    }
+
+    /**
+         * @method endTelemetry
+         * @desc - end the telemtry event
+         * @memberOf Controllers.composeAnnouncementCtrl
+         */
+    composeAnn.endTelemetry = function () {
+      if (composeAnn.editAction) {
+        telemetryService.endTelemetryData('announcement', $stateParams.announcementId, 'announcement', '1.0',
+          'workflow', 'announcement-resend', 'edit')
+      } else {
+        telemetryService.endTelemetryData('announcement', '', 'announcement', '1.0', 'workflow',
+          'announcement-create', 'edit')
+      }
     }
   }
 ])

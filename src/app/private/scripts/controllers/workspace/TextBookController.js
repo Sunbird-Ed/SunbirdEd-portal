@@ -2,42 +2,13 @@
 
 angular.module('playerApp')
   .controller('TextBookController', ['contentService', '$timeout', '$state', 'config',
-    '$rootScope', 'toasterService', 'searchService', 'configService', function (contentService, $timeout,
-      $state, config, $rootScope, toasterService, searchService, configService) {
+    '$rootScope', 'toasterService', 'searchService', 'configService', 'telemetryService', '$scope',
+    function (contentService, $timeout, $state, config, $rootScope, toasterService,
+      searchService, configService, telemetryService, $scope) {
       var textbook = this
       textbook.categoryListofFramework = {}
       textbook.categoryModelList = {}
       textbook.formDropdown = configService.getWorkspaceFormDropdown()
-
-      searchService.getChannel().then(function (res) {
-        if (res.responseCode === 'OK') {
-          textbook.frameworkId = null
-          if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
-            textbook.frameworkId = res.result.channel.frameworks[0].identifier
-          } else {
-            textbook.frameworkId = _.find(res.result.channel.suggested_frameworks, function (framework) {
-              return framework.identifier === res.result.channel.defaultFramework
-            }).identifier
-          }
-
-          searchService.getFramework(textbook.frameworkId).then(function (res) {
-            if (res.responseCode === 'OK') {
-              textbook.frameworkData = res.result.framework.categories
-              var categoryMasterList = _.cloneDeep(res.result.framework.categories)
-              _.forEach(categoryMasterList, function (category) {
-                textbook.categoryListofFramework[category.index] = category.terms || []
-                var categoryName = 'category' + category.index
-                textbook[categoryName] = category
-                textbook.categoryModelList[category.index] = category.code
-              })
-            }
-          }).catch(function (error) {
-            console.log('error is ......', error)
-          })
-        }
-      }).catch(function (error) {
-        console.log('error is ......', error)
-      })
       textbook.years = textbook.formDropdown.years
       textbook.showCreateTextBookModal = false
       textbook.isTextBookCreated = false
@@ -54,25 +25,21 @@ angular.module('playerApp')
 
       textbook.initializeModal = function () {
         textbook.showCreateTextBookModal = true
+        telemetryService.impressionTelemetryData('workspace', '', 'textbook', '1.0', 'scroll',
+          'workspace-create-textbook', '/create/textbook')
         $timeout(function () {
-          $('#textbookmeta-category-1').dropdown('set selected', textbook[textbook.categoryModelList[1]])
-          $('#textbookmeta-category-2').dropdown('set selected', textbook[textbook.categoryModelList[2]])
-          $('#textbookmeta-category-3').dropdown('set selected', textbook[textbook.categoryModelList[3]])
-          $('#textbookmeta-category-4').dropdown('set selected', textbook[textbook.categoryModelList[4]])
-          $('#boardDropDown').dropdown()
-          $('#mediumDropDown').dropdown()
-          $('#subjectDropDown').dropdown()
-          $('#textbookmeta-gradeLevel').dropdown()
-          $('#yearDropDown').dropdown()
-          $('#createTextBookModal').modal({
-            onHide: function () {
-              textbook.data = {}
-              if (!textbook.isTextBookCreated) {
-                $state.go('WorkSpace.ContentCreation')
+          $('#createTextBookModal')
+            .modal({
+              observeChanges: true,
+              onHide: function () {
+                textbook.data = {}
+                if (!textbook.isTextBookCreated) {
+                  $state.go('WorkSpace.ContentCreation')
+                }
               }
-            }
-          }).modal('show')
-        }, 10)
+            })
+            .modal('show')
+        })
       }
 
       textbook.createContent = function (requestData) {
@@ -83,6 +50,8 @@ angular.module('playerApp')
             textbook.showCreateTextBookModal = false
             textbook.loader.showLoader = false
             textbook.hideCreateTextBookModal()
+            telemetryService.interactTelemetryData('workspace', res.result.content_id, 'create-textbook',
+              textbook.version, 'create-textbook', 'workspace-create-textbook')
             textbook.initEKStepCE(res.result.content_id)
           } else {
             textbook.loader.showLoader = false
@@ -94,13 +63,14 @@ angular.module('playerApp')
         })
       }
 
-      textbook.saveMetaData = function (data, textData) {
+      textbook.saveMetaData = function (data, framework) {
+        textbook.framework = framework
         var requestBody = angular.copy(data)
         requestBody.name = requestBody.name ? requestBody.name : textbook.defaultName
         requestBody.mimeType = textbook.mimeType
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
-        requestBody.framework = textbook.frameworkId
+        requestBody.framework = textbook.framework
         if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
           delete requestBody['gradeLevel']
         }
@@ -114,100 +84,17 @@ angular.module('playerApp')
       }
 
       textbook.initEKStepCE = function (contentId) {
-        var params = { contentId: contentId, type: 'TextBook', state: '', frameworkId: textbook.frameworkId }
+        var params = { contentId: contentId, type: 'TextBook', state: '', framework: textbook.framework }
         $state.go('CollectionEditor', params)
       }
-      textbook.getAssociations = function (selectedCategory, categoryList) {
-        var associations = []
-        if (_.isArray(selectedCategory)) {
-          _.forEach(selectedCategory, function (val) {
-            var categoryObj = _.find(categoryList, function (o) {
-              return o.name === val
-            })
-            if (categoryObj && categoryObj.associations) {
-              associations = _.concat(categoryObj.associations, associations)
-            }
-          })
-        } else if (selectedCategory) {
-          var categoryObj = _.find(categoryList, function (o) {
-            return o.name === selectedCategory
-          })
-          if (categoryObj && categoryObj.associations) {
-            associations = categoryObj.associations || []
-          }
-        }
-        return associations
-      }
-      textbook.updatedDependentCategory = function (categoryIndex, categoryVal) {
-        var category1 = []
-        var category2 = []
-        var category3 = []
-        var category4 = []
-        var categoryList = textbook.categoryListofFramework[categoryIndex]
-        var associations = textbook.getAssociations(categoryVal, categoryList)
-        if (associations.length > 0) {
-          _.forEach(associations, function (data) {
-            var catendex = _.findKey(textbook.categoryModelList, function (val, key) {
-              return val === data.category
-            })
-            var categoryName = 'category' + catendex
-            switch (catendex) {
-            case '1':
-              $('.textbookmeta-category-1').dropdown('restore defaults')
-              category1 = _.concat(data, category1)
-              textbook[categoryName].terms = _.uniqWith(category1, _.isEqual)
-              break
-            case '2':
-              $('.textbookmeta-category-2').dropdown('restore defaults')
-              category2 = _.concat(data, category2)
-              textbook[categoryName].terms = _.uniqWith(category2, _.isEqual)
-              break
-            case '3':
-              $('.textbookmeta-category-3').dropdown('restore defaults')
-              category3 = _.concat(data, category3)
-              textbook[categoryName].terms = _.uniqWith(category3, _.isEqual)
-              break
-            case '4':
-              $('.textbookmeta-category-4').dropdown('restore defaults')
-              category4 = _.concat(data, category4)
-              textbook[categoryName].terms = _.uniqWith(category4, _.isEqual)
-              break
-            }
-          })
-        } else {
-          switch (categoryIndex) {
-          case '1':
-            setTimeout(function () {
-              $('.textbookmeta-category-2').dropdown('restore defaults')
-              $('.textbookmeta-category-3').dropdown('restore defaults')
-              $('.textbookmeta-category-4').dropdown('restore defaults')
-            }, 0)
-            textbook['category2'] = textbook.getTemsByindex(2)
-            textbook['category3'] = textbook.getTemsByindex(3)
-            textbook['category4'] = textbook.getTemsByindex(4)
-            break
-          case '2':
-            setTimeout(function () {
-              $('.textbookmeta-category-3').dropdown('restore defaults')
-              $('.textbookmeta-category-4').dropdown('restore defaults')
-            }, 0)
-            textbook['category3'] = textbook.getTemsByindex(3)
-            textbook['category4'] = textbook.getTemsByindex(4)
-            break
-          case '3':
-            setTimeout(function () {
-              $('.textbookmeta-category-4').dropdown('restore defaults')
-            }, 0)
-            textbook['category4'] = textbook.getTemsByindex(4)
-            break
-          }
-        }
-      }
-      textbook.getTemsByindex = function (index) {
-        var masterList = _.cloneDeep(textbook.frameworkData)
-        var category = _.find(masterList, function (o) {
-          return o.index === index
+
+      var CreateTextBookFromDataDrivenForm = $rootScope.$on('CreateTextbook',
+        function (event, args) {
+          textbook.saveMetaData(args.Data, args.framework)
         })
-        return category
-      }
-    }])
+
+      $scope.$on('$destroy', function () {
+        CreateTextBookFromDataDrivenForm()
+      })
+    }
+  ])

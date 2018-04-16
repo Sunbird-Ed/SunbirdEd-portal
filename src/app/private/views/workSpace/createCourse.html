@@ -5,7 +5,7 @@
                 <div class="ui grid">
                     <div class="eleven wide column">
                         <span class="ui header">
-                            {{$root.frmelmnts.lbl.designcourse}}
+                            {{$root.frmelmnts.lbl.createCourse}}
                         </span>
                     </div>
                     <div class="one wide column actions">
@@ -15,44 +15,17 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
-                <form class="ui form" ng-init="course.data = {}">
-                    <div class="field">
-                        <label>
-                            {{$root.frmelmnts.lbl.name}}
-                        </label>
-                        <div class="field">
-                            <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.name}} ng-model="course.data.name">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="field">
-                            <label>
-                                {{$root.frmelmnts.lbl.description}}
-                            </label>
-                            <div class="field">
-                                <input name="description" name="title" placeholder={{$root.frmelmnts.lbl.description}} ng-model="course.data.description">
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <div ng-include="'views/workSpace/ContentCreationTemplate.html'">
             </div>
-            <div class="actions margin-top-10">
-                <p class="text-align-center padding-top-20">
-                    <button class="ui primary text-align-center icon button" ng-click="course.saveMetaData(course.data)" ng-disabled="course.loader.showLoader">
-                        {{$root.frmelmnts.btn.startcreating}}
-                    </button>
-                </p>
-                <h4 class="text-align-center">
+            <h4 class="text-align-center margin-top-10">
                     {{$root.frmelmnts.lbl.coursefilllater}}
-                </h4>
-                <div>
-                    <label>
-                        <p class="text-align-center">
-                            {{$root.frmelmnts.lbl.agreeandproceedtext}}
-                        </p>
-                    </label>
-                </div>
+            </h4>
+            <div>
+                <label>
+                    <p class="text-align-center margin-bottom-20">
+                        {{$root.frmelmnts.lbl.agreeandproceedtext}}
+                    </p>
+                </label>
             </div>
         </div>
         <div class=" ui segment margin-top-10" ng-if="course.loader.showLoader">

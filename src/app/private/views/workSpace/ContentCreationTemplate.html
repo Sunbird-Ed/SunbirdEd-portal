@@ -1,0 +1,25 @@
+<div class=" ui segment scrolling content">
+    <div ng-controller="DataDrivenFormController as dataDrivenForm">
+        <form class="ui form" name="metaForm" ng-init="dataDrivenForm.init()">
+                <!-- <div class=" ui segment margin-top-10" ng-if="dataDrivenForm.loader.showLoader">
+                        <app-loader data="{{dataDrivenForm.loader}}"></app-loader>
+                </div> -->
+            <div  class="ui grid">
+                <div class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" ng-repeat="field in dataDrivenForm.formFieldProperties">
+                    <div ng-include="'views/workSpace/defaultTemplate.html'">
+                    </div>
+                </div>
+            </div>
+            <div class=" ui segment margin-top-10" ng-if="dataDrivenForm.loader.showLoader">
+                    <app-loader data="{{course.loader}}"></app-loader>
+            </div>
+            <div class="actions">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" ng-click="dataDrivenForm.saveMetaData(dataDrivenForm.data)" ng-disabled="dataDrivenForm.loader.showLoader">
+                        {{$root.frmelmnts.btn.startcreating}}
+                    </button>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

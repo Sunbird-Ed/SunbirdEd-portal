@@ -17,13 +17,15 @@
                                     <span  ng-if="profileCtrl.user.location">{{profileCtrl.user.location}}</span>
                                 </div>
                                 <div class="meta">
-                                    <div class="ui label" ng-if="profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}
+                                    <div class="ui label" ng-if="!profileCtrl.user.provider && profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}
+                                    </div>
+                                    <div class="ui label" ng-if="profileCtrl.user.provider && profileCtrl.user.userName">Username: {{profileCtrl.user.userName}}@{{profileCtrl.user.provider}}
                                     </div>
                                     <a class="ui link label" ng-if="profileCtrl.user.rootOrg.contactDetail.length > 0 && profileCtrl.user.rootOrg.contactDetail[0].email && profileCtrl.user.rootOrg.orgName"
                                     ng-href="mailto:{{profileCtrl.user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{profileCtrl.user.rootOrg.orgName}} <i class="mail outline icon"></i>
                                     </a>
                                     </br>
-                                    <div class="ui label profile-headerLabelCard" ng-if="profileCtrl.lastLoginTime"> Last login time: {{profileCtrl.lastLoginTime | date:'medium'}}</div>
+                                    <div class="ui label profile-headerLabelCard" ng-if="profileCtrl.lastLoginTime"> {{$root.frmelmnts.lbl.lastlogintime}}: {{profileCtrl.lastLoginTime | date:'medium'}}</div>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +38,7 @@
         </div>
         <div class="ui grid">
             <div class="two wide column padding-top-none">
-            <div class="profileImageSizeText">Max upload size 4MB</div>
+            <div class="profileImageSizeText">{{$root.messages.imsg.m0032}}</div>
             </div>
         </div>
     </div>

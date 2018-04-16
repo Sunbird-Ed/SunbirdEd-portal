@@ -2,11 +2,13 @@
 
 angular.module('playerApp')
   .controller('ContentEditorController', ['config', '$stateParams', 'toasterService',
-    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService',
+    '$state', 'contentService', '$timeout', '$rootScope', 'workSpaceUtilsService', '$window', 'searchService',
     function (config, $stateParams, toasterService, $state, contentService, $timeout, $rootScope,
-      workSpaceUtilsService) {
+      workSpaceUtilsService, $window, searchService) {
       var contentEditor = this
       contentEditor.contentId = $stateParams.contentId
+      contentEditor.framework = $stateParams.framework
+      var previousState = JSON.parse($window.localStorage.getItem('previousURl'))
       contentEditor.openContentEditor = function () {
         window.context = {
           user: {
@@ -15,13 +17,16 @@ angular.module('playerApp')
           },
           sid: $rootScope.sessionId,
           contentId: contentEditor.contentId,
+          framework: contentEditor.framework,
           pdata: {
             id: org.sunbird.portal.appid,
-            ver: '1.0'
+            ver: '1.0',
+            pid: 'sunbird-portal'
           },
-          etags: { app: [], partner: [], dims: org.sunbird.portal.dims },
+          tags: _.concat([], org.sunbird.portal.channel),
           channel: org.sunbird.portal.channel
         }
+
         window.config = {
           baseURL: '',
           modalId: 'contentEditor',
@@ -34,7 +39,22 @@ angular.module('playerApp')
           plugins: [
             {
               id: 'org.ekstep.sunbirdcommonheader',
-              ver: '1.1',
+              ver: '1.2',
+              type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.metadata',
+              ver: '1.0',
+              type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.sunbirdmetadata',
+              ver: '1.0',
+              type: 'plugin'
+            },
+            {
+              id: 'org.ekstep.questionset',
+              ver: '1.0',
               type: 'plugin'
             }
           ],
@@ -51,6 +71,11 @@ angular.module('playerApp')
             showEndPage: false
           }
         }
+        // Add search criteria
+        if (searchService.updateReqForChannelFilter()) {
+          window.config.searchCriteria = searchService.updateReqForChannelFilter()
+        }
+
         $('#contentEditor').iziModal({
           title: '',
           iframe: true,
@@ -114,11 +139,11 @@ angular.module('playerApp')
               contentEditor.openContentEditor()
             } else {
               toasterService.warning($rootScope.messages.imsg.m0004)
-              $state.go('Home')
+              $state.go(previousState.name, previousState.params)
             }
           } else {
             toasterService.warning($rootScope.messages.imsg.m0004)
-            $state.go('Home')
+            $state.go(previousState.name, previousState.params)
           }
         })
       }
@@ -135,12 +160,12 @@ angular.module('playerApp')
 
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
-            if ($stateParams.state) {
-              $state.go($stateParams.state)
-            } else {
-              $state.go('WorkSpace.DraftContent')
-            }
-          })
+                  if ($stateParams.state) {
+                    $state.go($stateParams.state)
+                  } else {
+                    $state.go('WorkSpace.DraftContent')
+                  }
+                })
 
         window.addEventListener('editor:metadata:edit', function (event, data) {
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta')

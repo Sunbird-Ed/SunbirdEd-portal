@@ -52,6 +52,7 @@
   font-family: 'sunbirdregularfont';
   font-size: 1em;
   color: #7c7b7b;
+  overflow-wrap: break-word;
 }
 .sliderCardSubDesc {
   font-family: 'sunbirdregularfont';
@@ -230,6 +231,9 @@
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.padding-topBottom-10 {
+  padding: 10px 0px!important;
+}
 .padding-topBottom-20 {
   padding: 10px 0px!important;
 }
@@ -238,6 +242,12 @@
 }
 .padding-right-25 {
   padding-right: 25px !important;
+}
+.padding-left-35 {
+  padding-left: 35px !important;
+}
+.padding-right-35 {
+  padding-right: 35px !important;
 }
 .padding-topBottom-35 {
   padding: 35px 0px!important;
@@ -474,6 +484,15 @@ a:active,
 a:hover {
   outline: none !important;
 }
+.primary-text-color-sunbird {
+  color: #333333 !important;
+}
+.secondary-text-color-sunbird {
+  color: #7c7b7b !important;
+}
+.font-weight-700 {
+  font-weight: 700 !important;
+}
 .ui.menu {
   font-family: 'sunbirdregularfont';
   color: #333333;
@@ -583,7 +602,6 @@ a:hover {
 30 px   1.875 em
 40 px   2.5 em
 50 px   3.125 em
-
 */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
@@ -991,8 +1009,9 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input:not([type]) {
   border: 0;
   border-bottom: 1px solid #333333;
-  border-radius: 0;
-  padding: 0.8em 0;
+  border-radius: 0 !important;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
 }
 .ui.selection.dropdown {
   border: 0;
@@ -1926,6 +1945,9 @@ ul.fancytree-container li {
 .searchfilterinput.ui.search .prompt {
   border-radius: 0;
 }
+.searchinputpublic {
+  width: 30em;
+}
 .searchinput {
   width: 600px;
 }
@@ -2010,6 +2032,9 @@ ul.fancytree-container li {
   border-radius: 0;
   color: #7c7b7b;
   font-size: 13px;
+}
+.filterFieldSearch.ui.selection.dropdown {
+  min-width: 100%;
 }
 .resource-padding.ui.grid > .column:not(.row) {
   padding-top: 0;
@@ -2273,7 +2298,7 @@ ul.fancytree-container li {
   top: 17px !important;
 }
 .ui.addSkillsMarginCursor.multiple.dropdown > .label {
-  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
+  margin: 0.2285714rem .28571429rem .14285714rem 0 !important;
 }
 .addSkillMoreBtn {
   padding: 10px 10px 14px 15px !important;
@@ -2622,7 +2647,7 @@ i.edit.icon.editIcon-fontSize {
   position: absolute !important;
 }
 .batch-des label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2635,7 +2660,7 @@ i.edit.icon.editIcon-fontSize {
   padding-top: 12px;
 }
 .batch-date label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2759,18 +2784,21 @@ ol.ui.list ol li:before {
     margin: 0 0 0 -373px !important;
   }
 }
-@media only screen and (max-width: 1290px) and (min-width: 992px) {
-  .modals.dimmer .ui.modal.updateRoleModel {
-    top: 60px !important;
-    position: relative !important;
-    margin: 0 0 0 -400px !important;
+@media screen and (min-height: 750px) {
+  .updateRoleModel {
+    margin-top: 60px !important;
+    margin-left: 350px !important;
   }
 }
-@media only screen and (min-width: 1300px) {
-  .modals.dimmer .ui.modal.updateRoleModel {
-    margin-top: -300px !important;
-    position: relative !important;
-  }
+.ui.fluid.search.dropdown img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
+.ui.label > img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
 }
 .createAnnHeaderDesc {
   font-size: small;
@@ -2808,8 +2836,8 @@ ol.ui.list ol li:before {
 .ui.modal .announcementForm input.ng-invalid {
   border-color: red !important;
 }
-.ui.modal .dropdown-margin-left .ui.dropdown > .text {
-  margin-left: -1em !important;
+.ui.dropdown:not(.button) > .default.text {
+  color: #cdcccc;
 }
 .dropdown-margin-left {
   margin-left: 1px !important;
@@ -2853,4 +2881,96 @@ body {
 }
 html {
   height: 100%;
+}
+
+
+/*get dial code page responsive css*/
+
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 989898;
+}
+
+.bars.icon.tablet.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 0.5em;
+    opacity: .7;
+    -webkit-transition: opacity .1s ease;
+    transition: opacity .1s ease;
+}
+
+.getPage-background {
+  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  height: 100vh;
+}
+.dailcodePage-background {
+  background: #f9f9f9;
+  height: 100vh;
+}
+.bars.icon.mobile.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 1.5em; 
+}
+
+
+.dial-section-header {
+  margin-top: 3em;
+}
+.dail-section-meta {
+  color: white;
+}
+.ui.header.dial-section-header-text {
+  color:#fff;
+}
+
+.ui.header .sub.header.dial-section-subheader-text {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.dial-section-input {
+  margin-top: 10em;
+}
+
+@media screen and  (min-width: 240px) and (max-width: 768px) {
+  .dial-section-input {
+    margin-top: 2em;
+  }
+}
+
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.header.dial-section-header-text {
+    padding-top: 4em !important;
+  }
+}
+
+.dial-code-section-bg {
+  background: #fff;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.container.publicResponviveContainer {    
+    margin-right: 0 !important; 
+  } 
+}
+
+@media only screen and (min-width: 768px) {
+  .closeBtn-dial-code {
+    float:right;
+  }
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.small.header.popUp-dial-code-header {
+    font-size: 1.2em;
+  }
+}
+.menu-public-header{
+  border-top: 2px solid rgba(0,0,0,.13);
 }

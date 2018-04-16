@@ -5,6 +5,11 @@ const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
+const telemetryHelper = require('./telemetryHelper')
+const appId = envHelper.APPID
+const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+telemtryEventConfig['pdata']['id'] = appId
+const successResponseStatusCode = 200
 
 module.exports = {
   getInfo: function (req, res) {
@@ -80,14 +85,26 @@ module.exports = {
           ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')
         responseObj.appLogo = results.appLogo
           ? baseUrl + '/tenant/' + tenantId + '/appLogo.png' : responseObj.logo
-        module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
+        module.exports.getSucessResponse(res, 'api.tenant.info', responseObj, req)
       })
     } else {
-      module.exports.getSucessResponse(res, 'api.tenant.info', responseObj)
+      module.exports.getSucessResponse(res, 'api.tenant.info', responseObj, req)
     }
   },
-  getSucessResponse: function (res, id, result) {
-    res.status(200)
+  getSucessResponse: function (res, id, result, req) {
+    const userId = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
+    const type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
+
+    const telemetryData = {reqObj: req,
+      statusCode: successResponseStatusCode,
+      resp: result,
+      uri: 'tenant/info',
+      type: type,
+      userId: userId,
+      channel: envHelper.DEFAUULT_TENANT
+    }
+    telemetryHelper.logAPIAccessEvent(telemetryData)
+    res.status(successResponseStatusCode)
     res.send({
       'id': id,
       'ver': '1.0',

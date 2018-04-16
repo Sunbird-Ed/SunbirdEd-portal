@@ -2,19 +2,24 @@
 
 angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService', '$rootScope',
   'userService', '$q', 'config', '$location', '$timeout',
-  'portalTelemetryService', 'messages', 'frmelmnts', 'sessionService',
+  'telemetryService', 'messages', 'frmelmnts', 'sessionService',
   'learnService', '$http', 'searchService', 'toasterService', 'adminService', '$state', '$window',
   function ($scope, permissionsService, $rootScope, userService, $q, config,
-    $location, $timeout, portalTelemetryService, messages, frmelmnts,
+    $location, $timeout, telemetryService, messages, frmelmnts,
     sessionService, learnService, $http, searchService, toasterService, adminService, $state, $window) {
     $rootScope.userId = $('#userId').attr('value')
     $rootScope.sessionId = $('#sessionId').attr('value')
+    $rootScope.logSession = $('#logSession').attr('value')
     $rootScope.cdnUrl = $('#cdnUrl').attr('value') || ''
     $rootScope.language = $('#defaultPortalLanguage').attr('value') || 'en'
+    $rootScope.content_channel_filter_type = $('#contentChannelFilterType').attr('value')
     $rootScope.messages = messages[$rootScope.language]
     $rootScope.frmelmnts = frmelmnts[$rootScope.language]
     $rootScope.searchKey = ''
     $rootScope.enrolledCourseIds = {}
+    telemetryService.setConfigData('env', 'home')
+    telemetryService.setConfigData('message', 'Content read')
+    org.sunbird.portal.appid = $('#producerId').attr('value')
     /**
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/
@@ -112,8 +117,17 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       permissionsService.setCurrentUserRoleMap(orgRoleMap)
       permissionsService.setCurrentUserRoles(userRoles)
       $rootScope.initializePermissionDirective = true
-      $scope.getTelemetryConfigData(profileData)
+      telemetryService.init()
+      $scope.logSessionStartEvent()
       $scope.setRootOrgInfo(profileData)
+    }
+    $scope.logSessionStartEvent = function () {
+      if ($rootScope.logSession === 'false') {
+        $http.get('/v1/user/session/start/' + EkTelemetry.fingerPrintId).then(function (res) {
+        }).catch(function () {
+        })
+      } else {
+      }
     }
 
     $scope.getTelemetryConfigData = function () {
@@ -123,17 +137,14 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $http.get('/get/envData').then(function (res) {
         org.sunbird.portal.appid = res.data.appId
         org.sunbird.portal.ekstep_env = res.data.ekstep_env
-      })
-        .catch(function () {
-          org.sunbird.portal.appid = 'sunbird.portal'
-          org.sunbird.portal.ekstep_env = 'qa'
-        })
-        .finally(function () {
-          org.sunbird.portal.init()
-          portalTelemetryService.init()
-        })
-    }
+        org.sunbird.portal.init()
+        telemetryService.init()
+        $scope.logSessionStartEvent()
+      }).catch(function () {
 
+      })
+    }
+    $scope.getTelemetryConfigData()
     $scope.setRootOrgInfo = function (profileData) {
       if (profileData.rootOrg) {
         // set Page Title
@@ -151,7 +162,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
             }
             document.head.appendChild(link)
           }
-        }).catch(function () {
+        }).catch(function (err) {
+          console.log('app controller', err)
           toasterService.error($rootScope.messages.fmsg.m0057)
         })
       }
@@ -171,7 +183,8 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
           } else {
             // error handler
           }
-        }).catch(function () {
+        }).catch(function (error) {
+          console.log('err', error)
           // error handler
         })
       }
@@ -181,6 +194,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     $rootScope.closeRoleAccessError = function () {
       $rootScope.accessDenied = ''
     }
+
     $scope.getMyCourses = function () {
       sessionService.setSessionData('ENROLLED_COURSES', undefined)
       learnService.enrolledCourses($rootScope.userId).then(function (successResponse) {
@@ -253,14 +267,6 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
         }
       })
     }
-    // badges
-    $scope.getBadges = function () {
-      adminService.getBadges().then(function (res) {
-        if (res.responseCode === 'OK') {
-          adminService.setBadges(res)
-        }
-      })
-    }
     // orgTypes
     $scope.getOrgTypes = function () {
       searchService.getOrgTypes().then(function (res) {
@@ -275,6 +281,28 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       $state.go('Profile')
     }
 
-    $scope.getBadges()
+    // telemetry interact event
+    $rootScope.generateInteractEvent = function (env, objId, objType, objVer, edataId, pageId, objRollup) {
+      telemetryService.interactTelemetryData(env, objId, objType, objVer, edataId, pageId, objRollup)
+    }
+
+    // telemetry start event
+    $rootScope.generateStartEvent = function (env, objId, objType, objVer, startContentType,
+      pageId, mode) {
+      telemetryService.startTelemetryData(env, objId, objType, objVer, startContentType,
+        pageId, mode)
+    }
+
+    // telemetry end event
+    $rootScope.generateEndEvent = function (env, objId, objType, objVer, startContentType,
+      pageId, mode) {
+      telemetryService.endTelemetryData(env, objId, objType, objVer, startContentType,
+        pageId, mode)
+    }
+
     $scope.getOrgTypes()
+
+    $window.onbeforeunload = function () {
+      document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }))
+    }
   }])

@@ -1,0 +1,137 @@
+{
+  "endpoint": "data/v1/telemetry",
+  "pdata": {
+    "id": "portal-backend",
+    "ver": "0.0.1"
+  },
+  "default_username": "public",
+  "default_userid": "public",
+  "env": "portal-backend",
+  "/create": {
+    "rid": "announcement.create",
+    "title": "Create",
+    "category": "create",
+    "env": "announcement"
+  },
+  "/get": {
+    "rid": "announcement.get",
+    "title": "get",
+    "category": "get",
+    "env": "announcement"
+  },
+  "/cancel": {
+    "rid": "announcement.cancel",
+    "title": "Cancel",
+    "category": "cancel",
+    "env": "announcement"
+  },
+  "/user/inbox": {
+    "rid": "announcement.user.inbox",
+    "title": "User inbox",
+    "category": "userinbox",
+    "env": "announcement"
+  },
+  "/user/outbox": {
+    "rid": "announcement.user.outbox",
+    "title": "User outbox",
+    "category": "useroutbox",
+    "env": "announcement"
+  },
+  "/definitions": {
+    "rid": "announcement.definitions",
+    "title": "Definitions",
+    "category": "definitions",
+    "env": "announcement"
+  },
+  "/received": {
+    "rid": "announcement.received",
+    "title": "Received",
+    "category": "received",
+    "env": "announcement"
+  },
+  "/read": {
+    "rid": "announcement.read",
+    "title": "Read",
+    "category": "read",
+    "env": "announcement"
+  },
+  "/resend/get": {
+    "rid": "announcement.resend.get",
+    "title": "Resend get",
+    "category": "resend/get",
+    "env": "announcement"
+  },
+  "/resend": {
+    "rid": "announcement.resend",
+    "title": "Resend",
+    "category": "resend",
+    "env": "announcement"
+  },
+  "user/v1/read/": {
+    "rid": "user.read",
+    "title": "userread",
+    "category": "user/read",
+    "env": "announcement"
+  },
+  "data/v1/object/create": {
+    "rid": "data.object.create",
+    "title": "dataobjectcreate",
+    "category": "data/object/create",
+    "env": "announcement"
+  },
+  "data/v1/object/search": {
+    "rid": "data.object.search",
+    "title": "dataobjectsearch",
+    "category": "data/object/search",
+    "env": "announcement"
+
+  },
+  "data/v1/object/update": {
+    "rid": "data.object.update",
+    "title": "dataobjectupdate",
+    "category": "data/object/update",
+    "env": "announcement"
+  },
+  "data/v1/object/metrics": {
+    "rid": "data.object.metrics",
+    "title": "dataobjectmetrics",
+    "category": "data/object/metrics",
+    "env": "announcement"
+  },
+  "data/v1/notification/audience": {
+    "rid": "data.notification.audience",
+    "title": "datanotificationaudience",
+    "category": "data/notification/audience",
+    "env": "announcement"
+  },
+  "data/v1/notification/send": {
+    "rid": "data.notification.send",
+    "title": "datanotificationsend",
+    "category": "data/notification/send",
+    "env": "announcement"
+  },
+  "org/v1/search": {
+    "rid": "Org search",
+    "title": "orgsearch",
+    "category": "orgsearch",
+    "env": "announcement"
+  },
+  "/manage/announcement-type/create": {
+    "rid": "announcement.manage.announcementtype.create",
+    "title": "Create announcement type",
+    "category": "announcementtype",
+    "env": "announcement"
+  },
+  "/manage/announcement-type/list": {
+    "rid": "announcement.manage.announcementtype.list",
+    "title": "List announcement types",
+    "category": "announcementtype",
+    "env": "announcement"
+  },
+  "/manage/announcement-type/update": {
+    "rid": "announcement.manage.announcementtype.update",
+    "title": "Update announcement type",
+    "category": "announcementtype",
+    "env": "announcement"
+  }
+}
