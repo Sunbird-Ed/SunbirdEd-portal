@@ -326,8 +326,10 @@ module.exports = {
     request(options, function (error, response, body) {
       if (_.isFunction(callback)) {
         if (error) {
+          console.log('telemetry sync error while syncing  portal', error)
           callback(error, false)
         } else if (body && body.params && body.params.err) {
+          console.log('telemetry sync error while syncing  portal', body.params.err)
           callback(body, false)
         } else {
           callback(null, true)
