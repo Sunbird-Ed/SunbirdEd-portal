@@ -320,7 +320,7 @@ function endSession (request, response, next) {
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    telemetryHelper.logSessionEnd(request)
+    if (_.get(request.kauth.grant.access_token.content.sub)) { telemetryHelper.logSessionEnd(request) }
     telemetry.syncOnExit(function (err, res) { // sync on session end
       if (err) {
         console.log('error while syncing', err)
