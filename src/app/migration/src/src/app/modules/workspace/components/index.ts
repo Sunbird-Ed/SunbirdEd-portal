@@ -13,4 +13,6 @@ export * from './draft/draft.component';
 export * from './published/published.component';
 export * from './review-submissions/review-submissions.component';
 export * from './uploaded/uploaded.component';
+export * from './data-driven/data-driven.component';
+export * from './default-template/default-template.component';
 
