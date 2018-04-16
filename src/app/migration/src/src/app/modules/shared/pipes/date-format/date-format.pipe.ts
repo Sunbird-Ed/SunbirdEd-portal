@@ -18,7 +18,6 @@ export class DateFormatPipe implements PipeTransform {
    *
    */
   transform(value: Date | moment.Moment | string | number, format: string): string {
-    console.log(format);
     return momentConstructor(value).format(format);
   }
 

@@ -173,7 +173,6 @@ export class UserService {
           organisationIds.push(profileData.rootOrgId);
         }
       });
-      this.setRoleOrgMap(profileData);
     }
     const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
     this.channel = rootOrg;
@@ -186,6 +185,7 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
+    this.setRoleOrgMap(profileData);
   }
   /**
     * method to set setRoleOrgMap.
@@ -193,18 +193,17 @@ export class UserService {
   private setRoleOrgMap(profile) {
     let  roles = [];
     const roleOrgMap = {};
-    _.forEach(profile.organisations, function (org) {
+    _.forEach(profile.organisations, (org) => {
       roles = roles.concat(org.roles);
     });
     roles = _.uniq(roles);
-    _.forEach(roles, function (role) {
-      _.forEach(profile.organisations, function (org) {
+    _.forEach(roles, (role) => {
+      _.forEach(profile.organisations, (org) => {
         roleOrgMap[role] = roleOrgMap[role] || [];
         if (_.indexOf(org.roles, role) > -1) { }
         roleOrgMap[role].push(org.organisationId);
       });
     });
-    this._userProfile = profile;
     this._userProfile.roleOrgMap = roleOrgMap;
   }
   get RoleOrgMap () {

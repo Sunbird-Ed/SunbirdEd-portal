@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkSpaceService } from '../../services';
-import { BatchService } from '../../services';
+import { WorkSpaceService, BatchService } from '../../services';
 import { SearchService, UserService } from '@sunbird/core';
-import { IMenter } from './../../interfaces/menter';
-import { Ibatch } from './../../interfaces/batch';
+import { IMenter, Ibatch } from './../../interfaces';
 import { WorkSpace } from '../../classes/workspaceclass';
 import * as _ from 'lodash';
 @Component({
@@ -93,7 +91,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-   *@param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
+   * @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {UserService} UserService Reference of UserService
@@ -227,7 +225,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
         }
       },
       (err: ServerResponse) => {
-
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
     );
   }
@@ -277,7 +275,6 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
       this.batchService.updateBatchDetails(requestParam).subscribe(
         (apiResponse: ServerResponse) => {
           if (apiResponse) {
-
             if (batchData.enrollmentType !== 'open') {
               const users = this.batchAddUserForm.value.users;
               if (users && users.length > 0) {
@@ -301,7 +298,6 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
                 this.redirectTobatches();
               }
             }
-
           } else {
             this.toasterService.error(this.resourceService.messages.fmsg.m0055);
           }

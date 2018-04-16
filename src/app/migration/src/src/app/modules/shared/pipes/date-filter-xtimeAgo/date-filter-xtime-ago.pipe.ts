@@ -7,7 +7,7 @@ const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default 
  *
  */
 @Pipe({
-  name: 'dateFilterXtimeAgo'
+  name: 'fromNow'
 })
 export class DateFilterXtimeAgoPipe implements PipeTransform {
   /**

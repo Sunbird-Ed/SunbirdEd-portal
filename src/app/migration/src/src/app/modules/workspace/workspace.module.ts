@@ -29,6 +29,6 @@ import {
     CreateCourseComponent, UpdateBatchComponent, CreateStudyMaterialComponent,
     CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent],
-  providers: [WorkSpaceService, EditorService]
+  providers: [WorkSpaceService, EditorService, BatchService]
 })
 export class WorkspaceModule { }

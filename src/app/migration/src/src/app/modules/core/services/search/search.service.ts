@@ -135,20 +135,6 @@ export class SearchService {
    * @param {SearchParam} requestParam api request data
   */
   compositeSearch(requestParam: SearchParam): Observable<ServerResponse> {
-    let sort_by = {};
-    if (requestParam.params.lastUpdatedOn) {
-      sort_by = {
-        lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
-      };
-    } else if (requestParam.params.name ) {
-      sort_by = {
-        name: requestParam.params.name
-      };
-    } else {
-      sort_by = {
-        createdOn: 'asc'
-      };
-    }
     const option = {
       url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
       data: {
@@ -157,7 +143,7 @@ export class SearchService {
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           query: requestParam.query,
-          sort_by: sort_by
+          sort_by: requestParam.sort_by
         }
       }
     };
@@ -176,9 +162,7 @@ export class SearchService {
           filters: requestParam.filters,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
-          sort_by: {
-            createdDate: requestParam.params.createdDate || 'desc'
-          }
+          sort_by: requestParam.sort_by
         }
       }
     };

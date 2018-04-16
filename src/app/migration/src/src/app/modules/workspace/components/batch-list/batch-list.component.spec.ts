@@ -77,7 +77,7 @@ describe('BatchListComponent', () => {
     userService._userProfile = mockroleOrgMap ;
     spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
     fixture.detectChanges();
-    component.fetchBatchList(9, 1);
+    component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
   }));
@@ -89,7 +89,7 @@ describe('BatchListComponent', () => {
     userService._userProfile = mockroleOrgMap;
     spyOn(searchService, 'batchSearch').and.callFake(() => Observable.throw({}));
     fixture.detectChanges();
-    component.fetchBatchList(9, 1);
+    component.fetchBatchList();
     expect(component.batchList.length).toBeLessThanOrEqual(0);
     expect(component.batchList.length).toEqual(0);
   }));

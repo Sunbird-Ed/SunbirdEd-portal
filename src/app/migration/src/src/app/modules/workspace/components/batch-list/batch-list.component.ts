@@ -6,8 +6,7 @@ import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
-import { Ibatch } from './../../interfaces/batch';
-import { IStatusOption } from './../../interfaces/statusoption';
+import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
@@ -87,16 +86,16 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   private userService: UserService;
 
   /**
-  * To get url, app configs
+    * to get url app config
   */
   public config: ConfigService;
   /**
-     * Contains page limit of inbox list
+    * Contains page limit of batch  list
   */
   pageLimit: number;
 
   /**
-    * Current page number of inbox list
+    * Current page number of batch list
   */
   pageNumber = 1;
 
@@ -147,93 +146,54 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
-    this.statusOptions = [
-      { name: 'Ongoing Batches', value: 1 },
-      { name: 'Upcoming Batches', value: 0 },
-      { name: 'Previous Batches', value: 2 }
-    ];
+    this.statusOptions = this.config.dropDownConfig.statusOptions;
     this.status = this.statusOptions[0].value;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0108,
+    };
+    this.noResultMessage = {
+      'message': this.resourceService.messages.stmsg.m0020,
+      'messageText': this.resourceService.messages.stmsg.m0008
+    };
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
-      this.fetchBatchList(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+      this.fetchBatchList();
     });
   }
 
   /**
     * This method sets the make an api call to get all batch with page No and offset
   */
-  fetchBatchList(limit: number, pageNumber: number) {
+  fetchBatchList() {
     this.showLoader = true;
-    this.pageNumber = pageNumber;
-    this.pageLimit = limit;
+    this.pageLimit = this.config.appConfig.WORKSPACE.PAGE_LIMIT;
     const searchParams = {
       filters: {
         status: this.status.toString(),
-        createdFor: this.userService.RoleOrgMap && this.userService.RoleOrgMap['COURSE_MENTOR'],
+        createdFor: this.userService.RoleOrgMap['COURSE_MENTOR'],
         createdBy: this.userService.userid
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
-      params: { createdDate: this.config.appConfig.WORKSPACE.createdDate }
-    };
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0108,
+      sort_by: { createdDate: this.config.appConfig.WORKSPACE.createdDate }
     };
     this.getBatches(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.response.count && data.result.response.content.length > 0) {
-          let userList = [];
-          const participants = [];
-          const userNames = [];
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.batchList, (item, key) => {
-            participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
-            userList.push(item.createdBy);
-            this.batchList[key].label = participants;
-          });
-          userList = _.compact(_.uniq(userList));
-          const req = {
-            filters: { identifier: userList }
-          };
-          this.UserList(req).subscribe(
-            (res: ServerResponse) => {
-              if (res.result.response.count && res.result.response.content.length > 0) {
-                this.showLoader = false;
-                _.forEach(res.result.response.content, function (val, key) {
-                  userNames[val.identifier] = val.firstName + ' ' + val.lastName;
-                });
-              } else {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-              }
-            },
-            (err: ServerResponse) => {
-              this.showLoader = false;
-              this.noResult = false;
-              this.showError = true;
-              this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-            }
-          );
-          _.forEach(this.batchList, (item, key) => {
-            this.batchList[key].userNames = userNames;
-          });
-          this.showLoader = false;
+          this.processBatch();
         } else {
           this.showError = false;
           this.noResult = true;
           this.showLoader = false;
-          this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0020,
-            'messageText': this.resourceService.messages.stmsg.m0008
-          };
         }
       },
       (err: ServerResponse) => {
         this.showLoader = false;
-        this.noResult = false;
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
@@ -255,6 +215,45 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     }
     this.pageNumber = page;
     this.route.navigate(['workspace/content/batches', this.pageNumber]);
+  }
+
+  /**
+  * processing batch for userlist to make an api call for userlist .
+  */
+  public processBatch() {
+    let userList = [];
+    const participants = [];
+    const userNames = [];
+    _.forEach(this.batchList, (item, key) => {
+      participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
+      userList.push(item.createdBy);
+      this.batchList[key].label = participants;
+    });
+    userList = _.compact(_.uniq(userList));
+    const req = {
+      filters: { identifier: userList }
+    };
+    this.UserList(req).subscribe((res: ServerResponse) => {
+      if (res.result.response.count && res.result.response.content.length > 0) {
+        this.showLoader = false;
+        _.forEach(res.result.response.content, function (val, key) {
+          userNames[val.identifier] = val.firstName + ' ' + val.lastName;
+        });
+        _.forEach(this.batchList, (item, key) => {
+            this.batchList[key].userNames = userNames;
+        });
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
+    },
+      (err: ServerResponse) => {
+        this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
+    );
+    this.showLoader = false;
   }
 }
 

@@ -163,7 +163,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
             },
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
-            params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+            sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
             'loaderMessage': this.resourceService.messages.stmsg.m0011,

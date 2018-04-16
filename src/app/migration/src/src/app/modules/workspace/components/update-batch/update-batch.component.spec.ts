@@ -23,7 +23,8 @@ describe('UpdateBatchComponent', () => {
     'messages': {
       'fmsg': {
         'm0054': 'Fetching batch list  failed, please try again',
-        'm0055': 'Updating batchlist is failed'
+        'm0055': 'Updating batchlist is failed',
+        'm0056' : 'Fetching user list  failed, please try again'
       },
       'stmsg': {
         'm0108': 'We are fetching batchlist...',

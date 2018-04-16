@@ -53,9 +53,9 @@ export class BatchCardComponent {
     this.route = route;
     this.activatedRoute = activatedRoute;
   }
-  public onAction(batchdata, identifier) {
+  public onAction(batchdata) {
     this.batchService.setBatchData(batchdata);
-    this.route.navigate(['workspace/content/update/batch', identifier]);
+    this.route.navigate(['workspace/content/update/batch', batchdata.identifier]);
   }
 
 }
