@@ -21,7 +21,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Content Editor in a IFrame Modal
  */
-export class ContentEditorComponent implements OnInit, AfterViewInit {
+export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
   * To show toaster(error, success etc) after any API calls
@@ -103,6 +103,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       this.state = params['state'];
     });
 
+    this.setRenderer();
+
+  }
+
+  setRenderer() {
     this.renderer.listen('window', 'editor:metadata:edit', () => {
       this.closeModal();
     });
@@ -115,7 +120,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       this.closeModal();
     });
   }
-
 
   ngAfterViewInit() {
      /**
@@ -143,6 +147,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       }
     });
     this.getContentData();
+  }
+
+  ngOnDestroy() {
+    this.setRenderer();
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+     }
   }
 
   /**
@@ -272,9 +283,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
   }
 
 navigateToDraft() {
-  if (document.getElementById('contentEditor')) {
-    document.getElementById('contentEditor').remove();
-   }
    this.router.navigate(['workspace/content/draft/1']);
    this.showModal = false;
   }

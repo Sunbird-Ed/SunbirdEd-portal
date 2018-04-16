@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
@@ -19,7 +19,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Generic Editor in a IFrame Modal
  */
-export class GenericEditorComponent implements OnInit, AfterViewInit {
+export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
 * To show toaster(error, success etc) after any API calls
@@ -182,10 +182,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCreate() {
+    this.router.navigate(['workspace/content']);
+    this.showModal = false;
+  }
+
+/**
+ * On componenet destroy remove the genericEditor id from DOM
+ */
+  ngOnDestroy() {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.router.navigate(['workspace/content']);
-    this.showModal = false;
   }
 }

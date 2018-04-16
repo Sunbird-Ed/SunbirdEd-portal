@@ -130,9 +130,6 @@ export class CreateStudyMaterialComponent implements OnInit {
       gradeLevel: '',
       resourceType: ''
     });
-    if (document.getElementById('contentEditor')) {
-      document.getElementById('contentEditor').remove();
-    }
   }
 
 
