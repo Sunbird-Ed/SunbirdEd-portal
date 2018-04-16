@@ -1,11 +1,13 @@
+import { IInteractEventData } from './telemetryEvent';
 export interface IInteractEventInput {
-    'env': String;
-    'objectId': String;
-    'objectType': String;
-    'objectVersion': String;
-    'type': String;
-    'subType': String;
-    'edataId': String;
-    'pageId': String;
-    'rollup'?: Object;
+    'context': {
+        'env': String;
+    };
+    'object'?: {
+        'id': String;
+        'type': String;
+        'ver'?: String;
+        'rollup'?: Object;
+    };
+    'edata': IInteractEventData;
 }

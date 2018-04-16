@@ -1,9 +1,11 @@
 export interface IStartEventData {
     'type': String;
-    'mode': String;
-    'duration'?: String;
     'pageid': String;
-    'uaspec': Object;
+    'mode': String;
+    'dspec'?: Object;
+    'uaspec'?: Object;
+    'loc'?: String;
+    'duration'?: Number;
 }
 export interface IImpressionEventData {
     'type': String;
@@ -13,13 +15,13 @@ export interface IImpressionEventData {
     'visits'?: Object;
 }
 export interface IInteractEventData {
+    'id': String;
     'type': String;
     'subtype'?: String;
-    'id': String;
     'pageid'?: String;
+    'extra'?: Object;
     'target'?: String;
     'plugin'?: String;
-    'extra'?: Object;
 }
 export interface IShareEventData {
     'type': String;
@@ -28,24 +30,23 @@ export interface IShareEventData {
 }
 export interface IErrorEventData {
     'err': String;
-    'errType': String;
+    'errtype': String;
     'stacktrace': String;
-    'pageid'?: String;
-    'object'?: String;
-    'plugin'?: String;
 }
 export interface IEndEventData {
+    'pageid'?: String;
+    'duration'?: String;
     'type': String;
     'mode'?: String;
-    'duration': String;
-    'pageid'?: String;
     'summary'?: Array<Object>;
+    'contentId': String;
 }
 export interface ILogEventData {
     'type': String;
     'level': String;
     'message': String;
-    'params': Array<Object>;
+    'pageid'?: String;
+    'params'?: Array<Object>;
 }
 export interface ITelemetryContextData {
     'channel': String;

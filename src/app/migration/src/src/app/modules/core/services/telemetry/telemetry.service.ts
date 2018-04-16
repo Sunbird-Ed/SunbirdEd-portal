@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import {
   ITelemetry, ITelemetryEvent, ITelemetryContextData, TelemetryObject,
-  IStartEventData, IImpressionEventData, IInteractEventData, IEndEventData,
-  IShareEventData, IErrorEventData, ILogEventData, IStartEventInput, IImpressionEventInput,
+  IStartEventInput, IImpressionEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput
 } from './../../interfaces';
 import { UserService } from './../user/user.service';
 import { TelemetryLibUtilService } from './telemetry-lib-util.service';
-import { ConfigService } from '../../../shared';
+import { ConfigService } from '@sunbird/shared';
 
 /**
 * Service Class for telemetry v3 event methods
@@ -105,13 +104,7 @@ export class TelemetryService {
    * @param startEventInput 'IStartEventInput' reference
    */
   public startTelemetry(startEventInput: IStartEventInput) {
-    const startEventData: IStartEventData = {
-      type: startEventInput.type,
-      mode: startEventInput.mode,
-      pageid: startEventInput.pageId,
-      uaspec: this.getUserAgentSpec()
-    };
-    this.telemetryLibUtilService.startEvent(this.getEventData(startEventInput, startEventData), this.telemetry);
+    this.telemetryLibUtilService.startEvent(this.getEventData(startEventInput), this.telemetry);
   }
 
   /**
@@ -119,14 +112,7 @@ export class TelemetryService {
    * @param impressionEventInput 'IImpressionEventInput' reference
    */
   public impression(impressionEventInput: IImpressionEventInput) {
-    const impressionEventData: IImpressionEventData = {
-      type: impressionEventInput.type,
-      subtype: impressionEventInput.subType,
-      pageid: impressionEventInput.pageId,
-      uri: impressionEventInput.uri,
-      visits: impressionEventInput.visits
-    };
-    this.telemetryLibUtilService.impressionEvent(this.getEventData(impressionEventInput, impressionEventData));
+    this.telemetryLibUtilService.impressionEvent(this.getEventData(impressionEventInput));
   }
 
   /**
@@ -134,13 +120,7 @@ export class TelemetryService {
    * @param iInteractEventInput  'IInteractEventInput' reference
    */
   public interact(iInteractEventInput: IInteractEventInput) {
-    const interactEventData: IInteractEventData = {
-      type: iInteractEventInput.type,
-      subtype: iInteractEventInput.subType,
-      id: iInteractEventInput.edataId,
-      pageid: iInteractEventInput.pageId
-    };
-    this.telemetryLibUtilService.interactEvent(this.getEventData(iInteractEventInput, interactEventData));
+    this.telemetryLibUtilService.interactEvent(this.getEventData(iInteractEventInput));
   }
 
   /**
@@ -148,16 +128,7 @@ export class TelemetryService {
    * @param iShareEventInput 'IShareEventInput' reference
    */
   public share(iShareEventInput: IShareEventInput) {
-    const shareEventData: IShareEventData = {
-      dir: iShareEventInput.dir,
-      type: iShareEventInput.type,
-      items: [{
-        id: iShareEventInput.objectId,
-        type: iShareEventInput.objectType,
-        ver: iShareEventInput.objectVersion
-      }]
-    };
-    this.telemetryLibUtilService.shareEvent(this.getEventData(iShareEventInput, shareEventData));
+    this.telemetryLibUtilService.shareEvent(this.getEventData(iShareEventInput));
   }
 
   /**
@@ -165,13 +136,7 @@ export class TelemetryService {
    * @param iErrorEventInput 'IErrorEventInput' reference
    */
   public error(iErrorEventInput: IErrorEventInput) {
-    const errorEventData: IErrorEventData = {
-      err: iErrorEventInput.errCode,
-      errType: iErrorEventInput.errType,
-      pageid: iErrorEventInput.pageId,
-      stacktrace: iErrorEventInput.stacktrace
-    };
-    this.telemetryLibUtilService.errorEvent(this.getEventData(iErrorEventInput, errorEventData));
+    this.telemetryLibUtilService.errorEvent(this.getEventData(iErrorEventInput));
   }
 
   /**
@@ -179,14 +144,7 @@ export class TelemetryService {
    * @param iEndEventInput 'IEndEventInput' reference
    */
   public endTelemetry(iEndEventInput: IEndEventInput) {
-    const endEventData: IEndEventData = {
-      type: iEndEventInput.type,
-      duration: iEndEventInput.duration,
-      mode: iEndEventInput.mode,
-      pageid: iEndEventInput.pageId,
-      summary: iEndEventInput.summary
-    };
-    this.telemetryLibUtilService.endEvent(this.getEventData(iEndEventInput, endEventData));
+    this.telemetryLibUtilService.endEvent(this.getEventData(iEndEventInput));
   }
 
   /**
@@ -194,26 +152,19 @@ export class TelemetryService {
  * @param iLogEventInput 'ILogEventInput' reference
  */
   public logTelemetry(iLogEventInput: ILogEventInput) {
-    const logEventData: ILogEventData = {
-      level: iLogEventInput.level,
-      type: iLogEventInput.type,
-      message: iLogEventInput.message,
-      params: iLogEventInput.params
-    };
-    this.telemetryLibUtilService.logEvent(this.getEventData(iLogEventInput, logEventData));
+    this.telemetryLibUtilService.logEvent(this.getEventData(iLogEventInput));
   }
 
   /**
    * function to prepare telemetry event data
    * @param eventInput
-   * @param eventData
    * @returns iTelemetryEvent 'ITelemetryEvent' reference
    */
-  public getEventData(eventInput: any, eventData: any) {
+  public getEventData(eventInput: any) {
     const contextData = this.getEventContext(eventInput);
     const eventObject = this.getEventObject(eventInput);
     const iTelemetryEvent: ITelemetryEvent = {
-      edata: eventData,
+      edata: eventInput.edata,
       options: {
         context: contextData,
         object: eventObject,
@@ -233,10 +184,10 @@ export class TelemetryService {
    */
   public getEventObject(eventInput: any) {
     const eventObjectData: TelemetryObject = {
-      id: eventInput.objectId,
-      type: eventInput.objectType,
-      ver: eventInput.objectVersion,
-      rollup: eventInput.rollup || {}
+      id: eventInput.object.id || '',
+      type: eventInput.object.type || '',
+      ver: eventInput.object.ver || '',
+      rollup: eventInput.object.rollup || {}
     };
     return eventObjectData;
   }
@@ -248,10 +199,10 @@ export class TelemetryService {
    */
   public getEventContext(eventInput: any) {
     const eventContextData: ITelemetryContextData = {
-      channel: this.telemetry.channel,
-      pdata: this.telemetry.pdata,
+      channel: eventInput.edata.channel || this.telemetry.channel,
+      pdata: eventInput.edata.pdata || this.telemetry.pdata,
       env: eventInput.env || this.telemetry.env,
-      sid: this.telemetry.sid,
+      sid: eventInput.sid || this.telemetry.sid,
       cdata: eventInput.cdata || [],
       rollup: this.getRollUpData(this.organisationIds)
     };

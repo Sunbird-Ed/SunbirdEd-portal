@@ -1,8 +1,13 @@
+import { IShareEventData } from './telemetryEvent';
 export interface IShareEventInput {
-    'env': String;
-    'dir': String;
-    'type': String;
-    'objectId'?: String;
-    'objectType'?: String;
-    'objectVersion'?: String;
+    'context': {
+        'env': String;
+    };
+    'object'?: {
+        'id': String;
+        'type': String;
+        'ver'?: String;
+        'rollup'?: Object;
+    };
+    'edata': IShareEventData;
 }

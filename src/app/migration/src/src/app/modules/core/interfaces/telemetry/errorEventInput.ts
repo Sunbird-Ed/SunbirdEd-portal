@@ -1,9 +1,13 @@
+import { IErrorEventData } from './telemetryEvent';
 export interface IErrorEventInput {
-    'env': String;
-    'objectType': String;
-    'objectVersion': String;
-    'errCode': String;
-    'errType': String;
-    'stacktrace': String;
-    'pageId': String;
+    'context': {
+        'env': String;
+    };
+    'object'?: {
+        'id': String;
+        'type': String;
+        'ver'?: String;
+        'rollup'?: Object;
+    };
+    'edata': IErrorEventData;
 }

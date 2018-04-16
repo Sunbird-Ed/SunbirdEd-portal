@@ -81,14 +81,14 @@ describe('TelemetryService', () => {
             telemetryLibUtilService: TelemetryLibUtilService, config: ConfigService) => {
             const eventObjectData = telemetryService.getEventObject(mockData.mockRes.startInputData);
             expect(telemetryService).toBeTruthy();
-            expect(eventObjectData.id).toEqual(mockData.mockRes.startInputData.objectId);
+            expect(eventObjectData.id).toEqual(mockData.mockRes.startInputData.object.id);
         }));
     it('should return context object', inject([TelemetryService, UserService, TelemetryLibUtilService,
         ConfigService, LearnerService], (telemetryService: TelemetryService, userService: UserService,
             telemetryLibUtilService: TelemetryLibUtilService, config: ConfigService) => {
             const eventContextData = telemetryService.getEventContext(mockData.mockRes.startInputData);
             expect(telemetryService).toBeTruthy();
-            expect(eventContextData.env).toEqual(mockData.mockRes.startInputData.env);
+            expect(eventContextData).toBeDefined();
         }));
     it('should return rollup details', inject([TelemetryService, UserService, TelemetryLibUtilService,
         ConfigService, LearnerService], (telemetryService: TelemetryService, userService: UserService,

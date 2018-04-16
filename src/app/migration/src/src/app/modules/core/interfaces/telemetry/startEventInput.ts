@@ -1,11 +1,14 @@
+import { IStartEventData } from './telemetryEvent';
 export interface IStartEventInput {
-    'env': String;
-    'objectId': String;
-    'objectType': String;
-    'objectVersion': String;
-    'type': String;
-    'pageId': String;
-    'mode': String;
-    'cdata'?: Array<Object>;
-    'rollup'?: Object;
+    'context': {
+        'env': String;
+        'cdata'?: Array<Object>;
+    };
+    'object'?: {
+        'id': String;
+        'type': String;
+        'ver'?: String;
+        'rollup'?: Object;
+    };
+    'edata': IStartEventData;
 }

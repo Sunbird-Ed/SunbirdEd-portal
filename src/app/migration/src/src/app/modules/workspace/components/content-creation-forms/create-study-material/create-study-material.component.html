@@ -1,0 +1,107 @@
+<sui-modal [isClosable]="true" (dismissed)="goToCreate()" #modal>
+    <div>
+        <div class=" ui segment margin-top-10" id="createSlideShowModal">
+            <div class=" margin-bottom-15">
+                <div class="ui grid">
+                    <div class="eleven wide column">
+                        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.createlessontext}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form class="ui form" [formGroup]="userForm">
+                    <div class="field">
+                        <label>{{resourceService?.frmelmnts?.lbl?.name}}</label>
+                        <div class="field">
+                            <input type="text" placeholder={{resourceService?.frmelmnts?.lbl?.name}} formControlName="name">
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.curriculum}}</label>
+
+                            <sui-select class="selection" [optionTemplate]="myTemplate" formControlName="boards">
+                                <sui-select-option *ngFor="let option of boards" [value]="option"></sui-select-option>
+                            </sui-select>
+
+                            <ng-template let-option #myTemplate>
+                                {{option}}
+                            </ng-template>
+
+                        </div>
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.medium}}</label>
+                            <sui-select class="selection" [optionTemplate]="myTemplate" formControlName="medium">
+                                <sui-select-option *ngFor="let option of medium" [value]="option"></sui-select-option>
+                            </sui-select>
+
+                            <ng-template let-option #myTemplate>
+                                {{option}}
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.subject}}</label>
+                            <sui-select class="selection" [optionTemplate]="myTemplate" formControlName="subjects">
+                                <sui-select-option *ngFor="let option of subjects" [value]="option"></sui-select-option>
+                            </sui-select>
+
+                            <ng-template let-option #myTemplate>
+                                {{option}}
+                            </ng-template>
+
+
+                        </div>
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.class}}</label>
+                            <sui-select class="selection" [optionTemplate]="gradeTemplate" formControlName="gradeLevel">
+                                <sui-select-option *ngFor="let option of grades" [value]="option"></sui-select-option>
+                            </sui-select>
+
+                            <ng-template let-option #gradeTemplate>
+                                {{option}}
+                            </ng-template>
+
+                            <!-- <sui-multi-select [(ngModel)]="selectedGrades" name="grades" [options]="grades" labelField="name" [maxSelected]="5" icon="list"
+                        #envSearch>
+                        <div class="scrolling menu">
+                          <sui-select-option *ngFor="let o of envSearch" [value]="o"></sui-select-option>
+                        </div>
+                      </sui-multi-select> -->
+                        </div>
+                    </div>
+                    <div class="two fields">
+
+                        <div class="field">
+                            <label>{{resourceService?.frmelmnts?.lbl?.resourcetype}}</label>
+                            <sui-select class="selection" [optionTemplate]="resourceTemplate" formControlName="resourceType">
+                                <sui-select-option *ngFor="let option of resourceType" [value]="option"></sui-select-option>
+                            </sui-select>
+
+                            <ng-template let-option #resourceTemplate>
+                                {{option}}
+                            </ng-template>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <p class="text-align-center padding-top-20">
+                    <button class="ui primary text-align-center icon button" (click)="createContent(); modal.deny();">
+                        {{resourceService?.frmelmnts?.btn?.startcreating}}
+                    </button>
+                </p>
+                <div>
+                    <label>
+                        <p class="text-align-center">{{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}</p>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</sui-modal>

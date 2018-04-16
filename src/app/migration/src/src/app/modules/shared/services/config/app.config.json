@@ -18,6 +18,21 @@
     "objectType": "Content",
     "lastUpdatedOn": "desc"
   },
+  "EDITOR_CONFIG": {
+    "collectionState": ["UpForReviewContent", "ReviewContent",
+      "PublishedContent", "FlaggedContent", "LimitedPublishedContent"
+    ],
+    "collectionStatus": ["Review", "Draft", "Live", "Flagged", "Unlisted"],
+    "mimeCollection": "application/vnd.ekstep.content-collection",
+    "editorQS": "createdBy,status,mimeType",
+    "MODE": "edit",
+    "contentState": ["UpForReviewContent", "ReviewContent", "PublishedContent", "LimitedPublishedContent"],
+    "contentStatus": ["Review", "Draft", "Live", "Unlisted"]
+  },
+  "CONTENT_CONST": {
+    "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
+  },
+  "APPID_EKSTEPENV": "get/envData",
   "ANNOUNCEMENT": {
     "HOME": {
       "PAGE_LIMIT": 2
@@ -50,6 +65,32 @@
         "adaptor": "SERVICE",
         "service": "geoService"
       }
+    }
+  },
+  "INBOX": {
+    "PAGE_LIMIT": 10
+  },
+  "PAGINATION": {
+    "PAGE_STRIP": 5
+  },
+  "API": {
+    "ANNOUNCEMENT": {
+      "CHANNEL": "web"
+    }
+  },
+  "FILEUPLOAD": {
+    "MAXFILESIZETOUPLOAD": 1024000,
+    "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
+    "ALLOWEDFILEEXTENSION": [
+      "png",
+      "pdf",
+      "jpg"
+    ]
+  },
+  "GEOCONFIG": {
+    "geo": {
+      "adaptor": "SERVICE",
+      "service": "geoService"
     }
   },
   "ADMIN_UPLOAD": {

@@ -1,67 +1,113 @@
 export const mockRes = {
     startInputData: {
-        'env': 'announcement',
-        'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
-        'objectType': 'announcement',
-        'objectVersion': '1.0',
-        'type': 'workflow',
-        'contentType': 'announcement',
-        'pageId': 'announcement-create',
-        'mode': 'create'
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '34ae4320-388d-11e8-b47d-596d7600c985',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'type': 'workflow',
+            'pageid': 'announcement-create',
+            'mode': 'create'
+        }
     },
     impressionInputData: {
-        'type': 'create',
-        'env': 'announcement',
-        'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
-        'objectType': 'announcement',
-        'objectVersion': '1.0',
-        'subType': 'announcement',
-        'pageId': 'announcement-create',
-        'uri': '/announcement/create'
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'type': 'announcement',
+            'subtype': 'announcement',
+            'pageid': 'announcement-create',
+            'uri': '/announcement/create'
+        }
     },
     interactEventData: {
-        'env': 'announcement',
-        'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
-        'objectType': 'announcement',
-        'objectVersion': '1.0',
-        'edataId': '123456',
-        'pageId': 'announcement-create',
-        'type': 'click',
-        'subType': ''
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'id': '123456',
+            'pageid': 'announcement-create',
+            'type': 'click',
+            'subtype': ''
+        }
     },
     shareEventData: {
-        'env': 'announcement',
-        'dir': 'out',
-        'type': 'link',
-        'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
-        'objectType': 'announcement',
-        'objectVersion': '1.0'
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'dir': 'out',
+            'type': 'link',
+            'items': []
+        }
+
     },
     errorEventData: {
-        'env': 'announcement',
-        'objectType': 'announcement',
-        'objectVersion': '1.0',
-        'errCode': '500',
-        'errType': 'SERVER_ERROR',
-        'stacktrace': 'error',
-        'pageId': 'announcement-create'
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'err': '500',
+            'errtype': 'SERVER_ERROR',
+            'stacktrace': 'error'
+        }
     },
     endEventData: {
-        'env': 'announcement',
-        'objectId': '34ae4320-388d-11e8-b47d-596d7600c985',
-        'objectType': 'announcement',
-        'objectVersion': '1.0',
-        'edataId': '123456',
-        'pageId': 'announcement-create',
-        'type': 'announcement',
-        'mode': 'announcement',
-        'summary': []
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'contentId': '34ae4320-388d-11e8-b47d-596d7600c985',
+            'pageid': 'announcement-create',
+            'type': 'announcement',
+            'mode': 'announcement',
+            'summary': []
+        }
     },
     logEventData: {
-        'env': 'announcement',
-        'type': 'api_call',
-        'level': '1',
-        'message': 'api to load inbox'
+        'context': {
+            'env': 'announcement'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'type': 'api_call',
+            'level': '1',
+            'message': 'api to load inbox'
+        }
     },
     userSessionData: {
         'userId': '99733cb8-588a-42af-8161-57e783351a0e'
