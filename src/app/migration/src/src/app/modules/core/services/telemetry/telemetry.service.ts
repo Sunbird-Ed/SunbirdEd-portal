@@ -68,7 +68,6 @@ export class TelemetryService {
     this.config = config;
     this.userService = userService;
     this.telemetryLibUtilService = telemetryLibUtilService;
-    this.loadUserSession();
     this.telemetry = {
       pdata: {
         id: 'org.sunbird',
@@ -93,6 +92,7 @@ export class TelemetryService {
   *  initalize telemetry method
   */
   public initialize() {
+    this.loadUserSession();
     this.telemetryLibUtilService.initEvent(this.telemetry);
   }
 
