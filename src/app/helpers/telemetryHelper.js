@@ -299,7 +299,6 @@ module.exports = {
       'params': {
         'requesterId': req.kauth.grant.access_token.content.sub,
         'did': telemtryEventConfig.default_did,
-        'key': '13405d54-85b4-341b-da2f-eb6b9e546fff',
         'msgid': uuidv1()
       },
       'events': eventsData
@@ -312,7 +311,10 @@ module.exports = {
         callback(null, true)
       }
     }
+    console.log('eventsData', JSON.stringify(eventsData))
+
     var data = this.prepareTelemetryRequestBody(req, eventsData)
+    console.log('data', JSON.stringify(data))
     var options = {
       method: 'POST',
       url: envHelper.content_Service_Local_BaseUrl + '/v1/telemetry',
@@ -324,6 +326,7 @@ module.exports = {
       json: true
     }
     request(options, function (error, response, body) {
+      console.log()
       if (_.isFunction(callback)) {
         if (error) {
           console.log('telemetry sync error while syncing  portal', error)
