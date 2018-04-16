@@ -168,7 +168,11 @@ export class SearchService {
     };
     return this.learner.post(option);
   }
-
+  /**
+   * getUserList.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
   getUserList(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,

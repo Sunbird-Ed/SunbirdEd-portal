@@ -184,8 +184,8 @@ export class UserService {
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
-    this._userData$.next({ err: null, userProfile: this._userProfile });
     this.setRoleOrgMap(profileData);
+    this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   /**
     * method to set setRoleOrgMap.

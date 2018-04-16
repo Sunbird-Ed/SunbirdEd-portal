@@ -242,6 +242,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
         _.forEach(this.batchList, (item, key) => {
             this.batchList[key].userNames = userNames;
         });
+        console.log(this.batchList);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }

@@ -18,7 +18,7 @@ export class DateFormatPipe implements PipeTransform {
    *
    */
   transform(value: Date | moment.Moment | string | number, format: string): string {
-    return momentConstructor(value).format(format);
+    return momentConstructor(value).format(format || 'Do MMMM YYYY');
   }
 
 }

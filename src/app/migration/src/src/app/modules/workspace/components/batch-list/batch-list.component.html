@@ -2,7 +2,7 @@
 <div class="twelve wide column margin-top-20" *ngIf="showLoader">
   <app-loader [data]="loaderMessage"></app-loader>
 </div>
-<div class="ui grid" *ngIf="!showLoader && showError">
+<div class="ui grid" *ngIf="!showLoader">
   <div class="four wide column padding-top-30">
     <sui-select  (selectedOptionChange)= "fetchBatchList()" class="inline" 
     [(ngModel)]="status" [options]="statusOptions" valueField ="value" labelField="name" #statusselect>
