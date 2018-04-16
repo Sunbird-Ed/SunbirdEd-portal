@@ -11,8 +11,8 @@ export interface ITelemetry {
   'pdata': IProducerData;
   'env': String;
   'channel': String;
-  'did': String;
-  'authtoken': String;
+  'did'?: String;
+  'authtoken'?: String;
   'uid': String;
   'sid'?: String;
   'batchsize'?: Number;

@@ -77,15 +77,12 @@ export class TelemetryService {
       },
       env: 'Home',
       channel: 'sunbird',
-      did: undefined,
-      authtoken: undefined,
       uid: '',
       sid: '',
       batchsize: this.config.appConfig.TELEMETRY.MAX_BATCH_SIZE || 10,
       host: '',
       endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
       apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-      dispatcher: undefined,
       runningEnv: 'client',
       tags: []
     };
