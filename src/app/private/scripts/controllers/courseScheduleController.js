@@ -258,7 +258,7 @@ angular.module('playerApp')
 
           // if contents mimeType is text/x-url the flow changes and the content is opened in a new tab
 
-          if (contentData && contentData.mimeType === 'video/x-youtube') {
+          if (contentData && contentData.mimeType === 'text/x-url') {
             let timeInterval = 250
             if (trigger) {
               org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:closeOnNext')
@@ -270,7 +270,7 @@ angular.module('playerApp')
               var newWindow = window.open(window.location.origin + window.location.pathname + '#!/redirect', '_blank')
               newWindow.redirectUrl = ((contentData.artifactUrl) +
                                       '&contentId=' + contentData.identifier + '&courseId=' + toc.courseId)
-              newWindow.timetobethere = 2500
+              newWindow.timetobethere = 250
             }, timeInterval)
           } else if (contentData && contentData.mimeType !== 'application/vnd.ekstep.content-collection') { // if content is not collection type then  only its can be played
             // load details needed for previous and next items in player
