@@ -159,10 +159,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver:  this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
-      framework: 'NCF',
+      tags: [ this.userService.dims ],
       channel: this.userProfile.rootOrgId
     };
 
@@ -172,39 +171,39 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
  */
     window.config = {
       baseURL: '',
-      modalId: 'contentEditor',
-      apislug: '/action',
+      modalId: this.config.appConfig.EDITOR_CONFIG.contentEditor,
+      apislug: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.apislug,
       alertOnUnload: true,
       headerLogo: '',
-      aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
-        this.userService.env + '/', 'https://ekstep-public-' +
-        this.userService.env + '.s3-ap-south-1.amazonaws.com/'],
+      aws_s3_urls: [this.config.appConfig.EDITOR_CONFIG.AWS_URL +
+        this.userService.env + this.config.appConfig.EDITOR_CONFIG.AWS_URL_2 +
+        this.userService.env + this.config.appConfig.EDITOR_CONFIG.AWS_URL_3],
       plugins: [
         {
-          id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.2',
-          type: 'plugin'
+          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION_1_2,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         },
         {
-          id: 'org.ekstep.sunbirdmetadata',
-          ver: '1.0',
-          type: 'plugin'
+          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_METADATA,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         },
         {
-          id: 'org.ekstep.metadata',
-          ver: '1.0',
-          type: 'plugin'
+          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.METADATA,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         }
       ],
-      dispatcher: 'local',
-      localDispatcherEndpoint: '/content-editor/telemetry',
+      dispatcher: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.dispatcher,
+      localDispatcherEndpoint: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.CONTENT_ENDPOINT,
       showHelp: false,
       previewConfig: {
-        repos: ['/content-plugins/renderer'],
+        repos: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RENDERER_URL,
         plugins: [{
-          id: 'org.sunbird.player.endpage',
-          ver: 1.0,
-          type: 'plugin'
+          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_ENDPAGE,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         }],
         showEndPage: false
       }
@@ -243,14 +242,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
   getContentData() {
     const state = 'UpForReviewContent';
     const req = { contentId: this.contentId };
-    const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
+    const qs = { fields: this.config.appConfig.EDITOR_CONFIG.editorQS, mode: this.config.appConfig.EDITOR_CONFIG.MODE };
     const validateModal = {
       'state': this.config.appConfig.EDITOR_CONFIG.contentState,
       'status': this.config.appConfig.EDITOR_CONFIG.contentStatus,
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {
-      if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = state;
         rspData.userId = this.userProfile.userId;
@@ -260,7 +258,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
         }
-      }
     }
     );
   }

@@ -167,9 +167,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
+      tags: [this.userService.dims],
       channel: this.userService.channel,
       framework: this.framework,
       env: this.type.toLowerCase()
@@ -180,38 +180,38 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
      */
     window.config = {
       corePluginsPackaged: true,
-      modalId: 'collectionEditor',
-      dispatcher: 'local',
-      apislug: '/action',
+      modalId: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.modalId,
+      dispatcher: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.dispatcher,
+      apislug: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.apislug,
       alertOnUnload: true,
       headerLogo: '',
       loadingImage: '',
       plugins: [{
-        id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.1',
-        type: 'plugin'
+        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       },
       {
-        id: 'org.ekstep.lessonbrowser',
-        ver: '1.3',
-        type: 'plugin'
+        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.LESSON_BROWSER,
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.LESSON_BROWSER_VERSION,
+        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       }],
-      localDispatcherEndpoint: '/collection-editor/telemetry',
+      localDispatcherEndpoint: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.localDispatcherEndpoint,
       editorConfig: {
-        mode: 'Edit',
-        contentStatus: 'draft',
+        mode: this.config.appConfig.EDITOR_CONFIG.MODE,
+        contentStatus: this.config.appConfig.EDITOR_CONFIG.DRAFT,
         rules: {
-          levels: 7,
+          levels: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RULES_LEVEL,
           objectTypes: this.getTreeNodes(this.type)
         },
         defaultTemplate: {}
       },
       previewConfig: {
-        repos: ['/content-plugins/renderer'],
+        repos: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RENDERER_URL,
         plugins: [{
-          id: 'org.sunbird.player.endpage',
-          ver: 1.0,
-          type: 'plugin'
+          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_ENDPAGE,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         }],
         showEndPage: false
       },
@@ -220,9 +220,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
-        id: 'org.ekstep.suggestcontent',
-        ver: '1.0',
-        type: 'plugin'
+        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SUGGEST_CONTENT,
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       });
     }
     window.config.editorConfig.publishMode = false;
@@ -280,9 +280,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToDraft() {
-    // if (document.getElementById('collectionEditor')) {
-    //   document.getElementById('collectionEditor').remove();
-    // }
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
     this.route.navigate(['workspace/content/draft/1']);
     this.showModal = false;
   }
@@ -320,20 +320,20 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
  */
   updateModeAndStatus(status) {
     if (status.toLowerCase() === 'draft') {
-      window.config.editorConfig.mode = 'Edit';
-      window.config.editorConfig.contentStatus = 'draft';
+      window.config.editorConfig.mode = this.config.appConfig.EDITOR_CONFIG.MODE;
+      window.config.editorConfig.contentStatus = this.config.appConfig.EDITOR_CONFIG.DRAFT;
     }
     if (status.toLowerCase() === 'review') {
-      window.config.editorConfig.mode = 'Read';
-      window.config.editorConfig.contentStatus = 'draft';
+      window.config.editorConfig.mode = this.config.appConfig.EDITOR_CONFIG.READ;
+      window.config.editorConfig.contentStatus = this.config.appConfig.EDITOR_CONFIG.DRAFT;
     }
     if (status.toLowerCase() === 'live') {
-      window.config.editorConfig.mode = 'Edit';
-      window.config.editorConfig.contentStatus = 'live';
+      window.config.editorConfig.mode = this.config.appConfig.EDITOR_CONFIG.MODE;
+      window.config.editorConfig.contentStatus = this.config.appConfig.EDITOR_CONFIG.LIVE;
     }
     if (status.toLowerCase() === 'flagged') {
-      window.config.editorConfig.mode = 'Read';
-      window.config.editorConfig.contentStatus = 'flagged';
+      window.config.editorConfig.mode = this.config.appConfig.EDITOR_CONFIG.READ;
+      window.config.editorConfig.contentStatus = this.config.appConfig.EDITOR_CONFIG.FLAGGED;
     }
   }
   /**
@@ -345,285 +345,250 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     switch (type) {
       case 'Course':
         editorConfig.push({
-          type: 'Course',
-          label: 'Course',
+          type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COURSE,
+          label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COURSE,
           isRoot: true,
           editable: true,
-          childrenTypes: [
-            'CourseUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
+          childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.CHILDREN_TYPE,
+          addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_BOOK
         },
           {
-            type: 'CourseUnit',
-            label: 'Course Unit',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COURSE_TYPE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COURSE_LABEL,
             isRoot: false,
             editable: true,
-            childrenTypes: [
-              'CourseUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
+            childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.CU_CHILDREN_TYPE,
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FOLDER
           },
           {
-            type: 'Collection',
-            label: 'Collection',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Resource',
-            label: 'Resource',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Story',
-            label: 'Story',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Worksheet',
-            label: 'Worksheet',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           });
         return editorConfig;
       case 'Collection':
         editorConfig.push({
-          type: 'Collection',
-          label: 'Collection',
+          type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
+          label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
           isRoot: true,
           editable: true,
-          childrenTypes: [
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-folder-o'
+          childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLL_CHILDREN_TYPE,
+          addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
         },
           {
-            type: 'Collection',
-            label: 'Collection',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Resource',
-            label: 'Resource',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Story',
-            label: 'Story',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Worksheet',
-            label: 'Worksheet',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           });
         return editorConfig;
       case 'LessonPlan':
         editorConfig.push({
-          type: 'LessonPlan',
-          label: 'LessonPlan',
+          type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LESSON_PLAN,
+          label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LESSON_PLAN,
           isRoot: true,
           editable: true,
-          childrenTypes: [
-            'LessonPlanUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
+          childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LP_CHILDREN_TYPE,
+          addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_BOOK
         },
           {
-            type: 'LessonPlanUnit',
-            label: 'LessonPlan Unit',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LESSON_PLAN_UNIT_TYPE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LESSON_PLAN_UNIT_LABEL,
             isRoot: false,
             editable: true,
-            childrenTypes: [
-              'LessonPlanUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
+            childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.LPUNIT_CHILDREN_TYPE,
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FOLDER
           },
           {
-            type: 'Collection',
-            label: 'Collection',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Resource',
-            label: 'Resource',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Story',
-            label: 'Story',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Worksheet',
-            label: 'Worksheet',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           });
         return editorConfig;
       default:
 
         editorConfig.push({
-          type: 'TextBook',
-          label: 'Textbook',
+          type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TEXTBOOK,
+          label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TEXTBOOK,
           isRoot: true,
           editable: true,
-          childrenTypes: [
-            'TextBookUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
+          childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TB_CHILDREN_TYPE,
+          addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_BOOK
         },
           {
-            type: 'TextBookUnit',
-            label: 'Textbook Unit',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TB_UNIT_TYPE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TB_UNIT_LABEL,
             isRoot: false,
             editable: true,
-            childrenTypes: [
-              'TextBookUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
+            childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.TBUNIT_CHILDREN_TYPE,
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FOLDER
           },
           {
-            type: 'Collection',
-            label: 'Collection',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Resource',
-            label: 'Resource',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Story',
-            label: 'Story',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType:  this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           },
           {
-            type: 'Worksheet',
-            label: 'Worksheet',
+            type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
+            label: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
             isRoot: false,
             editable: false,
             childrenTypes: [
 
             ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
+            addType:  this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
+            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
           });
         return editorConfig;
     }

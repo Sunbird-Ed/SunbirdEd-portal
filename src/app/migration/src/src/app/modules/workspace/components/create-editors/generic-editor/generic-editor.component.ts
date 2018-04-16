@@ -29,6 +29,10 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
     * To call resource service which helps to use language constant
     */
   public resourceService: ResourceService;
+   /**
+  * To get url, app configs
+  */
+  public config: ConfigService;
   /**
    * To make inbox API calls
    */
@@ -37,16 +41,21 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   * user profile details.
   */
   userService: UserService;
-
+  /**
+   * Id of the content created
+   */
   public contentId: string;
-
+  /**
+   * user profile details.
+   */
   public userProfile: IUserProfile;
-
   /**
  * To navigate to other pages
  */
   private router: Router;
-
+/**
+ * Boolean to show and hide modal
+ */
   public showModal: boolean;
   /**
    * To send activatedRoute.snapshot to router navigation
@@ -55,16 +64,17 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   private activatedRoute: ActivatedRoute;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute) {
+    activatedRoute: ActivatedRoute, config: ConfigService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
+    this.config = config;
   }
 
   ngOnInit() {
-   /**
-    * Call User service to get user data
-    */
+    /**
+     * Call User service to get user data
+     */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -113,9 +123,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
-/**
- * Assign the values to window context
- */
+    /**
+     * Assign the values to window context
+     */
     window.context = {
       user: {
         id: this.userService.userid,
@@ -126,35 +136,35 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
+      tags: [this.userService.dims ],
       channel: this.userService.channel,
-      env: 'genericeditor'
+      env: this.config.appConfig.EDITOR_CONFIG.GENERICEDITOR
     };
 
-/**
- * Assign the values to window config
- */
+    /**
+     * Assign the values to window config
+     */
     window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
-      dispatcher: 'local',
-      apislug: '/action',
+      dispatcher: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.dispatcher,
+      apislug: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.apislug,
       alertOnUnload: true,
       headerLogo: '',
       loadingImage: '',
       plugins: [{
-        id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.1',
-        type: 'plugin'
+        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       }],
       previewConfig: {
-        'repos': ['/content-plugins/renderer'],
+        'repos': this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RENDERER_URL,
         plugins: [{
-          'id': 'org.sunbird.player.endpage',
-          ver: 1.0,
-          type: 'plugin'
+          'id': this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_ENDPAGE,
+          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
         }],
         showEndPage: false
       }
