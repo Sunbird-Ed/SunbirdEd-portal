@@ -166,7 +166,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
   * api call to get batch by Id
   */
   getBatchDetails() {
-    this.batchData = this.workSpaceService.getBatchData();
+    this.batchData = this.batchService.getBatchData();
     if (_.isEmpty(this.batchData)) {
       this.batchService.getBatchDetailsById({ batchId: this.batchId }).subscribe(
         (apiResponse: ServerResponse) => {

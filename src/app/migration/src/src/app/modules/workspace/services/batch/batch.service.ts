@@ -46,7 +46,7 @@ export class BatchService {
   /**
    * Reference of batchDetails.
   */
-  public batchDetails: Array<Ibatch> = [];
+  public batchDetails: Ibatch;
 
   /**
    * Default method of OrganisationService class
@@ -222,6 +222,10 @@ export class BatchService {
   setBatchData(batchData): void {
     this.batchDetails = batchData;
   }
+
+  /**
+  * method getBatchData
+  */
   getBatchData() {
     return this.batchDetails;
   }

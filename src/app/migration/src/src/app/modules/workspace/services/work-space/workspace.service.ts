@@ -18,12 +18,7 @@ export class WorkSpaceService {
    * Reference of content service.
   */
   public content: ContentService;
-
-  /**
-   * Reference of batchDetails.
-  */
-  public batchDetails: any;
-
+  
   /**
     * Constructor - default method of AnnouncementService class
     *
@@ -45,11 +40,4 @@ export class WorkSpaceService {
     };
     return this.content.delete(option);
   }
-  setBatchData(batchData): void {
-    this.batchDetails = batchData;
-  }
-  getBatchData() {
-    return this.batchDetails;
-  }
-
 }
