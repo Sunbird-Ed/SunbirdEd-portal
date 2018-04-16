@@ -88,6 +88,10 @@ app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
 
+if (defaultTenant) {
+  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
+}
+
 app.all('/public', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
@@ -97,9 +101,7 @@ app.all('/public', function (req, res) {
 })
 
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
-if (defaultTenant) {
-  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
-}
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 

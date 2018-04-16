@@ -11,8 +11,10 @@
         </div>
         <div class="one wide column computer only"></div>
         <div class="one wide column computer only">
-            <div class="beforelogin ui secondary pointing menu" ng-controller="SignUpCtrl as newUser">
-                <a href="/private/index" class="sunblogin margin-top--5"> <button class="ui item " ng-if="!isLoggedIn">{{frmelmnts.btn.login}}</button></a>
+            <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
+                <button ng-if="$root.showSignup" class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
+                <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn">{{frmelmnts.btn.login}}</button></a>
+                <div ng-include="'views/home/Signup.html'"></div>
             </div>
 
         </div>
@@ -26,7 +28,8 @@
             <div class="ui dropdown" id='headerSearchtab'>
               <i class="large bars icon tablet sunbird-hamburger-menu" ng-click="newUser.dropdown()"></i>
               <div class="left menu">
-                <a href="/private/index" class="ui item sunblogin margin-top--5">{{frmelmnts.btn.login}}</a>
+                <button ng-if="$root.showSignup" class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
+                <a href="/private/index" class="ui item sunblogin">{{frmelmnts.btn.login}}</a>
               </div>
             </div>
         </div>
@@ -34,6 +37,8 @@
             <div class="ui dropdown float-ContentRight" id='headerSearchmob'>
               <i class="bars icon mobile sunbird-hamburger-menu" ng-click="newUser.dropdown()"></i>
               <div class="left menu">
+                <a ng-if="$root.showSignup" class="item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}
+                </a>
                 <a href="/private/index" class="ui item sunblogin">{{frmelmnts.btn.login}}</a>
               </div>
             </div>
