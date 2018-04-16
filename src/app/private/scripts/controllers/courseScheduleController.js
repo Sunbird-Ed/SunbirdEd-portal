@@ -95,7 +95,7 @@ angular.module('playerApp')
             click: function (event, data) {
               if (data.targetType === 'title') {
                 data.targetType = 'expander'
-                toc.openContent(data.node.key)
+                toc.openContent(data.node.key, 'Open')
               }
             }
           })
@@ -269,7 +269,7 @@ angular.module('playerApp')
             $timeout(function () {
               var newWindow = window.open(window.location.origin + window.location.pathname + '#!/redirect', '_blank')
               newWindow.redirectUrl = ((contentData.artifactUrl) +
-                                      '&contentId=' + contentData.identifier + '&courseId=' + toc.courseId)
+                                      '#&contentId=' + contentData.identifier + '&courseId=' + toc.courseId)
               newWindow.timetobethere = 250
             }, timeInterval)
           } else if (contentData && contentData.mimeType !== 'application/vnd.ekstep.content-collection') { // if content is not collection type then  only its can be played
