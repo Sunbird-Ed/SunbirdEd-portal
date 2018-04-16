@@ -9,6 +9,6 @@ export * from './search/search.service';
 export * from './announcement/announcement.service';
 export * from './page-api/page-api.service';
 export * from './framework/framework.service';
-export * from './form/form.service'
+export * from './form/form.service';
 
 
