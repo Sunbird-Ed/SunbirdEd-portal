@@ -84,7 +84,6 @@
     "BADGE": {
       "GET": "org/v1/badges/list",
       "ASSIGN": "user/v1/badges/add"
-
     },
     "ORG_TYPE": {
       "GET": "org/v1/type/list",
@@ -107,6 +106,9 @@
     },
     "FRAMEWORK": {
       "READ": "framework/v1/read"
+    },
+    "dataDrivenForms": {
+      "READ": "data/v1/form/read"
     },
     "GEO_EXPLORER": {
       "LOCATION_READ": "org/v1/location/read/"

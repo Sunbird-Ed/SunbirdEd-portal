@@ -188,12 +188,23 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.1',
+        ver: '1.2',
         type: 'plugin'
-      },
-      {
+      }, {
+        id: 'org.ekstep.sunbirdmetadata',
+        ver: '1.0',
+        type: 'plugin'
+      }, {
+        id: 'org.ekstep.metadata',
+        ver: '1.0',
+        type: 'plugin'
+      }, {
         id: 'org.ekstep.lessonbrowser',
         ver: '1.3',
+        type: 'plugin'
+      }, {
+        id: 'org.ekstep.contenteditorfunctions',
+        ver: '1.1',
         type: 'plugin'
       }],
       localDispatcherEndpoint: '/collection-editor/telemetry',

@@ -12,7 +12,7 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
   CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent, DataDrivenComponent, DefaultTemplateComponent
 
 } from './components';
 @NgModule({
@@ -28,7 +28,8 @@ import {
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
     CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-    CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent],
+    CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent, DataDrivenComponent,
+    DefaultTemplateComponent],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }
