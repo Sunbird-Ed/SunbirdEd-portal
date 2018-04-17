@@ -16,6 +16,7 @@ import { ResourceModule } from '@sunbird/resource';
 import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 
 @NgModule({
   declarations: [
@@ -36,8 +37,12 @@ import { OrgManagementModule } from '@sunbird/org-management';
     Ng2IziToastModule,
     ResourceModule,
     LearnModule,
+<<<<<<< HEAD
     WorkspaceModule,
     OrgManagementModule
+=======
+    Ng2DeviceDetectorModule.forRoot()
+>>>>>>> 61968fb3568b851abf95912ba279fb82ba618b2d
   ],
   providers: [],
   entryComponents: [AppComponent],
