@@ -1,6 +1,8 @@
+import { TenantService } from './../../services/tenant/tenant.service';
 import { UserService, PermissionService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird/shared';
+
 /**
  * Main header component
  */
@@ -51,6 +53,10 @@ export class MainHeaderComponent implements OnInit {
    */
   public config: ConfigService;
   /**
+   * reference of tenant service.
+   */
+  public tenantService: TenantService;
+  /**
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
@@ -62,11 +68,12 @@ export class MainHeaderComponent implements OnInit {
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService,
-    permissionService: PermissionService, userService: UserService) {
+    permissionService: PermissionService, userService: UserService, tenantService: TenantService) {
       this.config = config;
       this.resourceService = resourceService;
       this.permissionService = permissionService;
       this.userService = userService;
+      this.tenantService = tenantService;
   }
 
   ngOnInit() {
@@ -79,13 +86,21 @@ export class MainHeaderComponent implements OnInit {
       (user: IUserData) => {
           if (user && !user.err) {
             this.userProfile = user.userProfile;
+            const rootOrg = this.userProfile.rootOrg;
+            this.tenantService.getOrgDetails(rootOrg.slug).subscribe((data) => {
+              this.orgLogo = data.result.logo;
+            });
           }
+
       });
+
   }
+
   /**
    * logout function.
    */
   logout () {
     window.document.location.replace('/logout');
   }
+
 }

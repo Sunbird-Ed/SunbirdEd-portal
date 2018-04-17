@@ -7,6 +7,7 @@ import { OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupCompone
 const routes: Routes = [
   {
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
+    data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Announcements', url: ''}],
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },
       { path: 'view/:announcementId', component: DetailsPopupComponent }
@@ -14,6 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'announcement/inbox/:pageNumber', component: InboxComponent,
+    data: [{label: 'Home', url: '/home'}, {label: 'Announcements', url: ''}],
     children: [
       { path: 'view/:announcementId', component: DetailsPopupComponent }
     ]

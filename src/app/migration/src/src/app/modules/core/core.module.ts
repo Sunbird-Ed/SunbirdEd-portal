@@ -1,3 +1,4 @@
+import { TenantService } from './services/tenant/tenant.service';
 import { PermissionDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -23,7 +24,7 @@ import { AuthGuard } from './guard/auth-gard.service';
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard]
 })
 export class CoreModule {

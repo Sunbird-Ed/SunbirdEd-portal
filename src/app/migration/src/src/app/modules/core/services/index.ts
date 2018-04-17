@@ -8,5 +8,3 @@ export * from  './course/course.service';
 export * from './search/search.service';
 export * from './announcement/announcement.service';
 export * from './page-api/page-api.service';
-
-

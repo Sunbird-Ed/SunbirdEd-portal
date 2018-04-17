@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CommunityModule } from '@sunbird/community';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, BreadcrumbsComponent } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HomeModule } from '@sunbird/home';
 import { DashboardModule } from '@sunbird/dashboard';
@@ -20,7 +20,8 @@ import { OrgManagementModule } from '@sunbird/org-management';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BreadcrumbsComponent
   ],
   imports: [
     CoreModule,
