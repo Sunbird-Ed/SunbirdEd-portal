@@ -244,11 +244,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     const validateModal = {
       state: this.config.editorConfig.EDITOR_CONFIG.collectionState,
       status: this.config.editorConfig.EDITOR_CONFIG.collectionStatus,
-      mimeType: this.config.appConfig.WORKSPACE.mimeCollection
+      mimeType: this.config.editorConfig.EDITOR_CONFIG.mimeCollection
     };
 
     const req = { contentId: this.contentId };
-    const qs = { fields: this.config.appConfig.WORKSPACE.editorQS, mode: this.config.editorConfig.EDITOR_CONFIG.MODE };
+    const qs = { fields: this.config.editorConfig.EDITOR_CONFIG.editorQS, mode: this.config.editorConfig.EDITOR_CONFIG.MODE };
     if (this.state === 'flagged') {
       delete qs.mode;
     }
