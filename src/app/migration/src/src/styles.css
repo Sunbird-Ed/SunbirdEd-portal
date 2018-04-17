@@ -2517,6 +2517,7 @@ i.trash.outline.icon.trashIcon-fontSize {
 }
 .wmd-input {
   height: 150px !important;
+  width: 100%;
 }
 .ui.items > .item > .image.userSearchImage > img {
   min-height: 80px;
