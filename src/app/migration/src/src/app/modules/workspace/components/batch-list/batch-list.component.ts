@@ -223,11 +223,11 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   public processBatch() {
     let userList = [];
     const participants = [];
-    const userNames = [];
+    const userName = [];
     _.forEach(this.batchList, (item, key) => {
       participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
       userList.push(item.createdBy);
-      this.batchList[key].label = participants;
+      this.batchList[key].label = participants[item.id];
     });
     userList = _.compact(_.uniq(userList));
     const req = {
@@ -237,12 +237,11 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       if (res.result.response.count && res.result.response.content.length > 0) {
         this.showLoader = false;
         _.forEach(res.result.response.content, function (val, key) {
-          userNames[val.identifier] = val.firstName + ' ' + val.lastName;
+          userName[val.identifier] = val.firstName + ' ' + val.lastName;
         });
         _.forEach(this.batchList, (item, key) => {
-            this.batchList[key].userNames = userNames;
+          this.batchList[key].userName = userName[item.createdBy];
         });
-        console.log(this.batchList);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }

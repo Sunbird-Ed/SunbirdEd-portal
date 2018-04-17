@@ -55,7 +55,7 @@ export interface Ibatch {
     /**
     * Batch createdBy user
     */
-    userNames?: Array<string>;
+    userName?: Array<string>;
     /**
     * Stattus of Batch
     */
