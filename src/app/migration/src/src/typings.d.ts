@@ -10,3 +10,4 @@ declare module '*.json' {
 }
 
 declare const Markdown;
+declare var EkTelemetry: any;
