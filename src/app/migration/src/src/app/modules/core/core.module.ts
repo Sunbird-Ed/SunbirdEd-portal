@@ -6,12 +6,13 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService
+  BadgesService, ContentService, CoursesService, PageApiService, FrameworkService, FormService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
+import { CacheService } from 'ng2-cache-service';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { AuthGuard } from './guard/auth-gard.service';
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
     LearnerService, UserService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard]
+    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService, AuthGuard,
+    FrameworkService, FormService, CacheService]
 })
 export class CoreModule {
 }

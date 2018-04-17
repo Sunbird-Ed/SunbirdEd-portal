@@ -1,0 +1,17 @@
+<sui-modal [isClosable]="true" (dismissed)="goToCreate(); " [mustScroll]="true" #modal>
+    <div class=" ui segment margin-top-10">
+        <div class=" margin-bottom-15">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    <span class="ui header">
+                        {{resourceService?.frmelmnts?.lbl?.createtextbook}}
+                    </span>
+                </div>
+            </div>
+        </div>
+  <div *ngIf="formFieldProperties" class="content">
+        <app-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
+        </app-default-template>
+  </div>
+      </div>
+</sui-modal>
