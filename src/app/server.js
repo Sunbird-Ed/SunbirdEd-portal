@@ -97,6 +97,7 @@ app.all('/public', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
+  res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -128,6 +129,7 @@ app.all('/', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
+  res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
