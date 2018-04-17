@@ -3,6 +3,7 @@ import * as  urlConfig from './url.config.json';
 import * as  dropDownConfig from './dropdown.config.json';
 import * as  rolesConfig from './roles.config.json';
 import * as  appConfig from './app.config.json';
+import * as editorConfig from './editor.config.json';
 
 /**
  * Service to fetch config details.
@@ -30,5 +31,10 @@ export class ConfigService {
  *
  */
   appConfig = (<any>appConfig);
+ /**
+ * property containing editor config
+ *
+ */
+editorConfig = (<any>editorConfig);
 }
 

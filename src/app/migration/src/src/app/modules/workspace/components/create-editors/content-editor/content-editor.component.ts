@@ -1,4 +1,4 @@
-import { CustomWindow } from './../../../interfaces';
+import { CustomWindow } from './../../../interfaces/custom.window';
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -21,7 +21,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Content Editor in a IFrame Modal
  */
-export class ContentEditorComponent implements OnInit, AfterViewInit {
+export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
   * To show toaster(error, success etc) after any API calls
@@ -103,6 +103,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       this.state = params['state'];
     });
 
+    this.setRenderer();
+
+  }
+
+  setRenderer() {
     this.renderer.listen('window', 'editor:metadata:edit', () => {
       this.closeModal();
     });
@@ -145,6 +150,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
     this.getContentData();
   }
 
+
+  ngOnDestroy() {
+    this.setRenderer();
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+     }
+  }
   /**
    * Launch the content editor in Iframe Modal window
    */
@@ -161,8 +173,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
         id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
-      framework: 'NCF',
+      tags: this.userService.dims,
       channel: this.userProfile.rootOrgId
     };
 
@@ -182,17 +193,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.2',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.sunbirdmetadata',
-          ver: '1.0',
-          type: 'plugin'
-        },
-        {
-          id: 'org.ekstep.metadata',
-          ver: '1.0',
+          ver: '1.1',
           type: 'plugin'
         }
       ],
@@ -245,12 +246,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
-      'state': this.config.appConfig.EDITOR_CONFIG.contentState,
-      'status': this.config.appConfig.EDITOR_CONFIG.contentStatus,
+      'state': this.config.editorConfig.EDITOR_CONFIG.contentState,
+      'status': this.config.editorConfig.EDITOR_CONFIG.contentStatus,
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {
-      if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = state;
         rspData.userId = this.userProfile.userId;
@@ -260,7 +260,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
         }
-      }
     }
     );
   }

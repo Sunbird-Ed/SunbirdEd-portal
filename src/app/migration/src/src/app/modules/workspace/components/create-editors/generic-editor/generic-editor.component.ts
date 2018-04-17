@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services/editors/editor.service';
+import { EditorService } from './../../../services';
 
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -19,7 +19,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Generic Editor in a IFrame Modal
  */
-export class GenericEditorComponent implements OnInit, AfterViewInit {
+export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
 * To show toaster(error, success etc) after any API calls
@@ -37,9 +37,15 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   * user profile details.
   */
   userService: UserService;
+  /**
+   * Id of the content
+   */
 
   public contentId: string;
 
+  /**
+   * Userprofile details
+   */
   public userProfile: IUserProfile;
 
   /**
@@ -128,7 +134,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
         id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
+      tags: this.userService.dims,
       channel: this.userService.channel,
       env: 'genericeditor'
     };
@@ -172,10 +178,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCreate() {
+    this.router.navigate(['workspace/content']);
+    this.showModal = false;
+  }
+
+/**
+ * On componenet destroy remove the genericEditor id from DOM
+ */
+  ngOnDestroy() {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.router.navigate(['workspace/content']);
-    this.showModal = false;
   }
 }

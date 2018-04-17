@@ -6,7 +6,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces';
+import { CustomWindow } from './../../../interfaces/custom.window';
 import { EditorService } from './../../../services';
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -118,6 +118,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
    */
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
+      this.state = params['state'];
       this.type = params['type'];
       this.framework = params['framework'];
     });
@@ -169,7 +170,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
         id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
+      tags: this.userService.dims,
       channel: this.userService.channel,
       framework: this.framework,
       env: this.type.toLowerCase()
@@ -227,11 +228,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFalgReviewer = false;
-    if (this.state === 'UpForReviewContent' &&
+    if (this.state === 'upForReview' &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
-    } else if (this.state === 'FlaggedContent' &&
+    } else if (this.state === 'flagged' &&
       _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFalgReviewer = true;
@@ -241,14 +242,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     }, 100);
 
     const validateModal = {
-      state: this.config.appConfig.EDITOR_CONFIG.collectionState,
-      status: this.config.appConfig.EDITOR_CONFIG.collectionStatus,
-      mimeType: this.config.appConfig.EDITOR_CONFIG.mimeCollection
+      state: this.config.editorConfig.EDITOR_CONFIG.collectionState,
+      status: this.config.editorConfig.EDITOR_CONFIG.collectionStatus,
+      mimeType: this.config.editorConfig.EDITOR_CONFIG.mimeCollection
     };
 
     const req = { contentId: this.contentId };
-    const qs = { fields: this.config.appConfig.EDITOR_CONFIG.editorQS, mode: this.config.appConfig.EDITOR_CONFIG.MODE };
-    if (this.state === 'FlaggedContent') {
+    const qs = { fields: this.config.editorConfig.EDITOR_CONFIG.editorQS, mode: this.config.editorConfig.EDITOR_CONFIG.MODE };
+    if (this.state === 'flagged') {
       delete qs.mode;
     }
     /**
@@ -280,9 +281,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToDraft() {
-    // if (document.getElementById('collectionEditor')) {
-    //   document.getElementById('collectionEditor').remove();
-    // }
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
     this.route.navigate(['workspace/content/draft/1']);
     this.showModal = false;
   }
@@ -344,78 +345,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     const editorConfig = [];
     switch (type) {
       case 'Course':
-        editorConfig.push({
-          type: 'Course',
-          label: 'Course',
-          isRoot: true,
-          editable: true,
-          childrenTypes: [
-            'CourseUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
-        },
-          {
-            type: 'CourseUnit',
-            label: 'Course Unit',
-            isRoot: false,
-            editable: true,
-            childrenTypes: [
-              'CourseUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
-          },
-          {
-            type: 'Collection',
-            label: 'Collection',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Resource',
-            label: 'Resource',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          });
+        editorConfig.push();
         return editorConfig;
       case 'Collection':
         editorConfig.push({
