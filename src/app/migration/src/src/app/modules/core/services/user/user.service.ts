@@ -113,7 +113,7 @@ export class UserService {
 /**
     * method to fetch appId and Ekstep_env from server.
     */
-    public getAppidEnv(): void {
+    public getAppidEnv() {
       const url = this.config.appConfig.APPID_EKSTEPENV;
       this.http.get(url)
       .catch((error: any) => {
