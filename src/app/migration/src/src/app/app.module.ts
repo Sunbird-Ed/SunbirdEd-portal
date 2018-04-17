@@ -37,12 +37,9 @@ import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
     Ng2IziToastModule,
     ResourceModule,
     LearnModule,
-<<<<<<< HEAD
     WorkspaceModule,
-    OrgManagementModule
-=======
+    OrgManagementModule,
     Ng2DeviceDetectorModule.forRoot()
->>>>>>> 61968fb3568b851abf95912ba279fb82ba618b2d
   ],
   providers: [],
   entryComponents: [AppComponent],
