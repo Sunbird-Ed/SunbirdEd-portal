@@ -188,12 +188,26 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
       loadingImage: '',
       plugins: [{
         id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
-        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION_1_2,
         type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       },
       {
+      id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_METADATA,
+      ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+      type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+    }, {
+      id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.METADATA,
+      ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+      type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+    },
+      {
         id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.LESSON_BROWSER,
         ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.LESSON_BROWSER_VERSION,
+        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+      },
+      {
+        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.contenteditorfunctions,
+        ver:  this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION_1_1,
         type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
       }],
       localDispatcherEndpoint: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.localDispatcherEndpoint,
@@ -227,11 +241,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFalgReviewer = false;
-    if (this.state === 'UpForReviewContent' &&
+    if (this.state === 'upForReview' &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
-    } else if (this.state === 'FlaggedContent' &&
+    } else if (this.state === 'flagged' &&
       _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFalgReviewer = true;
@@ -248,7 +262,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
     const req = { contentId: this.contentId };
     const qs = { fields: this.config.appConfig.EDITOR_CONFIG.editorQS, mode: this.config.appConfig.EDITOR_CONFIG.MODE };
-    if (this.state === 'FlaggedContent') {
+    if (this.state === 'flagged') {
       delete qs.mode;
     }
     /**
@@ -281,7 +295,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.route.navigate(['workspace/content/draft/1']);
+    if (this.state) {
+      this.route.navigate(['workspace/content/', this.state, 1]);
+    } else {
+      this.route.navigate(['workspace/content/draft/1']);
+    }
     this.showModal = false;
   }
 
@@ -369,7 +387,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
             ],
             addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
-            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
+            iconClass: 'fa fa-file-o'
           },
           {
             type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.RESOURCE,
@@ -380,7 +398,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
             ],
             addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
-            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
+            iconClass: 'fa fa-file-o'
           },
           {
             type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.STORY,
@@ -391,7 +409,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
             ],
             addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
-            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
+            iconClass: 'fa fa-file-o'
           },
           {
             type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.WORKSHEET,
@@ -402,7 +420,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
 
             ],
             addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.BROWSER,
-            iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
+            iconClass: 'fa fa-file-o'
           });
         return editorConfig;
       case 'Collection':
@@ -413,7 +431,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
           editable: true,
           childrenTypes: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLL_CHILDREN_TYPE,
           addType: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.EDITOR,
-          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FILE_O
+          iconClass: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.ICON_CLASS_FOLDER
         },
           {
             type: this.config.appConfig.EDITOR_CONFIG.TREE_NODE.COLLECTION,

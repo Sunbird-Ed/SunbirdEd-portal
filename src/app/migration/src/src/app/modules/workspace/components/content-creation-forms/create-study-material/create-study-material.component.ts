@@ -156,12 +156,12 @@ export class CreateStudyMaterialComponent implements OnInit {
   */
   createContent() {
     const state = 'Draft';
+    const framework = 'NCF';
     const requestData = {
       content: this.generateData()
     };
     this.editorService.create(requestData).subscribe(res => {
-      this.showLoader = true;
-        this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state]);
+        this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state, framework]);
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0010);
     });

@@ -25,8 +25,8 @@ const routes: Routes = [
         ]
       },
       {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
-      {path: 'edit/generic/:state', component: GenericEditorComponent },
+      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
+      {path: 'edit/generic', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },

@@ -17,11 +17,11 @@
     },
     "EDITOR_CONFIG": {
         "collectionState": [
-            "UpForReviewContent",
-            "ReviewContent",
-            "PublishedContent",
-            "FlaggedContent",
-            "LimitedPublishedContent"
+            "upForReview",
+            "review",
+            "published",
+            "flagged",
+            "limitedPublish"
         ],
         "collectionStatus": [
             "Review",
@@ -34,10 +34,10 @@
         "editorQS": "createdBy,status,mimeType",
         "MODE": "edit",
         "contentState": [
-            "UpForReviewContent",
-            "ReviewContent",
-            "PublishedContent",
-            "LimitedPublishedContent"
+            "upForReview",
+            "review",
+            "published",
+            "limitedPublish"
         ],
         "contentStatus": [
             "Review",
@@ -61,6 +61,7 @@
             "SB_COMMON_HEADER": "org.ekstep.sunbirdcommonheader",
             "SUGGEST_CONTENT": "org.ekstep.suggestcontent",
             "PLUGIN_VERSION": "1.0",
+            "PLUGIN_VERSION_1_1": "1.1",
             "PLUGIN_VERSION_1_2": "1.2",
             "PLUGIN_TYPE": "plugin",
             "LESSON_BROWSER": "org.ekstep.lessonbrowser",
@@ -71,7 +72,8 @@
             "localDispatcherEndpoint": "/collection-editor/telemetry",
             "CONTENT_ENDPOINT": "/content-editor/telemetry",
             "SB_METADATA": "org.ekstep.sunbirdmetadata",
-            "METADATA": "org.ekstep.metadata"
+            "METADATA": "org.ekstep.metadata",
+            "contenteditorfunctions": "contenteditorfunctions"
         },
         "TREE_NODE": {
             "COURSE": "Course",
