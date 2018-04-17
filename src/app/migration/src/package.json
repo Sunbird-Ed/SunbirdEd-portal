@@ -45,6 +45,7 @@
     "moment-duration-format": "^2.2.2",
     "ng2-cache-service": "^1.1.1",
     "ng2-charts": "^1.6.0",
+    "ng2-device-detector": "^1.0.1",
     "ng2-izitoast": "^1.0.1",
     "ng2-semantic-ui": "^0.9.6",
     "ngx-slick": "^0.1.3",
