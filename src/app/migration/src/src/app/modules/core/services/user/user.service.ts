@@ -51,11 +51,11 @@ export class UserService {
   /**
    * Reference of channel
    */
-  public channel: string;
+  private _channel: string;
   /**
    * Reference of dims
    */
-  public dims: Array<string> = [];
+  public _dims: Array<string> = [];
   /**
    * Reference of Ekstep_env
    */
@@ -174,8 +174,8 @@ export class UserService {
       });
     }
     const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
-    this.channel = rootOrg;
-    this.dims = _.concat(organisationIds, this.channel);
+    this._channel = rootOrg;
+    this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;
@@ -191,5 +191,13 @@ export class UserService {
 
   get rootOrgId() {
     return this._rootOrgId;
+  }
+
+  get channel() {
+    return this._channel;
+  }
+
+  get dims() {
+    return this._dims;
   }
 }

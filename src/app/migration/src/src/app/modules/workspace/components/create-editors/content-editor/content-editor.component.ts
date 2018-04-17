@@ -1,4 +1,4 @@
-import { CustomWindow } from './../../../interfaces';
+import { CustomWindow } from './../../../interfaces/custom.window';
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -121,6 +121,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     });
   }
 
+
   ngAfterViewInit() {
      /**
      * Launch the generic editor after window load
@@ -149,13 +150,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.getContentData();
   }
 
+
   ngOnDestroy() {
     this.setRenderer();
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
      }
   }
-
   /**
    * Launch the content editor in Iframe Modal window
    */
@@ -170,9 +171,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver:  this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        ver: '1.0'
       },
-      tags: [ this.userService.dims ],
+      tags: this.userService.dims,
       channel: this.userProfile.rootOrgId
     };
 
@@ -182,39 +183,29 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
  */
     window.config = {
       baseURL: '',
-      modalId: this.config.appConfig.EDITOR_CONFIG.contentEditor,
-      apislug: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.apislug,
+      modalId: 'contentEditor',
+      apislug: '/action',
       alertOnUnload: true,
       headerLogo: '',
-      aws_s3_urls: [this.config.appConfig.EDITOR_CONFIG.AWS_URL +
-        this.userService.env + this.config.appConfig.EDITOR_CONFIG.AWS_URL_2 +
-        this.userService.env + this.config.appConfig.EDITOR_CONFIG.AWS_URL_3],
+      aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
+        this.userService.env + '/', 'https://ekstep-public-' +
+        this.userService.env + '.s3-ap-south-1.amazonaws.com/'],
       plugins: [
         {
-          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
-          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION_1_2,
-          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
-        },
-        {
-          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_METADATA,
-          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
-          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
-        },
-        {
-          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.METADATA,
-          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
-          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+          id: 'org.ekstep.sunbirdcommonheader',
+          ver: '1.1',
+          type: 'plugin'
         }
       ],
-      dispatcher: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.dispatcher,
-      localDispatcherEndpoint: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.CONTENT_ENDPOINT,
+      dispatcher: 'local',
+      localDispatcherEndpoint: '/content-editor/telemetry',
       showHelp: false,
       previewConfig: {
-        repos: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RENDERER_URL,
+        repos: ['/content-plugins/renderer'],
         plugins: [{
-          id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_ENDPAGE,
-          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
-          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+          id: 'org.sunbird.player.endpage',
+          ver: 1.0,
+          type: 'plugin'
         }],
         showEndPage: false
       }
@@ -253,10 +244,10 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   getContentData() {
     const state = 'UpForReviewContent';
     const req = { contentId: this.contentId };
-    const qs = { fields: this.config.appConfig.EDITOR_CONFIG.editorQS, mode: this.config.appConfig.EDITOR_CONFIG.MODE };
+    const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
-      'state': this.config.appConfig.EDITOR_CONFIG.contentState,
-      'status': this.config.appConfig.EDITOR_CONFIG.contentStatus,
+      'state': this.config.editorConfig.EDITOR_CONFIG.contentState,
+      'status': this.config.editorConfig.EDITOR_CONFIG.contentStatus,
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {
@@ -283,6 +274,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
 navigateToDraft() {
+  if (document.getElementById('contentEditor')) {
+    document.getElementById('contentEditor').remove();
+   }
    this.router.navigate(['workspace/content/draft/1']);
    this.showModal = false;
   }

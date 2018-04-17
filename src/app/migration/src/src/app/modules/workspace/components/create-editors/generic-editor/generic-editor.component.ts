@@ -5,7 +5,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services/editors/editor.service';
+import { EditorService } from './../../../services';
 
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -29,10 +29,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     * To call resource service which helps to use language constant
     */
   public resourceService: ResourceService;
-   /**
-  * To get url, app configs
-  */
-  public config: ConfigService;
   /**
    * To make inbox API calls
    */
@@ -42,20 +38,21 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   */
   userService: UserService;
   /**
-   * Id of the content created
+   * Id of the content
    */
+
   public contentId: string;
+
   /**
-   * user profile details.
+   * Userprofile details
    */
   public userProfile: IUserProfile;
+
   /**
  * To navigate to other pages
  */
   private router: Router;
-/**
- * Boolean to show and hide modal
- */
+
   public showModal: boolean;
   /**
    * To send activatedRoute.snapshot to router navigation
@@ -64,17 +61,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private activatedRoute: ActivatedRoute;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute, config: ConfigService) {
+    activatedRoute: ActivatedRoute) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
-    this.config = config;
   }
 
   ngOnInit() {
-    /**
-     * Call User service to get user data
-     */
+   /**
+    * Call User service to get user data
+    */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -123,9 +119,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
-    /**
-     * Assign the values to window context
-     */
+/**
+ * Assign the values to window context
+ */
     window.context = {
       user: {
         id: this.userService.userid,
@@ -136,35 +132,35 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
+        ver: '1.0'
       },
-      tags: [this.userService.dims ],
+      tags: this.userService.dims,
       channel: this.userService.channel,
-      env: this.config.appConfig.EDITOR_CONFIG.GENERICEDITOR
+      env: 'genericeditor'
     };
 
-    /**
-     * Assign the values to window config
-     */
+/**
+ * Assign the values to window config
+ */
     window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
-      dispatcher: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.dispatcher,
-      apislug: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.apislug,
+      dispatcher: 'local',
+      apislug: '/action',
       alertOnUnload: true,
       headerLogo: '',
       loadingImage: '',
       plugins: [{
-        id: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.SB_COMMON_HEADER,
-        ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
-        type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+        id: 'org.ekstep.sunbirdcommonheader',
+        ver: '1.1',
+        type: 'plugin'
       }],
       previewConfig: {
-        'repos': this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.RENDERER_URL,
+        'repos': ['/content-plugins/renderer'],
         plugins: [{
-          'id': this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_ENDPAGE,
-          ver: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_VERSION,
-          type: this.config.appConfig.EDITOR_CONFIG.WINDOW_CONFIG.PLUGIN_TYPE
+          'id': 'org.sunbird.player.endpage',
+          ver: 1.0,
+          type: 'plugin'
         }],
         showEndPage: false
       }
