@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
+   ILoaderMessage } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
 import { UserService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-import { DefaultTemplateComponent } from '../default-template/default-template.component';
+import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 
 @Component({
   selector: 'app-data-driven',
@@ -36,7 +37,7 @@ export class DataDrivenComponent implements OnInit {
   /**
 * contentType is creation type, fected from url
 */
-  private contentType;
+  public contentType;
   /**
  * userForm name creation
  */
@@ -65,6 +66,10 @@ export class DataDrivenComponent implements OnInit {
  * To send activatedRoute.snapshot to routerNavigationService
  */
   public activatedRoute: ActivatedRoute;
+    /**
+    * loader message
+    */
+    loaderMessage: ILoaderMessage;
 
   public frameworkService: FrameworkService;
 
@@ -80,11 +85,13 @@ export class DataDrivenComponent implements OnInit {
 
   public categoryMasterList: any;
 
-  public formInputData: any;
+  // public formInputData: any;
 
   private creationFormLable: string;
 
   public exists: boolean;
+
+  public framework: String;
 
 
 
@@ -116,7 +123,7 @@ export class DataDrivenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formInputData = {};
+    // this.formInputData = {};
     /***
  * Call User service to get user data
  */
@@ -129,29 +136,13 @@ export class DataDrivenComponent implements OnInit {
     this.showLoader = false;
   }
   /**
- * requestBody is returned of type object
- */
-  generateData() {
-    this.showLoader = true;
-    const requestBody = {
-      name: this.creationForm.value.name ? this.creationForm.value.name : 'Untitled Collection',
-      description: this.creationForm.value.description,
-      creator: this.userProfile.firstName + ' ' + this.userProfile.lastName,
-      createdBy: this.userProfile.id,
-      organisation: [],
-      createdFor: this.userProfile.organisationIds,
-      mimeType: this.config.urlConFig.URLS.CONTENT_COLLECTION,
-      contentType: 'Collection'
-    };
-    return requestBody;
-  }
-  /**
 * getMetaData is gives form config data
 */
   getMetaData() {
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+        this.framework = frameworkData.framework ;
         this.exists = this._cacheService.exists(this.contentType);
         if (this.exists) {
           const data: any | null = this._cacheService.get(this.contentType);
@@ -202,5 +193,54 @@ export class DataDrivenComponent implements OnInit {
 */
   goToCreate() {
     this.router.navigate(['/workspace/content/create']);
+  }
+
+    /**
+ * requestBody is returned of type object
+ */
+generateData(data) {
+  this.showLoader = true;
+  const requestData = _.cloneDeep(data);
+  // const requestBody = {
+  requestData.name = data.name ? data.name : 'Untitled Collection',
+    requestData.description = data.description ? data.description : 'Untitled Collection',
+    requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
+    requestData.createdBy = this.userProfile.id,
+    requestData.organisation = [],
+    requestData.createdFor = this.userProfile.organisationIds,
+    requestData.contentType = this.config.appConfig.contentCreateTypeForEditors[this.contentType],
+    requestData.framework = this.framework,
+  // };
+  console.log('requestBody', requestData);
+  if (this.contentType === 'studymaterial') {
+    requestData.mimeType = this.config.appConfig.CONTENT_CONST.CREATE_LESSON ;
+  } else {
+    requestData.mimeType = this.config.urlConFig.URLS.CONTENT_COLLECTION ;
+  }
+
+  return requestData;
+}
+
+  createCollection() {
+    const state = 'Draft';
+    const framework = this.framework;
+    const requestData = {
+      content: this.generateData(_.pickBy(this.formData.formInputData))
+    };
+    console.log('requestData', requestData);
+  if (this.contentType === 'studymaterial') {
+    this.editorService.create(requestData).subscribe(res => {
+        this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state, framework]);
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0010);
+    });
+  } else {
+    this.editorService.create(requestData).subscribe(res => {
+      const type = this.config.appConfig.contentCreateTypeForEditors[this.contentType];
+      this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0010);
+    });
+  }
   }
 }

@@ -9,9 +9,27 @@
                 </div>
             </div>
         </div>
-  <div *ngIf="formFieldProperties" class="content">
-        <app-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
-        </app-default-template>
-  </div>
-      </div>
+        <form class="ui form">
+            <div class="content">
+                <div *ngIf="formFieldProperties">
+                    <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
+                    </app-content-creation-default-template>
+                </div>
+                <div class="actions margin-top-10">
+                    <p class="text-align-center padding-top-20">
+                        <button class="ui primary text-align-center icon button" (click)="createCollection();modal.deny()">
+                            {{resourceService?.frmelmnts?.btn?.startcreating}}
+                        </button>
+                    </p>
+                    <div>
+                        <label>
+                            <p class="text-align-center">
+                                {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
+                            </p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </sui-modal>

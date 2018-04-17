@@ -115,5 +115,12 @@
         "collection": "createcollection",
         "studymaterial": "createlessontext",
         "lessonplan": "createlessonplan"
+    },
+    "contentCreateTypeForEditors": {
+        "textbook": "TextBook",
+        "course": "Course",
+        "collection": "Collection",
+        "studymaterial": "Resource",
+        "lessonplan": "LessonPlan"
     }
 }

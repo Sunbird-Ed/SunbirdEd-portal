@@ -14,5 +14,5 @@ export * from './published/published.component';
 export * from './review-submissions/review-submissions.component';
 export * from './uploaded/uploaded.component';
 export * from './data-driven/data-driven.component';
-export * from './default-template/default-template.component';
+export * from './content-creation-default-template/content-creation-default-template.component';
 
