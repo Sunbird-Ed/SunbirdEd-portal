@@ -255,7 +255,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
      * Call API to launch the Collection Editor in the modal
      */
     this.editorService.getById(req, qs).subscribe(response => {
-      if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = 'CreateCollection';
         rspData.userId = this.userProfile.userId;
@@ -264,7 +263,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
         }
-      }
     });
   }
 
