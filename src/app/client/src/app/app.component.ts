@@ -55,7 +55,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.userService.userid, this.userService.sessionId);
     if (this.userService.userid && this.userService.sessionId) {
       this.userService.initialize();
       this.permissionService.initialize();

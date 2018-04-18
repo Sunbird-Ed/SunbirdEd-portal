@@ -166,6 +166,7 @@ export class OrganisationComponent {
     this.route = route;
     this.activatedRoute.params.subscribe(params => {
       this.getMyOrganisations();
+      console.log(params);
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
