@@ -96,6 +96,7 @@ export class UserAdditionalInfoComponent implements OnInit {
         delete addInfo['phone'];
         editedInfo.push(addInfo);
       } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0076);
         const addInfo = {};
         addInfo['userId'] = this.userService.userid;
         editedInfo.push(addInfo);
@@ -110,6 +111,8 @@ export class UserAdditionalInfoComponent implements OnInit {
       this.toasterService.success(this.resourceService.messages.m0022);
     },
       err => {
+        console.log('err', err);
+        this.toasterService.error(err.error.params.errmsg);
         // toaster err
       });
   }

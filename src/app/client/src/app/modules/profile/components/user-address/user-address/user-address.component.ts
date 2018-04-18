@@ -74,17 +74,14 @@ export class UserAddressComponent implements OnInit {
     const req = {
       address: editedAddress
     };
-    if (req.address.length > 0) {
-      this.profileService.updateProfile(req).subscribe(res => {
-        this.router.navigate(['/profile']);
-        this.toasterService.success(this.resourceService.messages.smsg.m0023);
-      },
-        err => {
-          // toaster err
-        });
-    } else {
+    this.profileService.updateProfile(req).subscribe(res => {
       this.router.navigate(['/profile']);
-    }
+      this.toasterService.success(this.resourceService.messages.smsg.m0023);
+    },
+      err => {
+        // toaster err
+        this.toasterService.error(err.error.params.errmsg);
+      });
   }
   addAddress() {
     const addAddress: any = {};
