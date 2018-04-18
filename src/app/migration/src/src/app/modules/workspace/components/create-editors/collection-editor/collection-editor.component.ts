@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
@@ -6,7 +6,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
+import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -22,7 +22,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the collection Editor in a IFrame Modal
  */
-export class CollectionEditorComponent implements OnInit, AfterViewInit {
+export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
  * To navigate to other pages
  */
@@ -179,45 +179,16 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     /**
      * Assign the values to window config
      */
-    window.config = {
-      corePluginsPackaged: true,
-      modalId: 'collectionEditor',
-      dispatcher: 'local',
-      apislug: '/action',
-      alertOnUnload: true,
-      headerLogo: '',
-      loadingImage: '',
-      plugins: [{
-        id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.1',
-        type: 'plugin'
-      },
-      {
-        id: 'org.ekstep.lessonbrowser',
-        ver: '1.3',
-        type: 'plugin'
-      }],
-      localDispatcherEndpoint: '/collection-editor/telemetry',
-      editorConfig: {
-        mode: 'Edit',
-        contentStatus: 'draft',
-        rules: {
-          levels: 7,
-          objectTypes: this.getTreeNodes(this.type)
-        },
-        defaultTemplate: {}
-      },
-      previewConfig: {
-        repos: ['/content-plugins/renderer'],
-        plugins: [{
-          id: 'org.sunbird.player.endpage',
-          ver: 1.0,
-          type: 'plugin'
-        }],
-        showEndPage: false
-      },
-      editorType: this.type
-    };
+const editorWindowConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_WINDOW_CONFIG;
+const dynamicConfig = window.config = {
+  editorConfig : {
+    rules: {
+      objectTypes: this.getTreeNodes(this.type)
+    }
+  }
+};
+
+window.config = {...editorWindowConfig, ...dynamicConfig};
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
@@ -256,7 +227,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
      * Call API to launch the Collection Editor in the modal
      */
     this.editorService.getById(req, qs).subscribe(response => {
-      if (response && response.responseCode === 'OK') {
         const rspData = response.result.content;
         rspData.state = 'CreateCollection';
         rspData.userId = this.userProfile.userId;
@@ -265,7 +235,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0004);
         }
-      }
     });
   }
 
@@ -284,11 +253,19 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.route.navigate(['workspace/content/draft/1']);
+    if (this.state) {
+      this.route.navigate(['workspace/content/', this.state , '1']);
+    }  else {
+      this.route.navigate(['workspace/content/draft/1']);
+    }
     this.showModal = false;
   }
 
-
+ngOnDestroy() {
+  if (document.getElementById('collectionEditor')) {
+    document.getElementById('collectionEditor').remove();
+  }
+}
   /**
    *Validate the request
    * @param reqData user, state, status validation
@@ -337,225 +314,23 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit {
       window.config.editorConfig.contentStatus = 'flagged';
     }
   }
+
+
   /**
    * to assign the value to Editor Config
    * @param type of the content created
    */
   getTreeNodes(type) {
-    const editorConfig = [];
+    let editorConfig = [];
     switch (type) {
       case 'Course':
-        editorConfig.push();
-        return editorConfig;
+          return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COURSE_ARRAY;
       case 'Collection':
-        editorConfig.push({
-          type: 'Collection',
-          label: 'Collection',
-          isRoot: true,
-          editable: true,
-          childrenTypes: [
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-folder-o'
-        },
-          {
-            type: 'Collection',
-            label: 'Collection',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Resource',
-            label: 'Resource',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          });
-        return editorConfig;
+       return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_ARRAY;
       case 'LessonPlan':
-        editorConfig.push({
-          type: 'LessonPlan',
-          label: 'LessonPlan',
-          isRoot: true,
-          editable: true,
-          childrenTypes: [
-            'LessonPlanUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
-        },
-          {
-            type: 'LessonPlanUnit',
-            label: 'LessonPlan Unit',
-            isRoot: false,
-            editable: true,
-            childrenTypes: [
-              'LessonPlanUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
-          },
-          {
-            type: 'Collection',
-            label: 'Collection',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Resource',
-            label: 'Resource',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          });
-        return editorConfig;
+        return editorConfig  = this.config.editorConfig.EDITOR_CONFIG.LESSON_PLAN;
       default:
-
-        editorConfig.push({
-          type: 'TextBook',
-          label: 'Textbook',
-          isRoot: true,
-          editable: true,
-          childrenTypes: [
-            'TextBookUnit',
-            'Collection',
-            'Resource',
-            'Story',
-            'Worksheet'
-          ],
-          addType: 'Editor',
-          iconClass: 'fa fa-book'
-        },
-          {
-            type: 'TextBookUnit',
-            label: 'Textbook Unit',
-            isRoot: false,
-            editable: true,
-            childrenTypes: [
-              'TextBookUnit',
-              'Collection',
-              'Resource'
-            ],
-            addType: 'Editor',
-            iconClass: 'fa fa-folder-o'
-          },
-          {
-            type: 'Collection',
-            label: 'Collection',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Resource',
-            label: 'Resource',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Story',
-            label: 'Story',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          },
-          {
-            type: 'Worksheet',
-            label: 'Worksheet',
-            isRoot: false,
-            editable: false,
-            childrenTypes: [
-
-            ],
-            addType: 'Browser',
-            iconClass: 'fa fa-file-o'
-          });
-        return editorConfig;
+        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.DEFAULT_CONFIG;
     }
   }
 }

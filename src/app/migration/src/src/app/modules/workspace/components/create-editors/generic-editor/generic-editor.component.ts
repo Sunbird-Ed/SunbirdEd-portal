@@ -5,7 +5,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services';
+import { EditorService } from './../../../services/editors/editor.service';
 
 declare var jQuery: any;
 declare let window: CustomWindow;
@@ -38,21 +38,20 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   */
   userService: UserService;
   /**
-   * Id of the content
+   * Id of the content created
    */
-
   public contentId: string;
-
   /**
-   * Userprofile details
+   * user profile details.
    */
   public userProfile: IUserProfile;
-
   /**
  * To navigate to other pages
  */
   private router: Router;
-
+/**
+ * Boolean to show and hide modal
+ */
   public showModal: boolean;
   /**
    * To send activatedRoute.snapshot to router navigation
@@ -65,8 +64,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
-  }
 
+  }
   ngOnInit() {
    /**
     * Call User service to get user data
@@ -142,7 +141,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 /**
  * Assign the values to window config
  */
-    window.config = {
+     window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
       dispatcher: 'local',
@@ -152,7 +151,15 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.1',
+        ver: '1.2',
+        type: 'plugin'
+      }, {
+        id: 'org.ekstep.sunbirdmetadata',
+        ver: '1.0',
+        type: 'plugin'
+      }, {
+        id: 'org.ekstep.metadata',
+        ver: '1.0',
         type: 'plugin'
       }],
       previewConfig: {

@@ -1,4 +1,3 @@
-import { CustomWindow } from './../../../interfaces/custom.window';
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -7,6 +6,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService, PermissionService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
+import { CustomWindow } from './../../../interfaces';
 
 
 declare var jQuery: any;
@@ -116,16 +116,16 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.closeModal();
     });
 
-    this.renderer.listen( 'window' , 'editor:content:review', () => {
+    this.renderer.listen('window', 'editor:content:review', () => {
       this.closeModal();
     });
   }
 
 
   ngAfterViewInit() {
-     /**
-     * Launch the generic editor after window load
-     */
+    /**
+    * Launch the generic editor after window load
+    */
     const self = this;
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
@@ -155,7 +155,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.setRenderer();
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
-     }
+    }
   }
   /**
    * Launch the content editor in Iframe Modal window
@@ -178,9 +178,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     };
 
 
-/**
- * Window config
- */
+    /**
+     * Window config
+     */
     window.config = {
       baseURL: '',
       modalId: 'contentEditor',
@@ -193,7 +193,17 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.1',
+          ver: '1.2',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.sunbirdmetadata',
+          ver: '1.0',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.metadata',
+          ver: '1.0',
           type: 'plugin'
         }
       ],
@@ -212,11 +222,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     };
   }
 
-/**
- * Checking the permission using state, status and userId
- * @param reqData user, state, status validation
- * @param validateData default data in the Object ValidateData
- */
+  /**
+   * Checking the permission using state, status and userId
+   * @param reqData user, state, status validation
+   * @param validateData default data in the Object ValidateData
+   */
   checkContentAccess(reqData, validateData) {
     const status = reqData.status;
     const createdBy = reqData.createdBy;
@@ -251,15 +261,15 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {
-        const rspData = response.result.content;
-        rspData.state = state;
-        rspData.userId = this.userProfile.userId;
+      const rspData = response.result.content;
+      rspData.state = state;
+      rspData.userId = this.userProfile.userId;
 
-        if (this.checkContentAccess(rspData, validateModal)) {
-          this.openContentEditor();
-        } else {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        }
+      if (this.checkContentAccess(rspData, validateModal)) {
+        this.openContentEditor();
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
+      }
     }
     );
   }
@@ -269,15 +279,19 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-     this.navigateToDraft();
+      this.navigateToDraft();
     }, 1000);
   }
 
-navigateToDraft() {
-  if (document.getElementById('contentEditor')) {
-    document.getElementById('contentEditor').remove();
-   }
-   this.router.navigate(['workspace/content/draft/1']);
-   this.showModal = false;
+  navigateToDraft() {
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
+    if (this.state) {
+       this.router.navigate(['workspace/content/', this.state , '1']);
+    } else {
+      this.router.navigate(['workspace/content/draft/1']);
+      this.showModal = false;
+    }
   }
 }
