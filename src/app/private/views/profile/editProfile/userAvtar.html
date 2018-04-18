@@ -1,7 +1,0 @@
-<div class="userAvtarWrap field link ui small circular image header-image-profile" ng-init="profileCtrl.iconImage=false">
-    <img class="ui small circular image header-image-profile" ng-src="{{profileCtrl.user.avatar || '/common/images/user_logo.png'}}" ng-click="profileCtrl.openImageBrowser();">
-    <div class="img-description-layer ui small circular image header-image-profile">
-        <i class="edit icon" ng-click="profileCtrl.openImageBrowser();"></i>
-    </div>
-    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="content-input ui small circular image header-image-profile" id="iconImageInput" onchange="angular.element(this).scope().profileCtrl.updateAvatar(this.files);" required="" />
-</div>

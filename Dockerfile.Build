@@ -16,9 +16,6 @@ COPY * /opt/player/
 RUN apt-get update
 RUN apt-get install -y zip 
 RUN apt-get install -y bzip2 
-RUN npm install -g bower 
-RUN npm install -g gulp 
-RUN npm install gulp --save-dev
 RUN rm -rf /var/lib/apt/lists/* 
 WORKDIR /opt/player/
 RUN npm install --only=dev --unsafe-perm 

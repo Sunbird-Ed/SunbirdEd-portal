@@ -18,7 +18,6 @@ const tenantHelper = require('./helpers/tenantHelper.js')
 const envHelper = require('./helpers/environmentVariablesHelper.js')
 const publicServicehelper = require('./helpers/publicServiceHelper.js')
 const userHelper = require('./helpers/userHelper.js')
-const resourcesBundlesHelper = require('./helpers/resourceBundlesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const fs = require('fs')
 const port = envHelper.PORTAL_PORT
@@ -86,40 +85,51 @@ app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
 
-app.all('/public', function (req, res) {
-  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  res.locals.theme = envHelper.PORTAL_THEME
-  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-  res.render(path.join(__dirname, 'public', 'index.ejs'))
-})
-
-app.use('/public/*', express.static(path.join(__dirname, 'public')))
 if (defaultTenant) {
   app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
 }
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, 'private')))
-app.use(express.static(path.join(__dirname, 'migration/dist'), { extensions: ['ejs'], index: false }))
+
+app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
-app.use('/private/index', function (req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
-  res.header('Expires', '-1')
-  res.header('Pragma', 'no-cache')
-  next()
-})
+app.all('/logoff', function (req, res) {
+    res.cookie('connect.sid', '', { expires: new Date() })
+    res.redirect('/logout')
+  })
 
 // Mobile redirection to app
 require('./helpers/mobileRedirectHelper.js')(app)
 
-app.all('/', function (req, res) {
+function indexPage (req, res) {
+  res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
+  res.locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-  res.render(path.join(__dirname, 'public', 'index.ejs'))
-})
+  res.render(path.join(__dirname, 'dist', 'index.ejs'))
+}
+
+app.all('/', indexPage)
+app.all('/home', keycloak.protect(), indexPage)
+app.all('/home/*', keycloak.protect(), indexPage)
+app.all('/announcement', keycloak.protect(), indexPage)
+app.all('/announcement/*', keycloak.protect(), indexPage)
+app.all('/search', keycloak.protect(), indexPage)
+app.all('/search/*', keycloak.protect(), indexPage)
+app.all('/org-type', keycloak.protect(), indexPage)
+app.all('/org-type/*', keycloak.protect(), indexPage)
+app.all('/dashboard', keycloak.protect(), indexPage)
+app.all('/dashboard/*', keycloak.protect(), indexPage)
+app.all('/workspace', keycloak.protect(), indexPage)
+app.all('/workspace/*', keycloak.protect(), indexPage)
+app.all('/profile', keycloak.protect(), indexPage)
+app.all('/profile/*', keycloak.protect(), indexPage)
+app.all('/learn', keycloak.protect(), indexPage)
+app.all('/learn/*', keycloak.protect(), indexPage)
+app.all('/resources', keycloak.protect(), indexPage)
+app.all('/resources/*', keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -151,60 +161,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
-// Generate telemetry fot public service
-app.all('/private/service/*', telemetryHelper.generateTelemetryForProxy)
-
-app.post('/private/service/v1/learner/content/v1/media/upload',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(learnerURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      return require('url').parse(learnerURL + '/content/v1/media/upload').path
-    },
-    userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-      let data = JSON.parse(proxyResData.toString('utf8'))
-      if (data.responseCode === 'OK') {
-        data.success = true
-      }
-      return JSON.stringify(data)
-    }
-  }))
-
-app.all('/private/service/v1/learner/*',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(learnerURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      let urlParam = req.params['0']
-      let query = require('url').parse(req.url).query
-      if (query) {
-        return require('url').parse(learnerURL + urlParam + '?' + query).path
-      } else {
-        return require('url').parse(learnerURL + urlParam).path
-      }
-    }
-  }))
-
-app.all('/private/service/v1/content/*',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(contentURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      let urlParam = req.params['0']
-      let query = require('url').parse(req.url).query
-      if (query) {
-        return require('url').parse(contentURL + urlParam + '?' + query).path
-      } else {
-        return require('url').parse(contentURL + urlParam).path
-      }
-    }
-  }))
+// Generating telemetry for proxy  apis
+app.all('/learner/*', telemetryHelper.generateTelemetryForProxy)
+app.all('/content/*', telemetryHelper.generateTelemetryForProxy)
 
 app.post('/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
@@ -357,16 +316,8 @@ keycloak.deauthenticated = function (request) {
   }
 }
 
-resourcesBundlesHelper.buildResources(function (err, result) {
-  console.log('building resource bundles ......')
-  if (err) {
-    throw err
-  } else {
-    portal.server = app.listen(port, function () {
-      console.log('completed resource bundles' + '\r\n' + 'starting  server...')
-      console.log('app running on port ' + port)
-    })
-  }
+portal.server = app.listen(port, function () {
+  console.log('app running on port ' + port)
 })
 
 exports.close = function () {
