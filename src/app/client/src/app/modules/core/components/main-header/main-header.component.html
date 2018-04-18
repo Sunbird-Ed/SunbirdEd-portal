@@ -26,7 +26,7 @@
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'workSpaceRole' href="/private/index#!/workspace/content/create" >{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'myActivityRole' href="/private/index#!/course-creator-dashboard" >{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'orgSetupRole' [routerLink]="['org-type']" >{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
-                <a class="item" href="#" (click)='logout()'>{{resourceService.frmelmnts?.lnk?.logout}}</a>
+                <a class="item" href="/logoff">{{resourceService.frmelmnts?.lnk?.logout}}</a>
 
             </div>
         </div>
