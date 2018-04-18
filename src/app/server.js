@@ -95,14 +95,15 @@ app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
 app.all('/logoff', function (req, res) {
-    res.cookie('connect.sid', '', { expires: new Date() })
-    res.redirect('/logout')
-  })
+  res.cookie('connect.sid', '', { expires: new Date() })
+  res.redirect('/logout')
+})
 
 // Mobile redirection to app
 require('./helpers/mobileRedirectHelper.js')(app)
 
 function indexPage (req, res) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
   res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   res.locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
