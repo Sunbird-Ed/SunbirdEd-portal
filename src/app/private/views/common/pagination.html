@@ -1,7 +1,0 @@
-<div class="ui pagination menu margin-top-10 right-floated padding-top-none " ng-if="pegination.pager.pages.length ">
-    <a ng-class="{disabled:pegination.pager.currentPage===1 }" class="item " ng-click="pegination.setPage(1) ">First</a>
-    <a ng-class="{disabled:pegination.pager.currentPage===1 }" class="item " ng-click="pegination.setPage(pegination.pager.currentPage - 1)">Previous</a>
-    <a ng-repeat="page in pegination.pager.pages" ng-class="{active:pegination.pager.currentPage===page}" ng-click="pegination.setPage(page)" class="item">{{page}}</a>
-    <a ng-class="{disabled:pegination.pager.currentPage=== pegination.pager.totalPages}" ng-click="pegination.setPage(pegination.pager.currentPage + 1)" class="item">Next</a>
-    <a ng-class="{disabled:pegination.pager.currentPage=== pegination.pager.totalPages}" ng-click="pegination.setPage(pegination.pager.totalPages)" class="item ">Last</a>
-</div>

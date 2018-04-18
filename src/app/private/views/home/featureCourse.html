@@ -1,8 +1,0 @@
-<div class="ui dynamic-section-card margin-top-20" ng-if="homeCtrl.toDoCourses.length > 0">
-    <h4 class="ui header">Featured Courses</h4>
-    <div class="regular slider featured3" >
-        <div ng-repeat=" item in homeCtrl.toDoCourses track by $index" ng-init="$last && homeCtrl.loadFeaturedCarousel()" ng-click="homeCtrl.openCourseView(toDoCourse.courseId, 'OTHER_COURSE')" add-slick>
-            <div ng-include=" 'views/common/ratingCard.html'"></div>
-        </div>
-    </div>
-</div>

@@ -1,8 +1,0 @@
-<div class="ui dynamic-section-card margin-top-20" ng-if="homeCtrl.enrolledCourses.length > 0">
-    <h4 class="ui header "><span>To Do<span><span class="ui red circular inline label ">{{homeCtrl.enrolledCourses.length}}</span></h4>
-    <div class="regular slider">
-        <div ng-repeat=" enrolledCourse in homeCtrl.enrolledCourses track by $index" ng-init="$last && homeCtrl.loadCarousel()" ng-click="homeCtrl.openCourseView(enrolledCourse.courseId, 'ENROLLED_COURSE',enrolledCourse.progress,enrolledCourse.total)">
-            <ng-include src="'views/common/resumeCard.html'"></ng-include>
-        </div>
-    </div>
-</div>

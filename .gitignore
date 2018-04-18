@@ -8,7 +8,9 @@
 .coverrun
 /src/mochawesome-report
 /src/app/migration/src/node_modules
-/src/app/migration/dist
-/src/app/migration/src/documentation
-/src/app/migration/src/coverage
-/src/app/migration/src/src/thirdparty
+/src/app/dist
+/src/app/client/src/documentation
+/src/app/client/src/coverage
+/src/app/client/src/src/thirdparty
+src/app/dist/thirdparty/editors/
+src/app/app_dist
