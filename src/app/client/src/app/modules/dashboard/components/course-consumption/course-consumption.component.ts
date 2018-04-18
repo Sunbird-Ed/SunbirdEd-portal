@@ -196,8 +196,7 @@ export class CourseConsumptionComponent {
         this.courseName = selectedCourse.name;
         this.selectedCourse = selectedCourse;
       } else {
-        // TODO: Need to redirect to home page
-        this.route.navigate(['groups']);
+        this.route.navigate(['home']);
       }
     }
   }

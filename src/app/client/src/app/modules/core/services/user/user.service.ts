@@ -84,7 +84,6 @@ export class UserService {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
     } catch (error) {
-      console.log(error);
     }
   }
   /**

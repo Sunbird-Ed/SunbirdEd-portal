@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
     this.userService = userService;
     this.courseService = courseService;
     this.telemetryService = telemetryService;
-    resourceService.initialize();
   }
 
   /**
@@ -55,6 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resourceService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
       this.userService.initialize();
       this.permissionService.initialize();
