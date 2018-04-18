@@ -80,6 +80,11 @@ export class UserService {
     this.learner = learner;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    try {
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+    } catch (error) {
+    }
   }
   /**
    * get method to fetch userid.
@@ -115,14 +120,14 @@ export class UserService {
     */
     public getAppidEnv(): void {
       const url = this.config.appConfig.APPID_EKSTEPENV;
-      this.http.get(url)
-      .catch((error: any) => {
-            return Observable.throw(this.toasterService.error(this.resourceService.messages.emsg.m0005));
-      })
-      .subscribe((res: IAppIdEnv) => {
+      this.http.get(url).subscribe((res: IAppIdEnv) => {
         this._appId = res.appId;
         this._env = res.ekstep_env;
-      });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
     /**
@@ -139,10 +144,6 @@ export class UserService {
     }
 
   public initialize() {
-    try {
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
-      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
-    } catch { }
     this.getUserProfile();
     this.getAppidEnv();
   }
