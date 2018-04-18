@@ -14,12 +14,21 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
+  const resourceBundle = {
+    'messages': {
+      'stmsg': {
+        'm0007': 'Please search something else',
+        'm0006': 'NO result found'
+      },
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule],
       declarations: [ResourceComponent],
-      providers: [ResourceService, PageApiService, ConfigService, LearnerService, ToasterService, Ng2IzitoastService],
+      providers: [ResourceService, PageApiService, ConfigService, LearnerService, ToasterService,
+         Ng2IzitoastService, { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
