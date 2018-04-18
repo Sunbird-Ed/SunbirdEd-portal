@@ -16,7 +16,10 @@
       "application/vnd.ekstep.content-collection"
     ],
     "objectType": "Content",
-    "lastUpdatedOn": "desc"
+    "lastUpdatedOn": "desc",
+    "createdOn": "asc",
+    "createdDate" : "desc",
+    "name": "asc"
   },
   "EDITOR_CONFIG": {
     "collectionState": ["UpForReviewContent", "ReviewContent",

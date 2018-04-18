@@ -1,16 +1,16 @@
 <!-- Loader -->
 <div class="twelve wide column margin-top-20" *ngIf="showLoader">
-  <app-loader [data] = "loaderMessage" ></app-loader>
+  <app-loader [data]="loaderMessage"></app-loader>
 </div>
 
 <div class="ui grid" *ngIf="!showLoader">
   <div class="twelve wide column">
     <div class="ui three stackable cards">
       <div *ngFor="let content of draftList">
-        <app-content-card [content]="content" (clickEvent)="deleteDraft($event)"></app-content-card>
+        <app-content-card [content]="content" (clickEvent)="contentClick($event)"></app-content-card>
       </div>
     </div>
-   <div *ngIf="noResult">
+    <div *ngIf="noResult">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>

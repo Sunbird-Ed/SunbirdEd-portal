@@ -55,4 +55,21 @@ export interface IContents {
     * Content action
     */
     action: IAction;
+
+    /**
+    * Content patticipation
+    */
+    participant?: any;
+    /**
+    * Content id
+    */
+    id?: string;
+    /**
+    * Content patticipation
+    */
+    label?: any;
+    /**
+    * Content createdBy
+    */
+    createdBy?: string;
 }

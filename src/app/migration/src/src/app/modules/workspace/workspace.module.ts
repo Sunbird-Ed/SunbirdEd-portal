@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { WorkspaceRoutingModule } from './workspace-routing.module';
-import { WorkspacesidebarComponent } from './components/workspacesidebar/workspacesidebar.component';
 import { SharedModule } from '@sunbird/shared';
+import { CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui/dist';
-import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService } from './services';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WorkSpaceService, BatchService , EditorService} from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
-  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
+  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, WorkspacesidebarComponent, BatchListComponent,
+  BatchCardComponent, UpdateBatchComponent, CreateTextbookComponent, CreateCourseComponent,
   CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
-
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
 } from './components';
 @NgModule({
   imports: [
@@ -21,14 +19,16 @@ import {
     WorkspaceRoutingModule,
     SharedModule,
     SuiModule,
+    CoreModule,
     FormsModule,
     ReactiveFormsModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
-    CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-    CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent],
-  providers: [WorkSpaceService, EditorService]
+    PublishedComponent, UploadedComponent, BatchListComponent, BatchCardComponent, CreateTextbookComponent,
+    CreateCourseComponent, UpdateBatchComponent, CreateStudyMaterialComponent,
+    CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent,
+    ContentEditorComponent, GenericEditorComponent],
+  providers: [WorkSpaceService, EditorService, BatchService]
 })
 export class WorkspaceModule { }
