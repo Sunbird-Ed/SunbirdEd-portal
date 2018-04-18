@@ -183,15 +183,14 @@ angular.module('playerApp')
         }
 
         if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1) {
-          upForReviewContent.contentStatus = ['FlagReview']
-          req.filters.contentType = req.filters.contentType
+          req.filters.status = ['FlagReview']
+          req.filters.contentType.push('TextBook')
         }
 
         if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1 &&
             (_.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1 ||
           _.indexOf(permissionsService.getCurrentUserRoles(), 'CONTENT_REVIEWER') !== -1)) {
-          upForReviewContent.contentStatus = ['FlagReview', 'Review']
-          req.filters.contentType = req.filters.contentType
+          req.filters.status = ['FlagReview', 'Review']
         }
 
         return req
