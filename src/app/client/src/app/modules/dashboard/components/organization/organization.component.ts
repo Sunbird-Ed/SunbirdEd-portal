@@ -308,6 +308,11 @@ export class OrganisationComponent {
     const data = this.searchService.searchedOrganisationList;
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
+      this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
+      if (this.myOrganizations.length === 1) {
+        this.identifier = this.myOrganizations[0].identifier;
+        this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+      }
       this.showLoader = false;
     } else {
       this.userService.userData$.subscribe(
