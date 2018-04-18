@@ -106,7 +106,7 @@ require('./helpers/mobileRedirectHelper.js')(app)
 
 function indexPage (req, res) {
   res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  res.locals.sessionId = _.get(req.sessionID) ? req.sessionID : null
+  res.locals.sessionId = _.get(req, 'sessionID') ? req.sessionID : null
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
@@ -114,14 +114,23 @@ function indexPage (req, res) {
 }
 
 app.all('/', indexPage)
+app.all('/home', keycloak.protect(), indexPage)
 app.all('/home/*', keycloak.protect(), indexPage)
+app.all('/announcement', keycloak.protect(), indexPage)
 app.all('/announcement/*', keycloak.protect(), indexPage)
+app.all('/search', keycloak.protect(), indexPage)
 app.all('/search/*', keycloak.protect(), indexPage)
+app.all('/org-type', keycloak.protect(), indexPage)
 app.all('/org-type/*', keycloak.protect(), indexPage)
+app.all('/dashboard', keycloak.protect(), indexPage)
 app.all('/dashboard/*', keycloak.protect(), indexPage)
+app.all('/workspace', keycloak.protect(), indexPage)
 app.all('/workspace/*', keycloak.protect(), indexPage)
+app.all('/profile', keycloak.protect(), indexPage)
 app.all('/profile/*', keycloak.protect(), indexPage)
+app.all('/learn', keycloak.protect(), indexPage)
 app.all('/learn/*', keycloak.protect(), indexPage)
+app.all('/resources', keycloak.protect(), indexPage)
 app.all('/resources/*', keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
