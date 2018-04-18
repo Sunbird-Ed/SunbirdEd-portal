@@ -59,7 +59,7 @@
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node app/helpers/resourceBundles/build.js",
-    "build": "gulp download:editors && gulp client:dist"
+    "deploy": "gulp deploy"
   },
   "dependencies": {
     "async": "^2.5.0",
