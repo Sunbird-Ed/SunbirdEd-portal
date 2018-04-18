@@ -15,7 +15,7 @@ export class UserFilterComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
   private searchService: SearchService;
   /**
    * To navigate to other pages

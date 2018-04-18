@@ -18,7 +18,7 @@ export class OrgFilterComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
   private searchService: SearchService;
   private orgTypeService: OrgTypeService;
   /**
