@@ -1,5 +1,5 @@
 #Dockerfile for the player setup
-FROM node:6.11.0
+FROM node:8.11.0
 MAINTAINER "Manojvv" "manojv@ilimi.in"
 RUN apt update --no-install-recommends -y \
     && apt-get install -y python \
@@ -17,14 +17,10 @@ RUN apt-get update
 RUN apt-get install -y zip 
 RUN apt-get install -y bzip2 
 RUN rm -rf /var/lib/apt/lists/* 
-WORKDIR /opt/player/
-RUN npm install --only=dev --unsafe-perm 
-RUN bower cache clean
-RUN bower prune -f 
-RUN bower install /opt/player/bower.json  --force
-RUN gulp
-RUN rm -rf node_modules
+WORKDIR /opt/player/app
+RUN npm install  --unsafe-perm 
+RUN npm run deploy
+WORKDIR /opt/player/app/app_dist
 RUN npm install --production  --unsafe-perm  
-RUN cp -R node_modules dist/
-WORKDIR /opt/player
-CMD ["zip", "-r", "player-dist.zip",  "dist"]   
+WORKDIR /opt/player/app
+CMD ["zip", "-r", "player-dist.zip",  "app_dist"]   

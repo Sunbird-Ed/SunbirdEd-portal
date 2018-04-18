@@ -1,4 +1,4 @@
-FROM node:6-stretch
+FROM node:8.11-stretch
 MAINTAINER "Manojvv" "manojrpms@gmail.com"
 RUN apt-get update --no-install-recommends -y \
     && apt-get install unzip
