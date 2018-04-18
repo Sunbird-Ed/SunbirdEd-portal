@@ -1,6 +1,6 @@
 import { PageApiService, CoursesService, ICourses } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService,  ICaraouselData, IContents, IAction } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
  * This component contains 2 sub components
@@ -41,6 +41,10 @@ export class LearnPageComponent implements OnInit {
    */
   showLoader = true;
   /**
+    * To show / hide no result message when no result found
+   */
+  noResult = false;
+  /**
   * Contains result object returned from getPageData API.
   */
   caraouselData: Array<ICaraouselData> = [];
@@ -66,12 +70,14 @@ export class LearnPageComponent implements OnInit {
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
-            this.showLoader = false;
-            const action = { right: { displayType: 'button' ,
-                 classes: 'ui blue basic button' ,
-                 text: 'Resume' },
-                 left: { displayType: 'rating' }
-                };
+            const action = {
+              right: {
+                displayType: 'button',
+                classes: 'ui blue basic button',
+                text: 'Resume'
+              },
+              left: { displayType: 'rating' }
+            };
             this.enrolledCourses = data.enrolledCourses;
             _.forEach(this.enrolledCourses, (value, index) => {
               this.enrolledCourses[index].action = action;
@@ -83,10 +89,8 @@ export class LearnPageComponent implements OnInit {
             });
           }
           this.populatePageData();
-          this.showLoader = false;
         } else if (data && data.err) {
           this.populatePageData();
-          this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
         }
       }
@@ -102,9 +106,15 @@ export class LearnPageComponent implements OnInit {
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
-        this.processActionObject();
+        if (apiResponse && apiResponse.result.response.sections.length > 0) {
+          this.showLoader = false;
+          this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
+          this.processActionObject();
+        } else {
+          this.noResult = true;
+          this.showLoader = false;
+        }
+
       },
       err => {
         this.showLoader = false;
@@ -122,10 +132,13 @@ export class LearnPageComponent implements OnInit {
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                const action = { right: {displayType: 'button' ,
-                 classes: 'ui blue basic button' ,
-                 text: 'Resume' },
-                 left: { displayType: 'rating' }
+                const action = {
+                  right: {
+                    displayType: 'button',
+                    classes: 'ui blue basic button',
+                    text: 'Resume'
+                  },
+                  left: { displayType: 'rating' }
                 };
                 this.caraouselData[index].contents[index1].action = action;
               } else {

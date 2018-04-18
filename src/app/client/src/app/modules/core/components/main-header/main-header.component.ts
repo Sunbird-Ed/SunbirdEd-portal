@@ -82,10 +82,4 @@ export class MainHeaderComponent implements OnInit {
           }
       });
   }
-  /**
-   * logout function.
-   */
-  logout () {
-    window.document.location.replace('/logout');
-  }
 }
