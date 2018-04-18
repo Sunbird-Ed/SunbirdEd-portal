@@ -32,7 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '30mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const externalWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
+const externalWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
 const Telemetry = require('sb_telemetry_util')
@@ -94,7 +94,7 @@ app.all('/public', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
-  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -128,7 +128,7 @@ app.all('/', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
-  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -244,7 +244,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
   res.locals.producerId = producerId
-  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
   res.render(path.join(__dirname, 'private', 'index.ejs'))
 })
 
@@ -359,7 +359,7 @@ resourcesBundlesHelper.buildResources(function (err, result) {
     process.exit(1)
   }
   if (externalWhitelistedDomains === undefined) {
-    console.error('please set SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN environment' +
+    console.error('please set SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS environment' +
                   ' variable which is used to allow external content')
     process.exit(1)
   } else if (externalWhitelistedDomains.length) {
@@ -372,12 +372,12 @@ resourcesBundlesHelper.buildResources(function (err, result) {
       // Validate the domain
       if (!domainRegex.test(domain)) {
         console.error('"' + domain + '" does not seem to be a valid domain. Please fix the' +
-                      ' SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN environment variable before proceeding.')
+                      ' SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS environment variable before proceeding.')
         process.exit(1)
       }
     }
   } else {
-    console.info('Continuing without a value in SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN ' +
+    console.info('Continuing without a value in SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS ' +
                  'environment variable. User will be unable to add content from external domains.' +
                  ' To modify the behavior, please fix the mentioned environment variable and restart portal service.')
   }
