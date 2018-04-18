@@ -13,14 +13,12 @@ export class WorkSpaceService {
   * reference of config service.
   */
   public config: ConfigService;
-
   /**
    * Reference of content service.
   */
   public content: ContentService;
-
   /**
-    * Constructor - default method of AnnouncementService class
+    * Constructor - default method of WorkSpaceService class
     *
     * @param {ConfigService} config ConfigService reference
     * @param {HttpClient} http HttpClient reference
@@ -40,5 +38,4 @@ export class WorkSpaceService {
     };
     return this.content.delete(option);
   }
-
 }
