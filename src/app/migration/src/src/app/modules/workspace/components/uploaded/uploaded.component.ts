@@ -23,6 +23,10 @@ export class UploadedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
+  * state for content editior
+  */
+  state: string;
+  /**
   * To navigate to other pages
   */
   route: Router;
@@ -138,6 +142,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.state = 'uploaded';
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -205,9 +210,11 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     );
   }
 
-  deleteUploaded(param) {
+  contentClick(param) {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.contentId);
+    } else {
+      this.workSpaceService.openContentEditor(param.content, this.state);
     }
   }
 

@@ -29,6 +29,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
+  * state for content editior
+  */
+  state: string;
+  /**
     * To navigate to other pages
   */
   route: Router;
@@ -140,6 +144,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.state = 'published';
   }
 
   ngOnInit() {
@@ -206,9 +211,11 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     );
   }
 
-  deletePublishedContent(param) {
+  contentClick(param) {
     if (param.type === 'delete') {
-      this.deleteConfirmModal(param.contentId);
+      this.deleteConfirmModal(param.content.identifier);
+    } else {
+      this.workSpaceService.openContentEditor(param.content, this.state);
     }
   }
 
@@ -231,7 +238,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           },
           (err: ServerResponse) => {
             this.showLoader = false;
-            this.toasterService.success(this.resourceService.messages.fmsg.m0022);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
           }
         );
       })

@@ -3,7 +3,7 @@
     <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
       <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
     </div>
-    <div class="ui image ">
+    <div class="ui image "  (click)="onAction(content,'openContent')">
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
       <a class="ui black right ribbon label " *ngIf="content.resourceType == undefined">{{content.contentType || 'Course'}}</a>
@@ -29,7 +29,7 @@
         <span *ngIf="content.action.right.displayType == 'icon' ">
             <a>
               <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" 
-              (click)="onAction(content.identifier,content.action.right.actionType)"
+              (click)="onAction(content,content.action.right.actionType)"
                 class="{{content.action.right.classes}}">
               </i>
               <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>

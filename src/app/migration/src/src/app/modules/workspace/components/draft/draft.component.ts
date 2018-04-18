@@ -23,7 +23,10 @@ export class DraftComponent extends WorkSpace implements OnInit {
 
     @ViewChild('modalTemplate')
     public modalTemplate: ModalTemplate<{ data: string }, string, string>;
-
+    /**
+     * state for content editior
+    */
+    state: string;
     /**
      * To navigate to other pages
      */
@@ -140,6 +143,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.toasterService = toasterService;
         this.resourceService = resourceService;
         this.config = config;
+        this.state = 'draft';
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -205,9 +209,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
             }
         );
     }
-    deleteDraft(param) {
+    contentClick(param) {
         if (param.type === 'delete') {
-            this.deleteConfirmModal(param.contentId);
+            this.deleteConfirmModal(param.content.identifier);
+        } else {
+            this.workSpaceService.openContentEditor(param.content, this.state);
         }
     }
     public deleteConfirmModal(contentIds) {

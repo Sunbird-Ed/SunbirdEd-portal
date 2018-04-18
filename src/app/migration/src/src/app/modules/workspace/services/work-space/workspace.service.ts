@@ -6,7 +6,7 @@ import 'rxjs/add/observable/throw';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
-
+import { ActivatedRoute, Router } from '@angular/router';
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -17,16 +17,36 @@ export class WorkSpaceService {
    * Reference of content service.
   */
   public content: ContentService;
+
+  /**
+    * To navigate to other pages
+  */
+  route: Router;
+
+  /**
+    * To send activatedRoute.snapshot to router navigation
+    * service for redirection to draft  component
+  */
+  private activatedRoute: ActivatedRoute;
   /**
     * Constructor - default method of WorkSpaceService class
     *
     * @param {ConfigService} config ConfigService reference
     * @param {HttpClient} http HttpClient reference
   */
-  constructor(config: ConfigService, content: ContentService) {
+  constructor(config: ConfigService, content: ContentService,
+    activatedRoute: ActivatedRoute,
+    route: Router) {
     this.content = content;
     this.config = config;
+    this.route = route;
+    this.activatedRoute = activatedRoute;
   }
+  /**
+  * deleteContent
+  * delete  content based on contentId
+  * @param {contentIds}  contentIds - contentIds
+  */
   deleteContent(requestParam: IDeleteParam): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.RETIRE,
@@ -38,4 +58,49 @@ export class WorkSpaceService {
     };
     return this.content.delete(option);
   }
+
+  /**
+ * openContentEditor
+ * open content editor based content mime type
+ * @param {Object}  content - content
+ * @param {string}  state - Present state
+ */
+  openContentEditor(content, state) {
+    console.log('call opencontent editior');
+    const mimeType = content.mimeType;
+    if (mimeType === 'application/vnd.ekstep.content-collection') {
+      this.collectionEditor(content, state);
+    } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
+      this.contentEditor(content, state);
+    } else {
+      this.genericEditor(content, state);
+    }
+  }
+  /**
+  * collectionEditor
+  * @param {Object}  content - content
+  * @param {string}  state - Present state
+  */
+  collectionEditor(content, state) {
+    this.route.navigate(['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework]);
+  }
+
+  /**
+   * contentEditor
+   * @param {Object}  content - content
+   * @param {string}  state - Present state
+  */
+  contentEditor(content, state) {
+    this.route.navigate(['/workspace/content/edit/contentEditor/', content.identifier, state, content.framework]);
+  }
+  /**
+   * genericEditor
+   * State transaction to generic editor
+   * @param {Object}  content - content
+   * @param {string}  state - Present state
+  */
+  genericEditor(content, state) {
+    this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state]);
+  }
+
 }
