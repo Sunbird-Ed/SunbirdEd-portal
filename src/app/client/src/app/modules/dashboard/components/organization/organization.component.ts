@@ -309,6 +309,7 @@ export class OrganisationComponent {
     const data = this.searchService.searchedOrganisationList;
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
+      this.showLoader = false;
     } else {
       this.userService.userData$.subscribe(
         user => {
