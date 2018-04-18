@@ -94,19 +94,17 @@ app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], inde
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
-app.use('/private/index', function (req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
-  res.header('Expires', '-1')
-  res.header('Pragma', 'no-cache')
-  next()
-})
+app.all('/logoff', function (req, res) {
+    res.cookie('connect.sid', '', { expires: new Date() })
+    res.redirect('/logout')
+  })
 
 // Mobile redirection to app
 require('./helpers/mobileRedirectHelper.js')(app)
 
 function indexPage (req, res) {
   res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  res.locals.sessionId = _.get(req, 'sessionID') ? req.sessionID : null
+  res.locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
@@ -168,24 +166,6 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
 // Generating telemetry for proxy  apis
 app.all('/learner/*', telemetryHelper.generateTelemetryForProxy)
 app.all('/content/*', telemetryHelper.generateTelemetryForProxy)
-
-app.post('/private/service/v1/learner/content/v1/media/upload',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(learnerURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      return require('url').parse(learnerURL + '/content/v1/media/upload').path
-    },
-    userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-      let data = JSON.parse(proxyResData.toString('utf8'))
-      if (data.responseCode === 'OK') {
-        data.success = true
-      }
-      return JSON.stringify(data)
-    }
-  }))
 
 app.post('/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
