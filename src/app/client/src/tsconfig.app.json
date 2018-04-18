@@ -39,6 +39,9 @@
       ],
       "@sunbird/public": [
         "app/modules/public"
+      ],
+      "@sunbird/profile": [
+        "app/modules/profile"
       ]
     },
     "module": "es2015",

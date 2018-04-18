@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { PermissionService } from './../services';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
  * based on roles and permission of logedin user.
 */
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanActivateChild {
     /**
      *currentUrl
     */
@@ -37,6 +37,9 @@ export class AuthGuard implements CanActivate {
     * method CanActivate for guard .
     */
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        return this.getPermission(route.url[0].path);
+    }
+    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return this.getPermission(state);
     }
 
@@ -45,10 +48,7 @@ export class AuthGuard implements CanActivate {
             this.permissionService.permissionAvailable$.subscribe(
                 permissionAvailable => {
                     if (permissionAvailable && permissionAvailable === 'success') {
-                        if (state && state.url.indexOf('/') === 0) {
-                            this.currentUrl = state.url.replace('/', '');
-                        }
-                        this.currentUrl = this.currentUrl.split('/')[0];
+                        this.currentUrl = state;
                         const rolePermission = this.resourceService.config.rolesConfig.ROLES[this.currentUrl];
                         if (rolePermission) {
                             if (this.permissionService.checkRolesPermissions(rolePermission)) {
@@ -71,7 +71,6 @@ export class AuthGuard implements CanActivate {
             );
         });
     }
-
 }
 
 

@@ -17,6 +17,7 @@ import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
+import { ProfileModule } from '@sunbird/profile';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PublicModule } from '@sunbird/public';
     LearnModule,
     WorkspaceModule,
     OrgManagementModule,
-    PublicModule
+    PublicModule,
+    ProfileModule
   ],
   providers: [],
   entryComponents: [AppComponent],

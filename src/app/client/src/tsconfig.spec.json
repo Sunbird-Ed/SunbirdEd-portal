@@ -33,6 +33,9 @@
       ],  
       "@sunbird/org-management": [
         "app/modules/org-management"
+      ],
+      "@sunbird/profile": [
+        "app/modules/profile"
       ]
     },
     "module": "commonjs",
