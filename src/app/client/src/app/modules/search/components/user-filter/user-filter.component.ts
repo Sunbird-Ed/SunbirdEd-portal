@@ -1,0 +1,89 @@
+import { ConfigService, ResourceService } from '@sunbird/shared';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { SearchService } from '@sunbird/core';
+import * as _ from 'lodash';
+@Component({
+  selector: 'app-user-filter',
+  templateUrl: './user-filter.component.html',
+  styleUrls: ['./user-filter.component.css']
+})
+
+export class UserFilterComponent implements OnInit {
+  @Input() queryParams: any;
+  /**
+   * To get url, app configs
+   */
+  public config: ConfigService;
+  private resourceService: ResourceService;
+  private searchService: SearchService;
+  /**
+   * To navigate to other pages
+   */
+  private router: Router;
+  searchGrades: Array<string>;
+  searchMediums: Array<string>;
+  searchSubjects: Array<string>;
+  searchRoles: Array<string>;
+  label: any;
+  refresh = true;
+  /**
+    * Constructor to create injected service(s) object
+    Default method of Draft Component class
+    * @param {Router} route Reference of Router
+    * @param {PaginationService} paginationService Reference of PaginationService
+    * @param {ConfigService} config Reference of ConfigService
+  */
+  constructor(config: ConfigService,  private cdr: ChangeDetectorRef,
+    resourceService: ResourceService, router: Router) {
+    this.config = config;
+    this.resourceService = resourceService;
+    this.router = router;
+    this.router.onSameUrlNavigation = 'reload';
+  }
+
+  removeFilterSelection(filterType, value) {
+      const itemIndex = this.queryParams[filterType].indexOf(value);
+      if (itemIndex !== -1) {
+        console.log(this.queryParams[filterType], value);
+        this.queryParams[filterType].splice(itemIndex, 1);
+        console.log(this.queryParams[filterType]);
+      }
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
+  }
+
+  applyFilters() {
+    const queryParams = {};
+    _.forIn(this.queryParams, (value, key) => {
+      if (value.length > 0) {
+        queryParams[key] = value;
+      }
+    });
+    this.router.navigate(['/search/Users', 1], { queryParams: queryParams });
+  }
+
+  resetFilters() {
+    this.queryParams = {};
+    this.router.navigate(['/search/Users', 1]);
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
+  }
+
+  ngOnInit() {
+    _.forIn(this.queryParams, (value, key) => {
+      if (typeof value === 'string') {
+        this.queryParams[key] = [value];
+      }
+    });
+    this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Users.DROPDOWN, ...this.queryParams };
+    console.log(this.queryParams);
+    this.searchGrades = this.config.dropDownConfig.COMMON.grades;
+    this.searchMediums = this.config.dropDownConfig.COMMON.medium;
+    this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
+    this.searchRoles = this.config.dropDownConfig.FILTER.RESOURCES.roles;
+    this.label = this.config.dropDownConfig.FILTER.SEARCH.Users.label;
+  }
+}

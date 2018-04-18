@@ -1,0 +1,42 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+    <div class="header">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <span class="ui header">{{resourceService.frmelmnts?.lbl?.selrole}}</span>
+            </div>
+            <div class="one wide column actions">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="scrolling content">
+        <div class="ui selection dropdown margin-left-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
+            <i class="dropdown icon"></i>
+            <div>{{selectedOrgName || userDetails.organisations[0].orgName}}</div>
+
+            <div class="menu" suiDropdownMenu [menuAutoSelectFirst]="true">
+                <div class="item" *ngFor="let org of userDetails.organisations" (click)="selectedOrgName = org.orgName; selectedOrgUserRoles=org.roles; selectedOrgId=org.id">{{org.orgName}}</div>
+            </div>
+        </div>
+        <div class="ui form margin-top-40" *ngIf="selectedOrgUserRoles">
+            <ul class="selectOrgRoles">
+
+                <li class="orgRolesListView" *ngFor="let role of allRoles">
+                    <div class="ui checkbox">
+                        <input type="checkbox" value='{{role.role}}' (click)="editRoles(role.role, selectedOrgUserRoles, $event)" [checked]="selectedOrgUserRoles.includes(role.role)"
+                            [disabled]="selectedOrgUserRoles.includes(role.role)">
+                        <label>{{role.roleName || role.role}}</label>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="actions">
+        <button [disabled]="!selectedOrgUserRoles" class="ui primary button" type="submit" (click)="updateRoles(selectedOrgUserRoles); modal.deny();">
+            {{resourceService.frmelmnts?.btn?.update}}</button>
+    </div>
+</sui-modal>

@@ -1,0 +1,78 @@
+<div class=" ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div>
+      <app-org-filter [queryParams]="queryParams" (filter)="onFilter($event)"></app-org-filter>
+      <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
+        <div class="ui left floated header margin-auto ">
+          <p class="serch-allresult">Showing results for
+            <span class="lower-case">
+              {{this.queryParams.key}} in "organisations"
+            </span>
+          </p>
+        </div>
+        <h5 class="ui right floated basic icon circular button ">
+          <a [routerLink]="['/profile']">
+            <i class="ui remove icon "></i>
+          </a>
+        </h5>
+      </div>
+
+      <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.ORGANISATION.DOWNLOAD_BUTTON === 'TRUE'">
+        <div class="ui right floated primary button" (click)="downloadOrganisation();">
+          {{resourceService.frmelmnts?.btn?.download}}
+        </div>
+      </div>
+
+      <div class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
+        <div class="item userSearchCardHover" *ngFor="let org of searchList">
+          <div class="ui tiny image userSearchImage ">
+            <img [src]="org.avatar || './assets/common/images/userOrganization.png'">
+          </div>
+          <div class="content ">
+            <a class="header ">{{org.orgName}}</a>
+            <div class="description ">
+              <p>{{org.description}}</p>
+            </div>
+            <div class="extra ">
+              <div class="ui label " *ngIf="org.orgType">Org Type:{{org.orgType}}</div>
+              <div class="ui label " *ngIf="org.orgCode">org code:{{org.orgCode}}</div>
+              <div class="ui label " *ngIf="org.isRootOrg">Root organisation</div>
+              <div class="ui label " *ngIf="org.status===0">{{resourceService.frmelmnts?.lbl?.inactive}}</div>
+              <div class="ui label " *ngIf="org.status===1">{{resourceService.frmelmnts?.lbl?.active}}</div>
+              <div class="ui label " *ngIf="org.status===2">{{resourceService.frmelmnts?.lbl?.blocked}}</div>
+              <div class="ui label " *ngIf="org.status===3">{{resourceService.frmelmnts?.lbl?.retired}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div *ngIf="noResult && !showLoader">
+          <app-no-result [data]="noResultMessage"></app-no-result>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui grid margin-top-20">
+      <div class="two wide column"></div>
+      <div class="ten wide column padding-top-none">
+        <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+          <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length">
+            <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+            <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+            <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+            <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+            <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+          </div>
+        </div>
+      </div>
+      <div class="one wide column"></div>
+    </div>
+
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+
+  </div>
+  <div class="one wide column"></div>
+</div>
