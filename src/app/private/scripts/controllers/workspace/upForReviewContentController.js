@@ -182,6 +182,18 @@ angular.module('playerApp')
           req.filters.contentType = ['TextBook']
         }
 
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1) {
+          upForReviewContent.contentStatus = ['FlagReview']
+          req.filters.contentType = req.filters.contentType
+        }
+
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1 &&
+            (_.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1 ||
+          _.indexOf(permissionsService.getCurrentUserRoles(), 'CONTENT_REVIEWER') !== -1)) {
+          upForReviewContent.contentStatus = ['FlagReview', 'Review']
+          req.filters.contentType = req.filters.contentType
+        }
+
         return req
       }
 

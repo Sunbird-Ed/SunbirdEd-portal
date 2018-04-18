@@ -29,7 +29,7 @@ const realm = envHelper.PORTAL_REALM
 const authServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const keycloakResource = envHelper.PORTAL_AUTH_SERVER_CLIENT
 const reqDataLimitOfContentEditor = '50mb'
-const reqDataLimitOfContentUpload = '30mb'
+const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
@@ -39,7 +39,6 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
-const contentServiceLocalUrl = envHelper.content_Service_Local_BaseUrl
 
 let memoryStore = null
 
@@ -354,7 +353,8 @@ keycloak.deauthenticated = function (request) {
 
 resourcesBundlesHelper.buildResources(function (err, result) {
   if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-    console.error('please set environment variable sunbird_environment, sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+    console.error('please set environment variable sunbird_environment, ' +
+    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
   }
   console.log('building resource bundles ......')
