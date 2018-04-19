@@ -19,7 +19,7 @@ describe('ProfilePageComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule],
       declarations: [ ProfilePageComponent ],
       providers: [ProfileService, UserService, SearchService,
-        { provide: Router, useClass: RouterStub },],
+        { provide: Router, useClass: RouterStub }, ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -82,7 +82,7 @@ describe('ProfilePageComponent', () => {
       status: ['Live'],
       contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
       params: { lastUpdatedOn: 'desc' }
-    }
+    };
     spyOn(searchService, 'searchContentByUserId').and.returnValue(Observable.of(mockProfilePageData.success));
     component.getMyContent();
     expect(component.contributions).toBeDefined();
