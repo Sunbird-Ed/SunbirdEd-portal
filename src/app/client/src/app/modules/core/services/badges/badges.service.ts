@@ -41,25 +41,10 @@ export class BadgesService {
     this.learner = learner;
   }
   public initialize() {
-    this.getBadges();
   }
   /**
    * method to fetch badges from server.
   */
-  public getBadges(): void {
-    const option = {
-      url: this.config.urlConFig.URLS.BADGE.GET
-    };
-    this.learner.get(option).subscribe(
-      (badges: ServerResponse) => {
-          this.badges = badges;
-          this._badges$.next({err: null, userProfile: { ...this.badges }});
-      },
-      (err: ServerResponse) => {
-        this._badges$.next({err: err, userProfile: { ...this.badges }});
-      }
-    );
-  }
   public getAllBadgeList(req) {
     const option = {
       url: this.config.urlConFig.URLS.BADGE.BADGE_CLASS_SEARCH,
