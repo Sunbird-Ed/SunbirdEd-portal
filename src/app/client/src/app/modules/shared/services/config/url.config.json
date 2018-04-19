@@ -108,6 +108,9 @@
     "FRAMEWORK": {
       "READ": "framework/v1/read"
     },
+    "dataDrivenForms": {
+      "READ": "data/v1/form/read"
+    },
     "GEO_EXPLORER": {
       "LOCATION_READ": "org/v1/location/read/"
     },

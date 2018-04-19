@@ -127,5 +127,26 @@
       "preferredLanguage": "preferredLanguage",
       "contactDetail": "contactDetail"
     }]
-  }
+  },
+  "contentCreateType": {
+        "textbook": "textbook",
+        "course": "course",
+        "collection": "collection",
+        "studymaterial": "resource",
+        "lessonplan": "lessonplan"
+    },
+    "contentCreateTypeLable": {
+        "textbook": "createtextbook",
+        "course": "designcourse",
+        "collection": "createcollection",
+        "studymaterial": "createlessontext",
+        "lessonplan": "createlessonplan"
+    },
+    "contentCreateTypeForEditors": {
+        "textbook": "TextBook",
+        "course": "Course",
+        "collection": "Collection",
+        "studymaterial": "Resource",
+        "lessonplan": "LessonPlan"
+    }
 }
