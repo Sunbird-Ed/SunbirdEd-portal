@@ -106,7 +106,6 @@ export class UserEducationComponent implements OnInit {
         this.toasterService.success(this.resourceService.messages.smsg.m0024);
       },
         err => {
-          // toaster err
           this.toasterService.error(this.resourceService.messages.fmsg.m0076);
         });
     } else {
@@ -118,10 +117,10 @@ export class UserEducationComponent implements OnInit {
       education: [deletedEdu]
     };
     this.profileService.updateProfile(request).subscribe(res => {
-      // toaster suc
+      this.toasterService.success(this.resourceService.messages.smsg.m0014);
     },
       err => {
-        // toaster err
+        this.toasterService.error(this.resourceService.messages.fmsg.m0041);
       });
   }
 }
