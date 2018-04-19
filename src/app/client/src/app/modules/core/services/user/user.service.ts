@@ -125,6 +125,7 @@ export class UserService {
         this._env = res.ekstep_env;
       },
       (error) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         console.log(error);
       }
     );
