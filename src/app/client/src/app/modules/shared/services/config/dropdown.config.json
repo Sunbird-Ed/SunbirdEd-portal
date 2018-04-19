@@ -1,10 +1,47 @@
 {
     "COMMON": {
-        "languages": ["Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu","Urdu"],
-        "lessonTypes": [
-            "Story", "Worksheet"
+        "languages": [
+            "Bengali",
+            "English",
+            "Gujarati",
+            "Hindi",
+            "Kannada",
+            "Marathi",
+            "Punjabi",
+            "Tamil",
+            "Telugu",
+            "Urdu"
         ],
-        "subjects": ["Assamese", "Bengali", "Biology", "Chemistry", "Economics", "English", "Environmental Studies", "Geography", "Gujarati", "Hindi", "History", "Kannada", "Malayalam", "Marathi", "Mathematics", "Nepali", "Oriya", "Physics", "Political Science", "Punjabi", "Sanskrit", "Tamil", "Telugu", "Urdu"],
+        "lessonTypes": [
+            "Story",
+            "Worksheet"
+        ],
+        "subjects": [
+            "Assamese",
+            "Bengali",
+            "Biology",
+            "Chemistry",
+            "Economics",
+            "English",
+            "Environmental Studies",
+            "Geography",
+            "Gujarati",
+            "Hindi",
+            "History",
+            "Kannada",
+            "Malayalam",
+            "Marathi",
+            "Mathematics",
+            "Nepali",
+            "Oriya",
+            "Physics",
+            "Political Science",
+            "Punjabi",
+            "Sanskrit",
+            "Tamil",
+            "Telugu",
+            "Urdu"
+        ],
         "grades": [
             "Kindergarten",
             "Grade 1",
@@ -22,15 +59,190 @@
             "Other"
         ],
         "audiences": [
-            "Learner", "Instructor"
+            "Learner",
+            "Instructor"
         ],
         "ageGroup": [
-            "<5", "5-6", "6-7", "7-8", "8-10", ">10", "Other"
+            "<5",
+            "5-6",
+            "6-7",
+            "7-8",
+            "8-10",
+            ">10",
+            "Other"
         ],
         "medium": [
-            "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Nepali", "Oriya", "Other", "Punjabi", "Tamil", "Telugu", "Urdu"
+            "Assamese",
+            "Bengali",
+            "English",
+            "Gujarati",
+            "Hindi",
+            "Kannada",
+            "Malayalam",
+            "Marathi",
+            "Nepali",
+            "Oriya",
+            "Other",
+            "Punjabi",
+            "Tamil",
+            "Telugu",
+            "Urdu"
         ],
-        "boards": ["AP Board", "BSER", "CBSE", "ICSE", "MSCERT", "NCERT", "NCTE", "TN Board", "UP Board"],
-        "orgType": ["technical"]
+        "boards": [
+            "AP Board",
+            "BSER",
+            "CBSE",
+            "ICSE",
+            "MSCERT",
+            "NCERT",
+            "NCTE",
+            "TN Board",
+            "UP Board"
+        ],
+        "orgType": [
+            "technical"
+        ]
+    },
+    "FILTER": {
+        "RESOURCES": {
+            "languages": [
+                "Bengali",
+                "English",
+                "Gujarati",
+                "Hindi",
+                "Kannada",
+                "Marathi",
+                "Punjabi",
+                "Tamil",
+                "Telugu",
+                "Urdu"
+            ],
+            "contentTypes": [
+                {
+                    "key": "TextBook",
+                    "value": "Book"
+                },
+                {
+                    "key": "Collection",
+                    "value": "Collection"
+                },
+                {
+                    "key": "LessonPlan",
+                    "value": "Lesson Plan"
+                },
+                {
+                    "key": "Resource",
+                    "value": "Resource"
+                },
+                {
+                    "key": "Story",
+                    "value": "Story"
+                },
+                {
+                    "key": "Worksheet",
+                    "value": "Worksheet"
+                },
+                {
+                    "key": "Game",
+                    "value": "Game"
+                }
+            ],
+            "resourceType": [
+                "(Annual / Half-yearly / Semester) Examination",
+                "Academic calendar",
+                "Activity",
+                "Article",
+                "Benchmark assessment",
+                "Book",
+                "Classroom assessments",
+                "Course",
+                "Daily test",
+                "Diagnostic",
+                "E-resources for Professional Development",
+                "Game",
+                "Learning / Study material",
+                "Lesson plan",
+                "Micro practice videos",
+                "Puzzle",
+                "Quiz",
+                "Reference material",
+                "Reflective journals",
+                "Simulation",
+                "Story",
+                "Summative exam",
+                "Teaching resources",
+                "Timed worksheets",
+                "Unit plan",
+                "Worksheet"
+            ],
+            "subjects": [
+                "Assamese",
+                "Bengali",
+                "English",
+                "Gujarati",
+                "Hindi",
+                "Kannada",
+                "Malayalam",
+                "Marathi",
+                "Nepali",
+                "Oriya",
+                "Punjabi",
+                "Tamil",
+                "Telugu",
+                "Urdu",
+                "Biology",
+                "Chemistry",
+                "Physics",
+                "Mathematics",
+                "Environmental Studies",
+                "Geography",
+                "History",
+                "Political Science",
+                "Economics",
+                "Sanskrit"
+            ],
+            "boards": [
+                "AP Board",
+                "BSER",
+                "CBSE",
+                "ICSE",
+                "MSCERT",
+                "NCERT",
+                "NCTE",
+                "TN Board",
+                "UP Board"
+            ]
+        },
+        "SEARCH": {
+            "search": {
+                "All": "/search/All",
+                "home": "/search/All",
+                "learn": "/search/Courses",
+                "Courses": "/search/Courses",
+                "resources": "/search/Library",
+                "Library": "/search/Library",
+                "Users": "/search/Users",
+                "profile": "/search/Users"
+            },
+            "searchUrl": {
+                "home": "All",
+                "learn": "Courses",
+                "resources": "Library",
+                "profile": "Users"
+            },
+            "All": {
+                "DROPDOWN": {
+                    "boards": [],
+                    "subjects": [],
+                    "languages": []
+                },
+                "label": [
+                    "boards",
+                    "languages",
+                    "subjects",
+                    "Concepts"
+                ]
+            }
+        }
     }
 }

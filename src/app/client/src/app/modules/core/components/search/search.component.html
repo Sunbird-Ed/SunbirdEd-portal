@@ -1,25 +1,23 @@
 <div>
     <div class="ui fluid icon input left action" id="search-input-container">
-        <div class="searchdropdown ui basic floating dropdown button" suiDropdown [(isOpen)]="isOpen" apply-script id="headerSearch">
-            <div class="text">All</div>
-            <i class="dropdown icon"></i>
-            <div class="menu" suiDropdownMenu> 
-                <div class="item" >All</div>
-                <div class="item" >Courses</div>
-                <div class="item" >Library</div>
-                <div class="item" >Organization</div>
-                <div class="item" >Users</div>
-            </div>
+        <div class="searchdropdown ui basic floating dropdown button" id="headerSearch">
+            <sui-select [(ngModel)]="selectedOption" (ngModelChange)="onChange()">
+                <sui-select-option value="All"></sui-select-option>
+                <sui-select-option value="Courses"></sui-select-option>
+                <sui-select-option value="Library"></sui-select-option>
+                <sui-select-option value="Organization"></sui-select-option>
+                <sui-select-option value="Users"></sui-select-option>
+            </sui-select>
         </div>
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
-                <input type="text" id="keyword" name="filter_search" 
-                    title="Search" class="searchinput"   />
-                <i class="circular search link icon" ></i>
+                <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                    class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                <i class="circular search link icon"></i>
             </div>
-<!--             <div id="search-suggestions" ng-if="$root.search.autosuggest_data.length > 0" class="ui fluid results transition visible dropdown-menu-list">
+            <!-- <div id="search-suggestions" *ngIf="autosuggestData.length > 0" class="ui fluid results transition visible dropdown-menu-list">
                 <div>
-                    <a class="result" ng-repeat="item in $root.search.autosuggest_data" ng-click='$root.search.setSearchText(item.name)'>
+                    <a class="result" *ngFor="let item of autosuggestData">
                         <div class="content">
                             <div class="title">{{item.name}}</div>
                         </div>
