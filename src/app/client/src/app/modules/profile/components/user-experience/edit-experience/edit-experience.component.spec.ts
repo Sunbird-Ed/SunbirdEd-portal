@@ -26,18 +26,6 @@ describe('EditExperienceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditExperienceComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
-  });
-
-  // it('should create', () => {
-  //   component.experience = response.successData;
-  //   // fixture.detectChanges();
-  //   expect(component).toBeTruthy();
-  // });
-  it('should call profile service', () => {
-    const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'smoothScroll').and.callThrough();
-    component.ngOnInit();
   });
   it('should create form', () => {
     const joiningDate = '2017-11-20';

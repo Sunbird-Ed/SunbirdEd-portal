@@ -56,7 +56,7 @@ describe('UserEducationComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  it('should create UserEducationComponent', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userProfile = data.userProfile;
@@ -70,7 +70,7 @@ describe('UserEducationComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-  it('should create 2', () => {
+  it('should pass activated route', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userProfile = data.userProfile;

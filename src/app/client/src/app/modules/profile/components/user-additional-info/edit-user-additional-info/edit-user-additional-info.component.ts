@@ -16,6 +16,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   userProfile: IUserProfile;
   @Input() basicInfo: any;
   subjects: any;
+  initDate = new Date();
   languages: any;
   grades: any;
   basicInfoForm: FormGroup;
@@ -23,7 +24,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   isEdit: boolean;
 
   constructor(public resourceService: ResourceService, public userService: UserService, public configService: ConfigService,
-  public profileService: ProfileService) {
+    public profileService: ProfileService) {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
     this.languages = this.configService.dropDownConfig.COMMON.languages;
     this.grades = this.configService.dropDownConfig.COMMON.grades;
@@ -41,6 +42,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         }
       });
     if (this.basicInfo) {
+      const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : null;
       this.isEdit = true;
       this.basicInfo.webPages.forEach(element => {
         this.basicInfo.webPages[element.type] = element.url;

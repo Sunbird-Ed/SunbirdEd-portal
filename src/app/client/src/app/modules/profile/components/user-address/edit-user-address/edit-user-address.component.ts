@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as _ from 'lodash';

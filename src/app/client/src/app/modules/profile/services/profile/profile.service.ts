@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService, PermissionService, LearnerService } from '@sunbird/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
 @Injectable()
 export class ProfileService {
   constructor(private learnerService: LearnerService,
