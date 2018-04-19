@@ -130,7 +130,9 @@ export const Response = {
             'resmsgid': 'UnAutorized', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
             'status': 'UnAutorized', 'err': 'UnAutorized', 'errmsg': 'UnAutorized'
         }, 'responseCode': 'Err',
-        'result': {}
+        'result': {
+            'courses': []
+        }
     },
     courseSuccess: {
         'id': 'api.course.getbyuser', 'params': {
@@ -164,22 +166,10 @@ export const Response = {
             }
         ]
     },
-error: {'id': 'api.course.getbyuser', 'params': {
-    'resmsgid': 'UnAutorized', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
-    'status': 'UnAutorized', 'err': 'UnAutorized', 'errmsg': 'UnAutorized'
-}, 'responseCode': 'Err',
-'result': {'courses': [
-]
-}
-},
-resourceBundle: {
-    'messages': {
-      'stmsg': {
-        'm0007': 'Search for something else',
-          'm0008': 'No result'
-      }
-   }
-   }
+    pager: {
+        'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
+        'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
+    }
 
 };
 

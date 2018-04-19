@@ -1,38 +1,52 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ServerResponse, ConfigService, PaginationService, ToasterService, IAction} from '@sunbird/shared';
-import { LearnerService, CoursesService, UserService, SearchService, ContentService} from '@sunbird/core';
+import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
+import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseSearchComponent } from './course-search.component';
-import {Response} from './course-search.component.spec.data';
+import { Response } from './course-search.component.spec.data';
 
 describe('CourseSearchComponent', () => {
   let component: CourseSearchComponent;
   let fixture: ComponentFixture<CourseSearchComponent>;
+  const resourceBundle = {
+    'messages': {
+      'stmsg': {
+        'm0007': 'Search for something else',
+        'm0006': 'No result'
+      },
+      'fmsg': {
+        'm0002': 'Fetching other courses failed, please try again later...'
+      }
+    }
+  };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+    'queryParams': Observable.from([{ subject: ['english'] }])
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule],
-      declarations: [ CourseSearchComponent ],
-      providers: [ResourceService, ConfigService, LearnerService, ContentService, CoursesService, UserService,
-        ToasterService, Ng2IzitoastService, SearchService, PaginationService],
-     schemas: [NO_ERRORS_SCHEMA]
+      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      declarations: [CourseSearchComponent],
+      providers: [ConfigService, CoursesService, SearchService, LearnerService,
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
@@ -44,10 +58,10 @@ describe('CourseSearchComponent', () => {
     fixture.detectChanges();
     expect(component.showLoader).toBeTruthy();
   });
-  it('should throw error when courseService api is not called ', () => {
+  it('should throw error when courseService api throw error ', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw(Response.error));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.errorCourse));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
     component.populateEnrolledCourse();
@@ -61,33 +75,32 @@ describe('CourseSearchComponent', () => {
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-     expect(component.searchList).toBeDefined();
-     expect(component.totalCount).toBeDefined();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.searchList).toBeDefined();
+    expect(component.totalCount).toBeDefined();
   });
-  it('same identifier ', () => {
+  it('should show resume button if enrolled course and other courses have same identifier ', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
     component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-     expect(component.searchList).toBeDefined();
-     expect(component.totalCount).toBeDefined();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.searchList).toBeDefined();
+    expect(component.totalCount).toBeDefined();
   });
-  it('should subscribe to searchService', () => {
+  it('should subscribe to searchService when enrolled courses are not present', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
-    component.enrolledCourses = Response.noCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
-     expect(component.searchList).toBeDefined();
-     expect(component.totalCount).toBeDefined();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.searchList).toBeDefined();
+    expect(component.totalCount).toBeDefined();
   });
-  it('should throw error', () => {
+  it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.throw({}));
     component.populateCourseSearch();
@@ -95,16 +108,27 @@ describe('CourseSearchComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeFalsy();
   });
-  it('no result', () => {
+  it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
-  const resourceService = TestBed.get(ResourceService);
-  resourceService.messages = Response.resourceBundle.messages;
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.noResult));
     component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     component.searchList = Response.noResult.result.course;
     component.totalCount = Response.noResult.result.count;
     component.populateCourseSearch();
     fixture.detectChanges();
-     expect(component.showLoader).toBeFalsy();
+    expect(component.showLoader).toBeFalsy();
+  });
+  it('should call navigateToPage method and page number should be default, i,e 1', () => {
+    const configService = TestBed.get(ConfigService);
+    const route = TestBed.get(Router);
+    const queryParams = { subject: ['english'] };
+    component.pager = Response.pager;
+    component.pageLimit = 20;
+    component.pager.totalPages = 7;
+    component.navigateToPage(3);
+    fixture.detectChanges();
+    expect(component.pageNumber).toEqual(3);
+    expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
+    expect(route.navigate).toHaveBeenCalledWith(['search/Courses', 3], { queryParams: queryParams });
   });
 });

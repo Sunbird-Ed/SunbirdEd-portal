@@ -1,5 +1,6 @@
-import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses } from '@sunbird/core';
+import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+  ILoaderMessage, IContents } from '@sunbird/shared';
+import { SearchService, CoursesService, ICourses, SearchParam } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -12,8 +13,13 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./course-search.component.css']
 })
 export class CourseSearchComponent implements OnInit {
-
+ /**
+  * To call searchService which helps to use list of courses
+  */
   private searchService: SearchService;
+  /**
+  * To call resource service which helps to use language constant
+  */
   private resourceService: ResourceService;
   /**
    * To get url, app configs
@@ -30,7 +36,7 @@ export class CourseSearchComponent implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
    */
-  searchList: Array<any> = [];
+  searchList: Array<IContents> = [];
   /**
    * To navigate to other pages
    */
@@ -74,7 +80,7 @@ export class CourseSearchComponent implements OnInit {
   /**
      * loader message
     */
-  loaderMessage: any;
+  loaderMessage: ILoaderMessage;
   /**
    * Contains returned object of the pagination service
    * which is needed to show the pagination on inbox view
@@ -96,10 +102,13 @@ export class CourseSearchComponent implements OnInit {
      * @param {PaginationService} paginationService Reference of PaginationService
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
      * @param {ConfigService} config Reference of ConfigService
+     * @param {CoursesService} coursesService Reference of CoursesService
+     * @param {ResourceService} resourceService Reference of ResourceService
+     * @param {ToasterService} toasterService Reference of ToasterService
    */
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
-    resourceService: ResourceService, toasterService: ToasterService, public ngZone: NgZone,
+    resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, coursesService: CoursesService) {
     this.searchService = searchService;
     this.route = route;
@@ -109,13 +118,11 @@ export class CourseSearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.config = config;
-
   }
-  /**
+   /**
      * This method calls the enrolled courses API.
      */
   populateEnrolledCourse() {
-    console.log('caleed');
     this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -134,7 +141,7 @@ export class CourseSearchComponent implements OnInit {
   populateCourseSearch() {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-    const searchParams = {
+    const requestParams = {
       filters: {
         objectType: ['Content']
       },
@@ -143,9 +150,8 @@ export class CourseSearchComponent implements OnInit {
       query: this.queryParams.key,
       sort_by: {}
     };
-    this.searchService.courseSearch(searchParams).subscribe(
+    this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        console.log('//////////', apiResponse);
         if (apiResponse.result.count && apiResponse.result.course.length > 0) {
           this.showLoader = false;
           this.noResult = false;
@@ -157,8 +163,8 @@ export class CourseSearchComponent implements OnInit {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0007
+            'message': this.resourceService.messages.stmsg.m0007,
+            'messageText': this.resourceService.messages.stmsg.m0006
           };
         }
       },
@@ -174,6 +180,9 @@ export class CourseSearchComponent implements OnInit {
    */
   processActionObject() {
     _.forEach(this.searchList, (value, index) => {
+         delete value.contentType;
+         delete value.resourceType;
+      console.log('value', value);
       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
         _.forEach(this.enrolledCourses, (value1, index1) => {
           if (this.searchList[index].identifier === this.enrolledCourses[index1].courseId) {
@@ -230,7 +239,6 @@ export class CourseSearchComponent implements OnInit {
         }
         this.queryParams = { ...bothParams.queryParams };
         this.populateEnrolledCourse();
-        console.log(bothParams);
       });
   }
 
