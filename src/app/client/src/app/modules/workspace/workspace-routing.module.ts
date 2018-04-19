@@ -23,8 +23,8 @@ const routes: Routes = [
         //   { path: 'lessonplan', component: CreateLessonPlanComponent }
         // ]
       },
-      {path: 'edit/collection/:contentId/:type/:framework', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
+      {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
       {path: 'edit/generic', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },

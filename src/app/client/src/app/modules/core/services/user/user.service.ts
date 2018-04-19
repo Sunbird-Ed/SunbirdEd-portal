@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv, ToasterService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -51,15 +51,23 @@ export class UserService {
   /**
    * Reference of channel
    */
-  public channel: string;
+  private _channel: string;
   /**
    * Reference of dims
    */
-  public dims: Array<string> = [];
+  private _dims: Array<string> = [];
   /**
    * Reference of Ekstep_env
    */
   private _env: string;
+  /**
+* To show toaster(error, success etc) after any API calls
+*/
+  private toasterService: ToasterService;
+  /**
+    * To call resource service which helps to use language constant
+    */
+  public resourceService: ResourceService;
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -106,34 +114,35 @@ export class UserService {
 /**
     * method to fetch appId and Ekstep_env from server.
     */
-    public getAppidEnv(): void {
+    public getAppIdEnv(): void {
       const url = this.config.appConfig.APPID_EKSTEPENV;
       this.http.get(url).subscribe((res: IAppIdEnv) => {
         this._appId = res.appId;
         this._env = res.ekstep_env;
       },
       (error) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         console.log(error);
       }
     );
   }
 
-    /**
-     * get method to fetch appId.
-     */
-    get appId(): string {
-      return this._appId;
-    }
-    /**
-     * get method to fetch Ekstep_env.
-     */
-    get env(): string {
-      return this._env;
-    }
+  /**
+   * get method to fetch appId.
+   */
+  get appId(): string {
+    return this._appId;
+  }
+  /**
+   * get method to fetch Ekstep_env.
+   */
+  get env(): string {
+    return this._env;
+  }
 
   public initialize() {
     this.getUserProfile();
-    this.getAppidEnv();
+    this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
@@ -163,8 +172,8 @@ export class UserService {
       });
     }
     const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
-    this.channel = rootOrg;
-    this.dims = _.concat(organisationIds, this.channel);
+    this._channel = rootOrg;
+    this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;
@@ -180,5 +189,13 @@ export class UserService {
 
   get rootOrgId() {
     return this._rootOrgId;
+  }
+
+  get channel() {
+    return this._channel;
+  }
+
+  get dims() {
+    return this._dims;
   }
 }
