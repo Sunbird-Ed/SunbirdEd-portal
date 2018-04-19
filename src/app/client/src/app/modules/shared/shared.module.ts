@@ -9,7 +9,7 @@ import { ConfigService, ResourceService, FileUploadService, ToasterService } fro
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe } from './pipes';
-
+import { Ng2IzitoastService } from 'ng2-izitoast';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,6 +21,6 @@ import { DateFormatPipe } from './pipes';
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent],
-  providers: [ResourceService, ConfigService, FileUploadService, ToasterService]
+  providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService]
 })
 export class SharedModule { }

@@ -4,7 +4,7 @@ node_js:
 
 before_script:
     - npm install -g @angular/cli
-    - cd src/app/migration/src/
+    - cd src/app/client/
     - npm install
     - ng build --prod
     - ng lint

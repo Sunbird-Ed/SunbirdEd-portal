@@ -1,4 +1,4 @@
-import { ConfigService, ToasterService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -60,26 +60,14 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-    /**
-  * To show toaster(error, success etc) after any API calls
-  */
-  private toasterService: ToasterService;
-  /**
-    * To call resource service which helps to use language constant
-    */
-  public resourceService: ResourceService;
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {LearnerService} learner LearnerService reference
    */
-  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient,
-    resourceService: ResourceService,
-    toasterService: ToasterService) {
+  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient) {
     this.config = config;
     this.learner = learner;
-    this.resourceService = resourceService;
-    this.toasterService = toasterService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
