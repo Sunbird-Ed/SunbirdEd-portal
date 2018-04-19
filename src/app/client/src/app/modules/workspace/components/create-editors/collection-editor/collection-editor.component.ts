@@ -1,3 +1,4 @@
+
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -8,6 +9,7 @@ import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
+import { state } from './../../../classes/state';
 declare var jQuery: any;
 declare let window: CustomWindow;
 
@@ -60,7 +62,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   /**
   * state for editor
   */
-  public state: any;
+  public state: string;
   /**
   * type for editor
   */
@@ -201,10 +203,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 
-    const enum state {
-      UPFORREVIEW = 'upForReview',
-      FLAGGED = 'flagged'
-    }
     if (this.state === state.UPFORREVIEW &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
@@ -241,7 +239,11 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0004);
       }
-    });
+    },
+    error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0004);
+    }
+  );
   }
 
 
@@ -280,12 +282,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   validateRequest(reqData, validateData) {
     const status = reqData.status;
     const createdBy = reqData.createdBy;
-    const state = reqData.state;
+    const reqState = reqData.state;
     const userId = reqData.userId;
     const validateDataStatus = validateData.status;
     if (reqData.mimeType === validateData.mimeType) {
       const isStatus = _.indexOf(validateDataStatus, status) > -1;
-      const isState = _.indexOf(validateData.state, state) > -1;
+      const isState = _.indexOf(validateData.state, reqState) > -1;
       if (isStatus && isState && createdBy !== userId) {
         return true;
       } else if (isStatus && isState && createdBy === userId) {
@@ -327,16 +329,15 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    * @param type of the content created
    */
   getTreeNodes(type) {
-    let editorConfig = [];
     switch (type) {
       case 'Course':
-        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COURSE_ARRAY;
+        return this.config.editorConfig.EDITOR_CONFIG.COURSE_ARRAY;
       case 'Collection':
-        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_ARRAY;
+        return this.config.editorConfig.EDITOR_CONFIG.COLLECTION_ARRAY;
       case 'LessonPlan':
-        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.LESSON_PLAN;
+        return this.config.editorConfig.EDITOR_CONFIG.LESSON_PLAN;
       default:
-        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.DEFAULT_CONFIG;
+        return this.config.editorConfig.EDITOR_CONFIG.DEFAULT_CONFIG;
     }
   }
 }
