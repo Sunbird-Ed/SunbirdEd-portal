@@ -26,22 +26,16 @@ export class AppComponent implements OnInit {
    */
   public resourceService: ResourceService;
   public courseService: CoursesService;
-
-  /**
-   * reference of TelemetryService
-   */
-  public telemetryService: TelemetryService;
   /**
    * constructor
    */
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
-    courseService: CoursesService, telemetryService: TelemetryService) {
+    courseService: CoursesService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.courseService = courseService;
-    this.telemetryService = telemetryService;
   }
 
   /**
@@ -59,7 +53,6 @@ export class AppComponent implements OnInit {
       this.userService.initialize();
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.telemetryService.initialize();
     }
   }
 }

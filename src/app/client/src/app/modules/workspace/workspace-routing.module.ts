@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
-  ReviewSubmissionsComponent, PublishedComponent, CreateTextbookComponent, CreateStudyMaterialComponent,
-  CreateCourseComponent, CreateCollectionComponent, CreateLessonPlanComponent, CollectionEditorComponent, ContentEditorComponent,
+  ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';

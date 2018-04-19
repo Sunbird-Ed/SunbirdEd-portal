@@ -157,7 +157,7 @@ describe('CourseConsumptionComponent', () => {
     component.validateIdentifier('do_123');
     fixture.detectChanges();
     expect(component.myCoursesList.length).toBeGreaterThanOrEqual(1);
-    expect(route.navigate).toHaveBeenCalledWith(['groups']);
+    expect(route.navigate).toHaveBeenCalledWith(['home']);
   }));
 
   it('should display next graph', () => {
