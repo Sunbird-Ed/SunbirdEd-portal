@@ -148,5 +148,8 @@
         "collection": "Collection",
         "studymaterial": "Resource",
         "lessonplan": "LessonPlan"
+    },
+    "Courses":{
+      "filterType":"course"
     }
 }

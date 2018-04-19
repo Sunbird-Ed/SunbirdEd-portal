@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { CoursesService, UserService } from '@sunbird/core';
+import { CoursesService, UserService, FrameworkService } from '@sunbird/core';
 import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
 /**
  * This component contains 3 sub components
@@ -33,6 +33,10 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * To show toaster(error, success etc) after any API calls.
    */
   private toasterService: ToasterService;
+    /**
+   * To get user details.
+   */
+  private frameworkService: FrameworkService;
   /**
    * Contains details of userprofile and enrolled courses.
    */
@@ -57,11 +61,13 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(resourceService: ResourceService,
-    userService: UserService, courseService: CoursesService, toasterService: ToasterService) {
+    userService: UserService, courseService: CoursesService, toasterService: ToasterService, frameworkService: FrameworkService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.frameworkService = frameworkService;
+    this.frameworkService.initialize();
   }
   /**
    * This method calls the user API.
