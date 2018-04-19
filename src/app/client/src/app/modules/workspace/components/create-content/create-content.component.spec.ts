@@ -1,3 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule, ResourceService } from '@sunbird/shared';
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateContentComponent } from './create-content.component';
@@ -8,7 +11,9 @@ describe('CreateContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateContentComponent ]
+      imports: [RouterTestingModule, SharedModule, HttpClientTestingModule ],
+      declarations: [ CreateContentComponent ],
+      providers: [ResourceService]
     })
     .compileComponents();
   }));
