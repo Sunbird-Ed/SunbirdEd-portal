@@ -83,8 +83,8 @@
     },
     "BADGE": {
       "GET": "org/v1/badges/list",
-      "ASSIGN": "user/v1/badges/add"
-
+      "ASSIGN": "user/v1/badges/add",
+      "BADGE_CLASS_SEARCH": "badging/v1/issuer/badge/search"
     },
     "ORG_TYPE": {
       "GET": "org/v1/type/list",

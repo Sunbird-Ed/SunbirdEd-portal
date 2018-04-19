@@ -1,0 +1,32 @@
+<div id="skills" *ngIf="userProfile" class="twelve wide column padding-bottom-none"> 
+    <div class="margin-top-20 ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.summary}} </span>
+            <a class="addeditprofile" *ngIf='privateProfileFields'><app-profile-visibility field="profileSummary"></app-profile-visibility></a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" 
+            routerLink= '/profile/summary/edit'>{{resourceService.frmelmnts.btn.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'edit'" 
+            routerLink= '/profile' (click)="action = 'view';editSummury=userProfile.profileSummary">{{resourceService.frmelmnts.btn.close}}</a>
+        </div>
+        <div class="description" *ngIf="action === 'view'">
+            <div  *ngIf="!readMore" >
+                <span>{{userProfile?.profileSummary | slice:0:120 }}&nbsp;</span>
+                <span class="ui cardsKnowMore mouse-pointer" *ngIf="userProfile.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}} </span>
+    
+            </div>
+    
+            <div *ngIf="readMore"> {{userProfile.profileSummary}}&nbsp;
+                <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+            </div>
+        </div>
+    
+        <div class="ui form margin-top-20 "  *ngIf="action === 'edit'">
+            <div class="field">
+                <textarea [(ngModel)]="editSummury" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+    
+            <button class="ui primary button margin-top-15" *ngIf="action === 'edit'" 
+            (click)="editDetails(editSummury)">{{resourceService.frmelmnts.btn.save}} </button>
+        </div>
+    </div>
+</div>

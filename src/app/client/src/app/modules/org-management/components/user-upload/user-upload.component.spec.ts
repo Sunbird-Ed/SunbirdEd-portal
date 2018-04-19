@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
@@ -19,6 +19,9 @@ describe('UserUploadComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const fakeActivatedRoute = {
+    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+  };
   const ResourceData = {
     'frmelmnts': {
       'instn': {
@@ -55,7 +58,8 @@ describe('UserUploadComponent', () => {
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, SharedModule],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
-        { provide: ResourceService, useValue: ResourceData }
+        { provide: ResourceService, useValue: ResourceData },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -71,7 +75,7 @@ describe('UserUploadComponent', () => {
     const router = TestBed.get(Router);
     component.redirect();
     fixture.detectChanges();
-    expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call downloadSample method to download a csv file', () => {
     component.downloadSampleCSV();

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrganizationUploadComponent } from './organization-upload.component';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -10,6 +10,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { mockRes } from './organization-upload.component.spec.data';
+
 import { By } from '@angular/platform-browser';
 
 describe('OrganizationUploadComponent', () => {
@@ -18,6 +19,9 @@ describe('OrganizationUploadComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const fakeActivatedRoute = {
+    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+  };
   const ResourceData = {
     'frmelmnts': {
       'instn': {
@@ -48,7 +52,8 @@ describe('OrganizationUploadComponent', () => {
       declarations: [OrganizationUploadComponent],
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub },
-        { provide: ResourceService, useValue: ResourceData }
+        { provide: ResourceService, useValue: ResourceData },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -63,7 +68,8 @@ describe('OrganizationUploadComponent', () => {
     const router = TestBed.get(Router);
     component.redirect();
     fixture.detectChanges();
-    expect(router.navigate).toHaveBeenCalledWith(['/bulkUpload']);
+    component.redirectUrl = '/profile';
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call downloadSample method and download a sample csv file', () => {
     component.downloadSample();
