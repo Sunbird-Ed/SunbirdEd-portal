@@ -1,4 +1,3 @@
-// NG modules
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -7,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
-import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
+import { SharedModule, ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 // Services
 import { OrganisationService, DashboardUtilsService, RendererService,
   LineChartService, DownloadService } from './../../services';
@@ -42,6 +41,7 @@ describe('OrganisationComponent', () => {
         UserService,
         DownloadService,
         ConfigService,
+        ToasterService,
         ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

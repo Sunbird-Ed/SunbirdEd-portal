@@ -9,8 +9,7 @@ import { WorkSpaceService, EditorService } from './services';
 
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
-  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
-  CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
+  ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
   WorkspacesidebarComponent
 } from './components';
@@ -26,9 +25,8 @@ import {
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
-    PublishedComponent, UploadedComponent, CreateTextbookComponent, CreateCourseComponent,
-    CreateStudyMaterialComponent, CreateCollectionComponent, CreateLessonPlanComponent,
-    CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent],
+    PublishedComponent, UploadedComponent, CollectionEditorComponent,
+    ContentEditorComponent, GenericEditorComponent],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }
