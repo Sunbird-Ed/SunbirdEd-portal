@@ -1,5 +1,5 @@
 export enum state {
-    UPFORREVIEW = 'upForReview',
+    UP_FOR_REVIEW = 'upForReview',
     FLAGGED = 'flagged'
   }
 

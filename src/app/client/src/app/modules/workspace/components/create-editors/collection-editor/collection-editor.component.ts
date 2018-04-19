@@ -203,7 +203,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 
-    if (this.state === state.UPFORREVIEW &&
+    if (this.state === state.UP_FOR_REVIEW &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
