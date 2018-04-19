@@ -1,6 +1,6 @@
 import { PageApiService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, INoResultMessage } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
@@ -33,6 +33,14 @@ export class ResourceComponent implements OnInit {
    * any data
    */
   showLoader = true;
+    /**
+    * To show / hide no result message when no result found
+   */
+  noResult = false;
+   /**
+   * no result  message
+  */
+  noResultMessage: INoResultMessage;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -60,14 +68,29 @@ export class ResourceComponent implements OnInit {
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse) {
+          this.noResultMessage = {
+            'message': this.resourceService.messages.stmsg.m0007,
+            'messageText': this.resourceService.messages.stmsg.m0006
+          };
+          let noResultCounter = 0;
           this.showLoader = false;
           this.caraouselData = apiResponse.result.response.sections;
           _.forEach(this.caraouselData, (value, index) => {
-            _.forEach(this.caraouselData[index].contents, (item, key) => {
-              const action = { left: { displayType: 'rating' } };
-              this.caraouselData[index].contents[key].action = action;
-            });
+              _.forEach(this.caraouselData[index].contents, (item, key) => {
+                const action = { left: { displayType: 'rating' } };
+                this.caraouselData[index].contents[key].action = action;
+              });
           });
+          if (this.caraouselData.length > 0) {
+            _.forIn(this.caraouselData, (value, key) => {
+              if (this.caraouselData[key].contents === undefined) {
+                noResultCounter++;
+              }
+            });
+          }
+          if (noResultCounter === this.caraouselData.length) {
+            this.noResult = true;
+          }
         }
       },
       err => {

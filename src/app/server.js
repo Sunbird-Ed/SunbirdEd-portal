@@ -95,14 +95,15 @@ app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
 app.all('/logoff', function (req, res) {
-    res.cookie('connect.sid', '', { expires: new Date() })
-    res.redirect('/logout')
-  })
+  res.cookie('connect.sid', '', { expires: new Date() })
+  res.redirect('/logout')
+})
 
 // Mobile redirection to app
 require('./helpers/mobileRedirectHelper.js')(app)
 
 function indexPage (req, res) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
   res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   res.locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
@@ -118,10 +119,12 @@ app.all('/announcement', keycloak.protect(), indexPage)
 app.all('/announcement/*', keycloak.protect(), indexPage)
 app.all('/search', keycloak.protect(), indexPage)
 app.all('/search/*', keycloak.protect(), indexPage)
-app.all('/org-type', keycloak.protect(), indexPage)
-app.all('/org-type/*', keycloak.protect(), indexPage)
+app.all('/orgType', keycloak.protect(), indexPage)
+app.all('/orgType/*', keycloak.protect(), indexPage)
 app.all('/dashboard', keycloak.protect(), indexPage)
 app.all('/dashboard/*', keycloak.protect(), indexPage)
+app.all('/orgDashboard', keycloak.protect(), indexPage)
+app.all('/orgDashboard/*', keycloak.protect(), indexPage)
 app.all('/workspace', keycloak.protect(), indexPage)
 app.all('/workspace/*', keycloak.protect(), indexPage)
 app.all('/profile', keycloak.protect(), indexPage)
@@ -130,6 +133,8 @@ app.all('/learn', keycloak.protect(), indexPage)
 app.all('/learn/*', keycloak.protect(), indexPage)
 app.all('/resources', keycloak.protect(), indexPage)
 app.all('/resources/*', keycloak.protect(), indexPage)
+app.all('/myActivity', keycloak.protect(), indexPage)
+app.all('/myActivity/*', keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)

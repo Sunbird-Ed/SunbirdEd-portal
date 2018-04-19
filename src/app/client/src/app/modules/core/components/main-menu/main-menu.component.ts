@@ -1,5 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
+import { UserService } from '../../services';
 
 /**
  * Main menu component
@@ -14,11 +15,16 @@ export class MainMenuComponent {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
+  /**
+   * reference of UserService service.
+   */
+  public userService: UserService;
   /*
   * constructor
   */
-  constructor(resourceService: ResourceService) {
+  constructor(resourceService: ResourceService, userService: UserService) {
     this.resourceService = resourceService;
+    this.userService = userService;
   }
 
 }

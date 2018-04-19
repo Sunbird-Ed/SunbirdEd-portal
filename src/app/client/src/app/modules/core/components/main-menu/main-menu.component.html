@@ -1,4 +1,4 @@
-<div class="ui secondary pointing menu">
+<div class="ui secondary pointing menu" *ngIf="userService.userid">
 	<a class="item"  routerLinkActive="active" routerLink="/home" >
 		{{resourceService?.frmelmnts?.tab?.home}}
 	    </a>
@@ -11,7 +11,7 @@
 	<a class="item" routerLinkActive="active" routerLink="/groups" >
 		{{resourceService?.frmelmnts?.tab?.community}}
 	    </a>
-	<a class="item" href="/private/index#!/profile" >
+	<a class="item" routerLinkActive="active" routerLink="/profile" >
 		{{resourceService?.frmelmnts?.tab?.profile}}
 		</a>
 </div>

@@ -36,6 +36,9 @@
       ], 
       "@sunbird/org-management": [
         "app/modules/org-management"
+      ],
+      "@sunbird/public": [
+        "app/modules/public"
       ]
     },
     "module": "es2015",

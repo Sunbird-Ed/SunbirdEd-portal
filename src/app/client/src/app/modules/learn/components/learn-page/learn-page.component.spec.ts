@@ -53,7 +53,7 @@ describe('LearnPageComponent', () => {
     fixture.detectChanges();
     component.populateEnrolledCourse();
     fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
   it('should take else path when enrolledCourses length is 0 ', () => {
     const courseService = TestBed.get(CoursesService);
@@ -63,7 +63,7 @@ describe('LearnPageComponent', () => {
     fixture.detectChanges();
     component.populateEnrolledCourse();
     fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
   it('should throw error when courseService api is not called ', () => {
     const courseService = TestBed.get(CoursesService);
@@ -75,6 +75,6 @@ describe('LearnPageComponent', () => {
     fixture.detectChanges();
     component.populateEnrolledCourse();
     fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
 });

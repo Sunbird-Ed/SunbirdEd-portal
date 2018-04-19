@@ -14,3 +14,6 @@
 /src/app/client/src/thirdparty
 src/app/dist/thirdparty/editors/
 src/app/app_dist
+/extensible-framework
+**/node_modules
+**/package-lock.json

@@ -1,5 +1,5 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 import { UserService, PermissionService, CoursesService, TelemetryService } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -12,7 +12,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   /**
    * reference of UserService service.
    */
@@ -42,11 +42,6 @@ export class AppComponent {
     this.userService = userService;
     this.courseService = courseService;
     this.telemetryService = telemetryService;
-    userService.initialize();
-    permissionService.initialize();
-    resourceService.initialize();
-    courseService.initialize();
-    telemetryService.initialize();
   }
 
   /**
@@ -56,5 +51,15 @@ export class AppComponent {
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
     document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
+  }
+
+  ngOnInit() {
+    this.resourceService.initialize();
+    if (this.userService.userid && this.userService.sessionId) {
+      this.userService.initialize();
+      this.permissionService.initialize();
+      this.courseService.initialize();
+      this.telemetryService.initialize();
+    }
   }
 }
