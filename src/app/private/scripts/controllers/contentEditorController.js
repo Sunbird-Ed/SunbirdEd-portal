@@ -100,7 +100,7 @@ angular.module('playerApp')
       var validateModal = {
         state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
           'WorkSpace.PublishedContent', 'LimitedPublishedContent'],
-        status: ['Review', 'Draft', 'Live', 'Unlisted'],
+        status: ['Review', 'Draft', 'Live', 'Unlisted', 'FlagDraft', 'FlagReview'],
         mimeType: config.CreateLessonMimeType
       }
 
@@ -160,12 +160,12 @@ angular.module('playerApp')
 
         org.sunbird.portal.eventManager.addEventListener('sunbird:portal:content:review',
                 function (event, data) { //eslint-disable-line
-                  if ($stateParams.state) {
-                    $state.go($stateParams.state)
-                  } else {
-                    $state.go('WorkSpace.DraftContent')
-                  }
-                })
+            if ($stateParams.state) {
+              $state.go($stateParams.state)
+            } else {
+              $state.go('WorkSpace.DraftContent')
+            }
+          })
 
         window.addEventListener('editor:metadata:edit', function (event, data) {
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:portal:editor:editmeta')
