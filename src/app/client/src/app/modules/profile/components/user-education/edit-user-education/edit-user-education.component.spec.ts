@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import { ResourceService, SharedModule, WindowScrollService } from '@sunbird/shared';
 import { EditUserEducationComponent } from './edit-user-education.component';
 import { response } from './edit-user-education.component.spec.data';
 
@@ -33,7 +33,7 @@ describe('EditUserEducationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [EditUserEducationComponent],
       imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
-      providers: [ResourceService, UserService, ProfileService]
+      providers: [ResourceService, UserService, ProfileService, WindowScrollService]
     })
       .compileComponents();
   }));
@@ -41,11 +41,14 @@ describe('EditUserEducationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditUserEducationComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
     component.education = response.successData;
+    const offsetTop = 'education';
+    spyOn(windowScrollService, 'smoothScroll').and.returnValue(null);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });

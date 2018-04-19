@@ -104,7 +104,6 @@ export class OrganizationUploadComponent implements OnInit {
  * page, i.e, bulk upload page
  */
   public redirect() {
-    console.log('here');
     this.fileName = '';
     this.processId = '';
     this.router.navigate([this.redirectUrl]);

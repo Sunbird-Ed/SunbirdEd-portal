@@ -32,7 +32,7 @@ export class UserAdditionalInfoComponent implements OnInit {
   /**
  * Stores actions that are allowed
  */
-  allowedAction = ['edit', 'add'];
+  allowedAction = ['edit'];
 
   constructor(public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     public router: Router, public userService: UserService, public profileService: ProfileService,
@@ -66,9 +66,10 @@ export class UserAdditionalInfoComponent implements OnInit {
   }
   editBasicInfo() {
     const editedInfo = [];
+    let formStatus = true;
     const updatedInfo = {};
     this.editChild.forEach((child) => {
-      if (child.basicInfoForm.touched === true && child.basicInfoForm.valid === true) {
+      if (child.basicInfoForm.valid === true) {
         const addInfo: any = {};
         _.forIn(child.basicInfoForm.controls, (value, key) => {
           if (value.touched === true && value !== undefined && value.value !== '' && value !== null) {
@@ -96,24 +97,28 @@ export class UserAdditionalInfoComponent implements OnInit {
         delete addInfo['phone'];
         editedInfo.push(addInfo);
       } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0076);
-        const addInfo = {};
-        addInfo['userId'] = this.userService.userid;
-        editedInfo.push(addInfo);
+        formStatus = false;
+        // this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+        // const addInfo = {};
+        // addInfo['userId'] = this.userService.userid;
+        // editedInfo.push(addInfo);
       }
     });
-    const req = {
-      basicInfo: editedInfo,
-      userId: this.userService.userid
-    };
-    this.profileService.updateProfile(req.basicInfo[0]).subscribe(res => {
-      this.router.navigate(['/profile']);
-      this.toasterService.success(this.resourceService.messages.m0022);
-    },
-      err => {
-        console.log('err', err);
-        this.toasterService.error(err.error.params.errmsg);
-        // toaster err
-      });
+    if (formStatus === true) {
+      const req = {
+        basicInfo: editedInfo,
+        userId: this.userService.userid
+      };
+      this.profileService.updateProfile(req.basicInfo[0]).subscribe(res => {
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0022);
+      },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          // toaster err
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
 }

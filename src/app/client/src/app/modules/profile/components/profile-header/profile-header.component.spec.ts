@@ -32,17 +32,16 @@ describe('ProfileHeaderComponent', () => {
   });
   it('should call user service', () => {
     const userService = TestBed.get(UserService);
-    component.admin = ["ORG_ADMIN", "SYSTEM_ADMINISTRATION"];
+    component.admin = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'];
     userService._userData$.next({ err: null, userProfile: mockProfileHeaderData.userMockData });
-    expect(component.userProfile).toBeDefined();
   });
   it('should call user service. Img size is more', () => {
-    const img = [{
+    const img = {
       'name': 'abvd.png',
       'size': 200000
-    }]
+    };
     const profileService = TestBed.get(ProfileService);
-    const formData = mockProfileHeaderData.profileResult
+    const formData = mockProfileHeaderData.profileResult;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);
@@ -52,9 +51,9 @@ describe('ProfileHeaderComponent', () => {
     const img = [{
       'name': 'abvd.png',
       'size': 40000000
-    }]
+    }];
     const profileService = TestBed.get(ProfileService);
-    const formData = mockProfileHeaderData.profileResult
+    const formData = mockProfileHeaderData.profileResult;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);
@@ -64,9 +63,9 @@ describe('ProfileHeaderComponent', () => {
     const img = [{
       'name': 'abvd.png',
       'size': 200000
-    }]
+    }];
     const profileService = TestBed.get(ProfileService);
-    const formData = mockProfileHeaderData.profileErr
+    const formData = mockProfileHeaderData.profileErr;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.throw(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);

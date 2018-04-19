@@ -19,6 +19,9 @@ export class ProfileBadgeComponent implements OnInit {
     public badgeService: BadgesService) { }
 
   ngOnInit() {
+    this.getBadgeData();
+  }
+  getBadgeData() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ProfileService } from '../../../services/profile/profile.service';
@@ -24,14 +24,14 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   isEdit: boolean;
 
   constructor(public resourceService: ResourceService, public userService: UserService, public configService: ConfigService,
-    public profileService: ProfileService) {
+    public profileService: ProfileService, public windowScrollService: WindowScrollService) {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
     this.languages = this.configService.dropDownConfig.COMMON.languages;
     this.grades = this.configService.dropDownConfig.COMMON.grades;
   }
 
   ngOnInit() {
-    this.profileService.smoothScroll('additionalInfo');
+    this.windowScrollService.smoothScroll('additionalInfo');
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {

@@ -21,14 +21,14 @@
         <label>{{resourceService?.frmelmnts?.lbl?.phone}} </label>
         <div class="ui input right icon">
           <input [attr.disabled]="isEdit" type="text" name="phone" placeholder="{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}" formControlName="phone">
-          <app-profile-visibility top="'true'" update="'true'" field="phone"></app-profile-visibility>
+          <app-profile-visibility field="phone"></app-profile-visibility>
         </div>
       </div>
       <div class=" required  field" ng-class="{'disabled':profileCtrl.user.email.length?true:false }">
         <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
         <div class="ui input right icon">
           <input [attr.disabled]="isEdit" type="email" name="email" formControlName="email">
-          <app-profile-visibility top="'true'" update="'true'" field="email"></app-profile-visibility>
+          <app-profile-visibility field="email"></app-profile-visibility>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
           <option value="Male">{{resourceService?.frmelmnts?.drpdn?.male}}</option>
           <option value="Transgender">{{resourceService?.frmelmnts?.drpdn?.transgender}}</option>
         </select>
-        <app-profile-visibility top="'true'" update="'true'" field="gender"></app-profile-visibility>
+        <app-profile-visibility field="gender"></app-profile-visibility>
       </div>
     </div>
     <div class="field">
@@ -54,7 +54,7 @@
         <i class="calendar icon"></i>
         <input suiDatepicker name="dob" placeholder="Date" formControlName="dob" [pickerMaxDate]="initDate" [pickerMode]="'date'">
         <div ng-if="dobVis">
-          <app-profile-visibility top="'true'" update="'true'" field="dob"></app-profile-visibility>
+          <app-profile-visibility field="dob"></app-profile-visibility>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
       <label>{{resourceService?.frmelmnts?.lbl?.currentlocation}}</label>
       <div class="ui input right icon">
         <input type="text" name="location" formControlName="location">
-        <app-profile-visibility top="'true'" update="'true'" field="location"></app-profile-visibility>
+        <app-profile-visibility field="location"></app-profile-visibility>
       </div>
     </div>
   </div>

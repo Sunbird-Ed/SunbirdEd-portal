@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { CoreModule, UserService } from '@sunbird/core';
 import { ProfileService, ProfileVisibilityComponent } from '@sunbird/profile';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -15,7 +15,7 @@ describe('ProfileVisibilityComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
       declarations: [ ProfileVisibilityComponent ],
-      providers: [ ProfileService, UserService ]
+      providers: [ ResourceService, ProfileService, UserService ]
     })
     .compileComponents();
   }));
@@ -31,10 +31,12 @@ describe('ProfileVisibilityComponent', () => {
   });
   it('should call user service', () => {
     const userService = TestBed.get(UserService);
+    userService._userProfile = mockProfileVisibilityData.userMockData;
     userService._userData$.next({ err: null, userProfile: mockProfileVisibilityData.userMockData });
-    expect(component.userProfile).toBeDefined();
   });
   it('should call updateProfileFieldVisibility and update flag', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockProfileVisibilityData.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
     const value = 'private';
     component.loader = false;

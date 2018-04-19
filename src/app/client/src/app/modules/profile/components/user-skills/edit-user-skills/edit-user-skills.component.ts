@@ -1,9 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { ResourceService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
+import { ResourceService, IUserProfile, IUserData, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ProfileService } from '../../../services/profile/profile.service';
+import { ProfileService } from '../../../services';
 import * as _ from 'lodash';
 
 @Component({
@@ -18,10 +18,11 @@ export class EditUserSkillsComponent implements OnInit {
   profileData: any;
 
   constructor(public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public profileService: ProfileService, public toasterService: ToasterService) { }
+    public profileService: ProfileService, public toasterService: ToasterService,
+   public windowScrollService: WindowScrollService) { }
 
   ngOnInit() {
-    this.profileService.smoothScroll('skills');
+    this.windowScrollService.smoothScroll('skills');
     this.profileService.getSkills().subscribe((data) => {
       if (data) {
         this.profileData = data.result;

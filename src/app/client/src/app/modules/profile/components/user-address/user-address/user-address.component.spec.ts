@@ -48,7 +48,7 @@ describe('UserAddressComponent', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userProfile = mockRes.data.userProfile;
-    spyOn(userService, 'getUserProfile').and.callFake(() => Observable.of(mockRes.data));
+    userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     activatedRoute.params = {
       'section': 'address',
       'action': 'add'
@@ -57,7 +57,7 @@ describe('UserAddressComponent', () => {
     expect(component).toBeTruthy();
     fixture.detectChanges();
   });
-  it('should create 2', () => {
+  it('should pass activated route', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userProfile = mockRes.data.userProfile;
@@ -76,10 +76,13 @@ describe('UserAddressComponent', () => {
     parentComp.editAddress();
     expect(component).toBeTruthy();
   });
-  it('should call addAddress method', () => {
+  xit('should call addAddress method', () => {
+    const router = TestBed.get(Router);
     const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    parentComp.addChild.addressForm.value.value = mockRes.addressData;
     parentComp.addAddress();
-    expect(component).toBeTruthy();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should deleteAddress method', () => {
     const profileService = TestBed.get(ProfileService);

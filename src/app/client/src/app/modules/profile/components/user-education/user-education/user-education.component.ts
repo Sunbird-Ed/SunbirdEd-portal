@@ -46,12 +46,13 @@ export class UserEducationComponent implements OnInit {
   }
   editEducation() {
     const editedEdu = [];
+    let formStatus = true;
     this.editChild.forEach((child) => {
-      if (child.educationForm.touched === true && child.educationForm.valid === true) {
+      if (child.educationForm.valid === true) {
         const addEdu: any = {};
         _.forIn(child.educationForm.value, (value, key) => {
           if (value !== undefined && value !== '' && value !== null) {
-            if (key === 'joiningDate' || key === 'endDate') {
+            if (key === 'yearOfPassing') {
               addEdu[key] = moment(value).format('YYYY-MM-DD');
             } else {
               addEdu[key] = value;
@@ -62,51 +63,55 @@ export class UserEducationComponent implements OnInit {
         addEdu.userId = child.education.userId;
         editedEdu.push(addEdu);
       } else {
-        alert('invalid');
+        formStatus = false;
       }
     });
-    editedEdu['userId'] = this.userService.userid;
-    const req = {
-      education: editedEdu
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.router.navigate(['/profile']);
-      // toaster suc
-    },
-      err => {
-        // toaster err
-      });
+    if (formStatus === true) {
+      editedEdu['userId'] = this.userService.userid;
+      const req = {
+        education: editedEdu
+      };
+      this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0020);
+      },
+        (err) => {
+          this.toasterService.error(err.error.params.errmsg);
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
   addEducation() {
     const addEdu: any = {};
-    _.forIn(this.addChild.educationForm.value, (value, key) => {
-      console.log('value', value);
-      if (value && value !== '' && value !== null) {
-        if (key === 'joiningDate' || key === 'endDate') {
-          addEdu[key] = moment(value).format('YYYY-MM-DD');
+    if (this.addChild.educationForm.touched === true && this.addChild.educationForm.valid === true) {
+      _.forIn(this.addChild.educationForm.value, (value, key) => {
+        if (value && value !== '' && value !== null) {
+          if (key === 'yearOfPassing') {
+            addEdu[key] = moment(value).format('YYYY');
+          } else {
+            addEdu[key] = value;
+          }
         } else {
-          addEdu[key] = value;
-        }
-      } else {
 
-      }
-    });
-    addEdu.userId = this.userService.userid;
-    const req = {
-      education: [addEdu]
-    };
-    this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
-      // if (res.responseCode === 'OK') {
+        }
+      });
+      addEdu.userId = this.userService.userid;
+      const req = {
+        education: [addEdu]
+      };
+      this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
         this.action = 'view';
         this.router.navigate(['/profile']);
-        // toaster suc
         this.toasterService.success(this.resourceService.messages.smsg.m0024);
-      // }
-    },
-      err => {
-        // toaster err
-        this.toasterService.error(this.resourceService.messages.fmsg.m0076);
-      });
+      },
+        err => {
+          // toaster err
+          this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
   deleteEducation(deletedEdu) {
     const request = {

@@ -21,6 +21,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
      * reference of resourceService service.
     */
     public resourceService: ResourceService;
+        /**
+     * reference of resourceService service.
+    */
+   public config: ConfigService;
 
     /**
     * constructor
@@ -28,10 +32,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     * @param {resourceService} resourceService Refrence of resourceService service
     * @param {Router} route  Reference of Router
     */
-    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService) {
+    constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService,
+    config: ConfigService) {
         this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
+        this.config = config;
     }
     /**
     * method CanActivate for guard .
@@ -49,7 +55,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 permissionAvailable => {
                     if (permissionAvailable && permissionAvailable === 'success') {
                         this.currentUrl = state;
-                        const rolePermission = this.resourceService.config.rolesConfig.ROLES[this.currentUrl];
+                        const rolePermission = this.config.rolesConfig.ROLES[this.currentUrl];
                         if (rolePermission) {
                             if (this.permissionService.checkRolesPermissions(rolePermission)) {
                                 observer.next(true);

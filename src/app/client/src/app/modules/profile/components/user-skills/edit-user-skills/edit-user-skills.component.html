@@ -31,7 +31,7 @@
     <button class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
-    <button class="ui approve primary button" (click)="addSkill(skills)">
+    <button class="ui approve primary button" (click)="addSkill(skills); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.finish}}
     </button>
   </div>

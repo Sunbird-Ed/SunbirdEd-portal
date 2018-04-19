@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EditUserEducationComponent } from '../../user-education/edit-user-education/edit-user-education.component';
 import { UserEducationComponent } from './user-education.component';
+import {mockRes} from './user-education.component.spec.data';
 
 describe('UserEducationComponent', () => {
   let component: EditUserEducationComponent;
@@ -22,20 +23,6 @@ describe('UserEducationComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-  const data = {
-    userProfile: {
-      'education': [{
-        'boardOrUniversity': 'CBSE',
-        'courseName': null,
-        'degree': 'Graduation',
-        'duration': null,
-        'grade': 'A',
-        'name': 'SVM',
-        'percentage': 70,
-        'yearOfPassing': 2012
-      }]
-    }
-  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserEducationComponent, EditUserEducationComponent],
@@ -50,7 +37,7 @@ describe('UserEducationComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditUserEducationComponent);
-    fixture.autoDetectChanges();
+    // fixture.autoDetectChanges();
     parentFixture = TestBed.createComponent(UserEducationComponent);
     parentComp = parentFixture.componentInstance;
     component = fixture.componentInstance;
@@ -59,28 +46,46 @@ describe('UserEducationComponent', () => {
   it('should create UserEducationComponent', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = data.userProfile;
-    spyOn(userService, 'getUserProfile').and.callFake(() => Observable.of(data));
-    activatedRoute.params = {
-      'section': 'address',
-      'action': 'add'
-    };
-    parentComp.privateProfileFields = true;
-    component.education = [];
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
+    userService._userProfile = mockRes.data.userProfile;
+    userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
+    parentComp.ngOnInit();
+    parentFixture.detectChanges();
   });
   it('should pass activated route', () => {
+    const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = data.userProfile;
-    userService._userData$.next({ err: null, userProfile: data.userProfile });
-    parentComp.allowedAction = [];
+    userService._userProfile = mockRes.data.userProfile;
+    userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     parentComp.ngOnInit();
+    parentFixture.detectChanges();
     activatedRoute.params = {
-      'section': 'address',
+      'section': 'education',
       'action': 'add'
     };
-    expect(component).toBeTruthy();
+    parentFixture.detectChanges();
+    expect(router.navigate).not.toHaveBeenCalledWith(['/profile']);
+  });
+  xit('should call editExperience method', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    parentComp.editEducation();
+  });
+  xit('should call addExperience method', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const router = TestBed.get(Router);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    const profileService = TestBed.get(ProfileService);
+    parentComp.userProfile.jobProfile = [];
+    expect(parentFixture.componentInstance.addChild).toBeUndefined();
+    parentFixture.detectChanges();
+    expect(parentFixture.componentInstance.addChild).toBeDefined();
+    const addChild = parentFixture.componentInstance.addChild;
+    parentComp.addChild = component;
+    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    parentComp.addEducation();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
 });

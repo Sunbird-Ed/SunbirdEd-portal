@@ -9,7 +9,7 @@ import { UserAdditionalInfoComponent } from './user-additional-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditUserAdditionalInfoComponent } from '../../user-additional-info/edit-user-additional-info/edit-user-additional-info.component';
-import { ProfileService } from '../../../services/profile/profile.service';
+import { ProfileService } from '../../../services';
 import { mockRes } from './user-additional-info.component.spec.data';
 
 describe('UserAdditionalInfoComponent', () => {

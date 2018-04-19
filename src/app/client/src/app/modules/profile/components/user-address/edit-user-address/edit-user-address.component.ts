@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollService } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as _ from 'lodash';
-import { ProfileService } from '../../../services/profile/profile.service';
-// import { FormBuilder, FormGroup, Validators } from ‘@angular/forms’;
-// import { FormsModule, ReactiveFormsModule } from ‘@angular/forms’;
+import { ProfileService } from '../../../services';
 
 @Component({
   selector: 'app-edit-user-address',
@@ -21,10 +19,10 @@ export class EditUserAddressComponent implements OnInit {
   public isEdit = false;
   userProfile: IUserProfile;
   constructor(private fb: FormBuilder, public resourceService: ResourceService, public userService: UserService,
-    public profileService: ProfileService) { }
+    public profileService: ProfileService, public windowScrollService: WindowScrollService) { }
 
   ngOnInit() {
-    this.profileService.smoothScroll('address');
+    this.windowScrollService.smoothScroll('address');
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {

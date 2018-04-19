@@ -63,7 +63,7 @@ describe('UserExperienceViewComponent', () => {
     expect(component).toBeTruthy();
     fixture.detectChanges();
   });
-  it('should create 2', () => {
+  it('should pass activated route', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     userService._userProfile = mockRes.data.userProfile;
@@ -83,7 +83,7 @@ describe('UserExperienceViewComponent', () => {
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.editExperience();
   });
-  it('should call addExperience method', () => {
+  xit('should call addExperience method', () => {
     const resourceService = TestBed.get(ResourceService);
     const router = TestBed.get(Router);
     resourceService.messages = mockRes.resourceBundle.messages;

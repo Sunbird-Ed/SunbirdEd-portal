@@ -61,9 +61,9 @@ export class UserExperienceViewComponent implements OnInit {
 
   editExperience() {
     const editedExp = [];
+    let formStatus = true;
     this.editChild.forEach((child) => {
-      console.log('form check', child.experienceForm, child.experienceForm.touched);
-      if (child.experienceForm.touched === true) {
+      if (child.experienceForm.valid === true) {
         const addExp: any = {};
         _.forIn(child.experienceForm.value, (value, key) => {
           if (value !== undefined && value !== '' && value !== null) {
@@ -78,58 +78,53 @@ export class UserExperienceViewComponent implements OnInit {
         addExp.userId = child.experience.userId;
         editedExp.push(addExp);
       } else {
-
+        formStatus = false;
       }
     });
-    editedExp['userId'] = this.userService.userid;
-    const req = {
-      jobProfile: editedExp
-    };
-    if (req.jobProfile.length > 0) {
+    if (formStatus === true) {
+      editedExp['userId'] = this.userService.userid;
+      const req = {
+        jobProfile: editedExp
+      };
       this.profileService.updateProfile(req).subscribe(res => {
         this.router.navigate(['/profile']);
-        // toaster suc
         this.toasterService.success(this.resourceService.messages.smsg.m0021);
       },
         err => {
-          // toaster err
-          console.log('err', err);
           this.toasterService.error(err.error.params.errmsg);
         });
     } else {
-      // this.toasterService.success(this.resourceService.messages.smsg.m0021);
-      this.router.navigate(['/profile']);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
 
   addExperience() {
     const addExp: any = {};
-    _.forIn(this.addChild.experienceForm.value, (value, key) => {
-      if (value && value !== '' && value !== null) {
-        if (key === 'joiningDate' || key === 'endDate') {
-          addExp[key] = moment(value).format('YYYY-MM-DD');
-        } else {
-          addExp[key] = value;
+    if (this.addChild.experienceForm.touched === true && this.addChild.experienceForm.valid === true) {
+      _.forIn(this.addChild.experienceForm.value, (value, key) => {
+        if (value && value !== '' && value !== null) {
+          if (key === 'joiningDate' || key === 'endDate') {
+            addExp[key] = moment(value).format('YYYY-MM-DD');
+          } else {
+            addExp[key] = value;
+          }
         }
-      }
-    });
-    addExp.userId = this.userService.userid;
-    const req = {
-      jobProfile: [addExp]
-    };
-    this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
-      console.log('res', res);
-      // if (res.responseCode === 'OK') {
-      this.action = 'view';
-      this.router.navigate(['/profile']);
-      // toaster suc
-      this.toasterService.success(this.resourceService.messages.smsg.m0025);
-      // }
-    },
-      (err: ServerResponse) => {
-        // toaster err
-        this.toasterService.error(this.resourceService.messages.fmsg.m0076);
       });
+      addExp.userId = this.userService.userid;
+      const req = {
+        jobProfile: [addExp]
+      };
+      this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
+        this.action = 'view';
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0025);
+      },
+        (err: ServerResponse) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
   checkCurrentJob() {
     let curJobId = 0;

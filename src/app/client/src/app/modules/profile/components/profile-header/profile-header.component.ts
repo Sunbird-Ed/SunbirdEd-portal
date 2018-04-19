@@ -41,9 +41,11 @@ export class ProfileHeaderComponent implements OnInit {
       this.profileService.updateAvatar(formData).subscribe(
         results => {
           // toaster suc
+          this.toasterService.success(this.resourceService.messages.m0018);
         },
         err => {
           // toaster error
+          // this.toasterService.error(err.error.params.errmsg);
         }
       );
     } else {

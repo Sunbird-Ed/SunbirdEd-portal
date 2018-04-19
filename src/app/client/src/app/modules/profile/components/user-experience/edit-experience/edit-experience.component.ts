@@ -3,9 +3,9 @@ import { UserService, PermissionService } from '@sunbird/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {
   ResourceService, ConfigService, IUserProfile, IUserData,
-  ToasterService
+  ToasterService, WindowScrollService
 } from '@sunbird/shared';
-import { ProfileService } from '../../../services/profile/profile.service';
+import { ProfileService } from '../../../services';
 @Component({
   selector: 'app-edit-experience',
   templateUrl: './edit-experience.component.html',
@@ -16,7 +16,7 @@ export class EditExperienceComponent implements OnInit {
   subjects: any;
   initDate = new Date();
   @Output() currentJobChange = new EventEmitter();
-  constructor(public resourceService: ResourceService,
+  constructor(public resourceService: ResourceService, public windowScrollService: WindowScrollService,
     public userService: UserService, public configService: ConfigService, public profileService: ProfileService) {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
   }
@@ -24,7 +24,7 @@ export class EditExperienceComponent implements OnInit {
   experienceForm: FormGroup; // new FormGroup({});
 
   ngOnInit() {
-    this.profileService.smoothScroll('experience');
+    this.windowScrollService.smoothScroll('experience');
     if (this.experience) {
       const joiningDate = this.experience.joiningDate ? new Date(this.experience.joiningDate) : null;
       const endDate = this.experience.endDate ? new Date(this.experience.endDate) : null;
@@ -54,7 +54,6 @@ export class EditExperienceComponent implements OnInit {
     return this.experienceForm.get('isCurrentJob').value;
   }
   currentJobChangeEvent() {
-    console.log('current job');
     this.currentJobChange.emit();
   }
 }

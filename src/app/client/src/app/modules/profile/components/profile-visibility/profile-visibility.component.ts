@@ -51,6 +51,7 @@ export class ProfileVisibilityComponent implements OnInit {
     err => {
       this.loader = false;
       // toaster err
+      // this.toasterService.error(err.error.params.errmsg);
     });
   }
 }

@@ -116,5 +116,16 @@ export const mockProfileVisibilityData = {
         'result': {
             'response': 'SUCCESS'
         }
+    },
+    resourceBundle: {
+        'messages': {
+            'fmsg': {
+                'm0076': 'Please enter mandatory fields',
+                'm0042': 'Experience delete failed. Please try again later...'
+            },
+            'smsg': {
+                'm0040': 'Profile field visibility updated successfully'
+            }
+        }
     }
 };

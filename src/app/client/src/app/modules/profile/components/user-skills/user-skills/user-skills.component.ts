@@ -44,7 +44,6 @@ export class UserSkillsComponent implements OnInit {
     });
   }
   toggle(lim) {
-    console.log(lim);
     if (lim === true) {
       this.limit = this.userProfile.skills.length;
       this.viewMore = false;

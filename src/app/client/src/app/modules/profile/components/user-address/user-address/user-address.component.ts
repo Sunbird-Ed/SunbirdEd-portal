@@ -53,8 +53,9 @@ export class UserAddressComponent implements OnInit {
   }
   editAddress() {
     const editedAddress = [];
+    let formStatus = true;
     this.editChild.forEach((child) => {
-      if (child.addressForm.touched === true && child.addressForm.valid === true) {
+      if (child.addressForm.valid === true) {
         const addAddress: any = {};
         _.forIn(child.addressForm.value, (value, key) => {
           if (value !== undefined && value !== '' && value !== null) {
@@ -68,47 +69,55 @@ export class UserAddressComponent implements OnInit {
         addAddress['id'] = child.address.id;
         addAddress.userId = child.address.userId;
         editedAddress.push(addAddress);
+      } else {
+        formStatus = false;
       }
     });
-    editedAddress['userId'] = this.userService.userid;
-    const req = {
-      address: editedAddress
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.router.navigate(['/profile']);
-      this.toasterService.success(this.resourceService.messages.smsg.m0023);
-    },
-      err => {
-        // toaster err
-        this.toasterService.error(err.error.params.errmsg);
-      });
+    if (formStatus === true) {
+      editedAddress['userId'] = this.userService.userid;
+      const req = {
+        address: editedAddress
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0023);
+      },
+        err => {
+          // toaster err
+          this.toasterService.error(err.error.params.errmsg);
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
   addAddress() {
     const addAddress: any = {};
-    _.forIn(this.addChild.addressForm.value, (value, key) => {
-      if (value && value !== '' && value !== null) {
-        addAddress[key] = value;
-      }
-    });
-    addAddress.userId = this.userService.userid;
-    const req = {
-      address: [addAddress]
-    };
-    console.log('req', req);
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.action = 'view';
-      this.router.navigate(['/profile']);
-      this.toasterService.success(this.resourceService.messages.smsg.m0026);
-    },
-      err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    if (this.addChild.addressForm.touched === true && this.addChild.addressForm.valid === true) {
+      _.forIn(this.addChild.addressForm.value, (value, key) => {
+        if (value && value !== '' && value !== null) {
+          addAddress[key] = value;
+        }
       });
+      addAddress.userId = this.userService.userid;
+      const req = {
+        address: [addAddress]
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.action = 'view';
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0026);
+      },
+        err => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+        });
+    } else {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+    }
   }
   deleteAddress(deletedAddress) {
     const request = {
       address: [deletedAddress]
     };
-    console.log('req..', request);
     this.profileService.updateProfile(request).subscribe(res => {
       // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0016);

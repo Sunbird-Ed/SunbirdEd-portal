@@ -7,7 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule } from '@sunbird/shared';
+import {
+  ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule,
+  WindowScrollService
+} from '@sunbird/shared';
 import { EditUserSkillsComponent } from './edit-user-skills.component';
 import { mockRes } from './edit-user-skills.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
@@ -26,6 +29,7 @@ describe('EditUserSkillsComponent', () => {
       declarations: [EditUserSkillsComponent],
       imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
       providers: [ResourceService, UserService, ProfileService, Ng2IzitoastService, ToasterService,
+        WindowScrollService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -41,6 +45,9 @@ describe('EditUserSkillsComponent', () => {
 
   it('should create', () => {
     const userService = TestBed.get(UserService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    const offsetTop = 'skills';
+    spyOn(windowScrollService, 'smoothScroll').and.returnValue(null);
     userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     component.ngOnInit();

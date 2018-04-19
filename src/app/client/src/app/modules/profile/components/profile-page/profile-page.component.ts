@@ -26,14 +26,11 @@ export class ProfilePageComponent implements OnInit {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
           this.getMyContent();
-        } else if (user && user.err) {
-          // this.toasterService.error('Something went wrong, please try again later...');
         }
       });
     this.workSpaceRole = this.configService.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
   updateAction(field) {
-    console.log(field);
     const actions = {
       profileSummary: 'profile/summary/edit',
       jobProfile: 'profile/experience/add',
@@ -43,7 +40,11 @@ export class ProfilePageComponent implements OnInit {
       dob: 'profile/additionalInfo/edit',
       subject: 'profile/additionalInfo/edit',
       grade: 'profile/additionalInfo/edit',
-      gender: 'profile/additionalInfo/edit'
+      gender: 'profile/additionalInfo/edit',
+      lastName: 'profile/additionalInfo/edit',
+      email: 'profile/additionalInfo/edit',
+      phone: 'profile/additionalInfo/edit',
+      language: 'profile/additionalInfo/edit'
     };
     this.router.navigate([actions[field]]);
   }
