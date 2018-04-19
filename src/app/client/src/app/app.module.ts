@@ -17,7 +17,7 @@ import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
-import { SearchModule } from './modules/search/search.module';
+import { SearchModule } from '@sunbird/search';
 
 @NgModule({
   declarations: [

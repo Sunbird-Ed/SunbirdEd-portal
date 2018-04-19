@@ -51,8 +51,6 @@ export class UserSearchService {
       this.userDeleteEvent.emit(requestParam.userId);
       return data;
     });
-
-   // return this.learnerService.post(option);
   }
 
   updateRoles(requestParam) {

@@ -14,19 +14,15 @@ export class OrgFilterComponent implements OnInit {
   @Input() queryParams: any;
   @Output('filter')
   filter = new EventEmitter<any>();
-  /**
-   * To get url, app configs
-   */
+
   public config: ConfigService;
   public resourceService: ResourceService;
   private searchService: SearchService;
   private orgTypeService: OrgTypeService;
-  /**
-   * To navigate to other pages
-   */
+  private cdr: ChangeDetectorRef;
   private router: Router;
   searchOrgType: Array<string>;
-  label: any;
+  label: Array<string>;
   refresh = true;
   /**
     * Constructor to create injected service(s) object
@@ -36,71 +32,59 @@ export class OrgFilterComponent implements OnInit {
     * @param {ConfigService} config Reference of ConfigService
   */
   constructor(config: ConfigService, orgTypeService: OrgTypeService,
-    resourceService: ResourceService, router: Router,  private cdr: ChangeDetectorRef) {
+    resourceService: ResourceService, router: Router, cdr: ChangeDetectorRef) {
     this.config = config;
     this.orgTypeService = orgTypeService;
     this.resourceService = resourceService;
     this.router = router;
+    this.cdr = cdr;
   }
 
   removeFilterSelection(filterType, value) {
-    this.refresh = false;
-    if (filterType === 'selectedConcepts') {
-    // for concept picker
-    } else {
-      const itemIndex = this.queryParams[filterType].indexOf(value);
-      if (itemIndex !== -1) {
-        console.log(this.queryParams[filterType], value);
-        this.queryParams[filterType].splice(itemIndex, 1);
-        console.log(this.queryParams[filterType]);
-       // this.cdr.detectChanges();
-      }
-    }
-   /// this.appRef.tick();
-    setTimeout(() => {
+    const itemIndex = this.queryParams[filterType].indexOf(value);
+    if (itemIndex !== -1) {
+      this.queryParams[filterType].splice(itemIndex, 1);
+      this.refresh = false;
+      this.cdr.detectChanges();
       this.refresh = true;
-    }, 0);
+    }
   }
 
   applyFilters() {
-    this.filter.emit(this.queryParams);
+    const queryParams = {};
+    _.forIn(this.queryParams, (value, key) => {
+      if (value.length > 0) {
+        queryParams[key] = value;
+      }
+    });
+    this.router.navigate(['/search/Organisations', 1], { queryParams: queryParams });
   }
 
   resetFilters() {
-    this.refresh = false;
     this.queryParams = {};
     this.router.navigate(['/search/Organisations', 1]);
-    setTimeout(() => {
-      this.refresh = true;
-    }, 0);
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
-  ngOnInit() {
+
+  setFilters() {
     _.forIn(this.queryParams, (value, key) => {
       if (typeof value === 'string') {
         this.queryParams[key] = [value];
       }
     });
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Organisations.DROPDOWN, ...this.queryParams };
-    console.log(this.queryParams);
-
     this.label = this.config.dropDownConfig.FILTER.SEARCH.Organisations.label;
-
-
-this.orgTypeService.getOrgTypes();
+    this.orgTypeService.getOrgTypes();
     this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse && apiResponse.orgTypeData) {
-        console.log('apiResponse', apiResponse);
-
-this.searchOrgType = apiResponse.orgTypeData.result.response;
-
-
-      } else if (apiResponse && apiResponse.err) {
-
+        this.searchOrgType = apiResponse.orgTypeData.result.response;
       }
     });
-
-
   }
 
+  ngOnInit() {
+    this.setFilters();
+  }
 }
-

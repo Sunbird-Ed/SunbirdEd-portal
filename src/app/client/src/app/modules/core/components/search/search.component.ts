@@ -1,8 +1,7 @@
-import { SearchService } from './../../services/search/search.service';
+import { SearchService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-
 
 /**
  * Main menu component
@@ -58,9 +57,9 @@ export class SearchComponent implements OnInit {
      * @param {Router} route Reference of Router
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    */
-  constructor( route: Router,  activatedRoute: ActivatedRoute,
-  resourceService: ResourceService, config: ConfigService) {
-      this.route = route;
+  constructor(route: Router, activatedRoute: ActivatedRoute,
+    resourceService: ResourceService, config: ConfigService) {
+    this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.config = config;
@@ -83,12 +82,8 @@ export class SearchComponent implements OnInit {
       queryParams: this.queryParam
     });
   }
-  /**
-   * gets the current url,
-   * and queryParams
-   */
-  ngOnInit() {
 
+  setFilters() {
     this.search = this.config.dropDownConfig.FILTER.SEARCH.search;
     this.searchUrl = this.config.dropDownConfig.FILTER.SEARCH.searchUrl;
     this.activatedRoute.queryParams.subscribe(queryParams => {
@@ -97,7 +92,6 @@ export class SearchComponent implements OnInit {
     });
     this.route.events
       .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
-        console.log(params);
         this.value = params.url.split('/', 3);
         if (this.searchUrl[this.value[1]]) {
           this.selectedOption = this.searchUrl[this.value[1]];
@@ -108,5 +102,11 @@ export class SearchComponent implements OnInit {
         }
       });
   }
-
+  /**
+   * gets the current url,
+   * and queryParams
+   */
+  ngOnInit() {
+    this.setFilters();
+  }
 }

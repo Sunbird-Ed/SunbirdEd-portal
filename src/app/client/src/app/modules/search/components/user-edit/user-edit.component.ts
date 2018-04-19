@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import * as _ from 'lodash';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 
 /**
  * The delete component deletes the announcement
@@ -21,6 +21,8 @@ export class UserEditComponent implements OnInit {
 	 */
   userId: string;
 
+  allRoles: Array<RolesAndPermissions>;
+
   selectedOrgName: string;
   selectedOrgId: string;
   selectedOrgUserRoles: Array<string>;
@@ -31,33 +33,6 @@ export class UserEditComponent implements OnInit {
    * announcement service
 	 */
   userDetails: any;
-
-  allRoles = [
-    { 'role': 'COURSE_MENTOR', 'actions': [{}], 'roleName': 'Course Mentor' },
-    {
-      'role': 'CONTENT_REVIEWER', 'actions': [{ 'urls': ['v1/course/create'], 'name': 'createCourse', 'id': 'createCourse' },
-      { 'urls': [], 'name': 'updateCourse', 'id': 'updateCourse' },
-      { 'urls': [], 'name': 'createContent', 'id': 'createContent' },
-      { 'urls': [], 'name': 'updateContent', 'id': 'updateContent' },
-      { 'urls': [], 'name': 'flagCourse', 'id': 'flagCourse' },
-      { 'urls': [], 'name': 'flagContent', 'id': 'flagContent' },
-      { 'urls': ['/v1/course/publish'], 'name': 'publishCourse', 'id': 'publishCourse' },
-      { 'urls': ['/v1/course/publish'], 'name': 'publishContent', 'id': 'publishContent' }], 'roleName': 'Content Reviewer'
-    },
-    { 'role': 'TEACHER_BADGE_ISSUER', 'actions': [], 'roleName': 'Teacher Badge Issuer' },
-    { 'role': 'BOOK_CREATOR', 'actions': [], 'roleName': 'Book Creator' },
-    { 'role': 'BOOK_REVIEWER', 'actions': [], 'roleName': 'Book Reviewer' },
-    { 'role': 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'actions': [], 'roleName': 'Official TextBook Badge Issuer' },
-    { 'role': 'PUBLIC', 'actions': [{}], 'roleName': 'Public' },
-    { 'role': 'ANNOUNCEMENT_SENDER', 'actions': [{}], 'roleName': 'Announcement Sender' },
-    {
-      'role': 'CONTENT_CREATOR', 'actions': [{ 'urls': ['v1/course/create'], 'name': 'createCourse', 'id': 'createCourse' },
-      { 'urls': [], 'name': 'updateCourse', 'id': 'updateCourse' },
-      { 'urls': [], 'name': 'createContent', 'id': 'createContent' },
-      { 'urls': [], 'name': 'updateContent', 'id': 'updateContent' }], 'roleName': 'Content Creator'
-    },
-    { 'role': 'FLAG_REVIEWER', 'actions': [{}], 'roleName': 'Flag Reviewer' }];
-
 
   /**
    * To make get announcement by id
@@ -79,6 +54,7 @@ export class UserEditComponent implements OnInit {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
+  private permissionService: PermissionService;
 
   /**
    * To navigate back to parent component
@@ -97,7 +73,7 @@ export class UserEditComponent implements OnInit {
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(userSearchService: UserSearchService, searchService: SearchService,
-    activatedRoute: ActivatedRoute,
+    activatedRoute: ActivatedRoute, permissionService: PermissionService,
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService) {
@@ -106,9 +82,9 @@ export class UserEditComponent implements OnInit {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.permissionService = permissionService;
     this.routerNavigationService = routerNavigationService;
   }
-
 
   /**
    * This method helps to redirect to the parent component
@@ -138,9 +114,6 @@ export class UserEditComponent implements OnInit {
         });
       }
     );
-
-    console.log('this.userDetails1-----', this.userDetails);
-
   }
 
   populateUserDetails() {
@@ -151,11 +124,8 @@ export class UserEditComponent implements OnInit {
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
           this.populateOrgName();
-          this.selectedOrgId = this.userDetails.organisations[0].id;
+          this.selectedOrgId = this.userDetails.organisations[0].organisationId;
           this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
-
-
-          console.log('this.selectedOrgUserRoles', this.selectedOrgUserRoles);
         },
         err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -164,11 +134,9 @@ export class UserEditComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
-      this.selectedOrgId = this.userDetails.organisations[0].id;
+      this.selectedOrgId = this.userDetails.organisations[0].organisationId;
       this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
     }
-
-
   }
 
   editRoles(role, userRoles, event) {
@@ -186,8 +154,6 @@ export class UserEditComponent implements OnInit {
     }
   }
 
-
-
   updateRoles(roles) {
     if (this.selectedOrgUserRolesNew) {
       this.selectedOrgUserRolesNew.forEach(function (Newroles) {
@@ -204,7 +170,7 @@ export class UserEditComponent implements OnInit {
         return _.indexOf(removalRoles, role) !== -1;
       });
 
-      const option = { userId: this.userId, selectedOrgId: this.selectedOrgId, roles: roles };
+      const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
       this.userSearchService.updateRoles(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.toasterService.success(this.resourceService.messages.emsg.m0028);
@@ -216,9 +182,7 @@ export class UserEditComponent implements OnInit {
           this.redirect();
         }
       );
-
     }
-
   }
 
   /**
@@ -230,6 +194,15 @@ export class UserEditComponent implements OnInit {
       this.userId = params.userId;
     });
     this.populateUserDetails();
+
+    this.permissionService.permissionAvailable$.subscribe(params => {
+      if (params === 'success') {
+        this.allRoles = this.permissionService.allRoles;
+      }
+      this.allRoles = _.filter(this.allRoles, (role) => {
+        return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
+      });
+    });
   }
 }
 

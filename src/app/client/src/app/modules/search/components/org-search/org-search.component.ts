@@ -7,14 +7,21 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
-
 @Component({
   selector: 'app-org-search',
   templateUrl: './org-search.component.html',
   styleUrls: ['./org-search.component.css']
 })
 export class OrgSearchComponent implements OnInit {
+
+  /**
+   * Reference of toaster service
+   */
   private searchService: SearchService;
+
+  /**
+   * Reference of resource service
+   */
   private resourceService: ResourceService;
   /**
    * To get url, app configs
@@ -25,7 +32,7 @@ export class OrgSearchComponent implements OnInit {
   */
   private toasterService: ToasterService;
   /**
-   * Contains list of published course(s) of logged-in user
+   * Contains list of org search result
    */
   searchList: Array<any> = [];
   /**
@@ -38,7 +45,7 @@ export class OrgSearchComponent implements OnInit {
   */
   private activatedRoute: ActivatedRoute;
   /**
-   * For showing pagination on inbox list
+   * For showing pagination on user search list
    */
   private paginationService: PaginationService;
   /**
@@ -54,11 +61,11 @@ export class OrgSearchComponent implements OnInit {
   */
   totalCount: Number;
   /**
-   * Current page number of inbox list
+   * Current page number of org search
    */
   pageNumber = 1;
   /**
-	 * Contains page limit of outbox list
+	 * Contains page limit of user search list
 	 */
   pageLimit: number;
   /**
@@ -69,8 +76,8 @@ export class OrgSearchComponent implements OnInit {
    */
   showLoader = true;
   /**
-     * loader message
-    */
+   * loader message
+   */
   loaderMessage: any;
   /**
    * Contains returned object of the pagination service
@@ -82,18 +89,17 @@ export class OrgSearchComponent implements OnInit {
    */
   queryParams: any;
   /**
-     * Constructor to create injected service(s) object
-     * Default method of Draft Component class
-     * @param {SearchService} searchService Reference of SearchService
-     * @param {Router} route Reference of Router
-     * @param {PaginationService} paginationService Reference of PaginationService
-     * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
-     * @param {ConfigService} config Reference of ConfigService
+   * Constructor to create injected service(s) object
+   * Default method of Draft Component class
+   * @param {SearchService} searchService Reference of SearchService
+   * @param {Router} route Reference of Router
+   * @param {PaginationService} paginationService Reference of PaginationService
+   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+   * @param {ConfigService} config Reference of ConfigService
    */
   constructor(searchService: SearchService, route: Router,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService,
-    resourceService: ResourceService, toasterService: ToasterService, public ngZone: NgZone,
-    config: ConfigService) {
+    activatedRoute: ActivatedRoute, paginationService: PaginationService, resourceService: ResourceService,
+    toasterService: ToasterService, public ngZone: NgZone, config: ConfigService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -102,9 +108,10 @@ export class OrgSearchComponent implements OnInit {
     this.toasterService = toasterService;
     this.config = config;
   }
+
   /**
-   * This method sets the make an api call to get all search data with page No and offset
-   */
+  * This method calls the org API and populates the required data
+  */
   populateOrgSearch() {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
@@ -136,11 +143,14 @@ export class OrgSearchComponent implements OnInit {
       err => {
         this.showLoader = false;
         this.noResult = false;
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0006);
       }
     );
   }
 
+  /**
+  * This method helps to download the orgnasition name
+  */
   downloadOrganisation() {
     const options = {
       fieldSeparator: ',',
@@ -148,18 +158,15 @@ export class OrgSearchComponent implements OnInit {
       decimalseparator: '.',
       showLabels: true
     };
-
     const downloadArray = [{
       'orgName': 'Organisation Name'
     }];
-
     _.each(this.searchList, (key, index) => {
       downloadArray.push({
         'orgName': key.orgName
       });
     });
-
-    const csv = new Angular2Csv(downloadArray, 'Organisations', options);
+    return new Angular2Csv(downloadArray, 'Organisations', options);
   }
 
   /**
@@ -181,38 +188,27 @@ export class OrgSearchComponent implements OnInit {
     });
   }
 
-  onFilter(event) {
-    const queryParams = {};
-    _.forIn(event, (value, key) => {
-      if (value.length > 0) {
-        queryParams[key] = value;
+  getQueryParams () {
+    Observable
+    .combineLatest(
+    this.activatedRoute.params,
+    this.activatedRoute.queryParams,
+    (params: any, queryParams: any) => {
+      return {
+        params: params,
+        queryParams: queryParams
+      };
+    })
+    .subscribe(bothParams => {
+      if (bothParams.params.pageNumber) {
+        this.pageNumber = Number(bothParams.params.pageNumber);
       }
+      this.queryParams = { ...bothParams.queryParams };
+      this.populateOrgSearch();
     });
-    this.route.navigate(['/search/Organisations', 1], { queryParams: queryParams });
   }
 
   ngOnInit() {
-    Observable
-      .combineLatest(
-      this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
-      .subscribe(bothParams => {
-        if (bothParams.params.pageNumber) {
-          this.pageNumber = Number(bothParams.params.pageNumber);
-        }
-        this.queryParams = { ...bothParams.queryParams };
-        this.populateOrgSearch();
-      });
+    this.getQueryParams();
   }
-
 }
-
-
-
-

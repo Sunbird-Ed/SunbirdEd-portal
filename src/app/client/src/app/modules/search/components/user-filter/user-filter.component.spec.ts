@@ -48,24 +48,20 @@ describe('UserFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call resetFilters method ', inject([ConfigService, Router],
     (configService, route) => {
       component.resetFilters();
       expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1]);
       fixture.detectChanges();
   }));
-  it('should call resetFilters method ', inject([ConfigService, Router],
+  it('should call applyFilters method ', inject([ConfigService, Router],
     (configService, route) => {
       const queryParams = {};
       component.applyFilters();
       expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1], {queryParams: queryParams});
       fixture.detectChanges();
   }));
-  it('should call resetFilters method ', inject([ConfigService, Router],
+  it('should call removeFilterSelection method ', inject([ConfigService, Router],
     (configService, route) => {
       component.queryParams = { Grades: ['03'] };
      component.removeFilterSelection('Grades', '03');

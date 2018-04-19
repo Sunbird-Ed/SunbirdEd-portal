@@ -111,10 +111,10 @@ describe('UserSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should call downloadUser method to download a csv file', () => {
-  //   component.downloadUser();
-  //   fixture.detectChanges();
-  // });
+  it('should call downloadUser method to download a csv file', () => {
+    component.downloadUser();
+    fixture.detectChanges();
+  });
 
 
   it('should call navigateToPage method and page number should be default, i,e 1', inject([ConfigService, Router],

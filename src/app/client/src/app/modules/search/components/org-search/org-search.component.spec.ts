@@ -49,9 +49,6 @@ describe('OrgSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
   it('should call search api', () => {
     const searchService = TestBed.get(SearchService);
     const learnerService = TestBed.get(LearnerService);
@@ -64,7 +61,7 @@ describe('OrgSearchComponent', () => {
     expect(component.noResult).toBeFalsy();
   });
 
-  it('should throw error when searchService api is not called', () => {
+  it('should throw error when searchService api is not called and check all variables after error', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'orgSearch').and.callFake(() => Observable.throw({}));
     component.populateOrgSearch();
@@ -73,10 +70,6 @@ describe('OrgSearchComponent', () => {
     expect(component.searchList.length).toEqual(0);
     expect(component.noResult).toBeFalsy();
   });
-  // it('should call downloadOrganisation method to download a csv file', () => {
-  //   component.downloadOrganisation();
-  //   fixture.detectChanges();
-  // });
 
   it('should call navigateToPage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
@@ -87,4 +80,9 @@ describe('OrgSearchComponent', () => {
       expect(component.pageNumber).toEqual(1);
       expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
   }));
+
+  it('should call download org method to download a csv file', () => {
+    component.downloadOrganisation();
+    fixture.detectChanges();
+  });
 });

@@ -34,7 +34,7 @@ export class UserFilterComponent implements OnInit {
     * @param {PaginationService} paginationService Reference of PaginationService
     * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService,  private cdr: ChangeDetectorRef,
+  constructor(config: ConfigService, private cdr: ChangeDetectorRef,
     resourceService: ResourceService, router: Router) {
     this.config = config;
     this.resourceService = resourceService;
@@ -43,12 +43,10 @@ export class UserFilterComponent implements OnInit {
   }
 
   removeFilterSelection(filterType, value) {
-      const itemIndex = this.queryParams[filterType].indexOf(value);
-      if (itemIndex !== -1) {
-        console.log(this.queryParams[filterType], value);
-        this.queryParams[filterType].splice(itemIndex, 1);
-        console.log(this.queryParams[filterType]);
-      }
+    const itemIndex = this.queryParams[filterType].indexOf(value);
+    if (itemIndex !== -1) {
+      this.queryParams[filterType].splice(itemIndex, 1);
+    }
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
@@ -72,18 +70,21 @@ export class UserFilterComponent implements OnInit {
     this.refresh = true;
   }
 
-  ngOnInit() {
+  setFilters() {
     _.forIn(this.queryParams, (value, key) => {
       if (typeof value === 'string') {
         this.queryParams[key] = [value];
       }
     });
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Users.DROPDOWN, ...this.queryParams };
-    console.log(this.queryParams);
     this.searchGrades = this.config.dropDownConfig.COMMON.grades;
     this.searchMediums = this.config.dropDownConfig.COMMON.medium;
     this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
     this.searchRoles = this.config.dropDownConfig.FILTER.RESOURCES.roles;
     this.label = this.config.dropDownConfig.FILTER.SEARCH.Users.label;
+  }
+
+  ngOnInit() {
+    this.setFilters();
   }
 }

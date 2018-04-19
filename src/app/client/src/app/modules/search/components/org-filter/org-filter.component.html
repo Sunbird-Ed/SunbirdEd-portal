@@ -1,7 +1,5 @@
 <div>
   <div class="ui divider header-search-filters-divider"></div>
-
-
   <div class="ui grid">
     <div class="twelve wide column">
       <sui-accordion [closeOthers]="false">
@@ -13,13 +11,13 @@
           <div content>
             <div class="twelve wide column content margin-bottom-15">
               <span *ngFor="let value of label">
-                        <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
-                          {{value}}:
-                          <a class="ui label margin-top--5" *ngFor="let item of queryParams[value] ">
-                            {{item}}
-                            <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
-                          </a>
-                        </span>
+                <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
+                  {{value}}:
+                  <a class="ui label margin-top--5" *ngFor="let item of queryParams[value] ">
+                    {{item}}
+                    <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
+                  </a>
+                </span>
               </span>
             </div>
             <div *ngIf="refresh" class="filtercolmntext ui grid transition  ">
@@ -44,6 +42,4 @@
       </sui-accordion>
     </div>
   </div>
-
-
 </div>

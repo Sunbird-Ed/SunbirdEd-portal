@@ -32,7 +32,6 @@ export class RouterNavigationService {
  */
   navigateToParentUrl(activatedRoute: ActivatedRouteSnapshot): void {
     const urlArray = [];
-    console.log(activatedRoute.parent.url);
     _.each(activatedRoute.parent.url, (key) => {
       urlArray.push(key.path);
     });

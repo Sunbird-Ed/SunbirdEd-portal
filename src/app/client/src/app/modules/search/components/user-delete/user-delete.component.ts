@@ -107,15 +107,7 @@ export class UserDeleteComponent implements OnInit {
     this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
   }
 
-  /**
-   * This method sets the annmouncementId and pagenumber from
-   * activated route
-	 */
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.userId = params.userId;
-    });
-
+  setUserDetails() {
     if (this.userSearchService.userDetailsObject === undefined ||
       this.userSearchService.userDetailsObject.id !== this.userId) {
       const option = { userId: this.userId };
@@ -131,12 +123,17 @@ export class UserDeleteComponent implements OnInit {
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
     }
+  }
 
-
-
-    // this.activatedRoute.parent.params.subscribe((params) => {
-    //   this.pageNumber = Number(params.pageNumber);
-    // });
+  /**
+   * This method sets the annmouncementId and pagenumber from
+   * activated route
+	 */
+  ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+      this.userId = params.userId;
+    });
+    this.setUserDetails();
   }
 }
 

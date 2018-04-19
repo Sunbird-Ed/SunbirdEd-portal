@@ -141,7 +141,6 @@ export class UserSearchComponent implements OnInit {
           this.searchList = apiResponse.result.response.content;
           this.totalCount = apiResponse.result.response.count;
           this.populateOrgNameAndSetRoles();
-          console.log('this.searchList-mig', this.searchList);
           this.pager = this.paginationService.getPager(apiResponse.result.response.count, this.pageNumber, this.pageLimit);
         } else {
           this.noResult = true;
@@ -235,7 +234,7 @@ export class UserSearchComponent implements OnInit {
       });
     });
 
-    const csv = new Angular2Csv(downloadArray, 'Users', options);
+    return new Angular2Csv(downloadArray, 'Users', options);
   }
 
 
@@ -263,8 +262,6 @@ export class UserSearchComponent implements OnInit {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
         this.rootOrgId = this.userProfile.rootOrgId;
-        console.log('userProfile', this.userProfile);
-
 
         Observable
           .combineLatest(
@@ -281,12 +278,8 @@ export class UserSearchComponent implements OnInit {
               this.pageNumber = Number(bothParams.params.pageNumber);
             }
             this.queryParams = { ...bothParams.queryParams };
-            console.log(this.queryParams);
             this.populateUserSearch();
-            console.log(bothParams);
           });
-
-
       }
     });
 
@@ -297,9 +290,5 @@ export class UserSearchComponent implements OnInit {
         }
       });
     });
-
-
   }
-
 }
-

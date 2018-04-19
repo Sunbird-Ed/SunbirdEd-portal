@@ -2,13 +2,14 @@
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
-      <app-org-filter [queryParams]="queryParams" (filter)="onFilter($event)"></app-org-filter>
+      <app-org-filter [queryParams]="queryParams"></app-org-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
         <div class="ui left floated header margin-auto ">
-          <p class="serch-allresult">Showing results for
-            <span class="lower-case">
-              {{this.queryParams.key}} in "organisations"
+          <p class="serch-allresult">Showing results
+            <span class="lower-case" *ngIf="this.queryParams.key">
+               for {{this.queryParams.key}}
             </span>
+             in "organisations"
           </p>
         </div>
         <h5 class="ui right floated basic icon circular button ">

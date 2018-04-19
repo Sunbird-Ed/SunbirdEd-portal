@@ -4,11 +4,11 @@
             <div class="eleven wide column">
                 <span class="ui header">{{resourceService.frmelmnts?.lbl?.selrole}}</span>
             </div>
-            <div class="one wide column actions">
+            <!--<div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
                     <i class="ui remove icon"></i>
                 </h5>
-            </div>
+            </div>-->
         </div>
     </div>
 
@@ -18,7 +18,7 @@
             <div>{{selectedOrgName || userDetails.organisations[0].orgName}}</div>
 
             <div class="menu" suiDropdownMenu [menuAutoSelectFirst]="true">
-                <div class="item" *ngFor="let org of userDetails.organisations" (click)="selectedOrgName = org.orgName; selectedOrgUserRoles=org.roles; selectedOrgId=org.id">{{org.orgName}}</div>
+                <div class="item" [ngClass]="{'active': selectedOrgId === org.organisationId }" *ngFor="let org of userDetails.organisations" (click)="selectedOrgName = org.orgName; selectedOrgUserRoles=org.roles; selectedOrgId=org.organisationId">{{org.orgName}}</div>
             </div>
         </div>
         <div class="ui form margin-top-40" *ngIf="selectedOrgUserRoles">
@@ -31,7 +31,6 @@
                         <label>{{role.roleName || role.role}}</label>
                     </div>
                 </li>
-
             </ul>
         </div>
     </div>
