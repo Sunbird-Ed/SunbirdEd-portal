@@ -11,7 +11,10 @@ export interface SearchParam {
      * Content type - course,textbook,content
      */
     contentType?: string[];
-
+    /**
+     * Content concept
+     */
+    concept?: Array<object>;
     /**
      * Additional params - userId, lastUpdatedOn, sort etc
      */
@@ -53,6 +56,7 @@ export interface SearchParam {
    /**
     * filters param
     */
-   filters?: string[];
+   filters?: any;
+   sort_by?: { [key: string]: string};
 
   }

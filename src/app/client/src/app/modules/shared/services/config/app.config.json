@@ -19,20 +19,49 @@
     "lastUpdatedOn": "desc"
   },
   "EDITOR_CONFIG": {
-    "collectionState": ["UpForReviewContent", "ReviewContent",
-      "PublishedContent", "FlaggedContent", "LimitedPublishedContent"
+    "collectionState": [
+      "UpForReviewContent",
+      "ReviewContent",
+      "PublishedContent",
+      "FlaggedContent",
+      "LimitedPublishedContent"
     ],
-    "collectionStatus": ["Review", "Draft", "Live", "Flagged", "Unlisted"],
+    "collectionStatus": [
+      "Review",
+      "Draft",
+      "Live",
+      "Flagged",
+      "Unlisted"
+    ],
     "mimeCollection": "application/vnd.ekstep.content-collection",
     "editorQS": "createdBy,status,mimeType",
     "MODE": "edit",
-    "contentState": ["UpForReviewContent", "ReviewContent", "PublishedContent", "LimitedPublishedContent"],
-    "contentStatus": ["Review", "Draft", "Live", "Unlisted"]
+    "contentState": [
+      "UpForReviewContent",
+      "ReviewContent",
+      "PublishedContent",
+      "LimitedPublishedContent"
+    ],
+    "contentStatus": [
+      "Review",
+      "Draft",
+      "Live",
+      "Unlisted"
+    ]
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
   "APPID_EKSTEPENV": "get/envData",
+  "SEARCH": {
+    "PAGE_LIMIT": 20,
+    "USER": {
+      "DOWNLOAD_BUTTON": "FALSE"
+    },
+    "ORGANISATION": {
+      "DOWNLOAD_BUTTON": "TRUE"
+    }
+  },
   "ANNOUNCEMENT": {
     "HOME": {
       "PAGE_LIMIT": 2
@@ -67,65 +96,43 @@
       }
     }
   },
-  "INBOX": {
-    "PAGE_LIMIT": 10
-  },
-  "PAGINATION": {
-    "PAGE_STRIP": 5
-  },
-  "API": {
-    "ANNOUNCEMENT": {
-      "CHANNEL": "web"
-    }
-  },
-  "FILEUPLOAD": {
-    "MAXFILESIZETOUPLOAD": 1024000,
-    "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
-    "ALLOWEDFILEEXTENSION": [
-      "png",
-      "pdf",
-      "jpg"
-    ]
-  },
-  "GEOCONFIG": {
-    "geo": {
-      "adaptor": "SERVICE",
-      "service": "geoService"
-    }
-  },
   "ADMIN_UPLOAD": {
-    "SAMPLE_USER_CSV": [{
-      "firstName": "firstName",
-      "lastName": "lastName",
-      "phone": "phone",
-      "email": "email",
-      "userName": "userName",
-      "password": "password",
-      "provider": "provider",
-      "phoneVerified": "phoneVerified",
-      "emailVerified": "emailVerified",
-      "roles": "roles",
-      "position": "position",
-      "grade": "grade",
-      "location": "location",
-      "dob": "dob",
-      "gender": "gender",
-      "language": "language",
-      "profileSummary": "profileSummary",
-      "subject": "subject"
-    }],
-    "SAMPLE_ORGANIZATION_CSV": [{
-      "orgName": "orgName",
-      "isRootOrg": "isRootOrg",
-      "channel": "channel",
-      "externalId": "externalId",
-      "provider": "provider",
-      "description": "description",
-      "homeUrl": "homeUrl",
-      "orgCode": "orgCode",
-      "orgType": "orgType",
-      "preferredLanguage": "preferredLanguage",
-      "contactDetail": "contactDetail"
-    }]
+    "SAMPLE_USER_CSV": [
+      {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "phone": "phone",
+        "email": "email",
+        "userName": "userName",
+        "password": "password",
+        "provider": "provider",
+        "phoneVerified": "phoneVerified",
+        "emailVerified": "emailVerified",
+        "roles": "roles",
+        "position": "position",
+        "grade": "grade",
+        "location": "location",
+        "dob": "dob",
+        "gender": "gender",
+        "language": "language",
+        "profileSummary": "profileSummary",
+        "subject": "subject"
+      }
+    ],
+    "SAMPLE_ORGANIZATION_CSV": [
+      {
+        "orgName": "orgName",
+        "isRootOrg": "isRootOrg",
+        "channel": "channel",
+        "externalId": "externalId",
+        "provider": "provider",
+        "description": "description",
+        "homeUrl": "homeUrl",
+        "orgCode": "orgCode",
+        "orgType": "orgType",
+        "preferredLanguage": "preferredLanguage",
+        "contactDetail": "contactDetail"
+      }
+    ]
   }
 }

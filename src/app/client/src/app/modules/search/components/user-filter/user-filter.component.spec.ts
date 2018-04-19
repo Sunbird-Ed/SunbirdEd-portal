@@ -1,0 +1,71 @@
+import { UserSearchComponent } from './../user-search/user-search.component';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+ SharedModule, ServerResponse, PaginationService, ResourceService,
+ ConfigService, ToasterService, INoResultMessage
+} from '@sunbird/shared';
+import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { OrgTypeService } from '@sunbird/org-management';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { IPagination } from '@sunbird/announcement';
+import * as _ from 'lodash';
+import { Ng2IziToastModule } from 'ng2-izitoast';
+import { Observable } from 'rxjs/Observable';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserFilterComponent } from './user-filter.component';
+
+
+describe('UserFilterComponent', () => {
+  let component: UserFilterComponent;
+  let fixture: ComponentFixture<UserFilterComponent>;
+//   let parentcomponent: UserSearchComponent;
+//  let parentfixture: ComponentFixture<UserSearchComponent>;
+ const fakeActivatedRoute = {
+  'params': Observable.from([{ pageNumber: '1' }]),
+  'queryParams':  Observable.from([{ Grades: ['Grade 2'] }])
+};
+ class RouterStub {
+   navigate = jasmine.createSpy('navigate');
+ }
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule],
+      declarations: [ UserFilterComponent ],
+      providers: [ResourceService, SearchService, PaginationService, UserService,
+        LearnerService, ContentService, ConfigService, ToasterService,
+        { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useClass: fakeActivatedRoute}],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UserFilterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should call resetFilters method ', inject([ConfigService, Router],
+    (configService, route) => {
+      component.resetFilters();
+      expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1]);
+      fixture.detectChanges();
+  }));
+  it('should call applyFilters method ', inject([ConfigService, Router],
+    (configService, route) => {
+      const queryParams = {};
+      component.applyFilters();
+      expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1], {queryParams: queryParams});
+      fixture.detectChanges();
+  }));
+  it('should call removeFilterSelection method ', inject([ConfigService, Router],
+    (configService, route) => {
+      component.queryParams = { Grades: ['03'] };
+     component.removeFilterSelection('Grades', '03');
+     fixture.detectChanges();
+  }));
+
+});

@@ -5,27 +5,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { RolesAndPermissions, Roles } from './../../interfaces';
 
-interface Roles {
-  actionGroups: Array<ActionGroups>;
-  id: string;
-  name: string;
-}
-interface ActionGroups {
-  actions: Array<RoleAction>;
-  id: string;
-  name: string;
-}
-interface RolesAndPermissions {
-  actions: Array<RoleAction>;
-  role: string;
-  roleName: string;
-}
-interface RoleAction {
-  id: string;
-  name: string;
-  urls: Array<string>;
-}
 /**
  * Service to fetch permission and validate user permission
  *
@@ -161,5 +142,9 @@ export class PermissionService {
       return true;
     }
     return false;
+  }
+
+  get allRoles(): Array<RolesAndPermissions> {
+    return this.mainRoles;
   }
 }
