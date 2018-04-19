@@ -15,21 +15,39 @@ const routes: Routes = [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
         path: 'create', component: CreateContentComponent,
+        data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         // children: [
-        //   { path: 'textbook', component: CreateTextbookComponent },
-        //   { path: 'course', component: CreateCourseComponent },
-        //   { path: 'studymaterial', component: CreateStudyMaterialComponent },
-        //   { path: 'collection', component: CreateCollectionComponent },
-        //   { path: 'lessonplan', component: CreateLessonPlanComponent }
+        //   { path: 'textbook', component: CreateTextbookComponent,
+        // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] },
+        //   { path: 'course', component: CreateCourseComponent,
+        // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] },
+        //   { path: 'studymaterial', component: CreateStudyMaterialComponent,
+        // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] },
+        //   { path: 'collection', component: CreateCollectionComponent,
+        // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] },
+        //   { path: 'lessonplan', component: CreateLessonPlanComponent,
+        // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] }
         // ]
       },
-      {path: 'edit/collection/:contentId/:type/:framework', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
-      {path: 'edit/generic', component: GenericEditorComponent },
-      { path: 'draft/:pageNumber', component: DraftComponent },
-      { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
-      { path: 'published/:pageNumber', component: PublishedComponent },
-      { path: 'uploaded/:pageNumber', component: UploadedComponent },
+      { path: 'edit/collection/:contentId/:type/:framework', component: CollectionEditorComponent },
+      { path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
+      { path: 'edit/generic', component: GenericEditorComponent },
+      {
+        path: 'draft/:pageNumber', component: DraftComponent,
+        data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      },
+      {
+        path: 'review/:pageNumber', component: ReviewSubmissionsComponent,
+        data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      },
+      {
+        path: 'published/:pageNumber', component: PublishedComponent,
+        data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      },
+      {
+        path: 'uploaded/:pageNumber', component: UploadedComponent,
+        data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+      },
       { path: '**', redirectTo: 'create' }
     ]
   },

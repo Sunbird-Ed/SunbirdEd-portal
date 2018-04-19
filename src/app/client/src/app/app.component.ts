@@ -1,7 +1,7 @@
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 
-import { UserService, PermissionService, CoursesService, TelemetryService } from '@sunbird/core';
+import { UserService, PermissionService, CoursesService, TelemetryService, TenantService } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 /**
  * main app component
@@ -13,6 +13,15 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  /**
+   * user profile details.
+   */
+  userProfile: IUserProfile;
+  favicon: string;
+  /**
+   * reference of TenantService.
+   */
+  public tenantService: TenantService;
   /**
    * reference of UserService service.
    */
@@ -31,11 +40,12 @@ export class AppComponent implements OnInit {
    */
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
-    courseService: CoursesService) {
+    courseService: CoursesService, tenantService: TenantService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.courseService = courseService;
+    this.tenantService = tenantService;
   }
 
   /**
@@ -54,5 +64,19 @@ export class AppComponent implements OnInit {
       this.permissionService.initialize();
       this.courseService.initialize();
     }
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+          const rootOrg = this.userProfile.rootOrg;
+          this.tenantService.getOrgDetails(rootOrg.slug).subscribe((data) => {
+            this.favicon = data.result.favicon;
+            document.title = data.result.title || 'Sunbird';
+            document.querySelector('link[rel*=\'icon\']').setAttribute('href', this.favicon || '/assets/sunbird_logo.png');
+          });
+        }
+
+      });
   }
 }
+

@@ -8,6 +8,7 @@
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
+    "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "RESOURCEBUNDLES": {
@@ -84,7 +85,6 @@
     "BADGE": {
       "GET": "org/v1/badges/list",
       "ASSIGN": "user/v1/badges/add"
-
     },
     "ORG_TYPE": {
       "GET": "org/v1/type/list",
@@ -101,6 +101,9 @@
       "READ": "/read",
       "RECEIVED": "/received",
       "CANCEL": "/cancel"
+    },
+    "TENANT": {
+      "INFO": "/info"
     },
     "CHANNEL": {
       "READ": "channel/v1/read"

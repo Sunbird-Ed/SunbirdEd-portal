@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
+  UserService, LearnerService, PermissionService, AnnouncementService, TenantService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService
 } from './services';
 import {
@@ -23,7 +23,7 @@ import { AuthGuard } from './guard/auth-gard.service';
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, TelemetryLibUtilService]
 })

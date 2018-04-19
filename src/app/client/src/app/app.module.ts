@@ -17,10 +17,12 @@ import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
+import { BreadcrumbsComponent, BreadcrumbsService } from '@sunbird/core';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BreadcrumbsComponent
   ],
   imports: [
     CoreModule,
@@ -41,7 +43,7 @@ import { PublicModule } from '@sunbird/public';
     OrgManagementModule,
     PublicModule
   ],
-  providers: [],
+  providers: [BreadcrumbsService],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
