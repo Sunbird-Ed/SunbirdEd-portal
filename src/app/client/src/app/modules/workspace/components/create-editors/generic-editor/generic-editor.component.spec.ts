@@ -30,8 +30,7 @@ describe('GenericEditorComponent', () => {
       declarations: [ GenericEditorComponent ],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
     providers: [
-      EditorService, UserService, LearnerService, ContentService,
-      ResourceService, ToasterService, ConfigService,
+      EditorService, UserService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'contentId': 'do_21247940906829414411032'
        }]) }  }

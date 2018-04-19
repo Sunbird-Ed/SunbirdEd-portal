@@ -55,14 +55,14 @@ export class UserService {
   /**
    * Reference of dims
    */
-  public _dims: Array<string> = [];
+  private _dims: Array<string> = [];
   /**
    * Reference of Ekstep_env
    */
   private _env: string;
-    /**
-  * To show toaster(error, success etc) after any API calls
-  */
+  /**
+* To show toaster(error, success etc) after any API calls
+*/
   private toasterService: ToasterService;
   /**
     * To call resource service which helps to use language constant
@@ -110,14 +110,14 @@ export class UserService {
       }
     );
   }
-/**
-    * method to fetch appId and Ekstep_env from server.
-    */
-    public getAppidEnv() {
-      const url = this.config.appConfig.APPID_EKSTEPENV;
-      this.http.get(url)
+  /**
+      * method to fetch appId and Ekstep_env from server.
+      */
+  public getAppIdEnv() {
+    const url = this.config.appConfig.APPID_EKSTEPENV;
+    this.http.get(url)
       .catch((error: any) => {
-            return Observable.throw(this.toasterService.error(this.resourceService.messages.emsg.m0005));
+        return Observable.throw(this.toasterService.error(this.resourceService.messages.emsg.m0005));
       })
       .subscribe((res: IAppIdEnv) => {
         this._appId = res.appId;
@@ -125,18 +125,18 @@ export class UserService {
       });
   }
 
-    /**
-     * get method to fetch appId.
-     */
-    get appId(): string {
-      return this._appId;
-    }
-    /**
-     * get method to fetch Ekstep_env.
-     */
-    get env(): string {
-      return this._env;
-    }
+  /**
+   * get method to fetch appId.
+   */
+  get appId(): string {
+    return this._appId;
+  }
+  /**
+   * get method to fetch Ekstep_env.
+   */
+  get env(): string {
+    return this._env;
+  }
 
   public initialize() {
     try {
@@ -144,7 +144,7 @@ export class UserService {
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
     } catch { }
     this.getUserProfile();
-    this.getAppidEnv();
+    this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.

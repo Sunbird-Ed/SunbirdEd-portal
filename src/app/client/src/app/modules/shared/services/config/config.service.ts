@@ -11,30 +11,30 @@ import * as editorConfig from './editor.config.json';
  */
 @Injectable()
 export class ConfigService {
-/**
- * property containing url config
- *
- */
+  /**
+   * property containing url config
+   *
+   */
   urlConFig = (<any>urlConfig);
-/**
- * property containing drop down config
- *
- */
+  /**
+   * property containing drop down config
+   *
+   */
   dropDownConfig = (<any>dropDownConfig);
-/**
- * property containing roles config
- *
- */
+  /**
+   * property containing roles config
+   *
+   */
   rolesConfig = (<any>rolesConfig);
-/**
- * property containing app config
- *
- */
+  /**
+   * property containing app config
+   *
+   */
   appConfig = (<any>appConfig);
- /**
- * property containing editor config
- *
- */
-editorConfig = (<any>editorConfig);
+  /**
+  * property containing editor config
+  *
+  */
+  editorConfig = (<any>editorConfig);
 }
 
