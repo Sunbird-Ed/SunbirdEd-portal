@@ -1,3 +1,4 @@
+import { CoreModule } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
@@ -8,8 +9,8 @@ describe('MainMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      declarations: [ MainMenuComponent ],
+      imports: [HttpClientModule, CoreModule],
+      declarations: [ ],
       providers: [ HttpClient, ResourceService, ConfigService]
     })
     .compileComponents();
