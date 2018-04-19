@@ -42,6 +42,9 @@
       ],
       "@sunbird/profile": [
         "app/modules/profile"
+      ],
+      "@sunbird/search": [
+        "app/modules/search"
       ]
     },
     "module": "es2015",

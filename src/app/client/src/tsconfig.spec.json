@@ -36,6 +36,9 @@
       ],
       "@sunbird/profile": [
         "app/modules/profile"
+      ],
+      "@sunbird/search": [
+        "app/modules/search"
       ]
     },
     "module": "commonjs",
