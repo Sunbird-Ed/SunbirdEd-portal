@@ -1,0 +1,110 @@
+<div *ngIf="userProfile" class="margin-top-20 ui raised segment">
+  <div class="header announcementCard-header ">
+    <span class="header cardsHeading "> {{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
+    <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
+    <a class="addeditprofile cursor-pointer" *ngIf="action !== 'view'" routerLink="/profile">{{resourceService?.frmelmnts?.btn?.close}}</a>
+  </div>
+  <div class="profileitems profile-des ui relaxed aligned list " *ngIf="action === 'view'">
+    <div class="item ">
+      <div class="right floated content ">
+        <span>{{userProfile.email}}</span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.email}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span>{{userProfile.phone}}</span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.phone}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content capitalizeTextInfo">
+        <span>{{userProfile.gender}}</span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.gender}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span>{{userProfile.dob | date : "dd/MM/y"}}</span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService.frmelmnts.lbl.birthdate}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span>
+          <span *ngFor="let lan of userProfile.language; let last = last ">{{lan}}
+            <span *ngIf="!last">, </span>
+            <!-- | orderBy:'toString()' -->
+          </span>
+        </span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.language}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span *ngFor="let sub of userProfile.subject; let last = last ">{{sub}}
+          <span *ngIf="!last">, </span>
+          <!-- | orderBy:'toString()' -->
+        </span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.subjects}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span>
+          <span *ngFor="let grade of userProfile.grade; let last = last ">{{grade}}
+            <span *ngIf="!last">, </span>
+          </span>
+        </span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.grades}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <span>{{userProfile.location}}</span>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.currentlocation}}
+      </div>
+    </div>
+    <div class="item ">
+      <div class="right floated content ">
+        <a *ngIf="webPages.fb" href="{{webPages.fb}}" target="_blank">
+          <i class="large facebook f icon"></i>
+        </a>
+        <a *ngIf="webPages.twitter" href="{{webPages.twitter}}" target="_blank">
+          <i class="large twitter icon"></i>
+        </a>
+        <a *ngIf="webPages.in" href="{{webPages.in}}" target="_blank">
+          <i class="large linkedin icon"></i>
+        </a>
+        <a *ngIf="webPages.blog" href="{{webPages.blog}}" target="_blank">
+          <i class="large book icon"></i>
+        </a>
+      </div>
+      <div class="iniformationcontent content ">
+        {{resourceService?.frmelmnts?.lbl?.socialmedia}}
+      </div>
+    </div>
+  </div>
+  <div class="" *ngIf="action !== 'view'">
+    <div id="additionalInfo" class="ui" *ngIf="action === 'edit'">
+      <app-edit-user-additional-info #edit [basicInfo]="userProfile"></app-edit-user-additional-info>
+    </div>
+    <button *ngIf="action === 'edit'" class="ui primary button margin-top-15" (click)="editBasicInfo()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+  </div>
+  </div>

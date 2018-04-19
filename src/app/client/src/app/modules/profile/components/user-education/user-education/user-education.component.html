@@ -1,0 +1,55 @@
+<div id="education" class="twelve wide column padding-bottom-none">
+    <div class="margin-top-20 ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.education}} </span>
+            <a class="addeditprofile" *ngIf='privateProfileFields'>
+                <app-profile-visibility field="education"></app-profile-visibility>
+            </a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view' && userProfile.education.length > 0" routerLink='/profile/education/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink='/profile/education/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
+        </div>
+        <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
+            <div class="item" *ngFor="let education of userProfile.education">
+
+                <img class="ui avatar image" src="assets/common/images/businessman.png">
+                <div class="content">
+                    <a class=" header">{{education?.degree}}</a>
+                    <div class="description">
+                        {{education?.grade}}
+                        <span *ngIf="education.name && education.grade">, </span> {{education?.name}}
+                        <span *ngIf="education.boardOrUniversity && education.yearOfPassing">, </span> {{education?.boardOrUniversity}}
+                        <br/>
+                        <span *ngIf="education.yearOfPassing "> {{education?.yearOfPassing}}</span>
+                        <span *ngIf="education.percentage && education.yearOfPassing">, </span>
+                        <span *ngIf="education.percentage">{{education?.percentage}}</span>
+
+                    </div>
+                </div>
+                <div class="right-floated ">
+                    <div class="metadata">
+                        <a (click)="education.isDeleted=true;deleteEducation(education)">
+                            <i class="trash outline icon trashIcon-fontSize"></i>
+                        </a>
+                        <!-- <span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- add and edit -->
+        <div *ngIf="action !== 'view'" class="profileitems ui relaxed divided items">
+            <div class="edit-education-form" *ngIf="action === 'edit'">
+                <div class="ui" *ngFor="let education of userProfile.education">
+                    <app-edit-user-education #edit [education]='education'></app-edit-user-education>
+                </div>
+                <button *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="editEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+            </div>
+            <div class="add-education-form" *ngIf="action === 'add'">
+                <div class="ui">
+                    <app-edit-user-education #add></app-edit-user-education>
+                </div>
+                <button *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="addEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+            </div>
+        </div>
+    </div>
+</div>

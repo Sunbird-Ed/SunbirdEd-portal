@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
@@ -17,6 +17,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class UserUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  /**
+* reference for ActivatedRoute
+*/
+  public activatedRoute: ActivatedRoute;
   /**
 * reference of config service.
 */
@@ -66,6 +70,10 @@ export class UserUploadComponent implements OnInit {
  */
   private toasterService: ToasterService;
   /**
+* Contains redirect url
+*/
+  redirectUrl: string;
+  /**
 * Constructor to create injected service(s) object
 *
 * Default method of DetailsComponent class
@@ -74,18 +82,26 @@ export class UserUploadComponent implements OnInit {
 */
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService) {
+    resourceService: ResourceService, activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
     this.config = config;
+    this.activatedRoute = activatedRoute;
   }
   /**
  * This method initializes the user form and validates it,
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
+    this.activatedRoute.data.subscribe(data => {
+      if (data.redirectUrl) {
+        this.redirectUrl = data.redirectUrl;
+      } else {
+        this.redirectUrl = '/home';
+      }
+    });
     this.uploadUserForm = this.sbFormBuilder.group({
       provider: ['', null],
       externalId: ['', null],
@@ -126,7 +142,7 @@ export class UserUploadComponent implements OnInit {
   public redirect() {
     this.fileName = '';
     this.processId = '';
-    this.router.navigate(['bulkUpload']);
+    this.router.navigate([this.redirectUrl]);
   }
   /**
  * This method helps to download a sample csv file
