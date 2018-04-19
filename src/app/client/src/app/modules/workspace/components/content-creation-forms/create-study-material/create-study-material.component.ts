@@ -155,7 +155,7 @@ export class CreateStudyMaterialComponent implements OnInit {
   *  Create colletion creates the content Id
   */
   createContent() {
-    const state = 'Draft';
+    const state = 'draft';
     const framework = 'NCF';
     const requestData = {
       content: this.generateData()

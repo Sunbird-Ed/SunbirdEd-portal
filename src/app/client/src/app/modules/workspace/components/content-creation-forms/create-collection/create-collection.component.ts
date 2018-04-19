@@ -143,7 +143,7 @@ generateData() {
     this.editorService.create(requestData).subscribe(res => {
       this.showLoader = false;
       const type = 'Collection';
-      const state = 'Draft';
+      const state = 'draft';
       const framework = 'framework';
       modalCollection.approve();
       this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);

@@ -49,9 +49,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
  * To navigate to other pages
  */
   private router: Router;
-/**
- * Boolean to show and hide modal
- */
+  /**
+   * Boolean to show and hide modal
+   */
   public showModal: boolean;
   /**
    * To send activatedRoute.snapshot to router navigation
@@ -67,9 +67,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   }
   ngOnInit() {
-   /**
-    * Call User service to get user data
-    */
+    /**
+     * Call User service to get user data
+     */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -118,9 +118,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
-/**
- * Assign the values to window context
- */
+    /**
+     * Assign the values to window context
+     */
     window.context = {
       user: {
         id: this.userService.userid,
@@ -138,10 +138,10 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       env: 'genericeditor'
     };
 
-/**
- * Assign the values to window config
- */
-     window.config = {
+    /**
+     * Assign the values to window config
+     */
+    window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
       dispatcher: 'local',
@@ -189,9 +189,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.showModal = false;
   }
 
-/**
- * On componenet destroy remove the genericEditor id from DOM
- */
+  /**
+   * On componenet destroy remove the genericEditor id from DOM
+   */
   ngOnDestroy() {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();

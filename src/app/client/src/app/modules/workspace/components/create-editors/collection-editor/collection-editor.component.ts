@@ -60,7 +60,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   /**
   * state for editor
   */
-  public state: string;
+  public state: any;
   /**
   * type for editor
   */
@@ -179,16 +179,17 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     /**
      * Assign the values to window config
      */
-const editorWindowConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_WINDOW_CONFIG;
-const dynamicConfig = window.config = {
-  editorConfig : {
-    rules: {
-      objectTypes: this.getTreeNodes(this.type)
-    }
-  }
-};
+    const editorWindowConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_WINDOW_CONFIG;
+    const dynamicConfig = window.config = {
+      editorConfig: {
+        rules: {
+          levels: 7,
+          objectTypes: this.getTreeNodes(this.type)
+        }
+      }
+    };
 
-window.config = {...editorWindowConfig, ...dynamicConfig};
+    window.config = { ...editorWindowConfig, ...dynamicConfig };
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
@@ -198,15 +199,20 @@ window.config = {...editorWindowConfig, ...dynamicConfig};
       });
     }
     window.config.editorConfig.publishMode = false;
-    window.config.editorConfig.isFalgReviewer = false;
-    if (this.state === 'upForReview' &&
+    window.config.editorConfig.isFlagReviewer = false;
+
+    const enum state {
+      UPFORREVIEW = 'upForReview',
+      FLAGGED = 'flagged'
+    }
+    if (this.state === state.UPFORREVIEW &&
       _.intersection(this.userProfile.userRoles,
         ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
       window.config.editorConfig.publishMode = true;
-    } else if (this.state === 'flagged' &&
+    } else if (this.state === state.FLAGGED &&
       _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
-      window.config.editorConfig.isFalgReviewer = true;
+      window.config.editorConfig.isFlagReviewer = true;
     }
     setTimeout(function () {
       jQuery('#collectionEditor').iziModal('open');
@@ -220,21 +226,21 @@ window.config = {...editorWindowConfig, ...dynamicConfig};
 
     const req = { contentId: this.contentId };
     const qs = { fields: this.config.editorConfig.EDITOR_CONFIG.editorQS, mode: this.config.editorConfig.EDITOR_CONFIG.MODE };
-    if (this.state === 'flagged') {
+    if (this.state === state.FLAGGED) {
       delete qs.mode;
     }
     /**
      * Call API to launch the Collection Editor in the modal
      */
     this.editorService.getById(req, qs).subscribe(response => {
-        const rspData = response.result.content;
-        rspData.state = 'CreateCollection';
-        rspData.userId = this.userProfile.userId;
-        if (this.validateRequest(rspData, validateModal)) {
-          this.updateModeAndStatus(response.result.content.status);
-        } else {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        }
+      const rspData = response.result.content;
+      rspData.state = 'CreateCollection';
+      rspData.userId = this.userProfile.userId;
+      if (this.validateRequest(rspData, validateModal)) {
+        this.updateModeAndStatus(response.result.content.status);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
+      }
     });
   }
 
@@ -254,18 +260,18 @@ window.config = {...editorWindowConfig, ...dynamicConfig};
       document.getElementById('collectionEditor').remove();
     }
     if (this.state) {
-      this.route.navigate(['workspace/content/', this.state , '1']);
-    }  else {
+      this.route.navigate(['workspace/content/', this.state, '1']);
+    } else {
       this.route.navigate(['workspace/content/draft/1']);
     }
     this.showModal = false;
   }
 
-ngOnDestroy() {
-  if (document.getElementById('collectionEditor')) {
-    document.getElementById('collectionEditor').remove();
+  ngOnDestroy() {
+    if (document.getElementById('collectionEditor')) {
+      document.getElementById('collectionEditor').remove();
+    }
   }
-}
   /**
    *Validate the request
    * @param reqData user, state, status validation
@@ -324,11 +330,11 @@ ngOnDestroy() {
     let editorConfig = [];
     switch (type) {
       case 'Course':
-          return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COURSE_ARRAY;
+        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COURSE_ARRAY;
       case 'Collection':
-       return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_ARRAY;
+        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.COLLECTION_ARRAY;
       case 'LessonPlan':
-        return editorConfig  = this.config.editorConfig.EDITOR_CONFIG.LESSON_PLAN;
+        return editorConfig = this.config.editorConfig.EDITOR_CONFIG.LESSON_PLAN;
       default:
         return editorConfig = this.config.editorConfig.EDITOR_CONFIG.DEFAULT_CONFIG;
     }

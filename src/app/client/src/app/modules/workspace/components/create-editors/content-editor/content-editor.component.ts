@@ -288,7 +288,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       document.getElementById('contentEditor').remove();
     }
     if (this.state) {
-       this.router.navigate(['workspace/content/', this.state , '1']);
+      this.router.navigate(['workspace/content/', this.state, '1']);
     } else {
       this.router.navigate(['workspace/content/draft/1']);
       this.showModal = false;
