@@ -16,12 +16,12 @@
                             <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
                                 <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
                                     <div *ngIf="item.type === 'profile'">
-                                        <a href="/private/index#!/profile">
+                                        <a routerLink="/profile">
                                             <app-profile-card [profile]="item"></app-profile-card>
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
-                                        <a href="/private/index#!/course/{{item.courseId}}/no">
+                                        <a routerLink="/learn">
                                             <app-action-card [enrolledCourses]="item"></app-action-card>
                                         </a>
                                     </div>
