@@ -18,7 +18,7 @@ describe('NoResultComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

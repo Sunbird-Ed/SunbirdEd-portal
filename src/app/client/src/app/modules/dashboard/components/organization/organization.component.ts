@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // SB service(S)
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import * as _ from 'lodash';
 
@@ -155,7 +155,8 @@ export class OrganisationComponent {
    * @param {ResourceService} resourceService To get language constant
    */
   constructor(downloadService: DownloadService, route: Router, activatedRoute: ActivatedRoute, userService: UserService,
-    searchService: SearchService, rendererService: RendererService, orgService: OrganisationService, resourceService: ResourceService) {
+    searchService: SearchService, rendererService: RendererService, orgService: OrganisationService, resourceService: ResourceService,
+    public toasterService: ToasterService) {
     this.downloadService = downloadService;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;
@@ -205,6 +206,7 @@ export class OrganisationComponent {
       },
       err => {
         this.setError(true);
+        this.toasterService.error(`Root org doesn't exist for this Organization Id and channel`);
       }
     );
   }
