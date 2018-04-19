@@ -10,7 +10,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces';
+import { CustomWindow } from './../../../interfaces/custom.window';
 import { EditorService } from '@sunbird/workspace';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './generic-editor.component.spec.data';
@@ -30,7 +30,8 @@ describe('GenericEditorComponent', () => {
       declarations: [ GenericEditorComponent ],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
     providers: [
-      EditorService, UserService,
+      EditorService, UserService, LearnerService, ContentService,
+      ResourceService, ToasterService, ConfigService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'contentId': 'do_21247940906829414411032'
        }]) }  }
