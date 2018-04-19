@@ -33,6 +33,9 @@
       ],  
       "@sunbird/org-management": [
         "app/modules/org-management"
+      ],
+      "@sunbird/search": [
+        "app/modules/search"
       ]
     },
     "module": "commonjs",
