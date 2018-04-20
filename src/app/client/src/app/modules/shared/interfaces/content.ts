@@ -52,6 +52,10 @@ export interface IContents {
     */
     courseId?: string;
     /**
+    * Content badgeAssertions name
+    */
+    badgeAssertions?: object;
+    /**
     * Content action
     */
     action?: IAction;
