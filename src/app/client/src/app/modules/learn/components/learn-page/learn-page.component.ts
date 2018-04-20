@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * This component contains 2 sub components
@@ -58,6 +59,7 @@ export class LearnPageComponent implements OnInit {
   private router: Router;
   public filterType: string;
   public filters: any;
+  public queryParams: any = {};
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -67,13 +69,14 @@ export class LearnPageComponent implements OnInit {
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, config: ConfigService, ) {
+     private activatedRoute: ActivatedRoute, config: ConfigService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
     this.router = router;
+    this.router.onSameUrlNavigation = 'reload';
   }
   /**
      * This method calls the enrolled courses API.
@@ -177,6 +180,7 @@ export class LearnPageComponent implements OnInit {
  */
   ngOnInit() {
     this.filters = {};
+    this.getQueryParams();
     this.populateEnrolledCourse();
     this.filterType = this.config.appConfig.course.filterType;
   }
@@ -185,6 +189,33 @@ export class LearnPageComponent implements OnInit {
  */
   updatePageFilters(filters) {
     this.filters = filters;
+    const currUrl =  this.router.url.split('?');
+    this.router.navigate([currUrl[0]], {queryParams: this.filters });
     this.populatePageData();
+  }
+
+  /**
+   *  to get query parameters
+   */
+  getQueryParams() {
+    Observable
+      .combineLatest(
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams,
+        (params: any, queryParams: any) => {
+          return {
+            params: params,
+            queryParams: queryParams
+          };
+        })
+      .subscribe(bothParams => {
+        this.queryParams = { ...bothParams.queryParams };
+        const __self = this;
+        _.forOwn(this.queryParams, function(queryValue, queryParam) {
+          if (queryParam !== 'key') {
+            __self.filters[queryParam] = queryValue;
+          }
+        });
+      });
   }
 }
