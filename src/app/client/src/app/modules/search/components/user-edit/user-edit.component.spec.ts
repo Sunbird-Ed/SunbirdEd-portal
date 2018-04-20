@@ -5,7 +5,7 @@ import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
   ConfigService, ToasterService, INoResultMessage, RouterNavigationService
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions  } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
@@ -46,7 +46,7 @@ describe('UserEditComponent', () => {
       declarations: [UserEditComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,
-        RouterNavigationService,
+        RouterNavigationService, PermissionService,
         { provide: ResourceService, useValue: resourceBundle },
         {
           provide: ActivatedRoute, useValue: {
@@ -80,10 +80,6 @@ describe('UserEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserEditComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
   it('should call search api for populateOrgName', () => {
     const searchService = TestBed.get(SearchService);
@@ -107,8 +103,10 @@ describe('UserEditComponent', () => {
   it('should call search api', () => {
     const searchService = TestBed.get(UserSearchService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(searchService, 'getUserById').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'getUserById').and.returnValue(Observable.of(Response.successData));
     component.populateUserDetails();
+    component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
+    component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
     fixture.detectChanges();
     expect(component.userDetails).toBeDefined();
   });

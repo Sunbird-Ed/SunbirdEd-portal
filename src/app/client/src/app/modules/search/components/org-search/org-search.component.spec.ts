@@ -25,6 +25,9 @@ describe('OrgSearchComponent', () => {
       'stmsg': {
         'm0008': 'no-results',
         'm0007': 'Please search for something else.'
+      },
+      'emsg': {
+        'm0005': 'Something went wrong, please try in some time....'
       }
     }
   };

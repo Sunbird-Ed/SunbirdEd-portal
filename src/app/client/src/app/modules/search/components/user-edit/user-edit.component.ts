@@ -123,8 +123,10 @@ export class UserEditComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
+          console.log(this.userDetails);
           this.populateOrgName();
           this.selectedOrgId = this.userDetails.organisations[0].organisationId;
+          console.log('this.selectedOrgId', this.selectedOrgId);
           this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
         },
         err => {

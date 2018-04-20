@@ -165,4 +165,26 @@ export class SearchService {
     };
     return this.content.post(option);
   }
+  /**
+   * Course Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  courseSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          query: requestParam.query,
+          sort_by: requestParam.sort_by
+        }
+      }
+    };
+    return this.content.post(option);
+  }
 }
+
+
