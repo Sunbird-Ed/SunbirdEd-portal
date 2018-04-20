@@ -252,7 +252,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Check the Access and Launch the content Editor
    */
   getContentData() {
-    const state = 'UpForReviewContent';
+    const state = 'UpForReview';
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
