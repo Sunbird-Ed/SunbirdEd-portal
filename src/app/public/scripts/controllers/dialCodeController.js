@@ -35,8 +35,8 @@
           $state.go('PublicContent', params)
         }
 
-        dialctrl.openCollectionView = function (collection) {
-          var params = { contentId: collection.identifier, name: collection.identifier }
+        dialctrl.openCollectionView = function (collectionDetails) {
+          var params = { contentId: collectionDetails.identifier, name: collectionDetails.identifier }
           $state.go('PublicCollection', params)
         }
         contentService.search(req).then(function (res) {
