@@ -5,7 +5,8 @@ import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent
 } from './components';
-import { ConfigService, ResourceService, FileUploadService, ToasterService, PaginationService, RouterNavigationService } from './services';
+import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
+   PaginationService, RouterNavigationService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe } from './pipes';
@@ -22,6 +23,6 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService]
+     RouterNavigationService, WindowScrollService]
 })
 export class SharedModule { }

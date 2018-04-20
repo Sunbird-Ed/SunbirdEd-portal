@@ -33,6 +33,9 @@
       ],
       "@sunbird/search": [
         "app/modules/search"
+      ],
+      "@sunbird/profile": [
+        "app/modules/profile"
       ]
     },
     "sourceMap": true,

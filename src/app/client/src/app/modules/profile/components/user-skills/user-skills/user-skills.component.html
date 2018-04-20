@@ -1,0 +1,43 @@
+<div id="skills" class="twelve wide column padding-bottom-none">
+    <div class="ui raised segment margin-top-20 margin-bottom-0">
+        <div class="header announcementCard-header ">
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}} </span>
+            <a class="addeditprofile">
+                <app-profile-visibility field="skills"></app-profile-visibility>
+            </a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
+        </div>
+        <div class="profileitems profile-des ui relaxed aligned list">
+            <div class="item " *ngFor="let skill of userProfile.skills | slice:0:limit">
+                <!-- | orderBy : '-addedAt' | limitTo:profileCtrl.limit -->
+                <div class="ui label">
+                    {{skill?.skillName}}
+                    <div class="detail">
+                        <span *ngIf="skill.endorsementcount !== 0">|&nbsp;</span>
+                        <span *ngIf="skill.endorsementcount !== 0">{{skill?.endorsementcount}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="userProfile.skills.length > defaultLimit">
+        <div class="active item addSkillMoreBtn">
+            <a (click)="toggle(true)" *ngIf="viewMore">
+                <span class="cursor-pointer">
+                    {{resourceService?.frmelmnts?.btn?.viewmore}}
+                    <i class="chevron down icon"></i>
+                </span>
+            </a>
+            <a (click)="toggle(false)" *ngIf="!viewMore">
+                <span class="cursor-pointer">
+                    {{resourceService?.frmelmnts?.btn?.viewless}}
+                    <i class="chevron up icon"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+    <!-- edit popup-->
+    <div *ngIf="action !== 'view'" class="twelve wide column">
+        <app-edit-user-skills></app-edit-user-skills>
+    </div>
+</div>
