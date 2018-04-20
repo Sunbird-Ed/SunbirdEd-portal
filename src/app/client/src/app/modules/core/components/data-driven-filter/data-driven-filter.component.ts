@@ -13,6 +13,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DataDrivenFilterComponent implements OnInit {
   @Input() routerVal: string;
+  @Input() inPageFilter: boolean;
+  @Output() triggerParentSearch: EventEmitter<any> = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -20,7 +22,7 @@ export class DataDrivenFilterComponent implements OnInit {
 
   private resourceService: ResourceService;
 
-  public contentType: string;
+  public filterType: string;
   /**
  * To navigate to other pages
  */
@@ -49,10 +51,12 @@ export class DataDrivenFilterComponent implements OnInit {
   public pageNumber: Number = 1;
 
   public queryParams: any;
+
+  public redirectUrl: any;
   /**
  * formInputData is to take input data's from form
  */
-public formInputData: any;
+  public formInputData: any;
 
   searchBoards: Array<string>;
   searchLanguages: Array<string>;
@@ -92,32 +96,32 @@ public formInputData: any;
     this.formInputData = {};
     this.getQueryParams();
     console.log('routerVal', this.routerVal);
-    this.contentType = this.routerVal;
+    this.filterType = this.routerVal;
     this.getMetaData();
     // this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
     // this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
     // this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
     // this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
   }
-  getQueryParams () {
+  getQueryParams() {
     Observable
-    .combineLatest(
-    this.activatedRoute.params,
-    this.activatedRoute.queryParams,
-    (params: any, queryParams: any) => {
-      return {
-        params: params,
-        queryParams: queryParams
-      };
-    })
-    .subscribe(bothParams => {
-      if (bothParams.params.pageNumber) {
-        this.pageNumber = Number(bothParams.params.pageNumber);
-      }
-      this.queryParams = { ...bothParams.queryParams };
-      this.formInputData = this.queryParams ;
-      console.log('this.queryParams', this.queryParams);
-    });
+      .combineLatest(
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams,
+        (params: any, queryParams: any) => {
+          return {
+            params: params,
+            queryParams: queryParams
+          };
+        })
+      .subscribe(bothParams => {
+        if (bothParams.params.pageNumber) {
+          this.pageNumber = Number(bothParams.params.pageNumber);
+        }
+        this.queryParams = { ...bothParams.queryParams };
+        this.formInputData = this.queryParams;
+        console.log('this.queryParams', this.queryParams);
+      });
   }
   /**
 * getMetaData is gives form config data
@@ -128,10 +132,10 @@ public formInputData: any;
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
-        this.exists = this._cacheService.exists(this.contentType);
+        this.exists = this._cacheService.exists(this.filterType);
         console.log('exists', this.exists);
         if (this.exists) {
-          const data: any | null = this._cacheService.get(this.contentType);
+          const data: any | null = this._cacheService.get(this.filterType);
           this.formFieldProperties = data;
           this.getFormConfig(this.formFieldProperties);
         } else {
@@ -141,7 +145,7 @@ public formInputData: any;
           *@param {formAction} action form action type
           * @param {contentType} content selected content type
           */
-          this.formService.getFormConfig(this.formType, this.formAction, this.contentType, frameworkData.framework).subscribe(
+          this.formService.getFormConfig(this.formType, this.formAction, this.filterType, frameworkData.framework).subscribe(
             (data: ServerResponse) => {
               setTimeout(() => {
                 this.formFieldProperties = data;
@@ -159,10 +163,10 @@ public formInputData: any;
     });
   }
 
-    /**
-   * @description            - Which is used to config the form field vlaues
-   * @param {formFieldProperties} formFieldProperties  - Field information
-   */
+  /**
+ * @description            - Which is used to config the form field vlaues
+ * @param {formFieldProperties} formFieldProperties  - Field information
+ */
   getFormConfig(formFieldProperties) {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -177,14 +181,21 @@ public formInputData: any;
     console.log('this.formFieldProperties', this.formFieldProperties);
   }
   applyFilters() {
-    console.log('applyFilters', this.formInputData);
-    this.queryParams = this.formInputData;
-    this.router.navigate(['/search/Courses', this.pageNumber], { queryParams: this.queryParams });
+    this.initSearch();
   }
   resetFilters() {
     this.formInputData = {};
-    this.queryParams = this.formInputData;
-    this.router.navigate(['/search/Courses', this.pageNumber], { queryParams: this.queryParams });
+    this.initSearch();
+  }
+  initSearch() {
+    if (this.inPageFilter) {
+      this.triggerParentSearch.emit(this.formInputData);
+    } else {
+      this.queryParams = this.formInputData;
+      this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
+      console.log('redirectUrl', this.redirectUrl);
+      this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
+    }
   }
 
 }

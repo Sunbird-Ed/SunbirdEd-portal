@@ -13,9 +13,8 @@ import {
   MainHeaderComponent, MainMenuComponent, SearchComponent , DataDrivenFilterComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
-import * as $ from 'jquery';
 import { CacheService } from 'ng2-cache-service';
-
+import * as $ from 'jquery';
 @NgModule({
   imports: [
     CommonModule,

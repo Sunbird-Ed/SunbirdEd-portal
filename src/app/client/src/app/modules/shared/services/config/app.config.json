@@ -152,7 +152,20 @@
         "studymaterial": "Resource",
         "lessonplan": "LessonPlan"
     },
-    "Courses":{
-      "filterType":"course"
+    "course":{
+      "filterType":"course",
+      "redirectUrl":"/search/Courses"
+    },
+    "library":{
+      "filterType":"library",
+      "redirectUrl":"/search/Library"
+    },
+    "formApiTypes": {
+        "textbook": "textbook",
+        "course": "course",
+        "collection": "collection",
+        "studymaterial": "resource",
+        "lessonplan": "lessonplan",
+        "library": "library"
     }
 }

@@ -234,7 +234,7 @@ export class CourseSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filterType = this.config.appConfig.Courses.filterType;
+    this.filterType = this.config.appConfig.course.filterType;
     Observable
       .combineLatest(
       this.activatedRoute.params,
