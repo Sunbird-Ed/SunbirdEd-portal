@@ -9,24 +9,18 @@
               <i class="dropdown icon"></i>
             </div>
             <div content>
-              <!-- <div class="twelve wide column content margin-bottom-15">
-                <span *ngFor="let value of label">
-                  <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
-                    {{value}}:
-                    <span *ngFor="let item of queryParams[value] ">
-                      <a class="ui label margin-top--5" *ngIf='!isNumber(item)'>
+                <div *ngIf="formFieldProperties" class="twelve wide column content margin-bottom-15">
+                <span *ngFor="let field of formFieldProperties">
+                    <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
+                      {{field.name}}:
+                      <a class="ui label margin-top--5" *ngFor="let item of formInputData[field.code]">
                         {{item}}
-                        <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
-                      </a>
-                      <a class="ui label margin-top--5" *ngIf='isNumber(item)'>
-                        {{item.name}}
-                        <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
+                        <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                       </a>
                     </span>
-                  </span>
-                </span> id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="onConfigChange({index:i, field:field, value:formInputData[field.code]})"
-              </div> -->
-              <div>
+            </span>
+            </div>
+              <div *ngIf="refresh">
                   <form class="ui form">
                 <div *ngIf="formFieldProperties" class="ui grid">
                   <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
@@ -37,7 +31,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="three wide column filter-button">
+                <div class="three wide column filter-button margin-top-10">
                   <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>

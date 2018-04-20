@@ -58,10 +58,6 @@ export class DataDrivenFilterComponent implements OnInit {
  */
   public formInputData: any;
 
-  searchBoards: Array<string>;
-  searchLanguages: Array<string>;
-  searchSubjects: Array<string>;
-  label: any;
   refresh = true;
 
   /**
@@ -79,7 +75,7 @@ export class DataDrivenFilterComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     frameworkService: FrameworkService,
     formService: FormService,
-    toasterService: ToasterService
+    toasterService: ToasterService,
 
   ) {
     this.config = config;
@@ -195,6 +191,15 @@ export class DataDrivenFilterComponent implements OnInit {
       this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
       console.log('redirectUrl', this.redirectUrl);
       this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
+    }
+  }
+  removeFilterSelection(field, item) {
+    const itemIndex = this.formInputData[field].indexOf(item);
+    if (itemIndex !== -1) {
+      this.formInputData[field].splice(itemIndex, 1);
+      this.refresh = false;
+      this.cdr.detectChanges();
+      this.refresh = true;
     }
   }
 
