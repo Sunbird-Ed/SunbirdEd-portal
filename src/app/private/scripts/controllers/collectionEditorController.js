@@ -54,7 +54,7 @@ angular.module('playerApp')
           loadingImage: '',
           plugins: [{
             id: 'org.ekstep.sunbirdcommonheader',
-            ver: '1.2',
+            ver: '1.3',
             type: 'plugin'
           },
           {
@@ -134,7 +134,7 @@ angular.module('playerApp')
         var validateModal = {
           state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
             'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent', 'LimitedPublishedContent'],
-          status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
+          status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted', 'FlagDraft', 'FlagReview'],
           mimeType: 'application/vnd.ekstep.content-collection'
         }
 

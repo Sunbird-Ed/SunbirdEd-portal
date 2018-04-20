@@ -113,10 +113,14 @@ angular.module('playerApp')
       }
 
       upForReviewContent.getRequestObject = function (pageNumber) {
+        var rolesMap = permissionsService.getRoleOrgMap()
         var req = {
           filters: {
             status: upForReviewContent.contentStatus,
-            createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['CONTENT_REVIEWER'],
+            createdFor: permissionsService.getRoleOrgMap() &&
+            _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
+              rolesMap['BOOK_REVIEWER'],
+              rolesMap['FLAG_REVIEWER'])),
             objectType: 'Content',
             contentType: config.contributeContentType,
             createdBy: {'!=': upForReviewContent.userId}

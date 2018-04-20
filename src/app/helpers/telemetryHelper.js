@@ -13,6 +13,7 @@ const telemetry = new Telemetry()
 const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
+const contentURL = envHelper.CONTENT_URL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
 telemtryEventConfig['pdata']['id'] = appId
@@ -311,13 +312,10 @@ module.exports = {
         callback(null, true)
       }
     }
-    console.log('eventsData', JSON.stringify(eventsData))
-
     var data = this.prepareTelemetryRequestBody(req, eventsData)
-    console.log('data', JSON.stringify(data))
     var options = {
       method: 'POST',
-      url: envHelper.content_Service_Local_BaseUrl + '/v1/telemetry',
+      url: contentURL + '/data/v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + apiToken
