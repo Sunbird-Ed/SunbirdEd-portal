@@ -13,7 +13,7 @@ import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
-
+import * as $ from 'jquery';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,5 +31,3 @@ import { AuthGuard } from './guard/auth-gard.service';
 })
 export class CoreModule {
 }
-
-

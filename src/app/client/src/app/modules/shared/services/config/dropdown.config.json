@@ -222,7 +222,8 @@
                 "resources": "/search/Library",
                 "Library": "/search/Library",
                 "Users": "/search/Users",
-                "profile": "/search/Users"
+                "profile": "/search/Users",
+                "Organisations": "/search/Organisations"
             },
             "searchUrl": {
                 "home": "All",
@@ -232,15 +233,37 @@
             },
             "All": {
                 "DROPDOWN": {
-                    "boards": [],
-                    "subjects": [],
-                    "languages": []
+                    "Curriculum": [],
+                    "Subjects": [],
+                    "Medium": []
                 },
                 "label": [
-                    "boards",
-                    "languages",
-                    "subjects",
+                    "Curriculum",
+                    "Medium",
+                    "Subjects",
                     "Concepts"
+                ]
+            },
+            "Users": {
+                "DROPDOWN": {
+                    "Grades": [],
+                    "Medium": [],
+                    "Subjects": [],
+                    "Roles": []
+                },
+                "label": [
+                    "Grades",
+                    "Medium",
+                    "Subjects",
+                    "Roles"
+                ]
+            },
+            "Organisations": {
+                "DROPDOWN": {
+                    "OrgType": []
+                },
+                "label": [
+                    "OrgType"
                 ]
             }
         }
