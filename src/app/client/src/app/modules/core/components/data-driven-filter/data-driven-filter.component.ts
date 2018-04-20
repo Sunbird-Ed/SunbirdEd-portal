@@ -13,6 +13,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DataDrivenFilterComponent implements OnInit {
   @Input() routerVal: string;
+  @Input() inPageFilter: boolean;
+  @Output() triggerParentSearch: EventEmitter<any> = new EventEmitter();
   /**
  * To get url, app configs
  */
@@ -49,10 +51,12 @@ export class DataDrivenFilterComponent implements OnInit {
   public pageNumber: Number = 1;
 
   public queryParams: any;
+
+  public redirectUrl: any;
   /**
  * formInputData is to take input data's from form
  */
-public formInputData: any;
+  public formInputData: any;
 
   searchBoards: Array<string>;
   searchLanguages: Array<string>;
@@ -99,25 +103,25 @@ public formInputData: any;
     // this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
     // this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
   }
-  getQueryParams () {
+  getQueryParams() {
     Observable
-    .combineLatest(
-    this.activatedRoute.params,
-    this.activatedRoute.queryParams,
-    (params: any, queryParams: any) => {
-      return {
-        params: params,
-        queryParams: queryParams
-      };
-    })
-    .subscribe(bothParams => {
-      if (bothParams.params.pageNumber) {
-        this.pageNumber = Number(bothParams.params.pageNumber);
-      }
-      this.queryParams = { ...bothParams.queryParams };
-      this.formInputData = this.queryParams ;
-      console.log('this.queryParams', this.queryParams);
-    });
+      .combineLatest(
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams,
+        (params: any, queryParams: any) => {
+          return {
+            params: params,
+            queryParams: queryParams
+          };
+        })
+      .subscribe(bothParams => {
+        if (bothParams.params.pageNumber) {
+          this.pageNumber = Number(bothParams.params.pageNumber);
+        }
+        this.queryParams = { ...bothParams.queryParams };
+        this.formInputData = this.queryParams;
+        console.log('this.queryParams', this.queryParams);
+      });
   }
   /**
 * getMetaData is gives form config data
@@ -159,10 +163,10 @@ public formInputData: any;
     });
   }
 
-    /**
-   * @description            - Which is used to config the form field vlaues
-   * @param {formFieldProperties} formFieldProperties  - Field information
-   */
+  /**
+ * @description            - Which is used to config the form field vlaues
+ * @param {formFieldProperties} formFieldProperties  - Field information
+ */
   getFormConfig(formFieldProperties) {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -177,14 +181,21 @@ public formInputData: any;
     console.log('this.formFieldProperties', this.formFieldProperties);
   }
   applyFilters() {
-    console.log('applyFilters', this.formInputData);
-    this.queryParams = this.formInputData;
-    const redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
-    console.log('redirectUrl', redirectUrl);
-    this.router.navigate([redirectUrl, 1], { queryParams: this.queryParams });
+    this.initSearch();
   }
   resetFilters() {
     this.formInputData = {};
+    this.initSearch();
+  }
+  initSearch() {
+    if (this.inPageFilter) {
+      this.triggerParentSearch.emit(this.formInputData);
+    } else {
+      this.queryParams = this.formInputData;
+      this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
+      console.log('redirectUrl', this.redirectUrl);
+      this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
+    }
   }
 
 }

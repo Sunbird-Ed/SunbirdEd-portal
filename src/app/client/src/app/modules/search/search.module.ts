@@ -5,15 +5,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserSearchComponent } from './components/user-search/user-search.component';
-import { UserFilterComponent } from './components/user-filter/user-filter.component';
-import { UserEditComponent } from './components/user-edit/user-edit.component';
-import { UserDeleteComponent } from './components/user-delete/user-delete.component';
 import { UserSearchService } from './services';
-import { OrgSearchComponent } from './components/org-search/org-search.component';
-import { OrgFilterComponent } from './components/org-filter/org-filter.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-
+import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent,
+   OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent } from './components';
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +17,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     FormsModule,
     CoreModule
   ],
-  declarations: [ UserSearchComponent,
+  declarations: [ UserSearchComponent, CourseSearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent, UserProfileComponent],
   providers: [UserSearchService]
 })

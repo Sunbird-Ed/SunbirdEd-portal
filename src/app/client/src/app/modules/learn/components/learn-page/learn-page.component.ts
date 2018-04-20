@@ -57,6 +57,7 @@ export class LearnPageComponent implements OnInit {
   caraouselData: Array<ICaraouselData> = [];
   private router: Router;
   public filterType: string;
+  public filters: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -112,9 +113,12 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
+    this.caraouselData = [];
+    this.showLoader = true;
     const option = {
       source: 'web',
-      name: 'Course'
+      name: 'Course',
+      filters: this.filters
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -172,7 +176,15 @@ export class LearnPageComponent implements OnInit {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
+    this.filters = {};
     this.populateEnrolledCourse();
     this.filterType = this.config.appConfig.course.filterType;
+  }
+/**
+ * method to update page data based on filters.triggered by child filter page
+ */
+  updatePageFilters(filters) {
+    this.filters = filters;
+    this.populatePageData();
   }
 }
