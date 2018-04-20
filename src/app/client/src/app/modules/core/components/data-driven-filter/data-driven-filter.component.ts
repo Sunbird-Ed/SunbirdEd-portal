@@ -59,7 +59,7 @@ export class DataDrivenFilterComponent implements OnInit {
   public formInputData: any;
 
   refresh = true;
-
+  isShowFilterPlaceholder = true;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -123,15 +123,13 @@ export class DataDrivenFilterComponent implements OnInit {
 * getMetaData is gives form config data
 */
   getMetaData() {
-    console.log('getMetaData called');
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
-        this.exists = this._cacheService.exists(this.filterType);
-        console.log('exists', this.exists);
+        this.exists = this._cacheService.exists(this.filterType + this.formAction);
         if (this.exists) {
-          const data: any | null = this._cacheService.get(this.filterType);
+          const data: any | null = this._cacheService.get(this.filterType + this.formAction);
           this.formFieldProperties = data;
           this.getFormConfig(this.formFieldProperties);
         } else {
@@ -174,9 +172,9 @@ export class DataDrivenFilterComponent implements OnInit {
     });
     // this.formFieldProperties.sort((a, b) => a.index - b.index);
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    console.log('this.formFieldProperties', this.formFieldProperties);
   }
   applyFilters() {
+
     this.initSearch();
   }
   resetFilters() {
@@ -185,6 +183,11 @@ export class DataDrivenFilterComponent implements OnInit {
   }
   initSearch() {
       this.queryParams = this.formInputData;
+      _.forIn(this.queryParams, (value, key) => {
+        if (value.length > 0) {
+          this.queryParams[key] = value;
+        }
+      });
       this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
       if (this.router.url.indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
         this.triggerParentSearch.emit(this.formInputData);
@@ -196,6 +199,21 @@ export class DataDrivenFilterComponent implements OnInit {
     const itemIndex = this.formInputData[field].indexOf(item);
     if (itemIndex !== -1) {
       this.formInputData[field].splice(itemIndex, 1);
+      this.refresh = false;
+      this.cdr.detectChanges();
+      this.refresh = true;
+    }
+  }
+  ShowFilterPlaceholder(field) {
+    if (this.formInputData[field] && this.formInputData[field].length > 0) {
+      console.log('is false');
+      this.isShowFilterPlaceholder = false;
+      this.refresh = false;
+      this.cdr.detectChanges();
+      this.refresh = true;
+    } else {
+      console.log('true');
+      this.isShowFilterPlaceholder = true;
       this.refresh = false;
       this.cdr.detectChanges();
       this.refresh = true;

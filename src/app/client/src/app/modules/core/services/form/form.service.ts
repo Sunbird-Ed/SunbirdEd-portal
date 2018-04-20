@@ -59,7 +59,8 @@ export class FormService {
     };
     return this.content.post(channelOptions).map(
       (formConfig: ServerResponse) => {
-        this._cacheService.set(selectedContent, formConfig.result.form.data.fields, { maxAge: 10 * 60 });
+        console.log('selectedContent + formAction', selectedContent + formAction);
+        this._cacheService.set(selectedContent + formAction, formConfig.result.form.data.fields, { maxAge: 10 * 60 });
         return formConfig.result.form.data.fields;
       },
       (err: ServerResponse) => {

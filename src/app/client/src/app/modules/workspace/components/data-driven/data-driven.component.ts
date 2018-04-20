@@ -145,9 +145,9 @@ export class DataDrivenComponent implements OnInit {
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
-        this.exists = this._cacheService.exists(this.contentType);
+        this.exists = this._cacheService.exists(this.contentType + this.formAction);
         if (this.exists) {
-          const data: any | null = this._cacheService.get(this.contentType);
+          const data: any | null = this._cacheService.get(this.contentType + this.formAction);
           this.formFieldProperties = data;
           this.getFormConfig(this.formFieldProperties);
         } else {
