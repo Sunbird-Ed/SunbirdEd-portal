@@ -1,7 +1,7 @@
 <div class=" ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
-            <app-data-driven-filter *ngIf="filterType" [routerVal]="filterType"></app-data-driven-filter>
+            <app-data-driven-filter *ngIf="filterType" (triggerParentSearch)="updatePageFilters($event)" [routerVal]="filterType"></app-data-driven-filter>
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
             <div class="ui left floated header margin-auto ">
                 <p class="serch-allresult">Showing results for

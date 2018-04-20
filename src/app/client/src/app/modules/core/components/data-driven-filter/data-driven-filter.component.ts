@@ -184,14 +184,13 @@ export class DataDrivenFilterComponent implements OnInit {
     this.initSearch();
   }
   initSearch() {
-    if (this.inPageFilter) {
-      this.triggerParentSearch.emit(this.formInputData);
-    } else {
       this.queryParams = this.formInputData;
       this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
-      console.log('redirectUrl', this.redirectUrl);
-      this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
-    }
+      if (this.router.url.indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
+        this.triggerParentSearch.emit(this.formInputData);
+      } else {
+        this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
+      }
   }
   removeFilterSelection(field, item) {
     const itemIndex = this.formInputData[field].indexOf(item);

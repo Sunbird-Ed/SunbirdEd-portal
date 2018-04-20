@@ -90,6 +90,10 @@ export class CourseSearchComponent implements OnInit {
    *url value
    */
   queryParams: any;
+    /**
+   *search filters
+   */
+  filters: any;
   /**
   * Contains result object returned from enrolled course API.
   */
@@ -124,6 +128,7 @@ export class CourseSearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.config = config;
+    this.route.onSameUrlNavigation = 'reload';
   }
    /**
      * This method calls the enrolled courses API.
@@ -148,19 +153,13 @@ export class CourseSearchComponent implements OnInit {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
-      filters: {
-        objectType: ['Content'],
-      },
+      filters: this.filters,
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
       sort_by: {}
     };
-    _.forOwn(this.queryParams, function(queryValue, queryParam) {
-      if (queryParam !== 'key') {
-        requestParams.filters[queryParam] = queryValue;
-      }
-    } );
+
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.course.length > 0) {
@@ -235,6 +234,10 @@ export class CourseSearchComponent implements OnInit {
 
   ngOnInit() {
     this.filterType = this.config.appConfig.course.filterType;
+    this.filters =  {
+      objectType: ['Content']
+    };
+    const __self =  this;
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -250,8 +253,20 @@ export class CourseSearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        // load search filters from queryparams if any
+        _.forOwn(this.queryParams, function(queryValue, queryParam) {
+          if (queryParam !== 'key') {
+            __self.filters[queryParam] = queryValue;
+          }
+        } );
         this.populateEnrolledCourse();
       });
   }
-
+/**
+ * method to update page data based on filters.triggered by child filter page
+ */
+updatePageFilters(filters) {
+  this.queryParams =  filters;
+  this.navigateToPage(this.pageNumber);
+}
 }
