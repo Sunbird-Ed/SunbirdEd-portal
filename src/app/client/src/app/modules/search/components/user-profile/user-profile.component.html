@@ -50,15 +50,15 @@
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
         <div class="margin-top-20 ui raised segment">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.summary}} </span>
+            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
           <div class="description">
             <div *ngIf="!descriptionReadMore">
               <span>{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
             </div>
             <div *ngIf="descriptionReadMore"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
             </div>
           </div>
         </div>

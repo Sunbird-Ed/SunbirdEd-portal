@@ -87,7 +87,7 @@ describe('UserSearchComponent', () => {
     expect(component.searchList.length).toBeLessThanOrEqual(0);
     expect(component.searchList.length).toEqual(0);
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
 
   it('should call search api for populateOrgNameAndSetRoles', () => {

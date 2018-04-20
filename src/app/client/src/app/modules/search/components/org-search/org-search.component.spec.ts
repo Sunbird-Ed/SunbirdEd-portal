@@ -71,7 +71,7 @@ describe('OrgSearchComponent', () => {
     fixture.detectChanges();
     expect(component.searchList.length).toBeLessThanOrEqual(0);
     expect(component.searchList.length).toEqual(0);
-    expect(component.noResult).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
 
   it('should call navigateToPage method and page number should be default, i,e 1', inject([ConfigService, Router],
