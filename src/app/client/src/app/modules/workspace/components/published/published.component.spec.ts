@@ -69,7 +69,7 @@ describe('PublishedComponent', () => {
     (workSpaceService, activatedRoute, resourceService, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { type: 'delete', contentId: 'do_2124341006465925121871' };
+      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871'} };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124341006465925121871']

@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="description fixedRatingCard">
+      <div class="description " *ngIf="(content.description) && (content.description.length > 0) ">
         {{content.description | slice:0:40}}
         <i class="ellipsis horizontal icon" *ngIf="content.description && content.description.length >= 40" suiPopup popupText="{{content.description}}"></i>
       </div>

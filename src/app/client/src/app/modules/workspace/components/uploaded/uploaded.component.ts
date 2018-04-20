@@ -191,7 +191,6 @@ export class UploadedComponent extends WorkSpace implements OnInit {
 
           });
           this.showLoader = false;
-          console.log('>>>', this.uploaded);
         } else {
           this.showError = false;
           this.noResult = true;
