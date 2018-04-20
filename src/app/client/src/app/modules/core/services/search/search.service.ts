@@ -141,7 +141,8 @@ export class SearchService {
           filters: requestParam.filters,
           limit: requestParam.limit,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
-          query: requestParam.query
+          query: requestParam.query,
+          softConstraints: {badgeAssertions: 1}
         }
       }
     };
@@ -179,6 +180,27 @@ export class SearchService {
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  /**
+   * Content Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  contentSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.CONTENT.SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          query: requestParam.query,
+          sort_by: requestParam.sort_by,
+          softConstraints: {badgeAssertions: 1}
         }
       }
     };

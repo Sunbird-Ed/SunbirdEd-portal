@@ -25,10 +25,10 @@
   "SEARCH": {
     "PAGE_LIMIT": 20,
     "USER": {
-      "DOWNLOAD_BUTTON": "FALSE"
+      "DOWNLOAD_BUTTON_VISIBILITY": "FALSE"
     },
     "ORGANISATION": {
-      "DOWNLOAD_BUTTON": "TRUE"
+      "DOWNLOAD_BUTTON_VISIBILITY": "TRUE"
     }
   },
   "ANNOUNCEMENT": {

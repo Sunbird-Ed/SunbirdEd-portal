@@ -106,7 +106,7 @@ describe('CourseSearchComponent', () => {
     component.populateCourseSearch();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
   it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
