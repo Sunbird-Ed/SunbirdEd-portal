@@ -1,0 +1,77 @@
+<div id="experience" class="twelve wide column padding-bottom-none">
+    <div class="margin-top-20 ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading"> {{resourceService?.frmelmnts?.lbl?.experience}} </span>
+            <a class="addeditprofile" *ngIf='privateProfileFields'><app-profile-visibility field="jobProfile"></app-profile-visibility></a>
+
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view' && userProfile.jobProfile.length > 0"
+            routerLink= '/profile/experience/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" 
+            routerLink= '/profile/experience/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action !== 'view'" 
+            routerLink= '/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
+        </div>
+        <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items ">
+            <div class="item " *ngFor="let experience of userProfile.jobProfile">
+                <img class="ui avatar image" src="assets/common/images/businessman.png">
+                <div class="content">
+                    <a class=" header ">{{experience?.jobName}}</a>
+                    <div class="description ">
+                        <p class="margin-bottom-0"> {{experience?.role}} 
+                            <span *ngIf="experience.role">&nbsp;,&nbsp;
+                            </span>{{experience?.orgName}}
+                        </p>
+                        <p class="margin-bottom-0">
+                            <span class="margin-bottom-0" *ngIf="experience.subject.length ">
+                                {{resourceService?.frmelmnts?.lbl?.subjectstaught}} : 
+                            </span>
+                            <span *ngIf="experience.subject.length ">
+                            <span *ngFor="let sub of experience.subject; let last = last ">{{sub}}
+                                    <!-- | orderBy:'toString()' -->
+                            <span *ngIf="!last ">,</span></span></span>
+                        </p>
+                        <p *ngIf="experience.joiningDate ">{{resourceService?.frmelmnts?.lbl?.tcfrom}} : 
+                            {{experience?.joiningDate}} &nbsp;
+                            <span *ngIf="experience.endDate && experience.isCurrentJob!==true">, &nbsp;
+                                {{resourceService?.frmelmnts?.lbl?.tcto}} : {{experience?.endDate}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="right-floated ">
+                    <div class="metadata ">
+                        <a (click)="experience.isDeleted=true;deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="action !== 'view'" class="profileitems ui relaxed divided items ">
+            <div class="edit-experience-form " *ngIf="action === 'edit'">
+                <div class=" ui " *ngFor="let experience of userProfile.jobProfile; let index = index">
+                    <app-edit-experience #edit [experience]='experience'
+                    (currentJobChange)="checkCurrentJob()"></app-edit-experience>
+                </div>
+                <div class="ui warning message " *ngIf="isCurrentJobExist ">
+                    <i class="close icon "></i>
+                    <p>You already have a current job, please change that to not a current job</p>
+                </div>
+                <button [disabled]="isCurrentJobExist" *ngIf="action === 'edit'" [ngClass]="{'disabled' : disableSave}"
+                 class="ui primary button margin-top-15 " (click)="editExperience()">
+                 {{resourceService?.frmelmnts?.btn?.save}}</button>
+            </div>
+            <div class="add-experience-form " *ngIf="action === 'add'">
+                <div class="ui ">
+                        <app-edit-experience #add
+                        (currentJobChange)="checkCurrentJobAdd()"></app-edit-experience>
+                </div>
+                <div class="ui warning message " *ngIf="isCurrentJobExist ">
+                        <i class="close icon "></i>
+                        <p>You already have a current job, please change that to not a current job</p>
+                </div>
+                <button [disabled]="isCurrentJobExist" *ngIf="action === 'add'" [ngClass]="{'disabled' : disableSave}"
+                class="ui primary button margin-top-15 " (click)="addExperience()">
+                {{resourceService?.frmelmnts?.btn?.save}}</button>
+            </div>
+        </div>
+    </div>
+</div>

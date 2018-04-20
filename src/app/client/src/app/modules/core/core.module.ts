@@ -14,7 +14,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-
+import * as $ from 'jquery';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,5 +33,3 @@ import { CacheService } from 'ng2-cache-service';
 })
 export class CoreModule {
 }
-
-

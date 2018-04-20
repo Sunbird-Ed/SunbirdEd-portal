@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
@@ -15,6 +15,10 @@ import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../inter
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent implements OnInit {
+  /**
+* reference for ActivatedRoute
+*/
+  public activatedRoute: ActivatedRoute;
   /**
 * Contains status response
 */
@@ -48,6 +52,10 @@ export class StatusComponent implements OnInit {
 */
   sbFormBuilder: FormBuilder;
   /**
+* Contains redirect url
+*/
+  redirectUrl: string;
+  /**
 * Constructor to create injected service(s) object
 *
 * Default method of DetailsComponent class
@@ -55,16 +63,24 @@ export class StatusComponent implements OnInit {
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
   constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder,
-    toasterService: ToasterService, resourceService: ResourceService) {
+    toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
     this.toasterService = toasterService;
+    this.activatedRoute = activatedRoute;
   }
   /**
  * This method is used to initialize the formbuilder and to validate process id form field
  */
   ngOnInit() {
+    this.activatedRoute.data.subscribe(data => {
+      if (data.redirectUrl) {
+        this.redirectUrl = data.redirectUrl;
+      } else {
+        this.redirectUrl = '/home';
+      }
+    });
     this.statusForm = this.sbFormBuilder.group({
       processId: ['', null]
     });
@@ -75,7 +91,7 @@ export class StatusComponent implements OnInit {
  */
   public redirect() {
     this.processId = '';
-    this.router.navigate(['bulkUpload']);
+    this.router.navigate([this.redirectUrl]);
   }
   /**
  * This method helps to fetch bulk upload status based on the given process id

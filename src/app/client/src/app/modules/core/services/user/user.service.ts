@@ -146,6 +146,7 @@ export class UserService {
     const profileData = res.result.response;
     const orgRoleMap = {};
     let organisationIds = [];
+    profileData.rootOrgAdmin = false;
     let userRoles = profileData.roles;
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {

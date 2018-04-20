@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -19,7 +20,7 @@ export class DataDrivenFilterComponent implements OnInit {
 
   private resourceService: ResourceService;
 
-  public contentType: string;
+  public filterType: string;
   /**
  * To navigate to other pages
  */
@@ -45,6 +46,9 @@ export class DataDrivenFilterComponent implements OnInit {
 
   public formAction = 'search';
 
+  public pageNumber: Number = 1;
+
+  public queryParams: any;
   /**
  * formInputData is to take input data's from form
  */
@@ -86,14 +90,34 @@ public formInputData: any;
 
   ngOnInit() {
     this.formInputData = {};
+    this.getQueryParams();
     console.log('routerVal', this.routerVal);
-    this.contentType = this.routerVal;
-
+    this.filterType = this.routerVal;
     this.getMetaData();
     // this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
     // this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
     // this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
     // this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
+  }
+  getQueryParams () {
+    Observable
+    .combineLatest(
+    this.activatedRoute.params,
+    this.activatedRoute.queryParams,
+    (params: any, queryParams: any) => {
+      return {
+        params: params,
+        queryParams: queryParams
+      };
+    })
+    .subscribe(bothParams => {
+      if (bothParams.params.pageNumber) {
+        this.pageNumber = Number(bothParams.params.pageNumber);
+      }
+      this.queryParams = { ...bothParams.queryParams };
+      this.formInputData = this.queryParams ;
+      console.log('this.queryParams', this.queryParams);
+    });
   }
   /**
 * getMetaData is gives form config data
@@ -104,10 +128,10 @@ public formInputData: any;
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
-        this.exists = this._cacheService.exists(this.contentType);
+        this.exists = this._cacheService.exists(this.filterType);
         console.log('exists', this.exists);
         if (this.exists) {
-          const data: any | null = this._cacheService.get(this.contentType);
+          const data: any | null = this._cacheService.get(this.filterType);
           this.formFieldProperties = data;
           this.getFormConfig(this.formFieldProperties);
         } else {
@@ -117,7 +141,7 @@ public formInputData: any;
           *@param {formAction} action form action type
           * @param {contentType} content selected content type
           */
-          this.formService.getFormConfig(this.formType, this.formAction, this.contentType, frameworkData.framework).subscribe(
+          this.formService.getFormConfig(this.formType, this.formAction, this.filterType, frameworkData.framework).subscribe(
             (data: ServerResponse) => {
               setTimeout(() => {
                 this.formFieldProperties = data;
@@ -154,6 +178,10 @@ public formInputData: any;
   }
   applyFilters() {
     console.log('applyFilters', this.formInputData);
+    this.queryParams = this.formInputData;
+    const redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
+    console.log('redirectUrl', redirectUrl);
+    this.router.navigate([redirectUrl, 1], { queryParams: this.queryParams });
   }
   resetFilters() {
     this.formInputData = {};

@@ -60,4 +60,11 @@ export class BadgesService {
       }
     );
   }
+  public getAllBadgeList(req) {
+    const option = {
+      url: this.config.urlConFig.URLS.BADGE.BADGE_CLASS_SEARCH,
+      data: req
+    };
+    return this.learner.post(option);
+  }
 }

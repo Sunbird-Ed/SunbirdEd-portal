@@ -1,6 +1,6 @@
 import { PageApiService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, INoResultMessage } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import * as _ from 'lodash';
 /**
@@ -45,6 +45,8 @@ export class ResourceComponent implements OnInit {
   * Contains result object returned from getPageData API.
   */
   caraouselData: Array<ICaraouselData> = [];
+  public config: ConfigService;
+  public filterType: string;
   /**
    * The "constructor"
    *
@@ -52,10 +54,11 @@ export class ResourceComponent implements OnInit {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService,
-    resourceService: ResourceService) {
+    resourceService: ResourceService, config: ConfigService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
+    this.config = config;
   }
   /**
   * Subscribe to getPageData api.
@@ -104,6 +107,7 @@ export class ResourceComponent implements OnInit {
  */
   ngOnInit() {
     this.populatePageData();
+    this.filterType = this.config.appConfig.library.filterType;
   }
 
 }

@@ -44,7 +44,7 @@ export class FormService {
     * @param {selectedContent} content selected content type
     */
   getFormConfig(formType, formAction, selectedContent, framework): Observable<ServerResponse> {
-    this.newSelectedContent = this.config.appConfig.contentCreateType[selectedContent];
+    this.newSelectedContent = this.config.appConfig.formApiTypes[selectedContent];
     const channelOptions = {
       url: this.config.urlConFig.URLS.dataDrivenForms.READ,
       data: {
