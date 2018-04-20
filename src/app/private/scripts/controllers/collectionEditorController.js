@@ -54,7 +54,7 @@ angular.module('playerApp')
           loadingImage: '',
           plugins: [{
             id: 'org.ekstep.sunbirdcommonheader',
-            ver: '1.2',
+            ver: '1.3',
             type: 'plugin'
           },
           {
@@ -123,7 +123,7 @@ angular.module('playerApp')
         window.config.editorConfig.isFlagReviewer = false
         if ($stateParams.state === 'WorkSpace.UpForReviewContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
-            ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
+            ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER', 'FLAG_REVIEWER']).length > 0) {
           window.config.editorConfig.publishMode = true
         } else if ($stateParams.state === 'WorkSpace.FlaggedContent' &&
           _.intersection(permissionsService.getCurrentUserRoles(),
@@ -134,7 +134,7 @@ angular.module('playerApp')
         var validateModal = {
           state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
             'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent', 'LimitedPublishedContent'],
-          status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
+          status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted', 'FlagDraft', 'FlagReview'],
           mimeType: 'application/vnd.ekstep.content-collection'
         }
 
@@ -187,289 +187,289 @@ angular.module('playerApp')
       collectionEditor.getTreeNodes = function (type) {
         var editorConfig = []
         switch (type) {
-          case 'Course':
-            editorConfig.push({
-              type: 'Course',
-              label: 'Course',
-              isRoot: true,
-              editable: true,
-              childrenTypes: [
-                'CourseUnit',
-                'Collection',
-                'Resource',
-                'Story',
-                'Worksheet'
-              ],
-              addType: 'Editor',
-              iconClass: 'fa fa-book'
-            },
-              {
-                type: 'CourseUnit',
-                label: 'Course Unit',
-                isRoot: false,
-                editable: true,
-                childrenTypes: [
-                  'CourseUnit',
-                  'Collection',
-                  'Resource'
-                ],
-                addType: 'Editor',
-                iconClass: 'fa fa-folder-o'
-              },
-              {
-                type: 'Collection',
-                label: 'Collection',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+        case 'Course':
+          editorConfig.push({
+            type: 'Course',
+            label: 'Course',
+            isRoot: true,
+            editable: true,
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'CourseUnit',
+            label: 'Course Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: [
+              'CourseUnit',
+              'Collection',
+              'Resource'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Resource',
-                label: 'Resource',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Story',
-                label: 'Story',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Worksheet',
-                label: 'Worksheet',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              })
-            return editorConfig
-          case 'Collection':
-            editorConfig.push({
-              type: 'Collection',
-              label: 'Collection',
-              isRoot: true,
-              editable: true,
-              childrenTypes: [
-                'Collection',
-                'Resource',
-                'Story',
-                'Worksheet'
-              ],
-              addType: 'Editor',
-              iconClass: 'fa fa-folder-o'
-            },
-              {
-                type: 'Collection',
-                label: 'Collection',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        case 'Collection':
+          editorConfig.push({
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: true,
+            editable: true,
+            childrenTypes: [
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Resource',
-                label: 'Resource',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Story',
-                label: 'Story',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Worksheet',
-                label: 'Worksheet',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              })
-            return editorConfig
-          case 'LessonPlan':
-            editorConfig.push({
-              type: 'LessonPlan',
-              label: 'LessonPlan',
-              isRoot: true,
-              editable: true,
-              childrenTypes: [
-                'LessonPlanUnit',
-                'Collection',
-                'Resource',
-                'Story',
-                'Worksheet'
-              ],
-              addType: 'Editor',
-              iconClass: 'fa fa-book'
-            },
-              {
-                type: 'LessonPlanUnit',
-                label: 'LessonPlan Unit',
-                isRoot: false,
-                editable: true,
-                childrenTypes: [
-                  'LessonPlanUnit',
-                  'Collection',
-                  'Resource'
-                ],
-                addType: 'Editor',
-                iconClass: 'fa fa-folder-o'
-              },
-              {
-                type: 'Collection',
-                label: 'Collection',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        case 'LessonPlan':
+          editorConfig.push({
+            type: 'LessonPlan',
+            label: 'LessonPlan',
+            isRoot: true,
+            editable: true,
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'LessonPlanUnit',
+            label: 'LessonPlan Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: [
+              'LessonPlanUnit',
+              'Collection',
+              'Resource'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Resource',
-                label: 'Resource',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Story',
-                label: 'Story',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Worksheet',
-                label: 'Worksheet',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              })
-            return editorConfig
-          default:
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
+        default:
 
-            editorConfig.push({
-              type: 'TextBook',
-              label: 'Textbook',
-              isRoot: true,
-              editable: true,
-              childrenTypes: [
-                'TextBookUnit',
-                'Collection',
-                'Resource',
-                'Story',
-                'Worksheet'
-              ],
-              addType: 'Editor',
-              iconClass: 'fa fa-book'
-            },
-              {
-                type: 'TextBookUnit',
-                label: 'Textbook Unit',
-                isRoot: false,
-                editable: true,
-                childrenTypes: [
-                  'TextBookUnit',
-                  'Collection',
-                  'Resource'
-                ],
-                addType: 'Editor',
-                iconClass: 'fa fa-folder-o'
-              },
-              {
-                type: 'Collection',
-                label: 'Collection',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+          editorConfig.push({
+            type: 'TextBook',
+            label: 'Textbook',
+            isRoot: true,
+            editable: true,
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource',
+              'Story',
+              'Worksheet'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-book'
+          },
+          {
+            type: 'TextBookUnit',
+            label: 'Textbook Unit',
+            isRoot: false,
+            editable: true,
+            childrenTypes: [
+              'TextBookUnit',
+              'Collection',
+              'Resource'
+            ],
+            addType: 'Editor',
+            iconClass: 'fa fa-folder-o'
+          },
+          {
+            type: 'Collection',
+            label: 'Collection',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Resource',
-                label: 'Resource',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Resource',
+            label: 'Resource',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Story',
-                label: 'Story',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Story',
+            label: 'Story',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              },
-              {
-                type: 'Worksheet',
-                label: 'Worksheet',
-                isRoot: false,
-                editable: false,
-                childrenTypes: [
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          },
+          {
+            type: 'Worksheet',
+            label: 'Worksheet',
+            isRoot: false,
+            editable: false,
+            childrenTypes: [
 
-                ],
-                addType: 'Browser',
-                iconClass: 'fa fa-file-o'
-              })
-            return editorConfig
+            ],
+            addType: 'Browser',
+            iconClass: 'fa fa-file-o'
+          })
+          return editorConfig
         }
       }
 

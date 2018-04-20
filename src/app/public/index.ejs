@@ -6,7 +6,7 @@
     <title ng-bind="$root.titleName"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/ico" ng-href="{{faviconIcon || '/common/images/favicon.ico'}}">
+    <link rel="icon" type="image/ico" ng-href="{{$root.faviconIcon || '/common/images/favicon.ico'}}">
     <link rel="stylesheet" href="/themes/<%= theme ? theme : 'default' %>/semantic.min.css">
 
     <!-- inject:css -->
@@ -22,6 +22,7 @@
     <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
     <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
     <input type="hidden" id="producerId" value="<%=producerId%>" />
+    <input type="hidden" id="instance" value="<%=instance%>" />
     <div ng-include="'views/header/publicHeader.html'"></div>
     <div class="ui top attached fluid container">
         <div ng-class="{'dailcodePage-background' : $root.dailCodePageBackground === true,

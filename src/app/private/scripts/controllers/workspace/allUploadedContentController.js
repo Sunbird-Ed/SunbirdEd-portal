@@ -8,7 +8,7 @@ angular.module('playerApp')
       toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var allUploadedContent = this
       allUploadedContent.userId = $rootScope.userId
-      allUploadedContent.contentStatus = ['Draft']
+      allUploadedContent.contentStatus = ['Draft', 'FlagDraft']
       var mimeType = config.MIME_TYPE
       allUploadedContent.contentMimeType = [mimeType.pdf, mimeType.youtube, mimeType.html,
         mimeType.ePub, mimeType.h5p, mimeType.mp4, mimeType.webm
