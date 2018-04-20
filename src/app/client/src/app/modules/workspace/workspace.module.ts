@@ -11,7 +11,7 @@ import { WorkSpaceService, EditorService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
-  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent, DataDrivenComponent, DefaultTemplateComponent
 
 } from './components';
 @NgModule({
@@ -26,7 +26,8 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent],
+    ContentEditorComponent, GenericEditorComponent, DataDrivenComponent,
+    DefaultTemplateComponent],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }
