@@ -123,8 +123,10 @@ export class UserEditComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
+          console.log(this.userDetails);
           this.populateOrgName();
           this.selectedOrgId = this.userDetails.organisations[0].organisationId;
+          console.log('this.selectedOrgId', this.selectedOrgId);
           this.selectedOrgUserRoles = this.userDetails.organisations[0].roles;
         },
         err => {
@@ -173,12 +175,12 @@ export class UserEditComponent implements OnInit {
       const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
       this.userSearchService.updateRoles(option).subscribe(
         (apiResponse: ServerResponse) => {
-          this.toasterService.success(this.resourceService.messages.emsg.m0028);
+          this.toasterService.success(this.resourceService.messages.smsg.m0028);
           this.redirect();
         },
         err => {
           this.selectedOrgUserRoles = _.difference(this.selectedOrgUserRoles, this.selectedOrgUserRolesNew);
-          this.toasterService.error(this.resourceService.messages.emsg.m0051);
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
           this.redirect();
         }
       );
