@@ -26,8 +26,8 @@ describe('OrgSearchComponent', () => {
         'm0008': 'no-results',
         'm0007': 'Please search for something else.'
       },
-      'fmsg': {
-        'm0051': 'Something went wrong'
+      'emsg': {
+        'm0005': 'Something went wrong, please try in some time....'
       }
     }
   };
@@ -71,7 +71,7 @@ describe('OrgSearchComponent', () => {
     fixture.detectChanges();
     expect(component.searchList.length).toBeLessThanOrEqual(0);
     expect(component.searchList.length).toEqual(0);
-    expect(component.noResult).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
 
   it('should call navigateToPage method and page number should be default, i,e 1', inject([ConfigService, Router],

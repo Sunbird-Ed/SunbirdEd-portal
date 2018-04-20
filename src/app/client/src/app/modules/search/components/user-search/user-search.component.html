@@ -2,7 +2,7 @@
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
-      <app-user-filter [queryParams]="queryParams"></app-user-filter>
+      <app-user-filter></app-user-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
         <div class="ui left floated header margin-auto ">
           <p class="serch-allresult">Showing results
@@ -12,14 +12,12 @@
              in "users"
           </p>
         </div>
-        <h5 class="ui right floated basic icon circular button ">
-          <a [routerLink]="['/profile']">
-            <i class="ui remove icon "></i>
-          </a>
+        <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+          <i class="ui remove icon "></i>
         </h5>
       </div>
 
-      <div class=" ui clearing segment" *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON === 'TRUE'">
+      <div class=" ui clearing segment" *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
         <div class="ui right floated primary button" (click)="downloadUser();">
           {{resourceService.frmelmnts?.btn?.download}}
         </div>

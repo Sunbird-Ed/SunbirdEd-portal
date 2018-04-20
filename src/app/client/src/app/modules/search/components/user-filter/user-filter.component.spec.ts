@@ -19,8 +19,6 @@ import { UserFilterComponent } from './user-filter.component';
 describe('UserFilterComponent', () => {
   let component: UserFilterComponent;
   let fixture: ComponentFixture<UserFilterComponent>;
-//   let parentcomponent: UserSearchComponent;
-//  let parentfixture: ComponentFixture<UserSearchComponent>;
  const fakeActivatedRoute = {
   'params': Observable.from([{ pageNumber: '1' }]),
   'queryParams':  Observable.from([{ Grades: ['Grade 2'] }])
@@ -36,7 +34,7 @@ describe('UserFilterComponent', () => {
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,
         { provide: Router, useClass: RouterStub },
-      { provide: ActivatedRoute, useClass: fakeActivatedRoute}],
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute}],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -51,15 +49,15 @@ describe('UserFilterComponent', () => {
   it('should call resetFilters method ', inject([ConfigService, Router],
     (configService, route) => {
       component.resetFilters();
-      expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1]);
       fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1]);
   }));
   it('should call applyFilters method ', inject([ConfigService, Router],
     (configService, route) => {
-      const queryParams = {};
+      const queryParams = { Grades: ['Grade 2'] };
+      fixture.detectChanges();
       component.applyFilters();
       expect(route.navigate).toHaveBeenCalledWith(['/search/Users', 1], {queryParams: queryParams});
-      fixture.detectChanges();
   }));
   it('should call removeFilterSelection method ', inject([ConfigService, Router],
     (configService, route) => {
@@ -69,3 +67,5 @@ describe('UserFilterComponent', () => {
   }));
 
 });
+
+
