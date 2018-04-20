@@ -29,6 +29,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
+  * state for content editior
+  */
+  state: string;
+  /**
     * To navigate to other pages
   */
   route: Router;
@@ -205,10 +209,14 @@ export class PublishedComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
-  deletePublishedContent(param) {
+  /**
+    * This method launch the content editior
+  */
+  contentClick(param) {
     if (param.type === 'delete') {
-      this.deleteConfirmModal(param.contentId);
+      this.deleteConfirmModal(param.content.identifier);
+    } else {
+      this.workSpaceService.openContentEditor(param.content, this.state);
     }
   }
 

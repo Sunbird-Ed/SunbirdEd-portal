@@ -21,6 +21,10 @@ import * as _ from 'lodash';
 })
 export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   /**
+  * state for content editior
+ */
+  state: string;
+  /**
     * To navigate to other pages
   */
   route: Router;
@@ -134,6 +138,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.config = config;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.state = 'review';
   }
 
   ngOnInit() {
@@ -188,8 +193,11 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
-  actionClick(event) {
+  /**
+    * This method launch the content editior
+  */
+  contentClick(param) {
+    this.workSpaceService.openContentEditor(param.content, this.state);
   }
 
   /**
