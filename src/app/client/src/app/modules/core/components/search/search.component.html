@@ -5,15 +5,15 @@
                 <sui-select-option value="All"></sui-select-option>
                 <sui-select-option value="Courses"></sui-select-option>
                 <sui-select-option value="Library"></sui-select-option>
-                <sui-select-option value="Organisations"></sui-select-option>
                 <sui-select-option value="Users"></sui-select-option>
+                <sui-select-option value="Organisations"></sui-select-option>
             </sui-select>
         </div>
         <div class="searchfilterinput ui search">
             <div class="searchicon ui icon input ">
                 <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
                     class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
-                <i class="circular search link icon"></i>
+                <i class="circular search link icon" (click)="onEnter(key)" ></i>
             </div>
             <!-- <div id="search-suggestions" *ngIf="autosuggestData.length > 0" class="ui fluid results transition visible dropdown-menu-list">
                 <div>

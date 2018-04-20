@@ -25,8 +25,8 @@ describe('UserSearchComponent', () => {
         'm0008': 'no-results',
         'm0007': 'Please search for something else.'
       },
-      'fmsg': {
-        'm0051': 'Unable to fetch User'
+      'emsg': {
+        'm0005': 'Something went wrong, please try in some time....'
       }
     }
   };

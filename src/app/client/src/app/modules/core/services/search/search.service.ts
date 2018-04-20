@@ -141,7 +141,8 @@ export class SearchService {
           filters: requestParam.filters,
           limit: requestParam.limit,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
-          query: requestParam.query
+          query: requestParam.query,
+          softConstraints: {badgeAssertions: 1}
         }
       }
     };
