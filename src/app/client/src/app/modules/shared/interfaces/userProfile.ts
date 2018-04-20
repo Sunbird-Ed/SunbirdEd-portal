@@ -5,6 +5,7 @@ export interface IUserData {
 }
 export interface IUserProfile {
     missingFields?: Array<string>;
+    badgeAssertions?: Array<string>;
     lastName: string;
     webPages: Array<{type: string, url: string}>;
     tcStatus: any;

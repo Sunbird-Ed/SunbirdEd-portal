@@ -1,0 +1,56 @@
+<div id="address" class="twelve wide column padding-bottom-none">
+    <div class="margin-top-20 ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.address}} </span>
+            <a class="addeditprofile" *ngIf='privateProfileFields'>
+                <app-profile-visibility field="address"></app-profile-visibility>
+            </a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view' && userProfile.address.length > 0" routerLink='/profile/address/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view' && userProfile.address.length <= 1" routerLink='/profile/address/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
+        </div>
+        <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
+            <div class="item" *ngFor="let address of userProfile.address">
+                <img class="ui avatar image" src="assets/common/images/location.png">
+                <div class="content">
+                    <p class="header capitalizeTextInfo">{{address.addType}}</p>
+                    <div class="description"> {{address.addressLine1}}
+                        <span *ngIf="address.addressLine2"> , </span>{{address.addressLine2}}
+                        <p>{{address.city}}
+                            <span *ngIf="address.state"> , </span>{{address.state}}
+                            <span *ngIf="address.country"> , </span>{{address.country}}
+                            <span *ngIf="address.zipcode"> , </span>{{address.zipcode}}</p>
+                    </div>
+                </div>
+                <div class="right-floated">
+                    <div class="metadata">
+                        <a (click)="address.isDeleted=true;deleteAddress(address)">
+                            <i class="trash outline icon trashIcon-fontSize"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit and add -->
+        <div *ngIf="action !== 'view'" class="addressheader ui relaxed divided list">
+            <div class="edit-address-form" *ngIf="action === 'edit'">
+                <div class="ui" *ngFor="let address of userProfile.address">
+                    <app-edit-user-address #edit [address]="address" (addressChange)="onAddressChange($event)"></app-edit-user-address>
+                </div>
+                <div *ngIf="showError || showAddressError" class="ui warning message">
+                    <i class="close icon "></i>
+                    <p>You selected both address types are same, please change any one.</p>
+                </div>
+                <button [disabled]="showError || showAddressError" *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
+                    (click)="editAddress()">{{resourceService?.frmelmnts?.btn?.save}}</button>
+            </div>
+            <div class="add-address-form" *ngIf="action === 'add'">
+                <div class="ui">
+                    <app-edit-user-address #add></app-edit-user-address>
+                </div>
+                <button *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
+                    (click)="addAddress()">{{resourceService?.frmelmnts?.btn?.save}}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+  <div class="header">{{resourceService.frmelmnts?.scttl?.blkuser}}</div>
+  <div class="content">
+    <p>{{resourceService.frmelmnts?.lbl?.confirmblock}} {{userDetails.firstName}} {{userDetails.lastName}}</p>
+  </div>
+  <div class="actions">
+    <div class="ui primary approve button" (click)="modal.approve('done'); deleteUser()">{{resourceService.frmelmnts?.btn?.yes}}
+    </div>
+    <div class="ui negative cancel button" (click)="modal.deny(); redirect();">{{resourceService.frmelmnts?.btn?.no}}</div>
+  </div>
+</sui-modal>

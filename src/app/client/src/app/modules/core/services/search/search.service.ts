@@ -2,11 +2,10 @@ import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import {SearchParam} from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-
+import { SearchParam } from '@sunbird/core';
 /**
  * Service to search content
  */
@@ -16,27 +15,22 @@ export class SearchService {
    * Contains searched content list
    */
   private _searchedContentList: any;
-
   /**
    * Contains searched organization list
    */
   private _searchedOrganisationList: any;
-
   /**
    * Reference of user service.
    */
   public user: UserService;
-
   /**
    * Reference of content service.
    */
   public content: ContentService;
-
   /**
    * Reference of config service
    */
   public config: ConfigService;
-
   /**
    * Default method of OrganisationService class
    *
@@ -49,7 +43,6 @@ export class SearchService {
     this.content = content;
     this.config = config;
   }
-
   /**
    * Search content by user id.
    *
@@ -65,31 +58,30 @@ export class SearchService {
             createdBy: requestParam.params.userId ? requestParam.params.userId : this.user.userid,
             contentType: requestParam.contentType || ['Course'],
             mimeType: requestParam.mimeType,
-            objectType: requestParam.objectType
+            objectType: requestParam.objectType,
+            concept: requestParam.concept
           },
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          query: requestParam.query,
           sort_by: {
             lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
           }
         }
       }
     };
-
     return this.content.post(option)
-    .map((data: ServerResponse) => {
-      this._searchedContentList = data.result;
-      return data;
-    });
+      .map((data: ServerResponse) => {
+        this._searchedContentList = data.result;
+        return data;
+      });
   }
-
   /**
    * Get searched content list
    */
   get searchedContentList(): { content: Array<any>, count: number } {
     return this._searchedContentList;
   }
-
   /**
    * Get organization details.
    *
@@ -106,21 +98,18 @@ export class SearchService {
         }
       }
     };
-
     return this.content.post(option)
-    .map((data: ServerResponse) => {
-      this._searchedOrganisationList = data.result.response;
-      return data;
-    });
+      .map((data: ServerResponse) => {
+        this._searchedOrganisationList = data.result.response;
+        return data;
+      });
   }
-
   /**
    * Get searched organization list
    */
   get searchedOrganisationList(): { content: Array<any>, count: number } {
     return this._searchedOrganisationList;
   }
-
   /**
    * Composite Search.
    *
@@ -134,12 +123,67 @@ export class SearchService {
           filters: requestParam.filters,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
-          sort_by: {
-            lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
-          }
+          query: requestParam.query,
+          sort_by: requestParam.sort_by
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  /**
+   * User Search.
+  */
+  userSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          limit: requestParam.limit,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          query: requestParam.query
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  /**
+   * User Search.
+  */
+  orgSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          limit: requestParam.limit,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          query: requestParam.query
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  /**
+   * Course Search.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  courseSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          query: requestParam.query,
+          sort_by: requestParam.sort_by
         }
       }
     };
     return this.content.post(option);
   }
 }
+
+

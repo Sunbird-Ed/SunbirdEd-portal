@@ -6,7 +6,6 @@
     <div class="ui image "  (click)="onAction(content,'openContent')">
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
-      <a class="ui black right ribbon label " *ngIf="content.resourceType == undefined">{{content.contentType || 'Course'}}</a>
       <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">
       <div class="cardImageText center aligned ">
         <span class="sliderCardHeading text-cencapitalize">{{content.name || content.courseName}}</span>

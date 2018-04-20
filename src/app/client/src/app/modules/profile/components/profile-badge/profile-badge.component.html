@@ -1,0 +1,23 @@
+<div class="ui raised segment margin-top-20 margin-bottom-0">
+  <!--  ng-if="isprofileinfo" -->
+  <div class="header announcementCard-header">
+    <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
+  </div>
+  <div *ngIf="badgeData" class="ui items margin-top-10">
+    <div class="item" *ngFor="let badge of badgeData.badges">
+      <!--  | orderBy: 'createdTS' || 'createdDate' -->
+      <img class="ui avatar image" src="{{badge.image || badge.badgeClassImage}}">
+      <div class="middle aligned content padding-left-10">
+        <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
+        <div class="description">
+          <div class="secondary-text-color-sunbird">{{badge.description}}
+            <!--  | limitTo : 70 -->
+            <i *ngIf="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
+            </i>
+          </div>
+        </div>
+      </div>
+      <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat}}</div>
+    </div>
+  </div>
+</div>
