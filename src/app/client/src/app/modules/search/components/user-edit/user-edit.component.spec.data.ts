@@ -1,5 +1,5 @@
 export const Response = {
-    successData: 
+    successData:
     {
         'id': 'api.user.read',
         'ver': 'v1',
@@ -32,7 +32,7 @@ export const Response = {
               {
                 'organisationId': '0124226794392862720',
                 'updatedBy': null,
-                'addedByName': 'paqPbvW3s7CNzPQGTuCEicjfZJFzN9G7DTO7YJJ3J2tY/eZgGk600hTD3UcLrIDBIcrBmwIB1Stu\n3N0aVoinZmTEhYsqwYNB3kfjDCXXLzCL2fzskZpcyvAQqYxoa3ePT6a+wzaAmCWueMEdPmZuRg==',
+                'addedByName': 'paqPbvW3s7CNzPQGTuCEiqwYNB3kfjDCXXLzCL2fzskZpcyvAQqYxoa3ePT6a+wzaAmCWueMEdPmZuRg==',
                 'addedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
                 'roles': [
                   'ORG_ADMIN'
@@ -123,5 +123,4 @@ export const Response = {
           }
         }
       }
-    
 };
