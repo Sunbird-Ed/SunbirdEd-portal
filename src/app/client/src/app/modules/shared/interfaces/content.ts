@@ -54,9 +54,13 @@ export interface IContents {
     /**
     * Content badgeAssertions name
     */
-    badgeAssertions?: object;
+    badgeAssertions?: Array<IbadgeAssertions> ;
     /**
     * Content action
     */
     action?: IAction;
+}
+
+export interface IbadgeAssertions {
+    badgeClassName?: string;
 }
