@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -45,6 +46,9 @@ export class DataDrivenFilterComponent implements OnInit {
 
   public formAction = 'search';
 
+  public pageNumber: Number = 1;
+
+  public queryParams: any;
   /**
  * formInputData is to take input data's from form
  */
@@ -86,14 +90,34 @@ public formInputData: any;
 
   ngOnInit() {
     this.formInputData = {};
+    this.getQueryParams();
     console.log('routerVal', this.routerVal);
     this.contentType = this.routerVal;
-
     this.getMetaData();
     // this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
     // this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
     // this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
     // this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
+  }
+  getQueryParams () {
+    Observable
+    .combineLatest(
+    this.activatedRoute.params,
+    this.activatedRoute.queryParams,
+    (params: any, queryParams: any) => {
+      return {
+        params: params,
+        queryParams: queryParams
+      };
+    })
+    .subscribe(bothParams => {
+      if (bothParams.params.pageNumber) {
+        this.pageNumber = Number(bothParams.params.pageNumber);
+      }
+      this.queryParams = { ...bothParams.queryParams };
+      this.formInputData = this.queryParams ;
+      console.log('this.queryParams', this.queryParams);
+    });
   }
   /**
 * getMetaData is gives form config data
@@ -154,9 +178,13 @@ public formInputData: any;
   }
   applyFilters() {
     console.log('applyFilters', this.formInputData);
+    this.queryParams = this.formInputData;
+    this.router.navigate(['/search/Courses', this.pageNumber], { queryParams: this.queryParams });
   }
   resetFilters() {
     this.formInputData = {};
+    this.queryParams = this.formInputData;
+    this.router.navigate(['/search/Courses', this.pageNumber], { queryParams: this.queryParams });
   }
 
 }

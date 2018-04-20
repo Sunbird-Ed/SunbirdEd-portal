@@ -57,6 +57,7 @@ export class LearnPageComponent implements OnInit {
   caraouselData: Array<ICaraouselData> = [];
   private router: Router;
   public filterType: string;
+  public filters: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -172,6 +173,7 @@ export class LearnPageComponent implements OnInit {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
+    this.filters = {};
     this.populateEnrolledCourse();
     this.filterType = this.config.appConfig.Courses.filterType;
   }

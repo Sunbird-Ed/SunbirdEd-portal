@@ -94,6 +94,12 @@ export class CourseSearchComponent implements OnInit {
   * Contains result object returned from enrolled course API.
   */
   enrolledCourses: Array<ICourses>;
+
+/**
+ * contains the search filter type
+ */
+  public filterType: string;
+
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -143,13 +149,18 @@ export class CourseSearchComponent implements OnInit {
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
       filters: {
-        objectType: ['Content']
+        objectType: ['Content'],
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
       sort_by: {}
     };
+    _.forOwn(this.queryParams, function(queryValue, queryParam) {
+      if (queryParam !== 'key') {
+        requestParams.filters[queryParam] = queryValue;
+      }
+    } );
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.course.length > 0) {
@@ -223,6 +234,7 @@ export class CourseSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filterType = this.config.appConfig.Courses.filterType;
     Observable
       .combineLatest(
       this.activatedRoute.params,
