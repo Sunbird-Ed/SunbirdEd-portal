@@ -97,8 +97,11 @@ export const mockRes = {
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
     },
     validateModal: {
-        state: ['UpForReviewContent', 'ReviewContent',
-            'PublishedContent', 'FlaggedContent', 'LimitedPublishedContent'],
+        state: [ 'upForReview',
+        'review',
+        'published',
+        'flagged',
+        'limitedPublish'],
         status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
         mimeType: 'application/vnd.ekstep.content-collection'
     }
