@@ -97,7 +97,7 @@ export class UserProfileComponent implements OnInit {
   /**
    * This method fetches the user data
 	 */
-  populateUserProfile () {
+  populateUserProfile() {
     this.showLoader = true;
     if (this.userSearchService.userDetailsObject === undefined) {
       const option = { userId: this.userId };
@@ -123,25 +123,27 @@ export class UserProfileComponent implements OnInit {
    * This method fetches the badge details with the badge id and
    * populates with the userdetails object
 	 */
-  populateBadgeDescription () {
+  populateBadgeDescription() {
     const badgeList = [];
-    _.each(this.userDetails.badgeAssertions, (badge) => {
-      badgeList.push(badge['badgeId']);
-    });
-    const req = {
-      request: {
-        filters: {
-          'badgeList': badgeList,
-          'type': 'user',
-          'rootOrgId': this.userDetails.rootOrgId
+    if (this.userDetails.badgeAssertions && this.userDetails.badgeAssertions.length > 0) {
+      _.each(this.userDetails.badgeAssertions, (badge) => {
+        badgeList.push(badge['badgeId']);
+      });
+      const req = {
+        request: {
+          filters: {
+            'badgeList': badgeList,
+            'type': 'user',
+            'rootOrgId': this.userDetails.rootOrgId
+          }
         }
-      }
-    };
-    this.badgesService.getAllBadgeList(req).subscribe((badge) => {
-      if (badge) {
-        this.userDetails.badgeArray = badge.result.badges;
-      }
-    });
+      };
+      this.badgesService.getAllBadgeList(req).subscribe((badge) => {
+        if (badge) {
+          this.userDetails.badgeArray = badge.result.badges;
+        }
+      });
+    }
   }
 
   /**
