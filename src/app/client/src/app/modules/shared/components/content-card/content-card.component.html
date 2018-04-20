@@ -4,6 +4,8 @@
       <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
     </div>
     <div class="ui image ">
+      <a class="ui blue left ribbon label " *ngIf="content.badgeAssertions && content.badgeAssertions.length>0 && content.badgeAssertions[0].badgeClassName">
+        {{content.badgeAssertions[0].badgeClassName}}</a>
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
       <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">
@@ -26,14 +28,13 @@
           </a>
         </span>
         <span *ngIf="content.action.right.displayType == 'icon' ">
-            <a>
-              <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" 
-              (click)="onAction(content.identifier,content.action.right.actionType)"
-                class="{{content.action.right.classes}}">
-              </i>
-              <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>
-            </a>
-          </span>
+          <a>
+            <i *ngIf="(content.action.right.clickable) && (content.action.right.actionType == 'delete')" (click)="onAction(content.identifier,content.action.right.actionType)"
+              class="{{content.action.right.classes}}">
+            </i>
+            <i *ngIf="!content.action.right.clickable" class="{{content.action.right.classes}}"></i>
+          </a>
+        </span>
       </div>
       <div *ngIf="content.action.left" class="content.action.left" class="left floated">
         <span *ngIf="content.action.left.displayType == 'rating'">
