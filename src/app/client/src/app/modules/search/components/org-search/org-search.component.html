@@ -12,14 +12,13 @@
              in "organisations"
           </p>
         </div>
-        <h5 class="ui right floated basic icon circular button ">
-          <a [routerLink]="['/profile']">
-            <i class="ui remove icon "></i>
-          </a>
+        <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+          <i class="ui remove icon "></i>
         </h5>
+
       </div>
 
-      <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.ORGANISATION.DOWNLOAD_BUTTON === 'TRUE'">
+      <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.ORGANISATION.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
         <div class="ui right floated primary button" (click)="downloadOrganisation();">
           {{resourceService.frmelmnts?.btn?.download}}
         </div>
