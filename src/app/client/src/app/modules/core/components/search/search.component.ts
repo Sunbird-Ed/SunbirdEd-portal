@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import { SearchService } from './../../services/search/search.service';
-=======
 import { SearchService } from './../../services';
->>>>>>> upstream/angular-migration
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/angular-migration
 /**
  * Main menu component
  */
