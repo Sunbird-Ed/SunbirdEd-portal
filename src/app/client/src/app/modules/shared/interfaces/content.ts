@@ -14,7 +14,7 @@ export interface IContents {
     /**
     * Content description
     */
-    description: string;
+    description?: string;
     /**
     * Content rating
     */
@@ -22,11 +22,11 @@ export interface IContents {
     /**
     * Content leafNodes
     */
-    leafNodesCount: number;
+    leafNodesCount?: number;
     /**
     * Content progress
     */
-    progress: number;
+    progress?: number;
     /**
     * Content image
     */
@@ -54,5 +54,5 @@ export interface IContents {
     /**
     * Content action
     */
-    action: IAction;
+    action?: IAction;
 }

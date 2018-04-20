@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
@@ -18,13 +18,17 @@ describe('StatusComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const fakeActivatedRoute = {
+    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
       imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
       providers: [OrgManagementService, FormBuilder,
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -40,7 +44,7 @@ describe('StatusComponent', () => {
     spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
-    expect(router.navigate).toHaveBeenCalledWith(['bulkUpload']);
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call organization management service and get success status based on given processId', () => {
     const resourceService = TestBed.get(ResourceService);

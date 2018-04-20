@@ -154,7 +154,7 @@ export class UserSearchComponent implements OnInit {
       err => {
         this.showLoader = false;
         this.noResult = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0006);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       }
     );
   }
@@ -262,27 +262,22 @@ export class UserSearchComponent implements OnInit {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
         this.rootOrgId = this.userProfile.rootOrgId;
-
-        Observable
-          .combineLatest(
-          this.activatedRoute.params,
-          this.activatedRoute.queryParams,
-          (params: any, queryParams: any) => {
-            return {
-              params: params,
-              queryParams: queryParams
-            };
-          })
-          .subscribe(bothParams => {
-            if (bothParams.params.pageNumber) {
-              this.pageNumber = Number(bothParams.params.pageNumber);
-            }
-            this.queryParams = { ...bothParams.queryParams };
-            this.populateUserSearch();
-          });
       }
     });
-
+    Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
+    (params: any, queryParams: any) => {
+      return {
+        params: params,
+        queryParams: queryParams
+      };
+    })
+    .subscribe(bothParams => {
+      if (bothParams.params.pageNumber) {
+        this.pageNumber = Number(bothParams.params.pageNumber);
+      }
+      this.queryParams = { ...bothParams.queryParams };
+      this.populateUserSearch();
+    });
     this.userSearchService.userDeleteEvent.subscribe(data => {
       _.each(this.searchList, (key, index) => {
         if (data && data === key.id) {

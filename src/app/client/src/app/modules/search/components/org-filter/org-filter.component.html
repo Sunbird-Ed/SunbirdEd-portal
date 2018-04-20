@@ -1,5 +1,5 @@
-<div>
-  <div class="ui divider header-search-filters-divider"></div>
+
+<div class="ui divider header-search-filters-divider"></div>
   <div class="ui grid">
     <div class="twelve wide column">
       <sui-accordion [closeOthers]="false">
@@ -14,7 +14,7 @@
                 <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
                   {{value}}:
                   <a class="ui label margin-top--5" *ngFor="let item of queryParams[value] ">
-                    {{item}}
+                    {{item.name}}
                     <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
                   </a>
                 </span>
@@ -25,7 +25,7 @@
                 <span class="ShowFilterSubTitle">{{resourceService.frmelmnts?.lbl?.filterby}}</span>
               </div>
               <div class="two wide column">
-                <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.OrgType" labelField="orgType.name" valueField="orgType.id"
+                <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.OrgType" labelField="orgType.name"
                   [options]="options" [hasLabels]=false #multiSelect>
                   <sui-select-option *ngFor="let orgType of searchOrgType" [value]="orgType"> </sui-select-option>
                 </sui-multi-select>
@@ -42,4 +42,3 @@
       </sui-accordion>
     </div>
   </div>
-</div>

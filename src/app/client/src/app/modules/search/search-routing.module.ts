@@ -3,9 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {
   UserSearchComponent, UserEditComponent, UserProfileComponent,
-  UserDeleteComponent, OrgSearchComponent
+  UserDeleteComponent, OrgSearchComponent, CourseSearchComponent
 } from './components';
 const routes: Routes = [
+  {
+    path: 'search/Courses/:pageNumber', component: CourseSearchComponent
+
+  },
   {
     path: 'search/Users/:pageNumber', component: UserSearchComponent, data: { name: 'Users' },
     children: [

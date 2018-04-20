@@ -129,6 +129,8 @@ export class LearnPageComponent implements OnInit {
     _.forEach(this.caraouselData, (value, index) => {
       if (value.name !== 'My Courses') {
         _.forEach(this.caraouselData[index].contents, (value1, index1) => {
+          delete this.caraouselData[index].contents[index1].contentType;
+          delete this.caraouselData[index].contents[index1].resourceType;
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {

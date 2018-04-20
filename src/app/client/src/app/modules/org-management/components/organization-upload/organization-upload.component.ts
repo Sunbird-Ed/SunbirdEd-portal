@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
@@ -16,6 +16,10 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 })
 export class OrganizationUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  /**
+* reference for ActivatedRoute
+*/
+  public activatedRoute: ActivatedRoute;
   /**
  * To show/hide loader
  */
@@ -45,11 +49,16 @@ export class OrganizationUploadComponent implements OnInit {
   */
   fileName: string;
   /**
+* Contains redirect url
+*/
+  redirectUrl: string;
+  /**
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
-  constructor(orgManagementService: OrgManagementService, toasterService: ToasterService, private router: Router,
-    config: ConfigService, resourceService: ResourceService) {
+  constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
+    config: ConfigService, resourceService: ResourceService, private router: Router) {
+    this.activatedRoute = activatedRoute;
     this.orgManagementService = orgManagementService;
     this.resourceService = resourceService;
     this.config = config;
@@ -59,6 +68,13 @@ export class OrganizationUploadComponent implements OnInit {
 * This method defines array of instructions to be displayed
 */
   ngOnInit() {
+    this.activatedRoute.data.subscribe(data => {
+      if (data.redirectUrl) {
+        this.redirectUrl = data.redirectUrl;
+      } else {
+        this.redirectUrl = '/home';
+      }
+    });
     this.orgUploadInstructions = [
       { instructions: this.resourceService.frmelmnts.instn.t0013 },
       { instructions: this.resourceService.frmelmnts.instn.t0002 },
@@ -90,7 +106,7 @@ export class OrganizationUploadComponent implements OnInit {
   public redirect() {
     this.fileName = '';
     this.processId = '';
-    this.router.navigate(['/bulkUpload']);
+    this.router.navigate([this.redirectUrl]);
   }
   /**
 * This method helps to download a sample csv file
