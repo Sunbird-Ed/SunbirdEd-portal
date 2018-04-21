@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-import { UserService, LearnerService , PermissionService} from '@sunbird/core';
+import { UserService, LearnerService, PermissionService, TenantService } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 describe('MainHeaderComponent', () => {
@@ -18,7 +18,9 @@ describe('MainHeaderComponent', () => {
       imports: [HttpClientModule, Ng2IziToastModule],
       declarations: [ MainHeaderComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ ToasterService, ResourceService, PermissionService, UserService, ConfigService, LearnerService, HttpClient ]
+      providers: [ ToasterService, ResourceService, TenantService,
+         PermissionService, UserService, ConfigService,
+          LearnerService, HttpClient ]
     })
     .compileComponents();
   }));
