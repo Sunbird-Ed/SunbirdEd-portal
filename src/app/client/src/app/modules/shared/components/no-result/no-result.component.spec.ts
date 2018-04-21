@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NoResultComponent } from './no-result.component';
-const data = {'message': ' ', 'messageText': ''};
+
+const data = {'message': 'no result found ', 'messageText': 'you dont have content'};
 describe('NoResultComponent', () => {
   let component: NoResultComponent;
   let fixture: ComponentFixture<NoResultComponent>;
@@ -16,9 +16,12 @@ describe('NoResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NoResultComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should take input for showing the no result message  ', () => {
+     component.data = data;
+     component.message = data.message;
+     component.messageText = data.messageText;
+     component.ngOnInit();
+     fixture.detectChanges();
   });
 });
