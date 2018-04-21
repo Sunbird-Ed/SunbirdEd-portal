@@ -32,7 +32,7 @@
             </div>
         </div>
         <ng-template #showLoginBtn>
-            <div class="right floated one wide column computer only">
+            <div class="right floated one wide column tablet computer only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
                     <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a href="/home" class="sunblogin">

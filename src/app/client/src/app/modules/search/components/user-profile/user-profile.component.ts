@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
+import { BadgesService } from '@sunbird/core';
+import * as _ from 'lodash';
 
 /**
  * The delete component deletes the announcement
@@ -37,11 +39,15 @@ export class UserProfileComponent implements OnInit {
 
   showLoader = true;
 
-
   /**
    * To make get announcement by id
    */
   private userSearchService: UserSearchService;
+
+  /**
+   * Reference of BadgesService
+   */
+  private badgesService: BadgesService;
 
   /**
    * To send activatedRoute.snapshot to routerNavigationService
@@ -75,25 +81,30 @@ export class UserProfileComponent implements OnInit {
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(userSearchService: UserSearchService,
+    badgesService: BadgesService,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService) {
     this.userSearchService = userSearchService;
+    this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
   }
 
-  populateUserProfile () {
+  /**
+   * This method fetches the user data
+	 */
+  populateUserProfile() {
     this.showLoader = true;
     if (this.userSearchService.userDetailsObject === undefined) {
       const option = { userId: this.userId };
-
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
+          this.populateBadgeDescription();
           this.showLoader = false;
         },
         err => {
@@ -103,15 +114,50 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
+      this.populateBadgeDescription();
       this.showLoader = false;
     }
   }
 
+  /**
+   * This method fetches the badge details with the badge id and
+   * populates with the userdetails object
+	 */
+  populateBadgeDescription() {
+    const badgeList = [];
+    if (this.userDetails.badgeAssertions && this.userDetails.badgeAssertions.length > 0) {
+      _.each(this.userDetails.badgeAssertions, (badge) => {
+        badgeList.push(badge['badgeId']);
+      });
+      const req = {
+        request: {
+          filters: {
+            'badgeList': badgeList,
+            'type': 'user',
+            'rootOrgId': this.userDetails.rootOrgId
+          }
+        }
+      };
+      this.badgesService.getAllBadgeList(req).subscribe((badge) => {
+        if (badge) {
+          this.userDetails.badgeArray = badge.result.badges;
+        }
+      });
+    }
+  }
 
   /**
-   * This method sets the annmouncementId and pagenumber from
-   * activated route
+   * This method helps to toggle the skills div
 	 */
+  toggle(lim) {
+    if (lim === true) {
+      this.skillViewMore = false;
+    } else {
+      this.skillViewMore = true;
+      this.skillLimit = 4;
+    }
+  }
+
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params.userId;
@@ -119,19 +165,4 @@ export class UserProfileComponent implements OnInit {
     });
     this.queryParams = this.activatedRoute.snapshot.queryParams;
   }
-
-
-
-    toggle(lim) {
-      console.log(lim);
-      if (lim === true) {
-       // this.skillLimit = this.userProfile.skills.length;
-        this.skillViewMore = false;
-      } else {
-        this.skillViewMore = true;
-        this.skillLimit = 4;
-      }
-    }
 }
-
-

@@ -29,8 +29,8 @@ const routes: Routes = [
         // data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: '/profile'}, {label: 'My Workspace', url: ''}] }
         // ]
       },
-      { path: 'edit/collection/:contentId/:type/:framework', component: CollectionEditorComponent },
-      { path: 'edit/contentEditor/:contentId/:state', component: ContentEditorComponent },
+      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      { path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
       { path: 'edit/generic', component: GenericEditorComponent },
       {
         path: 'draft/:pageNumber', component: DraftComponent,

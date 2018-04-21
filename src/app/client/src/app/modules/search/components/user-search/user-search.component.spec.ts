@@ -25,8 +25,8 @@ describe('UserSearchComponent', () => {
         'm0008': 'no-results',
         'm0007': 'Please search for something else.'
       },
-      'fmsg': {
-        'm0051': 'Unable to fetch User'
+      'emsg': {
+        'm0005': 'Something went wrong, please try in some time....'
       }
     }
   };
@@ -87,7 +87,7 @@ describe('UserSearchComponent', () => {
     expect(component.searchList.length).toBeLessThanOrEqual(0);
     expect(component.searchList.length).toEqual(0);
     expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
   });
 
   it('should call search api for populateOrgNameAndSetRoles', () => {

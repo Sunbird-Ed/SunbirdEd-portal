@@ -31,7 +31,7 @@ describe('CollectionEditorComponent', () => {
         ResourceService, ToasterService, ConfigService, LearnerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'contentId': 'do_21247940906829414411032',
-        'type': 'collection', 'state': 'state', 'framework': 'framework' }]) }  }
+        'type': 'collection', 'state': 'draft', 'framework': 'framework' }]) }  }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
