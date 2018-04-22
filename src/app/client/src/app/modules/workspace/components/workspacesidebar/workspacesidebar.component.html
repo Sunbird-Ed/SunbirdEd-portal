@@ -26,7 +26,7 @@
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='upForReviewRole'>
     {{resourceService?.frmelmnts?.snav?.upForReview}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"
+   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"
     routerLinkActive="active">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}
   </a>
