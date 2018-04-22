@@ -66,7 +66,7 @@ export class WorkSpaceService {
  * @param {string}  state - Present state
  */
   openContentEditor(content, state) {
-   const mimeType = content.mimeType;
+    const mimeType = content.mimeType;
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.collectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
@@ -100,6 +100,22 @@ export class WorkSpaceService {
   */
   genericEditor(content, state) {
     this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state]);
+  }
+  /**
+  * method openContentPlayer
+  * open content player based item mime type
+  * @param {Object}  content - content
+  * @param {string}  state - Present state
+  */
+  openContentPlayer(content, state) {
+    if (content.mimeType === 'application/vnd.ekstep.content-collection') {
+      this.collectionEditor(content, state);
+    } else {
+      this.previewContent(content, state);
+    }
+  }
+
+  previewContent(content, state) {
   }
 
 }
