@@ -1127,7 +1127,8 @@ export const mockRes = {
     pager: {
         'totalItems': 72, 'currentPage': 3, 'pageSize': 9, 'totalPages': 8,
         'startPage': 1, 'endPage': 8, 'startIndex': 1, 'endIndex': 72, 'pages': [1, 2, 3, 4, 5]
-    },userlist: {
+    },
+    userlist: {
         'id': 'api.user.search',
         'ver': 'v1',
         'ts': '2018-04-22 06:41:39:687+0000',

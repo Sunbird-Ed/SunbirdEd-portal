@@ -1,6 +1,6 @@
 import { Injectable, Input } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { SearchService,SearchParam, LearnerService, ContentService, UserService } from '@sunbird/core';
+import { SearchService, SearchParam, LearnerService, ContentService, UserService } from '@sunbird/core';
 import { Ibatch } from './../../interfaces/batch';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,7 +15,6 @@ export class BatchService {
   *  orgIds
   */
   orgIds: string;
-  
   /**
   *  rootOrgId
   */

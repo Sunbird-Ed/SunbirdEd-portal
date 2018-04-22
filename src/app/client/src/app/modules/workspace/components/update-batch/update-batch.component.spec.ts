@@ -80,7 +80,7 @@ describe('UpdateBatchComponent', () => {
     component.getBatchDetails();
     expect(component.batchData).toBeDefined();
   }));
-  it('should throw error', inject([BatchService,ToasterService,ResourceService], (batchService,toasterService,resourceService) => {
+  it('should throw error', inject([BatchService, ToasterService, ResourceService], (batchService , toasterService , resourceService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
@@ -114,7 +114,7 @@ describe('UpdateBatchComponent', () => {
       const learnerService = TestBed.get(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
       userService._userProfile = Response.userSuccess.success;
-      userService._userProfile.roleOrgMap = roleOrgMap
+      userService._userProfile.roleOrgMap = roleOrgMap;
       component.redirectTobatches();
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
@@ -127,23 +127,22 @@ describe('UpdateBatchComponent', () => {
     spyOn(batchService, 'updateBatchDetails').and.callFake(() => Observable.of(Response.updateBatchDetails.request));
     fixture.detectChanges();
     const requestParam = {
-      "name": "Test 12345",
-      "description": "test",
-      "enrollmentType": "invite-only",
-      "startDate": "2018-04-19",
-      "endDate": "2018-04-25",
-      "createdFor": [
-        "0123653943740170242",
-        "ORG_001"
+      'name': 'Test 12345',
+      'description': 'test',
+      'enrollmentType': 'invite-only',
+      'startDate': '2018-04-19',
+      'endDate': '2018-04-25',
+      'createdFor': [
+        '0123653943740170242',
+        'ORG_001'
       ],
-      "id": "0124858459476131840",
-      "mentors": [
-        "8454cb21-3ce9-4e30-85b5-fade097880d8"
+      'id': '0124858459476131840',
+      'mentors': [
+        '8454cb21-3ce9-4e30-85b5-fade097880d8'
       ]
-    }
+  };
     component.updateBatchDetails(requestParam, component.batchAddUserForm);
   }));
-  
 });
 
 

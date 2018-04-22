@@ -267,5 +267,19 @@
                 ]
             }
         }
-    }
+    },
+    "statusOptions": [
+        {
+            "name": "Ongoing Batches",
+            "value": 1
+        },
+        {
+            "name": "Upcoming Batches",
+            "value": 0
+        },
+        {
+            "name": "Previous Batches",
+            "value": 2
+        }
+    ]
 }

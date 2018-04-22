@@ -83,7 +83,7 @@ describe('BatchListComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
     fixture.detectChanges();
     component.fetchBatchList();
@@ -98,7 +98,7 @@ describe('BatchListComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
     fixture.detectChanges();
     component.fetchBatchList();
@@ -111,7 +111,7 @@ describe('BatchListComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(searchService, 'batchSearch').and.callFake(() => Observable.throw({}));
     fixture.detectChanges();
     component.fetchBatchList();
@@ -125,7 +125,7 @@ describe('BatchListComponent', () => {
       const learnerService = TestBed.get(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
       userService._userProfile = testData.userSuccess.success;
-      userService._userProfile.roleOrgMap = roleOrgMap
+      userService._userProfile.roleOrgMap = roleOrgMap;
       component.pager = testData.pager;
       component.pager.totalPages = 8;
       component.navigateToPage(1);
@@ -149,7 +149,7 @@ describe('BatchListComponent', () => {
             '97255811-5486-4f01-bad1-36138d0f5b8a'
           ]
         }
-    }
+    };
     component.UserList(req).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');

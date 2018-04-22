@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent,BatchListComponent,UpdateBatchComponent
+  GenericEditorComponent, UploadedComponent, BatchListComponent, UpdateBatchComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
