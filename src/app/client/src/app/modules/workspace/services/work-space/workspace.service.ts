@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
-import { IDeleteParam } from '../../interfaces/delteparam';
+import { IDeleteParam } from '../../interfaces';
 
 @Injectable()
 export class WorkSpaceService {
