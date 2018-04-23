@@ -120,8 +120,7 @@ export const mockProfileVisibilityData = {
     resourceBundle: {
         'messages': {
             'fmsg': {
-                'm0076': 'Please enter mandatory fields',
-                'm0042': 'Experience delete failed. Please try again later...'
+                'm0076': 'Please enter mandatory fields'
             },
             'smsg': {
                 'm0040': 'Profile field visibility updated successfully'

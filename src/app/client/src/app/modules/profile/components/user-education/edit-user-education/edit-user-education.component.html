@@ -8,7 +8,7 @@
     <div class="field">
       <label>{{resourceService?.frmelmnts?.lbl?.yop}}</label>
       <div class="field">
-        <input class="cursor-pointer" name="yearOfPassing" suiDatepicker formControlName="yearOfPassing" [pickerMode]="'year'">
+        <input class="cursor-pointer" name="yearOfPassing" suiDatepicker [pickerMaxDate]="today" readonly formControlName="yearOfPassing" [pickerMode]="'year'">
       </div>
     </div>
   </div>
