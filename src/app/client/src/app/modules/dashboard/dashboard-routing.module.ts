@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganisationComponent, CourseConsumptionComponent } from './components/';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent } from './components/';
 
 
 const routes: Routes = [
@@ -15,6 +15,9 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent
+  },
+  {
+    path: 'dashboard/course/:courseId/:timePeriod', component: CourseProgressComponent
   }
 ];
 
