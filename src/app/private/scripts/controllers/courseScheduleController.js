@@ -95,7 +95,7 @@ angular.module('playerApp')
             click: function (event, data) {
               if (data.targetType === 'title') {
                 data.targetType = 'expander'
-                toc.openContent(data.node.key)
+                toc.openContent(data.node.key, 'Open')
               }
             }
           })
@@ -256,8 +256,23 @@ angular.module('playerApp')
           })
           var contentData = toc.courseContents[toc.itemIndex]
 
-          // if content is not collection type then  only its can be played
-          if (contentData && contentData.mimeType !== 'application/vnd.ekstep.content-collection') {
+          // if contents mimeType is text/x-url the flow changes and the content is opened in a new tab
+
+          if (contentData && contentData.mimeType === 'text/x-url') {
+            let timeInterval = 250
+            if (trigger) {
+              org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:closeOnNext')
+            } else {
+              timeInterval = 6000
+              toasterService.warning($rootScope.messages.imsg.m0034)
+            }
+            $timeout(function () {
+              var newWindow = window.open(window.location.origin + window.location.pathname + '#!/redirect', '_blank')
+              newWindow.redirectUrl = ((contentData.artifactUrl) +
+                                      '#&contentId=' + contentData.identifier + '&courseId=' + toc.courseId)
+              newWindow.timetobethere = 250
+            }, timeInterval)
+          } else if (contentData && contentData.mimeType !== 'application/vnd.ekstep.content-collection') { // if content is not collection type then  only its can be played
             // load details needed for previous and next items in player
             toc.prevPlaylistItem = (toc.itemIndex - 1) > -1
               ? toc.courseContents[toc.itemIndex - 1].identifier : -1
