@@ -42,8 +42,8 @@
         </span>
         <span *ngIf="content.action.left.displayType == 'icon' ">
           <a>
-            <i *ngIf="(content.action.left.clickable) && (contnet.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
-            <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes.icon}}"></i>
+            <i *ngIf="(content.action.left.clickable) && (content.action.left.actionType == 'share')" class="{{content.action.left.classes}}"></i>
+            <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes}}"></i>
           </a>
         </span>
       </div>

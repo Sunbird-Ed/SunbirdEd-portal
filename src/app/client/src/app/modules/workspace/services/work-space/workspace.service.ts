@@ -40,5 +40,9 @@ export class WorkSpaceService {
     };
     return this.content.delete(option);
   }
+  
+  getBase64Url(type, identifier) {
+    return btoa(type + '/' + identifier)
+  }
 
 }
