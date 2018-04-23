@@ -72,8 +72,8 @@ export class MainHeaderComponent implements OnInit {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
-    this.userService = userService;
     this.tenantService = tenantService;
+    this.userService = userService;
   }
 
   ngOnInit() {
@@ -86,10 +86,6 @@ export class MainHeaderComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          const rootOrg = this.userProfile.rootOrg;
-          this.tenantService.getOrgDetails(rootOrg.slug).subscribe((data) => {
-            this.logo = data.result.logo;
-          });
         }
       });
   }

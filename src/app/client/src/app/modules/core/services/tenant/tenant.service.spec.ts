@@ -20,12 +20,21 @@ describe('TenantService', () => {
     });
   });
 
-  it('Should make get API call and return Organization details', () => {
+  it('Should make get API call and set tenant data', () => {
     const service = TestBed.get(TenantService);
     const dataService = TestBed.get(DataService);
     spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
-    service.orgDetails = {};
-    service.getOrgDetails();
-    expect(service.orgDetails).toBeDefined();
+    service.tenantData = {};
+    service.getOrgDetails('Sunbird');
+    expect(service.tenantData).toBeDefined();
+  });
+
+  it('Should return tenant data when getTenantData method is called', () => {
+    const service = TestBed.get(TenantService);
+    const dataService = TestBed.get(DataService);
+    spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
+    service.tenantData = {};
+    service.getOrgDetails('Sunbird');
+    expect(service.getTenantData).toBeDefined();
   });
 });

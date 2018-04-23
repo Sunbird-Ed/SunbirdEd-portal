@@ -69,13 +69,8 @@ export class AppComponent implements OnInit {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
           const rootOrg = this.userProfile.rootOrg;
-          this.tenantService.getOrgDetails(rootOrg.slug).subscribe((data) => {
-            this.favicon = data.result.favicon;
-            document.title = data.result.title || 'Sunbird';
-            document.querySelector('link[rel*=\'icon\']').setAttribute('href', this.favicon || '/assets/sunbird_logo.png');
-          });
+          this.tenantService.getOrgDetails(rootOrg.slug);
         }
-
       });
   }
 }

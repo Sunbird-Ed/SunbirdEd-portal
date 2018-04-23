@@ -3,7 +3,7 @@
         <div class="one wide column"></div>
         <div class="two wide column">
             <a href="/private/index#!/home">
-                <img [class.header-logoBeforeLogin]="!userService.userid" [class.header-logo]="userService.userid" class="image centered" src="{{logo || '/assets/common/images/sunbird_logo.png'}} ">
+                <img [class.header-logoBeforeLogin]="!userService.userid" [class.header-logo]="userService.userid" class="image centered" src="{{ tenantService.getTenantData ? tenantService.getTenantData.logo : '/assets/common/images/sunbird_logo.png' }} ">
             </a>
         </div>
         <div class="six wide column padding-top-1rem" *ngIf="userService.userid">
