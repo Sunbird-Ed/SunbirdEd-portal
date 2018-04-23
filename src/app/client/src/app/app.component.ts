@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
    * user profile details.
    */
   userProfile: IUserProfile;
-  favicon: string;
   /**
    * reference of TenantService.
    */
