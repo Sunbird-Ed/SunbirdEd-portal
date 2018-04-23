@@ -121,6 +121,7 @@ export class DataDrivenComponent implements OnInit {
       this.contentType = url[0].path;
     });
     this.creationFormLable = this.config.appConfig.contentCreateTypeLable[this.contentType];
+   // console.log('creationFormLable', this.creationFormLable);
     this.getMetaData();
   }
 

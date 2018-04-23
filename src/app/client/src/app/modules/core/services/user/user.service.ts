@@ -187,7 +187,7 @@ export class UserService {
   get rootOrgId() {
     return this._rootOrgId;
   }
-  get hashTagId() {
-    return this._hashTagId;
-  }
+  // get hashTagId() {
+  //   return this._hashTagId;
+  // }
 }

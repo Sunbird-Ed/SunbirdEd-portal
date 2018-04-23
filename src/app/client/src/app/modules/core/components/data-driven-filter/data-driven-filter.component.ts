@@ -116,7 +116,7 @@ export class DataDrivenFilterComponent implements OnInit {
         }
         this.queryParams = { ...bothParams.queryParams };
         _.forIn(this.queryParams, (value, key) => {
-          if (typeof value === 'string') {
+          if (typeof value === 'string' && key !== 'key') {
             this.queryParams[key] = [value];
           }
         });
