@@ -1,3 +1,4 @@
+import { ITenantData } from './interfaces/tenant';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
@@ -20,7 +21,7 @@ export class TenantService extends DataService {
   /**
    * Variable that holds tenant details.
    */
-  tenantData: object;
+  tenantData: ITenantData;
   /**
    * This variable holds favicon details.
    */

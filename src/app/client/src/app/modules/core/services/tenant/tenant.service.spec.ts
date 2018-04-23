@@ -7,7 +7,7 @@ import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared'
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { TenantService } from './tenant.service';
-import {} from 'jasmine';
+import { } from 'jasmine';
 import { UserService } from '../user/user.service';
 
 describe('TenantService', () => {
@@ -16,7 +16,7 @@ describe('TenantService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TenantService, UserService, ConfigService,
-         LearnerService, DataService, ResourceService, ToasterService, Ng2IzitoastService]
+        LearnerService, DataService, ResourceService, ToasterService, Ng2IzitoastService]
     });
   });
 
@@ -24,7 +24,13 @@ describe('TenantService', () => {
     const service = TestBed.get(TenantService);
     const dataService = TestBed.get(DataService);
     spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
-    service.tenantData = {};
+    service.tenantData = {
+      appLogo: '',
+      favicon: '',
+      logo: '',
+      poster: '',
+      titleName: ''
+    };
     service.getOrgDetails('Sunbird');
     expect(service.tenantData).toBeDefined();
   });
@@ -33,7 +39,13 @@ describe('TenantService', () => {
     const service = TestBed.get(TenantService);
     const dataService = TestBed.get(DataService);
     spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
-    service.tenantData = {};
+    service.tenantData = {
+      appLogo: '',
+      favicon: '',
+      logo: '',
+      poster: '',
+      titleName: ''
+    };
     service.getOrgDetails('Sunbird');
     expect(service.getTenantData).toBeDefined();
   });

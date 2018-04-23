@@ -12,10 +12,6 @@ import { TenantService } from './../../services';
 })
 export class MainHeaderComponent implements OnInit {
   /**
-   * organization log
-   */
-  logo: string;
-  /**
    * user profile details.
    */
   userProfile: IUserProfile;
