@@ -142,9 +142,7 @@ export class CourseSearchComponent implements OnInit {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
-      filters: {
-       concepts: this.queryParams.Concepts
-      },
+      filters: {},
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
