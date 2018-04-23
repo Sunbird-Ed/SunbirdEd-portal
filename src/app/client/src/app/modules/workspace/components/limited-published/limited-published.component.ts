@@ -27,7 +27,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 
   @ViewChild('modalSharing')
   public modalSharing: ModalTemplate<{ data: string }, string, string>;
-  
   /**
    * To navigate to other pages
    */
