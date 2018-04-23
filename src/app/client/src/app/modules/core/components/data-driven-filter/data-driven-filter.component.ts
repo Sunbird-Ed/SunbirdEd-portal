@@ -91,7 +91,7 @@ export class DataDrivenFilterComponent implements OnInit {
   ngOnInit() {
     this.formInputData = {};
     this.getQueryParams();
-    console.log('routerVal', this.routerVal);
+   // console.log('routerVal', this.routerVal);
     this.filterType = this.routerVal;
     this.getMetaData();
     // this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
@@ -115,8 +115,14 @@ export class DataDrivenFilterComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
-        this.formInputData = this.queryParams;
-        console.log('this.queryParams', this.queryParams);
+        _.forIn(this.queryParams, (value, key) => {
+          if (typeof value === 'string') {
+            this.queryParams[key] = [value];
+          }
+        });
+       // console.log('this.queryParams', this.queryParams);
+        this.formInputData = _.pickBy(this.queryParams);
+       // console.log('this.queryParams', this.formInputData);
       });
   }
   /**
@@ -182,15 +188,12 @@ export class DataDrivenFilterComponent implements OnInit {
     this.initSearch();
   }
   initSearch() {
-      this.queryParams = this.formInputData;
-      _.forIn(this.queryParams, (value, key) => {
-        if (value.length > 0) {
-          this.queryParams[key] = value;
-        }
-      });
+
+      this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+     // console.log('this.queryParams in filter', this.queryParams);
       this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
       if (this.router.url.indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
-        this.triggerParentSearch.emit(this.formInputData);
+        this.triggerParentSearch.emit(_.pickBy(this.queryParams));
       } else {
         this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
       }
@@ -199,25 +202,10 @@ export class DataDrivenFilterComponent implements OnInit {
     const itemIndex = this.formInputData[field].indexOf(item);
     if (itemIndex !== -1) {
       this.formInputData[field].splice(itemIndex, 1);
+      this.formInputData = _.pickBy(this.formInputData);
       this.refresh = false;
       this.cdr.detectChanges();
       this.refresh = true;
     }
   }
-  ShowFilterPlaceholder(field) {
-    if (this.formInputData[field] && this.formInputData[field].length > 0) {
-      console.log('is false');
-      this.isShowFilterPlaceholder = false;
-      this.refresh = false;
-      this.cdr.detectChanges();
-      this.refresh = true;
-    } else {
-      console.log('true');
-      this.isShowFilterPlaceholder = true;
-      this.refresh = false;
-      this.cdr.detectChanges();
-      this.refresh = true;
-    }
-  }
-
 }
