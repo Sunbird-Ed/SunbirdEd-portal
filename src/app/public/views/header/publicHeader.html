@@ -3,7 +3,7 @@
         <div class="one wide column "></div>
         <div class="one wide column ">
             <a href="/">
-                <img class="image centered header-logoBeforeLogin" ng-src="{{orgLogo || '/common/images/sunbird_logo.png'}}">
+                <img class="image centered header-logoBeforeLogin" ng-src="{{$root.orgLogo || '/common/images/sunbird_logo.png'}}">
             </a>
         </div>
         <div class="one wide column computer only"></div>
@@ -12,7 +12,7 @@
         <div class="one wide column computer only"></div>
         <div class="one wide column computer only">
             <div class="beforelogin ui secondary pointing menu padding-top-1rem" ng-controller="SignUpCtrl as newUser">
-                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
+                <button ng-if="$root.showSignup" class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
                 <a href="/private/index" class="sunblogin"> <button class="ui item " ng-if="!isLoggedIn">{{frmelmnts.btn.login}}</button></a>
                 <div ng-include="'views/home/Signup.html'"></div>
             </div>
@@ -28,7 +28,7 @@
             <div class="ui dropdown" id='headerSearchtab'>
               <i class="large bars icon tablet sunbird-hamburger-menu" ng-click="newUser.dropdown()"></i>
               <div class="left menu">
-                <button class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
+                <button ng-if="$root.showSignup" class="ui item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}</button>
                 <a href="/private/index" class="ui item sunblogin">{{frmelmnts.btn.login}}</a>
               </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="ui dropdown float-ContentRight" id='headerSearchmob'>
               <i class="bars icon mobile sunbird-hamburger-menu" ng-click="newUser.dropdown()"></i>
               <div class="left menu">
-                <a class="item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}
+                <a ng-if="$root.showSignup" class="item" ng-if="!isLoggedIn" ng-click="newUser.showModal();"> {{frmelmnts.btn.signup}}
                 </a>
                 <a href="/private/index" class="ui item sunblogin">{{frmelmnts.btn.login}}</a>
               </div>

@@ -11,7 +11,7 @@ module.exports = function (app) {
     res.redirect(redirectUrl)
   })
   app.all('/app', function (req, res) {
-    var redirectUrl = envHelper.MOBILE_APP_URL
+    var redirectUrl = envHelper.ANDROID_APP_URL
     res.redirect(redirectUrl)
   })
 }

@@ -63,7 +63,7 @@ angular.module('playerApp')
           extContWhitelistedDomains: $rootScope.extContWhitelistedDomains,
           plugins: [{
             id: 'org.ekstep.sunbirdcommonheader',
-            ver: '1.2',
+            ver: '1.3',
             type: 'plugin'
           },
           {

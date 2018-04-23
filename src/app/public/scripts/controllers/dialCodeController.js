@@ -35,9 +35,9 @@
           $state.go('PublicContent', params)
         }
 
-        dialctrl.openCourseView = function (course) {
-          var params = { courseId: course.identifier }
-          $state.go('PublicCourse', params)
+        dialctrl.openCollectionView = function (collectionDetails) {
+          var params = { contentId: collectionDetails.identifier, name: collectionDetails.identifier }
+          $state.go('PublicCollection', params)
         }
         contentService.search(req).then(function (res) {
           if (res && res.responseCode === 'OK') {

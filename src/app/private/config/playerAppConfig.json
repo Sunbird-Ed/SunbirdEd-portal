@@ -542,7 +542,7 @@
                 "ROLES": ["CONTENT_CREATOR", "CONTENT_REVIEW", "CONTENT_CREATION", "CONTENT_REVIEWER"]
             },
             "UP_FOR_REVIEW":{
-                "ROLES":["CONTENT_REVIEWER", "CONTENT_REVIEW", "BOOK_REVIEWER"],
+                "ROLES":["CONTENT_REVIEWER", "CONTENT_REVIEW", "BOOK_REVIEWER", "FLAG_REVIEWER"],
                 "contentTypes": [
                     {
                       "key": "Collection",

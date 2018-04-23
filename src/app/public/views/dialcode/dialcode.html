@@ -40,7 +40,7 @@
 			<div class="ui stackable four column grid dynamic-section-card ">
 		        <div class="column " ng-repeat="item in dialctrl.searchResults track by $index">
 		            <div ng-if="item.mimeType!='application/vnd.ekstep.content-collection'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.playContent(item)"></div>
-		            <div ng-if="item.mimeType=='application/vnd.ekstep.content-collection'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.openCourseView(item)"></div>
+		            <div ng-if="item.mimeType=='application/vnd.ekstep.content-collection'" ng-include="'views/common/ratingCard.html'" ng-click="dialctrl.openCollectionView(item)"></div>
 		        </div>
 		    </div>
 		</div>
@@ -56,7 +56,7 @@
 			<a href='app'>
 			    <div class="ui container stackable two column grid">
 				  	<div class="column left floated left aligned">
-				  		<h1  class="ui small header popUp-dial-code-header"> Download the Sunbird App 
+				  		<h1  class="ui small header popUp-dial-code-header"> Download the {{$root.instance}} App 
 							<div class="sub header padding-top-5"> 
 								Get access to unlimited resources: worksheets, lesson plans and more!
 							</div>

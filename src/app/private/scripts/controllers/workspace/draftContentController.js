@@ -8,7 +8,7 @@ angular.module('playerApp')
       toasterService, $scope, workSpaceUtilsService, $timeout, PaginationService, telemetryService) {
       var draftContent = this
       draftContent.userId = $rootScope.userId
-      draftContent.status = ['Draft']
+      draftContent.status = ['Draft', 'FlagDraft']
       draftContent.mimeType = [
         'application/vnd.ekstep.ecml-archive',
         'application/vnd.ekstep.content-collection'
