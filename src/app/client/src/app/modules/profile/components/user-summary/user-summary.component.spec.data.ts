@@ -24,4 +24,11 @@ export const mockRes = {
                 est laborum.`
         }
     },
+    resourceBundle: {
+        'messages': {
+            'smsg': {
+                'm0019': 'Description updated successfully'
+            }
+        }
+    }
 };

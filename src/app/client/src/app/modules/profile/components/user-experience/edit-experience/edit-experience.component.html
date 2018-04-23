@@ -22,7 +22,7 @@
         <div class=" field">
             <label>{{resourceService?.frmelmnts?.lbl?.subjectstaught}}</label>
             <div class="field">
-                <sui-multi-select class="selection" formControlName="subject" [options]="subjects" #multiSelect>
+                <sui-multi-select [isSearchable]="false" class="selection" formControlName="subject" [options]="subjects" #multiSelect>
                     <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
                 </sui-multi-select>
             </div>
@@ -52,14 +52,14 @@
             <label>{{resourceService?.frmelmnts?.lbl?.tcfrom}}</label>
             <div class="ui left icon input">
                 <i class="calendar icon"></i>
-                <input suiDatepicker [pickerMaxDate]="initDate" formControlName="joiningDate" [pickerMode]="'date'">
+                <input suiDatepicker [pickerMaxDate]="initDate" readonly formControlName="joiningDate" [pickerMode]="'date'">
             </div>
         </div>
         <div class="field" *ngIf="!isCurrentJob">
             <label>{{resourceService?.frmelmnts?.lbl?.tcto}}</label>
             <div class="ui left icon input">
                 <i class="calendar icon"></i>
-                <input suiDatepicker [pickerMaxDate]="initDate" formControlName="endDate" [pickerMode]="'date'">
+                <input suiDatepicker [pickerMaxDate]="initDate" readonly formControlName="endDate" [pickerMode]="'date'">
             </div>
         </div>
     </div>
