@@ -141,10 +141,10 @@ export class CourseSearchComponent implements OnInit {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.enrolledCourses = data.enrolledCourses;
-            this.populateCourseSearch();
-          } else if (data && data.err) {
-            this.populateCourseSearch();
           }
+          this.populateCourseSearch();
+        } else if (data && data.err) {
+          this.populateCourseSearch();
         }
       });
   }

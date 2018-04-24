@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, ResourceService, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -55,16 +55,16 @@ export class UserService {
   /**
    * Reference of channel
    */
-  public channel: string;
+  private _channel: string;
   /**
    * Reference of dims
    */
-  public dims: Array<string> = [];
+  private _dims: Array<string> = [];
   /**
    * Reference of Ekstep_env
    */
   private _env: string;
-  /**
+   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {LearnerService} learner LearnerService reference
@@ -110,7 +110,7 @@ export class UserService {
 /**
     * method to fetch appId and Ekstep_env from server.
     */
-    public getAppidEnv(): void {
+    public getAppIdEnv(): void {
       const url = this.config.appConfig.APPID_EKSTEPENV;
       this.http.get(url).subscribe((res: IAppIdEnv) => {
         this._appId = res.appId;
@@ -122,22 +122,22 @@ export class UserService {
     );
   }
 
-    /**
-     * get method to fetch appId.
-     */
-    get appId(): string {
-      return this._appId;
-    }
-    /**
-     * get method to fetch Ekstep_env.
-     */
-    get env(): string {
-      return this._env;
-    }
+  /**
+   * get method to fetch appId.
+   */
+  get appId(): string {
+    return this._appId;
+  }
+  /**
+   * get method to fetch Ekstep_env.
+   */
+  get env(): string {
+    return this._env;
+  }
 
   public initialize() {
     this.getUserProfile();
-    this.getAppidEnv();
+    this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
@@ -168,8 +168,8 @@ export class UserService {
       });
     }
     const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
-    this.channel = rootOrg;
-    this.dims = _.concat(organisationIds, this.channel);
+    this._channel = rootOrg;
+    this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
     this._userProfile.userRoles = userRoles;
@@ -187,7 +187,12 @@ export class UserService {
   get rootOrgId() {
     return this._rootOrgId;
   }
-  // get hashTagId() {
-  //   return this._hashTagId;
-  // }
+
+  get channel() {
+    return this._channel;
+  }
+
+  get dims() {
+    return this._dims;
+  }
 }

@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { SharedModule} from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { mockProfilePageData } from './profile-page.component.spec.data';
 import { Observable } from 'rxjs/Observable';
 describe('ProfilePageComponent', () => {
@@ -17,12 +17,12 @@ describe('ProfilePageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule],
-      declarations: [ ProfilePageComponent ],
+      declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,
-        { provide: Router, useClass: RouterStub }, ],
+        { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

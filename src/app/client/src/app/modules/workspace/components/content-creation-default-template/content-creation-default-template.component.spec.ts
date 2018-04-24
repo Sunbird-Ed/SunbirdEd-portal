@@ -10,7 +10,7 @@ import { FrameworkService, FormService, ContentService, UserService, LearnerServ
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { DefaultTemplateComponent } from './content-creation-default-template.component';
-import { mockData } from './content-creation-default-template.component.data.spec';
+import { mockData } from './content-creation-default-template.component.spec.data';
 import { expand } from 'rxjs/operators/expand';
 
 describe('DefaultTemplateComponent', () => {

@@ -11,7 +11,7 @@ import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared'
 import { FrameworkService, FormService, ContentService, UserService, LearnerService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
-import { mockFrameworkData } from './data-driven.component.data.spec';
+import { mockFrameworkData } from './data-driven.component.spec.data';
 
 describe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;

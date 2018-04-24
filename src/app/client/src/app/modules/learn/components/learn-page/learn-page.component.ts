@@ -121,7 +121,8 @@ export class LearnPageComponent implements OnInit {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: this.filters
+      filters: this.filters,
+      sort_by: {}
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {

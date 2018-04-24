@@ -15,7 +15,7 @@ export interface IContextData {
         id: string,
         ver: string
       };
-      etags: { app: Array<any>[], partner: Array<any>[], dims: string[] };
+      tags: Array<any>;
       channel: string;
       framework?: string;
       env?: string;

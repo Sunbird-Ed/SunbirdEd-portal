@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
@@ -19,7 +19,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Generic Editor in a IFrame Modal
  */
-export class GenericEditorComponent implements OnInit, AfterViewInit {
+export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
 * To show toaster(error, success etc) after any API calls
@@ -37,16 +37,21 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   * user profile details.
   */
   userService: UserService;
-
+  /**
+   * Id of the content created
+   */
   public contentId: string;
-
+  /**
+   * user profile details.
+   */
   public userProfile: IUserProfile;
-
   /**
  * To navigate to other pages
  */
   private router: Router;
-
+  /**
+   * Boolean to show and hide modal
+   */
   public showModal: boolean;
   /**
    * To send activatedRoute.snapshot to router navigation
@@ -59,12 +64,12 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
-  }
 
+  }
   ngOnInit() {
-   /**
-    * Call User service to get user data
-    */
+    /**
+     * Call User service to get user data
+     */
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -113,9 +118,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
-/**
- * Assign the values to window context
- */
+    /**
+     * Assign the values to window context
+     */
     window.context = {
       user: {
         id: this.userService.userid,
@@ -128,14 +133,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
         id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
+      tags: this.userService.dims,
       channel: this.userService.channel,
       env: 'genericeditor'
     };
 
-/**
- * Assign the values to window config
- */
+    /**
+     * Assign the values to window config
+     */
     window.config = {
       corePluginsPackaged: true,
       modalId: 'genericEditor',
@@ -180,10 +185,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCreate() {
+    this.router.navigate(['workspace/content']);
+    this.showModal = false;
+  }
+
+  /**
+   * On componenet destroy remove the genericEditor id from DOM
+   */
+  ngOnDestroy() {
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.router.navigate(['workspace/content']);
-    this.showModal = false;
   }
 }

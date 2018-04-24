@@ -26,11 +26,11 @@ export class DataDrivenFilterComponent implements OnInit {
   /**
  * To navigate to other pages
  */
-  private router: Router;
+  public router: Router;
   /**
 * To show toaster(error, success etc) after any API calls
 */
-  private toasterService: ToasterService;
+  public toasterService: ToasterService;
 
   public frameworkService: FrameworkService;
 
@@ -153,10 +153,10 @@ export class DataDrivenFilterComponent implements OnInit {
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
-              setTimeout(() => {
+             // setTimeout(() => {
                 this.formFieldProperties = data;
                 this.getFormConfig(this.formFieldProperties);
-              }, 0);
+            //  }, 0);
             },
             (err: ServerResponse) => {
               this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
@@ -194,15 +194,14 @@ export class DataDrivenFilterComponent implements OnInit {
     this.initSearch();
   }
   initSearch() {
-
-      this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-     // console.log('this.queryParams in filter', this.queryParams);
-      this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
-      if (this.router.url.indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
-        this.triggerParentSearch.emit(_.pickBy(this.queryParams));
-      } else {
-        this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
-      }
+    this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
+    // console.log('this.queryParams in filter', this.queryParams);
+    this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
+    if (this.router.url.toString().indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
+      this.triggerParentSearch.emit(_.pickBy(this.queryParams));
+    } else {
+      this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
+    }
   }
   removeFilterSelection(field, item) {
     const itemIndex = this.formInputData[field].indexOf(item);

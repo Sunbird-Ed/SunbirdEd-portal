@@ -298,7 +298,7 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
     for (let i = currentYear - 15; i <= currentYear + 5; i++) {
       years.push(i);
     }
-    return years.reverse();
+    return years;
   }
 }
 

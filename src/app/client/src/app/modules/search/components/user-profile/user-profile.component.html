@@ -229,7 +229,7 @@
             </div>
             <div class="item ">
               <div class="right floated content ">
-                <span>{{userDetails.dob }}</span>
+                <span>{{userDetails.dob | date : "dd/MM/y"}}</span>
               </div>
               <div class="iniformationcontent content ">
                 {{resourceService.frmelmnts?.lbl?.birthdate}}

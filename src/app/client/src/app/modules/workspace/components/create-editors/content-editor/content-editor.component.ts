@@ -1,4 +1,3 @@
-import { CustomWindow } from './../../../interfaces';
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
@@ -7,6 +6,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService, PermissionService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
+import { CustomWindow } from './../../../interfaces';
 
 
 declare var jQuery: any;
@@ -21,7 +21,7 @@ declare let window: CustomWindow;
 /**
  * Component Launches the Content Editor in a IFrame Modal
  */
-export class ContentEditorComponent implements OnInit, AfterViewInit {
+export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
   * To show toaster(error, success etc) after any API calls
@@ -103,6 +103,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       this.state = params['state'];
     });
 
+    this.setRenderer();
+
+  }
+
+  setRenderer() {
     this.renderer.listen('window', 'editor:metadata:edit', () => {
       this.closeModal();
     });
@@ -111,16 +116,16 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
       this.closeModal();
     });
 
-    this.renderer.listen( 'window' , 'editor:content:review', () => {
+    this.renderer.listen('window', 'editor:content:review', () => {
       this.closeModal();
     });
   }
 
 
   ngAfterViewInit() {
-     /**
-     * Launch the generic editor after window load
-     */
+    /**
+    * Launch the generic editor after window load
+    */
     const self = this;
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
@@ -145,6 +150,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
     this.getContentData();
   }
 
+
+  ngOnDestroy() {
+    this.setRenderer();
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
+  }
   /**
    * Launch the content editor in Iframe Modal window
    */
@@ -161,15 +173,14 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
         id: this.userService.appId,
         ver: '1.0'
       },
-      etags: { app: [], partner: [], dims: this.userService.dims },
-      framework: 'NCF',
+      tags: this.userService.dims,
       channel: this.userProfile.rootOrgId
     };
 
 
-/**
- * Window config
- */
+    /**
+     * Window config
+     */
     window.config = {
       baseURL: '',
       modalId: 'contentEditor',
@@ -211,11 +222,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
     };
   }
 
-/**
- * Checking the permission using state, status and userId
- * @param reqData user, state, status validation
- * @param validateData default data in the Object ValidateData
- */
+  /**
+   * Checking the permission using state, status and userId
+   * @param reqData user, state, status validation
+   * @param validateData default data in the Object ValidateData
+   */
   checkContentAccess(reqData, validateData) {
     const status = reqData.status;
     const createdBy = reqData.createdBy;
@@ -241,25 +252,23 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
    * Check the Access and Launch the content Editor
    */
   getContentData() {
-    const state = 'UpForReviewContent';
+    const state = 'UpForReview';
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
-      'state': this.config.appConfig.EDITOR_CONFIG.contentState,
-      'status': this.config.appConfig.EDITOR_CONFIG.contentStatus,
+      'state': this.config.editorConfig.EDITOR_CONFIG.contentState,
+      'status': this.config.editorConfig.EDITOR_CONFIG.contentStatus,
       'mimeType': this.config.appConfig.CONTENT_CONST.CREATE_LESSON
     };
     this.editorService.getById(req, qs).subscribe((response) => {
-      if (response && response.responseCode === 'OK') {
-        const rspData = response.result.content;
-        rspData.state = state;
-        rspData.userId = this.userProfile.userId;
+      const rspData = response.result.content;
+      rspData.state = state;
+      rspData.userId = this.userProfile.userId;
 
-        if (this.checkContentAccess(rspData, validateModal)) {
-          this.openContentEditor();
-        } else {
-          this.toasterService.error(this.resourceService.messages.emsg.m0004);
-        }
+      if (this.checkContentAccess(rspData, validateModal)) {
+        this.openContentEditor();
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
       }
     }
     );
@@ -270,15 +279,19 @@ export class ContentEditorComponent implements OnInit, AfterViewInit {
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-     this.navigateToDraft();
+      this.navigateToDraft();
     }, 1000);
   }
 
-navigateToDraft() {
-  if (document.getElementById('contentEditor')) {
-    document.getElementById('contentEditor').remove();
-   }
-   this.router.navigate(['workspace/content/draft/1']);
-   this.showModal = false;
+  navigateToDraft() {
+    if (document.getElementById('contentEditor')) {
+      document.getElementById('contentEditor').remove();
+    }
+    if (this.state) {
+      this.router.navigate(['workspace/content/', this.state, '1']);
+    } else {
+      this.router.navigate(['workspace/content/draft/1']);
+      this.showModal = false;
+    }
   }
 }

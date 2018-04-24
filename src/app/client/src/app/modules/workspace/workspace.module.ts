@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { CoreModule } from '@sunbird/core';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
-import { WorkspacesidebarComponent } from './components/workspacesidebar/workspacesidebar.component';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
@@ -11,8 +10,8 @@ import { WorkSpaceService, EditorService } from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
-  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent, DataDrivenComponent, DefaultTemplateComponent
-
+  CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
+  WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent
 } from './components';
 @NgModule({
   imports: [
@@ -21,6 +20,7 @@ import {
     SharedModule,
     SuiModule,
     FormsModule,
+    CoreModule,
     ReactiveFormsModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,

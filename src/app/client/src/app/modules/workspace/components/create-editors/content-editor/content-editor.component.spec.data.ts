@@ -110,7 +110,10 @@ export const mockRes = {
         'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509'
     },
     validateModal: {
-        'state': ['UpForReviewContent', 'ReviewContent', 'PublishedContent', 'LimitedPublishedContent'],
+        'state': [ 'upForReview',
+        'review',
+        'published',
+        'limitedPublish'],
         'status': ['Review', 'Draft', 'Live', 'Unlisted'],
         mimeType: 'application/vnd.ekstep.ecml-archive'
     }
