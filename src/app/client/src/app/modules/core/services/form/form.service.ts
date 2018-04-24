@@ -22,9 +22,13 @@ export class FormService {
  * form config data
  */
   public formconfig;
-
+  /**
+* newSelectedContent is content selected type
+*/
   private newSelectedContent;
-
+  /**
+* _cacheService is to store the data in session
+*/
   public _cacheService: CacheService;
 
   /**
@@ -38,6 +42,7 @@ export class FormService {
     this.config = config;
     this._cacheService = _cacheService;
   }
+
   /**
     * @param {formType} content form type
     * @param {formAction} content form action type
@@ -59,9 +64,9 @@ export class FormService {
     };
     return this.content.post(channelOptions).map(
       (formConfig: ServerResponse) => {
-       // console.log('selectedContent + formAction', formInputParams.contentType + formInputParams.formAction);
+        // console.log('selectedContent + formAction', formInputParams.contentType + formInputParams.formAction);
         this._cacheService.set(formInputParams.contentType + formInputParams.formAction, formConfig.result.form.data.fields,
-           { maxAge: 10 * 60 });
+          { maxAge: 10 * 60 });
         return formConfig.result.form.data.fields;
       });
   }

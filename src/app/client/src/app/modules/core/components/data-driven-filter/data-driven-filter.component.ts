@@ -84,32 +84,28 @@ export class DataDrivenFilterComponent implements OnInit {
     this.frameworkService = frameworkService;
     this.formService = formService;
     this.toasterService = toasterService;
-    this.frameworkService.initialize();
     this.formInputData = {};
   }
 
   ngOnInit() {
+    this.frameworkService.initialize();
     this.formInputData = {};
     this.getQueryParams();
-   // console.log('routerVal', this.routerVal);
     this.filterType = this.routerVal;
     this.getMetaData();
-    // this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
-    // this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
-    // this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
-    // this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
   }
+
   getQueryParams() {
     Observable
       .combineLatest(
-        this.activatedRoute.params,
-        this.activatedRoute.queryParams,
-        (params: any, queryParams: any) => {
-          return {
-            params: params,
-            queryParams: queryParams
-          };
-        })
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams,
+      (params: any, queryParams: any) => {
+        return {
+          params: params,
+          queryParams: queryParams
+        };
+      })
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -120,9 +116,9 @@ export class DataDrivenFilterComponent implements OnInit {
             this.queryParams[key] = [value];
           }
         });
-       // console.log('this.queryParams', this.queryParams);
+        // console.log('this.queryParams', this.queryParams);
         this.formInputData = _.pickBy(this.queryParams);
-       // console.log('this.queryParams', this.formInputData);
+        // console.log('this.queryParams', this.formInputData);
       });
   }
   /**
@@ -139,12 +135,6 @@ export class DataDrivenFilterComponent implements OnInit {
           this.formFieldProperties = data;
           this.getFormConfig(this.formFieldProperties);
         } else {
-          /**
-          * Default method of OrganisationService class
-          *@param {formType} type form type
-          *@param {formAction} action form action type
-          * @param {contentType} content selected content type
-          */
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
@@ -153,10 +143,8 @@ export class DataDrivenFilterComponent implements OnInit {
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
-             // setTimeout(() => {
-                this.formFieldProperties = data;
-                this.getFormConfig(this.formFieldProperties);
-            //  }, 0);
+              this.formFieldProperties = data;
+              this.getFormConfig(this.formFieldProperties);
             },
             (err: ServerResponse) => {
               this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
@@ -170,7 +158,7 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   /**
- * @description            - Which is used to config the form field vlaues
+ * @description - Which is used to config the form field vlaues
  * @param {formFieldProperties} formFieldProperties  - Field information
  */
   getFormConfig(formFieldProperties) {
@@ -182,17 +170,18 @@ export class DataDrivenFilterComponent implements OnInit {
         return formFieldCategory;
       });
     });
-    // this.formFieldProperties.sort((a, b) => a.index - b.index);
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
   }
-  applyFilters() {
 
+  applyFilters() {
     this.initSearch();
   }
+
   resetFilters() {
     this.formInputData = {};
     this.initSearch();
   }
+
   initSearch() {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
     // console.log('this.queryParams in filter', this.queryParams);
