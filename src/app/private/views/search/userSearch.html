@@ -3,7 +3,7 @@
   <div class="ten wide column">
   </div>
   <div class="two wide column actions margin-bottom-10">
-    <div  class="ui right floated primary button"
+    <div  class="ui right floated primary button" ng-if="$root.user_downloadButton_visibility"
      ng-click="admin.downloadUsers($root.search.selectedSearchKey,admin.searchResult)">
        {{$root.frmelmnts.btn.download}}
     </div>

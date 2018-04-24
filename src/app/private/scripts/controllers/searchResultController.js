@@ -59,7 +59,7 @@ angular.module('playerApp').controller('SearchResultController', [
     $rootScope.search.selectedOrgType = []
     $rootScope.search.pageLimit = 20
     $rootScope.search.pager = {}
-    $rootScope.inviewLogs = []
+    $rootScope.user_downloadButton_visibility = config.USER_SEARCH.DOWNLOAD_BUTTON_VISIBILITY
     // search select dropdown changes
     $rootScope.$watch('searchKey', function () {
       $timeout(function () {
