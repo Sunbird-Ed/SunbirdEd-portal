@@ -90,6 +90,8 @@ describe('UserAdditionalInfoComponent', () => {
   });
   xit('should call editBasicInfo method', () => {
     const profileService = TestBed.get(ProfileService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.response));
     parentComp.editBasicInfo();
     expect(component).toBeTruthy();

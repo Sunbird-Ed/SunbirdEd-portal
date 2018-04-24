@@ -14,12 +14,12 @@ import * as _ from 'lodash';
 export class EditUserSkillsComponent implements OnInit {
   userProfile: IUserProfile;
   skillForm: FormGroup;
-  skills: any;
+  skill: any;
   profileData: any;
 
   constructor(public userService: UserService, public resourceService: ResourceService, public router: Router,
     public profileService: ProfileService, public toasterService: ToasterService,
-   public windowScrollService: WindowScrollService) { }
+    public windowScrollService: WindowScrollService) { }
 
   ngOnInit() {
     this.windowScrollService.smoothScroll('skills');
@@ -32,7 +32,6 @@ export class EditUserSkillsComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.skills = this.userProfile.skills;
         }
       });
     this.userProfile = this.userService.userProfile;
@@ -42,13 +41,17 @@ export class EditUserSkillsComponent implements OnInit {
       skillName: addedSkill,
       endorsedUserId: this.userService.userid
     };
-    this.profileService.add(req).subscribe(res => {
+    if (addedSkill !== undefined) {
+      this.profileService.add(req).subscribe(res => {
+        this.router.navigate(['/profile']);
+        this.toasterService.success(this.resourceService.messages.smsg.m0038);
+      },
+        err => {
+          // toaster err
+        });
+    } else {
       this.router.navigate(['/profile']);
-      this.toasterService.success(this.resourceService.messages.smsg.m0038);
-    },
-      err => {
-        // toaster err
-      });
+    }
   }
   redirect() {
     this.router.navigate(['/profile']);
