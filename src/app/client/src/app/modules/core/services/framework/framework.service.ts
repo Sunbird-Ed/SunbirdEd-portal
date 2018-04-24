@@ -88,8 +88,6 @@ export class FrameworkService {
           if (this.isApiCall === true) {
             this.getFramework();
           }
-        } else if (user && user.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
         }
       });
   }
@@ -103,11 +101,11 @@ export class FrameworkService {
     };
     this.content.get(channelOptions).subscribe(
       (data: ServerResponse) => {
-        const defaultFramework = data.result.channel.defaultFramework;
+        // const defaultFramework = data.result.channel.defaultFramework;
         this.defaultFramework = data.result.channel.defaultFramework;
         this._frameworkData$.next({ err: null, framework: this.defaultFramework, frameworkdata: null });
-        if (defaultFramework) {
-          this.getFrameworkCategories(defaultFramework);
+        if (this.defaultFramework) {
+          this.getFrameworkCategories(this.defaultFramework);
         }
       },
       (err: ServerResponse) => {

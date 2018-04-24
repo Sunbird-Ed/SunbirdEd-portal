@@ -87,8 +87,6 @@ export class DataDrivenComponent implements OnInit {
 
   public categoryMasterList: any;
 
-  // public formInputData: any;
-
   private creationFormLable: string;
 
   public exists: boolean;
@@ -121,12 +119,16 @@ export class DataDrivenComponent implements OnInit {
       this.contentType = url[0].path;
     });
     this.creationFormLable = this.config.appConfig.contentCreateTypeLable[this.contentType];
-   // console.log('creationFormLable', this.creationFormLable);
-    this.getMetaData();
+    // console.log('creationFormLable', this.creationFormLable);
   }
 
   ngOnInit() {
-    // this.formInputData = {};
+
+    /**
+     * getMetaData is called to config the form data and framework data
+     */
+    this.getMetaData();
+
     /***
  * Call User service to get user data
  */
@@ -136,7 +138,6 @@ export class DataDrivenComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
-    this.showLoader = false;
   }
   /**
 * getMetaData is gives form config data
@@ -146,32 +147,43 @@ export class DataDrivenComponent implements OnInit {
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
+        /**
+         * exists will check data is exists in cache or not. If exists should not call
+         * form api otherwise call form api and get form data
+         */
         this.exists = this._cacheService.exists(this.contentType + this.formAction);
         if (this.exists) {
           const data: any | null = this._cacheService.get(this.contentType + this.formAction);
           this.formFieldProperties = data;
-          this.getFormConfig(this.formFieldProperties);
+          this.getFormConfig();
         } else {
           /**
           * Default method of OrganisationService class
           *@param {formType} type form type
           *@param {formAction} action form action type
-          * @param {contentType} content selected content type
+          *@param {contentType} content selected content type
+          *@param {framework} framework framework id
           */
-          this.formService.getFormConfig(this.formType, this.formAction, this.contentType, frameworkData.framework).subscribe(
+          const formServiceInputParams = {
+            formType: this.formType,
+            formAction: this.formAction,
+            contentType: this.contentType,
+            framework: frameworkData.framework
+          };
+          this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
               setTimeout(() => {
                 this.formFieldProperties = data;
-                this.getFormConfig(this.formFieldProperties);
+                this.getFormConfig();
               }, 0);
             },
             (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
+              this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         }
       } else if (frameworkData && frameworkData.err) {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     });
   }
@@ -180,7 +192,7 @@ export class DataDrivenComponent implements OnInit {
    * @description            - Which is used to config the form field vlaues
    * @param {formFieldProperties} formFieldProperties  - Field information
    */
-  getFormConfig(formFieldProperties) {
+  getFormConfig() {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
         if (category.code === formFieldCategory.code) {
@@ -205,7 +217,6 @@ export class DataDrivenComponent implements OnInit {
   generateData(data) {
     this.showLoader = true;
     const requestData = _.cloneDeep(data);
-    // const requestBody = {
     requestData.name = data.name ? data.name : 'Untitled Collection',
       requestData.description = data.description ? data.description : 'Untitled Collection',
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
@@ -214,7 +225,6 @@ export class DataDrivenComponent implements OnInit {
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.config.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
-    // };
     if (this.contentType === 'studymaterial') {
       requestData.mimeType = this.config.appConfig.CONTENT_CONST.CREATE_LESSON;
     } else {
@@ -224,7 +234,7 @@ export class DataDrivenComponent implements OnInit {
     return requestData;
   }
 
-  createCollection() {
+  createContent() {
     const state = 'Draft';
     const framework = this.framework;
     const requestData = {

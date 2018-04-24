@@ -145,7 +145,13 @@ export class DataDrivenFilterComponent implements OnInit {
           *@param {formAction} action form action type
           * @param {contentType} content selected content type
           */
-          this.formService.getFormConfig(this.formType, this.formAction, this.filterType, frameworkData.framework).subscribe(
+          const formServiceInputParams = {
+            formType: this.formType,
+            formAction: this.formAction,
+            contentType: this.filterType,
+            framework: frameworkData.framework
+          };
+          this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
               setTimeout(() => {
                 this.formFieldProperties = data;

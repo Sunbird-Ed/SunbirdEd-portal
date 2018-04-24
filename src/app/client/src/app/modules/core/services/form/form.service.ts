@@ -43,29 +43,26 @@ export class FormService {
     * @param {formAction} content form action type
     * @param {selectedContent} content selected content type
     */
-  getFormConfig(formType, formAction, selectedContent, framework): Observable<ServerResponse> {
-    this.newSelectedContent = this.config.appConfig.formApiTypes[selectedContent];
+  getFormConfig(formInputParams): Observable<ServerResponse> {
+    this.newSelectedContent = this.config.appConfig.formApiTypes[formInputParams.contentType];
     const channelOptions = {
       url: this.config.urlConFig.URLS.dataDrivenForms.READ,
       data: {
         request: {
-          type: formType,
-          action: formAction,
+          type: formInputParams.formType,
+          action: formInputParams.formAction,
           subType: this.newSelectedContent,
           rootOrgId: this.user._hashTagId,
-          framework: framework
+          framework: formInputParams.framework
         }
       }
     };
     return this.content.post(channelOptions).map(
       (formConfig: ServerResponse) => {
-        console.log('selectedContent + formAction', selectedContent + formAction);
-        this._cacheService.set(selectedContent + formAction, formConfig.result.form.data.fields, { maxAge: 10 * 60 });
+       // console.log('selectedContent + formAction', formInputParams.contentType + formInputParams.formAction);
+        this._cacheService.set(formInputParams.contentType + formInputParams.formAction, formConfig.result.form.data.fields,
+           { maxAge: 10 * 60 });
         return formConfig.result.form.data.fields;
-      },
-      (err: ServerResponse) => {
-        return err;
-      }
-    );
+      });
   }
 }

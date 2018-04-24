@@ -159,27 +159,11 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
 
     return requestData;
   }
-  createCollection(data) {
-    const state = 'Draft';
-    const requestData = {
-      content: this.generateData(data)
-    };
-    // this.editorService.create(requestData).subscribe(res => {
-    //   this.showLoader = true;
-    //     this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state]);
-    // }, err => {
-    //   this.toasterService.error(this.resourceService.messages.emsg.m0010);
-    // });
-    /**
-     * need to integrate with create-editors
-     */
-
-  }
   /**
      * onConfigChange is called whene dropdown value changed
      */
   onConfigChange(data) {
-    console.log('data' , data);
+   // console.log('data' , data);
     this.updateForm(data);
   }
 
