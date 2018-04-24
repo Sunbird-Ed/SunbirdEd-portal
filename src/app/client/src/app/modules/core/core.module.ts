@@ -6,11 +6,11 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
+  UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService
 } from './services';
 import {
-  MainHeaderComponent, MainMenuComponent, SearchComponent
+  MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import * as $ from 'jquery';
@@ -22,12 +22,12 @@ import * as $ from 'jquery';
     RouterModule,
     FormsModule
   ],
-  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
-  exports: [MainHeaderComponent, PermissionDirective],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent],
   providers: [
     LearnerService, UserService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, TelemetryLibUtilService]
+    AuthGuard, TelemetryService, TelemetryLibUtilService, ConceptPickerService]
 })
 export class CoreModule {
 }
