@@ -18,7 +18,7 @@ export class HomeFilterComponent implements OnInit {
   /**
   * To call resource service which helps to use language constant
   */
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
    /**
   * To call searchService which helps to use list of courses
   */
