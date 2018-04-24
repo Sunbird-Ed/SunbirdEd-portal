@@ -87,7 +87,7 @@ export class DataDrivenComponent implements OnInit {
 
   public categoryMasterList: any;
 
-  private creationFormLable: string;
+  public creationFormLable: string;
 
   public exists: boolean;
 
