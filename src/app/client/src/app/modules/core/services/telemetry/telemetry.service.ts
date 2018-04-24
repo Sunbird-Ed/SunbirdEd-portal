@@ -69,9 +69,9 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public start(startEventInput: IStartEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(startEventInput);
     if (this.isInitialized) {
-      this.telemetryProvider.start(this.context.config, eventData.contentId, eventData.contentVer,
+      const eventData: ITelemetryEvent = this.getEventData(startEventInput);
+      this.telemetryProvider.start(this.context.config, eventData.options.object.id, eventData.options.object.ver,
         eventData.edata, eventData.options);
     }
   }
@@ -83,8 +83,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public impression(impressionEventInput: IImpressionEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
       this.telemetryProvider.impression(eventData.edata, eventData.options);
     }
   }
@@ -95,8 +95,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public interact(interactEventInput: IInteractEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(interactEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(interactEventInput);
       this.telemetryProvider.interact(eventData.edata, eventData.options);
     }
   }
@@ -108,8 +108,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public share(shareEventInput: IShareEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(shareEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(shareEventInput);
       this.telemetryProvider.share(eventData.edata, eventData.options);
     }
   }
@@ -120,8 +120,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public error(errorEventInput: IErrorEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
       this.telemetryProvider.error(eventData.edata, eventData.options);
     }
   }
@@ -133,8 +133,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public end(endEventInput: IEndEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(endEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(endEventInput);
       this.telemetryProvider.end(eventData.edata, eventData.options);
     }
   }
@@ -146,8 +146,8 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public log(logEventInput: ILogEventInput) {
-    const eventData: ITelemetryEvent = this.getEventData(logEventInput);
     if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
     }
   }
