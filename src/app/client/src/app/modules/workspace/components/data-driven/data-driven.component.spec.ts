@@ -97,10 +97,10 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(componentParent, 'createCollection').and.callThrough();
+    spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
-    componentParent.createCollection();
+    componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'Draft', componentParent.framework]);
   });
@@ -115,10 +115,10 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(componentParent, 'createCollection').and.callThrough();
+    spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
-    componentParent.createCollection();
+    componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'Draft', componentParent.framework]);
   });
@@ -132,10 +132,10 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(componentParent, 'createCollection').and.callThrough();
+    spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
-    componentParent.createCollection();
+    componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/contentEditor/', 'do_2124708548063559681134', 'Draft', componentParent.framework]);
   });
@@ -149,28 +149,26 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
-    spyOn(componentParent, 'createCollection').and.callThrough();
+    spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
-    componentParent.createCollection();
+    componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/contentEditor/', 'do_2124708548063559681134', 'Draft', componentParent.framework]);
   });
   it('should call getFormConfig', () => {
-    const data = mockFrameworkData.formSuccess;
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     componentParent.categoryMasterList = mockFrameworkData.frameworkSuccess;
     spyOn(componentParent, 'getFormConfig').and.callThrough();
-    componentParent.getFormConfig(data);
+    componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
    });
    it('should call getFormConfig api', () => {
-    const data = mockFrameworkData.formSuccess;
     const formService = TestBed.get(FormService);
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockFrameworkData.formSuccess));
     spyOn(componentParent, 'getFormConfig').and.callThrough();
-    componentParent.getFormConfig(data);
+    componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
    });
 });
