@@ -118,6 +118,10 @@ angular.module('loginApp')
         getContent($scope.id)
       }
 
+      $scope.$watch('id', function (newId, oldId) {
+        getContent(newId)
+      })
+
       $scope.gotoBottom = function () {
         $('html, body').animate({
           scrollTop: $('#player-auto-scroll').offset().top
