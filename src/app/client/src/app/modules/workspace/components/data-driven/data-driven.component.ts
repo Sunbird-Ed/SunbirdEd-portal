@@ -242,7 +242,7 @@ export class DataDrivenComponent implements OnInit {
     };
     if (this.contentType === 'studymaterial') {
       this.editorService.create(requestData).subscribe(res => {
-        this.router.navigate(['/workspace/content/edit/contentEditor/', res.result.content_id, state, framework]);
+        this.router.navigate(['/workspace/content/edit/content/', res.result.content_id, state, framework]);
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0010);
       });

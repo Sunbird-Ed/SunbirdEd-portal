@@ -20,7 +20,7 @@ export class DataDrivenFilterComponent implements OnInit {
  */
   public config: ConfigService;
 
-  private resourceService: ResourceService;
+  public resourceService: ResourceService;
 
   public filterType: string;
   /**
@@ -192,6 +192,7 @@ export class DataDrivenFilterComponent implements OnInit {
       this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
     }
   }
+
   removeFilterSelection(field, item) {
     const itemIndex = this.formInputData[field].indexOf(item);
     if (itemIndex !== -1) {
