@@ -575,6 +575,98 @@
         },
         "USER_SEARCH": {
             "DOWNLOAD_BUTTON_VISIBILITY": false
+        },
+        "CHECK_LIST_CONFIG": {
+            "reject": {
+                "title": "Request Changes Checklist",
+                "subtitle": "Please select the items that need changes:",
+                "contents": [
+                    {
+                        "name": "Appropriateness Check",
+                        "index": 3,
+                        "checkList": [
+                            "No Hate Speech, Abuse, Violence",
+                            "No Sexually explicit content Nudity or Vulgarity",
+                            "No Discrimination or Defamation",
+                            "Is Sensitive to Children"
+                        ]
+                    },
+                    {
+                        "name": "Content details Check",
+                        "index": 2,
+                        "checkList": [
+                            "Correct Title",
+                            "Correct Description",
+                            "Correct Curriculum",
+                            "Relevant Keywords"
+                        ]
+                    },
+                    {
+                        "name": "Usability Check",
+                        "index": 1,
+                        "checkList": [
+                            "Has visual clarity",
+                            "Language is simple and useful",
+                            "Content plays correctly"
+                        ]
+                    }
+                ],
+                "comments": {
+                    "required": true,
+                    "label": "Comments"
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "proceed": "Request changes"
+                }
+            },
+            "publish": {
+                "title": "Publish Checklist",
+                "subtitle": "Please review and accept that following before you publish:",
+                "contents": [
+                    {
+                        "name": "Appropriateness Check",
+                        "index": 1,
+                        "checkList": [
+                            "No Hate Speech, Abuse, Violence",
+                            "No Sexually explicit content Nudity or Vulgarity",
+                            "No Discrimination or Defamation",
+                            "Is Sensitive to Children"
+                        ]
+                    },
+                    {
+                        "name": "Content details Check",
+                        "index": 2,
+                        "checkList": [
+                            "Correct Title",
+                            "Correct Description",
+                            "Correct Curriculum",
+                            "Relevant Keywords"
+                        ]
+                    },
+                    {
+                        "name": "Usability Check",
+                        "index": 3,
+                        "checkList": [
+                            "Has visual clarity",
+                            "Language is simple and useful",
+                            "Content plays correctly"
+                        ]
+                    }
+                ],
+                "comments": {
+                    "required": false,
+                    "label": "Comments"
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "proceed": "Publish"
+                }
+            },
+            "read": {
+                "title": "Review Comments",
+                "subtitle": ""
+            }
         }
 
     }

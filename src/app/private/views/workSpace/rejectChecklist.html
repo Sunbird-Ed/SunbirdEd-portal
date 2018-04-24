@@ -1,0 +1,48 @@
+<div id="rejectCheckListModal" class="ui modal">
+    <div class="header">
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="column">
+                    <span><i class="envelope outline icon"></i>&nbsp; {{previewContent.checkListConfig.reject.title}}</span>
+                </div>
+                <div class="right aligned column">
+                    <i class="close link icon" ng-click="previewContent.closeChecklistModal('rejectCheckListModal');"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrolling content">
+        <div class="ui tiny header">
+            <h4>{{previewContent.checkListConfig.reject.subtitle}}</h4>
+        </div>
+        <div ng-repeat="list in previewContent.checkListConfig.reject.contents | orderBy: 'index'">
+            <h5 class="ui small header">{{list.name}}</h5>
+            <div class="ui row" ng-repeat="item in list.checkList">
+                <div class="ui checkbox">
+                    <input type="checkbox" class="listItem" ng-click="previewContent.validateRequestChecklistModal(item)">
+                    <label>{{item}}</label>
+                </div>
+            </div>
+            <br>
+        </div>
+        <h5>
+            <div class="ui checkbox">
+                <input type="checkbox" class="otherItem" ng-click="previewContent.validateRequestChecklistModal('Others')">
+                <label>Others</label>
+            </div>
+        </h5>
+        <h5 class="ui small header">{{previewContent.checkListConfig.reject.comments.label}}</h5>
+        <div class="ui form">
+            <div class="field">
+                <textarea rows="3" ng-model="previewContent.reviewComments" ng-change="previewContent.validateRequestChecklistModal()"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="actions footer">
+        <div class="ui buttons">
+            <button id="closePopUp " class="ui orange button" type="button " ng-click="previewContent.closeChecklistModal('rejectCheckListModal');">{{previewContent.checkListConfig.reject.buttons.cancel}}</button>
+            <div class="or "></div>
+            <button class="ui blue button " type="button " ng-disabled="!previewContent.enableCheckListSubmitBtn" ng-click="previewContent.rejectContent('rejectCheckListModal')">{{previewContent.checkListConfig.reject.buttons.proceed}}</button>
+        </div>
+    </div>
+</div>
