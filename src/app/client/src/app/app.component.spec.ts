@@ -1,7 +1,7 @@
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
-import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
+import { UserService, LearnerService, CoursesService, PermissionService, TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -14,7 +14,8 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      providers: [ToasterService, UserService, ConfigService, LearnerService, PermissionService , ResourceService, CoursesService ],
+      providers: [ToasterService, UserService, ConfigService, LearnerService, PermissionService, ResourceService, CoursesService,
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

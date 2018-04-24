@@ -7,11 +7,10 @@ import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService , FrameworkService, FormService
+  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, FrameworkService, FormService,
+  TELEMETRY_PROVIDER
 } from './services';
-import {
-  MainHeaderComponent, MainMenuComponent, SearchComponent , DataDrivenFilterComponent
-} from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent, DataDrivenFilterComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import * as $ from 'jquery';
@@ -29,7 +28,7 @@ import * as $ from 'jquery';
   providers: [
     LearnerService, UserService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, TelemetryLibUtilService, FrameworkService, FormService, CacheService]
+    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
 })
 export class CoreModule {
 }
