@@ -5,7 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'learn', component: LearnPageComponent
+    path: 'learn', component: LearnPageComponent,
+    data: [{label: 'Home', url: '/home'}, {label: 'Courses', url: ''}],
   }
 ];
 

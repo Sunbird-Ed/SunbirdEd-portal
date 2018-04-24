@@ -1,6 +1,7 @@
 import { UserService, PermissionService } from './../../services';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
+import { TenantService } from './../../services';
 /**
  * Main header component
  */
@@ -10,10 +11,6 @@ import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird
   styleUrls: ['./main-header.component.css']
 })
 export class MainHeaderComponent implements OnInit {
-  /**
-   * organization log
-   */
-  orgLogo: string;
   /**
    * user profile details.
    */
@@ -51,6 +48,10 @@ export class MainHeaderComponent implements OnInit {
    */
   public config: ConfigService;
   /**
+   * reference of tenant service.
+   */
+  public tenantService: TenantService;
+  /**
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
@@ -62,11 +63,13 @@ export class MainHeaderComponent implements OnInit {
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService,
-    permissionService: PermissionService, userService: UserService) {
-      this.config = config;
-      this.resourceService = resourceService;
-      this.permissionService = permissionService;
-      this.userService = userService;
+    permissionService: PermissionService, userService: UserService,
+    tenantService: TenantService) {
+    this.config = config;
+    this.resourceService = resourceService;
+    this.permissionService = permissionService;
+    this.tenantService = tenantService;
+    this.userService = userService;
   }
 
   ngOnInit() {
@@ -77,9 +80,9 @@ export class MainHeaderComponent implements OnInit {
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
     this.userService.userData$.subscribe(
       (user: IUserData) => {
-          if (user && !user.err) {
-            this.userProfile = user.userProfile;
-          }
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+        }
       });
   }
 }
