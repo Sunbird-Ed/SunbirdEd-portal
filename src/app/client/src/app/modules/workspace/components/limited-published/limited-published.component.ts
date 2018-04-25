@@ -67,11 +67,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   showError = false;
 
   /**
-   * To show / hide shareLink
-  */
-  shareLink = false;
-
-  /**
    * no result  message
   */
   noResultMessage: INoResultMessage;
@@ -205,6 +200,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
               }
             };
             this.limitedPublishList[key].action = action;
+            console.log(this.limitedPublishList);
           });
           this.showLoader = false;
         } else {
@@ -224,9 +220,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   contentClick(param) {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.content.identifier);
-    } else {
-      this.shareLink = true;
-      this.contentShareLink = this.workSpaceService.getUnlistedShareUrl(param.content);
     }
   }
   public deleteConfirmModal(contentIds) {

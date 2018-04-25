@@ -1,12 +1,12 @@
-<span  *ngIf="contentShare.action.left.icon !== 'linkify' 
-"class="ui mouse-pointer content-font" title="Share" (click)="initializeModal(copyLinkButton)">
+<span *ngIf="contentShare.action.left.icon !== 'linkify' 
+" class="ui mouse-pointer content-font" title="Share" (click)="initializeModal(copyLinkButton)">
     <i class="large blue share alternate icon"></i>&nbsp;
 </span>
-<span   *ngIf="contentShare.action.left.icon === 'linkify' 
-"class="ui mouse-pointer content-font" title="View Link" (click)="initializeModal(copyLinkButton)">
+<span *ngIf="contentShare.action.left.icon === 'linkify' 
+" class="ui mouse-pointer content-font" title="View Link" (click)="initializeModal(copyLinkButton)">
     <i class="linkify large icon float-ContentLeft limitedPublishingLinkIcon"></i>&nbsp;
 </span>
-<sui-modal [isClosable]="false" #contentShareModal  *ngIf ="sharelinkModal" >
+<sui-modal [isClosable]="false" #contentShareModal *ngIf="sharelinkModal">
 
   <div class="header">
     <div class="ui grid">
@@ -24,13 +24,11 @@
     <p class="meta">{{resourceService?.frmelmnts?.lbl?.sharelink}}</p>
     <div class="ui action input shareContent width-100" id="buttonPopUp">
       <input type="text" #copyLinkData name="title" readonly [(ngModel)]="ShareLink" />
-      <button class="ui basic primary button" (click)="copyLink(popup,copyLinkData)" #copyLinkButton>
+      <button class="ui basic primary button" (click)="copyLink(popup)" #copyLinkButton>
         COPY LINK
       </button>
     </div>
-    <div  suiPopup [popupPlacement]="position" popupText="Link copied to clipboard"
-     popupTrigger="manual" 
-    #popup="suiPopup">
+    <div id ="popups" suiPopup [popupPlacement]="position" popupText="Link copied to clipboard" popupTrigger="manual" #popup="suiPopup">
     </div>
   </div>
 </sui-modal>

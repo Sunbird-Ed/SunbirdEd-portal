@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, EventEmitter,
-ElementRef, ViewChild , Renderer } from '@angular/core';
+import {
+  Component, OnInit, Input, EventEmitter,
+  ElementRef, ViewChild, Renderer
+} from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui';
 import { ISharelink } from './../../interfaces';
@@ -35,13 +37,22 @@ export class ShareLinkComponent implements OnInit {
   *baseUrl;
   */
   public baseUrl: string;
+  /**
+  *input for Sharelink;
+  */
   @Input() contentShare: ISharelink;
+  /**
+  *Element Ref  for copyLinkButton;
+  */
   @ViewChild('copyLinkButton') copyLinkButton: ElementRef;
+  /**
+  *Element Ref  for copyLinkData;
+  */
+  @ViewChild('copyLinkData') copyLinkData: ElementRef;
   /**
   * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
-
   /**
   * Refrence of UserService
   */
@@ -51,7 +62,7 @@ export class ShareLinkComponent implements OnInit {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
-  constructor(resourceService: ResourceService , private _renderer: Renderer ) {
+  constructor(resourceService: ResourceService, private _renderer: Renderer) {
     this.resourceService = resourceService;
     this.position = 'top center';
     this.baseUrl = document.location.origin + '/';
@@ -64,7 +75,7 @@ export class ShareLinkComponent implements OnInit {
     }
   }
   /**
-  * popDenyss
+  * popDenys
   */
   popDeny(pop) {
     pop.close();
@@ -77,7 +88,7 @@ export class ShareLinkComponent implements OnInit {
     this.sharelinkModal = true;
     if (this.sharelinkModal) {
       setTimeout(() => {
-        this._renderer.invokeElementMethod(this.copyLinkButton.nativeElement, 'click');
+        this.copyLinkButton.nativeElement.click();
       });
     }
   }
@@ -86,17 +97,19 @@ export class ShareLinkComponent implements OnInit {
   * {object}  copyLinkData -element ref
   * {object}  popup -element ref
   */
-  public copyLink(popup: IPopup, copyLinkData) {
+  public copyLink(popup: IPopup) {
     popup.open();
-    copyLinkData.select();
+    setTimeout(() => {
+        this._renderer.invokeElementMethod(this.copyLinkData.nativeElement, 'select', []);
+    }, 0);
     document.execCommand('copy');
   }
- /**
-  * getBase64Url
-  * generate the base url to play unlisted content for public users.
-  * {object} identifier-content or course identifier
-  * returns {string} type - content or course type.
-  */
+  /**
+   * getBase64Url
+   * generate the base url to play unlisted content for public users.
+   * {object} identifier-content or course identifier
+   * returns {string} type - content or course type.
+   */
   getBase64Url(type, identifier) {
     return btoa(type + '/' + identifier);
   }
@@ -107,7 +120,6 @@ export class ShareLinkComponent implements OnInit {
   * returns {string} url to share.
   */
   getUnlistedShareUrl(content) {
-    console.log(content);
     if (content.contentType === 'Course') {
       return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', content.identifier);
     } else if (content.mimeType === 'application/vnd.ekstep.content-collection') {

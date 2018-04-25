@@ -23,7 +23,7 @@ describe('LimitedPublishedComponent', () => {
   let fixture: ComponentFixture<LimitedPublishedComponent>;
   const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
   class RouterStub {
-      navigate = jasmine.createSpy('navigate');
+    navigate = jasmine.createSpy('navigate');
   }
   const resourceBundle = {
     'messages': {
@@ -44,7 +44,7 @@ describe('LimitedPublishedComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LimitedPublishedComponent ],
+      declarations: [LimitedPublishedComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -54,7 +54,7 @@ describe('LimitedPublishedComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -85,7 +85,7 @@ describe('LimitedPublishedComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871'} };
+      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871' } };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -100,18 +100,9 @@ describe('LimitedPublishedComponent', () => {
       expect(component.showLoader).toBeTruthy();
       fixture.detectChanges();
     }));
-  it('should call share link  and open the share link modal ', inject([WorkSpaceService, ActivatedRoute],
-    (workSpaceService, activatedRoute, http) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
-      spyOn(component, 'contentClick').and.callThrough();
-      const params = { type: 'share', content: { identifier: 'do_2124341006465925121871'} };
-      component.contentClick(params);
-      expect(component.shareLink).toBeTruthy();
-      fixture.detectChanges();
-    }));
   // if  search api's throw's error
-   // if  search api's throw's error
-   it('should throw error', inject([SearchService], (searchService) => {
+  // if  search api's throw's error
+  it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
     component.fetchLimitedPublished(9, 1);
     fixture.detectChanges();
@@ -120,21 +111,21 @@ describe('LimitedPublishedComponent', () => {
   }));
 
 
- it('should call setpage method and set proper page number', inject([ConfigService, Router],
+  it('should call setpage method and set proper page number', inject([ConfigService, Router],
     (configService, route) => {
-        component.pager = testData.pager;
-        component.pager.totalPages = 8;
-        component.navigateToPage(1);
-        fixture.detectChanges();
-        expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited/publish', component.pageNumber]);
+      component.pager = testData.pager;
+      component.pager.totalPages = 8;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited/publish', component.pageNumber]);
     }));
 
-it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
+  it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
-        component.pager = testData.pager;
-        component.pager.totalPages = 0;
-        component.navigateToPage(3);
-        fixture.detectChanges();
-        expect(component.pageNumber).toEqual(1);
+      component.pager = testData.pager;
+      component.pager.totalPages = 0;
+      component.navigateToPage(3);
+      fixture.detectChanges();
+      expect(component.pageNumber).toEqual(1);
     }));
 });
