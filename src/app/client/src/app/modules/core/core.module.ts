@@ -7,7 +7,7 @@ import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService
+  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService, TenantService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent
@@ -25,7 +25,7 @@ import * as $ from 'jquery';
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, TelemetryLibUtilService]
 })
