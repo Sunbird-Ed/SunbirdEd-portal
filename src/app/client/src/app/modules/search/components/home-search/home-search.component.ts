@@ -1,24 +1,24 @@
-import {
-  ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, IContents
-} from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+   IContents } from '@sunbird/shared';
+import { SearchService } from '@sunbird/core';
+import { Component, OnInit,  NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IHomeQueryParams } from './../../interfaces';
+
 @Component({
-  selector: 'app-library-search',
-  templateUrl: './library-search.component.html',
-  styleUrls: ['./library-search.component.css']
+  selector: 'app-home-search',
+  templateUrl: './home-search.component.html',
+  styleUrls: ['./home-search.component.css']
 })
-export class LibrarySearchComponent implements OnInit {
+export class HomeSearchComponent implements OnInit {
   /**
-   * To call searchService which helps to use list of courses
-   */
+  * To call searchService which helps to use list of courses
+  */
   private searchService: SearchService;
-  /**
+   /**
   * To call resource service which helps to use language constant
   */
   private resourceService: ResourceService;
@@ -30,10 +30,6 @@ export class LibrarySearchComponent implements OnInit {
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
-  /**
-   * To get enrolled courses details.
-   */
-  coursesService: CoursesService;
   /**
    * Contains list of published course(s) of logged-in user
    */
@@ -68,8 +64,8 @@ export class LibrarySearchComponent implements OnInit {
    */
   pageNumber = 1;
   /**
-    * Contains page limit of outbox list
-    */
+	 * Contains page limit of outbox list
+	 */
   pageLimit: number;
   /**
    * This variable hepls to show and hide page loader.
@@ -81,7 +77,7 @@ export class LibrarySearchComponent implements OnInit {
   /**
      * loader message
     */
-  loaderMessage: ILoaderMessage;
+  loaderMessage: any;
   /**
    * Contains returned object of the pagination service
    * which is needed to show the pagination on inbox view
@@ -90,22 +86,14 @@ export class LibrarySearchComponent implements OnInit {
   /**
    *url value
    */
-  queryParams: any;
-
-  public filters: any;
-
-  public filterType: any;
-
-  public redirectUrl: string;
+  queryParams: IHomeQueryParams;
   /**
      * Constructor to create injected service(s) object
-     * Default method of Draft Component class
      * @param {SearchService} searchService Reference of SearchService
      * @param {Router} route Reference of Router
      * @param {PaginationService} paginationService Reference of PaginationService
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
      * @param {ConfigService} config Reference of ConfigService
-     * @param {CoursesService} coursesService Reference of CoursesService
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
    */
@@ -121,21 +109,25 @@ export class LibrarySearchComponent implements OnInit {
     this.toasterService = toasterService;
     this.config = config;
   }
-  /**
-   * This method sets the make an api call to get all search data with page No and offset
-   */
-  populateContentSearch() {
+    /**
+     * This method sets the make an api call to get all search data with page No and offset
+     */
+  populateCompositeSearch() {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-    const requestParams = {
-      filters: this.filters,
+    const searchParams = {
+      filters: {
+        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'],
+        board: this.queryParams.Curriculum,
+        language: this.queryParams.Medium,
+        subject: this.queryParams.Subjects,
+        concepts: this.queryParams.Concepts
+      },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
-      query: this.queryParams.key,
-      softConstraints: { badgeAssertions: 1 },
-      sort_by: {}
+      query: this.queryParams.key
     };
-    this.searchService.contentSearch(requestParams).subscribe(
+    this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.content.length > 0) {
           this.showLoader = false;
@@ -143,6 +135,13 @@ export class LibrarySearchComponent implements OnInit {
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
+          _.forEach(this.searchList, (item, key) => {
+            delete item.contentType;
+            delete item.resourceType;
+            delete item.badgeAssertions;
+            const action = { left: { displayType: 'rating' } };
+            this.searchList[key].action = action;
+          });
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -158,7 +157,7 @@ export class LibrarySearchComponent implements OnInit {
         this.noResultMessage = {
           'messageText': this.resourceService.messages.fmsg.m0077
         };
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       }
     );
   }
@@ -176,16 +175,12 @@ export class LibrarySearchComponent implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['search/Library', this.pageNumber], {
+    this.route.navigate(['search/All', this.pageNumber], {
       queryParams: this.queryParams
     });
   }
+
   ngOnInit() {
-    this.filterType = this.config.appConfig.library.filterType;
-    this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    this.filters = {
-      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-    };
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -201,12 +196,8 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
-        _.forOwn(this.queryParams, (queryValue, queryParam) => {
-          if (queryParam !== 'key') {
-            this.filters[queryParam] = queryValue;
-          }
-        });
-        this.populateContentSearch();
+        this.populateCompositeSearch();
       });
   }
+
 }

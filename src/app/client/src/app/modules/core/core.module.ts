@@ -6,11 +6,11 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, FrameworkService, FormService,
-  TELEMETRY_PROVIDER
+  UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
+  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent, DataDrivenFilterComponent } from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import * as $ from 'jquery';
@@ -23,12 +23,14 @@ import * as $ from 'jquery';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, DataDrivenFilterComponent],
-  exports: [MainHeaderComponent, PermissionDirective, DataDrivenFilterComponent],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
+     DataDrivenFilterComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
+    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
+     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
 })
 export class CoreModule {
 }
