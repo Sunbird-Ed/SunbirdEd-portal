@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, LimitedPublishedComponent
+  GenericEditorComponent, UploadedComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
@@ -23,14 +23,13 @@ const routes: Routes = [
         //   { path: 'lessonplan', component: CreateLessonPlanComponent }
         // ]
       },
-      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      { path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
-      { path: 'edit/generic', component: GenericEditorComponent },
+      {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
+      {path: 'edit/generic', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
       { path: 'uploaded/:pageNumber', component: UploadedComponent },
-      { path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent },
       { path: '**', redirectTo: 'create' }
     ]
   },
