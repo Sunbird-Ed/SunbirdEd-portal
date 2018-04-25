@@ -20,7 +20,7 @@ angular.module('playerApp')
          * @instance
          */
       this.getPageData = function (path, req) {
-        req = searchService.updateReqForChannelFilter(req)
+        req.request = searchService.updateReqForChannelFilter(_.clone(req.request))
         return restfulLearnerService.post(path, req)
       }
     }])
