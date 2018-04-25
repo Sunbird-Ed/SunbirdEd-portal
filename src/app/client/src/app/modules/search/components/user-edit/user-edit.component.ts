@@ -175,12 +175,12 @@ export class UserEditComponent implements OnInit {
       const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
       this.userSearchService.updateRoles(option).subscribe(
         (apiResponse: ServerResponse) => {
-          this.toasterService.success(this.resourceService.messages.emsg.m0028);
+          this.toasterService.success(this.resourceService.messages.smsg.m0028);
           this.redirect();
         },
         err => {
           this.selectedOrgUserRoles = _.difference(this.selectedOrgUserRoles, this.selectedOrgUserRolesNew);
-          this.toasterService.error(this.resourceService.messages.emsg.m0051);
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
           this.redirect();
         }
       );

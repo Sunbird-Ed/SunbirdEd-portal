@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, IUserProfile, IUserData, WindowScrollService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-user-education',
@@ -11,15 +12,16 @@ import { UserService } from '@sunbird/core';
 export class EditUserEducationComponent implements OnInit {
   @Input() education: any;
   educationForm: FormGroup;
+  today = new Date();
   constructor(public resourceService: ResourceService, public userService: UserService, public windowScrollService: WindowScrollService) { }
 
   ngOnInit() {
     this.windowScrollService.smoothScroll('education');
     if (this.education) {
-      const yearOfPassing = this.education.yearOfPassing ? new Date(this.education.yearOfPassing) : null;
+      const yearOfPassing = this.education.yearOfPassing ? new Date(this.education.yearOfPassing, 10, 10) : null;
       this.educationForm = new FormGroup({
         degree: new FormControl(this.education.degree, [Validators.required]),
-        yearOfPassing: new FormControl(this.education.yearOfPassing),
+        yearOfPassing: new FormControl(yearOfPassing),
         percentage: new FormControl(this.education.percentage),
         grade: new FormControl(this.education.grade),
         name: new FormControl(this.education.name, [Validators.required]),

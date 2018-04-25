@@ -1,6 +1,6 @@
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService } from '@sunbird/core';
 import * as _ from 'lodash';
 @Component({
@@ -10,13 +10,14 @@ import * as _ from 'lodash';
 })
 
 export class UserFilterComponent implements OnInit {
-  @Input() queryParams: any;
+  queryParams: any;
   /**
    * To get url, app configs
    */
   public config: ConfigService;
   public resourceService: ResourceService;
   private searchService: SearchService;
+  private activatedRoute: ActivatedRoute;
   /**
    * To navigate to other pages
    */
@@ -35,10 +36,11 @@ export class UserFilterComponent implements OnInit {
     * @param {ConfigService} config Reference of ConfigService
   */
   constructor(config: ConfigService, private cdr: ChangeDetectorRef,
-    resourceService: ResourceService, router: Router) {
+    resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute) {
     this.config = config;
     this.resourceService = resourceService;
     this.router = router;
+    this.activatedRoute = activatedRoute;
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -86,5 +88,14 @@ export class UserFilterComponent implements OnInit {
 
   ngOnInit() {
     this.setFilters();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = { ...params };
+      _.forIn(this.queryParams, (value, key) => {
+        if (typeof value === 'string') {
+          this.queryParams[key] = [value];
+        }
+      });
+      this.setFilters();
+    });
   }
 }

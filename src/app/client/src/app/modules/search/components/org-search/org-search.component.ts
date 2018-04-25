@@ -142,8 +142,8 @@ export class OrgSearchComponent implements OnInit {
       },
       err => {
         this.showLoader = false;
-        this.noResult = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.noResult = true;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
   }

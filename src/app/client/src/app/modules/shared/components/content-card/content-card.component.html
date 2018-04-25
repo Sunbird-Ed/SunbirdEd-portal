@@ -4,6 +4,8 @@
       <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
     </div>
     <div class="ui image "  (click)="onAction(content,'openContent')">
+      <a class="ui blue left ribbon label " *ngIf="content.badgeAssertions && content.badgeAssertions.length>0 && content.badgeAssertions[0].badgeClassName">
+        {{content.badgeAssertions[0].badgeClassName}}</a>
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
       <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">

@@ -6,7 +6,6 @@
     </div>
     <div class="one wide column"></div>
   </div>
-
 </div>
 <!-- header -->
 <div class="ui grid padding-topBottom-10 courseStructureHeader" *ngIf="!showLoader">
@@ -51,22 +50,17 @@
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
         <div class="margin-top-20 ui raised segment">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading ng-binding"> Summary </span>
+            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
-
           <div class="description">
             <div *ngIf="!descriptionReadMore">
               <span>{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">... Read More</span>
-
+              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
             </div>
-
             <div *ngIf="descriptionReadMore"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">Read Less ...</span>
+              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
             </div>
           </div>
-
-
         </div>
       </div>
       <!--Address-->
@@ -131,7 +125,6 @@
                   <p>{{education.grade}}
                     <span *ngIf="education.name && education.grade">, &nbsp;</span>{{education.name}}
                     <span *ngIf="education.boardOrUniversity">,&nbsp;</span>{{education.boardOrUniversity}}
-
                 </div>
               </div>
             </div>
@@ -142,14 +135,10 @@
       <div class="twelve wide column">
         <div class="ui raised segment margin-bottom-0">
           <div class="header announcementCard-header ">
-            <span class="header cardsHeading">Skill Tags</span>
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list">
-
-
-
             <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit">
-              <!-- | orderBy : '-addedAt' | limitTo:profileCtrl.limit -->
               <div class="ui label">
                 {{skill?.skillName}}
                 <div class="detail">
@@ -157,82 +146,59 @@
                   <span *ngIf="skill.endorsementcount !== 0">{{skill?.endorsementcount}}</span>
                 </div>
               </div>
-              <div *ngIf="skill.isEndorsable" class="ui circular labels float-ContentRight ">
-                <a class="ui basic label" (click)="publicProfile.endorsement(skill.skillName)">
-                                +1
-                                </a>
-              </div>
+              <!--<div *ngIf="skill.isEndorsable" class="ui circular labels float-ContentRight ">
+                <a class="ui basic label" (click)="publicProfile.endorsement(skill.skillName)"> +1  </a>
+              </div>-->
             </div>
-
-
           </div>
         </div>
-
-
-
         <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="userDetails.skills.length >= skillLimit">
           <div class="active item addSkillMoreBtn">
             <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
                 <span class="cursor-pointer">
-                    VIEW MORE
+                    {{resourceService?.frmelmnts?.btn?.viewmore}}
                     <i class="chevron down icon"></i>
                 </span>
             </a>
             <a (click)="toggle(false)" *ngIf="skillViewMore ===false">
                 <span class="cursor-pointer">
-                    VIEW LESS
+                    {{resourceService?.frmelmnts?.btn?.viewless}}
                     <i class="chevron up icon"></i>
                 </span>
             </a>
           </div>
         </div>
-
-
-
       </div>
 
-
-
-<!--Badge-->
-<div class="twelve wide column" *ngIf="userDetails.badgeAssertions && userDetails.badgeAssertions.length > 0">
-
-
-<div class="ui raised segment margin-bottom-0">
-  <div class="header announcementCard-header">
-    <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
-  </div>
-  <div class="ui items margin-top-10">
-    <div class="item" *ngFor="let badge of userDetails.badgeAssertions">
-      <!--  | orderBy: 'createdTS' || 'createdDate' -->
-      <img class="ui avatar image"  [src]="badge.image || badge.badgeClassImage">
-      <div class="middle aligned content padding-left-10">
-        <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
-        <div class="description">
-          <div class="secondary-text-color-sunbird">{{badge.description}}
-            <!--  | limitTo : 70 -->
-            <!-- <i ng-if="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
-            </i> -->
+      <!--Badge-->
+      <div class="twelve wide column" *ngIf="userDetails.badgeArray && userDetails.badgeArray.length > 0">
+        <div class="ui raised segment margin-bottom-0">
+          <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
+          </div>
+          <div class="ui items margin-top-10">
+            <div class="item" *ngFor="let badge of userDetails.badgeArray">
+              <img class="ui avatar image" [src]="badge.image || badge.badgeClassImage">
+              <div class="middle aligned content padding-left-10">
+                <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
+                <div class="description">
+                  <div class="secondary-text-color-sunbird">{{badge.description | slice:0:70 }}
+                    <i *ngIf="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
+            </i>
+                  </div>
+                </div>
+              </div>
+              <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat}}</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat}}</div>
-      <!--  | dateFilterWithMY -->
-    </div>
-  </div>
-</div>
 
-
-</div>
-
-
-
-
-      
       <!-- aditional information -->
       <div class="twelve wide column">
         <div class="ui raised segment ">
           <div class="header announcementCard-header ">
-            <span class="header cardsHeading "> Basic Profile</span>
+            <span class="header cardsHeading ">{{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list ">
             <div class="item ">
@@ -243,8 +209,6 @@
                 {{resourceService.frmelmnts?.lbl?.currentlocation}}
               </div>
             </div>
-
-
             <div class="item ">
               <div class="right floated content ">
                 <span *ngFor="let grade of userDetails.grade; let last = last">
@@ -255,9 +219,6 @@
                 {{resourceService.frmelmnts?.lbl?.grades}}
               </div>
             </div>
-
-
-
             <div class="item ">
               <div class="right floated content ">
                 <span>{{userDetails.gender}}</span>
@@ -266,10 +227,9 @@
                 {{resourceService.frmelmnts?.lbl?.gender}}
               </div>
             </div>
-
             <div class="item ">
               <div class="right floated content ">
-                <span>{{userDetails.dob }}</span>
+                <span>{{userDetails.dob | date : "dd/MM/y"}}</span>
               </div>
               <div class="iniformationcontent content ">
                 {{resourceService.frmelmnts?.lbl?.birthdate}}

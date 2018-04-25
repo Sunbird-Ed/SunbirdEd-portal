@@ -34,22 +34,20 @@ export class ProfileHeaderComponent implements OnInit {
       });
   }
   updateAvatar(image) {
-    if (image[0] && image[0].size < 4000000) {
+    if (image[0]  && image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000) {
       const formData = new FormData();
       formData.append('file', image[0]);
       formData.append('container', 'user/' + this.userService.userid);
       this.profileService.updateAvatar(formData).subscribe(
         results => {
-          // toaster suc
-          this.toasterService.success(this.resourceService.messages.m0018);
+          this.toasterService.success(this.resourceService.messages.smsg.m0018);
         },
         err => {
-          // toaster error
-          // this.toasterService.error(err.error.params.errmsg);
+          this.toasterService.error(err.params.errmsg);
         }
       );
     } else {
-      // toaster error
+      this.toasterService.error(this.resourceService.messages.imsg.m0005);
     }
   }
 

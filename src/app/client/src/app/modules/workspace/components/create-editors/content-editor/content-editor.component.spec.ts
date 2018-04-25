@@ -34,7 +34,7 @@ describe('ContentEditorComponent', () => {
           provide: ActivatedRoute, useValue: {
             'params': Observable.from([{
               'contentId': 'do_21247940906829414411032',
-              'state': 'state'
+              'state': 'draft'
             }])
           }
         }

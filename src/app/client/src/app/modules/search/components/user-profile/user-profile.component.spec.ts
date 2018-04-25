@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {SharedModule, ServerResponse, PaginationService, ResourceService,
   ConfigService, ToasterService, INoResultMessage, RouterNavigationService} from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService} from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, BadgesService} from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
@@ -39,7 +39,7 @@ describe('UserProfileComponent', () => {
       imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule, RouterTestingModule],
       declarations: [ UserProfileComponent ],
       providers: [ ResourceService, SearchService, PaginationService, UserService,
-        LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,
+        LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService, BadgesService,
         { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -57,6 +57,7 @@ describe('UserProfileComponent', () => {
   it('should call search api', () => {
     const searchService = TestBed.get(UserSearchService);
     const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
     spyOn(searchService, 'getUserById').and.callFake(() => Observable.of(Response.successData));
     component.populateUserProfile();
     fixture.detectChanges();
