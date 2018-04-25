@@ -51,7 +51,7 @@ export class LearnPageComponent implements OnInit {
   /**
 * Contains config service reference
 */
-  public config: ConfigService;
+  public configService: ConfigService;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -70,12 +70,12 @@ export class LearnPageComponent implements OnInit {
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, config: ConfigService) {
+     private activatedRoute: ActivatedRoute, configService: ConfigService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
-    this.config = config;
+    this.configService = configService;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
   }
@@ -182,10 +182,9 @@ export class LearnPageComponent implements OnInit {
  */
   ngOnInit() {
     this.filters = {};
-    this.filterType = this.config.appConfig.course.filterType;
-    this.redirectUrl = this.config.appConfig.course.inPageredirectUrl;
+    this.filterType = this.configService.appConfig.course.filterType;
+    this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
-    console.log('this.redirectUrl', this.redirectUrl);
   }
 
   /**
