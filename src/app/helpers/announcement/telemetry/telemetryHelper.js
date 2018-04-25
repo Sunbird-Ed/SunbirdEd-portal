@@ -172,8 +172,7 @@ module.exports = {
       edata: edata,
       context: telemetryData && telemetryData.context && telemetry.getContextData(telemetryData.context),
       actor: telemetryData && telemetryData.actor,
-      tags: telemetryData && telemetryData.tags,
-      object: telemetryData && telemetryData.object
+      tags: telemetryData && telemetryData.tags
     })
   },
 
@@ -194,8 +193,7 @@ module.exports = {
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
       actor: telemetryData && telemetryData.actor,
-      tags: telemetryData && telemetryData.tags,
-      object: telemetryData && telemetryData.object
+      tags: telemetryData && telemetryData.tags
     })
   },
 

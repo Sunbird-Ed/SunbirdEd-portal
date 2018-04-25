@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "private": true,
   "devDependencies": {
     "better-console": "^1.0.0",
