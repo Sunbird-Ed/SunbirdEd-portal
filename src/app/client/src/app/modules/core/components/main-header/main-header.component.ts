@@ -1,6 +1,6 @@
-import { UserService, PermissionService } from './../../services';
+import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 /**
  * Main header component
  */
@@ -11,9 +11,17 @@ import { ConfigService, ResourceService, IUserProfile, IUserData} from '@sunbird
 })
 export class MainHeaderComponent implements OnInit {
   /**
+   * reference of tenant service.
+   */
+  public tenantService: TenantService;
+  /**
    * organization log
    */
-  orgLogo: string;
+  logo: string;
+  /**
+   * tenant name
+   */
+  tenantName: string;
   /**
    * user profile details.
    */
@@ -62,11 +70,12 @@ export class MainHeaderComponent implements OnInit {
   * constructor
   */
   constructor(config: ConfigService, resourceService: ResourceService,
-    permissionService: PermissionService, userService: UserService) {
-      this.config = config;
-      this.resourceService = resourceService;
-      this.permissionService = permissionService;
-      this.userService = userService;
+    permissionService: PermissionService, userService: UserService, tenantService: TenantService) {
+    this.config = config;
+    this.resourceService = resourceService;
+    this.permissionService = permissionService;
+    this.userService = userService;
+    this.tenantService = tenantService;
   }
 
   ngOnInit() {
@@ -75,11 +84,19 @@ export class MainHeaderComponent implements OnInit {
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
+    this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          this.logo = data.tenantData.logo;
+          this.tenantName = data.tenantData.titleName;
+        }
+      }
+    );
     this.userService.userData$.subscribe(
       (user: IUserData) => {
-          if (user && !user.err) {
-            this.userProfile = user.userProfile;
-          }
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+        }
       });
   }
 }
