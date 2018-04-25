@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspaceclass';
 import { SearchService, UserService } from '@sunbird/core';
@@ -10,8 +10,10 @@ import {
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { SuiModalService, TemplateModalConfig, ModalTemplate,
- IPopup } from 'ng2-semantic-ui';
+import {
+  SuiModalService, TemplateModalConfig, ModalTemplate
+} from 'ng2-semantic-ui';
+
 /**
  * The limited publish component to search limited published content
 */
@@ -24,9 +26,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
-
-  @ViewChild('modalSharing')
-  public modalSharing: ModalTemplate<{ data: string }, string, string>;
   /**
    * To navigate to other pages
    */
@@ -68,6 +67,11 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   showError = false;
 
   /**
+   * To show / hide shareLink
+  */
+  shareLink = false;
+
+  /**
    * no result  message
   */
   noResultMessage: INoResultMessage;
@@ -87,12 +91,16 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   */
   public config: ConfigService;
   /**
-     * Contains page limit of inbox list
+  * contentShareLink
+  */
+  contentShareLink: string;
+  /**
+  * Contains page limit of inbox list
   */
   pageLimit: number;
 
   /**
-    * Current page number of inbox list
+  * Current page number of inbox list
   */
   pageNumber = 1;
 
@@ -146,6 +154,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
+    this.noResultMessage = {
+      'message': this.resourceService.messages.stmsg.m0008,
+      'messageText': this.resourceService.messages.stmsg.m0083
+    };
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -187,8 +199,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
               },
               left: {
                 displayType: 'icon',
-                classes: 'linkify large icon',
-                actionType: 'linkshare',
+                actionType: 'shareComponent',
+                icon: 'linkify',
                 clickable: true
               }
             };
@@ -200,10 +212,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           this.showError = false;
           this.noResult = true;
           this.showLoader = false;
-          this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0008,
-            'messageText': this.resourceService.messages.stmsg.m0083
-          };
         }
       },
       (err: ServerResponse) => {
@@ -215,10 +223,12 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     );
   }
   contentClick(param) {
-    // if (param.type === 'delete') {
-    //   this.deleteConfirmModal(param.contentId);
-    // }
-    this.ShareLinkModal();
+    if (param.type === 'delete') {
+      this.deleteConfirmModal(param.content.identifier);
+    } else {
+      this.shareLink = true;
+      this.contentShareLink = this.workSpaceService.getUnlistedShareUrl(param.content);
+    }
   }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
@@ -232,44 +242,30 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
         };
         this.delete(contentIds).subscribe(
-            (data: ServerResponse) => {
-                this.showLoader = false;
-                this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
-                this.toasterService.success(this.resourceService.messages.smsg.m0006);
-            },
-            (err: ServerResponse) => {
-                this.showLoader = false;
-                this.toasterService.error(this.resourceService.messages.fmsg.m0022);
-            }
+          (data: ServerResponse) => {
+            this.showLoader = false;
+            this.limitedPublishList = this.removeContent(this.limitedPublishList, contentIds);
+            this.toasterService.success(this.resourceService.messages.smsg.m0006);
+          },
+          (err: ServerResponse) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
+          }
         );
       })
       .onDeny(result => {
       });
   }
 
-  public ShareLinkModal() {
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalSharing);
-    config.isClosable = true;
-    config.size = 'normal';
-    this.modalService
-      .open(config)
-      .onDeny(result => {
-      });
-  }
-
-  public copyLink(popup: IPopup) {
-     popup.open();
-  }
-
   /**
- * This method helps to navigate to different pages.
- * If page number is less than 1 or page number is greater than total number
- * of pages is less which is not possible, then it returns.
- *
- * @param {number} page Variable to know which page has been clicked
- *
- * @example navigateToPage(1)
- */
+   * This method helps to navigate to different pages.
+   * If page number is less than 1 or page number is greater than total number
+   * of pages is less which is not possible, then it returns.
+   *
+   * @param {number} page Variable to know which page has been clicked
+   *
+   * @example navigateToPage(1)
+   */
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
       return;

@@ -41,23 +41,6 @@
     <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
   </div>
 </ng-template>
-
-<ng-template let-context let-modal="modal" #modalSharing>
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.lbl?.share}}</span>
-      </div>
-    </div>
-  </div>
-  <div class="content">
-    <p class="meta">{{resourceService?.frmelmnts?.lbl?.sharelink}}</p>
-    <div class="ui action input shareContent width-100" id="buttonPopUp">
-      <input type="text" id="copyLinkData" name="title" readonly [(ngModel)]="contentShareLink" suiPopup [popupPlacement]="top"
-        popupText="Link copied to clipboard" popupTrigger="manual"  #popup="suiPopup"/>
-      <button class="ui basic primary button" (click)="copyLink(popup)" id="copyLinkButton">
-        COPY LINK
-      </button>
-    </div>
-  </div>
-</ng-template>
+<!--<app-share-link [contentShareLink]="contentShareLink" *ngIf ="shareLink" 
+(close)="shareLink = false">
+</app-share-link>-->
