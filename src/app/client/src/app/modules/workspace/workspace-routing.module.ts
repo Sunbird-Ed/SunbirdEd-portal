@@ -23,15 +23,9 @@ const routes: Routes = [
         //   { path: 'lessonplan', component: CreateLessonPlanComponent }
         // ]
       },
-<<<<<<< HEAD
-      {path: 'edit/collection/:contentId/:type/:state/:frameworkk', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
-      {path: 'edit/generic/:contentId/:state', component: GenericEditorComponent },
-=======
       {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
       {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
       {path: 'edit/generic', component: GenericEditorComponent },
->>>>>>> upstream/angular-migration
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },
