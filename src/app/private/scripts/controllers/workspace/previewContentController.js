@@ -140,7 +140,7 @@ angular.module('playerApp')
         previewContent.reviewComments = ''
       }
 
-      previewContent.createCheckListObj = function (content) {
+      previewContent.createCheckListArr = function (content) {
         if (content && (previewContent.checkedContents.indexOf(content) === -1)) {
           previewContent.checkedContents.push(content)
         } else if (content && (previewContent.checkedContents.indexOf(content) !== -1)) {
@@ -149,7 +149,7 @@ angular.module('playerApp')
       }
 
       previewContent.validateRequestChecklistModal = function (content) {
-        previewContent.createCheckListObj(content)
+        previewContent.createCheckListArr(content)
         if (((($('.listItem:checked').length > 0) || ($('.otherItem:checked').length > 0))) &&
         (previewContent.reviewComments.length > 0)) {
           previewContent.enableCheckListSubmitBtn = true
@@ -159,7 +159,7 @@ angular.module('playerApp')
       }
 
       previewContent.validatePublishtChecklistModal = function (content) {
-        previewContent.createCheckListObj(content)
+        previewContent.createCheckListArr(content)
         if ($('.listPublishItem:checked').length === $('.listPublishItem').length) {
           previewContent.enableCheckListSubmitBtn = true
         } else {
