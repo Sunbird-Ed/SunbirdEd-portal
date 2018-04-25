@@ -1,4 +1,4 @@
-<sui-modal class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()" #modal>
+<sui-modal *ngIf="profileData" class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()" #modal>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -7,19 +7,11 @@
     </div>
   </div>
   <div class="content">
-    <!-- <div class="margin-bottom-15">
-      <span class="padded chip margin-top--5" *ngFor="let selectedSkill of userProfile.skills">
-        <a class="ui label margin-top--5">
-          {{selectedSkill?.skillName}}
-          <i class="delete icon" ng-click="profileCtrl.removeSelectedSkill(selectedSkill); profileCtrl.generateInteractEvent('removeSkills')"></i>
-        </a>
-      </span>
-    </div> -->
     <form class="ui form">
       <div class="ui form">
         <div class=" field">
-          <div *ngIf="profileData" class="field">
-            <sui-multi-select [isSearchable]="true" name="skills" class="selection" [(ngModel)]="skills" [options]="profileData.skills" #multiSelect>
+          <div class="field">
+            <sui-multi-select [isSearchable]="true" name="skills" class="selection" [(ngModel)]="skill" [options]="profileData.skills" #multiSelect>
               <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
             </sui-multi-select>
           </div>
@@ -31,7 +23,7 @@
     <button class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
-    <button class="ui approve primary button" (click)="addSkill(skills); modal.deny()">
+    <button class="ui approve primary button" (click)="addSkill(skill); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.finish}}
     </button>
   </div>

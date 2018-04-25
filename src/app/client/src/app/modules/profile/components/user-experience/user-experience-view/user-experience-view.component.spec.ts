@@ -55,7 +55,7 @@ describe('UserExperienceViewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     parentComp.ngOnInit();
     activatedRoute.params = {
-      'section': 'address',
+      'section': 'experience',
       'action': 'add'
     };
     component.experience = mockRes.data.userProfile;
@@ -71,7 +71,7 @@ describe('UserExperienceViewComponent', () => {
     parentComp.allowedAction = [];
     parentComp.ngOnInit();
     activatedRoute.params = {
-      'section': 'address',
+      'section': 'experience',
       'action': 'add'
     };
     expect(component).toBeTruthy();

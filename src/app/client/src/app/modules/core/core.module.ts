@@ -7,13 +7,12 @@ import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService, TelemetryLibUtilService
+  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
+  TELEMETRY_PROVIDER, TenantService
 } from './services';
-import {
-  MainHeaderComponent, MainMenuComponent, SearchComponent
-} from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
-import * as $ from 'jquery';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -25,9 +24,9 @@ import * as $ from 'jquery';
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
   exports: [MainHeaderComponent, PermissionDirective],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, TelemetryLibUtilService]
+    AuthGuard, TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
 })
 export class CoreModule {
 }

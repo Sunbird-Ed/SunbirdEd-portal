@@ -1,4 +1,4 @@
-export const mockUserData = {
+export const mockData = {
     tenantSuccess:
         {
             'id': 'api.tenant.info',

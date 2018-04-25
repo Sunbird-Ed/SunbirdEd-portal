@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ToasterService, SharedModule } from '@sunbird/shared';
+import { ToasterService, SharedModule, ResourceService } from '@sunbird/shared';
 import { CoreModule, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ProfileService, UserSummaryComponent } from '@sunbird/profile';
@@ -24,7 +24,7 @@ describe('UserSummaryComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, FormsModule,
         RouterTestingModule, CoreModule],
       declarations: [UserSummaryComponent],
-      providers: [ProfileService,
+      providers: [ProfileService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -63,6 +63,8 @@ describe('UserSummaryComponent', () => {
   });
   it('should call editDetails method', () => {
     const profileService = TestBed.get(ProfileService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
     const route = TestBed.get(Router);
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.successResponse));
     const editedSummary = 'newSummary';

@@ -15,4 +15,14 @@ export const mockRes = {
             'response': 'SUCCESS'
         }
     },
+    resourceBundle: {
+        'messages': {
+            'fmsg': {
+                'm0076': 'Please enter mandatory fields'
+            },
+            'smsg': {
+                'm0022': 'Address updated successfully'
+            }
+        }
+    }
 };
