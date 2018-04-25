@@ -17,10 +17,6 @@ export class WorkSpaceService {
   */
   public content: ContentService;
   /**
-  *baseUrl;
-  */
-  public baseUrl: string;
-  /**
   * Constructor - default method of AnnouncementService class
   * @param {ConfigService} config ConfigService reference
   * @param {HttpClient} http HttpClient reference
