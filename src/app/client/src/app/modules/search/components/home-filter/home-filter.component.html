@@ -10,7 +10,7 @@
             <i class="dropdown icon"></i>
           </div>
           <div content>
-            <div class="twelve wide column content margin-bottom-15" *ngIf='queryParams != undefined'>
+            <div class="twelve wide column content margin-bottom-15" *ngIf='queryParams != undefined && showFilter'>
               <span *ngFor="let value of label">
                 <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
                   {{value}}:
@@ -27,7 +27,7 @@
                 </span>
               </span>
             </div>
-            <div *ngIf="refresh" class="filtercolmntext ui grid transition  ">
+            <div class="filtercolmntext ui grid transition  " *ngIf='queryParams != undefined && showFilter && refresh'>
               <div class="one wide column filter-text">
                 <span class="ShowFilterSubTitle">{{resourceService.frmelmnts?.lbl?.filterby}}</span>
               </div>
@@ -50,7 +50,7 @@
                   <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
                 </sui-multi-select>
               </div>
-              <div class="two wide column">
+              <div class="two wide column" *ngIf='queryParams != undefined'> 
                 <div class="field">
                   <form class="conceptSelector ui form">
                     <app-concept-picker [selectedConcepts]="queryParams.Concepts" (Concepts)="concepts($event)"></app-concept-picker>

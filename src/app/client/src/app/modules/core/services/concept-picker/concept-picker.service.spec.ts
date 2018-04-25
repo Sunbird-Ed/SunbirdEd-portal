@@ -12,16 +12,20 @@ import { ConfigService, ResourceService, ToasterService} from '@sunbird/shared';
 import { ConceptPickerService } from './concept-picker.service';
 import {mockRes} from './concept-picker.service.spec.data';
 describe('ConceptPickerService', () => {
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {
+        'm0015': 'Fetching content detail failed, please try again later...'
+      }
+    }
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule],
-      providers: [ConceptPickerService, SearchService, UserService, ConfigService, LearnerService, ResourceService,
-        ToasterService, ContentService]
+      providers: [ConceptPickerService, SearchService, UserService, ConfigService, LearnerService,
+        ToasterService, ContentService, { provide: ResourceService, useValue: resourceBundle }]
     });
   });
-  it('should be created', inject([ConceptPickerService], (service: ConceptPickerService) => {
-    expect(service).toBeTruthy();
-  }));
   it('should be created', inject([ConceptPickerService, SearchService, ContentService], (service: ConceptPickerService,
     searchService: SearchService, contentService: ContentService) => {
       spyOn(service, 'getConcept').and.callThrough();
@@ -38,22 +42,4 @@ describe('ConceptPickerService', () => {
       expect(service).toBeTruthy();
       expect(contentService.post).toHaveBeenCalled();
   }));
-
-  // it('should call getConcept', inject([ConceptPickerService, SearchService], (service: ConceptPickerService,
-  //   searchService: SearchService, contentService: ContentService) => {
-  //     const searchParams = {
-  //       filters: {
-  //         objectType: ['Concept']
-  //       },
-  //       offset: 0,
-  //       limit: 200
-  //     };
-  //     // spyOn(contentService, 'post').and.callFake(() => Observable.of(mockRes.success));
-  //     // searchService.compositeSearch(searchParams);
-  //     // expect(service).toBeTruthy();
-  //     // expect(contentService.post).toHaveBeenCalled();
-  //     // spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(mockRes.result));
-  //     // service.getConcept(0, 200);
-  //     // expect()
-  // }));
 });

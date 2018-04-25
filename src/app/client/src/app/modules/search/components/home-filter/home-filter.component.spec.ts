@@ -51,7 +51,7 @@ describe('HomeFilterComponent', () => {
   }));
   it('should call applyFilters method ', inject([ConfigService, Router],
     (configService, route) => {
-      const queryParams = {Subjects: ['english']};
+      const queryParams = {};
       component.applyFilters();
       expect(route.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams: queryParams});
       fixture.detectChanges();

@@ -1,8 +1,9 @@
-import { ConceptPickerService } from './../../services/concept-picker/concept-picker.service';
+import { IConceptData } from './../../interfaces';
+import { ConceptPickerService } from './../../services';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
-declare var $: any;
+
 @Component({
   selector: 'app-concept-picker',
   templateUrl: './concept-picker.component.html',
@@ -13,15 +14,11 @@ export class ConceptPickerComponent implements OnInit {
   /**
    * concept Data
    */
-  conceptData: object;
+  conceptData: Array<IConceptData>;
   /**
    * selectedConcepts Data
    */
   @Input() selectedConcepts: any;
-  /**
-   * number of selectedConcepts Data
-   */
-  contentConcepts: any;
   /**
    * message about how many concept are selected
    */
@@ -33,17 +30,18 @@ export class ConceptPickerComponent implements OnInit {
    * any data
    */
   showLoader = true;
+  contentConcepts: any;
   /**
    * emits selected concepts
    */
   @Output('Concepts')
-  Concepts = new EventEmitter<any>();
+  Concepts = new EventEmitter();
   /**
     * Constructor to create injected service(s) object
     * Default method of Draft Component class
     * @param {ConceptPickerService} conceptPickerService Reference of ConceptPickerService
   */
-  constructor( conceptPickerService: ConceptPickerService) {
+  constructor(conceptPickerService: ConceptPickerService) {
     this.conceptPickerService = conceptPickerService;
   }
   /**
@@ -51,7 +49,7 @@ export class ConceptPickerComponent implements OnInit {
    */
   initConceptBrowser() {
     this.selectedConcepts = this.selectedConcepts || [];
-    this.contentConcepts = this.selectedConcepts;
+    this.contentConcepts = _.map(this.selectedConcepts, 'id');
     this.pickerMessage = this.contentConcepts.length + ' concepts selected';
     $('.tree-picker-selector').val(this.pickerMessage);
     setTimeout(() => {
@@ -61,14 +59,14 @@ export class ConceptPickerComponent implements OnInit {
         picked: this.contentConcepts,
         onSubmit: (nodes) => {
           $('.tree-picker-selector').val(nodes.length + ' concepts selected');
-          this.contentConcepts = [];
+          const contentConcepts = [];
           _.forEach(nodes, (obj) => {
-            this.contentConcepts.push({
+            contentConcepts.push({
               id: obj.id,
               name: obj.name
             });
           });
-          this.selectedConcepts = this.contentConcepts;
+          this.selectedConcepts = contentConcepts;
           this.Concepts.emit(this.selectedConcepts);
         },
         nodeName: 'conceptSelector_treePicker',

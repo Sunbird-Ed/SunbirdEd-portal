@@ -2,12 +2,14 @@ import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { SearchParam } from '@sunbird/core';
-import { ServerResponse } from '@sunbird/shared';
+import { ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 @Injectable()
 export class ConceptPickerService {
   private searchService: SearchService;
+  private toasterService: ToasterService;
+  private resourceService: ResourceService;
   /**
    * BehaviorSubject Containing user profile.
    */
@@ -20,18 +22,17 @@ export class ConceptPickerService {
    * concepts list
    */
   concepts = [];
-  apiCall = true;
   /**
     * Constructor to create injected service(s) object
     * @param {SearchService} searchService Reference of SearchService
   */
-  constructor(searchService: SearchService) {
+  constructor(searchService: SearchService, toasterService: ToasterService, resourceService: ResourceService) {
     this.searchService = searchService;
+    this.toasterService = toasterService;
+    this.resourceService = resourceService;
   }
   public initialize() {
-    if (this.apiCall === true) {
-       this.getConcept(0, 200);
-    }
+    this.getConcept(0, 200);
   }
   /**
   * call search api with objectType =['Concept']
@@ -58,6 +59,9 @@ export class ConceptPickerService {
             this.loadDomains();
           }
         }
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0015);
       }
     );
   }
@@ -93,8 +97,10 @@ export class ConceptPickerService {
             domains.push(domain);
           });
           this._conceptData$.next({ err: null, data: domains });
-          this.apiCall = false;
         }
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0015);
       }
     );
   }
@@ -117,16 +123,26 @@ export class ConceptPickerService {
     });
     return _.uniqBy(childArray, 'id');
   }
-
-  getObjectById(id, concepts, found) {
-    concepts.forEach((value) => {
+  /**
+   *  search concept by given id
+   */
+  searchConceptById(id, concepts, found) {
+    _.forEach(concepts, (value) => {
       if (id === value['id']) {
         found.push({ id: value['id'], name: value['name'] });
       } else if (value['nodes'].length > 0) {
-        this.getObjectById(id, value['nodes'], found);
-      } else {
+        this.searchConceptById(id, value['nodes'], found);
       }
     });
   }
-
+  /**
+   *  process Concepts data
+   */
+  processConcepts(query, concepts) {
+    const found = [];
+    _.forEach(query, (id) => {
+      this.searchConceptById(id, concepts, found);
+    });
+    return found;
+  }
 }

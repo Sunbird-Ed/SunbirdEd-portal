@@ -34,6 +34,8 @@ export class HomeFilterComponent implements OnInit {
   selectedConcepts: Array<object>;
   refresh = true;
   queryParams: IHomeQueryParams;
+  showFilter = false;
+
   /**
     * Constructor to create injected service(s) object
     * @param {Router} route Reference of Router
@@ -47,6 +49,7 @@ export class HomeFilterComponent implements OnInit {
     this.resourceService = resourceService;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
+    this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
   }
   /**
    * to get selected concepts from concept picker.
@@ -74,7 +77,7 @@ export class HomeFilterComponent implements OnInit {
    * apply selected values.
    */
   applyFilters() {
-    const queryParams = {};
+   const queryParams = {};
     _.forIn(this.queryParams, (value, key) => {
       if (value.length > 0) {
         if (key === 'Concepts') {
@@ -103,33 +106,29 @@ export class HomeFilterComponent implements OnInit {
    * seting initial filter values.
    */
   setFilters() {
-    this.label = this.config.dropDownConfig.FILTER.SEARCH.All.label;
     this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
     this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
     this.searchSubjects = this.config.dropDownConfig.FILTER.RESOURCES.subjects;
-    const Concepts = [];
-    if (this.queryParams && this.queryParams.Concepts !== undefined) {
-      this.queryParams.Concepts.forEach((id) => {
-        this.conceptPickerService.getObjectById(id, this.selectedConcepts['data'], Concepts);
-      });
-      this.queryParams.Concepts = Concepts;
+    if (this.queryParams && this.queryParams.Concepts) {
+      this.queryParams.Concepts = this.conceptPickerService.processConcepts(this.queryParams.Concepts, this.selectedConcepts);
     }
+    this.showFilter = true;
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.All.DROPDOWN, ...this.queryParams };
   }
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.queryParams = { ...params };
-      _.forIn(params, (value, key) => {
-        if (typeof value === 'string') {
-          this.queryParams[key] = [value];
-        }
-      });
-      this.conceptPickerService.conceptData$.subscribe(data => {
-        if (data !== undefined) {
-          this.selectedConcepts = data;
+      this.conceptPickerService.conceptData$.subscribe(conceptData => {
+        if (conceptData !== undefined) {
+          this.selectedConcepts = conceptData.data;
+          this.activatedRoute.queryParams.subscribe((params) => {
+            this.queryParams = { ...params };
+            _.forIn(params, (value, key) => {
+              if (typeof value === 'string') {
+                this.queryParams[key] = [value];
+              }
+            });
           this.setFilters();
+        });
         }
-      });
     });
   }
 }
