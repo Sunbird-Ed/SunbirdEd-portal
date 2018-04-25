@@ -45,9 +45,10 @@
           <a>
           <i *ngIf="(content.action.left.clickable) && (content.action.left.actionType == 'shareComponent')" 
            class="{{content.action.left.classes}}">
-          <app-share-link [contentShareLink]="content" (close)="shareLink = false">
+          <app-share-link [contentShare]="content" (close)="shareLink = false">
           </app-share-link>
-          <i *ngIf="(content.action.left.clickable) && (contnet.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
+          </i>
+          <i *ngIf="(content.action.left.clickable) && (content.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
           <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes.icon}}"></i>
           </a>
         </span>

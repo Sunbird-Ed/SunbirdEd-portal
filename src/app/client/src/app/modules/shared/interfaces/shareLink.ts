@@ -8,8 +8,8 @@ export interface ISharelink {
     * type of content type
     * data for share link
     */
-    id?: string | 'icon' | 'button';
-    classes?: string;
+    id?: string ;
+    icon?: string;
     type?: string;
     data?: object ;
 }

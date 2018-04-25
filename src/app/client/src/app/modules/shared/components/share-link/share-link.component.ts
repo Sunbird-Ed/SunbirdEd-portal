@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, AfterViewInit,
-EventEmitter, ElementRef, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter,
+ElementRef, ViewChild , Renderer } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui';
 import { ISharelink } from './../../interfaces';
@@ -10,14 +10,14 @@ import { ISharelink } from './../../interfaces';
     >>> .ui.popup{
       background-color: #007AFF !important;
       background:#007AFF !important
-    },
+    }
     >>> .arrow{
       background-color: #007AFF !important;
       background:#007AFF !important
     }
   `],
 })
-export class ShareLinkComponent implements OnInit, AfterViewInit {
+export class ShareLinkComponent implements OnInit {
   /**
   * position for the popup
   */
@@ -25,13 +25,18 @@ export class ShareLinkComponent implements OnInit, AfterViewInit {
   /**
   * contentShareLink
   */
-  @Input() contentShareLink: ISharelink;
+  ShareLink: string;
 
-  @Output() close = new EventEmitter();
-
-  // @ViewChild('copyLinkData') el:ElementRef;
+  /**
+   * To show / hide modal
+  */
+  sharelinkModal = false;
+  /**
+  *baseUrl;
+  */
+  public baseUrl: string;
+  @Input() contentShare: ISharelink;
   @ViewChild('copyLinkButton') copyLinkButton: ElementRef;
-
   /**
   * To call resource service which helps to use language constant
   */
@@ -46,29 +51,78 @@ export class ShareLinkComponent implements OnInit, AfterViewInit {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
-  constructor(resourceService: ResourceService ) {
+  constructor(resourceService: ResourceService , private _renderer: Renderer ) {
     this.resourceService = resourceService;
-    this.position = 'top';
+    this.position = 'top center';
+    this.baseUrl = document.location.origin + '/';
   }
   ngOnInit() {
-    console.log('>>>>>>', this.contentShareLink);
+    if (this.contentShare.type) {
+      this.ShareLink = this.getPublicShareUrl(this.contentShare.id, this.contentShare.type);
+    } else {
+      this.ShareLink = this.getUnlistedShareUrl(this.contentShare);
+    }
   }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.copyLinkButton.nativeElement.click();
-    });
+  /**
+  * popDenyss
+  */
+  popDeny(pop) {
+    pop.close();
   }
+
+  /**
+  * initializeModal
+  */
+  initializeModal() {
+    this.sharelinkModal = true;
+    if (this.sharelinkModal) {
+      setTimeout(() => {
+        this._renderer.invokeElementMethod(this.copyLinkButton.nativeElement, 'click');
+      });
+    }
+  }
+  /**
+  * copyLink
+  * {object}  copyLinkData -element ref
+  * {object}  popup -element ref
+  */
   public copyLink(popup: IPopup, copyLinkData) {
     popup.open();
     copyLinkData.select();
     document.execCommand('copy');
   }
-  modalDeny(contentShareModal) {
-    contentShareModal.deny();
-    this.close.emit(null);
+ /**
+  * getBase64Url
+  * generate the base url to play unlisted content for public users.
+  * {object} identifier-content or course identifier
+  * returns {string} type - content or course type.
+  */
+  getBase64Url(type, identifier) {
+    return btoa(type + '/' + identifier);
   }
-
-  initializeModal(contentShareModal) {
-    contentShareModal.open();
+  /**
+  * getUnlistedShareUrl
+  * generate the url to play unlisted content for other users.
+  * {object}  cData - content data
+  * returns {string} url to share.
+  */
+  getUnlistedShareUrl(content) {
+    console.log(content);
+    if (content.contentType === 'Course') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', content.identifier);
+    } else if (content.mimeType === 'application/vnd.ekstep.content-collection') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', content.identifier);
+    } else {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', content.identifier);
+    }
+  }
+  /**
+  * getPublicShareUrl
+  * {string}  identifier - content or course identifier
+  * {string}  type - content or course type
+  * returns {string} url to share
+  */
+  getPublicShareUrl(identifier, type) {
+    return this.baseUrl + type + '/' + identifier;
   }
 }
