@@ -80,7 +80,7 @@ export class FrameworkService {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.hashTagId = this.userProfile.rootOrg.hashTagId;
+          this.hashTagId = this.userProfile.hashTagId;
           if (this.isApiCall === true) {
             this.getFramework();
           }
