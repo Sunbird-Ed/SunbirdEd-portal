@@ -188,6 +188,10 @@ export class UserService {
     return this._rootOrgId;
   }
 
+  get hashTagId() {
+    return this._hashTagId;
+  }
+
   get channel() {
     return this._channel;
   }

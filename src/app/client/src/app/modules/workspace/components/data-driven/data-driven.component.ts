@@ -51,7 +51,7 @@ export class DataDrivenComponent implements OnInit {
   /**
 * Contains config service reference
 */
-  public config: ConfigService;
+  public configService: ConfigService;
   /**
  * To make inbox API calls
  */
@@ -89,7 +89,7 @@ export class DataDrivenComponent implements OnInit {
 
   public creationFormLable: string;
 
-  public exists: boolean;
+  public isCachedDataExists: boolean;
 
   public framework: String;
 
@@ -103,7 +103,7 @@ export class DataDrivenComponent implements OnInit {
     toasterService: ToasterService,
     editorService: EditorService,
     userService: UserService,
-    config: ConfigService,
+    configService: ConfigService,
     formService: FormService,
     private _cacheService: CacheService
   ) {
@@ -112,22 +112,21 @@ export class DataDrivenComponent implements OnInit {
     this.toasterService = toasterService;
     this.editorService = editorService;
     this.userService = userService;
-    this.config = config;
+    this.configService = configService;
     this.frameworkService = frameworkService;
     this.formService = formService;
     this.activatedRoute.url.subscribe(url => {
       this.contentType = url[0].path;
     });
-    this.creationFormLable = this.config.appConfig.contentCreateTypeLable[this.contentType];
+    this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
     // console.log('creationFormLable', this.creationFormLable);
   }
 
   ngOnInit() {
-
     /**
-     * getMetaData is called to config the form data and framework data
+     * fetchFrameworkMetaData is called to config the form data and framework data
      */
-    this.getMetaData();
+    this.fetchFrameworkMetaData();
 
     /***
  * Call User service to get user data
@@ -140,30 +139,24 @@ export class DataDrivenComponent implements OnInit {
       });
   }
   /**
-* getMetaData is gives form config data
+* fetchFrameworkMetaData is gives form config data
 */
-  getMetaData() {
+  fetchFrameworkMetaData() {
+
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (frameworkData && !frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
         this.framework = frameworkData.framework;
         /**
-         * exists will check data is exists in cache or not. If exists should not call
-         * form api otherwise call form api and get form data
-         */
-        this.exists = this._cacheService.exists(this.contentType + this.formAction);
-        if (this.exists) {
+  * isCachedDataExists will check data is exists in cache or not. If exists should not call
+  * form api otherwise call form api and get form data
+  */
+        this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
+        if (this.isCachedDataExists) {
           const data: any | null = this._cacheService.get(this.contentType + this.formAction);
           this.formFieldProperties = data;
-          this.getFormConfig();
+          console.log(' this.formFieldProperties', this.formFieldProperties);
         } else {
-          /**
-          * Default method of OrganisationService class
-          *@param {formType} type form type
-          *@param {formAction} action form action type
-          *@param {contentType} content selected content type
-          *@param {framework} framework framework id
-          */
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
@@ -172,10 +165,8 @@ export class DataDrivenComponent implements OnInit {
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
-              setTimeout(() => {
-                this.formFieldProperties = data;
-                this.getFormConfig();
-              }, 0);
+              this.formFieldProperties = data;
+              this.getFormConfig();
             },
             (err: ServerResponse) => {
               this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -201,8 +192,13 @@ export class DataDrivenComponent implements OnInit {
         return formFieldCategory;
       });
     });
-    // this.formFieldProperties.sort((a, b) => a.index - b.index);
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
+    console.log(' this.formFieldProperties', this.formFieldProperties);
+    this._cacheService.set(this.contentType + this.formAction, this.formFieldProperties,
+      {
+        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+      });
   }
   /****
 * Redirects to workspace create section
@@ -223,12 +219,12 @@ export class DataDrivenComponent implements OnInit {
       requestData.createdBy = this.userProfile.id,
       requestData.organisation = [],
       requestData.createdFor = this.userProfile.organisationIds,
-      requestData.contentType = this.config.appConfig.contentCreateTypeForEditors[this.contentType],
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
     if (this.contentType === 'studymaterial') {
-      requestData.mimeType = this.config.appConfig.CONTENT_CONST.CREATE_LESSON;
+      requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
     } else {
-      requestData.mimeType = this.config.urlConFig.URLS.CONTENT_COLLECTION;
+      requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
 
     return requestData;
@@ -248,7 +244,7 @@ export class DataDrivenComponent implements OnInit {
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {
-        const type = this.config.appConfig.contentCreateTypeForEditors[this.contentType];
+        const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
         this.router.navigate(['/workspace/content/edit/collection', res.result.content_id, type, state, framework]);
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0010);

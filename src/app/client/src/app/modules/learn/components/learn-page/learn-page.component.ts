@@ -58,6 +58,7 @@ export class LearnPageComponent implements OnInit {
   caraouselData: Array<ICaraouselData> = [];
   private router: Router;
   public filterType: string;
+  public redirectUrl: string;
   public filters: any;
   public queryParams: any = {};
   /**
@@ -181,18 +182,10 @@ export class LearnPageComponent implements OnInit {
  */
   ngOnInit() {
     this.filters = {};
-    this.getQueryParams();
-    this.populateEnrolledCourse();
     this.filterType = this.config.appConfig.course.filterType;
-  }
-/**
- * method to update page data based on filters.triggered by child filter page
- */
-  updatePageFilters(filters) {
-    this.filters = filters;
-    const currUrl =  this.router.url.split('?');
-    this.router.navigate([currUrl[0]], {queryParams: this.filters });
-    this.populatePageData();
+    this.redirectUrl = this.config.appConfig.course.inPageredirectUrl;
+    this.getQueryParams();
+    console.log('this.redirectUrl', this.redirectUrl);
   }
 
   /**
@@ -211,12 +204,8 @@ export class LearnPageComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-        const __self = this;
-        _.forOwn(this.queryParams, function(queryValue, queryParam) {
-          if (queryParam !== 'key') {
-            __self.filters[queryParam] = queryValue;
-          }
-        });
+       this.filters = this.queryParams;
+       this.populateEnrolledCourse();
       });
   }
 }

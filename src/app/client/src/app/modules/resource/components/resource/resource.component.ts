@@ -52,6 +52,7 @@ export class ResourceComponent implements OnInit {
   public filters: any;
   public queryParams: any;
   private router: Router;
+  public redirectUrl: string;
   /**
    * The "constructor"
    *
@@ -115,9 +116,10 @@ export class ResourceComponent implements OnInit {
  */
   ngOnInit() {
     this.filters = {};
-    this.getQueryParams();
-    this.populatePageData();
     this.filterType = this.config.appConfig.library.filterType;
+    this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
+    console.log('this.redirectUrl', this.redirectUrl);
+    this.getQueryParams();
   }
 
   /**
@@ -136,23 +138,12 @@ export class ResourceComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-        const __self = this;
-        _.forOwn(this.queryParams, function(queryValue, queryParam) {
+        _.forOwn(this.queryParams, (queryValue, queryParam) => {
           if (queryParam !== 'key') {
-            __self.filters[queryParam] = queryValue;
+            this.filters[queryParam] = queryValue;
           }
         });
+        this.populatePageData();
       });
   }
-
-  /**
- * method to update page data based on filters.triggered by child filter page
- */
-updatePageFilters(filters) {
-  this.filters = filters;
-  const currUrl =  this.router.url.split('?');
-  this.router.navigate([currUrl[0]], {queryParams: this.filters });
-  this.populatePageData();
-}
-
 }

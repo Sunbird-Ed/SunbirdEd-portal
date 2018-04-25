@@ -11,7 +11,7 @@
         </div>
         <form class="ui form">
             <div class="content">
-                <div *ngIf="formFieldProperties">
+                <div *ngIf="formFieldProperties && categoryMasterList">
                     <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
                     </app-content-creation-default-template>
                 </div>

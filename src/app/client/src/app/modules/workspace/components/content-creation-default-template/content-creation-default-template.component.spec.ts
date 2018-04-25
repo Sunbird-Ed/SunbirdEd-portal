@@ -61,9 +61,8 @@ describe('DefaultTemplateComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should call mapMasterCategoryList', () => {
-    const formFieldProperties = mockData.success;
     component.formFieldProperties = mockData.success;
-    component.mapMasterCategoryList(formFieldProperties, '');
+    component.mapMasterCategoryList('');
     expect(component.categoryList).toBeDefined();
   });
   it('should call applyDependencyRules', () => {
@@ -88,12 +87,12 @@ describe('DefaultTemplateComponent', () => {
   it('should call ngAfterViewInit', () => {
     const DROPDOWN_INPUT_TYPES = ['select', 'multiSelect'];
     component.formFieldProperties = mockData.formFieldMetaData;
-    component.ngAfterViewInit();
+    component.setFormConfig();
   });
   it('should call onConfigChange', () => {
    const data = mockData.onConfigChangeData;
    spyOn(component, 'updateForm').and.callThrough();
-   component.onConfigChange(data);
+   component.updateForm(data);
    expect(component.updateForm).toHaveBeenCalled();
   });
 });

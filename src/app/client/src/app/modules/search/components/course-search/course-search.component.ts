@@ -106,6 +106,8 @@ export class CourseSearchComponent implements OnInit {
    */
   public filterType: string;
 
+  public redirectUrl: string;
+
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -239,6 +241,7 @@ export class CourseSearchComponent implements OnInit {
 
   ngOnInit() {
     this.filterType = this.config.appConfig.course.filterType;
+    this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
     this.filters = {
       objectType: ['Content']
     };
@@ -259,19 +262,12 @@ export class CourseSearchComponent implements OnInit {
         }
         this.queryParams = { ...bothParams.queryParams };
         // load search filters from queryparams if any
-        _.forOwn(this.queryParams, function (queryValue, queryParam) {
+        _.forOwn(this.queryParams, (queryValue, queryParam) =>  {
           if (queryParam !== 'key') {
-            __self.filters[queryParam] = queryValue;
+            this.filters[queryParam] = queryValue;
           }
         });
         this.populateEnrolledCourse();
       });
-  }
-  /**
-   * method to update page data based on filters.triggered by child filter page
-   */
-  updatePageFilters(filters) {
-    this.queryParams = filters;
-    this.navigateToPage(this.pageNumber);
   }
 }

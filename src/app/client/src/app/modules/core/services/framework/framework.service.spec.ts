@@ -58,7 +58,8 @@ describe('FrameworkService', () => {
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'get').and.returnValue(Observable.throw(mockFrameworkData.error));
     service.isApiCall = true;
-    service.getFrameworkCategories('NCF');
+    service.defaultFramework = 'NCF';
+    service.getFrameworkCategories();
     service.frameworkData$.subscribe(frameworkData => {
       expect(frameworkData.err).toBeDefined();
     });

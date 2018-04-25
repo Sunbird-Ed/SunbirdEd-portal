@@ -12,10 +12,9 @@ import { EditorService } from './../../services';
   templateUrl: './content-creation-default-template.component.html',
   styleUrls: ['./content-creation-default-template.component.css']
 })
-export class DefaultTemplateComponent implements OnInit, AfterViewInit {
+export class DefaultTemplateComponent implements OnInit {
   @Input('formFieldProperties') formFieldProperties: any;
   @Input('categoryMasterList') categoryMasterList: any;
-  @Output() childEvent = new EventEmitter();
 
   /**
     * This variable hepls to show and hide page loader.
@@ -56,37 +55,36 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
   /**
 * Contains config service reference
 */
-  public config: ConfigService;
-/**
- * frameworkService is get framework data
- */
-  public frameworkService: FrameworkService;
-/**
- * formService is to get form meta data
- */
-  public formService: FormService;
-/**
- * formInputData is to take input data's from form
- */
-  public formInputData: any;
-/**
- * categoryList is category list of dropdown values
- */
-  public categoryList: Object;
-/**
- * masterList is master copy of framework data
- */
-  public masterList: any;
-/**
- * years is used to get years from getYearsForCreateTextBook
- */
-  public years: any;
-    /**
-   * To make content editor service API calls
+  public configService: ConfigService;
+  /**
+   * frameworkService is get framework data
    */
+  public frameworkService: FrameworkService;
+  /**
+   * formService is to get form meta data
+   */
+  public formService: FormService;
+  /**
+   * formInputData is to take input data's from form
+   */
+  public formInputData = {};
+  /**
+   * categoryList is category list of dropdown values
+   */
+  public categoryList: Object;
+  /**
+   * masterList is master copy of framework data
+   */
+  public masterList: {};
+  /**
+   * years is used to get years from getYearsForCreateTextBook
+   */
+  public years: any;
+  /**
+ * To make content editor service API calls
+ */
   private editorService: EditorService;
 
-  // private categoryMasterList: any;
 
 
 
@@ -98,7 +96,7 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
     frameworkService: FrameworkService,
     toasterService: ToasterService,
     userService: UserService,
-    config: ConfigService,
+    configService: ConfigService,
     editorService: EditorService
   ) {
     this.formService = formService;
@@ -107,11 +105,11 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
     this.toasterService = toasterService;
     this.categoryList = {};
     this.userService = userService;
-    this.config = config;
+    this.configService = configService;
     this.editorService = editorService;
   }
 
-  ngAfterViewInit() {
+  setFormConfig() {
     const DROPDOWN_INPUT_TYPES = ['select', 'multiSelect'];
     _.forEach(this.formFieldProperties, (field) => {
       if (_.includes(DROPDOWN_INPUT_TYPES, field.inputType)) {
@@ -125,11 +123,10 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit() {
-    this.formInputData = {};
-    this.masterList = {};
     /***
  * Call User service to get user data
  */
+    this.setFormConfig();
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -138,33 +135,7 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
       });
     this.showLoader = false;
     this.years = this.getYearsForCreateTextBook();
-    this.mapMasterCategoryList(this.formFieldProperties, '');
-  }
-  /**
- * requestBody is returned of type object
- */
-  generateData(data) {
-    this.showLoader = true;
-    const requestData = _.cloneDeep(data);
-    // const requestBody = {
-    requestData.name = data.name ? data.name : 'Untitled Collection',
-      requestData.description = data.description ? data.description : 'Untitled Collection',
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
-      requestData.createdBy = this.userProfile.id,
-      requestData.organisation = [],
-      requestData.createdFor = this.userProfile.organisationIds,
-      requestData.mimeType = this.config.appConfig.CONTENT_CONST.CREATE_LESSON,
-      requestData.contentType = 'Resource';
-    // };
-
-    return requestData;
-  }
-  /**
-     * onConfigChange is called whene dropdown value changed
-     */
-  onConfigChange(data) {
-   // console.log('data' , data);
-    this.updateForm(data);
+    this.mapMasterCategoryList('');
   }
 
   /**
@@ -230,7 +201,7 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
         if (resetSelected) {
           this.resetSelectedField(id, field.range);
         }
-        dependedValues =  _.map(associations, i => _.pick(i, ['name', 'category']));
+        dependedValues = _.map(associations, i => _.pick(i, ['name', 'category']));
         groupdFields = _.chain(dependedValues)
           .groupBy('category')
           .map((name, category) => ({ name, category }))
@@ -266,7 +237,7 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
     if (values.length) {
       this.categoryList[fieldCode] = _.unionBy(values, 'name');
     } else {
-      this.mapMasterCategoryList(this.formFieldProperties, fieldCode);
+      this.mapMasterCategoryList(fieldCode);
     }
   }
 
@@ -276,8 +247,8 @@ export class DefaultTemplateComponent implements OnInit, AfterViewInit {
 * @param {Object} configurations   - Field configurations
 * @param {String} key              - Field uniq code
 */
-  mapMasterCategoryList(configurations, key) {
-    _.forEach(configurations, (field, value) => {
+  mapMasterCategoryList(key) {
+    _.forEach(this.formFieldProperties, (field, value) => {
       if (key) {
         if (field.code === key) {
           this.categoryList[field.code] = field.range;

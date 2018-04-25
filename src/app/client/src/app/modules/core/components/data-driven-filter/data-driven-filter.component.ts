@@ -12,13 +12,12 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./data-driven-filter.component.css']
 })
 export class DataDrivenFilterComponent implements OnInit {
-  @Input() routerVal: string;
-  @Input() inPageFilter: boolean;
-  @Output() triggerParentSearch: EventEmitter<any> = new EventEmitter();
+  @Input() filterEnv: string;
+  @Input() redirectUrl: string;
   /**
  * To get url, app configs
  */
-  public config: ConfigService;
+  public configService: ConfigService;
 
   public resourceService: ResourceService;
 
@@ -42,7 +41,7 @@ export class DataDrivenFilterComponent implements OnInit {
 
   public framework: string;
 
-  public exists: boolean;
+  public isCachedDataExists: boolean;
 
   public formType = 'content';
 
@@ -51,8 +50,6 @@ export class DataDrivenFilterComponent implements OnInit {
   public pageNumber: Number = 1;
 
   public queryParams: any;
-
-  public redirectUrl: any;
   /**
  * formInputData is to take input data's from form
  */
@@ -67,7 +64,7 @@ export class DataDrivenFilterComponent implements OnInit {
     * @param {PaginationService} paginationService Reference of PaginationService
     * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService,
+  constructor(configService: ConfigService,
     resourceService: ResourceService,
     router: Router,
     private activatedRoute: ActivatedRoute,
@@ -78,7 +75,7 @@ export class DataDrivenFilterComponent implements OnInit {
     toasterService: ToasterService,
 
   ) {
-    this.config = config;
+    this.configService = configService;
     this.resourceService = resourceService;
     this.router = router;
     this.frameworkService = frameworkService;
@@ -91,8 +88,7 @@ export class DataDrivenFilterComponent implements OnInit {
     this.frameworkService.initialize();
     this.formInputData = {};
     this.getQueryParams();
-    this.filterType = this.routerVal;
-    this.getMetaData();
+    this.fetchFilterMetaData();
   }
 
   getQueryParams() {
@@ -116,52 +112,49 @@ export class DataDrivenFilterComponent implements OnInit {
             this.queryParams[key] = [value];
           }
         });
-        // console.log('this.queryParams', this.queryParams);
         this.formInputData = _.pickBy(this.queryParams);
-        // console.log('this.queryParams', this.formInputData);
       });
   }
   /**
-* getMetaData is gives form config data
+* fetchFilterMetaData is gives form config data
 */
-  getMetaData() {
-    this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-      if (frameworkData && !frameworkData.err) {
-        this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
-        this.framework = frameworkData.framework;
-        this.exists = this._cacheService.exists(this.filterType + this.formAction);
-        if (this.exists) {
-          const data: any | null = this._cacheService.get(this.filterType + this.formAction);
-          this.formFieldProperties = data;
-          this.getFormConfig(this.formFieldProperties);
-        } else {
+  fetchFilterMetaData() {
+    this.isCachedDataExists = this._cacheService.exists(this.filterEnv + this.formAction);
+    if (this.isCachedDataExists) {
+      const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
+      this.formFieldProperties = data;
+    } else {
+      this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+        if (frameworkData && !frameworkData.err) {
+          this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+          this.framework = frameworkData.framework;
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
-            contentType: this.filterType,
+            contentType: this.filterEnv,
             framework: frameworkData.framework
           };
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
-              this.getFormConfig(this.formFieldProperties);
+              this.getFormConfig();
             },
             (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
+              this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
+        } else if (frameworkData && frameworkData.err) {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
-      } else if (frameworkData && frameworkData.err) {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005 || 'Something went wrong, please try again later...');
-      }
-    });
+      });
+    }
   }
 
   /**
  * @description - Which is used to config the form field vlaues
  * @param {formFieldProperties} formFieldProperties  - Field information
  */
-  getFormConfig(formFieldProperties) {
+  getFormConfig() {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
         if (category.code === formFieldCategory.code) {
@@ -171,26 +164,22 @@ export class DataDrivenFilterComponent implements OnInit {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-  }
-
-  applyFilters() {
-    this.initSearch();
+    this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
+      {
+        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+      });
   }
 
   resetFilters() {
     this.formInputData = {};
-    this.initSearch();
+    this.applyFilters();
   }
 
-  initSearch() {
+  applyFilters() {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    // console.log('this.queryParams in filter', this.queryParams);
-    this.redirectUrl = this.config.appConfig[this.filterType]['redirectUrl'];
-    if (this.router.url.toString().indexOf(this.redirectUrl) >= 0 || this.inPageFilter) {
-      this.triggerParentSearch.emit(_.pickBy(this.queryParams));
-    } else {
-      this.router.navigate([this.redirectUrl, this.pageNumber], { queryParams: this.queryParams });
-    }
+    console.log('this.redirectUrl', this.redirectUrl);
+    this.router.navigate([this.redirectUrl], { queryParams: this.queryParams });
   }
 
   removeFilterSelection(field, item) {

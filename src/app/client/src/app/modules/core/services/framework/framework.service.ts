@@ -5,11 +5,7 @@ import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
   Framework, FrameworkCategorie, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { SearchParam } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { concat } from 'rxjs/operator/concat';
 import { CacheService } from 'ng2-cache-service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
@@ -17,7 +13,7 @@ export class FrameworkService {
   /**
    * Reference of user service.
    */
-  public user: UserService;
+  public userService: UserService;
 
   /**
    * Reference of content service.
@@ -27,7 +23,7 @@ export class FrameworkService {
   /**
    * Reference of config service
    */
-  public config: ConfigService;
+  public configService: ConfigService;
   /**
   * defaultFramework
   */
@@ -68,19 +64,19 @@ export class FrameworkService {
      * @param {ContentService} content content service reference
      * @param {ConfigService} config config service reference
      */
-  constructor(user: UserService, content: ContentService, config: ConfigService,
+  constructor(userService: UserService, content: ContentService, configService: ConfigService,
     private _cacheService: CacheService,
     public toasterService: ToasterService, public resourceService: ResourceService) {
-    this.user = user;
+    this.userService = userService;
     this.content = content;
-    this.config = config;
+    this.configService = configService;
   }
 
   public initialize() {
     /**
     * Call User service to get user data
     */
-    this.user.userData$.subscribe(
+    this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
@@ -97,15 +93,14 @@ export class FrameworkService {
 */
   public getFramework(): void {
     const channelOptions = {
-      url: this.config.urlConFig.URLS.CHANNEL.READ + '/' + this.hashTagId
+      url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + this.hashTagId
     };
     this.content.get(channelOptions).subscribe(
       (data: ServerResponse) => {
-        // const defaultFramework = data.result.channel.defaultFramework;
         this.defaultFramework = data.result.channel.defaultFramework;
         this._frameworkData$.next({ err: null, framework: this.defaultFramework, frameworkdata: null });
         if (this.defaultFramework) {
-          this.getFrameworkCategories(this.defaultFramework);
+          this.getFrameworkCategories();
         }
       },
       (err: ServerResponse) => {
@@ -117,9 +112,9 @@ export class FrameworkService {
 * getFramework data   .
 *
 */
-  public getFrameworkCategories(defaultFramework): void {
+  public getFrameworkCategories(): void {
     const frameworkOptions = {
-      url: this.config.urlConFig.URLS.FRAMEWORK.READ + '/' + defaultFramework
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + this.defaultFramework
     };
     this.content.get(frameworkOptions).subscribe(
       (frameworkData: ServerResponse) => {

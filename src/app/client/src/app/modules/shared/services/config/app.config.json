@@ -123,11 +123,13 @@
     },
     "course":{
       "filterType":"course",
-      "redirectUrl":"/search/Courses"
+      "inPageredirectUrl":"/learn",
+      "searchPageredirectUrl":"/search/Courses/1"
     },
     "library":{
       "filterType":"library",
-      "redirectUrl":"/search/Library"
+      "inPageredirectUrl":"/resources",
+      "searchPageredirectUrl":"/search/Library/1"
     },
     "formApiTypes": {
         "textbook": "textbook",
@@ -136,5 +138,9 @@
         "studymaterial": "resource",
         "lessonplan": "lessonplan",
         "library": "library"
+    },
+    "cacheServiceConfig": {
+      "setTimeInMinutes": 10,
+      "setTimeInSeconds": 60
     }
 }

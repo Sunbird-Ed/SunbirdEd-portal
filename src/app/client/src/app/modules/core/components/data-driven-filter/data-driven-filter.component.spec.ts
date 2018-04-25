@@ -68,7 +68,7 @@ const fakeActivatedRoute = {
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.getMetaData();
+    component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formService.getFormConfig).toHaveBeenCalled();
   });
@@ -83,7 +83,7 @@ const fakeActivatedRoute = {
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     spyOn(formService, 'getFormConfig').and.returnValue(Observable.throw({err: {error: 'SERVER_ERROR'}}));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.getMetaData();
+    component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(toasterService.error).toHaveBeenCalled();
   });
@@ -97,52 +97,49 @@ const fakeActivatedRoute = {
     spyOn(cacheService, 'get').and.returnValue(mockData.mockRes.formConfigData);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
-    component.getMetaData();
+    component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);
     const toasterService = TestBed.get(ToasterService);
+    const cacheService = TestBed.get(CacheService);
     spyOn(toasterService, 'error').and.callThrough();
+    spyOn(cacheService, 'exists').and.returnValue(false);
     frameworkService._frameworkData$.next({ err: { error: 'SERVER_ERROR' } });
-    component.getMetaData();
+    component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should frame form config data', () => {
     component.categoryMasterList = _.cloneDeep(mockData.mockRes.frameworkData);
-    component.getFormConfig(mockData.mockRes.formConfigData);
+    component.getFormConfig();
     fixture.detectChanges();
     expect(component.formFieldProperties).toBeDefined();
   });
   it('should apply filters', () => {
-    spyOn(component, 'initSearch').and.returnValue(null);
+    spyOn(component, 'applyFilters').and.returnValue(null);
     component.applyFilters();
     fixture.detectChanges();
-    expect(component.initSearch).toHaveBeenCalled();
+    expect(component.applyFilters).toHaveBeenCalled();
   });
   it('should reset filters', () => {
-    spyOn(component, 'initSearch').and.returnValue(null);
+    spyOn(component, 'applyFilters').and.returnValue(null);
     component.resetFilters();
     fixture.detectChanges();
     expect(component.formInputData).toEqual(component.queryParams);
-    expect(component.initSearch).toHaveBeenCalled();
+    expect(component.applyFilters).toHaveBeenCalled();
   });
   it('should initalize in page search incase of inpage filter is enabled', () => {
     component.filterType = 'course';
-    component.inPageFilter = true;
     const emitData =  _.pickBy(component.queryParams);
-    component.triggerParentSearch.subscribe(data => {
-      expect(data).toEqual(emitData);
-   });
-    component.initSearch();
+    component.applyFilters();
     fixture.detectChanges();
   });
   it('should initalize search and navigate to search page if inpage filter is not enabled', () => {
     component.filterType = 'course';
-    component.inPageFilter = false;
-    component.initSearch();
+    component.applyFilters();
     fixture.detectChanges();
   });
   it('should remove filter selection', () => {

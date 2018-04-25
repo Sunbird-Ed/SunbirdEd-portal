@@ -70,9 +70,9 @@ describe('DataDrivenComponent', () => {
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.success.frameworkdata
     });
-    componentParent.exists = true;
+    componentParent.isCachedDataExists = true;
     componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
-    componentParent.getMetaData();
+    componentParent.fetchFrameworkMetaData();
   });
   it('should throw error', () => {
     const service = TestBed.get(FrameworkService);
@@ -84,7 +84,7 @@ describe('DataDrivenComponent', () => {
       framework: mockFrameworkData.frameworkError.framework, frameworkdata: mockFrameworkData.frameworkError.frameworkdata
     });
     componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
-    componentParent.getMetaData();
+    componentParent.fetchFrameworkMetaData();
   });
   it('should router to collection editer ', () => {
     const state = 'Draft';
