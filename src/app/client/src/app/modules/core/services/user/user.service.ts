@@ -47,7 +47,7 @@ export class UserService {
     /**
    * Contains hashTag id
    */
-  public _hashTagId: string;
+  private _hashTagId: string;
   /**
  * Reference of appId
  */
