@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER
+  TELEMETRY_PROVIDER, TenantService
 } from './services';
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
@@ -24,7 +24,7 @@ import { AuthGuard } from './guard/auth-gard.service';
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent],
   providers: [
-    LearnerService, UserService,
+    LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
 })

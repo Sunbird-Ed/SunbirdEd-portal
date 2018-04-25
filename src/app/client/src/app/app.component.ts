@@ -1,8 +1,9 @@
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
-
-import { UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails, ITelemetryContext,
-   ConceptPickerService } from '@sunbird/core';
+import {
+  UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails,
+  ITelemetryContext, TenantService, ConceptPickerService
+} from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -15,6 +16,15 @@ import * as _ from 'lodash';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  /**
+   * user profile details.
+   */
+  userProfile: IUserProfile;
+  slug: string;
+  /**
+   * reference of TenantService.
+   */
+  public tenantService: TenantService;
   /**
    * reference of UserService service.
    */
@@ -44,12 +54,14 @@ export class AppComponent implements OnInit {
    */
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
-    courseService: CoursesService, telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
+    courseService: CoursesService, tenantService: TenantService,
+    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.courseService = courseService;
     this.conceptPickerService = conceptPickerService;
+    this.tenantService = tenantService;
     this.telemetryService = telemetryService;
   }
   /**
@@ -69,6 +81,22 @@ export class AppComponent implements OnInit {
        this.conceptPickerService.initialize();
       this.initTelemetryService();
     }
+
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          const slug = _.get(user, 'userProfile.rootOrg.slug');
+          this.tenantService.getTenantInfo(slug);
+          this.tenantService.tenantData$.subscribe(
+            data => {
+              if (data && !data.err) {
+                document.title = data.tenantData.titleName;
+                document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
+              }
+            }
+          );
+        }
+      });
   }
 
   public initTelemetryService() {

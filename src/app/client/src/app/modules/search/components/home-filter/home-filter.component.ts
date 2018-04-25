@@ -117,7 +117,7 @@ export class HomeFilterComponent implements OnInit {
   }
   ngOnInit() {
       this.conceptPickerService.conceptData$.subscribe(conceptData => {
-        if (conceptData !== undefined) {
+        if (conceptData && !conceptData.err) {
           this.selectedConcepts = conceptData.data;
           this.activatedRoute.queryParams.subscribe((params) => {
             this.queryParams = { ...params };
