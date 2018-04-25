@@ -79,8 +79,7 @@ export class FrameworkService {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = user.userProfile;
-          this.hashTagId = this.userProfile.hashTagId;
+          this.hashTagId = this.userService.hashTagId;
           if (this.isApiCall === true) {
             this.getFramework();
           }
