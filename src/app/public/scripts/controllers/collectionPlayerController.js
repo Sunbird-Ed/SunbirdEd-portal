@@ -19,7 +19,7 @@
         showEnrollError: false
       }
       cpvm.collectionMeta = {
-        author: '-',
+        creator: '-',
         language: '-',
         gradeLevel: '-',
         subject: '-',
@@ -39,7 +39,7 @@
             res.result.content.children = _.sortBy(res.result.content.children,
               ['index'])
             cpvm.courseHierachy = res.result.content
-            cpvm.collectionMeta.author = cpvm.courseHierachy.owner
+            cpvm.collectionMeta.creator = cpvm.courseHierachy.creator
             cpvm.collectionMeta.language = cpvm.courseHierachy.language
             cpvm.collectionMeta.gradeLevel = cpvm.courseHierachy.gradeLevel
             cpvm.collectionMeta.subject = cpvm.courseHierachy.subject

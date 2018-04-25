@@ -55,18 +55,17 @@
     <div class="ten wide column" ng-if="cpvm.collectionMeta">
         <div class="ui clearing divider" ng-hide="cpvm.showPlayer"></div>
         <div class="ui grid">
-            <div class="row">
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.creator">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
                                 <div class="header">{{$root.frmelmnts.lbl.author}}</div>
-                                <div class="description padding-top-1rem">{{cpvm.collectionMeta.author}}</div>
+                                <div class="description padding-top-1rem">{{cpvm.collectionMeta.creator}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.language">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
@@ -76,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.gradeLevel">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
@@ -86,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.subject">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
@@ -96,9 +95,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.lastUpdatedOn">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
@@ -108,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column" ng-if="cpvm.collectionMeta.createdOn">
                     <div class="ui list">
                         <div class="item">
                             <div class="content">
@@ -118,7 +115,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
     <div class="one wide column"></div>
