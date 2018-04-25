@@ -47,8 +47,6 @@ export class DataDrivenFilterComponent implements OnInit {
 
   public formAction = 'search';
 
-  public pageNumber: Number = 1;
-
   public queryParams: any;
   /**
  * formInputData is to take input data's from form
@@ -103,9 +101,6 @@ export class DataDrivenFilterComponent implements OnInit {
         };
       })
       .subscribe(bothParams => {
-        if (bothParams.params.pageNumber) {
-          this.pageNumber = Number(bothParams.params.pageNumber);
-        }
         this.queryParams = { ...bothParams.queryParams };
         _.forIn(this.queryParams, (value, key) => {
           if (typeof value === 'string' && key !== 'key') {

@@ -164,16 +164,16 @@ export class DefaultTemplateComponent implements OnInit {
     } else {
       names = keys;
     }
-    _.filter(range, function (res) {
-      _.forEach(names, function (value, key) {
+    _.filter(range, (res) => {
+      _.forEach(names, (value, key) => {
         if (res.name === value) {
           filteredAssociations.push(res);
         }
       });
     });
-    _.forEach(filteredAssociations, function (val, index) {
+    _.forEach(filteredAssociations, (val, index) => {
       if (val.associations) {
-        _.forEach(val.associations, function (key, value) {
+        _.forEach(val.associations, (key, value) => {
           associations.push(key);
         });
       }
