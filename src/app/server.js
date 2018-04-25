@@ -29,7 +29,7 @@ const realm = envHelper.PORTAL_REALM
 const authServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const keycloakResource = envHelper.PORTAL_AUTH_SERVER_CLIENT
 const reqDataLimitOfContentEditor = '50mb'
-const reqDataLimitOfContentUpload = '30mb'
+const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
@@ -39,7 +39,6 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
-const contentServiceLocalUrl = envHelper.content_Service_Local_BaseUrl
 
 let memoryStore = null
 
@@ -88,18 +87,21 @@ app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
 
+if (defaultTenant) {
+  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
+}
+
 app.all('/public', function (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
+  res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
 app.use('/public/*', express.static(path.join(__dirname, 'public')))
-if (defaultTenant) {
-  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
-}
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
 
@@ -126,6 +128,7 @@ app.all('/', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
+  res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -318,7 +321,7 @@ function endSession (request, response, next) {
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    telemetryHelper.logSessionEnd(request)
+    if (_.get(request, 'kauth.grant.access_token.content.sub')) { telemetryHelper.logSessionEnd(request) }
     telemetry.syncOnExit(function (err, res) { // sync on session end
       if (err) {
         console.log('error while syncing', err)
@@ -350,7 +353,8 @@ keycloak.deauthenticated = function (request) {
 
 resourcesBundlesHelper.buildResources(function (err, result) {
   if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-    console.error('please set environment variable sunbird_environment, sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+    console.error('please set environment variable sunbird_environment, ' +
+    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
   }
   console.log('building resource bundles ......')

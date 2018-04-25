@@ -18,7 +18,7 @@ angular.module('playerApp')
       var validateModal = {
         state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
           'WorkSpace.PublishedContent', 'WorkSpace.FlaggedContent'],
-        status: ['Review', 'Live', 'Flagged'],
+        status: ['Review', 'Live', 'Flagged', 'FlagDraft', 'FlagReview'],
         mimeType: config.MimeTypeExceptCollection
       }
       previewContent.contentPlayer = { isContentPlayerEnabled: false }

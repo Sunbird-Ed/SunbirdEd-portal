@@ -8,7 +8,7 @@ angular.module('playerApp')
       var reviewContent = this
       reviewContent.userId = $rootScope.userId
       $scope.contentPlayer = { isContentPlayerEnabled: false }
-      reviewContent.status = ['Review']
+      reviewContent.status = ['Review', 'FlagReview']
       reviewContent.sortBy = 'desc'
       reviewContent.pageLimit = 9
       reviewContent.pager = {}

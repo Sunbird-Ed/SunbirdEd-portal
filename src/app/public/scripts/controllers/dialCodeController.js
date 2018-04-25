@@ -1,5 +1,5 @@
-(function () {
-  angular.module('loginApp').controller('dialCodeController', ['$state', '$timeout',
+ (function () {
+   angular.module('loginApp').controller('dialCodeController', ['$state', '$timeout',
     'contentService', '$rootScope', '$stateParams', 'toasterService',
     function ($state, $timeout, contentService, $rootScope, $stateParams, toasterService) {
       console.log('dialCodeController intialized')
@@ -35,9 +35,9 @@
           $state.go('PublicContent', params)
         }
 
-        dialctrl.openCourseView = function (course) {
-          var params = { courseId: course.identifier }
-          $state.go('PublicCourse', params)
+        dialctrl.openCollectionView = function (collectionDetails) {
+          var params = { contentId: collectionDetails.identifier, name: collectionDetails.name }
+          $state.go('PublicCollection', params)
         }
         contentService.search(req).then(function (res) {
           if (res && res.responseCode === 'OK') {
@@ -64,4 +64,4 @@
       }
       dialctrl.init()
     }])
-}())
+ }())

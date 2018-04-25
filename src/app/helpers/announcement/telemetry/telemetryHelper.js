@@ -4,7 +4,11 @@ const telemetry = new Telemetry()
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
+const jwt = require('jsonwebtoken')
+const envHelper = require('./../../environmentVariablesHelper')
+const appId = envHelper.APPID
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+telemtryEventConfig['pdata']['id'] = appId
 let telemetryData = {}
 
 module.exports = {
@@ -32,9 +36,17 @@ module.exports = {
     if (req.session && req.session.userId) {
       actor.id = req.session && req.session.userId
       actor.type = 'user'
+    } else if (_.get(req, 'headers.x-authenticated-user-token')) {
+      var payload = jwt.decode(req['headers']['x-authenticated-user-token'])
+      actor.id = _.toString(payload['sub'])
+      actor.type = 'user'
     } else {
       actor.id = req.headers['x-consumer-id']
       actor.type = req.headers['x-consumer-username']
+    }
+    if (!actor['id'] || actor['id'] === '') {
+      actor.id = _.toString(process.pid)
+      actor.type = 'service'
     }
     return actor
   },
@@ -160,8 +172,7 @@ module.exports = {
       edata: edata,
       context: telemetryData && telemetryData.context && telemetry.getContextData(telemetryData.context),
       actor: telemetryData && telemetryData.actor,
-      tags: telemetryData && telemetryData.tags,
-      object: telemetryData && telemetryData.object
+      tags: telemetryData && telemetryData.tags
     })
   },
 
@@ -182,8 +193,7 @@ module.exports = {
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
       actor: telemetryData && telemetryData.actor,
-      tags: telemetryData && telemetryData.tags,
-      object: telemetryData && telemetryData.object
+      tags: telemetryData && telemetryData.tags
     })
   },
 

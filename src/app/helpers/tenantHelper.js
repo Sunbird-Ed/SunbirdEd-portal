@@ -11,7 +11,28 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './t
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 
+
+
+
 module.exports = {
+
+  getImagePath: function(baseUrl, tenantId, image, callback){
+
+    fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
+      if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
+        fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, image), function (err, stat) {
+          if (err) {
+            callback(null, null)
+          } else{
+            callback(null, baseUrl +'/tenant/' + envHelper.DEFAUULT_TENANT + '/' + image)
+          }
+        })
+      } else {
+        callback(null, baseUrl +'/tenant/' + tenantId + '/' + image)
+      }
+    })
+
+  },
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT
     let host = req.hostname
@@ -26,65 +47,27 @@ module.exports = {
     if (tenantId) {
       async.parallel({
         logo: function (callback) {
-          fs.stat(path.join(__dirname, '../tenant', tenantId, 'logo.png'), function (err, stat) {
-            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-              fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'logo.png'), function (err, stat) {
-                if (err) {}
-                callback(null, stat)
-              })
-            } else {
-              callback(null, stat)
-            }
-          })
+          module.exports.getImagePath(baseUrl, tenantId, 'logo.png', callback)
         },
         poster: function (callback) {
-          fs.stat(path.join(__dirname, '../tenant', tenantId, 'poster.png'), function (err, stat) {
-            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-              fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'poster.png'), function (err, stat) {
-                if (err) {}
-                callback(null, stat)
-              })
-            } else {
-              callback(null, stat)
-            }
-          })
+          module.exports.getImagePath(baseUrl, tenantId, 'poster.png', callback)
         },
         favicon: function (callback) {
-          fs.stat(path.join(__dirname, '../tenant', tenantId, 'favicon.ico'), function (err, stat) {
-            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-              fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'favicon.ico'),
-                function (err, stat) {
-                  if (err) {}
-                  callback(null, stat)
-                })
-            } else {
-              callback(null, stat)
-            }
-          })
+          module.exports.getImagePath(baseUrl, tenantId, 'favicon.ico', callback)
         },
         appLogo: function (callback) {
-          fs.stat(path.join(__dirname, '../tenant', tenantId, 'appLogo.png'), function (err, stat) {
-            if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-              fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, 'appLogo.png'),
-                function (err, stat) {
-                  if (err) {}
-                  callback(null, stat)
-                })
-            } else {
-              callback(null, stat)
-            }
-          })
+          module.exports.getImagePath(baseUrl, tenantId, 'appLogo.png', callback)
         }
       }, function (err, results) {
         if (err) {}
-        responseObj.logo = baseUrl + (results.logo
-          ? '/tenant/' + tenantId + '/logo.png' : '/common/images/sunbird_logo.png')
-        responseObj.poster = baseUrl + (results.poster
-          ? '/tenant/' + tenantId + '/poster.png' : '/common/images/sunbird_logo.png')
-        responseObj.favicon = baseUrl + (results.favicon
-          ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')
+        responseObj.logo = results.logo
+          ? results.logo : baseUrl + '/common/images/sunbird_logo.png'
+        responseObj.poster = results.poster
+          ? results.poster :  baseUrl + '/common/images/sunbird_logo.png'
+        responseObj.favicon = results.favicon
+          ? results.favicon :  baseUrl +'/common/images/favicon.ico'
         responseObj.appLogo = results.appLogo
-          ? baseUrl + '/tenant/' + tenantId + '/appLogo.png' : responseObj.logo
+          ? results.appLogo : responseObj.logo
         module.exports.getSucessResponse(res, 'api.tenant.info', responseObj, req)
       })
     } else {

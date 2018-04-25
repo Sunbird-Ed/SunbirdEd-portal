@@ -113,10 +113,14 @@ angular.module('playerApp')
       }
 
       upForReviewContent.getRequestObject = function (pageNumber) {
+        var rolesMap = permissionsService.getRoleOrgMap()
         var req = {
           filters: {
             status: upForReviewContent.contentStatus,
-            createdFor: permissionsService.getRoleOrgMap() && permissionsService.getRoleOrgMap()['CONTENT_REVIEWER'],
+            createdFor: permissionsService.getRoleOrgMap() &&
+            _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
+              rolesMap['BOOK_REVIEWER'],
+              rolesMap['FLAG_REVIEWER'])),
             objectType: 'Content',
             contentType: config.contributeContentType,
             createdBy: {'!=': upForReviewContent.userId}
@@ -180,6 +184,17 @@ angular.module('playerApp')
         if (_.indexOf(permissionsService.getCurrentUserRoles(), 'CONTENT_REVIEWER') === -1 &&
             _.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1) {
           req.filters.contentType = ['TextBook']
+        }
+
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1) {
+          req.filters.status = ['FlagReview']
+          req.filters.contentType.push('TextBook')
+        }
+
+        if (_.indexOf(permissionsService.getCurrentUserRoles(), 'FLAG_REVIEWER') !== -1 &&
+            (_.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1 ||
+          _.indexOf(permissionsService.getCurrentUserRoles(), 'CONTENT_REVIEWER') !== -1)) {
+          req.filters.status = ['FlagReview', 'Review']
         }
 
         return req

@@ -42,8 +42,12 @@ angular.module('loginApp')
             templateUrl: '/views/home/landingPage.html'
           }
         },
-        onEnter: function ($window) {
+        onEnter: function ($window, $rootScope) {
           delete $window.localStorage.redirectUrl
+          $rootScope.showSignup = true
+        },
+        onExit: function ($rootScope) {
+          $rootScope.showSignup = false
         }
       })
       .state('PublicContent', {
