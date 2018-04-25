@@ -119,7 +119,6 @@ export class DataDrivenComponent implements OnInit {
       this.contentType = url[0].path;
     });
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
-    // console.log('creationFormLable', this.creationFormLable);
   }
 
   ngOnInit() {
@@ -155,7 +154,6 @@ export class DataDrivenComponent implements OnInit {
         if (this.isCachedDataExists) {
           const data: any | null = this._cacheService.get(this.contentType + this.formAction);
           this.formFieldProperties = data;
-          console.log(' this.formFieldProperties', this.formFieldProperties);
         } else {
           const formServiceInputParams = {
             formType: this.formType,
@@ -193,7 +191,6 @@ export class DataDrivenComponent implements OnInit {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    console.log(' this.formFieldProperties', this.formFieldProperties);
     this._cacheService.set(this.contentType + this.formAction, this.formFieldProperties,
       {
         maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
