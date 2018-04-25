@@ -140,12 +140,16 @@ angular.module('playerApp')
         previewContent.reviewComments = ''
       }
 
-      previewContent.validateRequestChecklistModal = function (content) {
+      previewContent.createCheckListObj = function (content) {
         if (content && (previewContent.checkedContents.indexOf(content) === -1)) {
           previewContent.checkedContents.push(content)
         } else if (content && (previewContent.checkedContents.indexOf(content) !== -1)) {
           previewContent.checkedContents.splice(previewContent.checkedContents.indexOf(content), 1)
         }
+      }
+
+      previewContent.validateRequestChecklistModal = function (content) {
+        previewContent.createCheckListObj(content)
         if (((($('.listItem:checked').length > 0) || ($('.otherItem:checked').length > 0))) &&
         (previewContent.reviewComments.length > 0)) {
           previewContent.enableCheckListSubmitBtn = true
@@ -155,11 +159,7 @@ angular.module('playerApp')
       }
 
       previewContent.validatePublishtChecklistModal = function (content) {
-        if (content && (previewContent.checkedContents.indexOf(content) === -1)) {
-          previewContent.checkedContents.push(content)
-        } else if (content && (previewContent.checkedContents.indexOf(content) !== -1)) {
-          previewContent.checkedContents.splice(previewContent.checkedContents.indexOf(content), 1)
-        }
+        previewContent.createCheckListObj(content)
         if ($('.listPublishItem:checked').length === $('.listPublishItem').length) {
           previewContent.enableCheckListSubmitBtn = true
         } else {
