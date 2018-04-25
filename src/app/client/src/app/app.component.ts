@@ -1,11 +1,10 @@
 import { ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
-<<<<<<< HEAD
-import { UserService, PermissionService, CoursesService, TelemetryService, TenantService } from '@sunbird/core';
-=======
 
-import { UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails, ITelemetryContext } from '@sunbird/core';
->>>>>>> upstream/angular-migration
+import {
+  UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails,
+  ITelemetryContext, TenantService
+} from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -52,7 +51,7 @@ export class AppComponent implements OnInit {
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
-     telemetryService: TelemetryService) {
+    telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
