@@ -11,7 +11,7 @@ angular.module('playerApp')
       allUploadedContent.contentStatus = ['Draft', 'FlagDraft']
       var mimeType = config.MIME_TYPE
       allUploadedContent.contentMimeType = [mimeType.pdf, mimeType.youtube, mimeType.html,
-        mimeType.ePub, mimeType.h5p, mimeType.mp4, mimeType.webm
+        mimeType.ePub, mimeType.h5p, mimeType.mp4, mimeType.webm, mimeType.externalURL
       ]
       allUploadedContent.sortBy = 'desc'
       $scope.isSelected = false
