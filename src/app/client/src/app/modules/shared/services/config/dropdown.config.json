@@ -240,7 +240,8 @@
                 "DROPDOWN": {
                     "Curriculum": [],
                     "Subjects": [],
-                    "Medium": []
+                    "Medium": [],
+                    "Concepts":[]
                 },
                 "label": [
                     "Curriculum",

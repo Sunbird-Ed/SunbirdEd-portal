@@ -6,11 +6,11 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
+  UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
   TELEMETRY_PROVIDER, TenantService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent } from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 
 @NgModule({
@@ -21,12 +21,12 @@ import { AuthGuard } from './guard/auth-gard.service';
     RouterModule,
     FormsModule
   ],
-  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
-  exports: [MainHeaderComponent, PermissionDirective],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent],
   providers: [
     LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
+    AuthGuard, TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
 })
 export class CoreModule {
 }
