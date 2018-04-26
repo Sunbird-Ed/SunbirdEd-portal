@@ -11,6 +11,9 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './t
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 
+
+
+
 module.exports = {
 
   getImagePath: function (baseUrl, tenantId, image, callback) {

@@ -1,5 +1,5 @@
-(function () {
-  angular.module('loginApp').controller('dialCodeController', ['$state', '$timeout',
+ (function () {
+   angular.module('loginApp').controller('dialCodeController', ['$state', '$timeout',
     'contentService', '$rootScope', '$stateParams', 'toasterService',
     function ($state, $timeout, contentService, $rootScope, $stateParams, toasterService) {
       console.log('dialCodeController intialized')
@@ -64,4 +64,4 @@
       }
       dialctrl.init()
     }])
-}())
+ }())
