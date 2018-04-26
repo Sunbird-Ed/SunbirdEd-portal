@@ -71,7 +71,7 @@ export class WorkSpaceService {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
       this.openContent(content, state);
-    } else if((this.config.appConfig.WORKSPACE.genericMimeType).includes(mimeType)) {
+    } else if ((this.config.appConfig.WORKSPACE.genericMimeType).includes(mimeType)) {
       this.openGenericEditor(content, state);
     }
   }
@@ -89,8 +89,8 @@ export class WorkSpaceService {
    * @param {Object}  content - content
    * @param {string}  state - Present state
   */
-  openContent(content,state) {
-    if(this.config.appConfig.WORKSPACE.states.includes(state)) {
+  openContent(content, state) {
+    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/contentEditor/', content.identifier, state, content.framework]);
     } else {
       console.log('open content player');
@@ -103,10 +103,10 @@ export class WorkSpaceService {
    * @param {string}  state - Present state
   */
   openGenericEditor(content, state) {
-    if(this.config.appConfig.WORKSPACE.states.includes(state)) {
+    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state , content.framework]);
     } else {
-      console.log("open content player ");
+      console.log('open content player ');
     }
   }
 }
