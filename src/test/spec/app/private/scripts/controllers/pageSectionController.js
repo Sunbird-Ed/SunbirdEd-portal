@@ -227,7 +227,8 @@ describe('pageSectionCtrl', function () {
 
   it('Should called get enrolled courses', function () {
     spyOn(pageSectionService, 'getPageData').and.callThrough()
-    pageSectionService.getPageData('31231123112-1231232')
+    var req = {request: ''}
+    pageSectionService.getPageData('31231123112-1231232', req)
     expect(pageSectionService.getPageData).toBeDefined()
   })
 
