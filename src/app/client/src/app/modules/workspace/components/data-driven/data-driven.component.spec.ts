@@ -87,7 +87,7 @@ describe('DataDrivenComponent', () => {
     componentParent.fetchFrameworkMetaData();
   });
   it('should router to collection editer ', () => {
-    const state = 'Draft';
+    const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
@@ -102,10 +102,10 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'Draft', componentParent.framework]);
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
   it('should not router to collection editer ', () => {
-    const state = 'Draft';
+    const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
@@ -120,10 +120,10 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'Draft', componentParent.framework]);
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
   it('should router to contentEditor editer ', () => {
-    const state = 'Draft';
+    const state = 'draft';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -137,10 +137,10 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'Draft', componentParent.framework]);
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
   });
   it('should not router to contentEditor editer ', () => {
-    const state = 'Draft';
+    const state = 'draft';
     const router = TestBed.get(Router);
     const userService = TestBed.get(UserService);
     const editorService = TestBed.get(EditorService);
@@ -154,7 +154,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
-      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'Draft', componentParent.framework]);
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
   });
   it('should call getFormConfig', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
