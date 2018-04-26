@@ -9,3 +9,5 @@ export * from './published/published.component';
 export * from './review-submissions/review-submissions.component';
 export * from './uploaded/uploaded.component';
 export * from './limited-published/limited-published.component';
+export * from './data-driven/data-driven.component';
+export * from './content-creation-default-template/content-creation-default-template.component';

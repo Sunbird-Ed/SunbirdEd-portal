@@ -92,7 +92,8 @@ export class SearchComponent implements OnInit {
     });
     this.route.events
       .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
-        this.value = params.url.split('/', 3);
+        const currUrl = this.route.url.split('?');
+        this.value = currUrl[0].split('/', 3);
         if (this.searchUrl[this.value[1]]) {
           this.selectedOption = this.searchUrl[this.value[1]];
         } else if (this.value[1] === 'search') {

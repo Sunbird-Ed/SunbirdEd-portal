@@ -9,3 +9,4 @@ declare module '*.json' {
   export default sample;
 }
 declare const EkTelemetry: any;
+declare var $: any;
