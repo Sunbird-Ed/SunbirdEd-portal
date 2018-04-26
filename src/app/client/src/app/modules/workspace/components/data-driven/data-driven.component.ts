@@ -228,7 +228,7 @@ export class DataDrivenComponent implements OnInit {
   }
 
   createContent() {
-    const state = 'Draft';
+    const state = 'draft';
     const framework = this.framework;
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
