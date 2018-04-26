@@ -171,8 +171,7 @@ angular.module('playerApp')
         var request = {
           content: {
             rejectReasons: previewContent.checkedContents,
-            rejectComment: previewContent.reviewComments,
-            lastPublishedBy: previewContent.userId
+            rejectComment: previewContent.reviewComments
           }
         }
         contentService.reject(request, previewContent.contentId).then(function (res) {
