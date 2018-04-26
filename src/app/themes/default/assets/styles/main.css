@@ -471,6 +471,7 @@
   cursor: not-allowed;
 }
 .overFlowWordRap {
+  word-break: break-word !important;
   overflow-wrap: break-word !important;
 }
 h4.ui.header.sectionHeading {
@@ -1706,10 +1707,11 @@ ul.fancytree-container li {
 }
 .contentdetail {
   color: #7c7b7b;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .contentMetaDetail {
-  color: #7c7b7b;
+  color: #333;
   font-size: 13px;
   width: 50%;
 }
@@ -2784,12 +2786,7 @@ ol.ui.list ol li:before {
     margin: 0 0 0 -373px !important;
   }
 }
-@media screen and (min-height: 750px) {
-  .updateRoleModel {
-    margin-top: 60px !important;
-    margin-left: 350px !important;
-  }
-}
+
 .ui.fluid.search.dropdown img {
   width: 2.1666em !important;
   vertical-align: middle;

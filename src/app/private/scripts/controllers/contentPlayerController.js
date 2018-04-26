@@ -63,6 +63,14 @@ angular.module('playerApp')
 
       function showPlayer (data) {
         $scope.contentData = data
+
+        $scope.contentData.language = $scope.contentData.language
+          ? $scope.contentData.language.join(', ') : ''
+        $scope.contentData.gradeLevel = $scope.contentData.gradeLevel
+          ? $scope.contentData.gradeLevel.join(', ') : ''
+        $scope.contentData.subject = $scope.contentData.subject
+          ? $scope.contentData.subject.join(', ') : ''
+
         $scope._instance = {
           id: $scope.contentData.identifier,
           ver: $scope.contentData.pkgVersion
@@ -96,6 +104,8 @@ angular.module('playerApp')
         /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         } */
+
+
       }
 
       function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
@@ -186,12 +196,12 @@ angular.module('playerApp')
       }
 
       $scope.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name').toString()
+        var conceptNames = _.map(concepts, 'name').join(', ')
         if (concepts && conceptNames.length < concepts.length) {
           var filteredConcepts = _.filter($rootScope.concepts, function (p) {
             return _.includes(concepts, p.identifier)
           })
-          conceptNames = _.map(filteredConcepts, 'name').toString()
+          conceptNames = _.map(filteredConcepts, 'name').join(', ')
         }
         return conceptNames
       }

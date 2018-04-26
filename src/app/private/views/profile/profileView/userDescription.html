@@ -8,12 +8,12 @@
     </div>
     <div class="description" ng-if="!profileCtrl.openDiscriptionEdit" ng-init="profileCtrl.readMore = false">
         <div  ng-if="!profileCtrl.readMore" >
-            <span>{{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;</span>
+            <span class="overFlowWordRap">{{profileCtrl.user.profileSummary | limitTo: 120 }}&nbsp;</span>
             <span class="ui cardsKnowMore mouse-pointer" ng-if="profileCtrl.user.profileSummary.length > 120 && profileCtrl.readMore === false" ng-click="profileCtrl.readMore = !profileCtrl.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
 
         </div>
 
-        <div ng-if="profileCtrl.readMore"> {{profileCtrl.user.profileSummary}}&nbsp;
+        <div ng-if="profileCtrl.readMore" class="overFlowWordRap"> {{profileCtrl.user.profileSummary}}&nbsp;
             <span class="ui cardsKnowMore mouse-pointer" ng-click="profileCtrl.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
         </div>
     </div>

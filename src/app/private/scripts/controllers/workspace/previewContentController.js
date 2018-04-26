@@ -57,6 +57,19 @@ angular.module('playerApp')
           $state.go(previousState.name, previousState.params)
         }
         previewContent.contentData = data
+        previewContent.contentData.language = previewContent.contentData.language
+          ? previewContent.contentData.language.join(', ') : ''
+        previewContent.contentData.gradeLevel = previewContent.contentData.gradeLevel
+          ? previewContent.contentData.gradeLevel.join(', ') : ''
+        previewContent.contentData.subject = previewContent.contentData.subject
+          ? previewContent.contentData.subject.join(', ') : ''
+        previewContent.contentData.flagReasons = previewContent.contentData.flagReasons
+          ? previewContent.contentData.flagReasons.join(', ') : ''
+        previewContent.contentData.flaggedBy = previewContent.contentData.flaggedBy
+          ? previewContent.contentData.flaggedBy.join(', ') : ''
+        previewContent.contentData.flags = previewContent.contentData.flags
+          ? previewContent.contentData.flags.join(', ') : ''
+
         previewContent.contentPlayer.contentData = data
         previewContent.contentPlayer.isContentPlayerEnabled = true
       }
@@ -68,7 +81,7 @@ angular.module('playerApp')
           fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
                             'versionKey,audience,language,gradeLevel,ageGroup,subject,' +
                             'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
-                            'createdOn,lastUpdatedOn,body'
+                            'createdOn,lastUpdatedOn,body,creator'
         }
 
         if ($stateParams.backState === 'WorkSpace.UpForReviewContent' ||
@@ -206,12 +219,12 @@ angular.module('playerApp')
       }
 
       previewContent.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name').toString()
+        var conceptNames = _.map(concepts, 'name').join(', ')
         if (conceptNames.length < concepts.length) {
           var filteredConcepts = _.filter($rootScope.concepts, function (p) {
             return _.includes(concepts, p.identifier)
           })
-          conceptNames = _.map(filteredConcepts, 'name').toString()
+          conceptNames = _.map(filteredConcepts, 'name').join(', ')
         }
         return conceptNames
       }
