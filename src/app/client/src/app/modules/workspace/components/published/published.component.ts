@@ -167,9 +167,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
       },
-      pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0021,

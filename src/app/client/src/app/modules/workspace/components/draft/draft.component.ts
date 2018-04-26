@@ -167,8 +167,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
             },
             limit: this.pageLimit,
-            pageNumber: this.pageNumber,
-            params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+            offset: (this.pageNumber - 1 ) * (this.pageLimit),
+            sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
             'loaderMessage': this.resourceService.messages.stmsg.m0011,

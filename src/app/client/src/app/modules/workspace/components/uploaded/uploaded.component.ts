@@ -165,9 +165,9 @@ export class UploadedComponent extends WorkSpace implements OnInit {
         mimeType: ['application/pdf', 'video/x-youtube', 'application/vnd.ekstep.html-archive',
           'application/epub', 'application/vnd.ekstep.h5p-archive', 'video/mp4', 'video/webm'],
       },
-      pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0023,
