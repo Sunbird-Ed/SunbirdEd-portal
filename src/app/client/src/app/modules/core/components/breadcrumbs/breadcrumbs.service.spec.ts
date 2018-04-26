@@ -1,8 +1,8 @@
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreadcrumbsComponent } from '@sunbird/core';
-import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
+import { TestBed, inject, ComponentFixture, async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import {} from 'jasmine';
+import { } from 'jasmine';
 import { BreadcrumbsService } from './breadcrumbs.service';
 
 const fakeActivatedRoute = {
@@ -20,7 +20,7 @@ class MockRouter {
 describe('BreadcrumbsService', () => {
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [BreadcrumbsService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: MockRouter }],
@@ -28,12 +28,11 @@ describe('BreadcrumbsService', () => {
     });
     fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;
-  });
+  }));
 
   it('should emit the data passed from a component', inject([BreadcrumbsService], (service: BreadcrumbsService) => {
-    component.breadCrumbsData = [];
-    service.setBreadcrumbs({label: 'Home', url: '/home'});
-    expect(service).toBeTruthy();
-    expect(component.breadCrumbsData).toBeDefined();
+    spyOn(service.dynamicBreadcrumbs, 'emit').and.returnValue({ label: 'Home', url: '/home' });
+    service.setBreadcrumbs({ label: 'Home', url: '/home' });
+    expect(service.dynamicBreadcrumbs.emit).toHaveBeenCalledWith({ label: 'Home', url: '/home' });
   }));
 });

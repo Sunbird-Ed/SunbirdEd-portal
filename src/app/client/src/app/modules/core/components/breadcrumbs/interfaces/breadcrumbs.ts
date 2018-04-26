@@ -1,6 +1,6 @@
 import {Params} from '@angular/router';
 export interface IBreadcrumb {
     label: string;
-    params: Params;
+    params?: Params;
     url: string;
 }

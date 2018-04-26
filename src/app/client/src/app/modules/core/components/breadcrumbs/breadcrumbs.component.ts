@@ -2,6 +2,7 @@ import { BreadcrumbsService } from './breadcrumbs.service';
 import { Router, ActivatedRoute, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { IBreadcrumb } from './interfaces';
+import * as _ from 'lodash';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -74,16 +75,18 @@ export class BreadcrumbsComponent implements OnInit {
                 child.forEach(route => {
                     currentRoute = route;
                     breadCrumbLabel = route.snapshot.data;
-                    this.breadCrumbsData = Object.keys(breadCrumbLabel).map(function (index) {
-                        const data = breadCrumbLabel[index];
-                        return data;
-                    });
+                    this.breadCrumbsData = _.map(breadCrumbLabel, function(value, key) {
+                        return _.assign( value);
+                      });
                 });
             }
 
 
         });
-
+        /**
+         * The breadcrumb service helps in passing dynamic breadcrumbs from
+         * a selected component.
+         */
         this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data =>
             this.breadCrumbsData.push(data)
         );

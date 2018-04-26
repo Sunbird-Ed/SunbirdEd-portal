@@ -6,9 +6,10 @@ import { Observable } from 'rxjs/Observable';
 import { Type } from '@angular/core';
 import { distinctUntilChanged } from 'rxjs/operators';
 import 'rxjs/add/operator/filter';
+import { IBreadcrumb } from './interfaces';
 
 const data = { data: { 0: { label: 'Home', url: '/home' }, 1: { label: 'Courses', url: '' } } };
-
+const mockData: IBreadcrumb[] = [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }];
 const children: ActivatedRoute[] = [];
 
 const child: any[] = [{
@@ -56,19 +57,27 @@ describe('BreadcrumbsComponent', () => {
       declarations: [BreadcrumbsComponent],
       providers: [{ provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-      BreadcrumbsService
+        BreadcrumbsService
       ]
-    })
-      .compileComponents();
+    });
   }));
 
-  beforeEach(() => {
+  it('Should return data from activated route and assign it to breadcrumbs data', () => {
     fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    expect(component.breadCrumbsData).toEqual(mockData);
   });
 
-  it('Should return data from activated route', () => {
-    expect(component.breadCrumbsData).toBeDefined();
+  it('Should return return empty breadcrumbs data when no route data is passed', () => {
+    const mockActivatedRoute = {
+      root: { children: [] }
+    };
+    TestBed.overrideProvider(ActivatedRoute, { useValue: mockActivatedRoute });
+    TestBed.compileComponents();
+    fixture = TestBed.createComponent(BreadcrumbsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    expect(component.breadCrumbsData).toEqual([]);
   });
 });
