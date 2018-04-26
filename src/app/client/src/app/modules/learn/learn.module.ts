@@ -5,8 +5,8 @@ import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {LearnPageComponent } from './components/index';
-
+import { LearnPageComponent } from './components/index';
+import { CoreModule } from '@sunbird/core';
 @NgModule({
   imports: [
     CommonModule,
@@ -14,7 +14,8 @@ import {LearnPageComponent } from './components/index';
     SuiModule,
     SlickModule,
     FormsModule,
-    LearnRoutingModule
+    LearnRoutingModule,
+    CoreModule
   ],
   declarations: [LearnPageComponent]
 })

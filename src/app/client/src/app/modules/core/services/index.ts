@@ -12,3 +12,5 @@ export * from './user/user.mock.spec.data';
 export * from './telemetry/telemetry.service';
 export * from './concept-picker/concept-picker.service';
 export * from './tenant/tenant.service';
+export * from './framework/framework.service';
+export * from './form/form.service';
