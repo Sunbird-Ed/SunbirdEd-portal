@@ -1,0 +1,35 @@
+<sui-modal [isClosable]="true" (dismissed)="goToCreate(); " [mustScroll]="true" #modal>
+    <div class=" ui segment margin-top-10">
+        <div class=" margin-bottom-15">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    <span class="ui header">
+                        {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <form class="ui form">
+            <div class="content">
+                <div *ngIf="formFieldProperties && categoryMasterList">
+                    <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties" [categoryMasterList]="categoryMasterList">
+                    </app-content-creation-default-template>
+                </div>
+                <div class="actions margin-top-10">
+                    <p class="text-align-center padding-top-20">
+                        <button class="ui primary text-align-center icon button" (click)="createContent();modal.deny()">
+                            {{resourceService?.frmelmnts?.btn?.startcreating}}
+                        </button>
+                    </p>
+                    <div>
+                        <label>
+                            <p class="text-align-center">
+                                {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
+                            </p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</sui-modal>

@@ -44,6 +44,10 @@ export class UserService {
    * reference of lerner service.
    */
   public learner: LearnerService;
+    /**
+   * Contains hashTag id
+   */
+  private _hashTagId: string;
   /**
  * Reference of appId
  */
@@ -174,6 +178,7 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this.setRoleOrgMap(profileData);
+    this._hashTagId = this._userProfile.rootOrg.hashTagId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   get userProfile() {
@@ -182,6 +187,10 @@ export class UserService {
 
   get rootOrgId() {
     return this._rootOrgId;
+  }
+
+  get hashTagId() {
+    return this._hashTagId;
   }
 
   get channel() {

@@ -1,8 +1,10 @@
 import { PageApiService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, INoResultMessage } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -45,6 +47,12 @@ export class ResourceComponent implements OnInit {
   * Contains result object returned from getPageData API.
   */
   caraouselData: Array<ICaraouselData> = [];
+  public config: ConfigService;
+  public filterType: string;
+  public filters: any;
+  public queryParams: any;
+  private router: Router;
+  public redirectUrl: string;
   /**
    * The "constructor"
    *
@@ -52,10 +60,13 @@ export class ResourceComponent implements OnInit {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService,
-    resourceService: ResourceService) {
+    resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
+    this.config = config;
+    this.router = router;
+    this.router.onSameUrlNavigation = 'reload';
   }
   /**
   * Subscribe to getPageData api.
@@ -63,7 +74,8 @@ export class ResourceComponent implements OnInit {
   populatePageData() {
     const option = {
       source: 'web',
-      name: 'Resource'
+      name: 'Resource',
+      filters: this.filters
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -103,7 +115,35 @@ export class ResourceComponent implements OnInit {
  *This method calls the populatePageData
  */
   ngOnInit() {
-    this.populatePageData();
+    this.filters = {};
+    this.filterType = this.config.appConfig.library.filterType;
+    this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
+    console.log('this.redirectUrl', this.redirectUrl);
+    this.getQueryParams();
   }
 
+  /**
+   *  to get query parameters
+   */
+  getQueryParams() {
+    Observable
+      .combineLatest(
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams,
+        (params: any, queryParams: any) => {
+          return {
+            params: params,
+            queryParams: queryParams
+          };
+        })
+      .subscribe(bothParams => {
+        this.queryParams = { ...bothParams.queryParams };
+        _.forOwn(this.queryParams, (queryValue, queryParam) => {
+          if (queryParam !== 'key') {
+            this.filters[queryParam] = queryValue;
+          }
+        });
+        this.populatePageData();
+      });
+  }
 }

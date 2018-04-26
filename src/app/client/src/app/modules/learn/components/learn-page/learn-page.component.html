@@ -1,8 +1,10 @@
 <br>
 <br>
 <div class=" ui grid">
-  <div class="one wide column"></div>
+  <div class="one wide column">
+  </div>
   <div class="ten wide column">
+      <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"></app-data-driven-filter>
     <div *ngFor="let section of caraouselData">
       <app-page-section [section]="section"></app-page-section>
     </div>
@@ -13,5 +15,6 @@
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
-  <div class="one wide column"></div>
+  <div class="one wide column">
+  </div>
 </div>

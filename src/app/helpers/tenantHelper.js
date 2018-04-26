@@ -76,11 +76,11 @@ module.exports = {
       }, function (err, results) {
         if (err) {}
         responseObj.logo = baseUrl + (results.logo
-          ? '/tenant/' + tenantId + '/logo.png' : '/common/images/sunbird_logo.png')
+          ? '/tenant/' + tenantId + '/logo.png' : '/assets/common/images/sunbird_logo.png')
         responseObj.poster = baseUrl + (results.poster
-          ? '/tenant/' + tenantId + '/poster.png' : '/common/images/sunbird_logo.png')
+          ? '/tenant/' + tenantId + '/poster.png' : '/assets/common/images/sunbird_logo.png')
         responseObj.favicon = baseUrl + (results.favicon
-          ? '/tenant/' + tenantId + '/favicon.ico' : '/common/images/favicon.ico')
+          ? '/tenant/' + tenantId + '/favicon.ico' : '/assets/common/images/favicon.ico')
         responseObj.appLogo = results.appLogo
           ? baseUrl + '/tenant/' + tenantId + '/appLogo.png' : responseObj.logo
         module.exports.getSucessResponse(res, 'api.tenant.info', responseObj, req)
