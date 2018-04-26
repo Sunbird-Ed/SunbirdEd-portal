@@ -131,7 +131,7 @@ export const mockRes = {
                     'language': [
                         'English'
                     ],
-                    'mimeType': 'application/vnd.ekstep.content-collectionsss',
+                    'mimeType': 'video/mp4',
                     'idealScreenSize': 'normal',
                     'createdOn': '2018-04-19T14:21:42.012+0000',
                     'objectType': 'Content',

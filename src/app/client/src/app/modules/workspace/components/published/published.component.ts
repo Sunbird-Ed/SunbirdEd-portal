@@ -144,6 +144,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.state = 'published';
   }
 
   ngOnInit() {
@@ -216,7 +217,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.content.identifier);
     } else {
-      this.workSpaceService.openContentEditor(param.content, this.state);
+      this.workSpaceService.navigateToContent(param.content, this.state);
     }
   }
 

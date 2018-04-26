@@ -30,21 +30,21 @@ describe('WorkSpaceService', () => {
   });
   it('should  launch  content  editor when mime type is content-collection',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
-      workSpaceService.openContentEditor(testData.sucessData.result.content[0], 'draft');
+      workSpaceService.navigateToContent(testData.sucessData.result.content[0], 'draft');
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/contentEditor/', 'do_1124858179748904961134', 'draft', 'NCF']);
   }));
 
   it('should  launch  collection  editor when mime type is ecml-archive',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
-    workSpaceService.openContentEditor(testData.sucessData.result.content[1], 'review');
+    workSpaceService.navigateToContent(testData.sucessData.result.content[1], 'review');
     expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
     'do_1124858179748904961134', 'Resource', 'review', 'NCF']);
   }));
 
   it('should  launch  generic  editor when mime type is not matching ',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
-      workSpaceService.openContentEditor(testData.sucessData.result.content[2], 'review');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'review']);
+      workSpaceService.navigateToContent(testData.sucessData.result.content[2], 'draft');
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft' , 'NCF']);
   }));
 
   it('should call delete api and get success response', inject([WorkSpaceService],

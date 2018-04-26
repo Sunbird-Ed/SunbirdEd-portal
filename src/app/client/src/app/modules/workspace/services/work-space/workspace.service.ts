@@ -65,14 +65,14 @@ export class WorkSpaceService {
  * @param {Object}  content - content
  * @param {string}  state - Present state
  */
-  openContentEditor(content, state) {
+  navigateToContent(content, state) {
     const mimeType = content.mimeType;
     if (mimeType === 'application/vnd.ekstep.content-collection') {
-      this.collectionEditor(content, state);
+      this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
-      this.contentEditor(content, state);
-    } else {
-      this.genericEditor(content, state);
+      this.openContent(content, state);
+    } else if((this.config.appConfig.WORKSPACE.genericMimeType).includes(mimeType)) {
+      this.openGenericEditor(content, state);
     }
   }
   /**
@@ -80,7 +80,7 @@ export class WorkSpaceService {
   * @param {Object}  content - content
   * @param {string}  state - Present state
 */
-  collectionEditor(content, state) {
+  openCollectionEditor(content, state) {
     this.route.navigate(['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework]);
   }
 
@@ -89,8 +89,12 @@ export class WorkSpaceService {
    * @param {Object}  content - content
    * @param {string}  state - Present state
   */
-  contentEditor(content, state) {
-    this.route.navigate(['/workspace/content/edit/contentEditor/', content.identifier, state, content.framework]);
+  openContent(content,state) {
+    if(this.config.appConfig.WORKSPACE.states.includes(state)) {
+      this.route.navigate(['/workspace/content/edit/contentEditor/', content.identifier, state, content.framework]);
+    } else {
+      console.log('open content player');
+    }
   }
   /**
    * genericEditor
@@ -98,24 +102,11 @@ export class WorkSpaceService {
    * @param {Object}  content - content
    * @param {string}  state - Present state
   */
-  genericEditor(content, state) {
-    this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state]);
-  }
-  /**
-  * method openContentPlayer
-  * open content player based item mime type
-  * @param {Object}  content - content
-  * @param {string}  state - Present state
-  */
-  openContentPlayer(content, state) {
-    if (content.mimeType === 'application/vnd.ekstep.content-collection') {
-      this.collectionEditor(content, state);
+  openGenericEditor(content, state) {
+    if(this.config.appConfig.WORKSPACE.states.includes(state)) {
+      this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state , content.framework]);
     } else {
-      this.previewContent(content, state);
+      console.log("open content player ");
     }
   }
-
-  previewContent(content, state) {
-  }
-
 }

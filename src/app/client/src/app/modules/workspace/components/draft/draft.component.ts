@@ -217,7 +217,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         if (param.type === 'delete') {
             this.deleteConfirmModal(param.content.identifier);
         } else {
-            this.workSpaceService.openContentEditor(param.content, this.state);
+            this.workSpaceService.navigateToContent(param.content, this.state);
         }
     }
     public deleteConfirmModal(contentIds) {

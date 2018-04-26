@@ -197,7 +197,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    this.workSpaceService.openContentEditor(param.content, this.state);
+    this.workSpaceService.navigateToContent(param.content, this.state);
   }
 
   /**

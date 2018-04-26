@@ -216,7 +216,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.contentId);
     } else {
-      this.workSpaceService.openContentEditor(param.content, this.state);
+      this.workSpaceService.navigateToContent(param.content, this.state);
     }
   }
 
