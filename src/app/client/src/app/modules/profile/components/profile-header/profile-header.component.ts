@@ -1,7 +1,7 @@
 import { ProfileService } from './../../services/';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 
 @Component({
@@ -27,7 +27,7 @@ export class ProfileHeaderComponent implements OnInit {
   */
   allowedAction = ['update'];
   userProfile: IUserProfile;
-  constructor(public resourceService: ResourceService, public userService: UserService, public activatedRoute: ActivatedRoute,
+  constructor(public resourceService: ResourceService, public userService: UserService,
     public permissionService: PermissionService, public toasterService: ToasterService, public router: Router,
     public profileService: ProfileService, config: ConfigService) {
     this.config = config;
@@ -60,7 +60,6 @@ export class ProfileHeaderComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.imsg.m0005);
       this.router.navigate(['/profile']);
     } else {
-      console.log('image', image);
       this.router.navigate(['/profile']);
     }
   }
