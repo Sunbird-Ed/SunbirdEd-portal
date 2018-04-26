@@ -24,7 +24,7 @@ export class ProfileService {
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
-        }, 1000);
+        }, 2000);
         return res;
       }
     );
@@ -61,7 +61,7 @@ export class ProfileService {
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
-        }, 1000);
+        }, 2000);
         return res;
       });
   }
