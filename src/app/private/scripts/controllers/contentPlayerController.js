@@ -116,7 +116,7 @@ angular.module('playerApp')
                         'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
                         'domain,code,visibility,createdBy,description,language,mediaType,' +
                         'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
-                        'attributions,artifactUrl,mimeType,medium,year,publisher'
+                        'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
