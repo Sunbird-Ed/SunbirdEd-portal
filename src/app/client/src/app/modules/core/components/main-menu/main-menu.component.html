@@ -1,17 +1,17 @@
 <div class="ui secondary pointing menu" *ngIf="userService.userid">
-	<a class="item"  routerLinkActive="active" routerLink="/home" >
+	<a class="item"  [class.active]="router.isActive('/search/All') || router.isActive('/home')"  routerLink="/home" >
 		{{resourceService?.frmelmnts?.tab?.home}}
 	    </a>
-	<a class="item"  routerLinkActive="active" routerLink="/learn" >
+	<a class="item"  [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"  routerLink="/learn" >
 	    {{resourceService?.frmelmnts?.tab?.courses}}
 	    </a>
-	<a class="item"   routerLinkActive="active" routerLink="/resources" >
+	<a class="item"   [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"  routerLink="/resources" >
 		{{resourceService?.frmelmnts?.tab?.resources}}
 	    </a>
-	<a class="item" routerLinkActive="active" routerLink="/groups" >
+	<a class="item" [class.active]="router.isActive('/groups')"  routerLink="/groups" >
 		{{resourceService?.frmelmnts?.tab?.community}}
 	    </a>
-	<a class="item" routerLinkActive="active" routerLink="/profile" >
+	<a class="item" [class.active]="router.isActive('/search/Organisations') || router.isActive('/profile') || router.isActive('/search/Users')"  routerLink="/profile" >
 		{{resourceService?.frmelmnts?.tab?.profile}}
 		</a>
 </div>
