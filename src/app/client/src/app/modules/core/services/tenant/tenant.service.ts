@@ -1,5 +1,7 @@
-import { ITenantData } from './interfaces/tenant';
+import { ITenantData, ITenantInfo } from './interfaces';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +12,14 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class TenantService extends DataService {
+  /**
+   * BehaviorSubject containing tenant data.
+   */
+  private _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
+  /**
+   * Read only observable containing tenant data.
+   */
+  public readonly tenantData$: Observable<ITenantInfo> = this._tenantData$.asObservable();
   /**
    * reference of http.
    */
@@ -42,32 +52,18 @@ export class TenantService extends DataService {
    * API call to gather organization details.
    * @param orgSlug Organization details passed from main-header component.
    */
-  public getOrgDetails(orgSlug) {
+  public getTenantInfo(orgSlug) {
     const option = {
       url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}${orgSlug}`
     };
-    this.get(option).subscribe(data => {
-      this.favicon = data.result.favicon;
-      document.title = data.result.titleName || 'Sunbird';
-      document.querySelector('link[rel*=\'icon\']').setAttribute('href', this.favicon || '/assets/common/images/favicon.ico');
-      this.setTenantData(data.result);
-    });
-  }
+    this.get(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this._tenantData$.next({ err: null, tenantData: apiResponse.result });
+      },
+      (err: ServerResponse) => {
+        this._tenantData$.next({ err: err, tenantData: undefined });
+      }
+    );
 
-  /**
-   * A method to set tenant data.
-   */
-
-  public setTenantData(data) {
-    this.tenantData = data;
-  }
-
-  /**
-   * A method to get tenant data.
-   */
-  get getTenantData() {
-    return this.tenantData;
   }
 }
-
-

@@ -58,12 +58,8 @@ export class UserAddressComponent implements OnInit {
       if (child.addressForm.valid === true) {
         const addAddress: any = {};
         _.forIn(child.addressForm.value, (value, key) => {
-          if (value !== undefined && value !== '' && value !== null) {
-            if (key === 'joiningDate' || key === 'endDate') {
-              addAddress[key] = moment(value).format('YYYY-MM-DD');
-            } else {
-              addAddress[key] = value;
-            }
+          if (value !== undefined) {
+            addAddress[key] = value;
           }
         });
         addAddress['id'] = child.address.id;

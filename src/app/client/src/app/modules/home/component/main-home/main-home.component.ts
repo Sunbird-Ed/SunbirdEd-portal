@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { CoursesService, UserService } from '@sunbird/core';
+import { CoursesService, UserService} from '@sunbird/core';
 import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
 /**
  * This component contains 3 sub components

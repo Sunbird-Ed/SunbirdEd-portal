@@ -349,7 +349,7 @@ export const mockRes = {
                 'id ': '874ed8a5-782e-4f6c-8f36-e0288455901e ',
                 'tempPassword ': null,
                 'email ': 'us********@testss.com ',
-                'rootOrg ': {
+                'rootOrg': {
                     'dateTime ': null,
                     'preferredLanguage ': 'English ',
                     'approvedBy ': null,
@@ -378,7 +378,7 @@ export const mockRes = {
                     'isDefault ': null,
                     'createdBy ': null,
                     'parentOrgId ': null,
-                    'hashTagId ': 'b00bc992ef25f1a9a8d63291e20efc8d ',
+                    'hashTagId': 'b00bc992ef25f1a9a8d63291e20efc8d ',
                     'noOfMembers ': 1,
                     'status ': null
                 },
@@ -523,7 +523,7 @@ export const mockRes = {
                     'createdDate ': '2017-10-31 10:43:48:600+0000',
                     'createdBy ': null,
                     'parentOrgId ': null,
-                    'hashTagId ': '0123653943740170242 ',
+                    'hashTagId': '0123653943740170242 ',
                     'noOfMembers ': null,
                     'status ': 1
                 },
@@ -545,7 +545,7 @@ export const mockRes = {
             'resmsgid ': 'UNAUTHORIZED',
             'msgid ': 'bdf695fd-3916-adb0-2072-1d53deb14aea ',
             'err ': 'UNAUTHORIZED',
-            'status ': 'success ',
+            'status ': 'failed ',
             'errmsg ': 'UNAUTHORIZED'
         },
         'responseCode ': 'error',

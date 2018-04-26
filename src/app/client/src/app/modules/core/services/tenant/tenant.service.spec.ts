@@ -1,6 +1,5 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { response } from './tenant.service.spec.data';
-import { DataService } from '../data/data.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LearnerService } from '../learner/learner.service';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
@@ -16,37 +15,38 @@ describe('TenantService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TenantService, UserService, ConfigService,
-        LearnerService, DataService, ResourceService, ToasterService, Ng2IzitoastService]
+        LearnerService, ResourceService, ToasterService, Ng2IzitoastService]
     });
   });
 
   it('Should make get API call and set tenant data', () => {
     const service = TestBed.get(TenantService);
-    const dataService = TestBed.get(DataService);
-    spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
-    service.tenantData = {
-      appLogo: '',
-      favicon: '',
-      logo: '',
-      poster: '',
-      titleName: ''
-    };
-    service.getOrgDetails('Sunbird');
-    expect(service.tenantData).toBeDefined();
+    spyOn(service, 'get').and.returnValue(Observable.of(response.success));
+    service.getTenantInfo('Sunbird');
+    service.tenantData$.subscribe(
+      data => {
+        expect(data.tenantData).toEqual(response.success.result);
+      });
   });
 
-  it('Should return tenant data when getTenantData method is called', () => {
+  it('Should return default data when get API call is triggered with wrong orgSlug value', () => {
     const service = TestBed.get(TenantService);
-    const dataService = TestBed.get(DataService);
-    spyOn(dataService, 'get').and.callFake(() => Observable.of(response.success));
-    service.tenantData = {
-      appLogo: '',
-      favicon: '',
-      logo: '',
-      poster: '',
-      titleName: ''
-    };
-    service.getOrgDetails('Sunbird');
-    expect(service.getTenantData).toBeDefined();
+    spyOn(service, 'get').and.returnValue(Observable.of(response.success));
+    service.getTenantInfo('test');
+    service.tenantData$.subscribe(
+      data => {
+        expect(data.tenantData).toEqual(response.default);
+      });
+  });
+
+  it('Should emit error on get api failure', () => {
+    const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(Observable.of(response.failure));
+    service.getTenantInfo('Sunbird');
+    service.tenantData$.subscribe(
+      data => {
+        expect(data.err).toBeDefined();
+        expect(data.tenantData).toBeUndefined();
+      });
   });
 });

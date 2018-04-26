@@ -101,6 +101,11 @@
         ],
         "orgType": [
             "technical"
+        ],
+        "gender": [
+            "Male",
+            "Female",
+            "Transgender"
         ]
     },
     "FILTER": {
@@ -235,7 +240,8 @@
                 "DROPDOWN": {
                     "Curriculum": [],
                     "Subjects": [],
-                    "Medium": []
+                    "Medium": [],
+                    "Concepts":[]
                 },
                 "label": [
                     "Curriculum",

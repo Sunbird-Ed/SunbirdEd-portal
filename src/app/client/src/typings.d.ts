@@ -8,4 +8,5 @@ declare module '*.json' {
   const sample: any;
   export default sample;
 }
-declare var EkTelemetry: any;
+declare const EkTelemetry: any;
+declare var $: any;

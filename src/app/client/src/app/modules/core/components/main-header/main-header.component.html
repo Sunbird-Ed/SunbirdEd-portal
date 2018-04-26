@@ -2,8 +2,8 @@
     <div class="center aligned twelve column row padding-top-2rem headerBackground">
         <div class="one wide column"></div>
         <div class="two wide column">
-            <a href="/private/index#!/home">
-                <img [class.header-logoBeforeLogin]="!userService.userid" [class.header-logo]="userService.userid" class="image centered" src="{{ tenantService.getTenantData ? tenantService.getTenantData.logo : '/assets/common/images/sunbird_logo.png' }} ">
+            <a routerLink ="home">
+                <img [class.header-logoBeforeLogin]="!userService.userid" [class.header-logo]="userService.userid" class="image centered" alt={{tenantName}} src="{{logo}} ">
             </a>
         </div>
         <div class="six wide column padding-top-1rem" *ngIf="userService.userid">

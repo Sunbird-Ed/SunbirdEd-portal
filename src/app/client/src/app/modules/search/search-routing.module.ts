@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {
-  UserSearchComponent, UserEditComponent, UserProfileComponent,
+  UserSearchComponent, UserEditComponent, UserProfileComponent, HomeSearchComponent,
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
 const routes: Routes = [

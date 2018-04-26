@@ -10,6 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceComponent } from './resource.component';
 import {Response} from './resource.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
@@ -22,13 +23,22 @@ describe('ResourceComponent', () => {
       },
     }
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+  'queryParams':  Observable.from([{ subject: ['English'] }])
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule],
       declarations: [ResourceComponent],
       providers: [ResourceService, PageApiService, ConfigService, LearnerService, ToasterService,
-         Ng2IzitoastService, { provide: ResourceService, useValue: resourceBundle }],
+         Ng2IzitoastService, { provide: ResourceService, useValue: resourceBundle },
+         { provide: Router, useClass: RouterStub },
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
