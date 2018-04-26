@@ -154,6 +154,9 @@ export class UserSearchComponent implements OnInit {
       err => {
         this.showLoader = false;
         this.noResult = true;
+        this.noResultMessage = {
+          'messageText': this.resourceService.messages.fmsg.m0077
+        };
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );

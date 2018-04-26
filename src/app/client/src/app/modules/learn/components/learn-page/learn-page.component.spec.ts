@@ -11,18 +11,28 @@ import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './learn-page.component.spec.data';
 import { LearnPageComponent } from './learn-page.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+  'queryParams':  Observable.from([{ subject: ['English'] }])
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule],
       declarations: [ LearnPageComponent ],
       providers: [ResourceService, PageApiService, ConfigService, LearnerService, CoursesService, UserService,
-         ToasterService, Ng2IzitoastService],
+         ToasterService, Ng2IzitoastService,
+         { provide: Router, useClass: RouterStub },
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -37,6 +47,7 @@ describe('LearnPageComponent', () => {
     const courseService = TestBed.get(CoursesService);
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    component.filters = { board: ['NCERT'], subject: [] };
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
     component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     component.caraouselData = Response.successData.result.response.sections;
