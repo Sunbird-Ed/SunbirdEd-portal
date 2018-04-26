@@ -1,7 +1,10 @@
 import { PageApiService, CoursesService, ICourses } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -21,6 +24,7 @@ export class LearnPageComponent implements OnInit {
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
+
   /**
   * To call get course data.
   */
@@ -45,9 +49,18 @@ export class LearnPageComponent implements OnInit {
    */
   noResult = false;
   /**
+* Contains config service reference
+*/
+  public configService: ConfigService;
+  /**
   * Contains result object returned from getPageData API.
   */
   caraouselData: Array<ICaraouselData> = [];
+  private router: Router;
+  public filterType: string;
+  public redirectUrl: string;
+  public filters: any;
+  public queryParams: any = {};
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -56,11 +69,15 @@ export class LearnPageComponent implements OnInit {
    * @param {CoursesService} courseService  Reference of courseService.
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
-    toasterService: ToasterService, resourceService: ResourceService) {
+    toasterService: ToasterService, resourceService: ResourceService, router: Router,
+     private activatedRoute: ActivatedRoute, configService: ConfigService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
+    this.configService = configService;
+    this.router = router;
+    this.router.onSameUrlNavigation = 'reload';
   }
   /**
      * This method calls the enrolled courses API.
@@ -100,9 +117,13 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
+    this.caraouselData = [];
+    this.showLoader = true;
     const option = {
       source: 'web',
-      name: 'Course'
+      name: 'Course',
+      filters: this.filters,
+      sort_by: {}
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -160,6 +181,30 @@ export class LearnPageComponent implements OnInit {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
-    this.populateEnrolledCourse();
+    this.filters = {};
+    this.filterType = this.configService.appConfig.course.filterType;
+    this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
+    this.getQueryParams();
+  }
+
+  /**
+   *  to get query parameters
+   */
+  getQueryParams() {
+    Observable
+      .combineLatest(
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams,
+        (params: any, queryParams: any) => {
+          return {
+            params: params,
+            queryParams: queryParams
+          };
+        })
+      .subscribe(bothParams => {
+        this.queryParams = { ...bothParams.queryParams };
+       this.filters = this.queryParams;
+       this.populateEnrolledCourse();
+      });
   }
 }

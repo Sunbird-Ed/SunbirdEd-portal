@@ -1,5 +1,7 @@
-import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, IContents } from '@sunbird/shared';
+import {
+  ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+  ILoaderMessage, IContents
+} from '@sunbird/shared';
 import { SearchService, CoursesService, ICourses, SearchParam } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,9 +15,9 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./course-search.component.css']
 })
 export class CourseSearchComponent implements OnInit {
- /**
-  * To call searchService which helps to use list of courses
-  */
+  /**
+   * To call searchService which helps to use list of courses
+   */
   private searchService: SearchService;
   /**
   * To call resource service which helps to use language constant
@@ -91,9 +93,21 @@ export class CourseSearchComponent implements OnInit {
    */
   queryParams: any;
   /**
+ *search filters
+ */
+  filters: any;
+  /**
   * Contains result object returned from enrolled course API.
   */
   enrolledCourses: Array<ICourses>;
+
+  /**
+   * contains the search filter type
+   */
+  public filterType: string;
+
+  public redirectUrl: string;
+
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -118,20 +132,21 @@ export class CourseSearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.config = config;
+    this.route.onSameUrlNavigation = 'reload';
   }
-   /**
-     * This method calls the enrolled courses API.
-     */
+  /**
+    * This method calls the enrolled courses API.
+    */
   populateEnrolledCourse() {
     this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.enrolledCourses = data.enrolledCourses;
-            this.populateCourseSearch();
-          } else if (data && data.err) {
-            this.populateCourseSearch();
           }
+          this.populateCourseSearch();
+        } else if (data && data.err) {
+          this.populateCourseSearch();
         }
       });
   }
@@ -142,14 +157,13 @@ export class CourseSearchComponent implements OnInit {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
-      filters: {
-        objectType: ['Content']
-      },
+      filters: this.filters,
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
       sort_by: {}
     };
+
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.course.length > 0) {
@@ -158,7 +172,7 @@ export class CourseSearchComponent implements OnInit {
           this.searchList = apiResponse.result.course;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-             this. processActionObject();
+          this.processActionObject();
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -175,21 +189,24 @@ export class CourseSearchComponent implements OnInit {
       }
     );
   }
-   /**
-   * This method process the action object.
-   */
+  /**
+  * This method process the action object.
+  */
   processActionObject() {
     _.forEach(this.searchList, (value, index) => {
-         delete value.contentType;
-         delete value.resourceType;
+      delete value.contentType;
+      delete value.resourceType;
       console.log('value', value);
       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
         _.forEach(this.enrolledCourses, (value1, index1) => {
           if (this.searchList[index].identifier === this.enrolledCourses[index1].courseId) {
-            const action = { right: {displayType: 'button' ,
-             classes: 'ui blue basic button' ,
-             text: 'Resume' },
-             left: { displayType: 'rating' }
+            const action = {
+              right: {
+                displayType: 'button',
+                classes: 'ui blue basic button',
+                text: 'Resume'
+              },
+              left: { displayType: 'rating' }
             };
             this.searchList[index].action = action;
           } else {
@@ -223,6 +240,12 @@ export class CourseSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filterType = this.config.appConfig.course.filterType;
+    this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
+    this.filters = {
+      objectType: ['Content']
+    };
+    const __self = this;
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -238,8 +261,13 @@ export class CourseSearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        // load search filters from queryparams if any
+        _.forOwn(this.queryParams, (queryValue, queryParam) =>  {
+          if (queryParam !== 'key') {
+            this.filters[queryParam] = queryValue;
+          }
+        });
         this.populateEnrolledCourse();
       });
   }
-
 }

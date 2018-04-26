@@ -82,6 +82,16 @@ export const mockProfileHeaderData = {
             'errmsg': null
         },
         'responseCode': 'CLIENT_ERROR',
-        'result': { }
+        'result': {}
+    },
+    resourceBundle: {
+        'messages': {
+            'imsg': {
+                'm0005': 'Please upload a valid image file. Supported file types: jpeg, jpg, png. Max size: 4MB.'
+            },
+            'smsg': {
+                'm0018': 'Profile Image updated successfully'
+            }
+        }
     }
 };

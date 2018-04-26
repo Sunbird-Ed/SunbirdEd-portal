@@ -103,26 +103,34 @@ export const mockProfilePageData = {
                     'previewUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/ecml/do_112484375073890304147-latest',
                     'subject': 'Mathematics',
                     'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
-                    'downloadUrl': 'https://ekstep-public-dev.3890304147/test-8_1523971722055_do_112484375073890304147_1.0.ecar',
+                    'downloadUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files
+                    /do_112484375073890304147/test-8_1523971722055_do_112484375073890304147_1.0.ecar`,
                     'language': [
                         'English'
                     ],
                     'mimeType': 'application/vnd.ekstep.ecml-archive',
                     'variants': {
                         'spine': {
-                            'ecarUrl': 'https://ekstep-public-375073890304147/test-8_1523971722142_do_112484375073890304147_1.0_spine.ecar',
+                            'ecarUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_112484375073890304147
+                            /test-8_1523971722142_do_112484375073890304147_1.0_spine.ecar`,
                             'size': 88434
                         }
                     },
-                    'editorState': '',
+                    'editorState': `{\'plugin\':{\'noOfExtPlugins\':5,\'extPlugins\':[{\'plugin\':\'org.ekstep.contenteditorfunctions
+                    \',\'version\':\'1.0\'},{\'plugin\':\'org.ekstep.keyboardshortcuts\',\'version\':\'1.0\'},{\'plugin\':\
+                    'org.ekstep.richtext\',\'version\':\'1.0\'},{\'plugin\':\'org.ekstep.iterator\',\'version\':\'1.0\'},
+                    {\'plugin\':\'org.ekstep.navigation\',\'version\':\'1.0\'}]},\'stage\':{\'noOfStages\':1,\'currentStage\
+                    ':\'a2bd0785-9464-410c-bdcb-cdecd1ddd2a2\'},\'sidebar\':{\'selectedMenu\':\'settings\'}}`,
                     'objectType': 'Content',
                     'gradeLevel': [
                         'Grade 1'
                     ],
-                    'appIcon': 'https://ekstep-public-dev3890304147/artifact/10_1466418041535.thumb.jpg',
+                    'appIcon': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/
+                    do_112484375073890304147/artifact/10_1466418041535.thumb.jpg`,
                     'appId': 'dev.sunbird.portal',
                     'contentEncoding': 'gzip',
-                    'artifactUrl': 'https://ekstep-public-dev.s3-3890304147/artifact/1523971721838_do_112484375073890304147.zip',
+                    'artifactUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/
+                    content/do_112484375073890304147/artifact/1523971721838_do_112484375073890304147.zip`,
                     'contentType': 'Resource',
                     'identifier': 'do_112484375073890304147',
                     'lastUpdatedBy': '104',

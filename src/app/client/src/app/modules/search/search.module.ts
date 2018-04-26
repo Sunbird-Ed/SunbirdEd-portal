@@ -6,8 +6,9 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
-import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent,
+import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent, HomeFilterComponent,
    OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent, LibrarySearchComponent } from './components';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,7 +19,8 @@ import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDele
     CoreModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
-  UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent, UserProfileComponent],
+  UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
+   UserProfileComponent, HomeSearchComponent, HomeFilterComponent],
   providers: [UserSearchService]
 })
 export class SearchModule { }

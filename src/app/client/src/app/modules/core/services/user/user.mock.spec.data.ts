@@ -1,4 +1,44 @@
 export const mockUserData = {
+    tenantSuccess:
+        {
+            'id': 'api.tenant.info',
+            'ver': '1.0',
+            'ts': '2018-04-10 15:34:45:875+0530',
+            'params': {
+                'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
+                'msgid': null,
+                'status': 'successful',
+                'err': '',
+                'errmsg': ''
+            },
+            'responseCode': 'OK',
+            'result': {
+                'titleName': 'Sunbird',
+                'logo': 'http://localhost:3000/common/images/sunbird_logo.png',
+                'poster': 'http://localhost:3000/common/images/sunbird_logo.png',
+                'favicon': 'http://localhost:3000/common/images/favicon.ico',
+                'appLogo': 'http://localhost:3000/common/images/sunbird_logo.png'
+            }
+        },
+    tenantFailure: {
+        'id': 'api.tenant.info',
+        'ver': '1.0',
+        'ts': '2018-04-10 15:34:45:875+0530',
+        'params': {
+            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
+            'msgid': null,
+            'status': 'failed'
+        },
+        'responseCode': 'CLIENT_ERROR'
+    },
+    tenantDefault: {
+        'titleName': 'Sunbird',
+        'logo': 'http://localhost:3000/common/images/sunbird_logo.png',
+        'poster': 'http://localhost:3000/common/images/sunbird_logo.png',
+        'favicon': 'http://localhost:3000/common/images/favicon.ico',
+        'appLogo': 'http://localhost:3000/common/images/sunbird_logo.png'
+
+    },
     error: {
         'id': 'api.user.read',
         'ver': 'v1',
@@ -391,7 +431,7 @@ export const mockUserData = {
                     'homeUrl': null,
                     'isDefault': null,
                     'contactDetail':
-                    '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                     'createdDate': null,
                     'createdBy': null,
                     'parentOrgId': null,
@@ -496,7 +536,7 @@ export const mockUserData = {
                 'profileSummary': 'asdd',
                 'tcUpdatedDate': null,
                 'avatar':
-                'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                 'userName': 'ntptest102',
                 'rootOrgId': 'ORG_001',
                 'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -934,7 +974,7 @@ export const mockUserData = {
                     'homeUrl': null,
                     'isDefault': null,
                     'contactDetail':
-                    '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                     'createdDate': null,
                     'createdBy': null,
                     'parentOrgId': null,
@@ -1039,7 +1079,7 @@ export const mockUserData = {
                 'profileSummary': 'asdd',
                 'tcUpdatedDate': null,
                 'avatar':
-                'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                 'userName': 'ntptest102',
                 'rootOrgId': 'ORG_001',
                 'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
