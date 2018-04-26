@@ -23,6 +23,10 @@ export class DraftComponent extends WorkSpace implements OnInit {
 
     @ViewChild('modalTemplate')
     public modalTemplate: ModalTemplate<{ data: string }, string, string>;
+    /**
+     * state for content editior
+    */
+    state: string;
 
     /**
      * To navigate to other pages
@@ -140,6 +144,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.toasterService = toasterService;
         this.resourceService = resourceService;
         this.config = config;
+        this.state = 'draft';
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -162,8 +167,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
             },
             limit: this.pageLimit,
-            pageNumber: this.pageNumber,
-            params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+            offset: (this.pageNumber - 1 ) * (this.pageLimit),
+            sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
             'loaderMessage': this.resourceService.messages.stmsg.m0011,
@@ -205,9 +210,14 @@ export class DraftComponent extends WorkSpace implements OnInit {
             }
         );
     }
-    deleteDraft(param) {
+    /**
+     * This method launch the content editior
+    */
+    contentClick(param) {
         if (param.type === 'delete') {
-            this.deleteConfirmModal(param.contentId);
+            this.deleteConfirmModal(param.content.identifier);
+        } else {
+            this.workSpaceService.navigateToContent(param.content, this.state);
         }
     }
     public deleteConfirmModal(contentIds) {
