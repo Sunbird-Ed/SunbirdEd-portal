@@ -185,6 +185,9 @@ export class CourseSearchComponent implements OnInit {
       err => {
         this.showLoader = false;
         this.noResult = true;
+        this.noResultMessage = {
+          'messageText': this.resourceService.messages.fmsg.m0077
+        };
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
       }
     );
