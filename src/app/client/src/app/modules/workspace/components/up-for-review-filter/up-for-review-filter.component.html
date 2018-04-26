@@ -1,0 +1,180 @@
+<div class="ui grid">
+  <div class="seven wide column padding-top-none">
+    <div class="ui fluid icon input left action" id="search-input-container">
+      <div class="searchfilterinput ui search">
+        <div class="searchicon ui icon input ">
+          <input class="upForReviewSearchBox" type="text" name="filter_search" 
+            [(ngModel)]="search.searchText" (keyup)="keyup($event)"
+            placeholder="{{resourceService?.frmelmnts?.prmpt?.searchContent}}"
+            title="Search" autocomplete="off" spellcheck="false" dir="auto" />
+          <i class="circular search link icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+  <div class="two wide column padding-top-10" id="showFilterButton">
+    <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
+      {{resourceService?.frmelmnts?.lbl?.showFilters}}
+      <i class="dropdown icon"></i>
+    </span>
+  </div>
+  <div class="two wide column padding-top-5">
+    <div class="twelve wide column">
+      <div class="field">
+        <div class="content dropdown-content">
+         <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}&nbsp;</span>
+          <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
+            <div class="text"></div>
+            <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption">
+              <sui-select-option *ngFor="let option of sortingOptions" [value]="option.name">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]="{ 'sort content ascending icon': !sortIcon , 'sort content descending icon': sortIcon }"
+            class="link" (click)="applySorting(sortByOption)">
+          </i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<ng-template let-popup #popupTemplate>
+  <div class="popup-content">
+    <div class="filtercolmntext ui grid">
+      <!-- Curriculum -->
+      <div class="three wide column">
+        <div id="filterBoard" class="ui dropdown ui multiple selection ui filtersearch" suiDropdown>
+          <div class="filter-sel-text" *ngIf="search.board.length > 0 ">
+            {{search.board.length+' '+resourceService.frmelmnts?.prmpt?.curriculum}}
+          </div>
+          <div class="filter-sel-text" *ngIf="search.board.length === 0 ">
+            {{resourceService.frmelmnts?.prmpt?.curriculum}}
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu" suiDropdownMenu>
+            <div class="item " (click)="selectFilter('board',board,$event)" *ngFor="let board of boards">{{board}}</div>
+          </div>
+        </div>
+      </div>
+      <!-- Subjects -->
+      <div class="three wide column">
+        <div id="filterBoard" class="ui dropdown ui multiple selection ui filtersearch" suiDropdown>
+          <div class="filter-sel-text" *ngIf="search.subject.length > 0 ">
+            {{search.subject.length+' '+resourceService.frmelmnts?.prmpt?.subject}}
+          </div>
+          <div class="filter-sel-text" *ngIf="search.subject.length === 0 ">
+            {{resourceService.frmelmnts?.prmpt?.subject}}
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu" suiDropdownMenu>
+            <div class="item " (click)="selectFilter('subject',subject,$event)" *ngFor="let subject of subjects">
+              {{subject}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- grades -->
+      <div class="three wide column">
+        <div id="filterBoard" class="ui dropdown ui multiple selection ui filtersearch" suiDropdown>
+          <div class="filter-sel-text" *ngIf="search.grades.length > 0 ">
+            {{search.grades.length+' '+resourceService.frmelmnts?.prmpt?.grades}}
+          </div>
+          <div class="filter-sel-text" *ngIf="search.grades.length === 0 ">
+            {{resourceService.frmelmnts?.prmpt?.grades}}
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu" suiDropdownMenu>
+            <div class="item " (click)="selectFilter('grades',grade,$event)" *ngFor="let grade  of grades">
+              {{grade}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Language -->
+      <div class="three wide column">
+        <div id="filterBoard" class="ui dropdown ui multiple selection ui filtersearch" suiDropdown>
+          <div class="filter-sel-text" *ngIf="search.medium.length > 0 ">
+            {{search.medium.length+' '+resourceService.frmelmnts?.prmpt?.medium}}
+          </div>
+          <div class="filter-sel-text" *ngIf="search.medium.length === 0 ">
+            {{resourceService.frmelmnts?.prmpt?.grades}}
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu" suiDropdownMenu>
+            <div class="item " (click)="selectFilter('medium',medium,$event)" *ngFor="let medium  of mediums">{{medium}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="filtercolmntext ui grid">
+      <!-- Content Type -->
+      <div class="three wide column">
+        <div id="filterBoard" class="ui dropdown ui multiple selection ui filtersearch" suiDropdown>
+          <div class="filter-sel-text">{{resourceService.frmelmnts?.prmpt?.contenttypes}}</div>
+          <i class="dropdown icon"></i>
+          <div class="menu" suiDropdownMenu>
+            <div class="item " (click)="selectFilter('selectedContentType',subject,$event)" *ngFor="let contentType of contentTypes">
+              {{contentType.value}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="three wide column filter-button float-ContentRight padding-top-10">
+        <a class="searchfilterbutton ui blue tiny  button" (click)="appliedFilter();popup.close()">{{resourceService.frmelmnts?.btn?.apply}}</a>
+        <a class="searchfilterbutton ui primary tiny basic button">{{resourceService.frmelmnts?.btn?.reset}}</a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="ui grid" *ngIf="isShowAppliedFilter">
+  <div class="ten wide column content">
+    <!-- curriculum -->
+    <span class="padded chip margin-top--5" *ngIf="search.board && search.board.length> 0">
+        {{resourceService.frmelmnts?.prmpt?.curriculum}}:
+        <a class="ui label margin-top--5" *ngFor="let board of search.board">
+          {{board}}
+          <i class="delete icon" >
+          </i>
+        </a>
+    </span>
+    <span class="padded chip margin-top--5" *ngIf="search.subject && search.subject.length> 0">
+        {{resourceService.frmelmnts?.prmpt?.subject}}:
+        <a class="ui label margin-top--5" *ngFor="let subject of search.subject">
+          {{subject}}
+          <i class="delete icon" >
+          </i>
+        </a>
+    </span>
+    <span class="padded chip margin-top--5" *ngIf="search.grades && search.grades.length> 0">
+        {{resourceService.frmelmnts?.prmpt?.grades}}:
+        <a class="ui label margin-top--5" *ngFor="let grade of search.grades">
+          {{grade}}
+          <i class="delete icon" >
+          </i>
+        </a>
+    </span>
+    <span class="padded chip margin-top--5" *ngIf="search.medium && search.medium.length> 0">
+        {{resourceService.frmelmnts?.prmpt?.medium}}:
+        <a class="ui label margin-top--5" *ngFor="let medium of search.medium">
+          {{medium}}
+          <i class="delete icon" >
+          </i>
+        </a>
+    </span>
+    <span class="padded chip margin-top--5" *ngIf="search.contentType && search.contentType.length> 0">
+        {{resourceService.frmelmnts?.prmpt?.contenttypes}}:
+        <a class="ui label margin-top--5" *ngFor="let board of search.contentType">
+          {{board}}
+          <i class="delete icon" >
+          </i>
+        </a>
+    </span>
+  </div>
+</div>
