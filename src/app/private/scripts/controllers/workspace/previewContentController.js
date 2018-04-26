@@ -136,7 +136,7 @@ angular.module('playerApp')
         $('#' + modalId).modal('hide')
         previewContent.enableCheckListSubmitBtn = false
         previewContent.checkedContents = []
-        $('.listItem, .otherItem, .listPublishItem').attr('checked', false)
+        $('.listItem, .listPublishItem').attr('checked', false)
         previewContent.reviewComments = ''
       }
 
@@ -150,8 +150,7 @@ angular.module('playerApp')
 
       previewContent.validateRequestChecklistModal = function (content) {
         previewContent.createCheckListArr(content)
-        if (((($('.listItem:checked').length > 0) || ($('.otherItem:checked').length > 0))) &&
-        (previewContent.reviewComments.length > 0)) {
+        if ($('.listItem:checked').length > 0 && (previewContent.reviewComments.length > 0)) {
           previewContent.enableCheckListSubmitBtn = true
         } else {
           previewContent.enableCheckListSubmitBtn = false
