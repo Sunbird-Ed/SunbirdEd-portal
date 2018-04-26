@@ -90,12 +90,7 @@ angular.module('playerApp')
 
       this.search = function (req) {
         var objectType = req && req.filters && req.filters.objectType
-        if (!objectType || objectType === 'Content' ||
-        objectType.includes('Content') ||
-         objectType.includes('Concept') ||
-         objectType.includes('Dimension') ||
-         objectType.includes('Domain')
-        ) {
+        if (!objectType || objectType === 'Content' || objectType.includes('Content')) {
           req = this.updateReqForChannelFilter(req)
         }
         return restfulContentService.post(config.URL.COMPOSITE.SEARCH, req)
