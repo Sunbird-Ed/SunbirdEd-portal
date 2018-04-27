@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
-import { UserService, LearnerService, AnnouncementService } from '@sunbird/core';
+import { UserService, LearnerService, AnnouncementService, TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/core';
 
 import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
 import {
@@ -48,7 +48,8 @@ describe('CreateComponent', () => {
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}
       ]
     })
       .compileComponents();
@@ -75,7 +76,7 @@ describe('CreateComponent', () => {
       expect(component.announcementTypes.length).not.toEqual(0);
     }));
 
-    it('should return selected recipients', inject([],
+  it('should return selected recipients', inject([],
     () => {
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       const resourceService = TestBed.get(ResourceService);

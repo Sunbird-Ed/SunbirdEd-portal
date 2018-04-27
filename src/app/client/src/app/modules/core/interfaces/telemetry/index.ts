@@ -1,202 +1,198 @@
 import { IUserProfile } from '../../../shared';
 
-
-
-
-
 export interface IStartEventData {
   'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
-  'pageid': String;
+  'pageid': string;
   'mode': 'play' | 'edit' | 'preview';
-  'dspec'?: Object;
-  'uaspec'?: Object;
-  'loc'?: String;
+  'dspec'?: {};
+  'uaspec'?: {};
+  'loc'?: string;
   'duration'?: Number;
 }
 export interface IImpressionEventData {
   'type': 'list' | 'detail' | 'view' | 'edit' | 'workflow' | 'search';
-  'subtype'?: String;
-  'pageid': String;
-  'uri': String;
-  'visits'?: Object;
+  'subtype'?: string;
+  'pageid': string;
+  'uri': string;
+  'visits'?: {};
 }
 export interface IInteractEventData {
-  'id': String;
-  'type': String;
-  'subtype'?: String;
-  'pageid'?: String;
-  'extra'?: Object;
-  'target'?: String;
-  'plugin'?: String;
+  'id': string;
+  'type': string;
+  'subtype'?: string;
+  'pageid'?: string;
+  'extra'?: {};
+  'target'?: string;
+  'plugin'?: string;
 }
 export interface IShareEventData {
   'type': 'File' | 'Link' | 'Message';
   'dir': 'In' | 'Out';
-  'items': Array<Object>;
+  'items': Array<{}>;
 }
 export interface IErrorEventData {
-  'err': String;
-  'errtype': String;
-  'stacktrace': String;
+  'err': string;
+  'errtype': string;
+  'stacktrace': string;
 }
 export interface IEndEventData {
-  'pageid'?: String;
-  'duration'?: String;
+  'pageid'?: string;
+  'duration'?: string;
   'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
   'mode'?: 'play' | 'edit' | 'preview';
-  'summary'?: Array<Object>;
-  'contentId': String;
+  'summary'?: Array<{}>;
+  'contentId': string;
 }
 export interface ILogEventData {
   'type': 'system' | 'process' | 'api_access' | 'api_call' | 'job' | 'app_update';
   'level': 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
-  'message': String;
-  'pageid'?: String;
-  'params'?: Array<Object>;
+  'message': string;
+  'pageid'?: string;
+  'params'?: Array<{}>;
 }
 export interface ITelemetryContextData {
-  'channel': String;
-  'uid': String;
-  'env': String;
-  'pdata'?: Object;
-  'sid'?: String;
-  'did'?: String;
-  'cdata'?: Array<Object>;
-  'rollup'?: Object;
+  'channel': string;
+  'uid': string;
+  'env': string;
+  'pdata'?: {};
+  'sid'?: string;
+  'did'?: string;
+  'cdata'?: Array<{}>;
+  'rollup'?: {};
 }
 export interface TelemetryObject {
-  'id': String;
-  'type': String;
-  'ver'?: String;
-  'rollup': Object;
+  'id': string;
+  'type': string;
+  'ver'?: string;
+  'rollup': {};
 }
 export interface TelemetryEventOptions {
   'context'?: ITelemetryContextData;
   'object'?: TelemetryObject;
-  'tags'?: Array<String>;
+  'tags'?: Array<string>;
 }
 export interface ITelemetryEvent {
   'edata': IStartEventData | IImpressionEventData | IInteractEventData | IShareEventData
   | IErrorEventData | IEndEventData | ILogEventData;
-  'contentId'?: String;
-  'contentVer'?: String;
+  'contentId'?: string;
+  'contentVer'?: string;
   'options': TelemetryEventOptions;
 }
 
 export interface IEndEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IEndEventData;
 }
 
 export interface IErrorEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IErrorEventData;
 }
 
 export interface IImpressionEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IImpressionEventData;
 }
 
 export interface IInteractEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IInteractEventData;
 }
 
 export interface ILogEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': ILogEventData;
 }
 
 export interface IShareEventInput {
   'context': {
-    'env': String;
+    'env': string;
   };
   'object'?: {
-    'id': String;
-    'type': String;
-    'ver'?: String;
-    'rollup'?: Object;
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IShareEventData;
 }
 
 export interface IStartEventInput {
   context: {
-    env: String;
-    cdata?: Array<Object>;
+    env: string;
+    cdata?: Array<{}>;
   };
   object?: {
-    id: String;
-    type: String;
-    ver?: String;
-    rollup?: Object;
+    id: string;
+    type: string;
+    ver?: string;
+    rollup?: {};
   };
   edata: IStartEventData;
 }
 
 export interface IProducerData {
-  'id': String;
-  'ver': String;
-  'pid': String;
+  'id': string;
+  'ver': string;
+  'pid': string;
 }
 
 export interface ITelemetry {
   'pdata': IProducerData;
-  'env': String;
-  'apislug': String;
-  'channel': String;
-  'uid': String;
-  'endpoint': String;
-  'did'?: String;
-  'authtoken'?: String;
-  'sid'?: String;
+  'env': string;
+  'apislug': string;
+  'channel': string;
+  'uid': string;
+  'endpoint': string;
+  'did'?: string;
+  'authtoken'?: string;
+  'sid'?: string;
   'batchsize'?: Number;
-  'runningEnv'?: String;
-  'mode'?: String;
-  'host'?: String;
-  'tags'?: Array<String>;
-  'cdata'?: Array<Object>;
+  'runningEnv'?: string;
+  'mode'?: string;
+  'host'?: string;
+  'tags'?: Array<string>;
+  'cdata'?: Array<{}>;
   'dispatcher'?: undefined;
 }
 

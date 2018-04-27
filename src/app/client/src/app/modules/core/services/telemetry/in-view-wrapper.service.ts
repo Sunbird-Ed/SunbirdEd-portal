@@ -11,7 +11,7 @@ export class InViewWrapperService {
   /**
    * inViewLogs - variable to store inview data
    */
-  public inViewLogs: Array<Object>;
+  public inViewLogs: Array<any>;
 
   /**
    * constructor

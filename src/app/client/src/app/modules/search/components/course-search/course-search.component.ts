@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, IContents
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam, TelemetryService, InViewWrapperService } from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam, InViewWrapperService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -109,11 +109,6 @@ export class CourseSearchComponent implements OnInit {
 
   public redirectUrl: string;
 
-  /**
-   * To log telemetry events
-   */
-  public telemetryService: TelemetryService;
-
    /**
    * To log inview visit data for telemetry impressions
    */
@@ -132,13 +127,12 @@ export class CourseSearchComponent implements OnInit {
      * @param {CoursesService} coursesService Reference of CoursesService
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
-     * @param {TelemetryService} telemetryService Reference of TelemetryService
      * @param {InViewWrapperService} inViewWrapperService Reference of InViewWrapperService
    */
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, coursesService: CoursesService, telemetryService: TelemetryService,
+    config: ConfigService, coursesService: CoursesService,
     inViewWrapperService: InViewWrapperService) {
     this.searchService = searchService;
     this.route = route;
@@ -147,7 +141,6 @@ export class CourseSearchComponent implements OnInit {
     this.paginationService = paginationService;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.telemetryService =  telemetryService;
     this.inViewWrapperService = inViewWrapperService;
     this.config = config;
     this.route.onSameUrlNavigation = 'reload';

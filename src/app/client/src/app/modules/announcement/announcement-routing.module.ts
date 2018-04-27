@@ -32,13 +32,15 @@ const routes: Routes = [
   {
     path: 'announcement/create/:stepNumber', component: CreateComponent, data: {
       pageid: 'announcement-create',
-      env: telemetryEnv, objectType: telemetryEnv
+      type: 'workflow', subtype: 'Paginate',
+      env: telemetryEnv
     }
   },
   {
     path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent, data: {
       pageid: 'announcement-resend',
       env: telemetryEnv, objectType: telemetryEnv,
+      type: 'workflow', subtype: 'Paginate',
       object: { idParam: 'identifier', type: objectType, ver: '1.0' }
     }
   }
