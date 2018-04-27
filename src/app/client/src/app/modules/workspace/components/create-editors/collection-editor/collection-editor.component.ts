@@ -207,7 +207,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFlagReviewer = true;
     }
-    setTimeout(function () {
+    setTimeout(() => {
       jQuery('#collectionEditor').iziModal('open');
     }, 100);
 

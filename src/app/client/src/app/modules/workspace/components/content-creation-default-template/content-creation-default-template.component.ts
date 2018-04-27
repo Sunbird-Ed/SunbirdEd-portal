@@ -71,7 +71,7 @@ export class DefaultTemplateComponent implements OnInit {
   /**
    * categoryList is category list of dropdown values
    */
-  public categoryList: Object;
+  public categoryList: {};
   /**
    * masterList is master copy of framework data
    */
