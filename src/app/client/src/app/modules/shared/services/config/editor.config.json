@@ -88,7 +88,7 @@
                     "type": "plugin"
                 },
                 {
-                    "id": "org.ekstep.lessonbrowser",
+                    "id": "org.ekstep.contenteditorfunctions",
                     "ver": "1.1",
                     "type": "plugin"
                 }

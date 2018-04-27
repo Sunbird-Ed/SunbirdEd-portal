@@ -4,7 +4,8 @@
   <div class="one wide column">
   </div>
   <div class="ten wide column">
-      <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"></app-data-driven-filter>
+      <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
+       [accordionDefaultOpen]=false [isShowFilterLabel]=true [showConceptPicker]=true></app-data-driven-filter>
     <div *ngFor="let section of caraouselData">
       <app-page-section [section]="section"></app-page-section>
     </div>

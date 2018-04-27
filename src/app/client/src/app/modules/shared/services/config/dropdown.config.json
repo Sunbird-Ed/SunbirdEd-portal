@@ -288,12 +288,12 @@
             }
         },
         "WORKSPACE": {
-            "label": [
-                    "board",
-                    "gradeLevel",
-                    "medium",
-                    "subject",
-                    "ContentType"
+            "label": [ { "id": "board", "name": "Curriculum" },
+                { "id": "gradeLevel", "name": "Grades" },
+                { "id": "medium", "name": "Medium" },
+                { "id": "subject", "name": "Subjects" },
+                { "id": "Content", "name": "Content Types" }
+                    
                 ]
         }
     }

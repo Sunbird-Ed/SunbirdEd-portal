@@ -6,7 +6,22 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-up-for-review-filter',
   templateUrl: './up-for-review-filter.component.html',
-  styleUrls: ['./up-for-review-filter.component.css']
+  styles: [`
+     >>> .ui.popup{
+       background-color: #007AFF !important;
+       background:#007AFF !important
+     }
+     >>> .arrow{
+       background-color: #007AFF !important;
+       background:#007AFF !important
+     }
+     >>> .ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
+      display: none;
+  }
+  .popup-content{
+      width: 850px !important;
+  }
+   `]
 })
 export class UpforReviewFilterComponent implements OnInit {
   /**
@@ -19,34 +34,13 @@ export class UpforReviewFilterComponent implements OnInit {
   */
   private activatedRoute: ActivatedRoute;
   /**
-   * selectedBoard
-  */
-  search: ISelectFilter;
+   * value typed
+   */
   query: string;
   /**
    * upForReviewSortingOptions
   */
   sortingOptions: Array<string>;
-  /**
-   * Boards dropdown
-  */
-  boards: Array<string>;
-  /**
-   * mediums dropdown
-  */
-  mediums: Array<string>;
-  /**
-   * contentTypes dropdown
-  */
-  contentTypes: Array<string>;
-  /**
-   * subjects dropdown
-  */
-  subjects: Array<string>;
-  /**
-   * grades dropdown
-  */
-  grades: Array<string>;
   /**
     * To show / hide sortIcon
    */
@@ -55,12 +49,6 @@ export class UpforReviewFilterComponent implements OnInit {
     * position for the popup
   */
   position: string;
-  /**
-    * To show / hide AppliedFilter
-   */
-  isShowAppliedFilter = false;
-
-
   /**
     * To call resource service which helps to use language constant
   */
@@ -71,8 +59,17 @@ export class UpforReviewFilterComponent implements OnInit {
   public config: ConfigService;
 
   sortByOption: string;
+  /**
+  * type of filter
+  */
   public filterType: any;
+  /**
+  * label for filter selected
+  */
   label: Array<string>;
+  /**
+  * redirect url
+  */
   public redirectUrl: string;
   queryParams: any;
   /**
@@ -95,6 +92,7 @@ export class UpforReviewFilterComponent implements OnInit {
     this.position = 'bottom right';
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.upForReviewSortingOptions;
   }
 
   ngOnInit() {
@@ -106,9 +104,12 @@ export class UpforReviewFilterComponent implements OnInit {
         console.log( this.queryParams);
         this.query = this.queryParams['query'];
         this.sortByOption = this.queryParams['sort_by'];
+        _.forIn(params, (value, key) => {
+          if (typeof value === 'string' && key !== 'query') {
+            this.queryParams[key] = [value];
+          }
+        });
     });
-    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.upForReviewSortingOptions;
-  //  this.isShowAppliedFilter = true;
   }
   keyup(event) {
     this.query = event;

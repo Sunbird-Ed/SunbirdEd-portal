@@ -1,4 +1,4 @@
-export const mockRes = {
+export const Response = {
     userSuccess: {
         error: {
             'id': 'api.user.read',
