@@ -216,7 +216,21 @@
                 "NCTE",
                 "TN Board",
                 "UP Board"
-            ]
+            ],
+        "upForReviewSortingOptions": [
+               {
+                   "field": "lastUpdatedOn",
+                   "name": "Updated On"
+               },
+               {
+                   "field": "createdOn",
+                   "name": "Created On"
+               },
+               {
+                   "field": "name",
+                   "name": "Name A-Z"
+               }
+           ]
         },
         "SEARCH": {
             "search": {
@@ -272,6 +286,15 @@
                     "OrgType"
                 ]
             }
+        },
+        "WORKSPACE": {
+            "label": [
+                    "board",
+                    "gradeLevel",
+                    "medium",
+                    "subject",
+                    "ContentType"
+                ]
         }
     }
 }

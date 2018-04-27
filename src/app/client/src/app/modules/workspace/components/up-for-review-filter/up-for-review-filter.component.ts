@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ISelectFilter } from '../../interfaces/selectfilter';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-up-for-review-filter',
   templateUrl: './up-for-review-filter.component.html',
@@ -22,6 +22,7 @@ export class UpforReviewFilterComponent implements OnInit {
    * selectedBoard
   */
   search: ISelectFilter;
+  query: string;
   /**
    * upForReviewSortingOptions
   */
@@ -57,7 +58,7 @@ export class UpforReviewFilterComponent implements OnInit {
   /**
     * To show / hide AppliedFilter
    */
-  isShowAppliedFilter = true;
+  isShowAppliedFilter = false;
 
 
   /**
@@ -70,8 +71,10 @@ export class UpforReviewFilterComponent implements OnInit {
   public config: ConfigService;
 
   sortByOption: string;
-  @Output('filter')
-  filter = new EventEmitter<any>();
+  public filterType: any;
+  label: Array<string>;
+  public redirectUrl: string;
+  queryParams: any;
   /**
    * Constructor to create injected service(s) object
    Default method of Draft Component class
@@ -90,65 +93,46 @@ export class UpforReviewFilterComponent implements OnInit {
     this.resourceService = resourceService;
     this.config = config;
     this.position = 'bottom right';
+    this.route.onSameUrlNavigation = 'reload';
+    this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
   }
 
   ngOnInit() {
+    this.filterType = this.config.appConfig.upForReview.filterType;
+    this.redirectUrl = this.config.appConfig.upForReview.inPageredirectUrl;
     this.activatedRoute.queryParams
       .subscribe(params => {
-        this.init();
-        if (params.text) {
-          this.search.searchText = params.text;
-        } else if (params.sort_by) {
-            console.log('inside else');
-            this.sortByOption = params.sort_by;
-            console.log(this.sortByOption);
-        } else {
-          // this.init();
-        }
+        this.queryParams =  { ...params };
+        console.log( this.queryParams);
+        this.query = this.queryParams['query'];
+        this.sortByOption = this.queryParams['sort_by'];
     });
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.upForReviewSortingOptions;
-    this.boards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
-    this.contentTypes = this.config.dropDownConfig.FILTER.RESOURCES.contentTypes;
-    this.subjects = this.config.dropDownConfig.COMMON.subjects;
-    this.grades = this.config.dropDownConfig.COMMON.grades;
-    this.mediums = this.config.dropDownConfig.COMMON.medium;
-    // this.init();
-  }
-  /**
-    * initiliaze the applied filter
-  */
-  init() {
-    this.search = {
-      'board': [],
-      'subject': [],
-      'grades': [],
-      'medium': [],
-      'contentType': [],
-      'searchText': ''
-    };
-  }
-  /**
-    * To add applied filter and show in tags
-  */
-  selectFilter(filterType, value, $event) {
-    const itemIndex = this.search[filterType].indexOf(value);
-    if (itemIndex === -1) {
-      this.search[filterType].push(value);
-    } else {
-      this.search[filterType].splice(itemIndex, 1);
-    }
-  }
-  appliedFilter() {
-    this.isShowAppliedFilter = true;
+  //  this.isShowAppliedFilter = true;
   }
   keyup(event) {
+    this.query = event;
+   if (this.query.length > 0) {
+    this.queryParams['query'] = this.query;
+   } else {
+     delete this.queryParams['query'];
+   }
     setTimeout(() => {
-      this.filter.emit({'text': this.search.searchText});
+      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
      }, 1000);
   }
 
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
-    this.filter.emit({'sort_by': sortByOption} );
+    this.queryParams['sort_by'] = sortByOption;
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+  }
+
+  removeFilterSelection(filterType, value) {
+    const itemIndex = this.queryParams[filterType].indexOf(value);
+    if (itemIndex !== -1) {
+      this.queryParams[filterType].splice(itemIndex, 1);
+    }
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
   }
 }

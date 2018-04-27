@@ -106,7 +106,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   */
   private toasterService: ToasterService;
 
-
+  queryParams: any;
   /**
   * To call resource service which helps to use language constant
  */
@@ -153,6 +153,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
+        this.queryParams = bothParams.queryParams;
         this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
     // this.activatedRoute.params.subscribe(params => {
@@ -195,7 +196,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: bothParams.queryParams.text,
-      params: params
+      sort_by: params
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0032,
@@ -240,21 +241,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/upForReview', this.pageNumber]);
-  }
-  /**
-  * This method sets the search filter
-  */
-  applyfilter(event) {
-    this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: event });
-    // console.log(event);
-    // if ( event.board && event.board.length > 0) {
-    //   this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: event});
-    // } else {
-    //   const queryParams = _.omit(event, ['board']);
-    //   console.log(queryParams);
-    //   this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: queryParams});
-    // }
-
+    this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: this.queryParams });
   }
 }
