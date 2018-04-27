@@ -25,7 +25,7 @@ angular.module('playerApp')
       { fieldName: 'city', optional: false, type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0097 },
       { fieldName: 'state', optional: true, type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0098 },
       { fieldName: 'country', optional: true, type: 'regExp[^[A-z ]{1,35}$]', prompt: $rootScope.messages.stmsg.m0099 },
-      { fieldName: 'pinCode', optional: true, type: 'regExp[^[0-9]{6}$]', prompt: $rootScope.messages.stmsg.m0065 }
+      { fieldName: 'pinCode', optional: true, type: 'regExp[^[1-9][0-9]{5}$]', prompt: $rootScope.messages.stmsg.m0065 }
     ]
     var educationFields = [
       { fieldName: 'degree', type: 'regExp[.*?]', prompt: $rootScope.messages.stmsg.m0062 },
