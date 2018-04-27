@@ -41,6 +41,10 @@ export class DataDrivenComponent implements OnInit {
 */
   public contentType;
   /**
+   * resourceType is resource type
+   */
+  public resourceType;
+  /**
  * userForm name creation
  */
   public creationForm: FormGroup;
@@ -117,6 +121,18 @@ export class DataDrivenComponent implements OnInit {
     this.formService = formService;
     this.activatedRoute.url.subscribe(url => {
       this.contentType = url[0].path;
+      if (this.contentType === 'collection') {
+        this.resourceType = this.configService.appConfig.resourceType.collection;
+      } else
+        if (this.contentType === 'textbook') {
+          this.resourceType = this.configService.appConfig.resourceType.book;
+        } else
+          if (this.contentType === 'course') {
+            this.resourceType = this.configService.appConfig.resourceType.course;
+          } else
+            if (this.contentType === 'lessonplan') {
+              this.resourceType = this.configService.appConfig.resourceType.lessonplan;
+            }
     });
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
@@ -222,6 +238,9 @@ export class DataDrivenComponent implements OnInit {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
     } else {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
+    }
+    if (this.resourceType) {
+      requestData.resourcetype = this.resourceType;
     }
 
     return requestData;

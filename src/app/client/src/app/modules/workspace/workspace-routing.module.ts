@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
@@ -7,7 +6,6 @@ import {
   GenericEditorComponent, UploadedComponent, DataDrivenComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
 const routes: Routes = [
   {
     path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],

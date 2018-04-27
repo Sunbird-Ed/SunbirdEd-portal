@@ -7,9 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces/custom.window';
 import { EditorService } from './../../../services/editors/editor.service';
 
-declare var jQuery: any;
-declare let window: CustomWindow;
-
 @Component({
   selector: 'app-generic-editor',
   templateUrl: './generic-editor.component.html',
