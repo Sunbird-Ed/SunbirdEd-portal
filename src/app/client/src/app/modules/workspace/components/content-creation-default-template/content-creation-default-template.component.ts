@@ -85,6 +85,8 @@ export class DefaultTemplateComponent implements OnInit {
  */
   private editorService: EditorService;
 
+  public resourceType = [];
+
 
 
 
@@ -123,6 +125,7 @@ export class DefaultTemplateComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.resourceType = this.configService.dropDownConfig.FILTER.RESOURCES.resourceType;
     /***
  * Call User service to get user data
  */
@@ -136,6 +139,13 @@ export class DefaultTemplateComponent implements OnInit {
     this.showLoader = false;
     this.years = this.getYearsForCreateTextBook();
     this.mapMasterCategoryList('');
+  }
+
+  /**
+* to get selected concepts from concept picker.
+*/
+  concepts(events) {
+    this.formInputData['concepts'] = events;
   }
 
   /**

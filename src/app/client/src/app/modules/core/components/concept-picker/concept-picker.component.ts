@@ -49,7 +49,7 @@ export class ConceptPickerComponent implements OnInit {
    */
   initConceptBrowser() {
     this.selectedConcepts = this.selectedConcepts || [];
-    this.contentConcepts = _.map(this.selectedConcepts, 'id');
+    this.contentConcepts = _.map(this.selectedConcepts, 'identifier');
     this.pickerMessage = this.contentConcepts.length + ' concepts selected';
     $('.tree-picker-selector').val(this.pickerMessage);
     setTimeout(() => {
@@ -62,7 +62,7 @@ export class ConceptPickerComponent implements OnInit {
           const contentConcepts = [];
           _.forEach(nodes, (obj) => {
             contentConcepts.push({
-              id: obj.id,
+              identifier: obj.id,
               name: obj.name
             });
           });
