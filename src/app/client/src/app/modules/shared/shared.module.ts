@@ -21,9 +21,9 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     FormsModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, ShareLinkComponent],
+    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, ShareLinkComponent,CollectionTreeComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
-    PageSectionComponent, ContentCardComponent, NoResultComponent, ShareLinkComponent,ShareLinkComponent],
+    PageSectionComponent, ContentCardComponent, NoResultComponent, ShareLinkComponent,ShareLinkComponent,CollectionTreeComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService]
 })
