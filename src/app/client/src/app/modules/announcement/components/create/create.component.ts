@@ -1,11 +1,12 @@
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
 import { CreateService } from './../../services';
-import { UserService } from '@sunbird/core';
+import { UserService, TelemetryService } from '@sunbird/core';
+import { IStartEventInput, IEndEventInput, IImpressionEventInput } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
@@ -130,6 +131,17 @@ export class CreateComponent implements OnInit, OnDestroy {
   public user: UserService;
 
   /**
+ * To log telemtry events
+ */
+  public telemetryService: TelemetryService;
+
+  /**
+ * To log telemtry events
+ */
+  public telemetryEventInput: any;
+
+
+  /**
    * To get url, app configs
    */
   public config: ConfigService;
@@ -142,7 +154,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService) {
+    private elRef: ElementRef, config: ConfigService, telemetryService: TelemetryService) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -152,6 +164,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.createService = createService;
     this.user = user;
     this.config = config;
+    this.telemetryService = telemetryService;
   }
 
   /**
@@ -267,6 +280,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
         (res: ServerResponse) => {
+          this.identifier = res.result.announcement.id;
           this.modalName = 'success';
         },
         (err: ServerResponse) => {
@@ -282,6 +296,23 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Function gets executed when user click close icon of announcement form
    */
   redirectToOutbox(): void {
+    const endEventInput: IEndEventInput = {
+      object: {
+        id: this.identifier,
+        type: this.activatedRoute.snapshot.data.objectType,
+        ver: '1.0'
+      },
+      context: {
+        env: this.activatedRoute.snapshot.data.env
+      },
+      edata: {
+        type: 'workflow',
+        mode: 'edit',
+        pageid: this.activatedRoute.snapshot.data.pageid,
+        contentId: this.identifier
+      }
+    };
+    this.telemetryService.end(endEventInput);
     this.route.navigate(['announcement/outbox/1']);
   }
 
@@ -393,12 +424,29 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.onFormValueChanges();
         }
         this.setAnnouncementTypes();
+        const startEventInput: IStartEventInput = {
+          object: {
+            id: this.identifier,
+            type: this.activatedRoute.snapshot.data.objectType,
+            ver: '1.0'
+          },
+          context: {
+            env: this.activatedRoute.snapshot.data.env
+          },
+          edata: {
+            type: 'workflow',
+            mode: 'edit',
+            pageid: this.activatedRoute.snapshot.data.pageid
+          }
+        };
+        this.telemetryService.start(startEventInput);
         this.navigateToWizardNumber(1);
       } else if (user && user.err) {
         this.showAnnouncementForm = false;
         this.toasterService.error(this.resource.messages.emsg.m0005);
       }
     });
+
   }
 
   ngOnDestroy() {

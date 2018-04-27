@@ -1,16 +1,20 @@
 import { IUserProfile } from '../../../shared';
 
+
+
+
+
 export interface IStartEventData {
-  'type': String;
+  'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
   'pageid': String;
-  'mode': String;
+  'mode': 'play' | 'edit' | 'preview';
   'dspec'?: Object;
   'uaspec'?: Object;
   'loc'?: String;
   'duration'?: Number;
 }
 export interface IImpressionEventData {
-  'type': String;
+  'type': 'list' | 'detail' | 'view' | 'edit' | 'workflow' | 'search';
   'subtype'?: String;
   'pageid': String;
   'uri': String;
@@ -26,8 +30,8 @@ export interface IInteractEventData {
   'plugin'?: String;
 }
 export interface IShareEventData {
-  'type': String;
-  'dir': String;
+  'type': 'File' | 'Link' | 'Message';
+  'dir': 'In' | 'Out';
   'items': Array<Object>;
 }
 export interface IErrorEventData {
@@ -38,14 +42,14 @@ export interface IErrorEventData {
 export interface IEndEventData {
   'pageid'?: String;
   'duration'?: String;
-  'type': String;
-  'mode'?: String;
+  'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
+  'mode'?: 'play' | 'edit' | 'preview';
   'summary'?: Array<Object>;
   'contentId': String;
 }
 export interface ILogEventData {
-  'type': String;
-  'level': String;
+  'type': 'system' | 'process' | 'api_access' | 'api_call' | 'job' | 'app_update';
+  'level': 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
   'message': String;
   'pageid'?: String;
   'params'?: Array<Object>;
@@ -81,94 +85,94 @@ export interface ITelemetryEvent {
 
 export interface IEndEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': IEndEventData;
 }
 
 export interface IErrorEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': IErrorEventData;
 }
 
 export interface IImpressionEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': IImpressionEventData;
 }
 
 export interface IInteractEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': IInteractEventData;
 }
 
 export interface ILogEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': ILogEventData;
 }
 
 export interface IShareEventInput {
   'context': {
-      'env': String;
+    'env': String;
   };
   'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+    'id': String;
+    'type': String;
+    'ver'?: String;
+    'rollup'?: Object;
   };
   'edata': IShareEventData;
 }
 
 export interface IStartEventInput {
-  'context': {
-      'env': String;
-      'cdata'?: Array<Object>;
+  context: {
+    env: String;
+    cdata?: Array<Object>;
   };
-  'object'?: {
-      'id': String;
-      'type': String;
-      'ver'?: String;
-      'rollup'?: Object;
+  object?: {
+    id: String;
+    type: String;
+    ver?: String;
+    rollup?: Object;
   };
-  'edata': IStartEventData;
+  edata: IStartEventData;
 }
 
 export interface IProducerData {
@@ -197,10 +201,10 @@ export interface ITelemetry {
 }
 
 export interface IUserOrgDetails {
-    'userId': IUserProfile['userId'];
-    'rootOrgId': IUserProfile['rootOrgId'];
-    'rootOrg': IUserProfile['rootOrg'];
-    'organisationIds': IUserProfile['organisationIds'];
+  'userId': IUserProfile['userId'];
+  'rootOrgId': IUserProfile['rootOrgId'];
+  'rootOrg': IUserProfile['rootOrg'];
+  'organisationIds': IUserProfile['organisationIds'];
 }
 
 export interface ITelemetryContext {

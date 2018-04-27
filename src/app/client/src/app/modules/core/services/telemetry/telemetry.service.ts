@@ -71,7 +71,10 @@ export class TelemetryService {
   public start(startEventInput: IStartEventInput) {
     if (this.isInitialized) {
       const eventData: ITelemetryEvent = this.getEventData(startEventInput);
-      this.telemetryProvider.start(this.context.config, eventData.options.object.id, eventData.options.object.ver,
+      // if object data is present in Event Data use it for Content Id and version
+      const contentId = eventData.options.object ? eventData.options.object.id : '';
+      const contentver = eventData.options.object ? eventData.options.object.ver : '';
+      this.telemetryProvider.start(this.context.config, contentId, contentver,
         eventData.edata, eventData.options);
     }
   }
@@ -169,6 +172,9 @@ export class TelemetryService {
         tags: this.context.userOrgDetails.organisationIds || []
       }
     };
+    if (event.options.object === null) {
+      delete event.options.object;
+    }
     return event;
   }
 
@@ -181,13 +187,17 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   private getEventObject(eventInput: any) {
-    const eventObjectData: TelemetryObject = {
-      id: eventInput.object.id || '',
-      type: eventInput.object.type || '',
-      ver: eventInput.object.ver || '',
-      rollup: eventInput.object.rollup || {}
-    };
-    return eventObjectData;
+    if (eventInput.object && eventInput.object.id) {
+      return {
+        id: eventInput.object.id,
+        type: eventInput.object.type,
+        ver: eventInput.object.ver,
+        rollup: eventInput.object.rollup
+      };
+    } else {
+      this.telemetryProvider.resetObject();
+      return null;
+    }
   }
 
   /**
