@@ -4,6 +4,10 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "typedef": [true, "call-signature", "parameter", "member-variable-declaration"],
+    "max-file-line-count": [true, 300],
+    "ban-types": [true, ["Object", "Use {} instead."], ["String", "use string instead"], ["declare", "define it in typings.d.ts file"]],
+    "only-arrow-functions": true,
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -24,7 +28,8 @@
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,
