@@ -107,6 +107,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   private toasterService: ToasterService;
 
   queryParams: any;
+  type: string;
   /**
   * To call resource service which helps to use language constant
  */
@@ -156,11 +157,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         this.queryParams = bothParams.queryParams;
         this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-    // this.activatedRoute.params.subscribe(params => {
-    //   console.log('>>', params);
-    //   this.pageNumber = Number(params.pageNumber);
-    //   this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
-    // });
   }
 
   /**
@@ -172,13 +168,21 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     let params =  {};
-    if ( bothParams.queryParams.sort_by === 'Created On') {
+    if ( bothParams.queryParams.sort_by === 'Created On' && this.type === 'asc') {
       params = {
-        createdOn : this.config.appConfig.WORKSPACE.createdOn
+        createdOn : this.config.appConfig.WORKSPACE.createdOnAsc
       };
-    } else if (bothParams.queryParams.sort_by === 'Name A-Z') {
+    } else if (bothParams.queryParams.sort_by === 'Created On' && this.type === 'desc') {
       params = {
-        name : this.config.appConfig.WORKSPACE.name
+        name : this.config.appConfig.WORKSPACE.createdOnDesc
+      };
+    } else if (bothParams.queryParams.sort_by === 'Name A-Z' && this.type === 'asc') {
+      params = {
+        name : this.config.appConfig.WORKSPACE.nameAsc
+      };
+    } else if (bothParams.queryParams.sort_by === 'Name A-Z' && this.type === 'desc') {
+      params = {
+        name : this.config.appConfig.WORKSPACE.nameDesc
       };
     } else {
        params = {
@@ -192,10 +196,15 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         createdBy: { '!=': this.userService.userid },
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
+        board: bothParams.queryParams.board,
+        subject: bothParams.queryParams.subject,
+        medium: bothParams.queryParams.medium,
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        Content: bothParams.queryParams.Content
       },
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
-      query: bothParams.queryParams.text,
+      query: bothParams.queryParams.query,
       sort_by: params
     };
     this.loaderMessage = {
@@ -226,7 +235,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
+  sortByType(type) {
+this.type = type;
+console.log(type);
+  }
   /**
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number

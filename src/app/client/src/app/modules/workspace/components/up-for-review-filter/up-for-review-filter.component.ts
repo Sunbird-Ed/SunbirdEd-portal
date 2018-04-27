@@ -7,23 +7,21 @@ import * as _ from 'lodash';
   selector: 'app-up-for-review-filter',
   templateUrl: './up-for-review-filter.component.html',
   styles: [`
-     >>> .ui.popup{
-       background-color: #007AFF !important;
-       background:#007AFF !important
-     }
-     >>> .arrow{
-       background-color: #007AFF !important;
-       background:#007AFF !important
-     }
-     >>> .ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
+     >>> .ui.dropdown:not(.button)>.default.text {
       display: none;
-  }
-  .popup-content{
-      width: 850px !important;
-  }
+       }
+      .ui.inline.dropdown.search-dropdown {
+       margin-left: -5px;
+       box-sizing: border-box;
+       }
+      .popup-content{
+        width: 850px !important;
+       }
    `]
 })
 export class UpforReviewFilterComponent implements OnInit {
+  @Output('clickEvent')
+   clickEvent = new EventEmitter();
   /**
    * To navigate to other pages
    */
@@ -100,8 +98,8 @@ export class UpforReviewFilterComponent implements OnInit {
     this.redirectUrl = this.config.appConfig.upForReview.inPageredirectUrl;
     this.activatedRoute.queryParams
       .subscribe(params => {
-        this.queryParams =  { ...params };
-        console.log( this.queryParams);
+        this.queryParams = { ...params };
+        console.log(this.queryParams);
         this.query = this.queryParams['query'];
         this.sortByOption = this.queryParams['sort_by'];
         _.forIn(params, (value, key) => {
@@ -109,31 +107,39 @@ export class UpforReviewFilterComponent implements OnInit {
             this.queryParams[key] = [value];
           }
         });
-    });
+      });
   }
   keyup(event) {
     this.query = event;
-   if (this.query.length > 0) {
-    this.queryParams['query'] = this.query;
-   } else {
-     delete this.queryParams['query'];
-   }
+    if (this.query.length > 0) {
+      this.queryParams['query'] = this.query;
+    } else {
+      delete this.queryParams['query'];
+    }
     setTimeout(() => {
       this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
-     }, 1000);
+    }, 1000);
   }
 
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
-    this.queryParams['sort_by'] = sortByOption;
-    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+    if (this.sortIcon) {
+      this.clickEvent.emit('asc');
+      this.queryParams['sort_by'] = sortByOption;
+      this.route.onSameUrlNavigation = 'reload';
+      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+    } else {
+      this.clickEvent.emit('desc');
+      this.queryParams['sort_by'] = sortByOption;
+      this.route.onSameUrlNavigation = 'reload';
+      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+    }
   }
-
   removeFilterSelection(filterType, value) {
     const itemIndex = this.queryParams[filterType].indexOf(value);
     if (itemIndex !== -1) {
       this.queryParams[filterType].splice(itemIndex, 1);
     }
-    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams  });
   }
 }
