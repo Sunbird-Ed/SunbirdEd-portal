@@ -4,9 +4,7 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
-    "typedef": [true, "call-signature", "parameter", "member-variable-declaration"],
-    "max-file-line-count": [true, 300],
-    "ban-types": [true, ["Object", "Use {} instead."], ["String", "use string instead"], ["declare", "define it in typings.d.ts file"]],
+    "ban-types": [true, ["Object", "Use {} instead."], ["String", "use string instead"]],
     "only-arrow-functions": true,
     "callable-types": true,
     "class-name": true,
