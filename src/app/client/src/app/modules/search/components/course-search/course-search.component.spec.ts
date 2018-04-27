@@ -20,7 +20,8 @@ describe('CourseSearchComponent', () => {
         'm0006': 'No result'
       },
       'fmsg': {
-        'm0002': 'Fetching other courses failed, please try again later...'
+        'm0002': 'Fetching other courses failed, please try again later...',
+        'm0077': 'Fetching serach result failed'
       }
     }
   };

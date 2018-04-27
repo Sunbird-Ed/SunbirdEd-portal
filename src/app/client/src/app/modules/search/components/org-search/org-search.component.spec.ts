@@ -28,6 +28,9 @@ describe('OrgSearchComponent', () => {
       },
       'emsg': {
         'm0005': 'Something went wrong, please try in some time....'
+      },
+      'fmsg': {
+        'm0077': 'Fetching serach result failed'
       }
     }
   };

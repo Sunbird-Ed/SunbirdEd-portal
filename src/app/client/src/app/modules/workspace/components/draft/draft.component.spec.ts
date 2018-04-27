@@ -67,9 +67,9 @@ describe('DraftComponent', () => {
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
-      spyOn(component, 'deleteDraft').and.callThrough();
-      const params = { type: 'delete', contentId: 'do_2124645735080755201259' };
-      component.deleteDraft(params);
+      spyOn(component, 'contentClick').and.callThrough();
+      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871'} };
+      component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
       };

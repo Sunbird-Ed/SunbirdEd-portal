@@ -52,6 +52,14 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public state: string;
   /**
+  * type for editor
+  */
+  public type: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
+  /**
    * reference of UserService service.
    */
   userService: UserService;
@@ -101,6 +109,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
       this.state = params['state'];
+      this.type = params['type'];
+      this.framework = params['framework'];
     });
 
     this.setRenderer();
@@ -174,7 +184,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         ver: '1.0'
       },
       tags: this.userService.dims,
-      channel: this.userProfile.rootOrgId
+      channel: this.userProfile.rootOrgId,
+      framework: this.framework,
     };
 
 
