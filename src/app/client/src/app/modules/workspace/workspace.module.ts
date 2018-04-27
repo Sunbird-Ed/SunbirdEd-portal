@@ -11,7 +11,6 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
-  UpForReviewComponent, UpforReviewFilterComponent,
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent
 } from './components';
 @NgModule({
@@ -27,7 +26,7 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
+    ContentEditorComponent, GenericEditorComponent,
     DataDrivenComponent,
     DefaultTemplateComponent],
   providers: [WorkSpaceService, EditorService]

@@ -10,7 +10,7 @@ import { ConfigService, ResourceService, FileUploadService, ToasterService, Wind
    PaginationService, RouterNavigationService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DateFormatPipe , DateFilterXtimeAgoPipe} from './pipes';
+import { DateFormatPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 
 @NgModule({
@@ -20,9 +20,9 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     SlickModule,
     FormsModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFilterXtimeAgoPipe,
+  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent],
-  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
+  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService]
