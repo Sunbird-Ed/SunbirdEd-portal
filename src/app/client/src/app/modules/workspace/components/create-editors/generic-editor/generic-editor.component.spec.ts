@@ -10,8 +10,6 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from '@sunbird/workspace';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './generic-editor.component.spec.data';
 
@@ -30,7 +28,7 @@ describe('GenericEditorComponent', () => {
       declarations: [ GenericEditorComponent ],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
     providers: [
-      EditorService, UserService, LearnerService, ContentService,
+      UserService, LearnerService, ContentService,
       ResourceService, ToasterService, ConfigService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'contentId': 'do_21247940906829414411032'
@@ -46,19 +44,17 @@ describe('GenericEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
-    ResourceService], (editorService, userService, router, toasterService, resourceService) => {
+  it('should call userservice, call open editor', inject([UserService, Router, ToasterService,
+    ResourceService], (userService, router, toasterService, resourceService) => {
     userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
     fixture.detectChanges();
-
-    spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
     expect(component.openGenericEditor).toBeDefined();
     component.openGenericEditor();
   }));
 
    it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();
-    setTimeout(function () {
+    setTimeout(() => {
       component.navigateToCreate();
     }, 1000);
 

@@ -24,7 +24,7 @@ import * as _ from 'lodash';
 *
 *
 * sample options = {
-    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons 
+    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons
     fileIcon: 'fa fa-file-o fa-lg', //default
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',
@@ -88,7 +88,7 @@ export class CollectionTreeComponent implements OnInit {
   @Input() public nodes;
   @Input() public options;
   private rootNode: any;
-  private rootChildrens: any;
+  public rootChildrens: any;
 
   ngOnInit() {
     this.rootNode = this.createTreeModel();

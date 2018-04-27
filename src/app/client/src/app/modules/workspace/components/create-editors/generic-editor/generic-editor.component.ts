@@ -4,11 +4,6 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services/editors/editor.service';
-
-declare var jQuery: any;
-declare let window: CustomWindow;
 
 @Component({
   selector: 'app-generic-editor',
@@ -29,10 +24,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     * To call resource service which helps to use language constant
     */
   public resourceService: ResourceService;
-  /**
-   * To make inbox API calls
-   */
-  private editorService: EditorService;
   /**
   * user profile details.
   */
@@ -107,14 +98,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlayColor: '',
       history: false,
       closeButton: true,
-      onClosing: function () {
+      onClosing: () => {
         self._zone.run(() => {
           self.closeModal();
         });
       }
     });
 
-    setTimeout(function () {
+    setTimeout(() => {
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
