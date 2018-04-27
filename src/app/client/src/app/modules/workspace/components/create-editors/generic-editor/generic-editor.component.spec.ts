@@ -10,8 +10,6 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from '@sunbird/workspace';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './generic-editor.component.spec.data';
 
