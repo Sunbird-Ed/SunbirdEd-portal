@@ -1,16 +1,16 @@
 import { IUserProfile } from '../../../shared';
 
 export interface IStartEventData {
-  'type': string;
+  'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
   'pageid': string;
-  'mode': string;
+  'mode': 'play' | 'edit' | 'preview';
   'dspec'?: {};
   'uaspec'?: {};
   'loc'?: string;
   'duration'?: Number;
 }
 export interface IImpressionEventData {
-  'type': string;
+  'type': 'list' | 'detail' | 'view' | 'edit' | 'workflow' | 'search';
   'subtype'?: string;
   'pageid': string;
   'uri': string;
@@ -26,8 +26,8 @@ export interface IInteractEventData {
   'plugin'?: string;
 }
 export interface IShareEventData {
-  'type': string;
-  'dir': string;
+  'type': 'File' | 'Link' | 'Message';
+  'dir': 'In' | 'Out';
   'items': Array<{}>;
 }
 export interface IErrorEventData {
@@ -38,14 +38,14 @@ export interface IErrorEventData {
 export interface IEndEventData {
   'pageid'?: string;
   'duration'?: string;
-  'type': string;
-  'mode'?: string;
+  'type': 'app' | 'session' | 'editor' | 'player' | 'workflow' | 'assessment';
+  'mode'?: 'play' | 'edit' | 'preview';
   'summary'?: Array<{}>;
   'contentId': string;
 }
 export interface ILogEventData {
-  'type': string;
-  'level': string;
+  'type': 'system' | 'process' | 'api_access' | 'api_call' | 'job' | 'app_update';
+  'level': 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
   'message': string;
   'pageid'?: string;
   'params'?: Array<{}>;
@@ -158,17 +158,17 @@ export interface IShareEventInput {
 }
 
 export interface IStartEventInput {
-  'context': {
-    'env': string;
-    'cdata'?: Array<{}>;
+  context: {
+    env: string;
+    cdata?: Array<{}>;
   };
-  'object'?: {
-    'id': string;
-    'type': string;
-    'ver'?: string;
-    'rollup'?: {};
+  object?: {
+    id: string;
+    type: string;
+    ver?: string;
+    rollup?: {};
   };
-  'edata': IStartEventData;
+  edata: IStartEventData;
 }
 
 export interface IProducerData {

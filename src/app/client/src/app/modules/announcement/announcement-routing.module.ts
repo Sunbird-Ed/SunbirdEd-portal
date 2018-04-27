@@ -1,15 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
-   InboxComponent, CreateComponent } from './components';
-   import { AuthGuard } from './../core/guard/auth-gard.service';
+import {
+  OutboxComponent, DeleteComponent, DetailsComponent, DetailsPopupComponent,
+  InboxComponent, CreateComponent
+} from './components';
+import { AuthGuard } from './../core/guard/auth-gard.service';
+const telemetryEnv = 'announcement';
+const objectType = 'announcement';
 
 const routes: Routes = [
   {
-    path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
+    path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard], data: {
+      env: telemetryEnv, pageid: 'announcement-outbox', type: 'pageexit', subtype: 'Paginate'
+    },
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },
-      { path: 'view/:announcementId', component: DetailsPopupComponent }
+      {
+        path: 'view/:announcementId', component: DetailsPopupComponent, data: {
+          env: telemetryEnv, pageid: 'announcement-outbox-details', type: 'pageexit', subtype: 'Paginate',
+          object: { idParam: 'announcementId', type: objectType, ver: '1.0' }
+        }
+      }
     ]
   },
   {
@@ -19,10 +30,19 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'announcement/create/:stepNumber', component: CreateComponent
+    path: 'announcement/create/:stepNumber', component: CreateComponent, data: {
+      pageid: 'announcement-create',
+      type: 'workflow', subtype: 'Paginate',
+      env: telemetryEnv
+    }
   },
   {
-    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent
+    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent, data: {
+      pageid: 'announcement-resend',
+      env: telemetryEnv, objectType: telemetryEnv,
+      type: 'workflow', subtype: 'Paginate',
+      object: { idParam: 'identifier', type: objectType, ver: '1.0' }
+    }
   }
 ];
 

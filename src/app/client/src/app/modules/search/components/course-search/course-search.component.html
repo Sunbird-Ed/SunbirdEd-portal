@@ -17,8 +17,8 @@
                 </a>
             </h5>
         </div>
-        <div *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
-            <div class="column" *ngFor="let content of searchList">
+        <div in-view-container *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card " (inview)="setInView($event)" [throttle]="[1000]">
+            <div in-view-item  class="column"  *ngFor="let content of searchList; let i = index;" [id]="i" [data]="content">
                 <app-content-card [content]="content"></app-content-card>
             </div>
         </div>

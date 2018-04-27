@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
 import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent, HomeFilterComponent,
    OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent, LibrarySearchComponent } from './components';
-
+import { NgInviewModule } from 'angular-inport';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +16,8 @@ import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDele
     SharedModule,
     SuiModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    NgInviewModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,

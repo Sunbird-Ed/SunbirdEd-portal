@@ -11,7 +11,9 @@ const routes: Routes = [
 
   },
   {
-    path: 'search/Courses/:pageNumber', component: CourseSearchComponent
+    path: 'search/Courses/:pageNumber', component: CourseSearchComponent, data: {
+      env: 'course', pageid: 'course-search', type: 'pageexit'
+    }
   },
   {
     path: 'search/Library/:pageNumber', component: LibrarySearchComponent
