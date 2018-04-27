@@ -27,8 +27,8 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent,DataDrivenComponent,
-    LimitedPublishedComponent,DefaultTemplateComponent],
+    ContentEditorComponent, GenericEditorComponent, LimitedPublishedComponent, DataDrivenComponent,
+    DefaultTemplateComponent],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }
