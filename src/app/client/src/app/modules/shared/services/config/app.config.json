@@ -16,7 +16,18 @@
       "application/vnd.ekstep.content-collection"
     ],
     "objectType": "Content",
-    "lastUpdatedOn": "desc"
+    "lastUpdatedOn": "desc",
+    "genericMimeType": [
+      "application/pdf",
+      "video/mp4",
+      "video/x-youtube",
+      "video/youtube",
+      "application/vnd.ekstep.html-archive",
+      "application/epub",
+      "application/vnd.ekstep.h5p-archive",
+      "video/webm"
+    ],
+    "states":["draft","uploaded","published","limited-publish","flagged"]
   },  
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -66,42 +77,81 @@
     }
   },
   "ADMIN_UPLOAD": {
-    "SAMPLE_USER_CSV": [
-      {
-        "firstName": "firstName",
-        "lastName": "lastName",
-        "phone": "phone",
-        "email": "email",
-        "userName": "userName",
-        "password": "password",
-        "provider": "provider",
-        "phoneVerified": "phoneVerified",
-        "emailVerified": "emailVerified",
-        "roles": "roles",
-        "position": "position",
-        "grade": "grade",
-        "location": "location",
-        "dob": "dob",
-        "gender": "gender",
-        "language": "language",
-        "profileSummary": "profileSummary",
-        "subject": "subject"
-      }
-    ],
-    "SAMPLE_ORGANIZATION_CSV": [
-      {
-        "orgName": "orgName",
-        "isRootOrg": "isRootOrg",
-        "channel": "channel",
-        "externalId": "externalId",
-        "provider": "provider",
-        "description": "description",
-        "homeUrl": "homeUrl",
-        "orgCode": "orgCode",
-        "orgType": "orgType",
-        "preferredLanguage": "preferredLanguage",
-        "contactDetail": "contactDetail"
-      }
-    ]
-  }
+    "SAMPLE_USER_CSV": [{
+      "firstName": "firstName",
+      "lastName": "lastName",
+      "phone": "phone",
+      "email": "email",
+      "userName": "userName",
+      "password": "password",
+      "provider": "provider",
+      "phoneVerified": "phoneVerified",
+      "emailVerified": "emailVerified",
+      "roles": "roles",
+      "position": "position",
+      "grade": "grade",
+      "location": "location",
+      "dob": "dob",
+      "gender": "gender",
+      "language": "language",
+      "profileSummary": "profileSummary",
+      "subject": "subject"
+    }],
+    "SAMPLE_ORGANIZATION_CSV": [{
+      "orgName": "orgName",
+      "isRootOrg": "isRootOrg",
+      "channel": "channel",
+      "externalId": "externalId",
+      "provider": "provider",
+      "description": "description",
+      "homeUrl": "homeUrl",
+      "orgCode": "orgCode",
+      "orgType": "orgType",
+      "preferredLanguage": "preferredLanguage",
+      "contactDetail": "contactDetail"
+    }]
+  },
+  "contentCreateType": {
+        "textbook": "textbook",
+        "course": "course",
+        "collection": "collection",
+        "studymaterial": "resource",
+        "lessonplan": "lessonplan"
+    },
+    "contentCreateTypeLable": {
+        "textbook": "createtextbook",
+        "course": "designcourse",
+        "collection": "createcollection",
+        "studymaterial": "createlessontext",
+        "lessonplan": "createlessonplan"
+    },
+    "contentCreateTypeForEditors": {
+        "textbook": "TextBook",
+        "course": "Course",
+        "collection": "Collection",
+        "studymaterial": "Resource",
+        "lessonplan": "LessonPlan"
+    },
+    "course":{
+      "filterType":"course",
+      "inPageredirectUrl":"/learn",
+      "searchPageredirectUrl":"/search/Courses/1"
+    },
+    "library":{
+      "filterType":"library",
+      "inPageredirectUrl":"/resources",
+      "searchPageredirectUrl":"/search/Library/1"
+    },
+    "formApiTypes": {
+        "textbook": "textbook",
+        "course": "course",
+        "collection": "collection",
+        "studymaterial": "resource",
+        "lessonplan": "lessonplan",
+        "library": "library"
+    },
+    "cacheServiceConfig": {
+      "setTimeInMinutes": 10,
+      "setTimeInSeconds": 60
+    }
 }

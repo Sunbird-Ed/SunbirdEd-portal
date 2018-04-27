@@ -196,11 +196,15 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
                 displayType: 'icon',
                 actionType: 'shareComponent',
                 icon: 'linkify',
+                mimeType: item.mimeType,
+                identifier: item.identifier,
+                contentType: item.contentType,
                 clickable: true
               }
             };
             this.limitedPublishList[key].action = action;
           });
+          console.log(this.limitedPublishList);
           this.showLoader = false;
         } else {
           this.showError = false;

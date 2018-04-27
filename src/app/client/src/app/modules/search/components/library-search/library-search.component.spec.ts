@@ -20,6 +20,7 @@ describe('LibrarySearchComponent', () => {
         'm0006': 'No result'
       },
       'fmsg': {
+        'm0077': 'Fetching search result failed',
         'm0051': 'Fetching other courses failed, please try again later...'
       }
     }

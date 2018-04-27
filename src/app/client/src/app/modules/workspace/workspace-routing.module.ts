@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, LimitedPublishedComponent
+  GenericEditorComponent,LimitedPublishedComponent,
+  UploadedComponent, DataDrivenComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
@@ -14,17 +15,19 @@ const routes: Routes = [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
         path: 'create', component: CreateContentComponent,
-        // children: [
-        //   { path: 'textbook', component: CreateTextbookComponent },
-        //   { path: 'course', component: CreateCourseComponent },
-        //   { path: 'studymaterial', component: CreateStudyMaterialComponent },
-        //   { path: 'collection', component: CreateCollectionComponent },
-        //   { path: 'lessonplan', component: CreateLessonPlanComponent }
-        // ]
+        children: [
+          { path: 'textbook', component: DataDrivenComponent },
+          { path: 'uploadcontent', component: DataDrivenComponent },
+          { path: 'course', component: DataDrivenComponent },
+          { path: 'studymaterial', component: DataDrivenComponent },
+          { path: 'collection', component: DataDrivenComponent },
+          { path: 'lessonplan', component: DataDrivenComponent }
+        ]
       },
       {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
+      {path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
       {path: 'edit/generic', component: GenericEditorComponent },
+      {path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
       { path: 'draft/:pageNumber', component: DraftComponent },
       { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
       { path: 'published/:pageNumber', component: PublishedComponent },

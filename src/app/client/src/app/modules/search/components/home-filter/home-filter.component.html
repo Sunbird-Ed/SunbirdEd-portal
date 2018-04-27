@@ -1,0 +1,70 @@
+<div>
+  <div class="ui divider header-search-filters-divider"></div>
+  <div class="ui grid">
+    <div class="twelve wide column">
+      <sui-accordion [closeOthers]="false">
+        <sui-accordion-panel>
+          <div title>
+            <i alt="Filter" class="icon filter"></i>
+            {{resourceService.frmelmnts?.lbl?.filters}}
+            <i class="dropdown icon"></i>
+          </div>
+          <div content>
+            <div class="twelve wide column content margin-bottom-15" *ngIf='queryParams != undefined && showFilter'>
+              <span *ngFor="let value of label">
+                <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
+                  {{value}}:
+                  <span *ngFor="let item of queryParams[value] ">
+                    <a class="ui label margin-top--5" *ngIf='!isObject(item) '>
+                      {{item}}
+                      <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
+                    </a>
+                    <a class="ui label margin-top--5" *ngIf='isObject(item)'>
+                      {{item.name}}
+                      <i class="delete icon" (click)="removeFilterSelection(value,item)"></i>
+                    </a>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="filtercolmntext ui grid transition  " *ngIf='queryParams != undefined && showFilter && refresh'>
+              <div class="one wide column filter-text">
+                <span class="ShowFilterSubTitle">{{resourceService.frmelmnts?.lbl?.filterby}}</span>
+              </div>
+              <div class="two wide column ">
+                <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Curriculum" [options]="options" [hasLabels]=false
+               placeholder="Curriculum"  #multiSelect>
+                  <sui-select-option *ngFor="let board of searchBoards" [value]="board"> </sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div class="two wide column">
+                <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Medium" [options]="options" [hasLabels]=false
+                placeholder="Medium" #multiSelect>
+                  <sui-select-option *ngFor="let language of searchLanguages" [value]="language"> </sui-select-option>
+                  <i class="dropdown icon"></i>
+                </sui-multi-select>
+              </div>
+              <div class="two wide column">
+                <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Subjects" [options]="options" [hasLabels]=false
+                placeholder="Subjects"  #multiSelect>
+                  <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div class="two wide column" *ngIf='queryParams != undefined'> 
+                <div class="field">
+                  <form class="conceptSelector ui form">
+                    <app-concept-picker [selectedConcepts]="queryParams.Concepts" (Concepts)="concepts($event)"></app-concept-picker>
+                  </form>
+                </div>
+              </div>
+              <div class="three wide column filter-button">
+                <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
+                <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+              </div>
+            </div>
+          </div>
+        </sui-accordion-panel>
+      </sui-accordion>
+    </div>
+  </div>
+</div>

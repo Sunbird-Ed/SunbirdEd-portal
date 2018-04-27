@@ -85,7 +85,7 @@ export class ShareLinkComponent implements OnInit {
   * initializeModal
   */
   initializeModal() {
-    this.sharelinkModal = true;
+    this.sharelinkModal = !this.sharelinkModal;
     if (this.sharelinkModal) {
       setTimeout(() => {
         this.copyLinkButton.nativeElement.click();
@@ -100,7 +100,7 @@ export class ShareLinkComponent implements OnInit {
   public copyLink(popup: IPopup) {
     popup.open();
     setTimeout(() => {
-        this._renderer.invokeElementMethod(this.copyLinkData.nativeElement, 'select', []);
+    this._renderer.invokeElementMethod(this.copyLinkData.nativeElement, 'select', []);
     }, 0);
     document.execCommand('copy');
   }

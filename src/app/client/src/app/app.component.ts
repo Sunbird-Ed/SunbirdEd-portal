@@ -2,7 +2,7 @@ import { ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails,
-  ITelemetryContext, TenantService
+  ITelemetryContext, TenantService, ConceptPickerService
 } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
    * reference of courseService service.
    */
   public courseService: CoursesService;
+ /**
+  * reference of conceptPickerService service.
+   */
+  public conceptPickerService: ConceptPickerService;
   /**
    * reference of telemetryService service.
    */
@@ -51,15 +55,15 @@ export class AppComponent implements OnInit {
   constructor(userService: UserService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService) {
+    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
     this.courseService = courseService;
+    this.conceptPickerService = conceptPickerService;
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
   }
-
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -68,13 +72,13 @@ export class AppComponent implements OnInit {
   public beforeunloadHandler($event) {
     document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
   }
-
   ngOnInit() {
     this.resourceService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
       this.userService.initialize();
       this.permissionService.initialize();
       this.courseService.initialize();
+       this.conceptPickerService.initialize();
       this.initTelemetryService();
     }
 

@@ -5,20 +5,32 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import 'rxjs/add/operator/mergeMap';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { AnnouncementService, UserService, CoursesService, LearnerService } from '@sunbird/core';
+import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './main-home-component.spec.data';
+import { CacheService } from 'ng2-cache-service';
+
 const testData = mockData.mockRes;
 describe('MainHomeComponent', () => {
   let component: MainHomeComponent;
   let fixture: ComponentFixture<MainHomeComponent>;
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {
+        'm0001': 'api failed, please try again',
+        'm0004': 'api failed, please try again'
+      }
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, Ng2IziToastModule],
       declarations: [MainHomeComponent],
-      providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService, ToasterService],
+      providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
+         ToasterService, FrameworkService, CacheService, ContentService,
+         { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
@@ -34,18 +46,18 @@ describe('MainHomeComponent', () => {
     userService.getUserProfile();
     fixture.detectChanges();
     component.populateUserProfile();
-    fixture.detectChanges();
+   // fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
   });
-  it('should throw error', () => {
+  it('should throw error in user Service ', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userError));
+    spyOn(learnerService, 'get').and.returnValue(Observable.throw(testData.userError));
     userService.getUserProfile();
     fixture.detectChanges();
     component.populateUserProfile();
-    fixture.detectChanges();
+   // fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
   it('should subscribe to course service', () => {
@@ -55,18 +67,18 @@ describe('MainHomeComponent', () => {
     courseService.getEnrolledCourses();
     fixture.detectChanges();
     component.populateEnrolledCourse();
-    fixture.detectChanges();
+   // fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.toDoList).toBeDefined();
   });
-  it('should throw error', () => {
+  it('should throw error in course service ', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.courseError));
+    spyOn(learnerService, 'get').and.returnValue(Observable.throw(testData.courseError));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
     component.populateEnrolledCourse();
-    fixture.detectChanges();
+   // fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
 });

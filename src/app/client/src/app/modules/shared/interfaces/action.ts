@@ -33,5 +33,8 @@ export interface IAction {
         clickable?: boolean;
         actionType?: 'share' | 'shareComponent' | string  ;
         icon?: string;
+        mimeType?: string;
+        identifier?: string;
+        contentType?: string
     };
 }
