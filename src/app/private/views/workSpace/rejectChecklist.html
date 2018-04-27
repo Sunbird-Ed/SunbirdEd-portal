@@ -16,7 +16,7 @@
             <h4>{{previewContent.checkListConfig.reject.subtitle}}</h4>
         </div>
         <div class="ui three column grid">
-            <div class="column" ng-repeat="list in previewContent.checkListConfig.publish.contents | orderBy: 'index'">
+            <div class="column" ng-repeat="list in previewContent.checkListConfig.reject.contents | orderBy: 'index'">
                 <h5 class="ui tiny header">{{list.name}}</h5>
                 <div class="ui list" ng-repeat="item in list.checkList">
                     <div class="item">
