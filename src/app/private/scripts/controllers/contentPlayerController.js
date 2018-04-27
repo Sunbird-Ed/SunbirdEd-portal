@@ -2,9 +2,9 @@
 
 angular.module('playerApp')
   .controller('contentPlayerCtrl', ['$state', '$scope', 'contentService', '$timeout', '$stateParams',
-    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', '$window',
+    'config', '$rootScope', '$location', '$anchorScroll', 'toasterService', '$window', 'workSpaceUtilsService',
     function ($state, $scope, contentService, $timeout, $stateParams, config, $rootScope,
-      $location, $anchorScroll, toasterService, $window) {
+      $location, $anchorScroll, toasterService, $window, workSpaceUtilsService) {
       $scope.isClose = $scope.isclose
       $scope.isHeader = $scope.isheader
       $scope.showModalInLectureView = true
@@ -183,6 +183,41 @@ angular.module('playerApp')
       $scope.tryAgain = function () {
         $scope.errorObject = {}
         getContent($scope.id)
+      }
+
+      $scope.copyContent = function () {
+        $scope.showCopyLoader = true
+        var editorData = angular.copy($scope.contentData)
+        editorData.code = editorData.code + '.copy'
+        var req = {
+          content: {
+            description: editorData.description,
+            code: editorData.code,
+            createdBy: $rootScope.userId
+          }
+        }
+        var state = ''
+        if ($scope.contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
+          state = 'WorkSpace.DraftContent'
+        } else {
+          state = 'WorkSpace.AllUploadedContent'
+        }
+        contentService.copy(req, editorData.identifier).then(function (response) {
+          if (response && response.responseCode === 'OK') {
+            _.forEach(response.result.node_id, function (value) {
+              editorData.identifier = value
+            })
+            $scope.showCopyLoader = false
+            toasterService.success($rootScope.messages.emsg.m0012)
+            workSpaceUtilsService.openContentEditor(editorData, state)
+          } else {
+            toasterService.error($rootScope.messages.emsg.m0013)
+            $scope.showCopyLoader = false
+          }
+        }).catch(function () {
+          toasterService.error($rootScope.messages.emsg.m0013)
+          $scope.showCopyLoader = false
+        })
       }
 
       $scope.getConceptsNames = function (concepts) {
