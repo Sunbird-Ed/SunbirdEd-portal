@@ -61,16 +61,15 @@ angular.module('playerApp')
         }
       }
 
-      function showPlayer (data) {
+      function validateContentData(fieldData) {
+        return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
+      }
+
+      function showPlayer(data) {
         $scope.contentData = data
-
-        $scope.contentData.language = $scope.contentData.language
-          ? $scope.contentData.language.join(', ') : ''
-        $scope.contentData.gradeLevel = $scope.contentData.gradeLevel
-          ? $scope.contentData.gradeLevel.join(', ') : ''
-        $scope.contentData.subject = $scope.contentData.subject
-          ? $scope.contentData.subject.join(', ') : ''
-
+        $scope.contentData.language = validateContentData($scope.contentData.language)
+        $scope.contentData.gradeLevel = validateContentData($scope.contentData.gradeLevel)
+        $scope.contentData.subject = validateContentData($scope.contentData.subject)
         $scope._instance = {
           id: $scope.contentData.identifier,
           ver: $scope.contentData.pkgVersion
@@ -97,18 +96,16 @@ angular.module('playerApp')
          * from renderer
          * Player controller dispatching the event sunbird
          */
-        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', function (event, data) { // eslint-disable-line
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
         })
         /* window.onbeforeunload = function (e) { // eslint-disable-line
           playerTelemetryUtilsService.endTelemetry({ progress: $scope.contentProgress })
         } */
-
-
       }
 
-      function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
+      function showLoaderWithMessage(showMetaLoader, message, closeButton, tryAgainButton) {
         var error = {}
         error.showError = true
         error.showMetaLoader = showMetaLoader
@@ -119,19 +116,19 @@ angular.module('playerApp')
         $scope.errorObject = error
       }
 
-      function getContent (contentId) {
+      function getContent(contentId) {
         var req = { contentId: contentId }
         var qs = {
           fields: 'body,editorState,templateId,languageCode,template,' +
-                        'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
-                        'domain,code,visibility,createdBy,description,language,mediaType,' +
-                        'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
-                        'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
+            'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+            'domain,code,visibility,createdBy,description,language,mediaType,' +
+            'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+            'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
             if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
-             $scope.isworkspace) {
+              $scope.isworkspace) {
               $scope.errorObject = {}
               showPlayer(response.result.content)
             } else {
@@ -196,14 +193,14 @@ angular.module('playerApp')
       }
 
       $scope.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name').join(', ')
-        if (concepts && conceptNames.length < concepts.length) {
+        var conceptNames = _.map(concepts, 'name')
+        if (concepts && _.isArray(concepts) && conceptNames.length < concepts.length) {
           var filteredConcepts = _.filter($rootScope.concepts, function (p) {
             return _.includes(concepts, p.identifier)
           })
-          conceptNames = _.map(filteredConcepts, 'name').join(', ')
+          conceptNames = _.map(filteredConcepts, 'name')
         }
-        return conceptNames
+        return conceptNames.join(', ')
       }
 
       // Restore default values(resume course, view dashboard) onAfterUser leave current state

@@ -9,11 +9,11 @@ angular.module('playerApp')
       previewContent.contentId = $stateParams.contentId
       previewContent.userId = $rootScope.userId
       previewContent.isShowPublishRejectButton =
-                                    $stateParams.backState === 'WorkSpace.UpForReviewContent'
+        $stateParams.backState === 'WorkSpace.UpForReviewContent'
       previewContent.isShowDeleteButton =
-                                    $stateParams.backState === 'WorkSpace.PublishedContent'
+        $stateParams.backState === 'WorkSpace.PublishedContent'
       previewContent.isShowFlagActionButton =
-                                    $stateParams.backState === 'WorkSpace.FlaggedContent'
+        $stateParams.backState === 'WorkSpace.FlaggedContent'
 
       var validateModal = {
         state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
@@ -24,7 +24,7 @@ angular.module('playerApp')
       previewContent.contentPlayer = { isContentPlayerEnabled: false }
       previewContent.redirectUrl = $stateParams.backState
 
-      function checkContentAccess (reqData, validateData) {
+      function checkContentAccess(reqData, validateData) {
         var status = reqData.status
         var createdBy = reqData.createdBy
         var state = reqData.state
@@ -46,7 +46,11 @@ angular.module('playerApp')
         return false
       }
 
-      function showPlayer (data) {
+      function validatePreviewData(fieldData) {
+        return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
+      }
+
+      function showPlayer(data) {
         var rspData = data
         rspData.state = $stateParams.backState
         rspData.userId = $rootScope.userId
@@ -57,18 +61,13 @@ angular.module('playerApp')
           $state.go(previousState.name, previousState.params)
         }
         previewContent.contentData = data
-        previewContent.contentData.language = previewContent.contentData.language
-          ? previewContent.contentData.language.join(', ') : ''
-        previewContent.contentData.gradeLevel = previewContent.contentData.gradeLevel
-          ? previewContent.contentData.gradeLevel.join(', ') : ''
-        previewContent.contentData.subject = previewContent.contentData.subject
-          ? previewContent.contentData.subject.join(', ') : ''
-        previewContent.contentData.flagReasons = previewContent.contentData.flagReasons
-          ? previewContent.contentData.flagReasons.join(', ') : ''
-        previewContent.contentData.flaggedBy = previewContent.contentData.flaggedBy
-          ? previewContent.contentData.flaggedBy.join(', ') : ''
-        previewContent.contentData.flags = previewContent.contentData.flags
-          ? previewContent.contentData.flags.join(', ') : ''
+        previewContent.contentData.language = validatePreviewData(previewContent.contentData.language)
+        previewContent.contentData.gradeLevel = validatePreviewData(previewContent.contentData.gradeLevel)
+        previewContent.contentData.subject = validatePreviewData(previewContent.contentData.subject)
+        previewContent.contentData.flagReasons = validatePreviewData(previewContent.contentData.flagReasons)
+        previewContent.contentData.flaggedBy = validatePreviewData(previewContent.contentData.flaggedBy)
+        previewContent.contentData.flags = validatePreviewData(previewContent.contentData.flags)
+        previewContent.contentData.keywords = validatePreviewData(previewContent.contentData.keywords)
 
         previewContent.contentPlayer.contentData = data
         previewContent.contentPlayer.isContentPlayerEnabled = true
@@ -79,13 +78,13 @@ angular.module('playerApp')
         var req = { contentId: contentId }
         var qs = {
           fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
-                            'versionKey,audience,language,gradeLevel,ageGroup,subject,' +
-                            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
-                            'createdOn,lastUpdatedOn,body,creator'
+            'versionKey,audience,language,gradeLevel,ageGroup,subject,' +
+            'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
+            'createdOn,lastUpdatedOn,body,board,keywords,resourceType,creator'
         }
 
         if ($stateParams.backState === 'WorkSpace.UpForReviewContent' ||
-        $stateParams.backState === 'WorkSpace.ReviewContent') {
+          $stateParams.backState === 'WorkSpace.ReviewContent') {
           qs.mode = 'edit'
         }
         contentService.getById(req, qs).then(function (response) {
@@ -198,7 +197,7 @@ angular.module('playerApp')
       }
 
       previewContent.discardContentFlag = function (contentData) {
-        var request = { }
+        var request = {}
         previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0041)
 
         contentService.discardContentFlag(request, contentData.identifier).then(function (res) {
@@ -219,16 +218,15 @@ angular.module('playerApp')
       }
 
       previewContent.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name').join(', ')
-        if (conceptNames.length < concepts.length) {
+        var conceptNames = _.map(concepts, 'name')
+        if (concepts && _.isArray(concepts) && conceptNames.length < concepts.length) {
           var filteredConcepts = _.filter($rootScope.concepts, function (p) {
             return _.includes(concepts, p.identifier)
           })
-          conceptNames = _.map(filteredConcepts, 'name').join(', ')
+          conceptNames = _.map(filteredConcepts, 'name')
         }
-        return conceptNames
+        return conceptNames.join(', ')
       }
-
       // Restore default values(resume course, view dashboard) onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
     }])

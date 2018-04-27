@@ -27,22 +27,24 @@
 <!--notes End-->
     <div class="ui grid">
         <div class="eight wide column">
-            <div class="twelve wide column" ng-if="contentData.description">
+            <div class="twelve wide column">
                 <div class="ui raised segment">
-                    <div class="header announcementCard-header margin-bottom-10">
-                        <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
-                    </div>
-                    <div class="description" ng-init="contentPlayerCtrl.readMore = false">                                   
-                        <div  ng-if="!contentPlayerCtrl.readMore" >
-                            <span class="overFlowWordRap">{{contentData.description | limitTo: 150 }}&nbsp;</span>
-                            <span class="ui cardsKnowMore mouse-pointer" ng-if="contentData.description.length > 150 && contentPlayerCtrl.readMore === false" ng-click="contentPlayerCtrl.readMore = !contentPlayerCtrl.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
+                    <div ng-if="contentData.description" class="margin-bottom-20">
+                        <div class="header announcementCard-header margin-bottom-10">
+                            <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
                         </div>
-                        <div class="overFlowWordRap" ng-if="contentPlayerCtrl.readMore"> {{contentData.description}}&nbsp;
-                            <span class="ui cardsKnowMore mouse-pointer" ng-click="contentPlayerCtrl.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
+                        <div class="description" ng-init="contentPlayerCtrl.readMore = false">                                   
+                            <div  ng-if="!contentPlayerCtrl.readMore" >
+                                <span class="overFlowWordRap">{{contentData.description | limitTo: 150 }}&nbsp;</span>
+                                <span class="ui cardsKnowMore mouse-pointer" ng-if="contentData.description.length > 150 && contentPlayerCtrl.readMore === false" ng-click="contentPlayerCtrl.readMore = !contentPlayerCtrl.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
+                            </div>
+                            <div class="overFlowWordRap" ng-if="contentPlayerCtrl.readMore"> {{contentData.description}}&nbsp;
+                                <span class="ui cardsKnowMore mouse-pointer" ng-click="contentPlayerCtrl.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="header announcementCard-header margin-top-20">
+                    <div class="header announcementCard-header">
                         <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
                     </div>
                     <div class="ui middle aligned list margin-top-0">
