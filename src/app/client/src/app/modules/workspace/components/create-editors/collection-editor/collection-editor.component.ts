@@ -2,17 +2,12 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
-declare var jQuery: any;
-declare let window: CustomWindow;
-
 
 @Component({
   selector: 'app-collection-editor',
@@ -240,10 +235,10 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         this.toasterService.error(this.resourceService.messages.emsg.m0004);
       }
     },
-    error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0004);
-    }
-  );
+      error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
+      }
+    );
   }
 
 
