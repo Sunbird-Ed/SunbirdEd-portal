@@ -61,11 +61,11 @@ angular.module('playerApp')
         }
       }
 
-      function validateContentData(fieldData) {
+      function validateContentData (fieldData) {
         return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
       }
 
-      function showPlayer(data) {
+      function showPlayer (data) {
         $scope.contentData = data
         $scope.contentData.language = validateContentData($scope.contentData.language)
         $scope.contentData.gradeLevel = validateContentData($scope.contentData.gradeLevel)
@@ -105,7 +105,7 @@ angular.module('playerApp')
         } */
       }
 
-      function showLoaderWithMessage(showMetaLoader, message, closeButton, tryAgainButton) {
+      function showLoaderWithMessage (showMetaLoader, message, closeButton, tryAgainButton) {
         var error = {}
         error.showError = true
         error.showMetaLoader = showMetaLoader
@@ -116,7 +116,7 @@ angular.module('playerApp')
         $scope.errorObject = error
       }
 
-      function getContent(contentId) {
+      function getContent (contentId) {
         var req = { contentId: contentId }
         var qs = {
           fields: 'body,editorState,templateId,languageCode,template,' +

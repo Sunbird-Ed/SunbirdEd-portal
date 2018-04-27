@@ -24,7 +24,7 @@ angular.module('playerApp')
       previewContent.contentPlayer = { isContentPlayerEnabled: false }
       previewContent.redirectUrl = $stateParams.backState
 
-      function checkContentAccess(reqData, validateData) {
+      function checkContentAccess (reqData, validateData) {
         var status = reqData.status
         var createdBy = reqData.createdBy
         var state = reqData.state
@@ -46,11 +46,11 @@ angular.module('playerApp')
         return false
       }
 
-      function validatePreviewData(fieldData) {
+      function validatePreviewData (fieldData) {
         return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
       }
 
-      function showPlayer(data) {
+      function showPlayer (data) {
         var rspData = data
         rspData.state = $stateParams.backState
         rspData.userId = $rootScope.userId

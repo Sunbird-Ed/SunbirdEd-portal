@@ -44,11 +44,11 @@ angular.module('loginApp')
         }
       }
 
-      function validateContentData(fieldData) {
+      function validateContentData (fieldData) {
         return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
       }
 
-      function showPlayer(data) {
+      function showPlayer (data) {
         $scope.contentData = data
         $scope.contentData.language = validateContentData($scope.contentData.language)
         $scope.contentData.gradeLevel = validateContentData($scope.contentData.gradeLevel)
@@ -73,7 +73,7 @@ angular.module('loginApp')
         }, 0)
       }
 
-      function getContent(contentId) {
+      function getContent (contentId) {
         var req = { contentId: contentId }
         var qs = {
           fields: 'body,editorState,stageIcons,templateId,languageCode,template,' +
