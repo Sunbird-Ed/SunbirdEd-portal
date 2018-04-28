@@ -1716,7 +1716,7 @@ ul.fancytree-container li {
   width: 50%;
 }
 
-.cardtakenote {
+.take-note-card {
   color: #007AFF;
   vertical-align: top;
   display: inline-block;
@@ -1726,11 +1726,11 @@ ul.fancytree-container li {
   font-size: 1em;
   text-decoration: underline;
 }
-.cardtakenote img {
+.take-note-card img {
   width: 40px;
   height: 50px;
 }
-.cardtakenote span {
+.take-note-card span {
   display: block;
   padding-top: 8px;
 }
