@@ -72,7 +72,7 @@ angular.module('playerApp')
           fields: 'name,description,appIcon,contentType,mimeType,artifactUrl,' +
                             'versionKey,audience,language,gradeLevel,ageGroup,subject,' +
                             'medium,author,domain,createdBy,flagReasons,flaggedBy,flags,status,' +
-                            'createdOn,lastUpdatedOn,body'
+                            'createdOn,lastUpdatedOn,body,creator'
         }
 
         if ($stateParams.backState === 'WorkSpace.UpForReviewContent' ||

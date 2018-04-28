@@ -16,6 +16,7 @@
             </div>
         </div>
     </div>
+
 </div>
 </div>
 <div class="three wide column "></div>
@@ -24,17 +25,127 @@
 </div>
 </div>
 <!--notes End-->
-<div class="ui grid">
-    <div class="eight wide column">
-        <div class="row">
+    <div class="ui grid">
+        <div class="eight wide column">
             <div class="twelve wide column" ng-if="contentData.description">
                 <div class="ui raised segment">
-                    <div class="header announcementCard-header">
+                    <div class="header announcementCard-header margin-bottom-10">
                         <span class="header cardsHeading ng-binding"> {{$root.frmelmnts.lbl.description}} </span>
                     </div>
-                    <div class="description padding-top-5">
-                        <p ng-bind-html="contentData.description">
-                        </p>
+                    <div class="description" ng-init="contentPlayerCtrl.readMore = false">                                   
+                        <div  ng-if="!contentPlayerCtrl.readMore" >
+                            <span class="overFlowWordRap">{{contentData.description | limitTo: 80 }}&nbsp;</span>
+                            <span class="ui cardsKnowMore mouse-pointer" ng-if="contentData.description.length > 80 && contentPlayerCtrl.readMore === false" ng-click="contentPlayerCtrl.readMore = !contentPlayerCtrl.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
+                        </div>
+                        <div class="overFlowWordRap" ng-if="contentPlayerCtrl.readMore"> {{contentData.description}}&nbsp;
+                            <span class="ui cardsKnowMore mouse-pointer" ng-click="contentPlayerCtrl.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
+                        </div>
+                    </div>
+
+                    <div class="header announcementCard-header margin-top-20">
+                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
+                    </div>
+                    <div class="ui middle aligned list margin-top-0">
+
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.creator">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui ">{{$root.frmelmnts.lbl.author}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.creator}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui ">{{$root.frmelmnts.lbl.medium}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.language.toString()}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui">{{$root.frmelmnts.lbl.class}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.gradeLevel.toString()}}
+                                  </div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui">{{$root.frmelmnts.lbl.subject}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.subject}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui">{{$root.frmelmnts.lbl.createdon}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.createdOn| dateFilterWithMDY}}
+                                  </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui">{{$root.frmelmnts.lbl.lastupdate}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                    {{contentData.lastUpdatedOn| dateFilterWithMDY}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts.length > 0">
+                            <div class= "ui grid">
+                                <div class="three wide column">
+                                  <div class="content contentdetail">
+                                    <div class="ui">{{$root.frmelmnts.lbl.concept}}</div>
+                                  </div>
+                                </div>
+                                <div class="nine wide column">
+                                  <div class="content contentMetaDetail">
+                                   {{getConceptsNames(contentData.concepts)}}
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,82 +153,11 @@
                 <course-discussions showaskquestion="false"></course-discussions>
             </div>
         </div>
-    </div>
-    <div class="four wide column">
-        <div class="row">
-            <div class="twelve wide column">
-                <div class="ui segment">
-                    <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding">{{$root.frmelmnts.lbl.contentinformation}}</span>
-                    </div>
-                    <div class="ui middle aligned list margin-top-0">
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.creator">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.creator}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.author}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.language.toString()}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.medium}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.gradeLevel.toString()}}</div>
-                            </div>
-                            <div class="content ">
-                                {{$root.frmelmnts.lbl.class}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.subject}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.subject}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.createdOn| dateFilterWithMDY}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.createdon}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui ">{{contentData.lastUpdatedOn| dateFilterWithMDY}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.lastupdate}}
-                            </div>
-                        </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts.length > 0">
-                            <div class="right floated content contentMetaDetail">
-                                <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
-                            </div>
-                            <div class="content">
-                                {{$root.frmelmnts.lbl.concept}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="twelve wide column margin-top-20">
-                <div class="row">
-                    <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
-                </div>
-            </div>
+        <div class="four wide column">
+            <note-card shownotecard="true" contentid="contentData.identifier"></note-card>
         </div>
     </div>
-</div>
+
 <!-- <div class="ui grid margin-top-15">
     <div class="row">
         <div class="three wide column">
