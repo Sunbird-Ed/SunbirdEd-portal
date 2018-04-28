@@ -42,7 +42,8 @@
                 "REJECT": "content/v1/reject",
                 "FLAG": "content/v1/flag",
                 "ACCEPT_FLAG": "content/v1/flag/accept",
-                "DISCARD_FLAG": "content/v1/flag/reject"
+                "DISCARD_FLAG": "content/v1/flag/reject",
+                "COPY": "content/v1/copy"
             },
             "DASHBOARD": {
                 "ORG_CREATION": "dashboard/v1/creation/org",

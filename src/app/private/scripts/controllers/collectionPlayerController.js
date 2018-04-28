@@ -3,8 +3,9 @@
 (function () {
   angular.module('playerApp').controller('CollectionPlayerCtrl', ['$state', '$timeout',
     'courseService', '$rootScope', '$stateParams', 'toasterService', 'telemetryService', '$window',
+    'contentService', 'workSpaceUtilsService',
     function ($state, $timeout, courseService, $rootScope, $stateParams, toasterService,
-      telemetryService, $window) {
+      telemetryService, $window, contentService, workSpaceUtilsService) {
       var cpvm = this
       cpvm.treeKey = 0
       cpvm.loader = {
@@ -179,6 +180,35 @@
         } else {
           $state.go('Resources')
         }
+      }
+
+      cpvm.copyContent = function () {
+        cpvm.showCopyLoader = true
+        var editorData = angular.copy(cpvm.courseHierachy)
+        editorData.code = editorData.code + '.copy'
+        var req = {
+          content: {
+            description: editorData.description,
+            code: editorData.code,
+            createdBy: $rootScope.userId
+          }
+        }
+        contentService.copy(req, editorData.identifier).then(function (response) {
+          if (response && response.responseCode === 'OK') {
+            _.forEach(response.result.node_id, function (value) {
+              editorData.identifier = value
+            })
+            cpvm.showCopyLoader = false
+            toasterService.success($rootScope.messages.emsg.m0012)
+            workSpaceUtilsService.openContentEditor(editorData, 'WorkSpace.DraftContent')
+          } else {
+            toasterService.error($rootScope.messages.emsg.m0013)
+            cpvm.showCopyLoader = false
+          }
+        }).catch(function () {
+          toasterService.error($rootScope.messages.emsg.m0013)
+          cpvm.showCopyLoader = false
+        })
       }
 
       cpvm.isShowBadgeAssign = function (contentData) {
