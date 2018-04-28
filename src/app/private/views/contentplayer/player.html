@@ -23,6 +23,9 @@
                             <span apply-script class="courseHeader-rating ui star rating course-header-divider" data-rating="{{contentData.me_averageRating |number:0}}" data-max-rating="5"></span>&nbsp;&nbsp;
                             <content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
                             <content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag>
+                            <span sb-permissions permission-only="CONTENT_CREATOR,CONTENT_REVIEWER" ng-click="copyContent()" class="ui mouse-pointer content-font margin-left-10" title="Copy content">
+                                <i class="ui large blue clone outline icon"></i>
+                            </span>  
                         </div>
                     </div>
                 </div>
@@ -37,6 +40,9 @@
                 <div class="twelve wide column contentMetaSection" ng-if="showMetaData">
                     <div ng-include="'views/contentplayer/contentMeta.html'"></div>
                 </div>
+            </div>
+            <div class="ui active inverted dimmer" ng-if="showCopyLoader">
+                <div class="ui text loader">{{$root.frmelmnts.lbl.copycontent}}</div>
             </div>
             <div ng-if="errorObject.showError">
                 <div class="ui active dimmer inverted">

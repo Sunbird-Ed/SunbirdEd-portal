@@ -29,6 +29,25 @@ angular.module('playerApp')
         return restfulContentService.post(config.URL.CONTENT.CREATE, req)
       }
       /**
+             * @method copy
+             * @desc Copy a content
+             * @memberOf Services.contentService
+             * @param {Object} request - Request object
+             * @param {Object} request.content - Content data
+             * @param {string} request.content.description - Description about content
+             * @param {string} request.content.code - Code of content
+             * @param {string} request.content.createdBy - User identifier of owner
+             * @returns {Promise} Promise object contains response code and content Id
+             * @instance
+             */
+      this.copy = function (req, id) {
+        req.content.createdFor = $rootScope.organisationIds
+        req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName
+        req.content.organization = $rootScope.organisationNames
+        var url = config.URL.CONTENT.COPY + '/' + id
+        return restfulContentService.post(url, req)
+      }
+      /**
              * @method publish
              * @desc Publish a content
              * @memberOf Services.contentService

@@ -106,12 +106,15 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       if ($rootScope.rootOrgId) {
         organisationIds.push($rootScope.rootOrgId)
       }
+      if (_.get(profileData, 'rootOrg.orgName')) {
+        organisationNames.push(profileData.rootOrg.orgName)
+      }
 
       // set role org map
       permissionsService.setRoleOrgMap(profileData)
 
       organisationIds = _.uniq(organisationIds)
-      $rootScope.organisationNames = organisationNames
+      $rootScope.organisationNames = _.uniq(organisationNames)
       $rootScope.organisationIds = angular.copy(organisationIds)
       org.sunbird.portal.dims = _.concat(organisationIds, org.sunbird.portal.channel)
       permissionsService.setCurrentUserRoleMap(orgRoleMap)
