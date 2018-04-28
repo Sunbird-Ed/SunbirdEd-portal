@@ -45,11 +45,11 @@
                         </div>
                         <div class="description padding-top-5" ng-init="previewContent.readMore = false">
                             <div ng-if="!previewContent.readMore">
-                                <span class="pre-line-space overFlowWordRap">{{previewContent.contentData.description | limitTo: 150 }}&nbsp;</span>
+                                <span class="pre-line-space overflow-word-wrap">{{previewContent.contentData.description | limitTo: 150 }}&nbsp;</span>
                                 <span class="ui cardsKnowMore mouse-pointer" ng-if="previewContent.contentData.description.length > 150 && previewContent.readMore === false"
                                     ng-click="previewContent.readMore = !previewContent.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
                             </div>
-                            <div class="pre-line-space overFlowWordRap" ng-if="previewContent.readMore"> {{previewContent.contentData.description}}&nbsp;
+                            <div class="pre-line-space overflow-word-wrap" ng-if="previewContent.readMore"> {{previewContent.contentData.description}}&nbsp;
                                 <span class="ui cardsKnowMore mouse-pointer" ng-click="previewContent.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.creator">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         <div class="ui ">{{$root.frmelmnts.lbl.author}}</div>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.keywords">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.keyword}}
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.board">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.board}}
                                     </div>
                                 </div>
@@ -103,7 +103,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.language">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.medium}}
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.gradeLevel">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.class}}
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.subject">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.subject}}
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.createdOn">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.createdon}}
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.lastUpdatedOn">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.lastupdate}}
                                     </div>
                                 </div>
@@ -174,13 +174,13 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.getConceptsNames(previewContent.contentData.concepts)">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.concept}}
                                     </div>
                                 </div>
                                 <div class="nine wide column">
                                     <div class="content">
-                                        <div class="ui overFlowWordRap">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
+                                        <div class="ui overflow-word-wrap">{{previewContent.getConceptsNames(previewContent.contentData.concepts)}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -188,7 +188,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.resourceType">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.resourcetype}}
                                     </div>
                                 </div>
@@ -202,13 +202,13 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flagReasons">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.flaggedreason}}
                                     </div>
                                 </div>
                                 <div class="nine wide column">
                                     <div class="content">
-                                        <div class="ui overFlowWordRap">{{previewContent.contentData.flagReasons}}
+                                        <div class="ui overflow-word-wrap">{{previewContent.contentData.flagReasons}}
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flaggedBy">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.flaggedby}}
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.status === 'Flagged' && previewContent.contentData.flags">
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div class="content contentdetail">
+                                    <div class="content content-detail">
                                         {{$root.frmelmnts.lbl.flaggeddescription}}
                                     </div>
                                 </div>

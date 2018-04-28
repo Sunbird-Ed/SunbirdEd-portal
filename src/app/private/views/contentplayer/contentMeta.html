@@ -35,10 +35,10 @@
                         </div>
                         <div class="description" ng-init="contentPlayerCtrl.readMore = false">                                   
                             <div  ng-if="!contentPlayerCtrl.readMore" >
-                                <span class="overFlowWordRap">{{contentData.description | limitTo: 150 }}&nbsp;</span>
+                                <span class="overflow-word-wrap">{{contentData.description | limitTo: 150 }}&nbsp;</span>
                                 <span class="ui cardsKnowMore mouse-pointer" ng-if="contentData.description.length > 150 && contentPlayerCtrl.readMore === false" ng-click="contentPlayerCtrl.readMore = !contentPlayerCtrl.readMore;">{{$root.frmelmnts.lbl.readmore}} </span>
                             </div>
-                            <div class="overFlowWordRap" ng-if="contentPlayerCtrl.readMore"> {{contentData.description}}&nbsp;
+                            <div class="overflow-word-wrap" ng-if="contentPlayerCtrl.readMore"> {{contentData.description}}&nbsp;
                                 <span class="ui cardsKnowMore mouse-pointer" ng-click="contentPlayerCtrl.readMore = false;">{{$root.frmelmnts.lbl.readless}}</span>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.creator">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui ">{{$root.frmelmnts.lbl.author}}</div>
                                   </div>
                                 </div>
@@ -67,7 +67,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.language">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui ">{{$root.frmelmnts.lbl.medium}}</div>
                                   </div>
                                 </div>
@@ -81,7 +81,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.gradeLevel">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui">{{$root.frmelmnts.lbl.class}}</div>
                                   </div>
                                 </div>
@@ -95,7 +95,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.subject">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui">{{$root.frmelmnts.lbl.subject}}</div>
                                   </div>
                                 </div>
@@ -109,7 +109,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.createdOn">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui">{{$root.frmelmnts.lbl.createdon}}</div>
                                   </div>
                                 </div>
@@ -124,7 +124,7 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.lastUpdatedOn">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui">{{$root.frmelmnts.lbl.lastupdate}}</div>
                                   </div>
                                 </div>
@@ -138,12 +138,12 @@
                         <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts.length > 0">
                             <div class= "ui grid">
                                 <div class="three wide column">
-                                  <div class="content contentdetail">
+                                  <div class="content content-detail">
                                     <div class="ui">{{$root.frmelmnts.lbl.concept}}</div>
                                   </div>
                                 </div>
                                 <div class="nine wide column">
-                                  <div class="content overFlowWordRap">
+                                  <div class="content overflow-word-wrap">
                                    {{getConceptsNames(contentData.concepts)}}
                                   </div>
                                 </div>

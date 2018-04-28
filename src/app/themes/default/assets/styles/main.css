@@ -470,7 +470,7 @@
   opacity: 0.65;
   cursor: not-allowed;
 }
-.overFlowWordRap {
+.overflow-word-wrap {
   word-break: break-word !important;
   overflow-wrap: break-word !important;
 }
@@ -1705,16 +1705,17 @@ ul.fancytree-container li {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.contentdetail {
+.content-detail {
   color: #7c7b7b;
   font-size: 14px;
   font-weight: 600;
 }
-.contentMetaDetail {
+.content-meta-Detail {
   color: #333;
   font-size: 13px;
   width: 50%;
 }
+
 .cardtakenote {
   color: #007AFF;
   vertical-align: top;
