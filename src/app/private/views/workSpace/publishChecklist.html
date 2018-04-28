@@ -1,0 +1,39 @@
+<div id="publishCheckListModal" class="ui modal">
+    <div class="header">
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="column">
+                    <span>{{previewContent.checkListConfig.publish.title}}</span>
+                </div>
+                <div class="right aligned column">
+                    <i class="close link icon" ng-click="previewContent.closeChecklistModal('publishCheckListModal');"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrolling content">
+        <div class="ui small header">
+            <h4>{{previewContent.checkListConfig.publish.subtitle}}</h4>
+        </div>
+        <div class="ui three column grid">
+            <div class="column" ng-repeat="list in previewContent.checkListConfig.publish.contents | orderBy: 'index'">
+                <h5 class="ui tiny header">{{list.name}}</h5>
+                <div class="ui list" ng-repeat="item in list.checkList">
+                    <div class="item">
+                        <div class="ui checkbox checklist">
+                            <input type="checkbox" class="listPublishItem" ng-click="previewContent.validatePublishtChecklistModal(item)">
+                            <label>{{item}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions footer">
+        <div class="ui buttons">
+            <button id="closePopUp " class="ui orange button" type="button " ng-click="previewContent.closeChecklistModal('publishCheckListModal');">{{previewContent.checkListConfig.publish.buttons.cancel}}</button>
+            <div class="or"></div>
+            <button class="ui blue button " type="button " ng-disabled="!previewContent.enableCheckListSubmitBtn" ng-click="previewContent.publishContent('publishCheckListModal');">{{previewContent.checkListConfig.publish.buttons.proceed}}</button>
+        </div>
+    </div>
+</div>

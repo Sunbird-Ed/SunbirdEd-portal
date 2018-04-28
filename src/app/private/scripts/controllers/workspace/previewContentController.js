@@ -14,6 +14,7 @@ angular.module('playerApp')
                                     $stateParams.backState === 'WorkSpace.PublishedContent'
       previewContent.isShowFlagActionButton =
                                     $stateParams.backState === 'WorkSpace.FlaggedContent'
+      previewContent.checkListConfig = config.CHECK_LIST_CONFIG
 
       var validateModal = {
         state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
@@ -23,6 +24,9 @@ angular.module('playerApp')
       }
       previewContent.contentPlayer = { isContentPlayerEnabled: false }
       previewContent.redirectUrl = $stateParams.backState
+      previewContent.checkedContents = []
+      previewContent.enableCheckListSubmitBtn = false
+      previewContent.reviewComments = ''
 
       function checkContentAccess (reqData, validateData) {
         var status = reqData.status
@@ -92,12 +96,14 @@ angular.module('playerApp')
 
       previewContent.getContent(previewContent.contentId)
 
-      previewContent.publishContent = function () {
+      previewContent.publishContent = function (modalId) {
         var request = {
           content: {
+            publishChecklist: previewContent.checkedContents,
             lastPublishedBy: previewContent.userId
           }
         }
+
         previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0029)
 
         contentService.publish(request, previewContent.contentId).then(function (res) {
@@ -106,34 +112,84 @@ angular.module('playerApp')
             previewContent.isShowPublishRejectButton = false
             previewContent.contentData.status = 'Live'
             toasterService.success($rootScope.messages.smsg.m0004)
+            previewContent.closeChecklistModal(modalId)
             //                $state.go("WorkSpace.UpForReviewContent")
           } else {
             previewContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0019)
+            previewContent.closeChecklistModal(modalId)
           }
         }).catch(function () {
           previewContent.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0019)
+          previewContent.closeChecklistModal(modalId)
         })
       }
 
-      previewContent.rejectContent = function () {
-        previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0030)
+      previewContent.showChecklistModal = function (modalId) {
+        $('#' + modalId).modal({
+          closable: false
+        }).modal('show')
+      }
 
-        var request = {}
+      previewContent.closeChecklistModal = function (modalId) {
+        $('#' + modalId).modal('hide')
+        previewContent.enableCheckListSubmitBtn = false
+        previewContent.checkedContents = []
+        $('.listItem, .listPublishItem').attr('checked', false)
+        previewContent.reviewComments = ''
+      }
+
+      previewContent.createCheckListArr = function (content) {
+        if (content && (previewContent.checkedContents.indexOf(content) === -1)) {
+          previewContent.checkedContents.push(content)
+        } else if (content && (previewContent.checkedContents.indexOf(content) !== -1)) {
+          previewContent.checkedContents.splice(previewContent.checkedContents.indexOf(content), 1)
+        }
+      }
+
+      previewContent.validateRequestChecklistModal = function (content) {
+        previewContent.createCheckListArr(content)
+        if ($('.listItem:checked').length > 0 && (previewContent.reviewComments.length > 0)) {
+          previewContent.enableCheckListSubmitBtn = true
+        } else {
+          previewContent.enableCheckListSubmitBtn = false
+        }
+      }
+
+      previewContent.validatePublishtChecklistModal = function (content) {
+        previewContent.createCheckListArr(content)
+        if ($('.listPublishItem:checked').length === $('.listPublishItem').length) {
+          previewContent.enableCheckListSubmitBtn = true
+        } else {
+          previewContent.enableCheckListSubmitBtn = false
+        }
+      }
+
+      previewContent.rejectContent = function (modalId) {
+        previewContent.loader = toasterService.loader('', $rootScope.messages.stmsg.m0030)
+        var request = {
+          content: {
+            rejectReasons: previewContent.checkedContents,
+            rejectComment: previewContent.reviewComments
+          }
+        }
         contentService.reject(request, previewContent.contentId).then(function (res) {
           if (res && res.responseCode === 'OK') {
             previewContent.loader.showLoader = false
             previewContent.isShowPublishRejectButton = false
             toasterService.success($rootScope.messages.smsg.m0005)
             //                $state.go("WorkSpace.UpForReviewContent");
+            previewContent.closeChecklistModal(modalId)
           } else {
             previewContent.loader.showLoader = false
             toasterService.error($rootScope.messages.fmsg.m0020)
+            previewContent.closeChecklistModal(modalId)
           }
         }).catch(function () {
           previewContent.loader.showLoader = false
           toasterService.error($rootScope.messages.fmsg.m0020)
+          previewContent.closeChecklistModal(modalId)
         })
       }
 
