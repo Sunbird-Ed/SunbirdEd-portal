@@ -6,7 +6,7 @@ module.exports = function (app) {
     var redirectUrl = publicUri + '/get'
     res.redirect(redirectUrl)
   })
-  app.all(['*/get/dial/:dialCode', '/get/dial/:dialCode'], function (req, res) {
+  app.all(['*/get/dial/:dialCode', '/get/dial/:dialCode', '*/dial/:dialCode', '/dial/:dialCode'], function (req, res) {
     var redirectUrl = publicUri + '/get/dial/' + req.params.dialCode
     res.redirect(redirectUrl)
   })
