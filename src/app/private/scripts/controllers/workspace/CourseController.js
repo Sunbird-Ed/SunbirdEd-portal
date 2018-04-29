@@ -11,6 +11,7 @@ angular.module('playerApp')
       course.defaultName = 'Untitled Course'
       course.mimeType = 'application/vnd.ekstep.content-collection'
       course.contentType = 'Course'
+      course.resourceType = 'Course'
 
       course.hideCreateCourseModal = function () {
         $('#createCourseModal').modal('hide')
@@ -59,6 +60,7 @@ angular.module('playerApp')
         requestBody.mimeType = course.mimeType
         requestBody.createdBy = course.userId
         requestBody.contentType = course.contentType
+        requestBody.resourceType = course.resourceType
         requestBody.framework = course.framework
         var requestData = {
           content: requestBody

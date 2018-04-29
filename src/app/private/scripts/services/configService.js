@@ -30,7 +30,7 @@ angular.module('playerApp')
           'medium': config.DROPDOWN.COMMON.medium,
           'subjects': config.DROPDOWN.COMMON.subjects,
           'grades': config.DROPDOWN.COMMON.grades,
-          'resourceType': config.FILTER.RESOURCES.resourceType
+          'resourceType': config.WORKSPACE.CREATE.RESOURCE.RESOURCE_TYPES
         }
       }
 

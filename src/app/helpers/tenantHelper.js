@@ -11,27 +11,26 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './t
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
 
-
-
-
 module.exports = {
 
-  getImagePath: function(baseUrl, tenantId, image, callback){
-
+  getImagePath: function (baseUrl, tenantId, image, callback) {
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
-      if (err && envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-        fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, image), function (err, stat) {
-          if (err) {
-            callback(null, null)
-          } else{
-            callback(null, baseUrl +'/tenant/' + envHelper.DEFAUULT_TENANT + '/' + image)
-          }
-        })
+      if (err) {
+        if (envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
+          fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, image), function (error, stat) {
+            if (error) {
+              callback(null, null)
+            } else {
+              callback(null, baseUrl + '/tenant/' + envHelper.DEFAUULT_TENANT + '/' + image)
+            }
+          })
+        } else {
+          callback(null, null)
+        }
       } else {
-        callback(null, baseUrl +'/tenant/' + tenantId + '/' + image)
+        callback(null, baseUrl + '/tenant/' + tenantId + '/' + image)
       }
     })
-
   },
   getInfo: function (req, res) {
     let tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT
@@ -63,9 +62,9 @@ module.exports = {
         responseObj.logo = results.logo
           ? results.logo : baseUrl + '/common/images/sunbird_logo.png'
         responseObj.poster = results.poster
-          ? results.poster :  baseUrl + '/common/images/sunbird_logo.png'
+          ? results.poster : baseUrl + '/common/images/sunbird_logo.png'
         responseObj.favicon = results.favicon
-          ? results.favicon :  baseUrl +'/common/images/favicon.ico'
+          ? results.favicon : baseUrl + '/common/images/favicon.ico'
         responseObj.appLogo = results.appLogo
           ? results.appLogo : responseObj.logo
         module.exports.getSucessResponse(res, 'api.tenant.info', responseObj, req)

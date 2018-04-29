@@ -9,7 +9,6 @@ angular.module('playerApp')
       dataDrivenForm.categoryModelList = {}
       dataDrivenForm.formDropdown = configService.getWorkspaceFormDropdown()
       dataDrivenForm.years = dataDrivenForm.formDropdown.years
-      dataDrivenForm.resourceType = dataDrivenForm.formDropdown.resourceType
       dataDrivenForm.StdMtrformDropdown = configService.getWorkspaceStdMtrlDrpdown()
       dataDrivenForm.resourceType = dataDrivenForm.StdMtrformDropdown.resourceType
       dataDrivenForm.categoryList = {}
@@ -125,7 +124,8 @@ angular.module('playerApp')
             dataDrivenForm.updateDropDownList(id, dependedValues)
             if (groupdFields.length) {
               _.forEach(groupdFields, function (value, key) {
-                dataDrivenForm.updateDropDownList(value.category, _.map(value.name, function (i) { return _.pick(i, 'name') }))
+                dataDrivenForm.updateDropDownList(value.category, _.map(value.name,
+                  function (i) { return _.pick(i, 'name') }))
               })
             } else {
               dataDrivenForm.updateDropDownList(id, [])
@@ -272,11 +272,18 @@ angular.module('playerApp')
                 var categoryMasterList = _.cloneDeep(res.result.framework.categories)
                 req.framework = dataDrivenForm.framework
                 searchService.getDataDrivenFormsConfig(req).then(function (res) {
-                  dataDrivenForm.formFieldProperties = res.result.form.data.fields
+                  dataDrivenForm.formFieldProperties = _.sortBy(res.result.form.data.fields, ['index'])
                   _.forEach(categoryMasterList, function (category) {
                     _.forEach(dataDrivenForm.formFieldProperties, function (formFieldCategory) {
                       if (formFieldCategory.code === 'year') {
                         formFieldCategory.range = dataDrivenForm.years
+                      }
+                      if (_.lowerCase(formFieldCategory.code) === 'resourcetype' &&
+                      formFieldCategory['range'] &&
+                      _.isArray(formFieldCategory.range) &&
+                        formFieldCategory.range.length
+                      ) {
+                        dataDrivenForm.resourceType = formFieldCategory.range
                       }
                       if (formFieldCategory.validation) {
                         _.forEach(formFieldCategory.validation, function (value, key) {
