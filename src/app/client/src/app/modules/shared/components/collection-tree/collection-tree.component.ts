@@ -6,7 +6,7 @@
 
 import {
   Component, OnInit, Input, ElementRef,
-  ViewChild, AfterViewInit
+  ViewChild, AfterViewInit, OnChanges
 } from '@angular/core';
 import * as _ from 'lodash';
 
@@ -24,7 +24,7 @@ import * as _ from 'lodash';
 *
 *
 * sample options = {
-    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons 
+    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons
     fileIcon: 'fa fa-file-o fa-lg', //default
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',
@@ -48,6 +48,7 @@ enum fileType {
   'video/x-youtube' = 'youtube',
   'application/pdf' = 'pdf',
   'application/epub' = 'epub',
+  'application/vnd.ekstep.ecml-archive' = 'ECML',
   'application/vnd.ekstep.ecml-archive+zip' = 'ECML',
   'application/vnd.ekstep.html-archive+zip' = 'HTML',
   'application/vnd.ekstep.content-archive+zip' = 'collection',
@@ -83,17 +84,27 @@ enum fileType {
   templateUrl: './collection-tree.component.html',
   styleUrls: ['./collection-tree.component.css']
 })
-export class CollectionTreeComponent implements OnInit {
+export class CollectionTreeComponent implements OnInit, OnChanges {
 
   @Input() public nodes;
   @Input() public options;
   private rootNode: any;
-  public  rootChildrens: any;
+  public rootChildrens: any;
 
   ngOnInit() {
+    this.initialize();
+  }
+
+  ngOnChanges() {
+    this.initialize();
+  }
+
+  private initialize() {
     this.rootNode = this.createTreeModel();
-    this.rootChildrens = this.rootNode.children;
-    this.addNodeMeta();
+    if (this.rootNode) {
+      this.rootChildrens = this.rootNode.children;
+      this.addNodeMeta();
+    }
   }
 
   private createTreeModel() {

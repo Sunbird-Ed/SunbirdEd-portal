@@ -23,7 +23,9 @@
     routerLinkActive="active">
     {{resourceService?.frmelmnts?.snav?.alluploads}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='upForReviewRole'>
+  <!-- <a class="item" [routerLink]="['upForReview',1]" routerLinkActive="active"> -->
+  <a class="item" *ngIf='permissionService.permissionAvailable' [routerLink]="['upForReview',1]" routerLinkActive="active" 
+  appPermission [permission]='upForReviewRole'>
     {{resourceService?.frmelmnts?.snav?.upForReview}}
   </a>
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"

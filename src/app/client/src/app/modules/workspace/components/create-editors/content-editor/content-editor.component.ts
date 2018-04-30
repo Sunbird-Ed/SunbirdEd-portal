@@ -151,7 +151,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosing: function () {
+      onClosing: () => {
         self._zone.run(() => {
           self.closeModal();
         });

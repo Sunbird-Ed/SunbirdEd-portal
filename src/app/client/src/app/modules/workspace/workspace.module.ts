@@ -11,6 +11,7 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
+  UpForReviewComponent, UpforReviewFilterComponent,
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
   LimitedPublishedComponent
 } from './components';
@@ -27,8 +28,9 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent, LimitedPublishedComponent, DataDrivenComponent,
-    DefaultTemplateComponent],
+    ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
+    DataDrivenComponent, LimitedPublishedComponent, DefaultTemplateComponent
+  ],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }
