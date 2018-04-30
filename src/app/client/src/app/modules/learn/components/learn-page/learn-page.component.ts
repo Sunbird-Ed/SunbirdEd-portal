@@ -61,6 +61,7 @@ export class LearnPageComponent implements OnInit {
   public redirectUrl: string;
   public filters: any;
   public queryParams: any = {};
+  sortingOptions: Array<string>;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -78,6 +79,7 @@ export class LearnPageComponent implements OnInit {
     this.configService = configService;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
+    this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
      * This method calls the enrolled courses API.
@@ -123,7 +125,7 @@ export class LearnPageComponent implements OnInit {
       source: 'web',
       name: 'Course',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {

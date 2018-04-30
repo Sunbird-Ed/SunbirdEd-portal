@@ -216,6 +216,16 @@
                 "NCTE",
                 "TN Board",
                 "UP Board"
+            ],
+            "sortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Updated On"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                }
             ]
         },
         "SEARCH": {

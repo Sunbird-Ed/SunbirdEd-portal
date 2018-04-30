@@ -53,6 +53,7 @@ export class ResourceComponent implements OnInit {
   public queryParams: any;
   private router: Router;
   public redirectUrl: string;
+  sortingOptions: Array<string>;
   /**
    * The "constructor"
    *
@@ -67,6 +68,7 @@ export class ResourceComponent implements OnInit {
     this.config = config;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
   * Subscribe to getPageData api.
@@ -76,7 +78,7 @@ export class ResourceComponent implements OnInit {
       source: 'web',
       name: 'Resource',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType  }
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {

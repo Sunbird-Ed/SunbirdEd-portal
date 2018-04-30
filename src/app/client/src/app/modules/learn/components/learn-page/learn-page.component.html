@@ -4,11 +4,18 @@
   <div class="one wide column">
   </div>
   <div class="ten wide column">
-      <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-    <div *ngFor="let section of caraouselData">
-      <app-page-section [section]="section"></app-page-section>
-    </div>
+      <div class=" ui grid">
+          <div class="ten wide column">
+              <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
+              [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
+           <div *ngFor="let section of caraouselData">
+             <app-page-section [section]="section"></app-page-section>
+           </div>
+          </div>
+          <div class="two wide column">
+              <app-sort-by [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
+            </div>
+        </div>
     <div class="twelve wide column" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
     </div>
