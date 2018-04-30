@@ -68,7 +68,7 @@ export interface IContents {
     /**
     * Content action
     */
-    contnetShare?:any;
+    contnetShare?: any;
 }
 
 export interface IbadgeAssertions {

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent,LimitedPublishedComponent,
+  GenericEditorComponent, LimitedPublishedComponent,
   UploadedComponent, DataDrivenComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
