@@ -69,9 +69,9 @@ export class CourseProgressService {
 
   parseDasboardResponse(data) {
     let tableData = [];
-    _.forEach(data.series, function (seriesData, key) {
+    _.forEach(data.series, (seriesData, key) => {
       if (key === 'course.progress.course_progress_per_user.count') {
-        _.forEach(seriesData, function (bucketData, bucketKey) {
+        _.forEach(seriesData, (bucketData, bucketKey) => {
           if (bucketKey === 'buckets') {
             tableData = bucketData;
           }
