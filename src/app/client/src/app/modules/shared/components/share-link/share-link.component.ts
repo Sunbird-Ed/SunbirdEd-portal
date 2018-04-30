@@ -71,7 +71,7 @@ export class ShareLinkComponent implements OnInit {
     if (this.contentShare.type) {
       this.ShareLink = this.getPublicShareUrl(this.contentShare.id, this.contentShare.type);
     } else {
-      this.ShareLink = this.getUnlistedShareUrl(this.contentShare);
+      this.ShareLink = this.getUnlistedShareUrl();
     }
   }
   /**
@@ -119,13 +119,13 @@ export class ShareLinkComponent implements OnInit {
   * {object}  cData - content data
   * returns {string} url to share.
   */
-  getUnlistedShareUrl(content) {
-    if (content.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', content.identifier);
-    } else if (content.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', content.identifier);
+  getUnlistedShareUrl() {
+    if (this.contentShare.contentType === 'Course') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', this.contentShare.identifier);
+    } else if (this.contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', this.contentShare.identifier);
     } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', content.identifier);
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', this.contentShare.identifier);
     }
   }
   /**
