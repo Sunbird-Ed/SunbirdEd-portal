@@ -23,12 +23,10 @@ angular.module('playerApp')
             }
           }
         }
-        badgeService.getAllBadgesList(req).then(function (response) {
-          if (response && response.responseCode === 'OK') {
-            profileBadge.badges = (response.result && response.result.badges) || []
-          } else {
-          }
-        }).catch(function () {
+        badgeService.getDetailedBadgeAssertions(req, profileBadge.badges).then(function (detailedBadgeAssertions) {
+          profileBadge.badges = detailedBadgeAssertions
+        }).catch(function (error) {
+          console.log("error = ", error)
         })
       }
     }])
