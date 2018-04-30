@@ -8,11 +8,12 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 // Custome component(s) and services
 import { CourseConsumptionService, DashboardUtilsService, OrganisationService,
-  RendererService, LineChartService, DownloadService } from './services';
+  RendererService, LineChartService, DownloadService, CourseProgressService } from './services';
 import { OrganisationComponent, CourseConsumptionComponent } from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
+import { CourseProgressComponent } from './components/course-progress/course-progress.component';
 
 @NgModule({
   imports: [
@@ -23,13 +24,13 @@ import { SharedModule } from '@sunbird/shared';
     SuiModule,
     SharedModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
   providers: [
     RendererService,
     DashboardUtilsService,
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService]
+    OrganisationService, DownloadService, CourseProgressService]
 })
 export class DashboardModule { }
