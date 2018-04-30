@@ -16,6 +16,7 @@ angular.module('playerApp')
       lessonPlan.mimeType = 'application/vnd.ekstep.content-collection'
       lessonPlan.defaultName = 'Untitled lesson plan'
       lessonPlan.contentType = 'LessonPlan'
+      lessonPlan.resourceType = 'LessonPlan'
 
       lessonPlan.hideCreateLessonPlanModal = function () {
         $('#createLessonPlanModal').modal('hide')
@@ -68,6 +69,7 @@ angular.module('playerApp')
         requestBody.mimeType = lessonPlan.mimeType
         requestBody.createdBy = lessonPlan.userId
         requestBody.contentType = lessonPlan.contentType
+        requestBody.resourceType = lessonPlan.resourceType
         requestBody.framework = lessonPlan.framework
         if (requestBody.language) {
           requestBody.language = [requestBody.language]

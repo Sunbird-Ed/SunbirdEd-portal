@@ -7,6 +7,7 @@ var merge = require('merge-stream')
 var minifyHTML = require('gulp-minify-html')
 var imagemin = require('gulp-imagemin')
 var inject = require('gulp-inject')
+var date = Date.now()
 
 gulp.task('addCDNFiles', ['injectFiles'], function () {
   return gulp
@@ -29,7 +30,7 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/public/scripts/routes/publicAppRoute.js',
       'dist/public/script.min.js',
       'dist/public/external.min.css'
-    ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+    ], { read: false }), { ignorePath: '/dist', addRootSlash: true, addSuffix: '?' + date }))
     .pipe(gulp.dest('dist/public/'))
   var y = gulp.src('dist/private/index.ejs')
     .pipe(inject(gulp.src(['dist/private/external.min.js',
@@ -45,7 +46,7 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/private/script.min.js',
       'dist/private/external.min.css',
       'dist/private/scripts/routes/announcementRoute.js'
-    ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+    ], { read: false }), { ignorePath: '/dist', addRootSlash: true, addSuffix: '?' + date }))
     .pipe(gulp.dest('dist/private/'))
   return merge(x, y)
 })
@@ -67,7 +68,8 @@ gulp.task('minifyThirdparty', ['minifyCSS'], function () {
   var publicBowerJs = gulp.src(paths.public_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/public/'))
   var publicBowerCss = gulp.src(paths.public_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/public/'))
   var privateBowerJs = gulp.src(paths.private_bower_js).pipe(concat('external.min.js')).pipe(gulp.dest('dist/private/'))
-  var privateBowerCss = gulp.src(paths.private_bower_css).pipe(concat('external.min.css')).pipe(gulp.dest('dist/private/'))
+  var privateBowerCss = gulp.src(paths.private_bower_css).pipe(concat('external.min.css'))
+    .pipe(gulp.dest('dist/private/'))
   var privateScripts = gulp.src(paths.private_scripts).pipe(concat('script.min.js')).pipe(gulp.dest('dist/private/'))
   var publicScripts = gulp.src(paths.public_scripts).pipe(concat('script.min.js')).pipe(gulp.dest('dist/public/'))
   var telemetry = gulp.src(paths.telemetry_js).pipe(concat('telemetry.min.js')).pipe(gulp.dest('dist/public/'))

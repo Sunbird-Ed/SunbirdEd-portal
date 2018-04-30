@@ -11,6 +11,7 @@ angular.module('playerApp')
       collection.mimeType = 'application/vnd.ekstep.content-collection'
       collection.defaultName = 'Untitled collection'
       collection.contentType = 'Collection'
+      collection.resourceType = 'Collection'
 
       collection.initializeModal = function () {
         collection.showCreateCollectionModel = true
@@ -59,6 +60,7 @@ angular.module('playerApp')
         requestBody.mimeType = collection.mimeType
         requestBody.createdBy = collection.userId
         requestBody.contentType = collection.contentType
+        requestBody.resourceType = collection.resourceType
         requestBody.framework = collection.framework
         var requestData = {
           content: requestBody

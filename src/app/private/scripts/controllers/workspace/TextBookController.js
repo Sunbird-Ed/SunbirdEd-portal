@@ -16,6 +16,7 @@ angular.module('playerApp')
       textbook.mimeType = 'application/vnd.ekstep.content-collection'
       textbook.defaultName = 'Untitled textbook'
       textbook.contentType = 'TextBook'
+      textbook.resourceType = 'Book'
 
       textbook.hideCreateTextBookModal = function () {
         $('#createTextBookModal').modal('hide')
@@ -71,6 +72,7 @@ angular.module('playerApp')
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
         requestBody.framework = textbook.framework
+        requestBody.resourceType = textbook.resourceType
         if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
           delete requestBody['gradeLevel']
         }

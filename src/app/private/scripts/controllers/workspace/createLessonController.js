@@ -74,7 +74,7 @@ angular.module('playerApp')
         requestBody.mimeType = config.CreateLessonMimeType
         requestBody.createdBy = contentLesson.userId
         requestBody.name = requestBody.name ? requestBody.name : 'Untitled lesson'
-        requestBody.contentType = requestBody.contentType ? requestBody.contentType : 'Resource'
+        requestBody.contentType = 'Resource'
         requestBody.framework = contentLesson.framework
         requestBody.concepts = contentLesson.concepts
         if (requestBody.language) {
