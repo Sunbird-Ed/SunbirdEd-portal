@@ -1,4 +1,4 @@
-import { PageApiService, CoursesService, ICourses } from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort} from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash';
@@ -61,7 +61,7 @@ export class LearnPageComponent implements OnInit {
   public redirectUrl: string;
   public filters: any;
   public queryParams: any = {};
-  sortingOptions: Array<string>;
+  sortingOptions: Array<ISort>;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService

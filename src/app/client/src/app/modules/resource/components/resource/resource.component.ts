@@ -1,4 +1,4 @@
-import { PageApiService } from '@sunbird/core';
+import { PageApiService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
@@ -53,7 +53,7 @@ export class ResourceComponent implements OnInit {
   public queryParams: any;
   private router: Router;
   public redirectUrl: string;
-  sortingOptions: Array<string>;
+  sortingOptions: Array<ISort>;
   /**
    * The "constructor"
    *
