@@ -29,7 +29,7 @@ describe('ShareLinkComponent', () => {
     spyOn(component, 'getBase64Url').and.callThrough();
     component.getBase64Url('content', 'do_1124786006384066561162');
     spyOn(component, 'getUnlistedShareUrl').and.callThrough();
-    component.getUnlistedShareUrl(component.contentShare);
+    component.getUnlistedShareUrl();
     fixture.detectChanges();
   });
   it('Should show the content share model', () => {
