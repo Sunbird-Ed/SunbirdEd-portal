@@ -20,8 +20,6 @@ import * as _ from 'lodash';
    `]
 })
 export class UpforReviewFilterComponent implements OnInit {
-  @Output('clickEvent')
-   clickEvent = new EventEmitter();
   /**
    * To navigate to other pages
    */
