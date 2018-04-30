@@ -7,7 +7,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, LearnerService } from '@sunbird/core';
+import { FrameworkService, FormService, ContentService, UserService, LearnerService,
+   ConceptPickerService, SearchService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { expand } from 'rxjs/operators/expand';
@@ -41,7 +42,7 @@ const fakeActivatedRoute = {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
       declarations: [ DataDrivenFilterComponent ],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService,
+        CacheService, ResourceService, ConceptPickerService, SearchService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],
@@ -128,7 +129,6 @@ const fakeActivatedRoute = {
     spyOn(component, 'applyFilters').and.returnValue(null);
     component.resetFilters();
     fixture.detectChanges();
-    expect(component.formInputData).toEqual(component.queryParams);
     expect(component.applyFilters).toHaveBeenCalled();
   });
   it('should initalize in page search incase of inpage filter is enabled', () => {

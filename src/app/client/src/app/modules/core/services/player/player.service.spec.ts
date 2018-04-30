@@ -21,7 +21,7 @@ describe('PlayerService', () => {
     });
     expect(playerService).toBeTruthy();
   });
-  fit('should return player config', () => {
+  it('should return player config', () => {
     const playerService = TestBed.get(PlayerService);
     const userService = TestBed.get(UserService);
     userService._sessionId = 'd5773f35773feab';

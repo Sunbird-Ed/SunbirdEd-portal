@@ -10,9 +10,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
-declare var jQuery: any;
-declare let window: CustomWindow;
-
 
 @Component({
   selector: 'app-collection-editor',

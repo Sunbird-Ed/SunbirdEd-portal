@@ -1,7 +1,7 @@
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService } from './../../services';
+import { FrameworkService, FormService, ConceptPickerService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
@@ -14,6 +14,8 @@ import { Observable } from 'rxjs/Observable';
 export class DataDrivenFilterComponent implements OnInit {
   @Input() filterEnv: string;
   @Input() redirectUrl: string;
+  @Input() accordionDefaultOpen: boolean;
+  @Input() isShowFilterLabel: boolean;
   /**
  * To get url, app configs
  */
@@ -53,8 +55,11 @@ export class DataDrivenFilterComponent implements OnInit {
  */
   public formInputData: any;
 
+  selectedConcepts: Array<object>;
+  showFilter = false;
   refresh = true;
   isShowFilterPlaceholder = true;
+  contentTypes: any;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -71,6 +76,7 @@ export class DataDrivenFilterComponent implements OnInit {
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
+    public conceptPickerService: ConceptPickerService
 
   ) {
     this.configService = configService;
@@ -87,28 +93,28 @@ export class DataDrivenFilterComponent implements OnInit {
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
+    this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
   }
 
   getQueryParams() {
-    Observable
-      .combineLatest(
-      this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
-      .subscribe(bothParams => {
-        this.queryParams = { ...bothParams.queryParams };
-        _.forIn(this.queryParams, (value, key) => {
-          if (typeof value === 'string' && key !== 'key') {
-            this.queryParams[key] = [value];
+    this.conceptPickerService.conceptData$.subscribe(conceptData => {
+      if (conceptData && !conceptData.err) {
+        this.selectedConcepts = conceptData.data;
+        this.activatedRoute.queryParams.subscribe((params) => {
+          this.queryParams = { ...params };
+          _.forIn(params, (value, key) => {
+            if (typeof value === 'string' && key !== 'key') {
+              this.queryParams[key] = [value];
+            }
+          });
+          this.formInputData = _.pickBy(this.queryParams);
+          if (this.formInputData && this.formInputData.concept) {
+            this.formInputData.concept = this.conceptPickerService.processConcepts(this.formInputData.concept, this.selectedConcepts);
           }
+          this.showFilter = true;
         });
-        this.formInputData = _.pickBy(this.queryParams);
-      });
+      }
+    });
   }
   /**
 * fetchFilterMetaData is gives form config data
@@ -169,12 +175,37 @@ export class DataDrivenFilterComponent implements OnInit {
   resetFilters() {
     this.formInputData = {};
     this.applyFilters();
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
   }
+
+  /**
+ * to get selected concepts from concept picker.
+ */
+  concepts(events) {
+    this.formInputData['concept'] = events;
+  }
+  /**
+ * To check filterType.
+ */
+  isObject(val) { return typeof val === 'object'; }
 
   applyFilters() {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
-    console.log('this.redirectUrl', this.redirectUrl);
-    this.router.navigate([this.redirectUrl], { queryParams: this.queryParams });
+    let queryParams = {};
+    _.forIn(this.queryParams, (value, key) => {
+      if (key === 'concept') {
+        queryParams[key] = [];
+        value.forEach((conceptDetails) => {
+          queryParams[key].push(conceptDetails.identifier);
+        });
+      } else {
+        queryParams[key] = value;
+      }
+    });
+    queryParams = _.pickBy(queryParams, value => value.length > 0);
+    this.router.navigate([this.redirectUrl], { queryParams: queryParams });
   }
 
   removeFilterSelection(field, item) {

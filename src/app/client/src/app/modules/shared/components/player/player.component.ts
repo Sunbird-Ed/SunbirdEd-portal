@@ -13,7 +13,7 @@ export class PlayerComponent implements OnInit {
   @Input() playerConfig: any;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
-  constructor(public windowScrollService: WindowScrollService, public configService: ConfigService) { }
+  constructor(public configService: ConfigService) { }
 
   ngOnInit() {
     this.showPlayer();

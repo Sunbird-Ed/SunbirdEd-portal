@@ -3,7 +3,8 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
-  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent, ContentMetadataComponent
+  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent, ContentMetadataComponent,
+  CollectionTreeComponent, FancyTreeComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
    PaginationService, RouterNavigationService } from './services';
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,10 +20,10 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     SlickModule,
     FormsModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
+  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, CollectionTreeComponent, FancyTreeComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, PlayerComponent, ContentMetadataComponent],
-  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
-    PageSectionComponent, ContentCardComponent, NoResultComponent, PlayerComponent, ContentMetadataComponent],
+  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent,
+    ContentCardComponent, NoResultComponent, PlayerComponent, ContentMetadataComponent, CollectionTreeComponent, FancyTreeComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService]
 })
