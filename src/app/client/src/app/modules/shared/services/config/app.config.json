@@ -17,6 +17,9 @@
     ],
     "objectType": "Content",
     "lastUpdatedOn": "desc",
+    "createdOn": "asc",
+    "createdDate": "desc",
+    "name": "asc",
     "genericMimeType": [
       "application/pdf",
       "video/mp4",
@@ -27,13 +30,7 @@
       "application/vnd.ekstep.h5p-archive",
       "video/webm"
     ],
-    "states": [
-      "draft",
-      "uploaded",
-      "published",
-      "limited-publish",
-      "flagged"
-    ]
+    "states":["draft","uploaded","published","limited-publish","flagged"]
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -150,6 +147,11 @@
   "library": {
     "filterType": "library",
     "inPageredirectUrl": "/resources",
+    "searchPageredirectUrl": "/search/Library/1"
+  },
+  "upForReview": {
+    "filterType": "library",
+    "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
   "formApiTypes": {

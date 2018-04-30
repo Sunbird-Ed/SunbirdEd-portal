@@ -1,0 +1,7 @@
+.ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
+    display: none;
+}
+
+.popup-content{
+    width: 850px !important;
+}

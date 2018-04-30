@@ -8,6 +8,9 @@ export * from './draft/draft.component';
 export * from './published/published.component';
 export * from './review-submissions/review-submissions.component';
 export * from './uploaded/uploaded.component';
+export * from './up-for-review/up-for-review.component';
+export * from './up-for-review-filter/up-for-review-filter.component';
+
 export * from './data-driven/data-driven.component';
 export * from './content-creation-default-template/content-creation-default-template.component';
 

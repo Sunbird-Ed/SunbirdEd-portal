@@ -197,7 +197,7 @@ export class UserSearchComponent implements OnInit {
                 }
               }
             }
-            const orgNameAndId = _.find(orgApiResponse.result.response.content, function (organisation) {
+            const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
               return organisation.id === org.organisationId;
             });
             if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }
