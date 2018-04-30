@@ -13,5 +13,5 @@ export interface ISharelink {
     type?: string;
     contentType?: string;
     mimeType?: string;
-    identifier? :string;
+    identifier?: string;
 }

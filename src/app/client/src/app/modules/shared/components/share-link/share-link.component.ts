@@ -89,7 +89,7 @@ export class ShareLinkComponent implements OnInit {
     if (this.sharelinkModal) {
       setTimeout(() => {
         this.copyLinkButton.nativeElement.click();
-      },1000);
+      }, 1000);
     }
   }
   /**
