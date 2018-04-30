@@ -13,7 +13,6 @@ import {
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-import * as $ from 'jquery';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
 @NgModule({
   imports: [

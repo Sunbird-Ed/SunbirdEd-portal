@@ -21,9 +21,11 @@
       "prefix": "app",
       "styles": [
         "styles.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/izitoast/dist/css/iziToast.min.css",
         "../node_modules/fine-uploader/fine-uploader/fine-uploader-gallery.min.css",
-        "./assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css"
+        "./assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.css",
+        "../node_modules/jquery.fancytree/dist/skin-awesome/ui.fancytree.css"
       ],
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
@@ -32,8 +34,10 @@
         "../node_modules/slick-carousel/slick/slick.js",
         "assets/common/js/telemetry.min.js",
         "../node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
-        "./assets/libs/semantic.min.js",
-        "./assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js"
+        "assets/libs/semantic.min.js",
+        "assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+        "../node_modules/tree-model/dist/TreeModel-min.js",
+        "../node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
