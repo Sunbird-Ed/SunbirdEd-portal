@@ -52,4 +52,26 @@ export class BadgesService {
     };
     return this.learner.post(option);
   }
+
+  public getDetailedBadgeAssertions(req, assertions) {
+    return Observable.create(observer => {
+      const option = {
+        url: this.config.urlConFig.URLS.BADGE.BADGE_CLASS_SEARCH,
+        data: req
+      };
+      this.learner.post(option).subscribe((badgeSearchResponse) => {
+        if (badgeSearchResponse) {
+          let detailedAssertions : any[] = assertions
+          for (let detailedAssertion of detailedAssertions) {
+            let badgeFound : any = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId })
+            if (badgeFound) {
+                detailedAssertion.description = badgeFound.description
+            }
+            observer.next(detailedAssertion)
+          }
+          observer.complete();
+        }
+      });
+    });
+  }
 }

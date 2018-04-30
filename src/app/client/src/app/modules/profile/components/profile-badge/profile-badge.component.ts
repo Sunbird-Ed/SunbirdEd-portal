@@ -13,7 +13,7 @@ export class ProfileBadgeComponent implements OnInit {
  * Reference of User Profile interface
  */
   userProfile: IUserProfile;
-  badgeData: any;
+  badgeArray: any;
   profileBadge: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService) { }
@@ -39,9 +39,10 @@ export class ProfileBadgeComponent implements OnInit {
               }
             }
           };
-          this.badgeService.getAllBadgeList(req).subscribe((badge) => {
-            if (badge) {
-              this.badgeData = badge.result;
+          this.badgeArray = []
+          this.badgeService.getDetailedBadgeAssertions(req, this.userProfile.badgeAssertions).subscribe((detailedAssertion) => {
+            if (detailedAssertion) {
+              this.badgeArray.push(detailedAssertion);
             }
           });
         }
