@@ -7,21 +7,16 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { mockProfileHeaderData } from './profile-header.component.spec.data';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 
 describe('ProfileHeaderComponent', () => {
   let component: ProfileHeaderComponent;
   let fixture: ComponentFixture<ProfileHeaderComponent>;
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
       declarations: [ProfileHeaderComponent],
-      providers: [ProfileService, UserService, ResourceService,
-        { provide: Router, useClass: RouterStub }],
+      providers: [ProfileService, UserService, ResourceService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -52,7 +47,6 @@ describe('ProfileHeaderComponent', () => {
     expect(component.updateAvatar).toHaveBeenCalled();
   });
   it('should not call user service as the image size is more', () => {
-    const router = TestBed.get(Router);
     const img = [{
       'name': 'abvd.png',
       'size': 40000000
@@ -65,7 +59,6 @@ describe('ProfileHeaderComponent', () => {
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img[0]);
     expect(profileService.updateAvatar).not.toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call user service as the file format is invalid', () => {
     const img = [{

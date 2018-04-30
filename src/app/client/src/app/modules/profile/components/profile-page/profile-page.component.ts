@@ -35,21 +35,7 @@ export class ProfilePageComponent implements OnInit {
     if (field === 'avatar') {
       $('#iconImageInput').click();
     } else {
-      const actions = {
-        profileSummary: 'profile/summary/edit',
-        jobProfile: 'profile/experience/add',
-        address: 'profile/address/add',
-        education: 'profile/education/add',
-        location: 'profile/additionalInfo/edit',
-        dob: 'profile/additionalInfo/edit',
-        subject: 'profile/additionalInfo/edit',
-        grade: 'profile/additionalInfo/edit',
-        gender: 'profile/additionalInfo/edit',
-        lastName: 'profile/additionalInfo/edit',
-        email: 'profile/additionalInfo/edit',
-        phone: 'profile/additionalInfo/edit',
-        language: 'profile/additionalInfo/edit'
-      };
+      const actions = this.configService.appConfig.PROFILE.profileField;
       this.router.navigate([actions[field]]);
     }
   }
