@@ -132,6 +132,20 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="item padding-top-10 padding-bottom-5" ng-if="contentData.concepts.length > 0">
+                                            <div class= "ui grid">
+                                                <div class="three wide column">
+                                                  <div class="content content-detail">
+                                                    <div class="ui">{{$root.frmelmnts.lbl.concept}}</div>
+                                                  </div>
+                                                </div>
+                                                <div class="nine wide column">
+                                                  <div class="content overflow-word-wrap">
+                                                   {{getConceptsNames(contentData.concepts)}}
+                                                  </div>
+                                                </div>
+                                            </div>
+                                         </div>
                                     </div>
                                 </div>
                             </div>

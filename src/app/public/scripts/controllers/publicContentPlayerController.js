@@ -129,6 +129,13 @@ angular.module('loginApp')
         getContent(newId)
       })
 
+      $scope.getConceptsNames = function (concepts) {
+        if (_.isArray(concepts)) {
+          var conceptNames = _.map(concepts, 'name')
+          return conceptNames.join(', ')
+        }
+      }
+
       $scope.gotoBottom = function () {
         $('html, body').animate({
           scrollTop: $('#player-auto-scroll').offset().top
