@@ -61,13 +61,13 @@ export class BadgesService {
       };
       this.learner.post(option).subscribe((badgeSearchResponse) => {
         if (badgeSearchResponse) {
-          let detailedAssertions : any[] = assertions
-          for (let detailedAssertion of detailedAssertions) {
-            let badgeFound : any = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId })
+          const detailedAssertions: any[] = assertions;
+          for (const detailedAssertion of detailedAssertions) {
+            const badgeFound: any = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId });
             if (badgeFound) {
-                detailedAssertion.description = badgeFound.description
+                detailedAssertion.description = badgeFound.description;
             }
-            observer.next(detailedAssertion)
+            observer.next(detailedAssertion);
           }
           observer.complete();
         }

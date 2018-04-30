@@ -138,7 +138,7 @@ export class UserProfileComponent implements OnInit {
           }
         }
       };
-      this.userDetails.badgeArray = []
+      this.userDetails.badgeArray = [];
       this.badgesService.getDetailedBadgeAssertions(req, this.userDetails.badgeAssertions).subscribe((detailedAssertion) => {
         if (detailedAssertion) {
           this.userDetails.badgeArray.push(detailedAssertion);
