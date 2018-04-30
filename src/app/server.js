@@ -136,6 +136,7 @@ app.all('/resources/*', keycloak.protect(), indexPage)
 app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
+app.all(['/play-content', '/play-content/*'],keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)

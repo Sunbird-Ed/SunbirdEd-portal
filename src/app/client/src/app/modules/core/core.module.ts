@@ -8,7 +8,7 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService
 } from './services';
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
@@ -29,7 +29,7 @@ import * as $ from 'jquery';
   providers: [
     LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
+    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService, PlayerService,
      { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
 })
 export class CoreModule {
