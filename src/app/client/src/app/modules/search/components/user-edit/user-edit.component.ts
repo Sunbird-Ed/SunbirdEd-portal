@@ -107,7 +107,7 @@ export class UserEditComponent implements OnInit {
       (orgApiResponse: any) => {
         // Setting Org Name
         _.each(this.userDetails.organisations, (org) => {
-          const orgNameAndId = _.find(orgApiResponse.result.response.content, function (organisation) {
+          const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
             return organisation.id === org.organisationId;
           });
           if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }
@@ -144,7 +144,7 @@ export class UserEditComponent implements OnInit {
   editRoles(role, userRoles, event) {
     this.selectedOrgUserRolesNew = [];
     if (userRoles.includes(role) === true) {
-      this.selectedOrgUserRoles = this.selectedOrgUserRoles.filter(function (selectedRole) {
+      this.selectedOrgUserRoles = this.selectedOrgUserRoles.filter((selectedRole) => {
         return selectedRole !== role;
       });
     } else {
@@ -158,17 +158,17 @@ export class UserEditComponent implements OnInit {
 
   updateRoles(roles) {
     if (this.selectedOrgUserRolesNew) {
-      this.selectedOrgUserRolesNew.forEach(function (Newroles) {
+      this.selectedOrgUserRolesNew.forEach((Newroles) => {
         roles.push(Newroles);
       });
       const mainRole = [];
       const mainRolesCollections = _.clone(this.allRoles);
-      _.forEach(mainRolesCollections, function (value, key) {
+      _.forEach(mainRolesCollections, (value, key) => {
         mainRole.push(value.role);
       });
       const sendingRoles = _.clone(roles);
       const removalRoles = _.difference(sendingRoles, mainRole);
-      _.remove(roles, function (role) {
+      _.remove(roles, (role) => {
         return _.indexOf(removalRoles, role) !== -1;
       });
 

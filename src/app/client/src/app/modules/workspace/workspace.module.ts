@@ -12,7 +12,7 @@ import {
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
-  FlaggedComponent
+  FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent
 } from './components';
 @NgModule({
   imports: [
@@ -27,9 +27,10 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent, DataDrivenComponent,
-    DefaultTemplateComponent,
-    FlaggedComponent],
+    ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
+    DataDrivenComponent, UpForReviewComponent, UpforReviewFilterComponent, DefaultTemplateComponent,
+    FlaggedComponent
+  ],
   providers: [WorkSpaceService, EditorService]
 })
 export class WorkspaceModule { }

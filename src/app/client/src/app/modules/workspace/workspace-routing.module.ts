@@ -1,13 +1,11 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent
+  GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
 const routes: Routes = [
   {
     path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],
@@ -33,6 +31,7 @@ const routes: Routes = [
       { path: 'published/:pageNumber', component: PublishedComponent },
       { path: 'uploaded/:pageNumber', component: UploadedComponent },
       { path: 'flagged/:pageNumber', component: FlaggedComponent },
+      {path: 'upForReview/:pageNumber', component: UpForReviewComponent },
       { path: '**', redirectTo: 'create' }
     ]
   },
