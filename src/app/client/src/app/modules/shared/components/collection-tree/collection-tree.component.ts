@@ -88,7 +88,7 @@ export class CollectionTreeComponent implements OnInit {
   @Input() public nodes;
   @Input() public options;
   private rootNode: any;
-  private rootChildrens: any;
+  public  rootChildrens: any;
 
   ngOnInit() {
     this.rootNode = this.createTreeModel();
