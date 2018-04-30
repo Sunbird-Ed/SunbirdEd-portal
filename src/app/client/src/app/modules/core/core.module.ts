@@ -14,6 +14,7 @@ import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPicker
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import * as $ from 'jquery';
+import { BreadcrumbsComponent, BreadcrumbsService } from './components';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,13 +25,13 @@ import * as $ from 'jquery';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent],
-  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent],
+     DataDrivenFilterComponent, BreadcrumbsComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent, BreadcrumbsComponent],
   providers: [
     LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
-     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
+     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService, BreadcrumbsService]
 })
 export class CoreModule {
 }

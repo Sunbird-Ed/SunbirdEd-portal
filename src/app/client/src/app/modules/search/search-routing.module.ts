@@ -8,17 +8,17 @@ import {
 const routes: Routes = [
   {
     path: 'search/Courses/:pageNumber', component: CourseSearchComponent,
-    data: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }]
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }] }
 
   },
   {
     path: 'search/Library/:pageNumber', component: LibrarySearchComponent,
-    data: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }]
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }] }
 
   },
   {
     path: 'search/Users/:pageNumber', component: UserSearchComponent,
-    data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }] },
     children: [
       { path: 'edit/:userId', component: UserEditComponent },
       { path: 'delete/:userId', component: UserDeleteComponent }
@@ -26,11 +26,11 @@ const routes: Routes = [
   },
   {
     path: 'search/Users/:pageNumber/view/:userId', component: UserProfileComponent,
-    data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }]
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }] }
   },
   {
     path: 'search/Organisations/:pageNumber', component: OrgSearchComponent,
-    data: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }]
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }] }
   },
 
 ];

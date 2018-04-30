@@ -10,8 +10,8 @@ import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
     path: 'profile', component: ProfilePageComponent,
-    data: [{label: 'Home', url: '/home'}, {label: 'Profile', url: ''}],
-     children: [
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }] },
+    children: [
       {
         path: 'bulkUpload/organizationUpload', component: OrganizationUploadComponent,
         data: { redirectUrl: '/profile' }, canActivate: [AuthGuard]

@@ -4,11 +4,10 @@ import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Type } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs/operators';
 import 'rxjs/add/operator/filter';
 import { IBreadcrumb } from './interfaces';
 
-const data = { data: { 0: { label: 'Home', url: '/home' }, 1: { label: 'Courses', url: '' } } };
+const data = { data: {breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }]} };
 const mockData: IBreadcrumb[] = [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }];
 const children: ActivatedRoute[] = [];
 
