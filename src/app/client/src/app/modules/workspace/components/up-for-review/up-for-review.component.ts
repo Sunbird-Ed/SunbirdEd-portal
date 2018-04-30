@@ -108,6 +108,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
 
   queryParams: any;
   sort: object;
+  state: string;
   /**
   * To call resource service which helps to use language constant
  */
@@ -141,6 +142,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0032,
     };
+    this.state = 'upForReview';
   }
 
   ngOnInit() {
@@ -234,5 +236,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     }
     this.pageNumber = page;
     this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: this.queryParams });
+  }
+  contentClick(content) {
+    this.workSpaceService.navigateToContent(content, this.state);
   }
 }

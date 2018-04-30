@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="UpForReviewListHover cursor-pointer" *ngFor="let content of upForReviewContentData">
+    <tr class="UpForReviewListHover cursor-pointer" *ngFor="let content of upForReviewContentData" (click)="contentClick(content)">
       <td>
         <h5 class="ui image header">
           <img src="{{content.appIcon  ? content.appIcon : '/common/images/default.png'}}" class="ui tiny image UpReviewTinyImage">

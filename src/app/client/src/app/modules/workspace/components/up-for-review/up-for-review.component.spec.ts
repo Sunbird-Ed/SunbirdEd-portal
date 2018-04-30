@@ -77,7 +77,6 @@ describe('UpForReviewComponent', () => {
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.upForReviewContentData).toBeDefined();
-    console.log(expect(component.upForReviewContentData.length).toBeGreaterThan(1));
   }));
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
@@ -101,7 +100,6 @@ describe('UpForReviewComponent', () => {
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.upForReviewContentData).toBeDefined();
-    console.log(expect(component.upForReviewContentData.length).toBe(0));
   }));
 });
 
