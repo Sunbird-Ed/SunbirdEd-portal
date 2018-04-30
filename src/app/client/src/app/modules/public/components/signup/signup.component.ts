@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-signup',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
+  }
+  redirect() {
+    console.log('here');
   }
 
 }

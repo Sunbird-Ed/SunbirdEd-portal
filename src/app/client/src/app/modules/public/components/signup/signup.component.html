@@ -6,7 +6,7 @@
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">{{frmelmnts.scttl.signup}}</span>
+        <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny">
@@ -20,11 +20,11 @@
       <div class="  field">
         <div class=" two fields">
           <div class="required field ">
-            <label>{{frmelmnts.lbl.username}}</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.username}}</label>
             <input type="text" name="userName" placeholder="eg:user.name , min 5 character required" ng-model="newUser.userName">
           </div>
           <div class="required field">
-            <label>{{frmelmnts.lbl.password}}</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.password}}</label>
             <input type="password" name="password" placeholder="Password" ng-model="newUser.password" />
           </div>
         </div>
@@ -32,7 +32,7 @@
       <div class="  field">
         <div class=" two fields">
           <div class=" required field">
-            <label>{{frmelmnts.lbl.name}}</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.name}}</label>
             <input type="text" name="firstName" placeholder="First Name" ng-model="newUser.firstName">
           </div>
           <div class="field">
@@ -43,17 +43,17 @@
       </div>
       <div class="two fields">
         <div class="required field">
-          <label>{{frmelmnts.lbl.phonenumber}}</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.phonenumber}}</label>
           <input type="text" name="phone" placeholder="eg:XXXXXXXXXX" ng-model="newUser.phone">
         </div>
         <div class=" required field">
-          <label>{{frmelmnts.lbl.email}}</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
           <input type="text" name="email" placeholder="User@example.com" ng-model="newUser.email">
         </div>
       </div>
 
       <div class=" required field">
-        <label>{{frmelmnts.lbl.lang}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.lang}}</label>
         <select name="language" ng-selected="true" placeholder="Languages" class="ui fluid dropdown signupMultiple" ng-value="option.value"
           ng-options=" language for language in newUser.languages" ng-model="newUser.language">
           <option value="">Languages</option>
@@ -71,6 +71,6 @@
     </div>
   </div>
   <div class="actions">
-    <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{frmelmnts.btn.signup}}</div>
+    <div class="ui primary button" ng-click="newUser.submitForm()" ;>{{resourceService?.frmelmnts?.btn?.signup}}</div>
   </div>
 </sui-modal>
