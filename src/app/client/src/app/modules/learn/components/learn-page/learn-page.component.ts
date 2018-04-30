@@ -122,7 +122,7 @@ export class LearnPageComponent implements OnInit {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: this.filters,
+      filters: _.pickBy(this.filters, value => value.length > 0),
       sort_by: {}
     };
     this.pageSectionService.getPageData(option).subscribe(

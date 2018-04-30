@@ -3,7 +3,7 @@ import { ConceptPickerService } from './../../services';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-concept-picker',
   templateUrl: './concept-picker.component.html',
@@ -49,7 +49,7 @@ export class ConceptPickerComponent implements OnInit {
    */
   initConceptBrowser() {
     this.selectedConcepts = this.selectedConcepts || [];
-    this.contentConcepts = _.map(this.selectedConcepts, 'id');
+    this.contentConcepts = _.map(this.selectedConcepts, 'identifier');
     this.pickerMessage = this.contentConcepts.length + ' concepts selected';
     $('.tree-picker-selector').val(this.pickerMessage);
     setTimeout(() => {
@@ -62,7 +62,7 @@ export class ConceptPickerComponent implements OnInit {
           const contentConcepts = [];
           _.forEach(nodes, (obj) => {
             contentConcepts.push({
-              id: obj.id,
+              identifier: obj.id,
               name: obj.name
             });
           });

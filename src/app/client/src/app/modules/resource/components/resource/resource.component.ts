@@ -75,7 +75,8 @@ export class ResourceComponent implements OnInit {
     const option = {
       source: 'web',
       name: 'Resource',
-      filters: this.filters
+      filters: _.pickBy(this.filters, value => value.length > 0),
+      sort_by: {}
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -138,11 +139,7 @@ export class ResourceComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-        _.forOwn(this.queryParams, (queryValue, queryParam) => {
-          if (queryParam !== 'key') {
-            this.filters[queryParam] = queryValue;
-          }
-        });
+        this.filters = this.queryParams;
         this.populatePageData();
       });
   }

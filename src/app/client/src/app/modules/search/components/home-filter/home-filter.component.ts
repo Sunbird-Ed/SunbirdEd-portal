@@ -83,7 +83,7 @@ export class HomeFilterComponent implements OnInit {
         if (key === 'Concepts') {
           queryParams[key] = [];
           value.forEach((conceptDetails) => {
-            queryParams[key].push(conceptDetails.id);
+            queryParams[key].push(conceptDetails.identifier);
           });
         } else {
           queryParams[key] = value;
