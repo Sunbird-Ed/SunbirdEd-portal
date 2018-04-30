@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule } from './../../shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ContentMetadataComponent } from './content-metadata.component';
 
 describe('ContentMetadataComponent', () => {
@@ -8,7 +9,8 @@ describe('ContentMetadataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentMetadataComponent ]
+      imports: [SharedModule, HttpClientTestingModule],
+      declarations: [ ]
     })
     .compileComponents();
   }));
@@ -19,7 +21,7 @@ describe('ContentMetadataComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });
