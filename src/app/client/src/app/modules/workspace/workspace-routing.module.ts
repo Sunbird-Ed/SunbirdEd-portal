@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, UpForReviewComponent, DataDrivenComponent
+  GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
@@ -77,6 +77,10 @@ const routes: Routes = [
       },
       {
         path: 'uploaded/:pageNumber', component: UploadedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'flagged/:pageNumber', component: FlaggedComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
       {
