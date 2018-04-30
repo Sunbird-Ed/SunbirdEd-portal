@@ -1,13 +1,11 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, DataDrivenComponent
+  GenericEditorComponent, UploadedComponent, UpForReviewComponent, DataDrivenComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
 const routes: Routes = [
   {
     path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],
@@ -79,6 +77,10 @@ const routes: Routes = [
       },
       {
         path: 'uploaded/:pageNumber', component: UploadedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'upForReview/:pageNumber', component: UpForReviewComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
       { path: '**', redirectTo: 'create' }

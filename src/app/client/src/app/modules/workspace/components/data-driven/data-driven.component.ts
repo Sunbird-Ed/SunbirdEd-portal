@@ -91,7 +91,7 @@ export class DataDrivenComponent implements OnInit {
 
   public isCachedDataExists: boolean;
 
-  public framework: String;
+  public framework: string;
 
 
 
