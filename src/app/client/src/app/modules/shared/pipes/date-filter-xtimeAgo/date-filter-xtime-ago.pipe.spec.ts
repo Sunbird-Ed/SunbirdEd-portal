@@ -7,7 +7,8 @@ describe('DateFilterXtimeAgoPipe', () => {
       const pipe = new DateFilterXtimeAgoPipe();
       const date = new Date();
       const result = pipe.transform(date, '');
-      const ans = moment(date).format('YYYY-MM-DD HH:mm:ss');
+      const local = moment(date).local().format('YYYY-MM-DD HH:mm:ss');
+      const ans = moment(local).fromNow();
       expect(result).toBe(ans);
     });
 
@@ -15,7 +16,8 @@ describe('DateFilterXtimeAgoPipe', () => {
       const pipe = new DateFilterXtimeAgoPipe();
       const date = new Date();
       const result = pipe.transform(date, 'YYYY-MM-DD HH:mm:ss');
-      const ans = moment(date).format('YYYY-MM-DD HH:mm:ss');
+      const local = moment(date).local().format('YYYY-MM-DD HH:mm:ss');
+      const ans = moment(local).fromNow();
       expect(result).toBe(ans);
     });
 
