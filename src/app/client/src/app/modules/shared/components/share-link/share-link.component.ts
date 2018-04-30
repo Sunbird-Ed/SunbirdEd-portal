@@ -89,7 +89,7 @@ export class ShareLinkComponent implements OnInit {
     if (this.sharelinkModal) {
       setTimeout(() => {
         this.copyLinkButton.nativeElement.click();
-      });
+      },1000);
     }
   }
   /**
@@ -102,7 +102,7 @@ export class ShareLinkComponent implements OnInit {
     setTimeout(() => {
     this._renderer.invokeElementMethod(this.copyLinkData.nativeElement, 'select', []);
     }, 0);
-    document.execCommand('copy');
+    setTimeout(() => document.execCommand('copy'));
   }
   /**
    * getBase64Url

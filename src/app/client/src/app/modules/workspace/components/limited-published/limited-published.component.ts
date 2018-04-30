@@ -204,7 +204,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
             };
             this.limitedPublishList[key].action = action;
           });
-          console.log(this.limitedPublishList);
           this.showLoader = false;
         } else {
           this.showError = false;
