@@ -177,6 +177,7 @@ export class UserService {
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
+    this.setRoleOrgMap(profileData);
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
@@ -198,5 +199,25 @@ export class UserService {
 
   get dims() {
     return this._dims;
+  }
+
+  private setRoleOrgMap(profile) {
+    let  roles = [];
+    const roleOrgMap = {};
+    _.forEach(profile.organisations, (org) => {
+      roles = roles.concat(org.roles);
+    });
+    roles = _.uniq(roles);
+    _.forEach(roles, (role) => {
+      _.forEach(profile.organisations, (org) => {
+        roleOrgMap[role] = roleOrgMap[role] || [];
+        if (_.indexOf(org.roles, role) > -1) { }
+        roleOrgMap[role].push(org.organisationId);
+      });
+    });
+    this._userProfile.roleOrgMap = roleOrgMap;
+  }
+  get RoleOrgMap () {
+    return _.cloneDeep(this._userProfile.roleOrgMap);
   }
 }

@@ -3,7 +3,6 @@ import { ConceptPickerService } from './../../services';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 @Component({
   selector: 'app-concept-picker',
   templateUrl: './concept-picker.component.html',
