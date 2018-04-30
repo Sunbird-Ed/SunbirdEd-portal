@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LandingPageComponent, SignupComponent } from './components';
 import { Routes, RouterModule } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -16,7 +17,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forRoot(routes),
-    SuiModule
+    SuiModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [LandingPageComponent, SignupComponent]
 })
