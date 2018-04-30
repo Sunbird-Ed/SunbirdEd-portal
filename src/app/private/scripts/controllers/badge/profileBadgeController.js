@@ -26,7 +26,7 @@ angular.module('playerApp')
         badgeService.getDetailedBadgeAssertions(req, profileBadge.badges).then(function (detailedBadgeAssertions) {
           profileBadge.badges = detailedBadgeAssertions
         }).catch(function (error) {
-          console.log("error = ", error)
+          console.log('error = ', error)
         })
       }
     }])

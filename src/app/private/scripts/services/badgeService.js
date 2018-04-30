@@ -41,25 +41,25 @@ angular.module('playerApp')
        * @param {*} assertions List of badge assertions.
        * @returns {Promise} Promise object containing response code and message.
        */
-      this.getDetailedBadgeAssertions = function(data, assertions) {
+      this.getDetailedBadgeAssertions = function (data, assertions) {
         return new Promise(function (resolve, reject) {
           var url = config.URL.BADGE.BADGE_CLASS_SEARCH
           restfulLearnerService.post(url, data).then(function (badgeSearchResponse) {
             var detailedAssertions = assertions
             if (badgeSearchResponse && badgeSearchResponse.responseCode === 'OK') {
               if (badgeSearchResponse.result && badgeSearchResponse.result.badges) {
-                angular.forEach(detailedAssertions, function(detailedAssertion) {
+                angular.forEach(detailedAssertions, function (detailedAssertion) {
                   var badgeFound = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId })
                   if (badgeFound) {
                     detailedAssertion.description = badgeFound.description
                   }
-                });
+                })
               }
             }
-            resolve(detailedAssertions);
+            resolve(detailedAssertions)
           }).catch(function (error) {
-            reject(error);
-          });
+            reject(error)
+          })
         })
       }
     }])
