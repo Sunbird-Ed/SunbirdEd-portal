@@ -107,14 +107,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlayColor: '',
       history: false,
       closeButton: true,
-      onClosing: function () {
+      onClosing: () => {
         self._zone.run(() => {
           self.closeModal();
         });
       }
     });
 
-    setTimeout(function () {
+    setTimeout( () => {
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 

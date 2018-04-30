@@ -226,7 +226,21 @@
                     "field": "createdOn",
                     "name": "Created On"
                 }
-            ]
+            ],
+        "upForReviewSortingOptions": [
+               {
+                   "field": "lastUpdatedOn",
+                   "name": "Updated On"
+               },
+               {
+                   "field": "createdOn",
+                   "name": "Created On"
+               },
+               {
+                   "field": "name",
+                   "name": "Name A-Z"
+               }
+           ]
         },
         "SEARCH": {
             "search": {
@@ -282,6 +296,15 @@
                     "OrgType"
                 ]
             }
+        },
+        "WORKSPACE": {
+            "label": [ { "id": "board", "name": "Curriculum" },
+                { "id": "gradeLevel", "name": "Grades" },
+                { "id": "medium", "name": "Medium" },
+                { "id": "subject", "name": "Subjects" },
+                { "id": "Content", "name": "Content Types" }
+                    
+                ]
         }
     }
 }
