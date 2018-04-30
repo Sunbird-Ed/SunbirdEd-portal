@@ -14,7 +14,6 @@
     </div>
 
     <div class="four wide column float-ContentLeft" *ngIf="courseList.length > 1">
-      <!--<div class="default text" id="selectCourse">{{resourceService?.messages?.intxt?.t0003}}</div>-->
       <sui-select class="selection fluid" [(ngModel)]="selectedOption" [options]="courseList" labelField="name" [isSearchable]="true"
         #select>
         <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);">
@@ -35,10 +34,10 @@
   <div class="ui grid centered margin-top-10" *ngIf="courseList && courseList.length > 0 && batchIdentifier">
     <div class="six wide column">
       <div class="ui text menu float-ContentLeft padding-top-10">
-        <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:timePeriod === '7d'}" (click)="setTimePeriod('7d')">LAST 7 DAYS{{resourceService?.messages?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '14d'}" (click)="setTimePeriod('14d')">LAST 14 DAYS{{resourceService?.messages?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '5w'}" (click)="setTimePeriod('5w')">LAST 5 WEEKS{{resourceService?.messages?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">FROM BEGINING{{resourceService?.messages?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:timePeriod === '7d'}" (click)="setTimePeriod('7d')">{{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '14d'}" (click)="setTimePeriod('14d')">{{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '5w'}" (click)="setTimePeriod('5w')">{{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">{{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
     <div class="two wide column"></div>
