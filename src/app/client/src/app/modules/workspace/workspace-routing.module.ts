@@ -14,26 +14,82 @@ const routes: Routes = [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
         path: 'create', component: CreateContentComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] },
         children: [
-          { path: 'textbook', component: DataDrivenComponent },
-          { path: 'uploadcontent', component: DataDrivenComponent },
-          { path: 'course', component: DataDrivenComponent },
-          { path: 'studymaterial', component: DataDrivenComponent },
-          { path: 'collection', component: DataDrivenComponent },
-          { path: 'lessonplan', component: DataDrivenComponent }
+          {
+            path: 'textbook', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'uploadcontent', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'course', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'studymaterial', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'collection', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'lessonplan', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          }
         ]
       },
-      {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      {path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
-      {path: 'edit/generic', component: GenericEditorComponent },
-      {path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
-      { path: 'draft/:pageNumber', component: DraftComponent },
-      { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
-      { path: 'published/:pageNumber', component: PublishedComponent },
-      { path: 'uploaded/:pageNumber', component: UploadedComponent },
-      { path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent },
-      { path: 'flagged/:pageNumber', component: FlaggedComponent },
-      {path: 'upForReview/:pageNumber', component: UpForReviewComponent },
+      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      { path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
+      { path: 'edit/generic', component: GenericEditorComponent },
+      { path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
+      {
+        path: 'draft/:pageNumber', component: DraftComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'review/:pageNumber', component: ReviewSubmissionsComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'published/:pageNumber', component: PublishedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'uploaded/:pageNumber', component: UploadedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'flagged/:pageNumber', component: FlaggedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'upForReview/:pageNumber', component: UpForReviewComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      { path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent ,
+      data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] } },
       { path: '**', redirectTo: 'create' }
     ]
   },
