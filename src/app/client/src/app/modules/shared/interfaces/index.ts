@@ -10,4 +10,4 @@ export * from './noresult';
 export * from './loader';
 export * from './appIdEnv';
 export * from './framework';
-
+export * from './shareLink';
