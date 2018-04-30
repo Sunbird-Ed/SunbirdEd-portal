@@ -32,7 +32,7 @@
     routerLinkActive="active">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'flaggedRole' >
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'flaggedRole'  [routerLink]="['flagged',1]" >
     {{resourceService?.frmelmnts?.snav?.flagged}}
   </a>
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'limitedPublishingRole' >
