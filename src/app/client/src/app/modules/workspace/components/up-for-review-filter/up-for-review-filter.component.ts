@@ -99,7 +99,6 @@ export class UpforReviewFilterComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
-        console.log(this.queryParams);
         this.query = this.queryParams['query'];
         this.sortByOption = this.queryParams['sort_by'];
         _.forIn(params, (value, key) => {
@@ -123,17 +122,9 @@ export class UpforReviewFilterComponent implements OnInit {
 
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
-    if (this.sortIcon) {
-      this.clickEvent.emit('asc');
-      this.queryParams['sort_by'] = sortByOption;
-      this.route.onSameUrlNavigation = 'reload';
-      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
-    } else {
-      this.clickEvent.emit('desc');
-      this.queryParams['sort_by'] = sortByOption;
-      this.route.onSameUrlNavigation = 'reload';
-      this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
-    }
+    this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
+     this.queryParams['sort_by'] = sortByOption;
+    this.route.navigate(['workspace/content/upForReview', 1], { queryParams: this.queryParams });
   }
   removeFilterSelection(filterType, value) {
     const itemIndex = this.queryParams[filterType].indexOf(value);

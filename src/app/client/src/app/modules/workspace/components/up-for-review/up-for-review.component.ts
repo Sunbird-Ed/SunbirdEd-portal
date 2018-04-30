@@ -107,7 +107,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   private toasterService: ToasterService;
 
   queryParams: any;
-  type: string;
+  sort: object;
   /**
   * To call resource service which helps to use language constant
  */
@@ -138,6 +138,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0032,
+    };
   }
 
   ngOnInit() {
@@ -165,28 +168,11 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   fecthUpForReviewContent(limit: number, pageNumber: number, bothParams) {
     console.log(bothParams);
     this.showLoader = true;
-    this.pageNumber = pageNumber;
-    this.pageLimit = limit;
-    let params =  {};
-    if ( bothParams.queryParams.sort_by === 'Created On' && this.type === 'asc') {
-      params = {
-        createdOn : this.config.appConfig.WORKSPACE.createdOnAsc
-      };
-    } else if (bothParams.queryParams.sort_by === 'Created On' && this.type === 'desc') {
-      params = {
-        name : this.config.appConfig.WORKSPACE.createdOnDesc
-      };
-    } else if (bothParams.queryParams.sort_by === 'Name A-Z' && this.type === 'asc') {
-      params = {
-        name : this.config.appConfig.WORKSPACE.nameAsc
-      };
-    } else if (bothParams.queryParams.sort_by === 'Name A-Z' && this.type === 'desc') {
-      params = {
-        name : this.config.appConfig.WORKSPACE.nameDesc
-      };
-    } else {
-       params = {
-        lastUpdatedOn : this.config.appConfig.WORKSPACE.lastUpdatedOn
+    if (bothParams.queryParams.sort_by) {
+      const sort_by = bothParams.queryParams.sort_by;
+      const sortType = bothParams.queryParams.sortIcon;
+      this.sort = {
+        [sort_by] : sortType
       };
     }
     const searchParams = {
@@ -202,21 +188,19 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         gradeLevel: bothParams.queryParams.gradeLevel,
         Content: bothParams.queryParams.Content
       },
-      limit: this.pageLimit,
-      pageNumber: this.pageNumber,
+      limit: limit,
+      offset: (pageNumber - 1 ) * (limit),
       query: bothParams.queryParams.query,
-      sort_by: params
-    };
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0032,
+      sort_by: this.sort
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
           this.upForReviewContentData = data.result.content;
           this.totalCount = data.result.count;
-          this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
+          this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;
+          this.noResult = false;
         } else {
           this.showError = false;
           this.noResult = true;
@@ -234,10 +218,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0021);
       }
     );
-  }
-  sortByType(type) {
-this.type = type;
-console.log(type);
   }
   /**
    * This method helps to navigate to different pages.

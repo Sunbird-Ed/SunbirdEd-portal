@@ -1,7 +1,7 @@
 <!-- Loader -->
 
-<app-up-for-review-filter (clickEvent)="sortByType($event)"></app-up-for-review-filter>
-<div class="twelve wide column margin-top-20" *ngIf="showLoader">
+<app-up-for-review-filter ></app-up-for-review-filter>
+<div class="twelve wide column margin-top-20" *ngIf="showLoader ">
     <app-loader [data]="loaderMessage"></app-loader>
   </div>
 <div *ngIf="noResult && !showLoader">

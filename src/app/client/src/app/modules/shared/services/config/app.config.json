@@ -17,11 +17,9 @@
     ],
     "objectType": "Content",
     "lastUpdatedOn": "desc",
-    "createdOnAsc": "asc",
-    "createdOnDesc": "desc",
+    "createdOn": "asc",
     "createdDate": "desc",
-    "nameAsc": "asc",
-    "nameDesc": "desc",
+    "name": "asc",
     "genericMimeType": [
       "application/pdf",
       "video/mp4",

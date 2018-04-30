@@ -51,7 +51,7 @@ describe('BatchFilterComponent', () => {
   it('should call applySorting method ', inject([ConfigService, Router],
     (configService, route) => {
       const sortByOption = 'Created On';
-      const queryParams = {subject: [ 'english', 'odia' ], sort_by: sortByOption};
+      const queryParams = {subject: [ 'english', 'odia' ], sortType: 'asc', sort_by: 'Created On'};
      component.applySorting(sortByOption);
      fixture.detectChanges();
      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
