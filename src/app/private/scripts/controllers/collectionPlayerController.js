@@ -186,8 +186,10 @@
         cpvm.showCopyLoader = true
         var editorData = angular.copy(cpvm.courseHierachy)
         editorData.code = editorData.code + '.copy'
+        editorData.name = 'Copy of ' + editorData.name
         var req = {
           content: {
+            name: editorData.name,
             description: editorData.description,
             code: editorData.code,
             createdBy: $rootScope.userId
@@ -198,9 +200,27 @@
             _.forEach(response.result.node_id, function (value) {
               editorData.identifier = value
             })
-            cpvm.showCopyLoader = false
-            toasterService.success($rootScope.messages.emsg.m0012)
-            workSpaceUtilsService.openContentEditor(editorData, 'WorkSpace.DraftContent')
+            var req = { contentId: editorData.identifier }
+            var qs = {
+              fields: 'body,editorState,templateId,languageCode,template,' +
+                            'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+                            'domain,code,visibility,createdBy,description,language,mediaType,' +
+                            'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+                            'attributions,artifactUrl,mimeType,medium,year,publisher,creator,framework'
+            }
+            contentService.getById(req, qs).then(function (response) {
+              if (response && response.responseCode === 'OK') {
+                toasterService.success($rootScope.messages.emsg.m0012)
+                cpvm.showCopyLoader = false
+                workSpaceUtilsService.openContentEditor(response.result.content, 'WorkSpace.DraftContent')
+              } else {
+                toasterService.error($rootScope.messages.emsg.m0013)
+                cpvm.showCopyLoader = false
+              }
+            }).catch(function () {
+              toasterService.error($rootScope.messages.emsg.m0013)
+              cpvm.showCopyLoader = false
+            })
           } else {
             toasterService.error($rootScope.messages.emsg.m0013)
             cpvm.showCopyLoader = false

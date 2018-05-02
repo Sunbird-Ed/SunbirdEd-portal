@@ -192,8 +192,10 @@ angular.module('playerApp')
         $scope.showCopyLoader = true
         var editorData = angular.copy($scope.contentData)
         editorData.code = editorData.code + '.copy'
+        editorData.name = 'Copy of ' + editorData.name
         var req = {
           content: {
+            name: editorData.name,
             description: editorData.description,
             code: editorData.code,
             createdBy: $rootScope.userId
@@ -210,9 +212,27 @@ angular.module('playerApp')
             _.forEach(response.result.node_id, function (value) {
               editorData.identifier = value
             })
-            $scope.showCopyLoader = false
-            toasterService.success($rootScope.messages.emsg.m0012)
-            workSpaceUtilsService.openContentEditor(editorData, state)
+            var req = { contentId: editorData.identifier }
+            var qs = {
+              fields: 'body,editorState,templateId,languageCode,template,' +
+                            'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+                            'domain,code,visibility,createdBy,description,language,mediaType,' +
+                            'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+                            'attributions,artifactUrl,mimeType,medium,year,publisher,creator,framework'
+            }
+            contentService.getById(req, qs).then(function (response) {
+              if (response && response.responseCode === 'OK') {
+                toasterService.success($rootScope.messages.emsg.m0012)
+                $scope.showCopyLoader = false
+                workSpaceUtilsService.openContentEditor(response.result.content, state)
+              } else {
+                toasterService.error($rootScope.messages.emsg.m0013)
+                $scope.showCopyLoader = false
+              }
+            }).catch(function () {
+              toasterService.error($rootScope.messages.emsg.m0013)
+              $scope.showCopyLoader = false
+            })
           } else {
             toasterService.error($rootScope.messages.emsg.m0013)
             $scope.showCopyLoader = false
