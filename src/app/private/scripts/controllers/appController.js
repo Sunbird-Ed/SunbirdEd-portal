@@ -125,7 +125,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     }
     $scope.logSessionStartEvent = function () {
       if ($rootScope.logSession === 'false') {
-        $http.get('/v1/user/session/start/' + EkTelemetry.fingerPrintId).then(function (res) {
+        $http.get('/v1/user/session/start/' + EkTelemetry.fingerPrintId, {
+          headers: {'X-Channel-Id': org.sunbird.portal.channel}
+        }).then(function (res) {
         }).catch(function () {
         })
       } else {
@@ -151,7 +153,9 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       if (profileData.rootOrg) {
         // set Page Title
         document.title = (!_.isUndefined(profileData.rootOrg.orgName)) ? profileData.rootOrg.orgName : 'Sunbird'
-        $http.get('/v1/tenant/info/' + profileData.rootOrg.slug).then(function (res) {
+        $http.get('/v1/tenant/info/' + profileData.rootOrg.slug, {
+          headers: {'X-Channel-Id': org.sunbird.portal.channel}
+        }).then(function (res) {
           if (res && res.statusText === 'OK') {
             $rootScope.orgLogo = res.data.result.logo
             var link = document.createElement('link')
