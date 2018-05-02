@@ -32,39 +32,39 @@ describe('profileBadgeCtrl', function () {
 
   describe('Search badge service', function () {
     it('Should called get all badges', function () {
-      spyOn(badgeService, 'getAllBadgesList').and.callThrough()
-      badgeService.getAllBadgesList()
-      expect(badgeService.getAllBadgesList).toBeDefined()
+      spyOn(badgeService, 'getDetailedBadgeAssertions').and.callThrough()
+      badgeService.getDetailedBadgeAssertions()
+      expect(badgeService.getDetailedBadgeAssertions).toBeDefined()
     })
 
     it('failed due to invalid request', function () {
-      spyOn(badgeService, 'getAllBadgesList').and.returnValue(deferred.promise)
+      spyOn(badgeService, 'getDetailedBadgeAssertions').and.returnValue(deferred.promise)
       deferred.resolve(badgeTestData.getAllBadgeFailureResponse)
       spyOn(profileBadge, 'getAllBadges').and.callThrough()
       profileBadge.getAllBadges()
       scope.$apply()
-      var response = badgeService.getAllBadgesList().$$state.value
+      var response = badgeService.getDetailedBadgeAssertions().$$state.value
       expect(response).toBeDefined()
       expect(response.responseCode).toBe('CLIENT_ERROR')
     })
 
     it('failed due to external error', function () {
-      spyOn(badgeService, 'getAllBadgesList').and.returnValue(deferred.promise)
+      spyOn(badgeService, 'getDetailedBadgeAssertions').and.returnValue(deferred.promise)
       deferred.reject({})
       spyOn(profileBadge, 'getAllBadges').and.callThrough()
       profileBadge.getAllBadges()
       scope.$apply()
-      var response = badgeService.getAllBadgesList().$$state.value
+      var response = badgeService.getDetailedBadgeAssertions().$$state.value
       expect(response).not.toBe(undefined)
     })
 
     it('success', function () {
-      spyOn(badgeService, 'getAllBadgesList').and.returnValue(deferred.promise)
+      spyOn(badgeService, 'getDetailedBadgeAssertions').and.returnValue(deferred.promise)
       deferred.resolve(badgeTestData.getAllBadgesSuccessResponse)
       spyOn(profileBadge, 'getAllBadges').and.callThrough()
       profileBadge.getAllBadges()
       scope.$apply()
-      var response = badgeService.getAllBadgesList().$$state.value
+      var response = badgeService.getDetailedBadgeAssertions().$$state.value
       expect(response).not.toBe(undefined)
       expect(response.responseCode).toBe('OK')
     })
