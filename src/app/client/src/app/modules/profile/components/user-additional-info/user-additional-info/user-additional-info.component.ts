@@ -71,8 +71,8 @@ export class UserAdditionalInfoComponent implements OnInit {
     const addInfo: any = {};
     if (this.editChild.basicInfoForm.valid === true) {
       _.forIn(this.editChild.basicInfoForm.controls, (value, key) => {
-        if (value !== undefined && value !== null) {
-          if (key === 'dob') {
+        if (value && value !== undefined && value !== null) {
+          if (key === 'dob' && value.value !== null) {
             addInfo[key] = moment(value.value).format('YYYY-MM-DD');
           } else if ((value.value !== null && value.value !== '' && value.value !== undefined) && (key === 'fb' || key === 'in'
             || key === 'twitter' || key === 'blog')) {
