@@ -20,7 +20,8 @@
       <div class="required field" [ngClass]="basicInfoForm.controls.phone.invalid && basicInfoForm.controls['phone'].errors.required && !basicInfoForm.controls['phone'].pristine ? 'error' : ''">
         <label>{{resourceService?.frmelmnts?.lbl?.phone}} </label>
         <div class="ui input right icon">
-          <input [attr.disabled]="isEdit" type="text" name="phone" placeholder="{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}" formControlName="phone">
+          <input [attr.disabled]="isEdit" type="text" name="phone" placeholder="{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}"
+            formControlName="phone">
           <app-profile-visibility field="phone"></app-profile-visibility>
         </div>
       </div>
@@ -36,25 +37,25 @@
   <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="basicInfoForm.controls.phone.invalid && basicInfoForm.controls['phone'].errors.required && !basicInfoForm.controls['phone'].pristine">
     {{resourceService?.messages?.stmsg?.m0067}}
   </div>
-  <div class="two fields">
-    <div class="field">
-      <label>{{resourceService?.frmelmnts?.lbl?.gender}}</label>
-      <div class="ui input right icon">
-        <select name="gender" class="ui fluid dropdown genderSelectionDropDown" formControlName="gender">
-          <option value="Female">{{resourceService?.frmelmnts?.drpdn?.female}}</option>
-          <option value="Male">{{resourceService?.frmelmnts?.drpdn?.male}}</option>
-          <option value="Transgender">{{resourceService?.frmelmnts?.drpdn?.transgender}}</option>
-        </select>
-        <app-profile-visibility field="gender"></app-profile-visibility>
+  <div class="field">
+    <div class="two fields">
+      <div class="field">
+        <label>{{resourceService?.frmelmnts?.lbl?.gender}}</label>
+        <div class="ui input right icon">
+          <sui-select name="gender" class="selection profile-dropdown-gender-lock" formControlName="gender">
+            <sui-select-option *ngFor="let option of gender" [value]="option">{{resourceService?.frmelmnts?.drpdn?.female}}</sui-select-option>
+          </sui-select>
+          <app-profile-visibility field="gender"></app-profile-visibility>
+        </div>
       </div>
-    </div>
-    <div class="field">
-      <label>{{resourceService?.frmelmnts?.lbl?.birthdate}}</label>
-      <div class="ui left icon input">
-        <i class="calendar icon"></i>
-        <input suiDatepicker name="dob" placeholder="Date" formControlName="dob" [pickerMaxDate]="initDate" [pickerMode]="'date'">
-        <div ng-if="dobVis">
-          <app-profile-visibility field="dob"></app-profile-visibility>
+      <div class="field">
+        <label>{{resourceService?.frmelmnts?.lbl?.birthdate}}</label>
+        <div class="ui left icon input">
+          <i class="calendar icon"></i>
+          <input suiDatepicker [pickerMaxDate]="initDate" readonly formControlName="dob" [pickerMode]="'date'">
+          <div ng-if="dobVis">
+            <app-profile-visibility field="dob"></app-profile-visibility>
+          </div>
         </div>
       </div>
     </div>
@@ -76,13 +77,16 @@
       </sui-multi-select>
     </div>
   </div>
-  <div class=" field">
+  <div class="required field">
     <label>{{resourceService?.frmelmnts?.lbl?.language}}</label>
-    <div class="field">
+    <div class="field" [ngClass]="basicInfoForm.controls.language.invalid && basicInfoForm.controls['language'].errors.required && !basicInfoForm.controls['language'].pristine ? 'error' : ''">
       <sui-multi-select class="selection" formControlName="language" [options]="languages" #multiSelect>
         <sui-select-option *ngFor="let option of languages" [value]="option"> </sui-select-option>
       </sui-multi-select>
     </div>
+  </div>
+  <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="basicInfoForm.controls.language.invalid && basicInfoForm.controls['language'].errors.required && !basicInfoForm.controls['language'].pristine">
+    {{resourceService?.messages?.stmsg?.m0069}}
   </div>
   <div class=" field">
     <label>{{resourceService?.frmelmnts?.lbl?.subjects}}</label>

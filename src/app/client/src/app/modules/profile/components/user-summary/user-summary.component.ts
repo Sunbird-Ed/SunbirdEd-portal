@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-user-summary',
@@ -17,7 +17,7 @@ export class UserSummaryComponent implements OnInit {
   editSummury: string;
   allowedAction = ['edit'];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-    public userService: UserService, public profileService: ProfileService,
+    public userService: UserService, public profileService: ProfileService, public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -49,6 +49,7 @@ export class UserSummaryComponent implements OnInit {
     this.profileService.updateProfile(req).subscribe(res => {
       this.router.navigate(['/profile']);
       // toaster suc
+      this.toasterService.success(this.resourceService.messages.smsg.m0019);
     },
     err => {
       // toaster err

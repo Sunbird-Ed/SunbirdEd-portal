@@ -49,7 +49,7 @@ export class EditUserAddressComponent implements OnInit {
         city: new FormControl(this.address.city, [Validators.required]),
         state: new FormControl(this.address.state),
         country: new FormControl(this.address.country),
-        zipcode: new FormControl(this.address.zipcode)
+        zipcode: new FormControl(this.address.zipcode, [Validators.pattern(/^\d{6}$/)])
       });
     } else {
       let addresstype = null;
@@ -67,7 +67,7 @@ export class EditUserAddressComponent implements OnInit {
         city: new FormControl(null, [Validators.required]),
         state: new FormControl(null),
         country: new FormControl(null),
-        zipcode: new FormControl(null)
+        zipcode: new FormControl(null, [Validators.pattern(/^\d{6}$/)])
       });
     }
   }

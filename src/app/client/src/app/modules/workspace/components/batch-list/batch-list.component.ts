@@ -182,6 +182,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     this.getBatches(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.response.count && data.result.response.content.length > 0) {
+          this.noResult = false;
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
@@ -194,6 +195,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       },
       (err: ServerResponse) => {
         this.showLoader = false;
+        this.noResult = false;
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
@@ -236,7 +238,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     this.UserList(req).subscribe((res: ServerResponse) => {
       if (res.result.response.count && res.result.response.content.length > 0) {
         this.showLoader = false;
-        _.forEach(res.result.response.content, function (val, key) {
+        _.forEach(res.result.response.content, (val, key) => {
           userName[val.identifier] = val.firstName + ' ' + val.lastName;
         });
         _.forEach(this.batchList, (item, key) => {

@@ -17,6 +17,14 @@ export class ProfileHeaderComponent implements OnInit {
  * reference of config service.
  */
   public config: ConfigService;
+  /**
+* Contains action performed - add/edit/view
+*/
+  action: string;
+  /**
+  * Stores actions that are allowed
+  */
+  allowedAction = ['update'];
   userProfile: IUserProfile;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public permissionService: PermissionService, public toasterService: ToasterService,
@@ -34,22 +42,20 @@ export class ProfileHeaderComponent implements OnInit {
       });
   }
   updateAvatar(image) {
-    if (image[0] && image[0].size < 4000000) {
+    if (image[0] && image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000) {
       const formData = new FormData();
       formData.append('file', image[0]);
       formData.append('container', 'user/' + this.userService.userid);
       this.profileService.updateAvatar(formData).subscribe(
         results => {
-          // toaster suc
-          this.toasterService.success(this.resourceService.messages.m0018);
+          this.toasterService.success(this.resourceService.messages.smsg.m0018);
         },
         err => {
-          // toaster error
-          // this.toasterService.error(err.error.params.errmsg);
+          this.toasterService.error(err.params.errmsg);
         }
       );
-    } else {
-      // toaster error
+    } else if (image[0] && !(image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000)) {
+      this.toasterService.error(this.resourceService.messages.imsg.m0005);
     }
   }
 

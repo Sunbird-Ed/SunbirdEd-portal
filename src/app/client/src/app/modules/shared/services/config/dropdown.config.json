@@ -101,6 +101,11 @@
         ],
         "orgType": [
             "technical"
+        ],
+        "gender": [
+            "Male",
+            "Female",
+            "Transgender"
         ]
     },
     "FILTER": {
@@ -211,7 +216,21 @@
                 "NCTE",
                 "TN Board",
                 "UP Board"
-            ]
+            ],
+        "upForReviewSortingOptions": [
+               {
+                   "field": "lastUpdatedOn",
+                   "name": "Updated On"
+               },
+               {
+                   "field": "createdOn",
+                   "name": "Created On"
+               },
+               {
+                   "field": "name",
+                   "name": "Name A-Z"
+               }
+           ]
         },
         "SEARCH": {
             "search": {
@@ -235,7 +254,8 @@
                 "DROPDOWN": {
                     "Curriculum": [],
                     "Subjects": [],
-                    "Medium": []
+                    "Medium": [],
+                    "Concepts":[]
                 },
                 "label": [
                     "Curriculum",
@@ -266,6 +286,15 @@
                     "OrgType"
                 ]
             }
+        },
+        "WORKSPACE": {
+            "label": [ { "id": "board", "name": "Curriculum" },
+                { "id": "gradeLevel", "name": "Grades" },
+                { "id": "medium", "name": "Medium" },
+                { "id": "subject", "name": "Subjects" },
+                { "id": "Content", "name": "Content Types" }
+                    
+                ]
         }
     },
     "statusOptions": [

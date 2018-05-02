@@ -44,7 +44,7 @@ export class WorkSpace {
     * Method to remove content localcaly
     */
     removeContent(contentList, requestData) {
-        return contentList.filter(function(content) {
+        return contentList.filter((content) => {
             return requestData.indexOf(content.identifier) === -1;
         });
     }

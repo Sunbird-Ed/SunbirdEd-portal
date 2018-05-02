@@ -1,0 +1,12 @@
+<sui-accordion *ngFor="let child of rootChildrens" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100">
+  <sui-accordion-panel [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
+    <div title class="courseAccordianHeading title-padding-left accordian-left-text">
+      <i *ngIf="child.folder" class="fa fa-2x" [class.fa-folder-open-o]="child.togglePanelIcon" [class.fa-folder-o]="!child.togglePanelIcon"></i>
+      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;{{child.title}}
+      <i *ngIf="child.folder" class="icon down-arrow-accordion" [class.plus]="!child.togglePanelIcon" [class.minus]="child.togglePanelIcon"></i>
+    </div>
+    <div *ngIf="child.folder" content>
+      <app-fancy-tree [nodes]="child.children" [options]="{ showConnectors: true }"></app-fancy-tree>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>

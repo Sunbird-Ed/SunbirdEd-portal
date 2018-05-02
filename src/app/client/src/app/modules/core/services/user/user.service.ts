@@ -44,6 +44,10 @@ export class UserService {
    * reference of lerner service.
    */
   public learner: LearnerService;
+    /**
+   * Contains hashTag id
+   */
+  private _hashTagId: string;
   /**
  * Reference of appId
  */
@@ -173,6 +177,8 @@ export class UserService {
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
+    this.setRoleOrgMap(profileData);
+    this._hashTagId = this._userProfile.rootOrg.hashTagId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
     this.setRoleOrgMap(profileData);
   }
@@ -184,6 +190,10 @@ export class UserService {
     return this._rootOrgId;
   }
 
+  get hashTagId() {
+    return this._hashTagId;
+  }
+
   get channel() {
     return this._channel;
   }
@@ -191,9 +201,6 @@ export class UserService {
   get dims() {
     return this._dims;
   }
-  /**
-  * method to set setRoleOrgMap.
-  */
   private setRoleOrgMap(profile) {
     let  roles = [];
     const roleOrgMap = {};

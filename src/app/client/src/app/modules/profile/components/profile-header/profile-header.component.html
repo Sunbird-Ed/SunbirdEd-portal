@@ -9,14 +9,16 @@
                     <div class="ui grid">
                         <div class="two wide column padding-top-none">
                             <div class="userAvtarWrap field link ui small circular image header-image-profile">
-                                <img class="ui small circular image header-image-profile" src="{{userProfile.avatar || '/common/images/user_logo.png'}}"
+                                <img class="ui small circular image header-image-profile" src="{{userProfile.avatar || '/assets/common/images/user_logo.png'}}"
                                     (click)="user.openImageBrowser();">
                                 <div class="img-description-layer ui small circular image header-image-profile">
-                                    <label for="iconImageInput">
-                                        <i class="edit icon" for="iconImageInput"></i>
+                                    <label>
+                                        <a id="file" class="cursor-pointer" (click)="imageInput.click()">
+                                            <i class="edit icon" for="iconImageInput"></i>
+                                        </a>
                                     </label>
                                 </div>
-                                <input type="file" style='display: none' accept="image/x-png,image/gif,image/jpeg,image/jpg" class="content-input ui small circular image header-image-profile"
+                                <input #imageInput type="file" style='display: none' accept="image/x-png,image/gif,image/jpeg,image/jpg" class="content-input ui small circular image header-image-profile"
                                     id="iconImageInput" (change)="updateAvatar($event.target.files)" required="" />
                             </div>
                         </div>
@@ -25,7 +27,7 @@
                                 <div class="sectionHeading header">{{userProfile.firstName}} &nbsp;{{userProfile.lastName}}</div>
                                 <div class="meta profileViewSubHeader padding-bottom-10">
                                     <span *ngIf="userProfile.currentJobLocation">{{userProfile.currentJobLocation?.orgName}}</span>
-                                    <span *ngIf="userProfile.location.length && userProfile.currentJobLocation">,</span>
+                                    <span *ngIf="userProfile.location && userProfile.location.length && userProfile.currentJobLocation">,</span>
                                     <span *ngIf="userProfile.location">{{userProfile.location}}</span>
                                 </div>
                                 <div class="meta">

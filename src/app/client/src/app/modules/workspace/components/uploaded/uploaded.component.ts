@@ -23,6 +23,10 @@ export class UploadedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
+  * state for content editior
+  */
+  state: string;
+  /**
   * To navigate to other pages
   */
   route: Router;
@@ -138,6 +142,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.state = 'uploaded';
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -160,9 +165,9 @@ export class UploadedComponent extends WorkSpace implements OnInit {
         mimeType: ['application/pdf', 'video/x-youtube', 'application/vnd.ekstep.html-archive',
           'application/epub', 'application/vnd.ekstep.h5p-archive', 'video/mp4', 'video/webm'],
       },
-      pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0023,
@@ -186,7 +191,6 @@ export class UploadedComponent extends WorkSpace implements OnInit {
 
           });
           this.showLoader = false;
-          console.log('>>>', this.uploaded);
         } else {
           this.showError = false;
           this.noResult = true;
@@ -205,12 +209,17 @@ export class UploadedComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
-  deleteUploaded(param) {
+  /**
+    * This method launch the content editior
+  */
+  contentClick(param) {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.contentId);
+    } else {
+      this.workSpaceService.navigateToContent(param.content, this.state);
     }
   }
+
 
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);

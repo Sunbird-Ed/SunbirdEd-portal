@@ -10,9 +10,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
-declare var jQuery: any;
-declare let window: CustomWindow;
-
 
 @Component({
   selector: 'app-collection-editor',
@@ -151,7 +148,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosing: function () {
+      onClosing: () => {
         self._zone.run(() => {
           self.closeModal();
         });
@@ -212,7 +209,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFlagReviewer = true;
     }
-    setTimeout(function () {
+    setTimeout(() => {
       jQuery('#collectionEditor').iziModal('open');
     }, 100);
 

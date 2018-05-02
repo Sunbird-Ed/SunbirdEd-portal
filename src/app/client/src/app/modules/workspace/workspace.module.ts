@@ -10,7 +10,9 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
-  WorkspacesidebarComponent, BatchListComponent, BatchCardComponent, UpdateBatchComponent
+  WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
+  FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
+  BatchListComponent, BatchCardComponent, UpdateBatchComponent
 } from './components';
 
 @NgModule({
@@ -26,8 +28,10 @@ import {
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
-    ContentEditorComponent, GenericEditorComponent, BatchListComponent,
-    BatchCardComponent, UpdateBatchComponent],
+    ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
+    DataDrivenComponent, UpForReviewComponent, UpforReviewFilterComponent, DefaultTemplateComponent,
+    FlaggedComponent, BatchListComponent, BatchCardComponent, UpdateBatchComponent
+  ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })
 export class WorkspaceModule { }

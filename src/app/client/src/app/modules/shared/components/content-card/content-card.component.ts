@@ -18,7 +18,7 @@ export class ContentCardComponent {
 @Output('clickEvent')
 clickEvent = new EventEmitter<any>();
 
-public onAction(contentId, actionType) {
-  this.clickEvent.emit({'type': actionType, 'contentId': contentId});
+public onAction(content, actionType) {
+  this.clickEvent.emit({'type': actionType, 'content': content});
 }
 }

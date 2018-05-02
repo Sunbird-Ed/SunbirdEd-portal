@@ -88,7 +88,7 @@ describe('CollectionEditorComponent', () => {
 
     it('test to navigate to drafts', inject([Router], (router) => () => {
       component.closeModal();
-      setTimeout(function () {
+      setTimeout( () => {
         component.navigateToDraft();
       }, 1000);
 

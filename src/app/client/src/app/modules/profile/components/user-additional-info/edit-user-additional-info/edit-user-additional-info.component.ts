@@ -19,6 +19,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   initDate = new Date();
   languages: any;
   grades: any;
+  gender: any;
   basicInfoForm: FormGroup;
   webPages: any = {};
   isEdit: boolean;
@@ -28,6 +29,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
     this.languages = this.configService.dropDownConfig.COMMON.languages;
     this.grades = this.configService.dropDownConfig.COMMON.grades;
+    this.gender = this.configService.dropDownConfig.COMMON.gender;
   }
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         }
       });
     if (this.basicInfo) {
-      const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : null;
+      const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : undefined;
       this.isEdit = true;
       this.basicInfo.webPages.forEach(element => {
         this.basicInfo.webPages[element.type] = element.url;
@@ -50,10 +52,10 @@ export class EditUserAdditionalInfoComponent implements OnInit {
       this.basicInfoForm = new FormGroup({
         firstName: new FormControl(this.basicInfo.firstName, [Validators.required]),
         lastName: new FormControl(this.basicInfo.lastName),
-        phone: new FormControl(this.basicInfo.phone, [Validators.required]),
-        email: new FormControl(this.basicInfo.email, [Validators.required]),
+        phone: new FormControl(this.basicInfo.phone),
+        email: new FormControl(this.basicInfo.email),
         gender: new FormControl(this.basicInfo.gender),
-        dob: new FormControl(this.basicInfo.dob),
+        dob: new FormControl(dob),
         location: new FormControl(this.basicInfo.location),
         grade: new FormControl(this.basicInfo.grade),
         language: new FormControl(this.basicInfo.language, [Validators.required]),
@@ -62,23 +64,6 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         twitter: new FormControl(this.basicInfo.webPages.twitter),
         in: new FormControl(this.basicInfo.webPages.in),
         blog: new FormControl(this.basicInfo.webPages.blog)
-      });
-    } else {
-      this.basicInfoForm = new FormGroup({
-        firstName: new FormControl(null, [Validators.required]),
-        lastName: new FormControl(null),
-        phone: new FormControl(null, [Validators.required]),
-        email: new FormControl(null, [Validators.required]),
-        gender: new FormControl(null),
-        dob: new FormControl(null),
-        location: new FormControl(null),
-        grade: new FormControl(null),
-        language: new FormControl(null, [Validators.required]),
-        subject: new FormControl(null),
-        fb: new FormControl(null),
-        twitter: new FormControl(null),
-        in: new FormControl(null),
-        blog: new FormControl(null)
       });
     }
   }

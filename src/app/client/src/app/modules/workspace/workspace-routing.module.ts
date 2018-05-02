@@ -1,13 +1,12 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
-  GenericEditorComponent, UploadedComponent, BatchListComponent, UpdateBatchComponent
+  GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
+   BatchListComponent, UpdateBatchComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
 const routes: Routes = [
   {
     path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],
@@ -15,21 +14,80 @@ const routes: Routes = [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
         path: 'create', component: CreateContentComponent,
-        // children: [
-        //   { path: 'textbook', component: CreateTextbookComponent },
-        //   { path: 'course', component: CreateCourseComponent },
-        //   { path: 'studymaterial', component: CreateStudyMaterialComponent },
-        //   { path: 'collection', component: CreateCollectionComponent },
-        //   { path: 'lessonplan', component: CreateLessonPlanComponent }
-        // ]
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] },
+        children: [
+          {
+            path: 'textbook', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'uploadcontent', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'course', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'studymaterial', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'collection', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'lessonplan', component: DataDrivenComponent,
+            data: {
+              breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          }
+        ]
       },
-      {path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      {path: 'edit/contentEditor/:contentId/:state/:framework', component: ContentEditorComponent },
-      {path: 'edit/generic', component: GenericEditorComponent },
-      { path: 'draft/:pageNumber', component: DraftComponent },
-      { path: 'review/:pageNumber', component: ReviewSubmissionsComponent },
-      { path: 'published/:pageNumber', component: PublishedComponent },
-      { path: 'uploaded/:pageNumber', component: UploadedComponent },
+      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
+      { path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
+      { path: 'edit/generic', component: GenericEditorComponent },
+      { path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
+      {
+        path: 'draft/:pageNumber', component: DraftComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'review/:pageNumber', component: ReviewSubmissionsComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'published/:pageNumber', component: PublishedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'uploaded/:pageNumber', component: UploadedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'flagged/:pageNumber', component: FlaggedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
+      {
+        path: 'upForReview/:pageNumber', component: UpForReviewComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
       { path: 'batches/:pageNumber', component: BatchListComponent },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
       { path: '**', redirectTo: 'create' }

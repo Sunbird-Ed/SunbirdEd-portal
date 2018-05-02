@@ -64,7 +64,7 @@ export class LineChartService {
       i++;
     });
 
-    _.forOwn(groupList, function (group, groupId) {
+    _.forOwn(groupList, (group, groupId) => {
       chartList.push({ yaxesData: group.yAxes, xaxesData: group.xAxes, chartOptions: group.options, chartColors: group.colors });
     });
 
@@ -79,7 +79,7 @@ export class LineChartService {
   getLineData(bucketData: any) {
     const values: Array<any> = [];
     const labels: Array<any> = [];
-    _.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
+    _.forEach(bucketData.buckets, (bucketValue, bucketKey) => {
       values.push(bucketValue.value);
       labels.push(bucketValue.key_name);
     });

@@ -129,7 +129,7 @@ export class SearchService {
       data: {
         request: {
           filters: requestParam.filters,
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          offset: requestParam.offset,
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by
