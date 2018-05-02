@@ -2,7 +2,7 @@ import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavi
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
-import { NoteFormComponent } from '../note-form/note-form.component';
+// import { NoteFormComponent } from '../note-form/note-form.component';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
@@ -16,8 +16,8 @@ import { INotesListData, ICourseDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
-  styleUrls: ['./note-list.component.css'],
-  entryComponents: [NoteFormComponent]
+  styleUrls: ['./note-list.component.css']
+  // entryComponents: [NoteFormComponent]
 })
 export class NoteListComponent implements OnInit {
 

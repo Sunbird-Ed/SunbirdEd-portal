@@ -1,5 +1,5 @@
 import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NoteFormComponent } from './../note-form/note-form.component';
+// import { NoteFormComponent } from './../note-form/note-form.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, ConfigService, FilterPipe, RouterNavigationService } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -26,7 +26,8 @@ describe('NoteListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ OrderModule, HttpClientTestingModule, Ng2IziToastModule ],
-      declarations: [ NoteListComponent, NoteFormComponent, FilterPipe, TimeAgoPipe ],
+      // declarations: [ NoteListComponent, NoteFormComponent, FilterPipe, TimeAgoPipe ],
+      declarations: [ NoteListComponent, FilterPipe, TimeAgoPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
          ConfigService, ContentService, SuiModalService, SuiComponentFactory,
          RouterNavigationService,

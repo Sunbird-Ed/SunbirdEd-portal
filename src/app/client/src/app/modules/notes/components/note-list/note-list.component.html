@@ -58,8 +58,8 @@
                       <i class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} [routerLink]="['update',selectedNote.id]"
                         (click)="noteService.selectedNote = selectedNote;"></i>
                       <i class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true">
-                        <app-delete-note *ngIf="showDelete === true" [deletePopup]="showDelete" [deleteNote]="selectedNote"  (exitModal)="exitModal($event)" (finalNotesListData)="finalNotesListData($event)">
-                        </app-delete-note>
+                        <!-- <app-delete-note *ngIf="showDelete === true" [deletePopup]="showDelete" [deleteNote]="selectedNote"  (exitModal)="exitModal($event)" (finalNotesListData)="finalNotesListData($event)">
+                        </app-delete-note> -->
                       </i>
                     </div>
 
