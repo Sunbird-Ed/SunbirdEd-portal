@@ -30,7 +30,6 @@
       "application/vnd.ekstep.h5p-archive",
       "video/webm"
     ],
-<<<<<<< HEAD
     "states": [
       "draft",
       "uploaded",
@@ -38,15 +37,6 @@
       "limited-publish",
       "flagged"
     ]
-=======
-    "states": [
-      "draft",
-      "uploaded",
-      "published",
-      "limited-publish",
-      "flagged"
-    ]
->>>>>>> 9b2119137ddf3f5132bf5e2fefc2785a7d1d7384
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"

@@ -54,11 +54,7 @@ describe('GenericEditorComponent', () => {
 
    it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();
-<<<<<<< HEAD
     setTimeout(() => {
-=======
-    setTimeout( () => {
->>>>>>> 9b2119137ddf3f5132bf5e2fefc2785a7d1d7384
       component.navigateToCreate();
     }, 1000);
 

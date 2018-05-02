@@ -105,11 +105,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     });
 
-<<<<<<< HEAD
     setTimeout(() => {
-=======
-    setTimeout( () => {
->>>>>>> 9b2119137ddf3f5132bf5e2fefc2785a7d1d7384
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
