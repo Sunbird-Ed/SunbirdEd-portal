@@ -50,10 +50,6 @@ angular.module('playerApp')
         return false
       }
 
-      function validatePreviewData (fieldData) {
-        return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
-      }
-
       function showPlayer (data) {
         var rspData = data
         rspData.state = $stateParams.backState
@@ -65,13 +61,13 @@ angular.module('playerApp')
           $state.go(previousState.name, previousState.params)
         }
         previewContent.contentData = data
-        previewContent.contentData.language = validatePreviewData(previewContent.contentData.language)
-        previewContent.contentData.gradeLevel = validatePreviewData(previewContent.contentData.gradeLevel)
-        previewContent.contentData.subject = validatePreviewData(previewContent.contentData.subject)
-        previewContent.contentData.flagReasons = validatePreviewData(previewContent.contentData.flagReasons)
-        previewContent.contentData.flaggedBy = validatePreviewData(previewContent.contentData.flaggedBy)
-        previewContent.contentData.flags = validatePreviewData(previewContent.contentData.flags)
-        previewContent.contentData.keywords = validatePreviewData(previewContent.contentData.keywords)
+        previewContent.contentData.language = contentService.validateContent(previewContent.contentData.language)
+        previewContent.contentData.gradeLevel = contentService.validateContent(previewContent.contentData.gradeLevel)
+        previewContent.contentData.subject = contentService.validateContent(previewContent.contentData.subject)
+        previewContent.contentData.flagReasons = contentService.validateContent(previewContent.contentData.flagReasons)
+        previewContent.contentData.flaggedBy = contentService.validateContent(previewContent.contentData.flaggedBy)
+        previewContent.contentData.flags = contentService.validateContent(previewContent.contentData.flags)
+        previewContent.contentData.keywords = contentService.validateContent(previewContent.contentData.keywords)
 
         previewContent.contentPlayer.contentData = data
         previewContent.contentPlayer.isContentPlayerEnabled = true
@@ -274,14 +270,7 @@ angular.module('playerApp')
       }
 
       previewContent.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name')
-        if (concepts && _.isArray(concepts) && conceptNames.length < concepts.length) {
-          var filteredConcepts = _.filter($rootScope.concepts, function (p) {
-            return _.includes(concepts, p.identifier)
-          })
-          conceptNames = _.map(filteredConcepts, 'name')
-        }
-        return conceptNames.join(', ')
+        return contentService.getConceptsNames(concepts)
       }
       // Restore default values(resume course, view dashboard) onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')

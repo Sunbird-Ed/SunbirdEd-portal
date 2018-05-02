@@ -61,15 +61,11 @@ angular.module('playerApp')
         }
       }
 
-      function validateContentData (fieldData) {
-        return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
-      }
-
       function showPlayer (data) {
         $scope.contentData = data
-        $scope.contentData.language = validateContentData($scope.contentData.language)
-        $scope.contentData.gradeLevel = validateContentData($scope.contentData.gradeLevel)
-        $scope.contentData.subject = validateContentData($scope.contentData.subject)
+        $scope.contentData.language = contentService.validateContent($scope.contentData.language)
+        $scope.contentData.gradeLevel = contentService.validateContent($scope.contentData.gradeLevel)
+        $scope.contentData.subject = contentService.validateContent($scope.contentData.subject)
         $scope._instance = {
           id: $scope.contentData.identifier,
           ver: $scope.contentData.pkgVersion
@@ -228,14 +224,7 @@ angular.module('playerApp')
       }
 
       $scope.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name')
-        if (concepts && _.isArray(concepts) && conceptNames.length < concepts.length) {
-          var filteredConcepts = _.filter($rootScope.concepts, function (p) {
-            return _.includes(concepts, p.identifier)
-          })
-          conceptNames = _.map(filteredConcepts, 'name')
-        }
-        return conceptNames.join(', ')
+        return contentService.getConceptsNames(concepts)
       }
 
       // Restore default values(resume course, view dashboard) onAfterUser leave current state
