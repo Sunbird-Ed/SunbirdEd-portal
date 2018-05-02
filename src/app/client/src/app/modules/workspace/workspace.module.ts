@@ -12,7 +12,8 @@ import {
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
-  FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent
+  FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
+  LimitedPublishedComponent
 } from './components';
 @NgModule({
   imports: [

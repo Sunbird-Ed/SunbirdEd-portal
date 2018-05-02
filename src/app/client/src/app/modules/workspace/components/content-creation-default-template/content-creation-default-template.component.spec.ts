@@ -65,13 +65,13 @@ describe('DefaultTemplateComponent', () => {
     component.mapMasterCategoryList('');
     expect(component.categoryList).toBeDefined();
   });
-  it('should call applyDependencyRules', () => {
+  xit('should call applyDependencyRules', () => {
     const range = mockData.formFieldMetaData;
     const associations =  mockData.frameworkAssociations.associations;
     component.applyDependencyRules(range, associations, false);
     expect(component.updateDropDownList).toBeDefined();
   });
-  it('should call getAssociations', () => {
+  xit('should call getAssociations', () => {
     const key = undefined;
     const range = mockData.formFieldMetaData.range;
     const callback = jasmine.createSpy('callback');
