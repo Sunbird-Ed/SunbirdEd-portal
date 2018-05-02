@@ -1,4 +1,4 @@
-<div *ngIf="userProfile" class="margin-top-20 ui raised segment">
+<div id="additionalInfo" *ngIf="userProfile" class="margin-top-20 ui raised segment">
   <div class="header announcementCard-header ">
     <span class="header cardsHeading "> {{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
     <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
@@ -102,7 +102,7 @@
     </div>
   </div>
   <div class="" *ngIf="action !== 'view'">
-    <div id="additionalInfo" class="ui" *ngIf="action === 'edit'">
+    <div class="ui" *ngIf="action === 'edit'">
       <app-edit-user-additional-info #edit [basicInfo]="userProfile"></app-edit-user-additional-info>
     </div>
     <button *ngIf="action === 'edit'" class="ui primary button margin-top-15" (click)="editBasicInfo()">{{resourceService?.frmelmnts?.btn?.save}} </button>
