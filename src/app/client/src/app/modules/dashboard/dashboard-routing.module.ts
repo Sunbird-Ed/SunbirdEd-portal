@@ -26,11 +26,17 @@ const routes: Routes = [
     }
   },
   {
+    path: 'dashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent
+  },
+  {
     path: 'dashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
+  },
+  {
+    path: 'dashboard/course/:courseId/:timePeriod', component: CourseProgressComponent
   }
 ];
 
