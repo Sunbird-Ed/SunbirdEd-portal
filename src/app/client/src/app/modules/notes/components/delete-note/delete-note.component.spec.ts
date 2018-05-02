@@ -34,7 +34,7 @@ describe('DeleteNoteComponent', () => {
     fixture = TestBed.createComponent(DeleteNoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.deleteNote = response.userSuccess.result.response.note[0];
+    component.deleteNote = response.note;
   });
 
   it('Should make remove api call and get success response', () => {

@@ -60,7 +60,7 @@ describe('NoteFormComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'create').and.returnValue(Observable.of(response.errResponse));
@@ -75,7 +75,7 @@ describe('NoteFormComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
@@ -109,7 +109,7 @@ describe('NoteFormComponent', () => {
     component.SelectedNote = response.selectedNote;
     resourceService.messages = response.resourceBundle.messages;
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'update').and.returnValue(Observable.of(response.errResponse));
@@ -127,7 +127,7 @@ describe('NoteFormComponent', () => {
     component.SelectedNote = response.selectedNote;
     resourceService.messages = response.resourceBundle.messages;
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
@@ -164,7 +164,7 @@ describe('NoteFormComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
     component.noteId = '01246872478619238499';
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));

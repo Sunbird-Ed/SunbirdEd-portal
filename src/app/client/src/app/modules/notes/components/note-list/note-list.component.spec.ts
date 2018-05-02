@@ -64,7 +64,7 @@ describe('NoteListComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
@@ -74,14 +74,14 @@ describe('NoteListComponent', () => {
   });
 
   it('Should assign values to selectedIndex and selectedNote', () => {
-    component.showNoteList(response.userSuccess.result.response.note[0], 0);
+    component.showNoteList(response.responseSuccess.result.response.note[0], 0);
     expect(component.selectedIndex).toBe(0);
-    expect(component.selectedNote).toBe(response.userSuccess.result.response.note[0]);
+    expect(component.selectedNote).toBe(response.responseSuccess.result.response.note[0]);
 
   });
 
   it('Should refresh the values of selectedIndex and selectedNote once a note is deleted', () => {
-    component.notesList = response.userSuccess.result.response.note;
+    component.notesList = response.responseSuccess.result.response.note;
     component.finalNotesListData('01245874638382694454');
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(component.notesList[0]);

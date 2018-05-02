@@ -67,7 +67,7 @@ describe('NoteCardComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userError));
+    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
