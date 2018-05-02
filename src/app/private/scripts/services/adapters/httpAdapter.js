@@ -14,6 +14,9 @@ angular.module('playerApp')
       var header = {
         'Content-Type': 'application/json'
       }
+      if (_.get(org, 'sunbird.portal.channel')) {
+        header['X-Channel-Id'] = org.sunbird.portal.channel
+      }
       return header
     }
 
