@@ -27,6 +27,9 @@ angular.module('playerApp')
           'X-Source': 'web',
           'X-Org-code': 'AP'
         }
+        if (org.sunbird.portal.channel) {
+          headers['X-Channel-Id'] = org.sunbird.portal.channel
+        }
         headers.Accept = 'text/html,application/xhtml+xml,application/xml,' +
                              'application/json;q=0.9,image/webp,*/*;q=0.8'
         return headers

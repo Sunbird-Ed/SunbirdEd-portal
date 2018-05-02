@@ -80,8 +80,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
       var organisationNames = []
       var orgRoleMap = {}
 
-      var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : md5('sunbird'); //eslint-disable-line
-      org.sunbird.portal.channel = rootOrg
+      org.sunbird.portal.channel = _.get(profileData, 'rootOrg.hashTagId')
       $rootScope.rootOrgId = profileData.rootOrgId
       $rootScope.rootOrgAdmin = false
       var organisationIds = []
