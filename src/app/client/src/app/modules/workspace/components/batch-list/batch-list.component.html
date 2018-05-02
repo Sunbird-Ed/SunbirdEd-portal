@@ -11,14 +11,14 @@
     </sui-select>
   </div>
 </div>
-<div class="ui grid" *ngIf="!showLoader">
+<div class="ui grid" >
   <div class="twelve wide column">
-    <div class="ui three stackable cards">
+    <div class="ui three stackable cards" *ngIf="!showLoader && !noResult">
       <div *ngFor="let batch  of batchList">
         <app-batch-card [batch]="batch"></app-batch-card>
       </div>
     </div>
-    <div *ngIf="noResult">
+    <div *ngIf="noResult  && !showLoader">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
