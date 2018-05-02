@@ -154,6 +154,9 @@ export class UserSearchComponent implements OnInit {
       err => {
         this.showLoader = false;
         this.noResult = true;
+        this.noResultMessage = {
+          'messageText': this.resourceService.messages.fmsg.m0077
+        };
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
@@ -194,7 +197,7 @@ export class UserSearchComponent implements OnInit {
                 }
               }
             }
-            const orgNameAndId = _.find(orgApiResponse.result.response.content, function (organisation) {
+            const orgNameAndId = _.find(orgApiResponse.result.response.content, (organisation) => {
               return organisation.id === org.organisationId;
             });
             if (orgNameAndId) { org.orgName = orgNameAndId.orgName; }

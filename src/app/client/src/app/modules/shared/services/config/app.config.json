@@ -16,8 +16,22 @@
       "application/vnd.ekstep.content-collection"
     ],
     "objectType": "Content",
-    "lastUpdatedOn": "desc"
-  },  
+    "lastUpdatedOn": "desc",
+    "createdOn": "asc",
+    "createdDate": "desc",
+    "name": "asc",
+    "genericMimeType": [
+      "application/pdf",
+      "video/mp4",
+      "video/x-youtube",
+      "video/youtube",
+      "application/vnd.ekstep.html-archive",
+      "application/epub",
+      "application/vnd.ekstep.h5p-archive",
+      "video/webm"
+    ],
+    "states":["draft","uploaded","published","limited-publish","flagged"]
+  },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
@@ -103,5 +117,73 @@
         "contactDetail": "contactDetail"
       }
     ]
+  },
+  "contentCreateType": {
+    "textbook": "textbook",
+    "course": "course",
+    "collection": "collection",
+    "studymaterial": "resource",
+    "lessonplan": "lessonplan"
+  },
+  "contentCreateTypeLable": {
+    "textbook": "createtextbook",
+    "course": "designcourse",
+    "collection": "createcollection",
+    "studymaterial": "createlessontext",
+    "lessonplan": "createlessonplan"
+  },
+  "contentCreateTypeForEditors": {
+    "textbook": "TextBook",
+    "course": "Course",
+    "collection": "Collection",
+    "studymaterial": "Resource",
+    "lessonplan": "LessonPlan"
+  },
+  "course": {
+    "filterType": "course",
+    "inPageredirectUrl": "/learn",
+    "searchPageredirectUrl": "/search/Courses/1"
+  },
+  "library": {
+    "filterType": "library",
+    "inPageredirectUrl": "/resources",
+    "searchPageredirectUrl": "/search/Library/1"
+  },
+  "upForReview": {
+    "filterType": "library",
+    "inPageredirectUrl": "/workspace/content/upForReview/1",
+    "searchPageredirectUrl": "/search/Library/1"
+  },
+  "formApiTypes": {
+    "textbook": "textbook",
+    "course": "course",
+    "collection": "collection",
+    "studymaterial": "resource",
+    "lessonplan": "lessonplan",
+    "library": "library"
+  },
+  "cacheServiceConfig": {
+    "setTimeInMinutes": 10,
+    "setTimeInSeconds": 60
+  },
+  "timeOutConfig": {
+    "setTime": 1500
+  },
+  "PROFILE": {
+    "profileField": {
+      "profileSummary": "profile/summary/edit",
+      "jobProfile": "profile/experience/add",
+      "address": "profile/address/add",
+      "education": "profile/education/add",
+      "location": "profile/additionalInfo/edit",
+      "dob": "profile/additionalInfo/edit",
+      "subject": "profile/additionalInfo/edit",
+      "grade": "profile/additionalInfo/edit",
+      "gender": "profile/additionalInfo/edit",
+      "lastName": "profile/additionalInfo/edit",
+      "email": "profile/additionalInfo/edit",
+      "phone": "profile/additionalInfo/edit",
+      "language": "profile/additionalInfo/edit"
+    }
   }
 }

@@ -8,6 +8,7 @@
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
+    "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "RESOURCEBUNDLES": {
@@ -102,11 +103,17 @@
       "RECEIVED": "/received",
       "CANCEL": "/cancel"
     },
+    "TENANT": {
+      "INFO": "/info"
+    },
     "CHANNEL": {
       "READ": "channel/v1/read"
     },
     "FRAMEWORK": {
       "READ": "framework/v1/read"
+    },
+    "dataDrivenForms": {
+      "READ": "data/v1/form/read"
     },
     "GEO_EXPLORER": {
       "LOCATION_READ": "org/v1/location/read/"

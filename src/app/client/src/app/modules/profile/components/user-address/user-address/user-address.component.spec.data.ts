@@ -50,5 +50,18 @@ export const mockRes = {
         'updatedDate': '2018-04-17 13:24:47:068+0000',
         'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
         'zipcode': '4566'
+    },
+    resourceBundle: {
+        'messages': {
+            'fmsg': {
+                'm0076': 'Please enter mandatory fields',
+                'm0043': 'Address delete failed. Please try again later...'
+            },
+            'smsg': {
+                'm0016': 'Address deleted successfully',
+                'm0023': 'Address updated successfully',
+                'm0026': 'Address added successfully'
+            }
+        }
     }
 };

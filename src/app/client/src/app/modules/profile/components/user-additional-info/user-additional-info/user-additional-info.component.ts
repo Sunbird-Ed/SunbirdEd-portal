@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ import * as moment from 'moment';
   styleUrls: ['./user-additional-info.component.css']
 })
 export class UserAdditionalInfoComponent implements OnInit {
-  @ViewChildren('edit') editChild: QueryList<EditUserAdditionalInfoComponent>;
+  @ViewChild('edit') editChild: EditUserAdditionalInfoComponent;
   /**
  * Reference of User Profile interface
  */
@@ -68,54 +68,50 @@ export class UserAdditionalInfoComponent implements OnInit {
     const editedInfo = [];
     let formStatus = true;
     const updatedInfo = {};
-    this.editChild.forEach((child) => {
-      if (child.basicInfoForm.valid === true) {
-        const addInfo: any = {};
-        _.forIn(child.basicInfoForm.controls, (value, key) => {
-          if (value.touched === true && value !== undefined && value.value !== '' && value !== null) {
-            if (key === 'dob') {
-              addInfo[key] = moment(value.value).format('YYYY-MM-DD');
-            } else if (key === 'fb' || key === 'in' || key === 'twitter' || key === 'blog') {
-              if (updatedInfo['webPages'] === undefined) {
-                updatedInfo['webPages'] = [];
-              }
-              updatedInfo['webPages'].push({ type: key, url: value.value });
-            } else {
-              addInfo[key] = value.value;
+    const addInfo: any = {};
+    if (this.editChild.basicInfoForm.valid === true) {
+      _.forIn(this.editChild.basicInfoForm.controls, (value, key) => {
+        if (value && value !== undefined && value !== null) {
+          if (key === 'dob' && value.value !== null) {
+            addInfo[key] = moment(value.value).format('YYYY-MM-DD');
+          } else if ((value.value !== null && value.value !== '' && value.value !== undefined) && (key === 'fb' || key === 'in'
+            || key === 'twitter' || key === 'blog')) {
+            if (updatedInfo['webPages'] === undefined) {
+              updatedInfo['webPages'] = [];
             }
+            updatedInfo['webPages'].push({ type: key, url: value.value });
           } else {
+            addInfo[key] = value.value;
           }
-        });
-        addInfo['id'] = child.basicInfo.id;
-        addInfo.userId = child.basicInfo.userId;
-        addInfo['webPages'] = updatedInfo[0];
-        delete addInfo['blog'];
-        delete addInfo['fb'];
-        delete addInfo['in'];
-        delete addInfo['twitter'];
-        delete addInfo['email'];
-        delete addInfo['phone'];
-        editedInfo.push(addInfo);
+        } else {
+        }
+      });
+      addInfo['id'] = this.editChild.basicInfo.id;
+      addInfo['userId'] = this.userService.userid;
+      addInfo['webPages'] = updatedInfo['webPages'];
+      delete addInfo['blog'];
+      delete addInfo['fb'];
+      delete addInfo['in'];
+      delete addInfo['twitter'];
+      delete addInfo['email'];
+      delete addInfo['phone'];
+    } else {
+      if ((this.editChild.basicInfoForm.controls.phone.valid === true || this.editChild.basicInfoForm.controls.email.valid === true) &&
+        (this.editChild.basicInfoForm.controls.firstName.valid === true && this.editChild.basicInfoForm.controls.language.valid === true)) {
       } else {
         formStatus = false;
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0076);
-        // const addInfo = {};
-        // addInfo['userId'] = this.userService.userid;
-        // editedInfo.push(addInfo);
       }
-    });
+    }
     if (formStatus === true) {
       const req = {
-        basicInfo: editedInfo,
-        userId: this.userService.userid
+        basicInfo: addInfo
       };
-      this.profileService.updateProfile(req.basicInfo[0]).subscribe(res => {
+      this.profileService.updateProfile(req.basicInfo).subscribe(res => {
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0022);
       },
         err => {
           this.toasterService.error(err.error.params.errmsg);
-          // toaster err
         });
     } else {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);

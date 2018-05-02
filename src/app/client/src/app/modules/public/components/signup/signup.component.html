@@ -1,0 +1,77 @@
+<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
+      </div>
+      <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny">
+          <i class="ui remove icon"></i>
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <form [formGroup]="signUpForm" autocomplete="off" id="signUpForm" class="ui form">
+      <!--  ng-if="!newUser.loader.showLoader && !newUser.error.showError " -->
+      <div class="  field">
+        <div class=" two fields">
+          <div class="required field ">
+            <label>{{resourceService?.frmelmnts?.lbl?.username}}</label>
+            <input type="text" formControlName="userName" placeholder="eg:user.name , min 5 character required">
+          </div>
+          <div class="required field">
+            <label>{{resourceService?.frmelmnts?.lbl?.password}}</label>
+            <input type="password" formControlName="password" placeholder="Password"/>
+          </div>
+        </div>
+      </div>
+      <div class="  field">
+        <div class=" two fields">
+          <div class=" required field">
+            <label>{{resourceService?.frmelmnts?.lbl?.name}}</label>
+            <input type="text" formControlName="firstName" placeholder="First Name">
+          </div>
+          <div class="field">
+            <label>&nbsp; </label>
+            <input type="text" formControlName="lastName" placeholder="Last Name">
+          </div>
+        </div>
+      </div>
+      <div class="two fields">
+        <div class="required field">
+          <label>{{resourceService?.frmelmnts?.lbl?.phonenumber}}</label>
+          <input type="text" formControlName="phone" placeholder="eg:XXXXXXXXXX">
+        </div>
+        <div class=" required field">
+          <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
+          <input type="text" formControlName="email" placeholder="User@example.com">
+        </div>
+      </div>
+
+      <div class=" required field">
+        <label>{{resourceService?.frmelmnts?.lbl?.lang}}</label>
+        <select formControlName="language" placeholder="Languages" class="ui fluid dropdown signupMultiple" ng-value="option.value"
+          ng-options=" language for language in newUser.languages">
+          <option value="">Languages</option>
+        </select>
+      </div>
+
+      <div class="ui error message">
+      </div>
+    </form>
+    <div>
+      <!--  ng-if="newUser.loader.showLoader" -->
+
+      <!-- <app-loader data="{{newUser.loader}}"></app-loader> -->
+    </div>
+    <div>
+      <!--  ng-if="newUser.error.showError" -->
+
+      <!-- <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message> -->
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui primary button" (click)="onSubmitForm()">{{resourceService?.frmelmnts?.btn?.signup}}</button>
+  </div>
+</sui-modal>

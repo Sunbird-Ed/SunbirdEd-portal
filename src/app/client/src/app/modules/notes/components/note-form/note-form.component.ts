@@ -193,8 +193,8 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     const converter1 = Markdown.getSanitizingConverter();
-    converter1.hooks.chain('preBlockGamut', function (text, rbg) {
-      return text.replace(/^ {0,3}""" *\n((?:.*?\n)+?) {0,3}""" *$/gm, function (whole, inner) {
+    converter1.hooks.chain('preBlockGamut', (text, rbg) => {
+      return text.replace(/^ {0,3}""" *\n((?:.*?\n)+?) {0,3}""" *$/gm, (whole, inner) => {
         return '<blockquote>' + rbg(inner) + '</blockquote>\n';
       });
     });

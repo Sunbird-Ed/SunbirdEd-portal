@@ -6,7 +6,6 @@
       <div class="ui radio checkbox">
         <input type="radio" name="addType" [attr.disabled]="isPermanent" formControlName="addType" id="addTypePermanent" value='permanent'
           (click)="onAddressChange('permanent')">
-        <!-- [value]='permanent' ng-disabled="profileCtrl.disabledPermanent" ng-checked="!profileCtrl.ischekedCurrent"-->
         <label>{{resourceService?.frmelmnts?.lbl?.permanent}}</label>
       </div>
     </div>
@@ -14,7 +13,6 @@
       <div class="ui radio checkbox">
         <input type="radio" name="addType" [attr.disabled]="isCurrent" formControlName="addType" id="addTypeCurrent" value='current'
           (click)="onAddressChange('current')">
-        <!-- [value]='current' ng-disabled="profileCtrl.disabledCurrent" ng-checked="profileCtrl.ischekedCurrent" -->
         <label>{{resourceService?.frmelmnts?.lbl?.current}}</label>
       </div>
     </div>
@@ -24,14 +22,12 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="addType" formControlName="addType" id="addTypePermanent" value='permanent' (click)="onAddressChange('permanent')">
-        <!-- [value]='permanent' ng-disabled="profileCtrl.disabledPermanent" ng-checked="!profileCtrl.ischekedCurrent"-->
         <label>{{resourceService?.frmelmnts?.lbl?.permanent}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="addType" formControlName="addType" id="addTypeCurrent" value='current' (click)="onAddressChange('current')">
-        <!-- [value]='current' ng-disabled="profileCtrl.disabledCurrent" ng-checked="profileCtrl.ischekedCurrent" -->
         <label>{{resourceService?.frmelmnts?.lbl?.current}}</label>
       </div>
     </div>
@@ -67,12 +63,14 @@
       <label>{{resourceService?.frmelmnts?.lbl?.country}}</label>
       <input type="text" name="country" formControlName="country">
     </div>
-    <div class="field">
+    <div class="field" [ngClass]="addressForm.controls['zipcode'].errors && addressForm.controls['zipcode'].errors.pattern ? 'error' : ''">
       <label>{{resourceService?.frmelmnts?.lbl?.pincode}}</label>
       <input type="text" name="zipcode" formControlName="zipcode">
     </div>
   </div>
+  <div class="zipcode-errormsg margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="addressForm.controls['zipcode'].errors && addressForm.controls['zipcode'].errors.pattern">
+    {{resourceService?.messages?.stmsg?.m0065}}
+  </div>
   <div class="ui error message">
   </div>
-  <!-- <button class="ui primary button " ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.addAddress(profileCtrl.newAddress); profileCtrl.generateInteractEvent('address')">{{resourceService.frmelmnts.btn.save}}</button> -->
 </form>

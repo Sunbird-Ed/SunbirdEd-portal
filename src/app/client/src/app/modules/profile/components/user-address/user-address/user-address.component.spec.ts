@@ -72,6 +72,8 @@ describe('UserAddressComponent', () => {
   });
   xit('should call editAddress method', () => {
     const profileService = TestBed.get(ProfileService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.editAddress();
     expect(component).toBeTruthy();
@@ -79,6 +81,8 @@ describe('UserAddressComponent', () => {
   xit('should call addAddress method', () => {
     const router = TestBed.get(Router);
     const profileService = TestBed.get(ProfileService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.addChild.addressForm.value.value = mockRes.addressData;
     parentComp.addAddress();
@@ -86,6 +90,8 @@ describe('UserAddressComponent', () => {
   });
   it('should deleteAddress method', () => {
     const profileService = TestBed.get(ProfileService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockRes.resourceBundle.messages;
     const request = {
       address: [mockRes.addressData]
     };
