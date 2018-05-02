@@ -38,7 +38,6 @@ angular.module('playerApp')
         password: 'password',
         provider: 'provider',
         phoneVerified: 'phoneVerified',
-        emailVerified: 'emailVerified',
         roles: 'roles',
         position: 'position',
         grade: 'grade',
