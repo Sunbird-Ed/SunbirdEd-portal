@@ -31,7 +31,9 @@
                 </div>
             </div>
             <div class="ui stackable twelve column grid padding-top-10" ng-if="!showNoteList">
-
+                <div class="ui active inverted dimmer" ng-if="showCopyLoader">
+                    <div class="ui text centered inline loader margin-top-40">{{$root.frmelmnts.lbl.copycontent}}</div>
+                </div> 
                 <div class="twelve wide column">
                     <div class="content-player" ng-if="showIFrameContent">
                         <iframe id="contentViewerIframe" class="contentViewerIframeShadow" height='100%' width='100%'></iframe>
@@ -40,9 +42,6 @@
                 <div class="twelve wide column contentMetaSection" ng-if="showMetaData">
                     <div ng-include="'views/contentplayer/contentMeta.html'"></div>
                 </div>
-            </div>
-            <div class="ui active inverted dimmer" ng-if="showCopyLoader">
-                <div class="ui text loader">{{$root.frmelmnts.lbl.copycontent}}</div>
             </div>
             <div ng-if="errorObject.showError">
                 <div class="ui active dimmer inverted">
