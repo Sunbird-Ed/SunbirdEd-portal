@@ -16,6 +16,7 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
+  @Input() showConceptPicker: boolean;
   /**
  * To get url, app configs
  */
