@@ -21,6 +21,9 @@ angular.module('playerApp')
           cid: 'sunbird'
         }
         headers.Accept = 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8'
+        if (org.sunbird.portal.channel) {
+          headers['X-Channel-Id'] = org.sunbird.portal.channel
+        }
         return headers
       }
       /**

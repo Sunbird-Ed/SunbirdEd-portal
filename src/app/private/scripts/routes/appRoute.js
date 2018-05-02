@@ -1017,8 +1017,7 @@ angular.module('playerApp')
                 userRoles = _.union(userRoles, org.roles)
               }
             })
-            var rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : md5('sunbird'); //eslint-disable-line
-            org.sunbird.portal.channel = rootOrg
+            org.sunbird.portal.channel = _.get(profileData, 'rootOrg.hashTagId')
             userService.setCurrentUserProfile(profileData)
             permissionsService.setCurrentUserRoles(userRoles)
             $rootScope.initializePermissionDirective = true

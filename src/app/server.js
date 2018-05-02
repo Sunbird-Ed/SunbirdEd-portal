@@ -300,12 +300,12 @@ app.all('*', function (req, res) {
 keycloak.authenticated = function (request) {
   request.session.logSession = false
   async.series({
+    getUserData: function (callback) {
+      permissionsHelper.getCurrentUserRoles(request, callback)
+    },
     getPermissionData: function (callback) {
       permissionsHelper.getPermissions(request)
       callback()
-    },
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
     },
     updateLoginTime: function (callback) {
       userHelper.updateLoginTime(request, callback)

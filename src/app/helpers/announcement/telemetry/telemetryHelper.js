@@ -67,7 +67,7 @@ module.exports = {
    * This function helps to get tags.
    */
   getTags: function (req) {
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.concat([], channel)
     return dims
   },
