@@ -58,14 +58,14 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         action: 'search'
       }
       switch (dynamic.search.selectedSearchKey) {
-        case 'Courses':
-          req.subType = 'course'
-          dynamic.getChannel(req)
-          break
-        case 'Library':
-          req.subType = 'library'
-          dynamic.getChannel(req)
-          break
+      case 'Courses':
+        req.subType = 'course'
+        dynamic.getChannel(req)
+        break
+      case 'Library':
+        req.subType = 'library'
+        dynamic.getChannel(req)
+        break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
     })
@@ -79,21 +79,21 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
         action: 'search'
       }
       switch (dynamic.search.selectedSearchKey) {
-        case 'Courses':
-          dynamic.req.subType = 'course'
-          dynamic.getChannel(dynamic.req)
-          break
-        case 'Library':
-          dynamic.req.subType = 'library'
-          dynamic.getChannel(dynamic.req)
-          break
+      case 'Courses':
+        dynamic.req.subType = 'course'
+        dynamic.getChannel(dynamic.req)
+        break
+      case 'Library':
+        dynamic.req.subType = 'library'
+        dynamic.getChannel(dynamic.req)
+        break
       }
       // console.log("dynamic.selectedFilter",dynamic.selectedFilter)
       // $scope.search.searchRequest(false)
     })
 
     var initSearchHandler = $rootScope.$on('initSearch', function (event, args) {
-      if(dynamic.applyFilterOnly === false){
+      if (dynamic.applyFilterOnly === false) {
         $scope.search.initSearch()
       }
     })
@@ -124,7 +124,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
               searchService.getDataDrivenFormsConfig(dynamic.req).then(function (res) {
                 if (res.responseCode === 'OK') {
                   dynamic.search.showFilters = true
-                  dynamic.formFieldProperties = res.result.form.data.fields
+                  dynamic.formFieldProperties = _.sortBy(res.result.form.data.fields, ['index'])
                   _.forEach(dynamic.formFieldProperties, function (category) {
                     dynamic.search['selected' + category.code] = []
                   })
@@ -205,7 +205,7 @@ angular.module('playerApp').controller('DataDrivenFiltersController', [
       }
     }
     $scope.search.initSearch = function () {
-      if($state.current.name === 'Search'){
+      if ($state.current.name === 'Search') {
         dynamic.isSearchPage = true
       }
       var searchParams = $stateParams
