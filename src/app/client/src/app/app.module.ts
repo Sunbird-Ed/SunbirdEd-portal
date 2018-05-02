@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { NotesModule } from '@sunbird/notes';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -37,6 +38,7 @@ import { SearchModule } from '@sunbird/search';
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
+    NotesModule,
     ResourceModule,
     LearnModule,
     WorkspaceModule,

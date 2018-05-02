@@ -8,4 +8,5 @@ declare module '*.json' {
   const sample: any;
   export default sample;
 }
+declare const Markdown;
 declare var EkTelemetry: any;
