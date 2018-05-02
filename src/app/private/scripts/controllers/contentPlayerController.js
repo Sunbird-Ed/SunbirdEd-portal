@@ -63,6 +63,9 @@ angular.module('playerApp')
 
       function showPlayer (data) {
         $scope.contentData = data
+        $scope.contentData.language = contentService.validateContent($scope.contentData.language)
+        $scope.contentData.gradeLevel = contentService.validateContent($scope.contentData.gradeLevel)
+        $scope.contentData.subject = contentService.validateContent($scope.contentData.subject)
         $scope._instance = {
           id: $scope.contentData.identifier,
           ver: $scope.contentData.pkgVersion
@@ -89,7 +92,7 @@ angular.module('playerApp')
          * from renderer
          * Player controller dispatching the event sunbird
          */
-        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event',function (event, data) { // eslint-disable-line
+        document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', function (event, data) { // eslint-disable-line
           org.sunbird.portal.eventManager.dispatchEvent('sunbird:player:telemetry',
             event.detail.telemetryData)
         })
@@ -113,15 +116,15 @@ angular.module('playerApp')
         var req = { contentId: contentId }
         var qs = {
           fields: 'body,editorState,templateId,languageCode,template,' +
-                        'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
-                        'domain,code,visibility,createdBy,description,language,mediaType,' +
-                        'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
-                        'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
+            'gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,' +
+            'domain,code,visibility,createdBy,description,language,mediaType,' +
+            'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
+            'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
         }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
             if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
-             $scope.isworkspace) {
+              $scope.isworkspace) {
               $scope.errorObject = {}
               showPlayer(response.result.content)
             } else {
@@ -241,14 +244,7 @@ angular.module('playerApp')
       }
 
       $scope.getConceptsNames = function (concepts) {
-        var conceptNames = _.map(concepts, 'name').toString()
-        if (concepts && conceptNames.length < concepts.length) {
-          var filteredConcepts = _.filter($rootScope.concepts, function (p) {
-            return _.includes(concepts, p.identifier)
-          })
-          conceptNames = _.map(filteredConcepts, 'name').toString()
-        }
-        return conceptNames
+        return contentService.getConceptsNames(concepts)
       }
 
       // Restore default values(resume course, view dashboard) onAfterUser leave current state

@@ -58,6 +58,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-useref": "^3.0.0",
     "gulp-util": "^3.0.6",
+    "gulp-version-number": "0.1.7",
     "gulp-watch": "^4.2.4",
     "husky": "0.14.3",
     "jasmine-core": "^2.6.1",

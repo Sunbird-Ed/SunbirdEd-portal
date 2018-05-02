@@ -132,4 +132,24 @@ angular.module('playerApp')
         var url = config.URL.CONTENT.DISCARD_FLAG + '/' + contentId
         return restfulContentService.post(url, req)
       }
+
+      this.validateContent = function (fieldData) {
+        if (_.isString(fieldData)) {
+          var contentFieldData = [fieldData]
+          return (_.isArray(contentFieldData)) ? (_.compact(contentFieldData).join(', ')) : ''
+        } else {
+          return (_.isArray(fieldData)) ? (_.compact(fieldData).join(', ')) : ''
+        }
+      }
+
+      this.getConceptsNames = function (concepts) {
+        var conceptNames = _.map(concepts, 'name')
+        if (concepts && _.isArray(concepts) && conceptNames.length < concepts.length) {
+          var filteredConcepts = _.filter($rootScope.concepts, function (p) {
+            return _.includes(concepts, p.identifier)
+          })
+          conceptNames = _.map(filteredConcepts, 'name')
+        }
+        return conceptNames.join(', ')
+      }
     }])
