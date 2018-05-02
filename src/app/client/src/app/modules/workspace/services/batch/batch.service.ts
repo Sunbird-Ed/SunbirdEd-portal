@@ -98,7 +98,7 @@ export class BatchService {
     } else {
       try {
         this.orgIds = this.user.RoleOrgMap && this.user.RoleOrgMap['COURSE_MENTOR'];
-        _.remove(this.orgIds, function (id) {
+        _.remove(this.orgIds, (id) => {
           return id === rootOrgId;
         });
       } catch (error) {

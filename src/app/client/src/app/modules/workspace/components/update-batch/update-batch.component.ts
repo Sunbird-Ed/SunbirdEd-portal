@@ -266,7 +266,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
 
       if (batchData.enrollmentType !== 'open') {
         const selected = [];
-        _.forEach(this.selectedMentors, function (value) {
+        _.forEach(this.selectedMentors, (value) => {
           selected.push(value.id);
         });
         requestParam['mentors'] = _.concat(_.compact(this.batchAddUserForm.value.mentors), selected);
