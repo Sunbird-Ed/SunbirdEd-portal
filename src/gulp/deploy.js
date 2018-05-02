@@ -7,11 +7,11 @@ var merge = require('merge-stream')
 var minifyHTML = require('gulp-minify-html')
 var imagemin = require('gulp-imagemin')
 var inject = require('gulp-inject')
-var date = Date.now()
+var version = require('gulp-version-number')
 
 gulp.task('addCDNFiles', ['injectFiles'], function () {
   return gulp
-    .src(paths.cdnFiles, {base: 'dist/'})
+    .src(paths.cdnFiles, { base: 'dist/' })
     .pipe(gulp.dest(paths.cdnDest))
 })
 
@@ -30,7 +30,14 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/public/scripts/routes/publicAppRoute.js',
       'dist/public/script.min.js',
       'dist/public/external.min.css'
-    ], { read: false }), { ignorePath: '/dist', addRootSlash: true, addSuffix: '?' + date }))
+    ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+    .pipe(version({
+      'value': '%MDS%',
+      'append': {
+        'key': 'v',
+        'to': ['js']
+      }
+    }))
     .pipe(gulp.dest('dist/public/'))
   var y = gulp.src('dist/private/index.ejs')
     .pipe(inject(gulp.src(['dist/private/external.min.js',
@@ -46,7 +53,14 @@ gulp.task('injectFiles', ['minifyIMG'], function () {
       'dist/private/script.min.js',
       'dist/private/external.min.css',
       'dist/private/scripts/routes/announcementRoute.js'
-    ], { read: false }), { ignorePath: '/dist', addRootSlash: true, addSuffix: '?' + date }))
+    ], { read: false }), { ignorePath: '/dist', addRootSlash: true }))
+    .pipe(version({
+      'value': '%MDS%',
+      'append': {
+        'key': 'v',
+        'to': ['js']
+      }
+    }))
     .pipe(gulp.dest('dist/private/'))
   return merge(x, y)
 })
