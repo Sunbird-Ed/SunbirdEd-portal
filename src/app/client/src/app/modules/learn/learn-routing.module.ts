@@ -1,4 +1,4 @@
-import { LearnPageComponent, ContentPlayerComponent } from './components';
+import { LearnPageComponent } from './components';
 import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -9,9 +9,6 @@ const routes: Routes = [
   {
     path: 'learn', component: LearnPageComponent,
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] }
-  },
-  {
-    path: 'learn/play/content/:contentId/:contentName', component: ContentPlayerComponent
   }
 ];
 
