@@ -27,12 +27,27 @@ describe('ProfileBadgeComponent', () => {
     // fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should call getBadgeData method', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(BadgesService);
     userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
-    spyOn(badgeService, 'getAllBadgeList').and.callFake(() => Observable.of(mockRes.badgeList));
+    spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(mockRes.badgeList));
     component.ngOnInit();
+  });
+  it('should call toggle method with limit greater than 3', () => {
+    const badgeService = TestBed.get(BadgesService);
+    const limit = true;
+    spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(mockRes.badgeList));
+    component.badgeArray = [];
+    component.badgeArray.length = 5;
+    component.limit = component.badgeArray.length;
+    component.toggle(limit);
+    expect(component.viewMore).toBe(false);
+  });
+  it('should call toggle method with limit lesser than 3', () => {
+    const limit = false;
+    component.toggle(limit);
+    expect(component.viewMore).toBe(true);
   });
 });

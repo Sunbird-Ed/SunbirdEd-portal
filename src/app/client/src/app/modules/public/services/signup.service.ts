@@ -13,7 +13,6 @@ export class SignupService {
     };
   }
   signup(req) {
-    console.log('inside signup service', req);
     const data = this.formatRequest(req);
     const options = {
       url: this.configService.urlConFig.URLS.USER.SIGNUP,

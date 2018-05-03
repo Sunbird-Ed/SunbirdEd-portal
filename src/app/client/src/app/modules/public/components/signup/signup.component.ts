@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SignupService } from '../../services/signup.service';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  @ViewChild('modal') modal;
   /**
 * sign up form name
 */
@@ -40,7 +41,7 @@ export class SignupComponent implements OnInit {
       lastName: new FormControl(null),
       phone: new FormControl(null, [Validators.required, Validators.pattern('^\\d{10}$')]),
       email: new FormControl(null, [Validators.required,
-      Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]),
+      Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
       language: new FormControl(null, [Validators.required])
     });
     this.signUpForm.valueChanges.map((value) => {
@@ -58,6 +59,7 @@ export class SignupComponent implements OnInit {
   onSubmitForm() {
     this.showLoader = true;
     this.signupService.signup(this.signUpForm.value).subscribe(res => {
+      this.modal.approve();
       this.showLoader = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0039);
       this.router.navigate(['']);

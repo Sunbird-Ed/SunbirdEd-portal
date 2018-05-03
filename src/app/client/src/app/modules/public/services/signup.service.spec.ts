@@ -14,7 +14,7 @@ describe('SignupService', () => {
     });
   });
 
-  it('should call sign up method', () => {
+  it('should call learner service and return response', () => {
     const learnerService = TestBed.get(LearnerService);
     const signupService = TestBed.get(SignupService);
     const req = {
@@ -30,5 +30,20 @@ describe('SignupService', () => {
     signupService.signup(req).subscribe((apiResponse) => {
       expect(apiResponse.responseCode).toBe('OK');
     });
+  });
+  it('should call formatRequest method', () => {
+    const signupService = TestBed.get(SignupService);
+    const req = {
+      'email': 'va@gm.co',
+      'firstName': 'vaish',
+      'language': ['English'],
+      'lastName': '',
+      'password': 'password',
+      'phone': '7899918817',
+      'userName': 'vaish'
+    };
+    spyOn(signupService, 'formatRequest').and.callThrough();
+    signupService.formatRequest(req);
+    expect(signupService.formatRequest).toHaveBeenCalled();
   });
 });

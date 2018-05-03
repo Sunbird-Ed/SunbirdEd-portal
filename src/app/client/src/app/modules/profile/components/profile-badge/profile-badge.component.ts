@@ -54,7 +54,7 @@ export class ProfileBadgeComponent implements OnInit {
   }
   toggle(lim) {
     if (lim === true) {
-      this.limit = this.userProfile.skills.length;
+      this.limit = this.badgeArray.length;
       this.viewMore = false;
     } else {
       this.viewMore = true;
