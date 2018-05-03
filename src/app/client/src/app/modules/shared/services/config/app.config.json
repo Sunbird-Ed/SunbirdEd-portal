@@ -30,7 +30,13 @@
       "application/vnd.ekstep.h5p-archive",
       "video/webm"
     ],
-    "states":["draft","uploaded","published","limited-publish","flagged"]
+    "states": [
+      "draft",
+      "uploaded",
+      "published",
+      "limited-publish",
+      "flagged"
+    ]
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -165,5 +171,31 @@
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
     "setTimeInSeconds": 60
+  },
+  "resourceType": {
+    "collection": "Collection",
+    "book": "Book",
+    "course": "Course",
+    "lessonplan": "Lesson Plan"
+  },
+  "timeOutConfig": {
+    "setTime": 1500
+  },
+  "PROFILE": {
+    "profileField": {
+      "profileSummary": "profile/summary/edit",
+      "jobProfile": "profile/experience/add",
+      "address": "profile/address/add",
+      "education": "profile/education/add",
+      "location": "profile/additionalInfo/edit",
+      "dob": "profile/additionalInfo/edit",
+      "subject": "profile/additionalInfo/edit",
+      "grade": "profile/additionalInfo/edit",
+      "gender": "profile/additionalInfo/edit",
+      "lastName": "profile/additionalInfo/edit",
+      "email": "profile/additionalInfo/edit",
+      "phone": "profile/additionalInfo/edit",
+      "language": "profile/additionalInfo/edit"
+    }
   }
 }

@@ -17,9 +17,8 @@
                     <app-user-address></app-user-address>
                     <app-user-education></app-user-education>
                     <app-user-skills></app-user-skills>
-                    <app-profile-badge *ngIf="userProfile.badgeAssertions.length > 0"></app-profile-badge>
+                    <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
                     <app-user-additional-info></app-user-additional-info>
-                    <!-- Certifications & Awards -->
                 </div>
                 <div class=" four wide column margin-top-20">
                     <div class="ui grid ">
@@ -40,7 +39,6 @@
                                         </sui-progress>
                                     </div>
                                     <div class="item" *ngFor="let field of userProfile.missingFields | slice:0:3;">
-                                        <!-- | limitTo:3" -->
                                         <div class="iniformationcontent content">
                                             <a (click)="updateAction(field)">
                                                 <h5 class="ui blue header profileUpdateAddDetails">+ Add {{resourceService.frmelmnts.lbl[field] || field}}</h5>

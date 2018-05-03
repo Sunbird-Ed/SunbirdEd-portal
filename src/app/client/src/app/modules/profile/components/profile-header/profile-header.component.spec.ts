@@ -7,6 +7,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { mockProfileHeaderData } from './profile-header.component.spec.data';
 import { Observable } from 'rxjs/Observable';
+
 describe('ProfileHeaderComponent', () => {
   let component: ProfileHeaderComponent;
   let fixture: ComponentFixture<ProfileHeaderComponent>;
