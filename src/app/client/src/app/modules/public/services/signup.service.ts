@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ResourceService, ConfigService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 
 @Injectable()

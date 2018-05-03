@@ -33,7 +33,9 @@ describe('ProfileBadgeComponent', () => {
     userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(mockRes.badgeList));
+    spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
+    expect(component.ngOnInit).toHaveBeenCalled();
   });
   it('should call toggle method with limit greater than 3', () => {
     const badgeService = TestBed.get(BadgesService);
