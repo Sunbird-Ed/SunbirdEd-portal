@@ -278,13 +278,6 @@ angular.module('playerApp')
                       if (formFieldCategory.code === 'year') {
                         formFieldCategory.range = dataDrivenForm.years
                       }
-                      if (_.lowerCase(formFieldCategory.code) === 'resourcetype' &&
-                      formFieldCategory['range'] &&
-                      _.isArray(formFieldCategory.range) &&
-                        formFieldCategory.range.length
-                      ) {
-                        dataDrivenForm.resourceType = formFieldCategory.range
-                      }
                       if (formFieldCategory.validation) {
                         _.forEach(formFieldCategory.validation, function (value, key) {
                           if (value.type === 'regex') {
@@ -293,7 +286,7 @@ angular.module('playerApp')
                           formFieldCategory.validation[value.type] = value
                         })
                       }
-                      if (category.code === formFieldCategory.code) {
+                      if (category.code === formFieldCategory.code && category.terms) {
                         formFieldCategory.range = category.terms
                       }
                       return formFieldCategory

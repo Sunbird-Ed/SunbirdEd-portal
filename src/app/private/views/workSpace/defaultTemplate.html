@@ -43,12 +43,3 @@
         <concept-picker selected-concepts="[]"></concept-picker>
     </div>
 </div>
-<div ng-if="field.code==='resourcetype'">
-    <div class="field" ng-class="{ 'disabled':!field.editable} ">
-        <label>{{$root.frmelmnts.lbl.resourcetype}}</label>
-        <select name="resourceType" class="ui fluid search selection dropdown singleSelectDropDown" ng-options=" resourceType for resourceType in dataDrivenForm.resourceType"
-            ng-model="dataDrivenForm.data[field.code]">
-            <option value="">{{field.name}}</option>
-        </select>
-    </div>
-</div>
