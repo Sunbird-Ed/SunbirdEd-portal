@@ -13,8 +13,10 @@ export class ProfileBadgeComponent implements OnInit {
  * Reference of User Profile interface
  */
   userProfile: IUserProfile;
+  viewMore = true;
+  defaultLimit = 3;
+  limit = 3; // config
   badgeData: any;
-  profileBadge: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService) { }
 
@@ -46,5 +48,14 @@ export class ProfileBadgeComponent implements OnInit {
           });
         }
       });
+  }
+  toggle(lim) {
+    if (lim === true) {
+      this.limit = this.userProfile.skills.length;
+      this.viewMore = false;
+    } else {
+      this.viewMore = true;
+      this.limit = 3;
+    }
   }
 }

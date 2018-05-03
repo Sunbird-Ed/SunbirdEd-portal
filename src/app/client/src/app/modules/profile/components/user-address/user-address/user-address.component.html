@@ -39,7 +39,7 @@
                 </div>
                 <div *ngIf="showError || showAddressError" class="ui warning message">
                     <i class="close icon "></i>
-                    <p>You selected both address types are same, please change any one.</p>
+                    <p>Multiple addresses with same type selected. Please change any one.</p>
                 </div>
                 <button [disabled]="showError || showAddressError" *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
                     (click)="editAddress()">{{resourceService?.frmelmnts?.btn?.save}}</button>
