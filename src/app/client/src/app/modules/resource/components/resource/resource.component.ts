@@ -54,6 +54,8 @@ export class ResourceComponent implements OnInit {
   private router: Router;
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  sort_by: any;
+  sortType: any;
   /**
    * The "constructor"
    *
@@ -74,6 +76,7 @@ export class ResourceComponent implements OnInit {
   * Subscribe to getPageData api.
   */
   populatePageData() {
+    this.showLoader = true;
     const option = {
       source: 'web',
       name: 'Resource',
@@ -109,6 +112,7 @@ export class ResourceComponent implements OnInit {
         }
       },
       err => {
+        this.noResult = true;
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
@@ -121,7 +125,6 @@ export class ResourceComponent implements OnInit {
     this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
-    console.log('this.redirectUrl', this.redirectUrl);
     this.getQueryParams();
   }
 
@@ -141,7 +144,12 @@ export class ResourceComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-        this.filters = this.queryParams;
+        this.filters = {};
+        _.forIn(this.queryParams, (value, key) => {
+          if (key !== 'sort_by' && key !== 'sortType') {
+            this.filters[key] = value;
+          }
+        });
         this.populatePageData();
       });
   }

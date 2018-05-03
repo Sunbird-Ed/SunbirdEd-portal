@@ -85,6 +85,7 @@ export class LearnPageComponent implements OnInit {
      * This method calls the enrolled courses API.
      */
   populateEnrolledCourse() {
+    this.showLoader = true;
     this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -120,7 +121,6 @@ export class LearnPageComponent implements OnInit {
    */
   populatePageData() {
     this.caraouselData = [];
-    this.showLoader = true;
     const option = {
       source: 'web',
       name: 'Course',
@@ -205,7 +205,12 @@ export class LearnPageComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-       this.filters = this.queryParams;
+        this.filters = {};
+        _.forIn(this.queryParams, (value, key) => {
+          if (key !== 'sort_by' && key !== 'sortType') {
+            this.filters[key] = value;
+          }
+        });
        this.populateEnrolledCourse();
       });
   }

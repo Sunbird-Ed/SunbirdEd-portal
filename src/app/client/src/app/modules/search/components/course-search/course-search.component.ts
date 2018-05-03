@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, IContents
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam } from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam , ISort} from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -107,6 +107,7 @@ export class CourseSearchComponent implements OnInit {
   public filterType: string;
 
   public redirectUrl: string;
+  sortingOptions: Array<ISort>;
 
   /**
      * Constructor to create injected service(s) object
@@ -133,11 +134,13 @@ export class CourseSearchComponent implements OnInit {
     this.toasterService = toasterService;
     this.config = config;
     this.route.onSameUrlNavigation = 'reload';
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
     * This method calls the enrolled courses API.
     */
   populateEnrolledCourse() {
+    this.showLoader = true;
     this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -154,14 +157,13 @@ export class CourseSearchComponent implements OnInit {
    * This method sets the make an api call to get all search data with page No and offset
    */
   populateCourseSearch() {
-    this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
       filters: _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
-      sort_by: {}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
 
     this.searchService.courseSearch(requestParams).subscribe(
@@ -199,7 +201,6 @@ export class CourseSearchComponent implements OnInit {
     _.forEach(this.searchList, (value, index) => {
       delete value.contentType;
       delete value.resourceType;
-      console.log('value', value);
       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
         _.forEach(this.enrolledCourses, (value1, index1) => {
           if (this.searchList[index].identifier === this.enrolledCourses[index1].courseId) {
@@ -264,9 +265,11 @@ export class CourseSearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        console.log(this.queryParams);
         // load search filters from queryparams if any
+        this.filters = {};
         _.forOwn(this.queryParams, (queryValue, queryParam) =>  {
-          if (queryParam !== 'key') {
+          if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType' ) {
             this.filters[queryParam] = queryValue;
           }
         });

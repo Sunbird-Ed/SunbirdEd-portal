@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, IContents
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam } from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam, ISort } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -97,6 +97,7 @@ export class LibrarySearchComponent implements OnInit {
   public filterType: any;
 
   public redirectUrl: string;
+  sortingOptions: Array<ISort>;
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -120,6 +121,7 @@ export class LibrarySearchComponent implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.config = config;
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
    * This method sets the make an api call to get all search data with page No and offset
@@ -133,7 +135,7 @@ export class LibrarySearchComponent implements OnInit {
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
       softConstraints: { badgeAssertions: 1 },
-      sort_by: {}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
@@ -181,6 +183,7 @@ export class LibrarySearchComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
     this.filters = {
@@ -202,7 +205,7 @@ export class LibrarySearchComponent implements OnInit {
         }
         this.queryParams = { ...bothParams.queryParams };
         _.forOwn(this.queryParams, (queryValue, queryParam) => {
-          if (queryParam !== 'key') {
+          if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
             this.filters[queryParam] = queryValue;
           }
         });
