@@ -2,7 +2,7 @@
 import { LearnerService } from '@sunbird/core';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import { INotesListData } from '@sunbird/notes';
+import { INoteData } from '@sunbird/notes';
 
 @Injectable()
 
@@ -11,36 +11,38 @@ export class NotesService {
    * To get url and app config.
    */
   config: ConfigService;
-
-  learnerService: LearnerService;
-
   /**
-   * The constructor
+   * Reference of Learner service.
+   */
+  learnerService: LearnerService;
+  /**
+   * The constructor - Constructor for Notes Service
    * @param {LearnerService} learnerService Reference of LearnerService
    * @param {ConfigService} config Reference of ConfigService
    */
-
   constructor(learnerService: LearnerService, config: ConfigService) {
     this.config = config;
     this.learnerService = learnerService;
   }
   /**
+   * An event emitter to update notesList after updating a note.
+   */
+  updateEventEmitter: EventEmitter<any> = new EventEmitter();
+  /**
    * An event emitter to update notesList after creating a note.
    */
-  updateNotesListData: EventEmitter<any> = new EventEmitter();
+  createEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
    * An event emitter to update notesList after removing a note.
    */
-  finalNotesListData: EventEmitter<any> = new EventEmitter();
+  deleteEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
    * To save 'selectedNote' value from NotesList Component.
    */
-  selectedNote: INotesListData;
-
+  selectedNote: INoteData;
   /**
    * API call to gather existing notes.
    */
-
   public search(request) {
     const option = {
       url: `${this.config.urlConFig.URLS.NOTES.SEARCH}`,
@@ -48,11 +50,9 @@ export class NotesService {
     };
     return this.learnerService.post(option);
   }
-
   /**
    * API call to create a new note.
    */
-
   public create(request) {
     const option = {
       url: `${this.config.urlConFig.URLS.NOTES.CREATE}`,
@@ -71,11 +71,10 @@ export class NotesService {
         updatedDate: new Date().toISOString(),
         id: data.result.id
       };
-      this.updateNotesListData.emit(returnObj);
+      this.createEventEmitter.emit(returnObj);
       return data;
     });
   }
-
   /**
    * API call to update an existing note.
    */
@@ -85,11 +84,10 @@ export class NotesService {
       data: request
     };
     return this.learnerService.patch(option).map( data => {
-    this.updateNotesListData.emit(0);
+    this.updateEventEmitter.emit();
     return data;
   });
 }
-
   /**
    * API call to remove an existing note.
    */

@@ -1,4 +1,4 @@
-export interface INotesListData {
+export interface INoteData {
     contentId?: string;
     courseId?: string;
     createdBy?: string;

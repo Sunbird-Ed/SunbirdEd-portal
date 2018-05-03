@@ -6,7 +6,7 @@ import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import { INotesListData, ICourseDetails } from '@sunbird/notes';
+import { INoteData, ICourseDetails } from '@sunbird/notes';
 /**
  * This component contains 2 sub components
  * 1)NoteForm: Provides an editor to create and update notes.
@@ -39,12 +39,12 @@ export class NoteListComponent implements OnInit {
    * The notesList array holds the entire list of existing notes. Each
    * note is saved as an object.
    */
-  notesList: Array<INotesListData> = [];
+  notesList: Array<INoteData> = [];
 
   /**
    *Stores the details of a note selected by the user.
    */
-  selectedNote: INotesListData;
+  selectedNote: INoteData;
   /**
    * Stores the index of the selected note in notesList array.
    */
@@ -66,7 +66,7 @@ export class NoteListComponent implements OnInit {
    */
   showDelete: false;
   /**
-   * user id from user service.
+   * User id from user service.
    */
   userId: string;
   /**
@@ -74,7 +74,7 @@ export class NoteListComponent implements OnInit {
    */
   private activatedRoute: ActivatedRoute;
   /**
-   * To display toaster(if any) after each API call.
+   * To display toast message(if any) after each API call.
    */
   private toasterService: ToasterService;
   /**
@@ -100,15 +100,15 @@ export class NoteListComponent implements OnInit {
   route: Router;
   routerNavigationService: RouterNavigationService;
   /**
-   * The constructor
+   * The constructor - Constructor for Note List Component.
    *
-   * @param {ToasterService} toasterService Reference of toasterService.
-   * @param {UserService} userService Reference of userService.
-   * @param {ContentService} contentService Reference of contentService.
-   * @param {ResourceService} resourceService Reference of resourceService.
-   * @param {SuiModalService} modalService Reference of modalService.
-   * @param {NotesService} noteService Reference of notesService.
-   * @param {ActivatedRoute} activatedRoute Reference of activatedRoute.
+   * @param {ToasterService} toasterService Reference of ToasterService.
+   * @param {UserService} userService Reference of UserService.
+   * @param {ContentService} contentService Reference of ContentService.
+   * @param {ResourceService} resourceService Reference of ResourceService.
+   * @param {SuiModalService} modalService Reference of SuiModalService.
+   * @param {NotesService} noteService Reference of NotesService.
+   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute.
    */
 
   constructor(noteService: NotesService,
@@ -129,7 +129,6 @@ export class NoteListComponent implements OnInit {
     this.modalService = modalService;
     this.route = route;
     this.routerNavigationService = routerNavigationService;
-
   }
   /**
    * To initialize notesList and showDelete.
@@ -142,25 +141,28 @@ export class NoteListComponent implements OnInit {
     /**
      * Initializing selectedNote
     */
-    this.noteService.updateNotesListData.subscribe(data => {
-      if (data === 0) {
-        this.selectedIndex = 0;
-        this.notesList = this.notesList.filter((note) => {
-          return note.id !== this.selectedNote.id;
-        });
-        this.notesList.unshift(this.noteService.selectedNote);
-        this.selectedNote = this.noteService.selectedNote;
-      } else {
-        this.notesList.unshift(data);
-        this.showNoteList(this.notesList[0], 0);
-      }
+    this.noteService.createEventEmitter.subscribe(data => {
+      this.notesList.unshift(data);
+      this.setSelectedNote(this.notesList[0], 0);
     });
-    if (this.courseDetails && this.courseDetails.contentId) {
+    this.noteService.updateEventEmitter.subscribe(data => {
+      this.selectedIndex = 0;
+      this.notesList = this.notesList.filter((note) => {
+        return note.id !== this.selectedNote.id;
+      });
+      this.notesList.unshift(this.noteService.selectedNote);
+      this.selectedNote = this.noteService.selectedNote;
+    });
+
+    if (this.courseDetails && this.courseDetails.courseId && this.courseDetails.contentId) {
+      this.courseId = this.courseDetails.courseId;
       this.contentId = this.courseDetails.contentId;
     } else if (this.courseDetails && this.courseDetails.courseId) {
       this.courseId = this.courseDetails.courseId;
+    } else if (this.courseDetails && this.courseDetails.contentId) {
+      this.contentId = this.courseDetails.contentId;
     } else {
-      this.activatedRoute.params.subscribe((params) => { // split into two validations?
+      this.activatedRoute.params.subscribe((params) => {
         this.courseId = params.courseId;
         this.contentId = params.contentId;
       });
@@ -168,18 +170,14 @@ export class NoteListComponent implements OnInit {
     /**
     * Initializing notesList array
     */
-
     this.userId = this.userService.userid;
     this.getAllNotes();
-
   }
 
   /**
    * This method calls the search API.
-   * @param request contains request body.
    */
   public getAllNotes() {
-
     const requestBody = {
       request: {
         filter: {
@@ -212,7 +210,7 @@ export class NoteListComponent implements OnInit {
    * @param note The selected note from list view.
    * @param index The index of the selectedNote.
    */
-  public showNoteList(note, index) {
+  public setSelectedNote(note, index) {
     this.selectedIndex = index;
     this.selectedNote = note;
   }
@@ -227,14 +225,14 @@ export class NoteListComponent implements OnInit {
   /**
    * This event listener updates the notesList array once a note is removed.
    */
-  finalNotesListData(noteId) {
+  deleteEventEmitter(noteId) {
     this.notesList = this.notesList.filter((note) => {
       return note.id !== noteId;
     });
     if (this.selectedIndex === 0) {
-      this.showNoteList(this.notesList[0], 0);
+      this.setSelectedNote(this.notesList[0], 0);
     } else {
-      this.showNoteList(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
+      this.setSelectedNote(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
     }
   }
 

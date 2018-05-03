@@ -4,15 +4,15 @@ import { NgModule } from '@angular/core';
 
 const routes: Routes = [{
   path: 'learn/:courseId/:contentId/notes',
-  component: NoteListComponent,
+  component: NoteListComponent
   // children: [{path: ':mode/:noteId', component: NoteFormComponent},
   //            {path: ':mode', component: NoteFormComponent}]
 },
-{
-path: ':courseId/:contentId/noteCard',
-  // component: NoteCardComponent,
-  // children: [{path: ':mode', component: NoteFormComponent}]
-}
+// {
+// path: ':courseId/:contentId/noteCard',
+//   // component: NoteCardComponent,
+//   // children: [{path: ':mode', component: NoteFormComponent}]
+// }
 ];
 
 @NgModule({

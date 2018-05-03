@@ -58,13 +58,14 @@ describe('NoteListComponent', () => {
     expect(component.notesList).toBeDefined();
   });
 
-  it('Should throw error from else statement', () => {
+  it('Should display error message in case of exception in fetching list of notes', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
+    spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -72,10 +73,11 @@ describe('NoteListComponent', () => {
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
   it('Should assign values to selectedIndex and selectedNote', () => {
-    component.showNoteList(response.responseSuccess.result.response.note[0], 0);
+    component.setSelectedNote(response.responseSuccess.result.response.note[0], 0);
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(response.responseSuccess.result.response.note[0]);
 
@@ -83,7 +85,7 @@ describe('NoteListComponent', () => {
 
   it('Should refresh the values of selectedIndex and selectedNote once a note is deleted', () => {
     component.notesList = response.responseSuccess.result.response.note;
-    component.finalNotesListData('01245874638382694454');
+    component.deleteEventEmitter('01245874638382694454');
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(component.notesList[0]);
 
