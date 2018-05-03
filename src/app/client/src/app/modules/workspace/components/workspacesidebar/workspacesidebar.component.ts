@@ -54,9 +54,14 @@ export class WorkspacesidebarComponent implements OnInit {
   flaggedRole: Array<string>;
 
   /**
-    * flaggedRole  access roles
+    * limitedPublishingRole  access roles
   */
   limitedPublishingRole: Array<string>;
+
+  /**
+    * start  access roles
+  */
+  startRole: Array<string>;
 
   /**
   * Constructor to create injected service(s) object
@@ -80,6 +85,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.coursebacthesRole = this.config.rolesConfig.workSpaceRole.coursebacthesRole;
     this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
     this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
+    this.startRole = this.config.rolesConfig.workSpaceRole.startRole;
   }
 
 }

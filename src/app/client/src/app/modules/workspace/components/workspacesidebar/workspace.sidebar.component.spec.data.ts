@@ -36,6 +36,13 @@ export const mockRes = {
       'CONTENT_CREATION',
       'CONTENT_REVIEWER',
       'CONTENT_REVIEW'
-    ]
+    ],
+    'startRole': [
+    'CONTENT_CREATOR',
+    'CONTENT_CREATION',
+    'CONTENT_REVIEWER',
+    'CONTENT_REVIEW',
+    'BOOK_CREATOR'
+  ]
   }
 };
