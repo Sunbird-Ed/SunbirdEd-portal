@@ -188,7 +188,7 @@
                   </div>
                 </div>
               </div>
-              <div class="meta">{{badge.createdTS || badge.createdTs | dateFormat}}</div>
+              <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat}}</div>
             </div>
           </div>
         </div>
