@@ -12,13 +12,14 @@ import { ContentService, UserService, LearnerService } from '@sunbird/core';
 
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, DateFormatPipe, ServerResponse
+  ToasterService, DateFormatPipe, ServerResponse, FilterPipe
 } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
 import { Observable } from 'rxjs/Observable';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
+import { OrderModule } from 'ngx-order-pipe';
 
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
@@ -46,8 +47,8 @@ describe('CourseProgressComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule],
-      declarations: [CourseProgressComponent],
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule],
+      declarations: [CourseProgressComponent, FilterPipe],
       providers: [UserService, ConfigService, ToasterService, ConfigService,
         PaginationService, DateFormatPipe, LearnerService, ContentService, CourseProgressService,
         { provide: Router, useClass: RouterStub },
@@ -114,8 +115,7 @@ describe('CourseProgressComponent', () => {
   }));
 
 
-  it('on selection of timeperiod call setTimePeriod()', inject([UserService, CourseProgressService, Router],
-    (userService, courseService, router) => {
+  it('on selection of timeperiod call setTimePeriod()', inject([], () => {
       fixture.detectChanges();
       component.setTimePeriod('7d');
       expect(component.timePeriod).toEqual('7d');
@@ -149,7 +149,6 @@ describe('CourseProgressComponent', () => {
   it('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => Observable.throw({}));
-
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);

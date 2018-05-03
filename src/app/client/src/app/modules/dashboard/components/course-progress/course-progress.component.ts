@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
+import {
+  ResourceService, ConfigService, PaginationService,
+  ToasterService, DateFormatPipe, ServerResponse, FilterPipe
+} from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
+import { OrderPipe } from 'ngx-order-pipe';
 
 /**
  * The announcement outbox component displays all
@@ -18,6 +22,8 @@ import { CourseProgressService } from './../../services';
 })
 export class CourseProgressComponent implements OnInit {
 
+  isDesc: boolean;
+  column: any;
   /**
 	 * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -76,8 +82,12 @@ export class CourseProgressComponent implements OnInit {
   */
   public user: UserService;
   public courseProgressService: CourseProgressService;
+  public filterText: string;
 
-
+  public order: string;
+  public reverse: boolean;
+  private orderPipe: OrderPipe;
+  // reverse = false;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -98,7 +108,9 @@ export class CourseProgressComponent implements OnInit {
     paginationService: PaginationService,
     toasterService: ToasterService,
     courseProgressService: CourseProgressService,
-    config: ConfigService) {
+    config: ConfigService,
+    orderPipe: OrderPipe
+  ) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -141,6 +153,13 @@ export class CourseProgressComponent implements OnInit {
   }
 
   setTimePeriod(timePeriod: string) {
+    const filterDesc = {
+      '7d': this.resourceService.messages.imsg.m0022,
+      '14d': this.resourceService.messages.imsg.m0023,
+      '5w': this.resourceService.messages.imsg.m0024,
+      'fromBegining': this.resourceService.messages.imsg.m0025
+    };
+    this.filterText = filterDesc[timePeriod];
     this.timePeriod = timePeriod;
     this.route.navigate(['dashboard/course', this.courseId, this.timePeriod]);
     this.populateCourseDashboardData();
@@ -162,6 +181,15 @@ export class CourseProgressComponent implements OnInit {
         this.showLoader = false;
       }
     );
+  }
+
+
+
+  setOrder(value: string) {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    }
+    this.order = value;
   }
 
   downloadReport() {

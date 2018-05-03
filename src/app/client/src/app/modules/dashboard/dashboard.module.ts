@@ -12,8 +12,9 @@ import { CourseConsumptionService, DashboardUtilsService, OrganisationService,
 import { OrganisationComponent, CourseConsumptionComponent } from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, FilterPipe } from '@sunbird/shared';
 import { CourseProgressComponent } from './components/course-progress/course-progress.component';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   imports: [
@@ -22,9 +23,10 @@ import { CourseProgressComponent } from './components/course-progress/course-pro
     FormsModule,
     ChartsModule,
     SuiModule,
-    SharedModule
+    SharedModule,
+    OrderModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, FilterPipe],
   providers: [
     RendererService,
     DashboardUtilsService,
