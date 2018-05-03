@@ -3,6 +3,7 @@ import { ShareLinkComponent } from './share-link.component';
 import { ResourceService, ConfigService } from '../../services/index';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
+import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './share-link.component.spec.data';
 import { By } from '@angular/platform-browser';
@@ -12,9 +13,10 @@ describe('ShareLinkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule , HttpClientTestingModule ],
+      imports: [SuiModule , HttpClientTestingModule, FormsModule ],
       declarations: [ShareLinkComponent],
-      providers: [ResourceService, ConfigService]
+      providers: [ResourceService, ConfigService],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -23,7 +25,7 @@ describe('ShareLinkComponent', () => {
     fixture = TestBed.createComponent(ShareLinkComponent);
     component = fixture.componentInstance;
   });
-  xit('should take content share INPUT and return the base64 link ', () => {
+  it('should take content share INPUT and return the base64 link ', () => {
     component.contentShare = Response.contentShare;
     spyOn(component, 'getBase64Url').and.callThrough();
     component.getBase64Url('content', 'do_1124786006384066561162');
@@ -36,5 +38,6 @@ describe('ShareLinkComponent', () => {
     component.initializeModal();
     expect(component.sharelinkModal).toBeDefined();
     expect(component.sharelinkModal).toBeTruthy();
+    fixture.detectChanges();
   });
 });
