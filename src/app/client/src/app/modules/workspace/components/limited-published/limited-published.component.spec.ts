@@ -8,9 +8,8 @@ import { LimitedPublishedComponent } from './limited-published.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
-import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
+import { UserService, LearnerService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
@@ -46,13 +45,12 @@ describe('LimitedPublishedComponent', () => {
       declarations: [LimitedPublishedComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
       providers: [PaginationService, WorkSpaceService, UserService,
-        SearchService, ContentService, LearnerService, CoursesService,
+        SearchService, ContentService, LearnerService,
         PermissionService, ResourceService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      ]
     })
       .compileComponents();
   }));

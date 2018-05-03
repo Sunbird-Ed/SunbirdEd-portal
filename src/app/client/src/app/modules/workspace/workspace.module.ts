@@ -30,7 +30,7 @@ import {
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
     DataDrivenComponent, UpForReviewComponent, UpforReviewFilterComponent, DefaultTemplateComponent,
-    FlaggedComponent
+    FlaggedComponent , LimitedPublishedComponent
   ],
   providers: [WorkSpaceService, EditorService]
 })

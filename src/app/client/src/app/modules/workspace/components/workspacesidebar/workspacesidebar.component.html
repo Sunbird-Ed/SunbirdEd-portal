@@ -35,7 +35,7 @@
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'flaggedRole'  [routerLink]="['flagged',1]" >
     {{resourceService?.frmelmnts?.snav?.flagged}}
   </a>
-  <!--<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'limitedPublishingRole' [routerLink]="['limited/publish',1]" >
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'limitedPublishingRole' [routerLink]="['limited/publish',1]" >
    {{resourceService?.frmelmnts?.snav?.limitedPublishing}}
-  </a>-->
+  </a>
 </div>

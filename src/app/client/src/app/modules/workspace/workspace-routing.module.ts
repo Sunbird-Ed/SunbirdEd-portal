@@ -88,10 +88,10 @@ const routes: Routes = [
         path: 'upForReview/:pageNumber', component: UpForReviewComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
-      // {
-      //   path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent,
-      //   data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
-      // },
+      {
+        path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
       { path: '**', redirectTo: 'create' }
     ]
   },
