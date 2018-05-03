@@ -7,7 +7,7 @@ import {
   CollectionTreeComponent, FancyTreeComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
-   PaginationService, RouterNavigationService } from './services';
+   PaginationService, RouterNavigationService, NavigationHelperService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe , DateFilterXtimeAgoPipe} from './pipes';
@@ -27,6 +27,6 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, ContentMetadataComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService]
+     RouterNavigationService, WindowScrollService, NavigationHelperService]
 })
 export class SharedModule { }

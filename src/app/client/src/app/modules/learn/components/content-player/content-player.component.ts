@@ -1,23 +1,24 @@
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
+import { ConfigService, IUserData, ResourceService, ToasterService,
+  WindowScrollService, NavigationHelperService } from '@sunbird/shared';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
-  params: any;
-  closeUrl: string;
+  params: {[key: string]: any; };
   playerConfig: any;
   showIFrameContent = false;
   showError = false;
   errorMessage: string;
   contentData: any;
-  constructor(public activatedRoute: ActivatedRoute,
+  constructor(public activatedRoute: ActivatedRoute, public location: Location, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) { }
 
@@ -58,10 +59,12 @@ export class ContentPlayerComponent implements OnInit {
     this.getContent();
   }
   close () {
-    if (this.closeUrl) {
-      this.router.navigate([this.closeUrl]);
-    } else {
+    console.log(this.navigationHelperService.getPreviousUrl());
+    const previousUrl = this.navigationHelperService.getPreviousUrl();
+    if (previousUrl === 'home') {
       this.router.navigate(['resources']);
+    } else {
+      this.router.navigate([previousUrl]);
     }
   }
 }
