@@ -11,7 +11,7 @@ angular.module('playerApp')
       collection.mimeType = 'application/vnd.ekstep.content-collection'
       collection.defaultName = 'Untitled collection'
       collection.contentType = 'Collection'
-      collection.resourceType = 'Collection'
+      collection.resourceType = ['Collection']
 
       collection.initializeModal = function () {
         collection.showCreateCollectionModel = true

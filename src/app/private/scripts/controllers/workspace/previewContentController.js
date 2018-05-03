@@ -272,6 +272,17 @@ angular.module('playerApp')
       previewContent.getConceptsNames = function (concepts) {
         return contentService.getConceptsNames(concepts)
       }
+
+      previewContent.getResourceTypes = function (resourceTypes) {
+        if (!resourceTypes) {
+          return false
+        }
+        if (_.isString(resourceTypes)) {
+          return [resourceTypes]
+        } else {
+          return resourceTypes
+        }
+      }
       // Restore default values(resume course, view dashboard) onAfterUser leave current state
       $('#courseDropdownValues').dropdown('restore defaults')
     }])

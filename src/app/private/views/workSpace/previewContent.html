@@ -179,7 +179,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.contentData.resourceType">
+                        <div class="item padding-top-10 padding-bottom-5" ng-if="previewContent.getResourceTypes(previewContent.contentData.resourceType)">
                             <div class="ui grid">
                                 <div class="three wide column">
                                     <div class="content content-detail">
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="nine wide column">
                                     <div class="content">
-                                        <div class="ui ">{{previewContent.contentData.resourceType}}</div>
+                                        <div class="ui ">{{previewContent.getResourceTypes(previewContent.contentData.resourceType)}}</div>
                                     </div>
                                 </div>
                             </div>

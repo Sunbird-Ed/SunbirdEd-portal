@@ -9,8 +9,6 @@ angular.module('playerApp')
       dataDrivenForm.categoryModelList = {}
       dataDrivenForm.formDropdown = configService.getWorkspaceFormDropdown()
       dataDrivenForm.years = dataDrivenForm.formDropdown.years
-      dataDrivenForm.StdMtrformDropdown = configService.getWorkspaceStdMtrlDrpdown()
-      dataDrivenForm.resourceType = dataDrivenForm.StdMtrformDropdown.resourceType
       dataDrivenForm.categoryList = {}
       dataDrivenForm.dropdownId = []
       dataDrivenForm.dropdownValue = []
