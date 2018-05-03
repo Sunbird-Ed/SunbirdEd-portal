@@ -4,16 +4,10 @@
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
       </div>
-      <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny">
-          <i class="ui remove icon"></i>
-        </h5>
-      </div>
     </div>
   </div>
   <div class="content">
     <form *ngIf="!showLoader" [formGroup]="signUpForm" autocomplete="off" id="signUpForm" class="ui form">
-      <!--  ng-if="!newUser.loader.showLoader && !newUser.error.showError " -->
       <div class="field">
         <div class=" two fields">
           <div class="required field" [ngClass]="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern) ? 'error' : ''">
@@ -63,8 +57,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="two fields">
-      </div> -->
       <div class="required field" [ngClass]="signUpForm.controls.language.invalid && signUpForm.controls['language'].errors.required && !signUpForm.controls['language'].pristine ? 'error' : ''">
         <label>{{resourceService?.frmelmnts?.lbl?.lang}}</label>
         <div class="field">
@@ -80,7 +72,6 @@
       </div>
     </form>
     <div *ngIf="showLoader">
-      <!--  ng-if="newUser.loader.showLoader" -->
       <app-loader></app-loader>
     </div>
     <div>
