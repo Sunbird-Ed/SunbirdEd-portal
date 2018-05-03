@@ -7,11 +7,13 @@ const _ = require('lodash')
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
+    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id')
+    if (channel) {
+      proxyReqOpts.headers['X-Channel-Id'] = channel
+    }
     if (srcReq.session) {
       var userId = srcReq.session.userId
-      var channel = srcReq.session.rootOrghashTagId || _.get(srcReq, 'headers.X-Channel-Id')
       if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
-      proxyReqOpts.headers['X-Channel-Id'] = channel
     }
     proxyReqOpts.headers['X-App-Id'] = appId
     if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token &&
