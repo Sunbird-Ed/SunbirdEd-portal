@@ -1,7 +1,7 @@
-import { BreadcrumbsService } from './breadcrumbs.service';
+import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { IBreadcrumb } from './interfaces';
+import { IBreadcrumb } from '../../interfaces';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
