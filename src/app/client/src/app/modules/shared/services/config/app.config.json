@@ -165,5 +165,25 @@
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
     "setTimeInSeconds": 60
+  },
+  "timeOutConfig": {
+    "setTime": 1500
+  },
+  "PROFILE": {
+    "profileField": {
+      "profileSummary": "profile/summary/edit",
+      "jobProfile": "profile/experience/add",
+      "address": "profile/address/add",
+      "education": "profile/education/add",
+      "location": "profile/additionalInfo/edit",
+      "dob": "profile/additionalInfo/edit",
+      "subject": "profile/additionalInfo/edit",
+      "grade": "profile/additionalInfo/edit",
+      "gender": "profile/additionalInfo/edit",
+      "lastName": "profile/additionalInfo/edit",
+      "email": "profile/additionalInfo/edit",
+      "phone": "profile/additionalInfo/edit",
+      "language": "profile/additionalInfo/edit"
+    }
   }
 }

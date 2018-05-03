@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
-import { BadgesService } from '@sunbird/core';
+import { BadgesService, BreadcrumbsService } from '@sunbird/core';
 import * as _ from 'lodash';
 
 /**
@@ -68,6 +68,10 @@ export class UserProfileComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
+  /**
+   * To pass dynamic breadcrumb data.
+   */
+  public breadcrumbsService: BreadcrumbsService;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -79,19 +83,22 @@ export class UserProfileComponent implements OnInit {
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
+   * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService
 	 */
   constructor(userSearchService: UserSearchService,
     badgesService: BadgesService,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    routerNavigationService: RouterNavigationService,
+    breadcrumbsService: BreadcrumbsService) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
+    this.breadcrumbsService = breadcrumbsService;
   }
 
   /**
@@ -104,6 +111,7 @@ export class UserProfileComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
+          this.breadcrumbsService.setBreadcrumbs({label: this.userDetails.firstName, url: ''});
           this.populateBadgeDescription();
           this.showLoader = false;
         },
@@ -114,6 +122,7 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
+      this.breadcrumbsService.setBreadcrumbs({label: this.userDetails.firstName, url: ''});
       this.populateBadgeDescription();
       this.showLoader = false;
     }
