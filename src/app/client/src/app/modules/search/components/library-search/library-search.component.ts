@@ -204,11 +204,17 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
-        _.forOwn(this.queryParams, (queryValue, queryParam) => {
-          if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
-            this.filters[queryParam] = queryValue;
-          }
-        });
+        if (_.isEmpty(this.queryParams)) {
+          this.filters = {
+            contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
+          };
+        } else {
+          _.forOwn(this.queryParams, (queryValue, queryParam) => {
+            if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
+              this.filters[queryParam] = queryValue;
+            }
+          });
+        }
         this.populateContentSearch();
       });
   }
