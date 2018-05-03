@@ -54,8 +54,6 @@ export class ResourceComponent implements OnInit {
   private router: Router;
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
-  sort_by: any;
-  sortType: any;
   /**
    * The "constructor"
    *
@@ -122,7 +120,6 @@ export class ResourceComponent implements OnInit {
  *This method calls the populatePageData
  */
   ngOnInit() {
-    this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
     this.getQueryParams();
@@ -143,8 +140,8 @@ export class ResourceComponent implements OnInit {
           };
         })
       .subscribe(bothParams => {
-        this.queryParams = { ...bothParams.queryParams };
         this.filters = {};
+        this.queryParams = { ...bothParams.queryParams };
         _.forIn(this.queryParams, (value, key) => {
           if (key !== 'sort_by' && key !== 'sortType') {
             this.filters[key] = value;
