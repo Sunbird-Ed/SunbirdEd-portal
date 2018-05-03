@@ -278,9 +278,11 @@ angular.module('playerApp')
           return false
         }
         if (_.isString(resourceTypes)) {
-          return [resourceTypes]
-        } else {
           return resourceTypes
+        } else if (_.isArray(resourceTypes)) {
+          return resourceTypes.join(', ')
+        } else {
+          return false
         }
       }
       // Restore default values(resume course, view dashboard) onAfterUser leave current state
