@@ -11,7 +11,7 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] }
   },
   {
-    path: 'play/content/:contentId', component: ContentPlayerComponent
+    path: 'play/content/:contentId/:contentName', component: ContentPlayerComponent
   }
 ];
 
