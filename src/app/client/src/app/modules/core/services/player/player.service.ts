@@ -1,29 +1,29 @@
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
-import { ConfigService, IUserData, ResourceService } from '@sunbird/shared';
+import { ConfigService, IUserData, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
-interface ContentDetails {
-  contentId: string;
-  contentData: any;
-  courseId?: string;
-  batchHashTagId?: string;
-}
+import { ContentDetails , PlayerConfig, ContentData } from './../../interfaces';
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class PlayerService {
-
+  contentData: ContentData;
   constructor(public userService: UserService, public resourceService: ResourceService,
   public contentService: ContentService, public configService: ConfigService ) {
 
-   }
-   getContent(contentId) {
+  }
+  getContent(contentId): Observable<ServerResponse> {
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { fields: this.configService.urlConFig.params.contentGet }
     };
-    return this.contentService.get(req);
+    return this.contentService.get(req).map((response: ServerResponse) => {
+      this.contentData = response.result.content;
+      return response;
+    });
   }
-  getContentPlayerConfig (contentDetails: ContentDetails) {
+  getContentPlayerConfig (contentDetails: ContentDetails): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;

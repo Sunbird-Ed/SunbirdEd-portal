@@ -2,10 +2,11 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, PlayerConfig } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService } from '@sunbird/shared';
+
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
@@ -13,15 +14,18 @@ import { ConfigService, IUserData, ResourceService, ToasterService,
 })
 export class ContentPlayerComponent implements OnInit {
   params: {[key: string]: any; };
-  playerConfig: any;
+  playerConfig: PlayerConfig;
   showIFrameContent = false;
   showError = false;
   errorMessage: string;
-  contentData: any;
   constructor(public activatedRoute: ActivatedRoute, public location: Location, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) { }
-
+    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
+  }
+  /**
+   *
+   * @memberof ContentPlayerComponent
+   */
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.params = params;
@@ -33,16 +37,20 @@ export class ContentPlayerComponent implements OnInit {
       });
     });
   }
+  /**
+   *
+   * @memberof ContentPlayerComponent
+   */
   getContent() {
     this.playerService.getContent(this.params.contentId).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
-          this.contentData = response.result.content;
           const contentDetails = {
             contentId: this.params.contentId,
-            contentData: this.contentData
+            contentData: response.result.content
           };
           this.playerConfig = this.playerService.getContentPlayerConfig(contentDetails);
+          console.log(this.playerConfig);
           this.windowScrollService.smoothScroll('content-player');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -54,10 +62,18 @@ export class ContentPlayerComponent implements OnInit {
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
     });
   }
+  /**
+   *
+   * @memberof ContentPlayerComponent
+   */
   tryAgain() {
     this.showError = false;
     this.getContent();
   }
+  /**
+   *
+   * @memberof ContentPlayerComponent
+   */
   close () {
     console.log(this.navigationHelperService.getPreviousUrl());
     const previousUrl = this.navigationHelperService.getPreviousUrl();
