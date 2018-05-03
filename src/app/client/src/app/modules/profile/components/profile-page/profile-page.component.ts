@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService, SearchService } from '@sunbird/core';
 import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -31,22 +32,12 @@ export class ProfilePageComponent implements OnInit {
     this.workSpaceRole = this.configService.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
   updateAction(field) {
-    const actions = {
-      profileSummary: 'profile/summary/edit',
-      jobProfile: 'profile/experience/add',
-      address: 'profile/address/add',
-      education: 'profile/education/add',
-      location: 'profile/additionalInfo/edit',
-      dob: 'profile/additionalInfo/edit',
-      subject: 'profile/additionalInfo/edit',
-      grade: 'profile/additionalInfo/edit',
-      gender: 'profile/additionalInfo/edit',
-      lastName: 'profile/additionalInfo/edit',
-      email: 'profile/additionalInfo/edit',
-      phone: 'profile/additionalInfo/edit',
-      language: 'profile/additionalInfo/edit'
-    };
-    this.router.navigate([actions[field]]);
+    if (field === 'avatar') {
+      $('#iconImageInput').click();
+    } else {
+      const actions = this.configService.appConfig.PROFILE.profileField;
+      this.router.navigate([actions[field]]);
+    }
   }
   getMyContent(): void {
     // First check local storage

@@ -11,7 +11,7 @@
         <div class="description" *ngIf="action === 'view'">
             <div  *ngIf="!readMore" >
                 <span>{{userProfile?.profileSummary | slice:0:120 }}&nbsp;</span>
-                <span class="ui cardsKnowMore mouse-pointer" *ngIf="userProfile.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}} </span>
+                <span class="ui cardsKnowMore mouse-pointer" *ngIf="userProfile.profileSummary && userProfile.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}} </span>
     
             </div>
     

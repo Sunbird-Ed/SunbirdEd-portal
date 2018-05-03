@@ -44,7 +44,7 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         }
       });
     if (this.basicInfo) {
-      const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : null;
+      const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : undefined;
       this.isEdit = true;
       this.basicInfo.webPages.forEach(element => {
         this.basicInfo.webPages[element.type] = element.url;
@@ -64,23 +64,6 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         twitter: new FormControl(this.basicInfo.webPages.twitter),
         in: new FormControl(this.basicInfo.webPages.in),
         blog: new FormControl(this.basicInfo.webPages.blog)
-      });
-    } else {
-      this.basicInfoForm = new FormGroup({
-        firstName: new FormControl(null, [Validators.required]),
-        lastName: new FormControl(null),
-        phone: new FormControl(null),
-        email: new FormControl(null),
-        gender: new FormControl(null),
-        dob: new FormControl(null),
-        location: new FormControl(null),
-        grade: new FormControl(null),
-        language: new FormControl(null, [Validators.required]),
-        subject: new FormControl(null),
-        fb: new FormControl(null),
-        twitter: new FormControl(null),
-        in: new FormControl(null),
-        blog: new FormControl(null)
       });
     }
   }
