@@ -48,13 +48,10 @@ export class NavigationHelperService {
     const previousUrl = this.history[this._history.length - 2];
     const sessionUrl = this.cacheService.get(this.cacheServiceName);
     if (previousUrl) {
-      console.log('returning previousUrl:', previousUrl);
       return previousUrl;
     } else if (sessionUrl) {
-      console.log('returning sessionPreviousUrl:', sessionUrl);
       return sessionUrl;
     } else {
-      console.log('returning defaultUrl:', '/home');
       return '/home';
     }
   }
