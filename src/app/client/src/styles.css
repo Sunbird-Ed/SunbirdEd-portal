@@ -2863,5 +2863,16 @@ iframe.iziModal-iframe {
   left: 0;
   bottom: 0;
 } 
+thead th {
+  cursor: pointer;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+thead th a span {
+  visibility: hidden;
+}
+thead th a.active span {
+  visibility: visible;
+}
 
 
