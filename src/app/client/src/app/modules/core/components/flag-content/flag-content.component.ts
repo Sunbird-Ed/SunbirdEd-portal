@@ -1,6 +1,7 @@
+import { ContentService, PlayerService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 
 /**
  * The delete component deletes the announcement
@@ -54,6 +55,12 @@ export class FlagContentComponent implements OnInit {
    */
   public routerNavigationService: RouterNavigationService;
 
+  private contentService: ContentService;
+  /**
+   * reference of config service.
+   */
+  public config: ConfigService;
+private playerService: PlayerService;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -68,12 +75,29 @@ export class FlagContentComponent implements OnInit {
   constructor(activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    routerNavigationService: RouterNavigationService,
+    contentService: ContentService,
+    config: ConfigService,
+    playerService: PlayerService) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
+    this.contentService = contentService;
+    this.config = config;
+    this.playerService = playerService;
   }
+  populateFlagContent() {
+    const data = this.playerService.contentData;
+    console.log(data);
+    // const option = {
+    //   url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${contentId}`,
+    //   data: {
+
+    //     }
+    //   };
+    }
+   // this.contentService.post(options);
 
   /**
    * This method helps to redirect to the parent component
@@ -88,7 +112,7 @@ export class FlagContentComponent implements OnInit {
    * This method sets the annmouncementId and pagenumber from
    * activated route
 	 */
-  ngOnInit() {
+  ngOnInit() {console.log(this.playerService.contentData);
     // this.activatedRoute.params.subscribe(params => {
     //   this.announcementId = params.announcementId;
     // });
