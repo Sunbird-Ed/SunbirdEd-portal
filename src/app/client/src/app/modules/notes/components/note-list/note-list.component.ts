@@ -158,8 +158,10 @@ export class NoteListComponent implements OnInit {
       this.notesList = this.notesList.filter((note) => {
         return note.id !== this.selectedNote.id;
       });
-      this.notesList.unshift(this.noteService.selectedNote);
-      this.selectedNote = this.noteService.selectedNote;
+      this.noteService.selectedNoteData.subscribe(selectedNoteData => {
+        this.notesList.unshift(selectedNoteData);
+        this.selectedNote = selectedNoteData;
+      });
     });
 
     if (this.courseDetails && this.courseDetails.courseId) {
