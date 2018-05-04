@@ -183,7 +183,6 @@ export class LearnPageComponent implements OnInit {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
-    this.filters = {};
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();

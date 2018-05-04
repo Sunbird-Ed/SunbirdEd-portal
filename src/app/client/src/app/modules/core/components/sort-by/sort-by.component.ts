@@ -13,14 +13,11 @@ import * as _ from 'lodash';
            margin-left: -5px;
            box-sizing: border-box;
            }
-          .popup-content{
-            width: 850px !important;
-           }
        `]
 })
 export class SortByComponent implements OnInit {
 
-  @Input() sortingOptions: Array<string>;
+  @Input() sortingOptions: Array<any>;
   @Input() url: string;
   sortByOption: string;
   /**
@@ -51,12 +48,19 @@ export class SortByComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
-        this.sortByOption = this.queryParams['sort_by'];
-        _.forIn(params, (value, key) => {
-          if (typeof value === 'string' && key !== 'query') {
-            this.queryParams[key] = [value];
-          }
-        });
+        console.log(this.queryParams);
+        const check = this.queryParams['sort_by'] instanceof Array;
+        if (this.queryParams['sort_by'] && !check ) {
+          const options = this.sortingOptions.find(o => o.field === this.queryParams['sort_by']);
+          this.sortByOption = options.field;
+        } else if (this.queryParams['sort_by'] && check ) {
+          const string = this.queryParams['sort_by'].toString();
+          const options = this.sortingOptions.find(o => o.field === string);
+          this.sortByOption = options.field;
+        } else {
+          this.sortByOption = '';
+        }
+        console.log(this.sortByOption);
       });
   }
 

@@ -5,6 +5,7 @@ import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import 'rxjs/add/observable/from';
 
 describe('SortByComponent', () => {
   let component: SortByComponent;
@@ -31,25 +32,33 @@ describe('SortByComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SortByComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    component.sortingOptions =  [
+      {
+          'field': 'lastUpdatedOn',
+          'name': 'Modified On'
+      },
+      {
+          'field': 'createdOn',
+          'name': 'Created On'
+      }
+  ];
+  component.queryParams = {sortType: 'asc', sort_by: 'createdOn'};
   });
-  it('should call applySorting method with learn url ', inject([ConfigService, Router],
-    (configService, route) => {
+  it('should call applySorting method with learn url ', inject([ConfigService, Router, ActivatedRoute],
+    (configService, route, activatedRoute) => {
       component.url = 'learn';
       const sortByOption = 'createdOn';
-      const queryParams = { sortType: 'asc', sort_by: 'createdOn'};
      component.applySorting(sortByOption);
      fixture.detectChanges();
-     expect(route.navigate).toHaveBeenCalledWith(['learn'], {queryParams: queryParams});
+     expect(route.navigate).toHaveBeenCalledWith(['learn'], {queryParams: component.queryParams });
   }));
   it('should call applySorting method with search/Courses url ', inject([ConfigService, Router],
     (configService, route) => {
       component.url = 'search/Courses/1';
       const sortByOption = 'createdOn';
-      const queryParams = { sortType: 'asc', sort_by: 'createdOn'};
      component.applySorting(sortByOption);
      fixture.detectChanges();
-     expect(route.navigate).toHaveBeenCalledWith(['search/Courses/1'], {queryParams: queryParams});
+     expect(route.navigate).toHaveBeenCalledWith(['search/Courses/1'], {queryParams: component.queryParams });
   }));
 });
 
