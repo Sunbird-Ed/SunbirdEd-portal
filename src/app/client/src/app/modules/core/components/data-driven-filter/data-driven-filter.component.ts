@@ -1,4 +1,4 @@
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, IUserData } from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
