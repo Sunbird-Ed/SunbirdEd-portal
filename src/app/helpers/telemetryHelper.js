@@ -88,7 +88,7 @@ module.exports = {
 
     const edata = telemetry.startEventData('sso')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: { id: 'sso', type: 'sso' } })
+    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: [{ id: 'sso', type: 'sso' }] })
     context.sid = req.sessionID
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(payload.sub, 'user')
@@ -259,6 +259,7 @@ module.exports = {
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
+
     if (channel) {
       var dims = _.clone(req.reqObj.session.orgs || [])
       dims = dims ? _.concat(dims, channel) : channel
