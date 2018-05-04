@@ -33,14 +33,6 @@
         </sui-select>
       </div>
     </div>
-    <div *ngIf="field.code==='resourcetype'" class="field">
-        <label>{{field.name}}</label>
-        <div class="field">
-      <sui-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})">
-          <sui-select-option *ngFor="let option of resourceType" [value]="option"></sui-select-option>
-        </sui-select>
-      </div>
-    </div>
     <div *ngIf="field.code==='concept'" class="field">
         <form class="conceptSelector ui form">
             <label>{{field.name}}</label>

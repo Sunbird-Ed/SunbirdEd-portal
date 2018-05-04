@@ -220,7 +220,7 @@
             "sortingOptions": [
                 {
                     "field": "lastUpdatedOn",
-                    "name": "Updated On"
+                    "name": "Modified On"
                 },
                 {
                     "field": "createdOn",
