@@ -48,7 +48,6 @@ export class SortByComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
-        console.log(this.queryParams);
         const check = this.queryParams['sort_by'] instanceof Array;
         if (this.queryParams['sort_by'] && !check ) {
           const options = this.sortingOptions.find(o => o.field === this.queryParams['sort_by']);
@@ -60,14 +59,13 @@ export class SortByComponent implements OnInit {
         } else {
           this.sortByOption = '';
         }
-        console.log(this.sortByOption);
       });
   }
 
-  applySorting(sortByOption) {
+  applySorting() {
     this.sortIcon = !this.sortIcon;
     this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
-    this.queryParams['sort_by'] = sortByOption;
+    this.queryParams['sort_by'] = this.sortByOption;
     this.route.navigate([this.url], { queryParams: this.queryParams });
   }
 

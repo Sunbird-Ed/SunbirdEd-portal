@@ -4,14 +4,14 @@
       <div class="content dropdown-content">
         <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sort}}&nbsp;</span>
         <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
-          <sui-select class="inline" (selectedOptionChange)="applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
+          <sui-select class="inline" (selectedOptionChange)="applySorting()" [(ngModel)]="sortByOption" [options]="sortingOptions"
             valueField="field" labelField="name" #selectSort>
             <sui-select-option *ngFor="let option of selectSort.filteredOptions" [value]="option">
             </sui-select-option>
           </sui-select>
         </div>
         <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
-          class="link" (click)="applySorting(sortByOption)">
+          class="link" (click)="applySorting()">
         </i>
       </div>
     </div>
