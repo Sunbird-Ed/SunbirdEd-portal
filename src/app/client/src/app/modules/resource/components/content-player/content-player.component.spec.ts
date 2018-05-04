@@ -106,7 +106,7 @@ describe('ContentPlayerComponent', () => {
     serverRes.result.content.status = 'Draft';
     spyOn(toasterService, 'warning').and.callThrough();
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
-    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue('home');
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue('/home');
     userService._userData$.next({ err: null, userProfile: mockUserData });
     fixture.detectChanges();
     expect(component.playerConfig).toBeUndefined();

@@ -23,9 +23,21 @@ export class ContentPlayerComponent implements OnInit {
    * contains player configuration
    */
   playerConfig: PlayerConfig;
+  /**
+   * Flag to show player
+   */
   showPlayer = false;
+  /**
+   * Flag to show error
+   */
   showError = false;
+  /**
+   * contain error message
+   */
   errorMessage: string;
+  /**
+   * contain contentData
+   */
   contentData: ContentData;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
