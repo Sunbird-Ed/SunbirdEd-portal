@@ -10,7 +10,8 @@ import {
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
   TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent } from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
+  SortByComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
@@ -24,8 +25,9 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent, BreadcrumbsComponent],
-  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent, BreadcrumbsComponent],
+     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
+     SortByComponent, BreadcrumbsComponent],
   providers: [
     LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
