@@ -35,7 +35,7 @@ export class SearchService {
   /**
    * Reference of learner service
    */
-  public learner: LearnerService;
+  public learnerService: LearnerService;
   /**
    * Default method of OrganisationService class
    *
@@ -45,11 +45,11 @@ export class SearchService {
    * @param {LearnerService} config learner service reference
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
-    learner: LearnerService) {
+    learnerService: LearnerService) {
     this.user = user;
     this.content = content;
     this.config = config;
-    this.learner = learner;
+    this.learnerService = learnerService;
   }
   /**
    * Search content by user id.
@@ -231,7 +231,7 @@ export class SearchService {
         }
       }
     };
-    return this.learner.post(option);
+    return this.learnerService.post(option);
   }
   /**
    * getUserList.
@@ -247,7 +247,7 @@ export class SearchService {
         }
       }
     };
-    return this.learner.post(option);
+    return this.learnerService.post(option);
   }
 }
 

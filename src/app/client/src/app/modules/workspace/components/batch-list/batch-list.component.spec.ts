@@ -143,21 +143,23 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
+    spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(testData.userlist));
     const req = {
       'filters': {
           'identifier': [
-            '97255811-5486-4f01-bad1-36138d0f5b8a'
+            '6d4da241-a31b-4041-bbdb-dd3a898b3f8'
           ]
         }
     };
     component.UserList(req).subscribe(
         apiResponse => {
+          console.log(apiResponse.result.response.count);
           expect(apiResponse.responseCode).toBe('OK');
-          expect( apiResponse.result.response.content.length).toBeGreaterThan(1);
-          expect( apiResponse.result.response.count).toBeDefined();
+          expect( apiResponse.result.response.content.length).toEqual(1);
+          expect( apiResponse.result.response.count).toEqual(1);
         }
       );
-    expect(component.showLoader).toBeFalsy();
+   expect(component.showLoader).toBeFalsy();
   }));
 });
 

@@ -216,8 +216,7 @@ export class BatchService {
   * method setBatchData
   */
   setBatchData(batchData): void {
-    console.log(JSON.stringify(batchData));
-    this.batchDetails = batchData;
+   this.batchDetails = batchData;
   }
   /**
   * method getBatchData
