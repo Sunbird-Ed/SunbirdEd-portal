@@ -48,13 +48,12 @@ export class SortByComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
-        const check = this.queryParams['sort_by'] instanceof Array;
-        if (this.queryParams['sort_by'] && !check ) {
+        const checkSortByType = this.queryParams['sort_by'] instanceof Array;
+        if (this.queryParams['sort_by'] && !checkSortByType ) {
           const options = this.sortingOptions.find(o => o.field === this.queryParams['sort_by']);
           this.sortByOption = options.field;
-        } else if (this.queryParams['sort_by'] && check ) {
-          const string = this.queryParams['sort_by'].toString();
-          const options = this.sortingOptions.find(o => o.field === string);
+        } else if (this.queryParams['sort_by'] && checkSortByType ) {
+          const options = this.sortingOptions.find(o => o.field === this.queryParams['sort_by'].toString());
           this.sortByOption = options.field;
         } else {
           this.sortByOption = '';
