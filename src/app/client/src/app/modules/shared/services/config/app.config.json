@@ -210,7 +210,7 @@
   },
   "resourceType": {
     "collection": "Collection",
-    "book": "Book",
+    "textbook": "Book",
     "course": "Course",
     "lessonplan": "Lesson Plan"
   },

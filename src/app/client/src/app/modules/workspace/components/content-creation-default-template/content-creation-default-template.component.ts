@@ -85,8 +85,6 @@ export class DefaultTemplateComponent implements OnInit {
  */
   private editorService: EditorService;
 
-  public resourceType = [];
-
 
 
 
@@ -125,7 +123,6 @@ export class DefaultTemplateComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.resourceType = this.configService.dropDownConfig.FILTER.RESOURCES.resourceType;
     /***
  * Call User service to get user data
  */
