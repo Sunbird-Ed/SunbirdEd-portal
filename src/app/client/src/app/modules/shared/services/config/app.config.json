@@ -30,7 +30,13 @@
       "application/vnd.ekstep.h5p-archive",
       "video/webm"
     ],
-    "states":["draft","uploaded","published","limited-publish","flagged"]
+    "states": [
+      "draft",
+      "uploaded",
+      "published",
+      "limited-publish",
+      "flagged"
+    ]
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
