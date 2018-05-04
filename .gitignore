@@ -9,7 +9,7 @@
 /src/mochawesome-report
 /src/app/migration/src/node_modules
 /src/app/dist
-/src/app/client/src/documentation
+/src/app/client/src/documentation/
 /src/app/client/src/coverage
 /src/app/client/src/thirdparty
 src/app/dist/thirdparty/editors/
@@ -19,3 +19,4 @@ src/app/app_dist
 **/node_modules
 **/package-lock.json
 /src/app/client/coverage
+/src/app/client/documentation
