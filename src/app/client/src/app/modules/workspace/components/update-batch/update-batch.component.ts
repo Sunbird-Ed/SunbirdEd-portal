@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkSpaceService, BatchService } from '../../services';
 import { SearchService, UserService } from '@sunbird/core';
 import { IMenter, Ibatch } from './../../interfaces';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-update-batch',
