@@ -30,19 +30,19 @@
               <form class="ui form">
                 <div *ngIf="formFieldProperties" class="ui grid">
                   <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
-                    <div *ngIf="field.inputType==='select' && field.code!=='Content'" class="field">
+                    <div *ngIf="field.inputType==='select'" class="field">
                       <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
                         [options]="options" [hasLabels]="false" #multiSelect>
                         <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                       </sui-multi-select>
                     </div>
-                    <div *ngIf="field.inputType==='select' && field.code==='Content'" class="field">
+                    <!-- <div *ngIf="field.inputType==='select' && field.code==='Content'" class="field">
                       <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
                         [options]="options" [hasLabels]="false" #multiSelect>
                         <sui-select-option *ngFor="let option of contentTypes" [value]="option.value"></sui-select-option>
                       </sui-multi-select>
-                    </div>
-                    <div *ngIf="field.code==='concept' && showConceptPicker" class="field" >
+                    </div> -->
+                    <div *ngIf="field.code==='concept'" class="field">
                       <form class="conceptSelector ui form">
                         <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
                       </form>
