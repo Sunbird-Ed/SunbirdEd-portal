@@ -37,9 +37,9 @@ export class NotesService {
    */
   deleteEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
-   * To save 'selectedNote' value from NotesList Component.
+   * An event emitter to emit changes done to the selected note.
    */
-  selectedNote: INoteData;
+  selectedNoteData: EventEmitter<any> = new EventEmitter();
   /**
    * API call to gather existing notes.
    */
@@ -83,11 +83,11 @@ export class NotesService {
       url: `${this.config.urlConFig.URLS.NOTES.UPDATE + '/'}${request.noteId}`,
       data: request
     };
-    return this.learnerService.patch(option).map( data => {
-    this.updateEventEmitter.emit();
-    return data;
-  });
-}
+    return this.learnerService.patch(option).map(data => {
+      this.updateEventEmitter.emit();
+      return data;
+    });
+  }
   /**
    * API call to remove an existing note.
    */
@@ -95,7 +95,7 @@ export class NotesService {
     const option = {
       url: `${this.config.urlConFig.URLS.NOTES.DELETE + '/'}${request.noteId}`,
       data: request
-        };
+    };
     return this.learnerService.delete(option);
   }
 }

@@ -97,7 +97,13 @@ export class NoteListComponent implements OnInit {
    * Reference of modal service.
    */
   modalService: SuiModalService;
+  /**
+   * Reference of Router.
+   */
   route: Router;
+  /**
+   * Reference of Router Navigation Service
+   */
   routerNavigationService: RouterNavigationService;
   /**
    * The constructor - Constructor for Note List Component.
@@ -109,6 +115,8 @@ export class NoteListComponent implements OnInit {
    * @param {SuiModalService} modalService Reference of SuiModalService.
    * @param {NotesService} noteService Reference of NotesService.
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute.
+   * @param {RouterNavigationService} routerNavigationService Reference of RouterNavigationService.
+   * @param {Router} route Reference of Router.
    */
 
   constructor(noteService: NotesService,
@@ -154,14 +162,13 @@ export class NoteListComponent implements OnInit {
       this.selectedNote = this.noteService.selectedNote;
     });
 
-    if (this.courseDetails && this.courseDetails.courseId && this.courseDetails.contentId) {
+    if (this.courseDetails && this.courseDetails.courseId) {
       this.courseId = this.courseDetails.courseId;
+    }
+    if (this.courseDetails && this.courseDetails.contentId) {
       this.contentId = this.courseDetails.contentId;
-    } else if (this.courseDetails && this.courseDetails.courseId) {
-      this.courseId = this.courseDetails.courseId;
-    } else if (this.courseDetails && this.courseDetails.contentId) {
-      this.contentId = this.courseDetails.contentId;
-    } else {
+    }
+    if (!this.courseId && !this.contentId) {
       this.activatedRoute.params.subscribe((params) => {
         this.courseId = params.courseId;
         this.contentId = params.contentId;
