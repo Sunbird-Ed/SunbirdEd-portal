@@ -2,6 +2,7 @@ import { ResourceComponent, ContentPlayerComponent } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { FlagContentComponent } from '@sunbird/core';
 
 const routes: Routes = [
   {
@@ -9,7 +10,10 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
   },
   {
-    path: 'resources/play/content/:contentId/:contentName', component: ContentPlayerComponent
+    path: 'resources/play/content/:contentId/:contentName', component: ContentPlayerComponent,
+    children: [
+      { path: 'flag-content', component: FlagContentComponent }
+    ]
   }
 ];
 
