@@ -172,6 +172,12 @@
     "setTimeInMinutes": 10,
     "setTimeInSeconds": 60
   },
+  "resourceType": {
+    "collection": "Collection",
+    "textbook": "Book",
+    "course": "Course",
+    "lessonplan": "Lesson Plan"
+  },
   "timeOutConfig": {
     "setTime": 1500
   },
