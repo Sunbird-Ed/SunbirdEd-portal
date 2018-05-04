@@ -60,7 +60,6 @@ export class ContentPlayerComponent implements OnInit {
   }
   /**
    * used to fetch content details and player config. On success launches player.
-   * @memberof ContentPlayerComponent
    */
   getContent() {
     this.playerService.getContent(this.contentId).subscribe(
@@ -99,7 +98,7 @@ export class ContentPlayerComponent implements OnInit {
   close () {
     const previousUrl = this.navigationHelperService.getPreviousUrl();
     if (previousUrl === '/home') {
-      this.router.navigate(['resources']);
+      this.router.navigate(['/resources']);
     } else {
       this.router.navigate([previousUrl]);
     }
