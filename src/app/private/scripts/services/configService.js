@@ -68,7 +68,7 @@ angular.module('playerApp')
         if (_.indexOf(permissionsService.getCurrentUserRoles(), 'BOOK_REVIEWER') !== -1) {
           data.contentTypes.unshift({
             'key': 'TextBook',
-            'value': 'Book'
+            'value': 'Text Book'
           })
         }
         return data

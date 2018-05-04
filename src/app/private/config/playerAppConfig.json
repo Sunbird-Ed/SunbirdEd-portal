@@ -127,7 +127,7 @@
                 "contentTypes": [
                     {
                         "key": "TextBook",
-                        "value": "Book"
+                        "value": "Text Book"
                     },
                     {
                         "key": "Collection",
@@ -135,7 +135,7 @@
                     },
                     {
                         "key": "LessonPlan",
-                        "value": "LessonPlan"
+                        "value": "Lesson Plan"
                     },
                     {
                         "key": "Resource",
@@ -749,7 +749,7 @@
                     },
                     {
                         "key": "LessonPlan",
-                        "value": "LessonPlan"
+                        "value": "Lesson Plan"
                     },
                     {
                         "key": "Resource",
