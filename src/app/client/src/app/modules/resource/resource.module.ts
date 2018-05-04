@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
-
+import { DiscussionModule } from '@sunbird/discussion';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +16,8 @@ import { CoreModule } from '@sunbird/core';
     SuiModule,
     SlickModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    DiscussionModule
   ],
   declarations: [ResourceComponent, ContentPlayerComponent]
 })

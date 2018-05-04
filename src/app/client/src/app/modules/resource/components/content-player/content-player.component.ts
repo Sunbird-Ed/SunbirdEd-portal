@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,13 +15,19 @@ import { ConfigService, IUserData, ResourceService, ToasterService,
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
-  params: {[key: string]: any; };
+  /**
+   * content id
+   */
+  contentId: string;
+  /**
+   * contains player configuration
+   */
   playerConfig: PlayerConfig;
-  showIFrameContent = false;
+  showPlayer = false;
   showError = false;
   errorMessage: string;
   contentData: ContentData;
-  constructor(public activatedRoute: ActivatedRoute, public location: Location, public navigationHelperService: NavigationHelperService,
+  constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
   }
@@ -32,7 +37,7 @@ export class ContentPlayerComponent implements OnInit {
    */
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
-      this.params = params;
+      this.contentId = params.contentId;
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {
@@ -46,15 +51,16 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   getContent() {
-    this.playerService.getContent(this.params.contentId).subscribe(
+    this.playerService.getContent(this.contentId).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
           const contentDetails = {
-            contentId: this.params.contentId,
+            contentId: this.contentId,
             contentData: response.result.content
           };
           this.playerConfig = this.playerService.getContentPlayerConfig(contentDetails);
           this.contentData = response.result.content;
+          this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -80,7 +86,7 @@ export class ContentPlayerComponent implements OnInit {
    */
   close () {
     const previousUrl = this.navigationHelperService.getPreviousUrl();
-    if (previousUrl === 'home') {
+    if (previousUrl === '/home') {
       this.router.navigate(['resources']);
     } else {
       this.router.navigate([previousUrl]);
