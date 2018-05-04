@@ -1,4 +1,4 @@
-import { ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
+import { ResourceService, IUserData, IUserProfile, NavigationHelperService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails,
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
   /**
    * constructor
    */
-  constructor(userService: UserService,
+  constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     this.resourceService.initialize();
+    this.navigationHelperService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
       this.userService.initialize();
       this.permissionService.initialize();
