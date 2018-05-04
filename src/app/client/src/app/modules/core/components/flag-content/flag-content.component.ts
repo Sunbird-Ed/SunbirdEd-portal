@@ -1,4 +1,4 @@
-import { ContentService, PlayerService } from './../../services';
+import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
@@ -61,8 +61,14 @@ export class FlagContentComponent implements OnInit {
    */
   public config: ConfigService;
 private playerService: PlayerService;
+private userService: UserService;
+request: any;
+data: any;
+contentId: any;
+contentName: any;
+contentData: any;
   /**
-	 * Constructor to create injected service(s) object
+	 * Consructor to create injected service(s) object
 	 *
 	 * Default method of DeleteComponent class
 	 *
@@ -78,7 +84,8 @@ private playerService: PlayerService;
     routerNavigationService: RouterNavigationService,
     contentService: ContentService,
     config: ConfigService,
-    playerService: PlayerService) {
+    playerService: PlayerService,
+    userService: UserService) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -86,18 +93,47 @@ private playerService: PlayerService;
     this.contentService = contentService;
     this.config = config;
     this.playerService = playerService;
+    this.userService = userService;
   }
-  populateFlagContent() {
-    const data = this.playerService.contentData;
-    console.log(data);
-    // const option = {
-    //   url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${contentId}`,
-    //   data: {
 
-    //     }
-    //   };
+
+  getContentData() {
+    if (this.playerService.contentData) {
+      this.contentData = this.playerService.contentData;
+      console.log('if', this.contentData);
+    } else {
+      this.playerService.getContent(this.contentId).subscribe(response => {
+        this.contentData = response.result.content;
+        console.log('else', this.contentData);
+      });
     }
+  }
+  // populateFlagContent() {
+  //   this.request = {
+  //     flaggedBy: this.data.firstName + '' + this.data.lastName,
+  //         versionKey: this.playerService.contentData.contentVersionKey
+  //   };
+  //   const option = {
+  //     url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.contentId}`,
+  //     data: this.request
+  //     };
+  //     return this.contentService.post(option);
+  //   }
    // this.contentService.post(options);
+
+  //  saveMetaData(data) {
+  //   this.request = {
+  //     flaggedBy: this.data.firstName + '' + this.data.lastName,
+  //         versionKey: this.playerService.contentData.contentVersionKey
+  //   };
+  //   if (data.flagReasons) {
+  //     this.request.flagReasons = [data.flagReasons];
+  //   }
+  //   if (data.comment) {
+  //     this.request.flags = [data.comment];
+  //   }
+  //   populateFlagContent(requestData)
+  // }
 
   /**
    * This method helps to redirect to the parent component
@@ -112,7 +148,17 @@ private playerService: PlayerService;
    * This method sets the annmouncementId and pagenumber from
    * activated route
 	 */
-  ngOnInit() {console.log(this.playerService.contentData);
+  ngOnInit() {
+    this.activatedRoute.parent.params.subscribe(params => {
+      this.contentId = params.contentId;
+      this.contentName = params.contentName;
+    });
+    this.userService.userData$.subscribe(data => {
+      if (data) {
+        this.data = data.userProfile;
+         this.getContentData();
+      }
+    });
     // this.activatedRoute.params.subscribe(params => {
     //   this.announcementId = params.announcementId;
     // });

@@ -25,8 +25,9 @@
                                 <div class="twelve wide column">
                                   <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
                                   [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                    <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
-                                    <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
+                                  <a [routerLink]="['flag-content']"> <i class="ui large blue flag outline icon" ></i></a>
+                                    <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp; -->
+                                    <!-- <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
                                 </div>
                             </div>
                         </div>
