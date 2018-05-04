@@ -180,7 +180,7 @@
             <div class="item" *ngFor="let badge of userDetails.badgeArray">
               <img class="ui avatar image" [src]="badge.image || badge.badgeClassImage">
               <div class="middle aligned content padding-left-10">
-                <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
+                <div class="ui huge sub header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
                 <div class="description">
                   <div class="secondary-text-color-sunbird">{{badge.description | slice:0:70 }}
                     <i *ngIf="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
@@ -188,7 +188,7 @@
                   </div>
                 </div>
               </div>
-              <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat}}</div>
+              <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat}}</div>
             </div>
           </div>
         </div>
