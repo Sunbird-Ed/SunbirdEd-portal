@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe , DateFilterXtimeAgoPipe} from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
+import { CacheService } from 'ng2-cache-service';
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, ContentMetadataComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService, NavigationHelperService]
+     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService]
 })
 export class SharedModule { }

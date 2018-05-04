@@ -1,3 +1,4 @@
+import { SharedModule } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { NavigationHelperService } from './navigation-helper.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,7 +14,7 @@ class RouterStub {
 describe('NavigationHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, SharedModule],
       providers: [NavigationHelperService,
         { provide: Router, useClass: RouterStub }]
     });
@@ -23,7 +24,7 @@ describe('NavigationHelperService', () => {
     router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
       console.log(urlAfterRedirects);
     });
-    const history = service.getHistory();
+    const history = service.history;
     expect(service).toBeTruthy();
     expect(history).toBeDefined();
     // expect(history).toContain('/home');

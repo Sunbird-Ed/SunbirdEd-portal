@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService } from './../../services';
 import * as _ from 'lodash';
+import { ContentData } from './../../interfaces';
 
 @Component({
   selector: 'app-content-metadata',
@@ -8,7 +9,7 @@ import * as _ from 'lodash';
   styleUrls: ['./content-metadata.component.css']
 })
 export class ContentMetadataComponent implements OnInit {
-  @Input() contentData: any;
+  @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {

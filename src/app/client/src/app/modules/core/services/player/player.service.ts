@@ -1,9 +1,10 @@
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
-import { ConfigService, IUserData, ResourceService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, IUserData, ResourceService, ServerResponse,
+  ContentDetails , PlayerConfig, ContentData
+ } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { ContentDetails , PlayerConfig, ContentData } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 
   /**
