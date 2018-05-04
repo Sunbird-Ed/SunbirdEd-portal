@@ -12,4 +12,6 @@ export interface ContentData {
     identifier: string;
     versionKey: string;
     name: string;
+    me_averageRating: string | number;
+    description: string;
 }

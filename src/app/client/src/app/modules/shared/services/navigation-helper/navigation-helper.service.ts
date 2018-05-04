@@ -9,11 +9,8 @@ export class NavigationHelperService {
   }
 
   public loadRouting(): void {
-    // this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(({urlAfterRedirects}: NavigationEnd) => {
-    //     this.history = [...this.history, urlAfterRedirects];
-    // });
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe(urlAfterRedirects => {
-      this.history = [...this.history, urlAfterRedirects];
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.history = [...this.history, urlAfterRedirects.url];
     });
   }
 

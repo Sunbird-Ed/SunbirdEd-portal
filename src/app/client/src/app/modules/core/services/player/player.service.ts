@@ -6,14 +6,24 @@ import * as _ from 'lodash';
 import { ContentDetails , PlayerConfig, ContentData } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 
+  /**
+   * helper services to fetch content details and preparing content player config
+   */
 @Injectable()
 export class PlayerService {
+  /**
+   * stores content details
+   */
   contentData: ContentData;
-  constructor(public userService: UserService, public resourceService: ResourceService,
-  public contentService: ContentService, public configService: ConfigService ) {
-
+  constructor(public userService: UserService, public contentService: ContentService,
+    public configService: ConfigService ) {
   }
-  getContent(contentId): Observable<ServerResponse> {
+  /**
+   * Return content details
+   * @param {string} contentId
+   * @returns {Observable<ServerResponse>}
+   */
+  getContent(contentId: string): Observable<ServerResponse> {
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { fields: this.configService.urlConFig.params.contentGet }
@@ -23,6 +33,11 @@ export class PlayerService {
       return response;
     });
   }
+  /**
+   * returns player config details.
+   * @param {ContentDetails} contentDetails
+   * @memberof PlayerService
+   */
   getContentPlayerConfig (contentDetails: ContentDetails): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;

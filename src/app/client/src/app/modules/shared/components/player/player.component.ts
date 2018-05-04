@@ -28,7 +28,6 @@ export class PlayerComponent implements OnInit {
       };
     }, 0);
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-      console.log('-------renderer:telemetry:event--------', event.detail.telemetryData);
       this.contentProgressEvent.emit(event);
     });
     // document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', (event: any) => {

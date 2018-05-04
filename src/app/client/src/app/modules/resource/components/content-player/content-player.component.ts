@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, PlayerConfig } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, PlayerConfig, ContentData } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService } from '@sunbird/shared';
@@ -18,6 +18,7 @@ export class ContentPlayerComponent implements OnInit {
   showIFrameContent = false;
   showError = false;
   errorMessage: string;
+  contentData: ContentData;
   constructor(public activatedRoute: ActivatedRoute, public location: Location, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
@@ -38,7 +39,7 @@ export class ContentPlayerComponent implements OnInit {
     });
   }
   /**
-   *
+   * used to fetch content details and player config. On success launches player.
    * @memberof ContentPlayerComponent
    */
   getContent() {
@@ -50,7 +51,7 @@ export class ContentPlayerComponent implements OnInit {
             contentData: response.result.content
           };
           this.playerConfig = this.playerService.getContentPlayerConfig(contentDetails);
-          console.log(this.playerConfig);
+          this.contentData = response.result.content;
           this.windowScrollService.smoothScroll('content-player');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
@@ -63,7 +64,7 @@ export class ContentPlayerComponent implements OnInit {
     });
   }
   /**
-   *
+   * retry launching player with same content details
    * @memberof ContentPlayerComponent
    */
   tryAgain() {
@@ -71,11 +72,10 @@ export class ContentPlayerComponent implements OnInit {
     this.getContent();
   }
   /**
-   *
+   * closes conent player and revert to previous url
    * @memberof ContentPlayerComponent
    */
   close () {
-    console.log(this.navigationHelperService.getPreviousUrl());
     const previousUrl = this.navigationHelperService.getPreviousUrl();
     if (previousUrl === 'home') {
       this.router.navigate(['resources']);

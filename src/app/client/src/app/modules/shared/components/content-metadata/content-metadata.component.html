@@ -51,7 +51,7 @@
                 {{resourceService.frmelmnts.lbl.lastupdate}}
             </div>
         </div>
-        <div class="item padding-top-10 padding-bottom-5" *ngIf="contentData.concepts.length > 0">
+        <div class="item padding-top-10 padding-bottom-5" *ngIf="contentData.concepts && contentData.concepts.length > 0">
             <div class="right floated content contentMetaDetail">
                 <div class="ui">{{getConceptsNames(contentData.concepts)}}</div>
             </div>

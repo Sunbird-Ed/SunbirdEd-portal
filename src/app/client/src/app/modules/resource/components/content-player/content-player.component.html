@@ -21,8 +21,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row margin-auto padding-top-none" *ngIf="contentData && contentData.name  && 
-                            !(contentData.status === 'Unlisted' || contentData.status === 'Processing')">
+                            <div class="row margin-auto padding-top-none" *ngIf="contentData && contentData.name">
                                 <div class="twelve wide column">
                                   <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
                                   [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
@@ -36,11 +35,11 @@
 
                       <app-player class="content-player" [playerConfig]="playerConfig" ></app-player>
 
-                      <div class="twelve wide column contentMetaSection" ng-if="showMetaData">
-                          <div *ngIf="contentData" class="ui grid margin-top-10">
+                      <div class="twelve wide column contentMetaSection">
+                          <div class="ui grid margin-top-10">
                               <div class="row">
                                   <div class="three wide column "></div>
-                                  <div class="six wide column center aligned" *ngIf="showModalInLectureView && !(contentData.status === 'Unlisted' || contentData.status === 'Processing')"  ng-show="!(contentData.status === 'Unlisted' || contentData.status === 'Processing')">
+                                  <div class="six wide column center aligned">
                                       <div class="ui grid">
                                           <div class="row">
                                               <div class="four wide column "></div>
@@ -59,10 +58,10 @@
                             <div class="twelve wide column ">
                               <div class="ui divider"></div>
                             </div>
-                            <div *ngIf="contentData" class="ui grid">
+                            <div class="ui grid">
                                 <div class="eight wide column">
                                     <div class="row">
-                                        <div class="twelve wide column" *ngIf="contentData.description">
+                                        <div class="twelve wide column" *ngIf="contentData && contentData.description">
                                             <div class="ui raised segment">
                                                 <div class="header announcementCard-header">
                                                     <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.description}} </span>
@@ -74,12 +73,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="twelve wide column margin-top-20" ng-show="!(contentData.status === 'Unlisted' || contentData.status === 'Processing')">
+                                        <div class="twelve wide column margin-top-20">
                                             <!-- <app-discussions></app-discussions> -->
                                         </div>
                                     </div>
                                 </div>
-                                <div class="four wide column">
+                                <div *ngIf="contentData" class="four wide column">
                                     <div class="row">
                                         <div class="twelve wide column">
                                           <app-content-metadata [contentData]="contentData"></app-content-metadata>
