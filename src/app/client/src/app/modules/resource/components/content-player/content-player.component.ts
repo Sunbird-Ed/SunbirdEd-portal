@@ -7,6 +7,9 @@ import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
 
+  /**
+   *Component to play content
+   */
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',

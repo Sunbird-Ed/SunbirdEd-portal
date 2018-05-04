@@ -4,6 +4,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestr
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import {PlayerConfig} from './../../interfaces';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -14,10 +15,15 @@ export class PlayerComponent implements OnInit {
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   constructor(public configService: ConfigService) { }
-
+  /**
+   * showPlayer method will be called
+   */
   ngOnInit() {
     this.showPlayer();
   }
+  /**
+   * Initializes player with given config and emits player telemetry events
+   */
   showPlayer () {
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL;
     setTimeout(() => {
@@ -35,6 +41,9 @@ export class PlayerComponent implements OnInit {
     //   this.contentProgressEvent.emit(event);
     // });
   }
+  /**
+   * Adjust player height after load
+   */
   adjustPlayerHeight () {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {

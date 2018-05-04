@@ -21,9 +21,6 @@ describe('NavigationHelperService', () => {
   });
 
   it('should store route history', inject([NavigationHelperService, Router], (service: NavigationHelperService, router) => {
-    router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
-      console.log(urlAfterRedirects);
-    });
     const history = service.history;
     expect(service).toBeTruthy();
     expect(history).toBeDefined();
