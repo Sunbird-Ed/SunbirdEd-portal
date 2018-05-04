@@ -167,8 +167,7 @@ export class UserService {
         }
       });
     }
-    const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
-    this._channel = rootOrg;
+    this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
@@ -180,7 +179,6 @@ export class UserService {
     this.setRoleOrgMap(profileData);
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
     this._userData$.next({ err: null, userProfile: this._userProfile });
-    this.setRoleOrgMap(profileData);
   }
   get userProfile() {
     return _.cloneDeep(this._userProfile);
