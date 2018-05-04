@@ -1,4 +1,4 @@
-import { IBreadcrumb } from './interfaces/breadcrumbs';
+import { IBreadcrumb } from '../../interfaces';
 import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable()
