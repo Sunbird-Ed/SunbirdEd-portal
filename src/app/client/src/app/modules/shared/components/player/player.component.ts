@@ -3,14 +3,14 @@ import { WindowScrollService, ConfigService } from './../../services';
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
-
+import {PlayerConfig} from './../../interfaces';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-  @Input() playerConfig: any;
+  @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   constructor(public configService: ConfigService) { }

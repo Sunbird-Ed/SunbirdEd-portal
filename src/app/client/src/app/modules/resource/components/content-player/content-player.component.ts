@@ -2,10 +2,10 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, PlayerConfig, ContentData } from '@sunbird/core';
+import { ContentService, UserService, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService } from '@sunbird/shared';
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-content-player',
