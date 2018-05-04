@@ -147,9 +147,10 @@ export class UserProfileComponent implements OnInit {
           }
         }
       };
-      this.badgesService.getAllBadgeList(req).subscribe((badge) => {
-        if (badge) {
-          this.userDetails.badgeArray = badge.result.badges;
+      this.userDetails.badgeArray = [];
+      this.badgesService.getDetailedBadgeAssertions(req, this.userDetails.badgeAssertions).subscribe((detailedAssertion) => {
+        if (detailedAssertion) {
+          this.userDetails.badgeArray.push(detailedAssertion);
         }
       });
     }
