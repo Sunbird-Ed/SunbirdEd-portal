@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent,
-  CollectionTreeComponent, FancyTreeComponent
+  CollectionTreeComponent, FancyTreeComponent, PlayerComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
    PaginationService, RouterNavigationService } from './services';
@@ -21,9 +21,11 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
     FormsModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent],
+    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
+    PlayerComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe,
-    PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent],
+    PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
+    PlayerComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService]
 })

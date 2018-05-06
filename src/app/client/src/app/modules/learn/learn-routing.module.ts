@@ -1,4 +1,4 @@
-import { LearnPageComponent } from './components/index';
+import { LearnPageComponent } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';

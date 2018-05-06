@@ -8,9 +8,10 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent } from './components';
+import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
+  ErrorPageComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 @NgModule({
@@ -23,13 +24,14 @@ import { CacheService } from 'ng2-cache-service';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent],
-  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent],
+     DataDrivenFilterComponent,
+     ErrorPageComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent, ErrorPageComponent],
   providers: [
     LearnerService, UserService, TenantService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
-     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService]
+     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService, PlayerService]
 })
 export class CoreModule {
 }

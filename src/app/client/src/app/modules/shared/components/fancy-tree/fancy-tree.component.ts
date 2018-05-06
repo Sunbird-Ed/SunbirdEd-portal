@@ -1,5 +1,15 @@
-import { Component, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import 'jquery.fancytree';
+
+interface IFancytreeOptions extends Fancytree.FancytreeOptions {
+  glyph: {
+    preset: string;
+    map: {
+      folder: string;
+      folderOpen: string;
+    }
+  };
+}
 
 @Component({
   selector: 'app-fancy-tree',
@@ -10,17 +20,24 @@ export class FancyTreeComponent implements AfterViewInit {
   @ViewChild('fancyTree') public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: any;
+  @Output() public itemSelect: EventEmitter<any> = new EventEmitter();
 
   ngAfterViewInit() {
-    const options = {
+    const options: IFancytreeOptions = {
       extensions: ['glyph'],
+      clickFolderMode: 3,
       source: this.nodes,
       glyph: {
         preset: 'awesome4',
         map: {
           folder: 'fa fa-folder-o fa-lg',
-          folderOpen: 'fa-folder-open-o fa-lg'
+          folderOpen: 'fa fa-folder-open-o fa-lg'
         }
+      },
+      click: (event, data): boolean => {
+        const node = data.node;
+        this.itemSelect.emit(node);
+        return true;
       }
     };
     $(this.tree.nativeElement).fancytree(options);

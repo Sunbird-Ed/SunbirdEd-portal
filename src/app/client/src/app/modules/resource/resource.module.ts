@@ -1,7 +1,7 @@
 import { ResourceRoutingModule } from './resource-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResourceComponent } from './components/index';
+import { ResourceComponent, CollectionPlayerComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
@@ -18,6 +18,6 @@ import { CoreModule } from '@sunbird/core';
     FormsModule,
     CoreModule
   ],
-  declarations: [ResourceComponent]
+  declarations: [ResourceComponent, CollectionPlayerComponent]
 })
 export class ResourceModule { }

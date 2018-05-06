@@ -5,4 +5,5 @@ export * from './no-result/no-result.component';
 export * from './page-section/page-section.component';
 export * from './collection-tree/collection-tree.component';
 export * from './fancy-tree/fancy-tree.component';
+export * from './content-player/player.component';
 
