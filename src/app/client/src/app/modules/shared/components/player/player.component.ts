@@ -3,6 +3,7 @@ import { WindowScrollService, ConfigService } from './../../services';
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
+import {PlayerConfig} from './../../interfaces';
 
 @Component({
   selector: 'app-player',
@@ -10,11 +11,13 @@ import * as $ from 'jquery';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit, OnChanges {
-  @Input() playerConfig: any;
+  @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   constructor(public configService: ConfigService) { }
-
+  /**
+   * showPlayer method will be called
+   */
   ngOnInit() {
     this.showPlayer();
   }
@@ -22,7 +25,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.showPlayer();
   }
-
+  /**
+   * Initializes player with given config and emits player telemetry events
+   */
   showPlayer () {
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL;
     setTimeout(() => {
@@ -33,7 +38,6 @@ export class PlayerComponent implements OnInit, OnChanges {
       };
     }, 0);
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-      console.log('-------renderer:telemetry:event--------', event.detail.telemetryData);
       this.contentProgressEvent.emit(event);
     });
     // document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', (event: any) => {
@@ -41,6 +45,9 @@ export class PlayerComponent implements OnInit, OnChanges {
     //   this.contentProgressEvent.emit(event);
     // });
   }
+  /**
+   * Adjust player height after load
+   */
   adjustPlayerHeight () {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {

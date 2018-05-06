@@ -4,6 +4,21 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, ContentService, PlayerService, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 
+const serverRes = {
+  id : 'api.content.read',
+  ver: '1.0',
+  ts: '2018-05-03T10:51:12.648Z',
+  params: 'params',
+  responseCode: 'OK',
+  result: {
+    content: {
+      mimeType: 'application/vnd.ekstep.ecml-archive',
+      body: 'body',
+      identifier: 'domain_66675',
+      versionKey: '1497028761823'
+    }
+  }
+};
 describe('PlayerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,28 +30,57 @@ describe('PlayerService', () => {
   it('should return content details', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(Observable.of('data'));
-    playerService.getContent('do_112489916589834240157').subscribe((data) => {
+    spyOn(contentService, 'get').and.returnValue(Observable.of(serverRes));
+    playerService.getContent(serverRes.result.content.identifier).subscribe((data) => {
       expect(data).toBeTruthy();
+      expect(playerService.contentData).toBeTruthy();
+      expect(playerService.contentData.mimeType).toContain('application/vnd.ekstep.ecml-archive');
+      expect(playerService.contentData.versionKey).toContain('1497028761823');
+      expect(playerService.contentData.identifier).toContain('domain_66675');
     });
     expect(playerService).toBeTruthy();
   });
-  it('should return player config', () => {
+  it('should return player config without with courseId', () => {
     const playerService = TestBed.get(PlayerService);
     const userService = TestBed.get(UserService);
     userService._sessionId = 'd5773f35773feab';
     userService._userId = 'd5773f35773feab';
     userService._channel = 'd5773f35773feab';
-    userService._dims = 'd5773f35773feab';
+    userService._dims = ['d5773f35773feab'];
     userService._appId = 'd5773f35773feab';
     const PlayerMeta = {
-      contentId: 'do_112489916589834240157',
-      contentData: {
-        mimeType : 'mp4',
-        body: 'body'
-      }
+      contentId: serverRes.result.content.identifier,
+      contentData: serverRes.result.content
     };
-    const playerConfig = playerService.getContentPlayerConfig(PlayerMeta);
+    const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig).toBeTruthy();
+    expect(playerConfig.context.contentId).toContain('domain_66675');
+    expect(playerConfig.context.dims).toContain('d5773f35773feab');
+    expect(playerConfig.context.dims.length).toBe(1);
+    expect(playerConfig.context.sid).toContain('d5773f35773feab');
+    expect(playerConfig.context.tags).toContain('d5773f35773feab');
+  });
+  it('should return player config with courseId', () => {
+    const playerService = TestBed.get(PlayerService);
+    const userService = TestBed.get(UserService);
+    userService._sessionId = 'd5773f35773feab';
+    userService._userId = 'd5773f35773feab';
+    userService._channel = 'd5773f35773feab';
+    userService._dims = ['d5773f35773feab'];
+    userService._appId = 'd5773f35773feab';
+    const PlayerMeta = {
+      contentId: serverRes.result.content.identifier,
+      contentData: serverRes.result.content,
+      courseId: 'do_66675'
+    };
+    const playerConfig = playerService.getConfig(PlayerMeta);
+    expect(playerConfig.context.contentId).toContain('domain_66675');
+    expect(playerConfig.context.dims).toContain('do_66675');
+    expect(playerConfig.context.dims.length).toBe(2);
+    expect(playerConfig.context.cdata.length).toBe(1);
+    expect(playerConfig.context.cdata).toContain({
+      id: 'do_66675',
+      type: 'course'
+    });
   });
 });

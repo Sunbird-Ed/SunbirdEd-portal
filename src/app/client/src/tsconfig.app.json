@@ -45,6 +45,9 @@
       ],
       "@sunbird/search": [
         "app/modules/search"
+      ],
+      "@sunbird/discussion": [
+        "app/modules/discussion"
       ]
     },
     "module": "es2015",

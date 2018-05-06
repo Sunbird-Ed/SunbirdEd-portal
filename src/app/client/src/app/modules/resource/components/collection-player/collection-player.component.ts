@@ -3,7 +3,7 @@ import { CoursesService, PlayerService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage } from '../../../shared';
+import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig } from '@sunbird/shared';
 
 @Component({
   selector: 'app-collection-player',
@@ -76,7 +76,10 @@ export class CollectionPlayerComponent implements OnInit {
   }
 
   private initPlayer(id: string) {
-    this.playerConfig = this.getPlayerConfig(id);
+    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
+      console.log(`unable to get player config for content ${id}`, error);
+      return error;
+    });
   }
 
   public playContent(data: any) {
@@ -93,8 +96,8 @@ export class CollectionPlayerComponent implements OnInit {
     this.router.navigate([], navigationExtras);
   }
 
-  private getPlayerConfig(contentId: string): Observable<any> {
-    return this.playerService.getPlayerConfig(contentId);
+  private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
+    return this.playerService.getConfigByContent(contentId);
   }
 
   private findContentById(collection: any, id: string) {
