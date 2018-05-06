@@ -16,5 +16,16 @@ export const mockSignupApiResponse = {
             'accessToken': null,
             'userId': 'ef643cb2 - 1894 - 4fd2-ac45 - e7b67e03d94e'
         }
+    },
+    returnValue: {
+        'params': {},
+        'request': {
+            'userName': 'vaish',
+            'firstName': 'vaishnavi',
+            'lastName': 'm',
+            'phone': '7899918811',
+            'email': 'vaish@gmail.com',
+            'language': ['English']
+        }
     }
 };

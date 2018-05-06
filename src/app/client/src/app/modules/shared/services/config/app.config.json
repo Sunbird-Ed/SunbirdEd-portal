@@ -196,6 +196,7 @@
       "email": "profile/additionalInfo/edit",
       "phone": "profile/additionalInfo/edit",
       "language": "profile/additionalInfo/edit"
-    }
+    },
+    "defaultViewMoreLimit": 3
   }
 }

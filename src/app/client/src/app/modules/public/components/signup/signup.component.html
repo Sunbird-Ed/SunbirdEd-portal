@@ -17,10 +17,10 @@
               {{resourceService?.messages?.stmsg?.m0087}}
             </div>
           </div>
-          <div class="required field" [ngClass]="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine ? 'error' : ''">
+          <div class="required field" [ngClass]="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern) ? 'error' : ''">
             <label>{{resourceService?.frmelmnts?.lbl?.password}}</label>
             <input type="password" formControlName="password" placeholder="Password" />
-            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine">
+            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern)">
               {{resourceService?.messages?.stmsg?.m0088}}
             </div>
           </div>
@@ -75,9 +75,6 @@
       <app-loader></app-loader>
     </div>
     <div>
-      <!--  ng-if="newUser.error.showError" -->
-
-      <!-- <error-message data="{{newUser.error}}" visibility="newUser.error.showError"></error-message> -->
     </div>
   </div>
   <div class="actions">

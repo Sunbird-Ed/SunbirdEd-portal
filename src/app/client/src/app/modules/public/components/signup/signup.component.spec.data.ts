@@ -1,5 +1,5 @@
 export const mockSignUpResponse = {
-    successRespone: {
+    successResponse: {
         'id': 'api.user.create',
         'ver': 'v1',
         'ts': '2018 - 05 - 02 09: 07: 12: 554 + 0000',

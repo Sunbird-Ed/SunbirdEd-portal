@@ -14,13 +14,12 @@ export class ProfileBadgeComponent implements OnInit {
  */
   userProfile: IUserProfile;
   viewMore = true;
-  defaultLimit = 3;
-  limit = 3; // config
-  badgeData: any;
+  defaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  limit = this.defaultLimit; // config
   badgeArray: any;
   profileBadge: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
-    public badgeService: BadgesService) { }
+    public badgeService: BadgesService, public configService: ConfigService) { }
 
   ngOnInit() {
     this.getBadgeData();
@@ -52,13 +51,13 @@ export class ProfileBadgeComponent implements OnInit {
         }
       });
   }
-  toggle(lim) {
-    if (lim === true) {
+  toggle(viewMore) {
+    if (viewMore === true) {
       this.limit = this.badgeArray.length;
       this.viewMore = false;
     } else {
       this.viewMore = true;
-      this.limit = 3;
+      this.limit = this.defaultLimit;
     }
   }
 }

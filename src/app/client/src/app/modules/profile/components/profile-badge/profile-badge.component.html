@@ -3,7 +3,7 @@
   <div class="header announcementCard-header">
     <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
   </div>
-  <div *ngIf="badgeArray" class="ui items margin-top-10">
+  <div *ngIf="badgeArray && badgeArray.length" class="ui items margin-top-10">
     <div class="item" *ngFor="let badge of badgeArray | slice:0:limit">
       <!--  | orderBy: 'createdTS' || 'createdDate' -->
       <img class="ui avatar image" src="{{badge.image || badge.badgeClassImage}}">
@@ -17,10 +17,10 @@
           </div>
         </div>
       </div>
-      <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat: 'MMM YYYY'}}</div>
+      <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat: 'MMM YYYY'}}</div>
     </div>
     <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="badgeArray.length > defaultLimit">
-      <div class="active item addSkillMoreBtn">
+      <div class="active item addViewMoreBtn">
         <a (click)="toggle(true)" *ngIf="viewMore">
           <span class="cursor-pointer">
             {{resourceService?.frmelmnts?.btn?.viewmore}}

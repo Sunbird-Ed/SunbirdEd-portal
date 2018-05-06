@@ -17,33 +17,16 @@ describe('SignupService', () => {
   it('should call learner service and return response', () => {
     const learnerService = TestBed.get(LearnerService);
     const signupService = TestBed.get(SignupService);
-    const req = {
-      'email': 'va@gm.co',
-      'firstName': 'vaish',
-      'language': ['English'],
-      'lastName': '',
-      'password': 'password',
-      'phone': '7899918817',
-      'userName': 'vaish'
-    };
     spyOn(learnerService, 'post').and.callFake(() => Observable.of(mockSignupApiResponse.successResponse));
-    signupService.signup(req).subscribe((apiResponse) => {
-      expect(apiResponse.responseCode).toBe('OK');
+    signupService.signup(mockSignupApiResponse.returnValue.request).subscribe((apiResponse) => {
+    expect(apiResponse.responseCode).toBe('OK');
     });
   });
   it('should call formatRequest method', () => {
     const signupService = TestBed.get(SignupService);
-    const req = {
-      'email': 'va@gm.co',
-      'firstName': 'vaish',
-      'language': ['English'],
-      'lastName': '',
-      'password': 'password',
-      'phone': '7899918817',
-      'userName': 'vaish'
-    };
-    spyOn(signupService, 'formatRequest').and.callThrough();
-    signupService.formatRequest(req);
+    spyOn(signupService, 'formatRequest').and.returnValue(mockSignupApiResponse.returnValue);
+    signupService.formatRequest(mockSignupApiResponse.returnValue.request);
+    // expect(signupService.formatRequest).toContain('userName');
     expect(signupService.formatRequest).toHaveBeenCalled();
   });
 });

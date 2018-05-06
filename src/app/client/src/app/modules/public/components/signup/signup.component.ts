@@ -12,20 +12,20 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
   @ViewChild('modal') modal;
   /**
-* sign up form name
-*/
+  * sign up form name
+  */
   signUpForm: FormGroup;
   /**
-* Contains reference of FormBuilder
-*/
+  * Contains reference of FormBuilder
+  */
   sbFormBuilder: FormBuilder;
   /**
-* Contains list of languages from config file
-*/
+  * Contains list of languages from config file
+  */
   languages: any;
   /**
-* Boolean value to either show/hide app loader
-*/
+  * Boolean value to either show/hide app loader
+  */
   showLoader = false;
 
   constructor(public resourceService: ResourceService, public configService: ConfigService,
@@ -36,8 +36,8 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.signUpForm = new FormGroup({
       userName: new FormControl(null, [Validators.required, Validators.pattern('^[-\\w\.\\$@\*\\!]{5,256}$')]),
-      password: new FormControl(null, [Validators.required]),
-      firstName: new FormControl(null, [Validators.required, Validators.pattern('^[^(?! )][0-9]*[A-Za-z\\s][0-9A-Za-z\\s]*(?<! )$')]),
+      password: new FormControl(null, [Validators.required, Validators.pattern('^[^(?! )][0-9]*[A-Za-z\\s]*(?<! )$')]),
+      firstName: new FormControl(null, [Validators.required, Validators.pattern('^[^(?! )][0-9]*[A-Za-z\\s]*(?<! )$')]),
       lastName: new FormControl(null),
       phone: new FormControl(null, [Validators.required, Validators.pattern('^\\d{10}$')]),
       email: new FormControl(null, [Validators.required,
@@ -50,7 +50,6 @@ export class SignupComponent implements OnInit {
         value.userName = value.userName.trim();
         return value;
       }
-    }).subscribe((value) => {
     });
   }
   redirect() {
