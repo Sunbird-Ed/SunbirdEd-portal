@@ -1,7 +1,7 @@
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, } from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService } from './../../services';
+import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
@@ -55,6 +55,10 @@ export class DataDrivenFilterComponent implements OnInit {
  */
   public formInputData: any;
 
+  userRoles = [];
+
+  public permissionService: PermissionService;
+
   selectedConcepts: Array<object>;
   showFilter = false;
   refresh = true;
@@ -76,7 +80,8 @@ export class DataDrivenFilterComponent implements OnInit {
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
-    public conceptPickerService: ConceptPickerService
+    public conceptPickerService: ConceptPickerService,
+    permissionService: PermissionService
 
   ) {
     this.configService = configService;
@@ -85,6 +90,7 @@ export class DataDrivenFilterComponent implements OnInit {
     this.frameworkService = frameworkService;
     this.formService = formService;
     this.toasterService = toasterService;
+    this.permissionService = permissionService;
     this.formInputData = {};
   }
 
@@ -138,6 +144,14 @@ export class DataDrivenFilterComponent implements OnInit {
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
+              _.forEach(this.formFieldProperties, (formFieldCategory) => {
+                if (formFieldCategory && formFieldCategory.allowedUsers) {
+                  const userRoles = formFieldCategory.allowedUsers.filter(element => this.userRoles.includes(element));
+                  if (!this.showField(formFieldCategory.allowedUsers)) {
+                    this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
+                  }
+                }
+              });
               this.getFormConfig();
             },
             (err: ServerResponse) => {
@@ -158,7 +172,7 @@ export class DataDrivenFilterComponent implements OnInit {
   getFormConfig() {
     _.forEach(this.categoryMasterList, (category) => {
       _.forEach(this.formFieldProperties, (formFieldCategory) => {
-        if (category.code === formFieldCategory.code) {
+        if (category.code === formFieldCategory.code && category.terms) {
           formFieldCategory.range = category.terms;
         }
         return formFieldCategory;
@@ -216,6 +230,14 @@ export class DataDrivenFilterComponent implements OnInit {
       this.refresh = false;
       this.cdr.detectChanges();
       this.refresh = true;
+    }
+  }
+
+  showField(allowedUsers) {
+    if (allowedUsers) {
+      return this.permissionService.checkRolesPermissions(allowedUsers);
+    } else {
+      return true;
     }
   }
 }

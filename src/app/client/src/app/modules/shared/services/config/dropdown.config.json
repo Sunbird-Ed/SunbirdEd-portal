@@ -153,32 +153,10 @@
                 }
             ],
             "resourceType": [
-                "(Annual / Half-yearly / Semester) Examination",
-                "Academic calendar",
-                "Activity",
-                "Article",
-                "Benchmark assessment",
-                "Book",
-                "Classroom assessments",
-                "Course",
-                "Daily test",
-                "Diagnostic",
-                "E-resources for Professional Development",
-                "Game",
-                "Learning / Study material",
-                "Lesson plan",
-                "Micro practice videos",
-                "Puzzle",
-                "Quiz",
-                "Reference material",
-                "Reflective journals",
-                "Simulation",
-                "Story",
-                "Summative exam",
-                "Teaching resources",
-                "Timed worksheets",
-                "Unit plan",
-                "Worksheet"
+                "Study material",
+                "Test",
+                "Worksheet",
+                "Activity"
             ],
             "subjects": [
                 "Assamese",
@@ -216,7 +194,31 @@
                 "NCTE",
                 "TN Board",
                 "UP Board"
-            ]
+            ],
+            "sortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Modified On"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                }
+            ],
+        "upForReviewSortingOptions": [
+               {
+                   "field": "lastUpdatedOn",
+                   "name": "Updated On"
+               },
+               {
+                   "field": "createdOn",
+                   "name": "Created On"
+               },
+               {
+                   "field": "name",
+                   "name": "Name A-Z"
+               }
+           ]
         },
         "SEARCH": {
             "search": {
@@ -272,6 +274,15 @@
                     "OrgType"
                 ]
             }
+        },
+        "WORKSPACE": {
+            "label": [ { "id": "board", "name": "Curriculum" },
+                { "id": "gradeLevel", "name": "Grades" },
+                { "id": "medium", "name": "Medium" },
+                { "id": "subject", "name": "Subjects" },
+                { "id": "Content", "name": "Content Types" }
+                    
+                ]
         }
     }
 }

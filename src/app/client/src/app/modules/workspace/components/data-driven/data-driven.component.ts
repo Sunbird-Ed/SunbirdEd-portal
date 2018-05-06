@@ -41,6 +41,10 @@ export class DataDrivenComponent implements OnInit {
 */
   public contentType;
   /**
+   * resourceType is resource type
+   */
+  public resourceType;
+  /**
  * userForm name creation
  */
   public creationForm: FormGroup;
@@ -91,7 +95,7 @@ export class DataDrivenComponent implements OnInit {
 
   public isCachedDataExists: boolean;
 
-  public framework: String;
+  public framework: string;
 
 
 
@@ -118,6 +122,7 @@ export class DataDrivenComponent implements OnInit {
     this.activatedRoute.url.subscribe(url => {
       this.contentType = url[0].path;
     });
+    this.resourceType =  this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
 
@@ -222,6 +227,9 @@ export class DataDrivenComponent implements OnInit {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
     } else {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
+    }
+    if (this.resourceType) {
+      requestData.resourcetype = this.resourceType;
     }
 
     return requestData;

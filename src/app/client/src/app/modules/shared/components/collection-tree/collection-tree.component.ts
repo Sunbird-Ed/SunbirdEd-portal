@@ -24,7 +24,7 @@ import * as _ from 'lodash';
 *
 *
 * sample options = {
-    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons 
+    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons
     fileIcon: 'fa fa-file-o fa-lg', //default
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',

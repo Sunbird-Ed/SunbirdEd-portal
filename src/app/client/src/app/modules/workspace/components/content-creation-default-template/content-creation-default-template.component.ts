@@ -71,7 +71,7 @@ export class DefaultTemplateComponent implements OnInit {
   /**
    * categoryList is category list of dropdown values
    */
-  public categoryList: Object;
+  public categoryList: {};
   /**
    * masterList is master copy of framework data
    */
@@ -84,8 +84,6 @@ export class DefaultTemplateComponent implements OnInit {
  * To make content editor service API calls
  */
   private editorService: EditorService;
-
-  public resourceType = [];
 
 
 
@@ -125,7 +123,6 @@ export class DefaultTemplateComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.resourceType = this.configService.dropDownConfig.FILTER.RESOURCES.resourceType;
     /***
  * Call User service to get user data
  */
