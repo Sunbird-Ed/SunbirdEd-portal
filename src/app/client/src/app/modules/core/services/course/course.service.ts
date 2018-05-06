@@ -46,7 +46,7 @@ export class CoursesService {
   * @param {UserService} userService Reference of UserService.
   * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(userService: UserService, learnerService: LearnerService, 
+  constructor(userService: UserService, learnerService: LearnerService,
     config: ConfigService, contentService: ContentService) {
     this.config = config;
     this.userService = userService;
