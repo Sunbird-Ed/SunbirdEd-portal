@@ -23,10 +23,6 @@ angular.module('playerApp')
              * @instance
              */
       this.create = function (req) {
-        var resourceType = _.get(req, 'content.resourceType')
-        if (_.isString(resourceType)) {
-          req.content.resourceType = [resourceType]
-        }
         req.content.organization = $rootScope.organisationNames
         req.content.createdFor = $rootScope.organisationIds
         req.content.creator = $rootScope.firstName + ' ' + $rootScope.lastName

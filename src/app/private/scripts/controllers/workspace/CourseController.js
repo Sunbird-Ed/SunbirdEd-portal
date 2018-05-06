@@ -11,7 +11,7 @@ angular.module('playerApp')
       course.defaultName = 'Untitled Course'
       course.mimeType = 'application/vnd.ekstep.content-collection'
       course.contentType = 'Course'
-      course.resourceType = ['Course']
+      course.resourceType = 'Course'
 
       course.hideCreateCourseModal = function () {
         $('#createCourseModal').modal('hide')

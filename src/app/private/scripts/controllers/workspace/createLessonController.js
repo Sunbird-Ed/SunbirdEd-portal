@@ -77,7 +77,7 @@ angular.module('playerApp')
         requestBody.contentType = 'Resource'
         requestBody.framework = contentLesson.framework
         requestBody.concepts = contentLesson.concepts
-        requestBody.resourceType = requestBody.resourceType || ['Study material']
+        requestBody.resourceType = requestBody.resourceType || 'Study material'
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }

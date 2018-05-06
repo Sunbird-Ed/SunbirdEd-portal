@@ -16,7 +16,7 @@ angular.module('playerApp')
       lessonPlan.mimeType = 'application/vnd.ekstep.content-collection'
       lessonPlan.defaultName = 'Untitled lesson plan'
       lessonPlan.contentType = 'LessonPlan'
-      lessonPlan.resourceType = ['Lesson Plan']
+      lessonPlan.resourceType = 'Lesson Plan'
 
       lessonPlan.hideCreateLessonPlanModal = function () {
         $('#createLessonPlanModal').modal('hide')
