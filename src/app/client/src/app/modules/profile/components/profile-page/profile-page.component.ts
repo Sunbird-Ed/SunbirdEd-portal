@@ -9,18 +9,32 @@ import * as $ from 'jquery';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Contains roles
+   */
   workSpaceRole: Array<string>;
+  /**
+   * Contains loader message to display
+   */
   loaderMessage = {
     headerMessage: '',
     loaderMessage: 'Loading profile ...'
   };
+  /**
+   * Contains list of contributions
+   */
   contributions: any;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
     public searchService: SearchService) { }
-
+  /**
+   * This method is used to fetch user profile details
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -31,6 +45,9 @@ export class ProfilePageComponent implements OnInit {
       });
     this.workSpaceRole = this.configService.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
+  /**
+   * This method is used to update user actions
+   */
   updateAction(field) {
     if (field === 'avatar') {
       $('#iconImageInput').click();
@@ -39,6 +56,9 @@ export class ProfilePageComponent implements OnInit {
       this.router.navigate([actions[field]]);
     }
   }
+  /**
+   * This method is used to get user content
+   */
   getMyContent(): void {
     // First check local storage
     const response = this.searchService.searchedContentList;

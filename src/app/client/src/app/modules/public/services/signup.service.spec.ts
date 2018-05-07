@@ -26,7 +26,6 @@ describe('SignupService', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'formatRequest').and.returnValue(mockSignupApiResponse.returnValue);
     signupService.formatRequest(mockSignupApiResponse.returnValue.request);
-    // expect(signupService.formatRequest).toContain('userName');
     expect(signupService.formatRequest).toHaveBeenCalled();
   });
 });
