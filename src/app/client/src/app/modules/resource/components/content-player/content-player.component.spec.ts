@@ -111,7 +111,7 @@ describe('ContentPlayerComponent', () => {
     fixture.detectChanges();
     expect(component.playerConfig).toBeUndefined();
     expect(component.toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0027);
-    expect(router.navigate).toHaveBeenCalledWith(['resources']);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources']);
   });
   it('should throw error if content api throws error', () => {
     const userService = TestBed.get(UserService);
