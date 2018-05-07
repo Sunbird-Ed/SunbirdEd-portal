@@ -1,8 +1,9 @@
 import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
-
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService, ContentData,
+ IUserProfile } from '@sunbird/shared';
+import {IRequestData} from './../../interfaces';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -16,23 +17,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 export class FlagContentComponent implements OnInit {
 
 
-  flagReasons = [{
-    name: 'Inappropriate content',
-    value: 'Inappropriate Content',
-    description: 'Hateful, harmful or explicit lesson that is inappropriate for young learners'
-  }, {
-    name: 'Copyright violation',
-    value: 'Copyright Violation',
-    description: 'Uses copyrighted work without permission'
-  }, {
-    name: 'Privacy violation',
-    value: 'Privacy Violation',
-    description: 'Collects sensitive data or personal information about users, such as name' +
-    '\n address, photo or other personally identifiable information'
-  }, {
-    name: 'Other',
-    value: 'Other'
-  }];
+  flagReasons: Array<object>;
 
 
   /**
@@ -59,14 +44,17 @@ export class FlagContentComponent implements OnInit {
   /**
    * reference of config service.
    */
-  public config: ConfigService;
+public config: ConfigService;
 private playerService: PlayerService;
 private userService: UserService;
-request: any;
-data: any;
-contentId: any;
-contentName: any;
-contentData: any;
+requestData: IRequestData;
+userData: IUserProfile;
+contentId: string;
+contentName: string;
+contentData: ContentData;
+data = {};
+showLoader = false;
+showContentFlagModal = true;
   /**
 	 * Consructor to create injected service(s) object
 	 *
@@ -94,46 +82,50 @@ contentData: any;
     this.config = config;
     this.playerService = playerService;
     this.userService = userService;
+    this.flagReasons = this.config.appConfig.FLAGREASONS;
   }
 
 
   getContentData() {
     if (this.playerService.contentData) {
       this.contentData = this.playerService.contentData;
-      console.log('if', this.contentData);
     } else {
       this.playerService.getContent(this.contentId).subscribe(response => {
         this.contentData = response.result.content;
-        console.log('else', this.contentData);
       });
     }
   }
-  // populateFlagContent() {
-  //   this.request = {
-  //     flaggedBy: this.data.firstName + '' + this.data.lastName,
-  //         versionKey: this.playerService.contentData.contentVersionKey
-  //   };
-  //   const option = {
-  //     url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.contentId}`,
-  //     data: this.request
-  //     };
-  //     return this.contentService.post(option);
-  //   }
-   // this.contentService.post(options);
+  populateFlagContent(requestData) {
+    this.showLoader = true;
+    const option = {
+      url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.contentId}`,
+      data: {'request' : requestData}
+      };
+       this.contentService.post(option).subscribe(response => {
+         if (response && response.responseCode === 'OK') {
+          this.showLoader = false;
+          this.showContentFlagModal = false;
+         } else {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0050);
+         }
+       });
+    }
 
-  //  saveMetaData(data) {
-  //   this.request = {
-  //     flaggedBy: this.data.firstName + '' + this.data.lastName,
-  //         versionKey: this.playerService.contentData.contentVersionKey
-  //   };
-  //   if (data.flagReasons) {
-  //     this.request.flagReasons = [data.flagReasons];
-  //   }
-  //   if (data.comment) {
-  //     this.request.flags = [data.comment];
-  //   }
-  //   populateFlagContent(requestData)
-  // }
+   saveMetaData() {
+    this.requestData = {
+      flaggedBy: this.userData.firstName + ' ' + this.userData.lastName,
+          versionKey: this.playerService.contentData.versionKey
+    };
+    if (this.data['flagReasons']) {
+      this.requestData.flagReasons = [this.data['flagReasons']];
+    }
+    if (this.data['comment']) {
+      this.requestData.flags = [this.data['comment']];
+    }
+    this.populateFlagContent(this.requestData);
+  }
+
 
   /**
    * This method helps to redirect to the parent component
@@ -142,6 +134,7 @@ contentData: any;
 	 */
   redirect(): void {
     this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    console.log(this.activatedRoute.snapshot);
   }
 
   /**
@@ -155,16 +148,10 @@ contentData: any;
     });
     this.userService.userData$.subscribe(data => {
       if (data) {
-        this.data = data.userProfile;
+        this.userData = data.userProfile;
          this.getContentData();
       }
     });
-    // this.activatedRoute.params.subscribe(params => {
-    //   this.announcementId = params.announcementId;
-    // });
-    // this.activatedRoute.parent.params.subscribe((params) => {
-    //   this.pageNumber = Number(params.pageNumber);
-    // });
   }
 }
 

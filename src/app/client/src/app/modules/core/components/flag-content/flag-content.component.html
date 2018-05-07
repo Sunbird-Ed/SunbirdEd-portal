@@ -1,25 +1,15 @@
-<sui-modal [isClosable]="true" [size]="'small'" (dismissed)="redirect()" #modal>
-  <div class="content">
-  
-
-
-
-
-
-
-<span class="ui mouse-pointer content-font" title="{{resourceService?.frmelmnts?.lbl?.whatwentwrong}}">
-    <i class="ui large blue flag outline icon"></i>
-</span>
+<sui-modal [isClosable]="true"  (dismissed)="redirect()" #modal *ngIf ="showContentFlagModal">
+  <div class="content" *ngIf="!showLoader">
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
                 <span class="ui header">{{resourceService?.frmelmnts?.lbl?.whatwentwrong}}</span>
             </div>
-            <!--<div class="one wide column actions">
+            <div class="one wide column actions">
                 <h5 class="ui basic icon circular button deny">
                     <i class="ui remove icon"></i>
                 </h5>
-            </div>-->
+            </div>
         </div>
     </div>
     <div class="content" >
@@ -30,7 +20,7 @@
             <div class="field">
                 <label class="flag-form">{{resourceService?.frmelmnts?.lbl?.contentname}}</label>
                 <div class="eight wide field">
-                    <input type="text" name="title" readonly value="ss">
+                    <input type="text" name="title" readonly value="{{contentName}}">
                 </div>
             </div>
             <div class="grouped fields">
@@ -38,50 +28,27 @@
                 <div *ngFor="let reason of flagReasons">
                     <div class="field radiomargin">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="radio" value="{{reason.value}}">
+                            <input type="radio" name="radio" [(ngModel)]="data.flagReasons" value="{{reason.value}}">
                             <label>{{reason.name}}</label>
                         </div>
-                        <!-- <i class="help circle icon link helpPopup" data-content="{{reason.description}}" data-variation="wide" data-position="right center"></i> -->
-                        <!--<i *ngIf="reason.description" class="help circle icon link helpPopup" data-content="{{reason.description}}" data-variation="wide" data-position="right center"></i>-->
+                        <i *ngIf="reason.description" class="help circle icon link helpPopup" [attr.data-content]="reason.description" ></i> 
                     </div>
-
                 </div>
                 <div class="field">
                     <div class="eight wide field">
-                        <input rows="2" name="addYourComment" placeholder="ADD YOUR COMMENT"  required="">
+                        <input rows="2" name="addYourComment" placeholder="ADD YOUR COMMENT"  [(ngModel)]="data.comment" required="">
                     </div>
                 </div>
-            </div>
+            </div> 
         </form>
     </div>
     <div class="actions">
-
-        <button class="ui primary button ">
+        <button class="ui primary button " (click)="saveMetaData()" [disabled]="!data.flagReasons">
           {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
-
     </div>
-    <!--<div class=" ui segment margin-top-10 " *ngIf="showLoader ">
-        <app-loader data="{{contentFlag.loader}}"></app-loader>
-    </div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
+    </div>
+          <div class=" ui segment margin-top-10 " *ngIf="showLoader ">
+            <app-loader data="loaderMessage"></app-loader>
+            </div>
 </sui-modal>
