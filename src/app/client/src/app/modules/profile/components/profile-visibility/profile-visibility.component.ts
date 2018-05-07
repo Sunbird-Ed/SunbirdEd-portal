@@ -8,8 +8,17 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService
   styleUrls: ['./profile-visibility.component.css']
 })
 export class ProfileVisibilityComponent implements OnInit {
+  /**
+   * Reference of Input annotation
+   */
   @Input() field: string;
+  /**
+   * 
+   */
   isOpen: any;
+  /**
+   * Contains text to show/hide
+   */
   options = [{
     text: 'Hide this from everyone',
     value: 'private'
@@ -18,13 +27,23 @@ export class ProfileVisibilityComponent implements OnInit {
     text: 'Show this to all',
     value: 'public'
   }];
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: any;
-  profileVisibility: any;
+  /**
+   * Contains visibility type - public/private
+   */
   visibility: 'private' | 'public';
+  /**
+   * Boolean value to show/hide loader
+   */
   loader = false;
   constructor(public userService: UserService, public profileService: ProfileService, public resourceService: ResourceService,
     public toasterService: ToasterService) { }
-
+    /**
+   * This method is used to fetch user profile details
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -35,6 +54,9 @@ export class ProfileVisibilityComponent implements OnInit {
     });
     this.userProfile = this.userService.userProfile;
   }
+  /**
+   * This method is used to update profile visibility
+   */
   setProfileFieldLabel(value) {
     const req = {};
     if (this.visibility === value) {
@@ -45,13 +67,10 @@ export class ProfileVisibilityComponent implements OnInit {
     this.profileService.updateProfileFieldVisibility(req).subscribe(res => {
       this.loader = false;
       this.visibility = value;
-      // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0040);
     },
     err => {
       this.loader = false;
-      // toaster err
-      // this.toasterService.error(err.error.params.errmsg);
     });
   }
 }

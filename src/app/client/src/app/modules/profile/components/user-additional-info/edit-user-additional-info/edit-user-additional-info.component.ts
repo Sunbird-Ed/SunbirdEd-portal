@@ -11,17 +11,44 @@ import { ProfileService } from '../../../services/profile/profile.service';
 })
 export class EditUserAdditionalInfoComponent implements OnInit {
   /**
-* Reference of User Profile interface
-*/
+  * Reference of User Profile interface
+  */
   userProfile: IUserProfile;
+  /**
+  * Reference of Input annotation
+  */
   @Input() basicInfo: any;
+  /**
+  * Contains array of subjects which comes from config
+  */
   subjects: any;
+  /**
+  * Contains Date object instance
+  */
   initDate = new Date();
+  /**
+  * Conatins array of languages which comes from config
+  */
   languages: any;
+  /**
+  * Conatins array of grades which comes from config
+  */
   grades: any;
+  /**
+  * Contains gender array which comes from config
+  */
   gender: any;
+  /**
+  * Reference of FormGroup
+  */
   basicInfoForm: FormGroup;
+  /**
+  * Contains webpage Object
+  */
   webPages: any = {};
+  /**
+  * Boolean value to disable/enable phone and email input fields
+  */
   isEdit: boolean;
 
   constructor(public resourceService: ResourceService, public userService: UserService, public configService: ConfigService,
@@ -31,7 +58,10 @@ export class EditUserAdditionalInfoComponent implements OnInit {
     this.grades = this.configService.dropDownConfig.COMMON.grades;
     this.gender = this.configService.dropDownConfig.COMMON.gender;
   }
-
+  /**
+  * This method is used to fetch user profile data
+  * Also used to create instance of formgroup
+  */
   ngOnInit() {
     this.windowScrollService.smoothScroll('additionalInfo');
     this.userService.userData$.subscribe(

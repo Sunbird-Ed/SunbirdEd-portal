@@ -6,12 +6,18 @@ import { LearnerService } from '@sunbird/core';
 export class SignupService {
 
   constructor(private learnerService: LearnerService, public configService: ConfigService) { }
+  /**
+   * This method is used to format the request
+   */
   private formatRequest(request) {
     return {
       params: {},
       request: request
     };
   }
+  /**
+   * This method invokes learner service to add new user
+   */
   signup(req) {
     const data = this.formatRequest(req);
     const options = {

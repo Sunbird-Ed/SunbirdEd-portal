@@ -32,7 +32,9 @@ export class SignupComponent implements OnInit {
     public router: Router, public signupService: SignupService, public toasterService: ToasterService) {
     this.languages = this.configService.dropDownConfig.COMMON.languages;
   }
-
+  /**
+   * This method is used to create formgroup instance
+   */
   ngOnInit() {
     this.signUpForm = new FormGroup({
       userName: new FormControl(null, [Validators.required, Validators.pattern('^[-\\w\.\\$@\*\\!]{5,256}$')]),
@@ -52,9 +54,15 @@ export class SignupComponent implements OnInit {
       }
     });
   }
+  /**
+   * This method is used to navigate back
+   */
   redirect() {
     this.router.navigate(['']);
   }
+  /**
+   * This method invokes signup servicec to create new user
+   */
   onSubmitForm() {
     this.showLoader = true;
     this.signupService.signup(this.signUpForm.value).subscribe(res => {
