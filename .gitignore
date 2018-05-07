@@ -17,6 +17,5 @@ src/app/app_dist
 /extensible-framework
 **/dist
 **/node_modules
-**/package-lock.json
 /src/app/client/coverage
 /src/app/client/documentation

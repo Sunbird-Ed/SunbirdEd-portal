@@ -1,7 +1,7 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService} from '@sunbird/shared';
-import { PageApiService, LearnerService, CoursesService, UserService} from '@sunbird/core';
+import { PageApiService, LearnerService, CoursesService, UserService, CoreModule } from '@sunbird/core';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
@@ -27,11 +27,9 @@ describe('LearnPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
       declarations: [ LearnPageComponent ],
-      providers: [ResourceService, PageApiService, ConfigService, LearnerService, CoursesService, UserService,
-         ToasterService, Ng2IzitoastService,
-         { provide: Router, useClass: RouterStub },
+      providers: [{ provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
