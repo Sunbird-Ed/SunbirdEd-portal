@@ -52,7 +52,7 @@ describe('PlayerService', () => {
       contentId: serverRes.result.content.identifier,
       contentData: serverRes.result.content
     };
-    const playerConfig = playerService.getContentPlayerConfig(PlayerMeta);
+    const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig).toBeTruthy();
     expect(playerConfig.context.contentId).toContain('domain_66675');
     expect(playerConfig.context.dims).toContain('d5773f35773feab');
@@ -73,7 +73,7 @@ describe('PlayerService', () => {
       contentData: serverRes.result.content,
       courseId: 'do_66675'
     };
-    const playerConfig = playerService.getContentPlayerConfig(PlayerMeta);
+    const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig.context.contentId).toContain('domain_66675');
     expect(playerConfig.context.dims).toContain('do_66675');
     expect(playerConfig.context.dims.length).toBe(2);

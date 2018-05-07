@@ -8,13 +8,15 @@ import { ContentData } from './../../interfaces';
   templateUrl: './content-metadata.component.html',
   styleUrls: ['./content-metadata.component.css']
 })
-export class ContentMetadataComponent implements OnInit {
+export class ContentMetadataComponent {
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService) { }
-
-  ngOnInit() {
-  }
-  getConceptsNames(concepts) {
+/**
+ * Fetches concepts
+ * @param {any} concepts
+ * @returns {string}
+ */
+getConceptsNames(concepts): string {
     const conceptNames = _.map(concepts, 'name');
     if (concepts && conceptNames.length < concepts.length) {
       // const filteredConcepts = _.filter($rootScope.concepts, (p) => {

@@ -1,5 +1,5 @@
 import { LearnPageComponent } from './components';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';

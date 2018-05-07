@@ -19,6 +19,23 @@ export class PlayerService {
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService ) {
   }
+
+  /**
+   *
+   *
+   * @param {string} id
+   * @returns {Observable<{contentId: string, contentData: ContentData }>}
+   */
+  getConfigByContent(id: string): Observable<PlayerConfig> {
+    return this.getContent(id)
+      .flatMap((contentDetails) => {
+        return Observable.of(this.getConfig({
+          contentId: contentDetails.result.content.identifier,
+          contentData: contentDetails.result.content
+        }));
+      });
+  }
+
   /**
    * Return content details
    * @param {string} contentId
@@ -39,7 +56,7 @@ export class PlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getContentPlayerConfig (contentDetails: ContentDetails): PlayerConfig {
+  getConfig (contentDetails: ContentDetails): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;

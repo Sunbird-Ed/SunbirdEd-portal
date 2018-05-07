@@ -195,6 +195,16 @@
                 "TN Board",
                 "UP Board"
             ],
+            "sortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Modified On"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                }
+            ],
         "upForReviewSortingOptions": [
                {
                    "field": "lastUpdatedOn",

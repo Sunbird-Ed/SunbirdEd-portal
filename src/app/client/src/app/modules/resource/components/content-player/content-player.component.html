@@ -5,23 +5,23 @@
         <div id="content-player">
             <div class='margin-top--5 videosegment ui segment'>
                 <div class='content-player-body'>
-                    <div class="videosegment  ui clearing segment">
+                    <div *ngIf="showPlayer && contentData"  class="videosegment  ui clearing segment">
                         <div class="ui grid">
                             <div class="row margin-auto padding-bottom-none">
                                 <div class="twelve wide column">
                                     <div class="ten wide column" id="player-auto-scroll">
-                                        <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData && contentData.name">
+                                        <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
                                                     {{contentData.name}}
                                         </span>
                                     </div>
                                     <div class="two wide column">
-                                        <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" *ngIf="contentData && contentData.name" (click)="close()">
+                                        <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
                                             <i class="ui remove icon"></i>
                                         </h5>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row margin-auto padding-top-none" *ngIf="contentData && contentData.name">
+                            <div class="row margin-auto padding-top-none">
                                 <div class="twelve wide column">
                                   <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
                                   [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="contentData" class="ui stackable twelve column grid padding-top-10">
+                    <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
 
                       <app-player class="content-player" [playerConfig]="playerConfig" ></app-player>
 
@@ -62,7 +62,7 @@
                             <div class="ui grid">
                                 <div class="eight wide column">
                                     <div class="row">
-                                        <div class="twelve wide column" *ngIf="contentData && contentData.description">
+                                        <div class="twelve wide column" *ngIf="contentData.description">
                                             <div class="ui raised segment">
                                                 <div class="header announcementCard-header">
                                                     <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.description}} </span>
@@ -75,11 +75,11 @@
                                             </div>
                                         </div>
                                         <div class="twelve wide column margin-top-20">
-                                            <!-- <app-discussions></app-discussions> -->
+                                            <app-discussions></app-discussions>
                                         </div>
                                     </div>
                                 </div>
-                                <div *ngIf="contentData" class="four wide column">
+                                <div class="four wide column">
                                     <div class="row">
                                         <div class="twelve wide column">
                                           <app-content-metadata [contentData]="contentData"></app-content-metadata>
@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>                              
+                            </div>                              
                       </div>
                     </div>
                     <div *ngIf="showError">

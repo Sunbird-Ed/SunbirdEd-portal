@@ -8,10 +8,10 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService
 } from './services';
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
-  FlagContentComponent } from './components';
+  ErrorPageComponent, SortByComponent, FlagContentComponent  } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
@@ -25,10 +25,11 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent, BreadcrumbsComponent, FlagContentComponent],
-  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent, BreadcrumbsComponent],
+     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
+     SortByComponent, BreadcrumbsComponent, FlagContentComponent],
   providers: [
-    LearnerService, UserService, TenantService,
+    LearnerService, UserService, TenantService, SearchService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
      { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService, BreadcrumbsService, PlayerService]
