@@ -107,7 +107,7 @@ export class CollectionPlayerComponent implements OnInit {
     });
   }
 
-  private OnPlayContent(content: { title: string, id: string }) {
+  public OnPlayContent(content: { title: string, id: string }) {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);

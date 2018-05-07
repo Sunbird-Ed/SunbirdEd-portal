@@ -8,7 +8,7 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, BreadcrumbsService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, BreadcrumbsService
 } from './services';
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
   ErrorPageComponent, SortByComponent, BreadcrumbsComponent } from './components';
@@ -29,7 +29,7 @@ import { CacheService } from 'ng2-cache-service';
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
      SortByComponent, BreadcrumbsComponent],
   providers: [
-    LearnerService, UserService, TenantService,
+    LearnerService, UserService, TenantService, SearchService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
      { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService, BreadcrumbsService, PlayerService]
