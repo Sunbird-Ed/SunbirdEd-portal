@@ -6,7 +6,7 @@
 
 import {
   Component, OnInit, Input, ElementRef,
-  ViewChild, AfterViewInit, OnChanges
+  ViewChild, AfterViewInit, OnChanges, Output, EventEmitter
 } from '@angular/core';
 import * as _ from 'lodash';
 
@@ -88,6 +88,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   @Input() public nodes;
   @Input() public options;
+  @Output() public contentSelect: EventEmitter<any> = new EventEmitter();
+
   private rootNode: any;
   public rootChildrens: any;
 
@@ -97,6 +99,18 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.initialize();
+  }
+
+  public onNodeClick(node: any) {
+    if (!node.folder) {
+      this.contentSelect.emit({ id: node.id, title: node.title });
+    }
+  }
+
+  public onItemSelect(item: any) {
+    if (!item.folder) {
+      this.contentSelect.emit({ id: item.data.id, title: item.title });
+    }
   }
 
   private initialize() {

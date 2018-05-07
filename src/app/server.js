@@ -138,6 +138,7 @@ app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
+app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -208,22 +209,6 @@ app.all('/learner/*',
     }
   }))
 
-app.all('/content/*',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(contentURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      let urlParam = req.params['0']
-      let query = require('url').parse(req.url).query
-      if (query) {
-        return require('url').parse(contentURL + urlParam + '?' + query).path
-      } else {
-        return require('url').parse(contentURL + urlParam).path
-      }
-    }
-  }))
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
 
@@ -261,6 +246,23 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+app.all('/content/*',
+proxyUtils.verifyToken(),
+permissionsHelper.checkPermission(),
+proxy(contentURL, {
+  limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqPathResolver: function (req) {
+    let urlParam = req.params['0']
+    let query = require('url').parse(req.url).query
+    if (query) {
+      return require('url').parse(contentURL + urlParam + '?' + query).path
+    } else {
+      return require('url').parse(contentURL + urlParam).path
+    }
+  }
+}))
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
