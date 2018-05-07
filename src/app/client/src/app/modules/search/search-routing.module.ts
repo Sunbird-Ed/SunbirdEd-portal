@@ -7,6 +7,11 @@ import {
 } from './components';
 const routes: Routes = [
   {
+    path: 'search/All/:pageNumber', component: HomeSearchComponent,
+  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }] }
+
+  },
+  {
     path: 'search/Courses/:pageNumber', component: CourseSearchComponent,
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }] }
 

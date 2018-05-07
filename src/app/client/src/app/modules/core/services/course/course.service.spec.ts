@@ -4,14 +4,15 @@ import { Observable } from 'rxjs/Observable';
 import { CoursesService } from './course.service';
 import { UserService } from './../user/user.service';
 import { LearnerService } from './../learner/learner.service';
-import { ConfigService } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import * as mockData from './course.service.spec.data';
+import { CoreModule } from '@sunbird/core';
 const testData = mockData.mockRes;
 describe('CoursesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CoursesService, UserService, LearnerService, ConfigService]
+      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      providers: []
     });
   });
   it('should be created', inject([CoursesService], (coursesService: CoursesService) => {

@@ -5,3 +5,4 @@ export * from './telemetry';
 export * from './permission';
 export * from './conceptData';
 export * from './breadcrumbs';
+export * from './sort';

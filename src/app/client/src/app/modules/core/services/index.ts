@@ -15,3 +15,4 @@ export * from './tenant/tenant.service';
 export * from './framework/framework.service';
 export * from './form/form.service';
 export * from './breadcrumbs/breadcrumbs.service';
+export * from './player/player.service';

@@ -5,6 +5,7 @@ import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { IEnrolledCourses } from './../../interfaces/index';
+import { ContentService } from '../content/content.service';
 /**
  *  Service for course API calls.
  */
@@ -18,6 +19,10 @@ export class CoursesService {
    *  To do learner service api call.
    */
   private learnerService: LearnerService;
+  /**
+   *  To get url, app configs.
+   */
+  private contentService: ContentService;
   /**
    *  To get url, app configs.
    */
@@ -41,11 +46,13 @@ export class CoursesService {
   * @param {UserService} userService Reference of UserService.
   * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(userService: UserService, learnerService: LearnerService, config: ConfigService) {
+  constructor(userService: UserService, learnerService: LearnerService,
+    config: ConfigService, contentService: ContentService) {
     this.config = config;
     this.userService = userService;
     this.learnerService = learnerService;
     this.userid = this.userService.userid;
+    this.contentService = contentService;
   }
   /**
    *  api call for enrolled courses.
@@ -65,6 +72,12 @@ export class CoursesService {
   }
   public initialize() {
     this.getEnrolledCourses();
+  }
+
+  public getCollectionHierarchy(id: string) {
+    return this.contentService.get({
+      url: this.config.urlConFig.URLS.COURSE.HIERARCHY + '/' + id
+    });
   }
 }
 
