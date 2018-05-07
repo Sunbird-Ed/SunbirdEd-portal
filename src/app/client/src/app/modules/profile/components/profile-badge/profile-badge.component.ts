@@ -10,20 +10,34 @@ import * as _ from 'lodash';
 })
 export class ProfileBadgeComponent implements OnInit {
   /**
- * Reference of User Profile interface
- */
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Booloean value to hide/show awards
+   */
   viewMore = true;
+  /**
+   * Contains default limit to show awards
+   */
   defaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
-  limit = this.defaultLimit; // config
+  /**
+   * Used to store limit to show/hide awards
+   */
+  limit = this.defaultLimit;
+  /**
+   * Contains array of badges
+   */
   badgeArray: any;
-  profileBadge: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public configService: ConfigService) { }
 
   ngOnInit() {
     this.getBadgeData();
   }
+  /**
+   * This method is used to fetch detailed badge data
+   */
   getBadgeData() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -51,6 +65,9 @@ export class ProfileBadgeComponent implements OnInit {
         }
       });
   }
+  /**
+   * This method is used to show/hide ViewMore based on the limit
+   */
   toggle(viewMore) {
     if (viewMore === true) {
       this.limit = this.badgeArray.length;
