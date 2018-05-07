@@ -13,8 +13,8 @@ import { EditorService } from './../../services';
   styleUrls: ['./content-creation-default-template.component.css']
 })
 export class DefaultTemplateComponent implements OnInit {
-  @Input('formFieldProperties') formFieldProperties: any;
-  @Input('categoryMasterList') categoryMasterList: any;
+  @Input() formFieldProperties: any;
+  @Input() categoryMasterList: any;
 
   /**
     * This variable hepls to show and hide page loader.
