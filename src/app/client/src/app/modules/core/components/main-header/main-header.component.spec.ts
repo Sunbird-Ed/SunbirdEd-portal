@@ -1,13 +1,14 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-import { UserService, LearnerService, PermissionService, TenantService } from '@sunbird/core';
+import { ConfigService, ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -15,13 +16,13 @@ describe('MainHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, Ng2IziToastModule],
-      declarations: [MainHeaderComponent],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule, RouterTestingModule],
+      declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService,
         ResourceService, PermissionService,
         UserService, ConfigService,
-        LearnerService, HttpClient]
+        LearnerService]
     })
       .compileComponents();
   }));
@@ -30,16 +31,6 @@ describe('MainHeaderComponent', () => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  // it('should subscribe to user service', () => {
-  //   const userService = TestBed.get(UserService);
-  //   spyOn(userService, 'userData$').and.returnValue(Observable.of({err: null, userProfile: {a: 1, b: 2}}));
-  //   fixture.detectChanges();
-  //   expect(component.userProfile).toBeTruthy();
-  // });
 
   it('should subscribe to user service', () => {
     const userService = TestBed.get(UserService);

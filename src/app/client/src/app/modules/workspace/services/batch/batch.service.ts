@@ -22,22 +22,22 @@ export class BatchService {
   /**
    * Reference of user service.
    */
-  public user: UserService;
+  public userService: UserService;
 
   /**
    * Reference of content service.
    */
-  public content: ContentService;
+  public contentService: ContentService;
 
   /**
-   * Reference of config service
+   * Reference of configService service
    */
-  public config: ConfigService;
+  public configService: ConfigService;
 
   /**
    * Reference of learner service
    */
-  public learner: LearnerService;
+  public learnerService: LearnerService;
 
   /**
    * Reference of batchDetails.
@@ -47,17 +47,17 @@ export class BatchService {
   /**
    * Default method of OrganisationService class
    *
-   * @param {UserService} user user service reference
-   * @param {ContentService} content content service reference
-   * @param {ConfigService} config config service reference
-   * @param {LearnerService} config learner service reference
+   * @param {UserService} userService user service reference
+   * @param {ContentService} contentService content service reference
+   * @param {ConfigService} configService configService service reference
+   * @param {LearnerService} LearnerService learner service reference
    */
-  constructor(user: UserService, content: ContentService,
-    config: ConfigService, learner: LearnerService) {
-    this.user = user;
-    this.content = content;
-    this.config = config;
-    this.learner = learner;
+  constructor(userService: UserService, contentService: ContentService,
+    configService: ConfigService, learnerService: LearnerService) {
+    this.userService = userService;
+    this.contentService = contentService;
+    this.configService = configService;
+    this.learnerService = learnerService;
   }
 
   /**
@@ -68,14 +68,14 @@ export class BatchService {
 
   getBatchDetails(requestParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.GET_DETAILS,
+      url: this.configService.urlConFig.URLS.BATCH.GET_DETAILS,
       data: {
         request: {
           filters: requestParam.filters,
         }
       }
     };
-    return this.learner.get(option);
+    return this.learnerService.get(option);
   }
   /**
   *  Method getRequestBodyForUserSearch
@@ -91,13 +91,13 @@ export class BatchService {
     if (users) {
       request.filters['identifier'] = users;
     }
-    const isCourseMentor = this.user.RoleOrgMap && this.user.RoleOrgMap['COURSE_MENTOR'];
-    const rootOrgId = this.user.rootOrgId;
-    if (isCourseMentor && isCourseMentor.includes(this.user.rootOrgId)) {
-      request.filters['rootOrgId'] = this.user.rootOrgId;
+    const isCourseMentor = this.userService.RoleOrgMap && this.userService.RoleOrgMap['COURSE_MENTOR'];
+    const rootOrgId = this.userService.rootOrgId;
+    if (isCourseMentor && isCourseMentor.includes(this.userService.rootOrgId)) {
+      request.filters['rootOrgId'] = this.userService.rootOrgId;
     } else {
       try {
-        this.orgIds = this.user.RoleOrgMap && this.user.RoleOrgMap['COURSE_MENTOR'];
+        this.orgIds = this.userService.RoleOrgMap && this.userService.RoleOrgMap['COURSE_MENTOR'];
         _.remove(this.orgIds, (id) => {
           return id === rootOrgId;
         });
@@ -157,7 +157,7 @@ export class BatchService {
   */
   updateBatchDetails(requestParam: Ibatch): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.UPDATE,
+      url: this.configService.urlConFig.URLS.BATCH.UPDATE,
       data: {
         request: {
           name: requestParam.name,
@@ -171,7 +171,7 @@ export class BatchService {
         }
       }
     };
-    return this.learner.patch(option);
+    return this.learnerService.patch(option);
   }
 
   /**
@@ -184,14 +184,14 @@ export class BatchService {
   */
   addUsers(requestParam: Ibatch, batchId) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
+      url: this.configService.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
       data: {
         request: {
           userIds: requestParam.userIds
         }
       }
     };
-    return this.learner.post(option);
+    return this.learnerService.post(option);
   }
 
   /**
@@ -206,9 +206,9 @@ export class BatchService {
 
   getBatchDetailsById(requestParam: Ibatch) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.GET_DETAILS + '/' + requestParam.batchId,
+      url: this.configService.urlConFig.URLS.BATCH.GET_DETAILS + '/' + requestParam.batchId,
     };
-    return this.learner.get(option);
+    return this.learnerService.get(option);
   }
 
 
@@ -216,8 +216,7 @@ export class BatchService {
   * method setBatchData
   */
   setBatchData(batchData): void {
-    console.log(JSON.stringify(batchData));
-    this.batchDetails = batchData;
+   this.batchDetails = batchData;
   }
   /**
   * method getBatchData

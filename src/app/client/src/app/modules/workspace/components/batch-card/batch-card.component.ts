@@ -39,7 +39,7 @@ export class BatchCardComponent {
 
   /**
   * Constructor to create injected service(s) object
-  * Default method of Draft Component class
+  * Default method of batch card  Component class
   *@param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
   *@param {BatchService} BatchService Reference of WorkSpaceService
   * @param {Router} route Reference of Router

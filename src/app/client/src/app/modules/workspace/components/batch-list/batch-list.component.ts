@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
@@ -34,10 +34,6 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   private activatedRoute: ActivatedRoute;
 
   /**
-   * Contains unique contentIds id
-  */
-  contentIds: string;
-  /**
    * Status option
   */
   statusOptions: Array<IStatusOption> = [];
@@ -48,7 +44,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   /**
     status for preselection;
   */
-  status: any;
+  status: number;
 
   /**
    * To show / hide loader
@@ -186,7 +182,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
-          this.processBatch();
+          this.upDateBatch();
         } else {
           this.showError = false;
           this.noResult = true;
@@ -222,7 +218,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   /**
   * processing batch for userlist to make an api call for userlist .
   */
-  public processBatch() {
+  public upDateBatch() {
     let userList = [];
     const participants = [];
     const userName = [];
@@ -244,7 +240,6 @@ export class BatchListComponent extends WorkSpace implements OnInit {
         _.forEach(this.batchList, (item, key) => {
           this.batchList[key].userName = userName[item.createdBy];
         });
-        console.log(this.batchList);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
