@@ -76,7 +76,7 @@ describe('ContentEditorComponent', () => {
 
   it('test to navigate to drafts', inject([Router], (router) => () => {
     component.closeModal();
-    setTimeout( () => {
+    setTimeout(() => {
       component.navigateToDraft();
     }, 1000);
 

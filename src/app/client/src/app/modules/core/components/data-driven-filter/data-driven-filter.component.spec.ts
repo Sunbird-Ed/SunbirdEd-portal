@@ -8,7 +8,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, LearnerService,
-   ConceptPickerService, SearchService } from '@sunbird/core';
+   ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { expand } from 'rxjs/operators/expand';
@@ -42,7 +42,7 @@ const fakeActivatedRoute = {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
       declarations: [ DataDrivenFilterComponent ],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService, ConceptPickerService, SearchService,
+        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],

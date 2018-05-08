@@ -153,32 +153,10 @@
                 }
             ],
             "resourceType": [
-                "(Annual / Half-yearly / Semester) Examination",
-                "Academic calendar",
-                "Activity",
-                "Article",
-                "Benchmark assessment",
-                "Book",
-                "Classroom assessments",
-                "Course",
-                "Daily test",
-                "Diagnostic",
-                "E-resources for Professional Development",
-                "Game",
-                "Learning / Study material",
-                "Lesson plan",
-                "Micro practice videos",
-                "Puzzle",
-                "Quiz",
-                "Reference material",
-                "Reflective journals",
-                "Simulation",
-                "Story",
-                "Summative exam",
-                "Teaching resources",
-                "Timed worksheets",
-                "Unit plan",
-                "Worksheet"
+                "Study material",
+                "Test",
+                "Worksheet",
+                "Activity"
             ],
             "subjects": [
                 "Assamese",
@@ -216,6 +194,16 @@
                 "NCTE",
                 "TN Board",
                 "UP Board"
+            ],
+            "sortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Modified On"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                }
             ],
         "upForReviewSortingOptions": [
                {
@@ -296,5 +284,19 @@
                     
                 ]
         }
-    }
+    },
+    "statusOptions": [
+        {
+            "name": "Ongoing Batches",
+            "value": 1
+        },
+        {
+            "name": "Upcoming Batches",
+            "value": 0
+        },
+        {
+            "name": "Previous Batches",
+            "value": 2
+        }
+    ]
 }

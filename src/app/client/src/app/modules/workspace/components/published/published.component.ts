@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService,
