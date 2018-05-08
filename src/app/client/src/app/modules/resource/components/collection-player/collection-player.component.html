@@ -1,0 +1,61 @@
+<br>
+<div class="ui grid container">
+  <div class="row" *ngIf="showPlayer">
+    <div class="ui grid container">
+      <div id="app-player-collection-renderer" class="row">
+        <div class="one wide column"></div>
+        <div class="ten wide column">
+          <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
+          <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer">
+            <i class="ui remove icon"></i>
+          </h5>
+        </div>
+        <div class="one wide column"></div>
+      </div>
+      <div class="row">
+        <div class="one wide column"></div>
+        <div class="ten wide column">
+          <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+        </div>
+        <div class="one wide column"></div>
+      </div>
+    </div>
+  </div>
+  <div class="eight wide centered column" *ngIf="loader">
+    <app-loader [data]="loaderMessage"></app-loader>
+  </div>
+  <div class="eight wide centered column" *ngIf="serviceUnavailable">
+      <div class="ui huge negative message">
+        <div class="header">
+          <span>
+            <i class="fa fa-warning-o fa-lg" aria-hidden="true"></i>
+            Unable to fetch the content details. Please try again later!
+          </span>
+        </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="!loader && !serviceUnavailable">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
+      <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer">
+        <i class="ui remove icon"></i>
+      </h5>
+    </div>
+    <div class="one wide column"></div>
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [maximum]="5"></sui-rating>&nbsp;&nbsp;
+      <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
+          <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+</div>

@@ -3,12 +3,12 @@
   <div class="header announcementCard-header">
     <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
   </div>
-  <div *ngIf="badgeData" class="ui items margin-top-10">
-    <div class="item" *ngFor="let badge of badgeData.badges">
+  <div *ngIf="badgeArray && badgeArray.length" class="ui items margin-top-10">
+    <div class="item" *ngFor="let badge of badgeArray">
       <!--  | orderBy: 'createdTS' || 'createdDate' -->
       <img class="ui avatar image" src="{{badge.image || badge.badgeClassImage}}">
       <div class="middle aligned content padding-left-10">
-        <div class="ui huge sub header secondary-text-color-sunbird">{{badge.name || badge.badgeClassName}}</div>
+        <div class="ui huge sub header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
         <div class="description">
           <div class="secondary-text-color-sunbird">{{badge.description | slice:0:70}}
             <!--  | limitTo : 70 -->
@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div class="meta">{{badge.createdDate || badge.createdTs | dateFormat}}</div>
+      <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat}}</div>
     </div>
   </div>
 </div>

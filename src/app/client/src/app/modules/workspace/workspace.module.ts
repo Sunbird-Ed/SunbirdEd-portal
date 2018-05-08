@@ -5,16 +5,16 @@ import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { WorkSpaceService, EditorService } from './services';
-
+import { WorkSpaceService, EditorService , BatchService} from './services';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
   CollectionEditorComponent, ContentEditorComponent, GenericEditorComponent,
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
   FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
-  LimitedPublishedComponent
+  BatchListComponent, BatchCardComponent, UpdateBatchComponent,LimitedPublishedComponent
 } from './components';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -30,8 +30,9 @@ import {
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
     DataDrivenComponent, UpForReviewComponent, UpforReviewFilterComponent, DefaultTemplateComponent,
-    FlaggedComponent, LimitedPublishedComponent
+    FlaggedComponent, BatchListComponent, BatchCardComponent, UpdateBatchComponent,
+    LimitedPublishedComponent
   ],
-  providers: [WorkSpaceService, EditorService]
+  providers: [WorkSpaceService, EditorService, BatchService]
 })
 export class WorkspaceModule { }

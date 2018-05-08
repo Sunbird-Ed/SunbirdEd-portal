@@ -11,3 +11,7 @@ export * from './loader';
 export * from './appIdEnv';
 export * from './framework';
 export * from './shareLink';
+export * from './playerConfig';
+export * from './contentDetails';
+export * from './collectionTree';
+export * from './fancyTree';

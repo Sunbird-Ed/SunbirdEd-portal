@@ -14,3 +14,6 @@ export * from './data-driven/data-driven.component';
 export * from './content-creation-default-template/content-creation-default-template.component';
 export * from './limited-published/limited-published.component';
 export * from './flagged/flagged.component';
+export * from './batch-list/batch-list.component';
+export * from './batch-card/batch-card.component';
+export * from './update-batch/update-batch.component';
