@@ -4,13 +4,19 @@ import { LandingPageComponent, SignupComponent } from './components';
 import { Routes, RouterModule } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GetComponent } from './components/get/get.component';
+import { DialCodeComponent } from './components/dial-code/dial-code.component';
+import { SharedModule} from '@sunbird/shared';
+import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 
 const routes: Routes = [
   {
     path: '', // root path '/' for the app
     component: LandingPageComponent
   },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  { path: 'get', component: GetComponent },
+  { path: 'get/dial/:dialCode', component: DialCodeComponent }
 ];
 
 @NgModule({
@@ -19,8 +25,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     SuiModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
-  declarations: [LandingPageComponent, SignupComponent]
+  declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent, PublicFooterComponent]
 })
 export class PublicModule { }
