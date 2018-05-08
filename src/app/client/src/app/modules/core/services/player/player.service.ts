@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
@@ -17,7 +18,7 @@ export class PlayerService {
    */
   contentData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService ) {
+    public configService: ConfigService, public router: Router ) {
   }
 
   /**
@@ -82,8 +83,30 @@ export class PlayerService {
     }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
-    configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecml ?
+    configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
     {} : contentDetails.contentData.body;
     return configuration;
+  }
+  playContent(content) {
+
+    if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+
+      if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
+        this.router.navigate(['/resources/play/collection', content.identifier]);
+      } else {
+        console.log('course consumption');
+      }
+
+    } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
+
+      this.router.navigate(['/resources/play/content', content.identifier , content.name]);
+
+    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
+
+      this.router.navigate(['/resources/play/content', content.identifier , content.name]);
+
+    } else {
+      // toaster not valid content type
+    }
   }
 }
