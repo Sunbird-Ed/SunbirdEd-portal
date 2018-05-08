@@ -229,13 +229,13 @@ export class DataDrivenComponent implements OnInit {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
     if (this.resourceType) {
-      requestData.resourcetype = this.resourceType;
+      requestData.resourceType = this.resourceType;
     }
 
     return requestData;
   }
 
-  createContent() {
+createContent() {
     const state = 'draft';
     const framework = this.framework;
     const requestData = {
