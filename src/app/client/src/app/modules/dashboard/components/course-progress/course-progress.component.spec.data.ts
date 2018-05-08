@@ -98,6 +98,15 @@ userMockData: {
   'createdDate': '2017-10-31 10:47:04:723+0000',
   'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
 },
+dashboardError: {
+  error: {
+      'id': 'api.dashboard.progress.coursex', 'ver': '1.0', 'ts': '2018-02-26 09:22:46:452+0000',
+      'params': {
+          'resmsgid': '9b3bef40-1ad6-11e8-98b8-5deaf514b022', 'msgid': null, 'status': 'failed', 'err': '',
+          'errmsg': 'Timeperiod is invalid'
+      }, 'responseCode': 'CLIENT_ERROR', 'result': {}
+  }
+},
 getBatchRes :
   {
       'id': 'api.course.batch.search',

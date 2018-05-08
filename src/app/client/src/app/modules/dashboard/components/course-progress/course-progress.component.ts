@@ -5,6 +5,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { Observable } from 'rxjs/Observable';
+import { ICourseProgressData, IBatchListData } from './../../interfaces';
 
 /**
  * This component shows the course progress dashboard
@@ -15,44 +16,80 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./course-progress.component.css']
 })
 export class CourseProgressComponent implements OnInit {
-
+  /**
+	 * This variable helps to show and hide page loader.
+	 */
   showLoader = true;
-  batchlist: any;
+  /**
+	 * This variable sets the batch list data related to the given course
+	 */
+  batchlist: Array<IBatchListData>;
+  /**
+	 * This variable sets the course id
+	 */
   courseId: string;
+  /**
+	 * This variable sets the user id
+	 */
   userId: string;
-  batchIdentifier: string;
-  dashboarData: any;
+  /**
+	 * This variable sets the dashboard result related to the given batch
+	 */
+  dashboarData: Array<ICourseProgressData>;
+  /**
+	 * This variable is set to true when the length of batch is 0.
+   * It helps to show a message div on html
+	 */
   showNoBatch = false;
+  /**
+	 * This variable helps to show the download modal after successful download API call
+	 */
   showDownloadModal = false;
+  /**
+	 * This variable sets the filter description which is displayed inside the dashboard
+	 */
   filterText: string;
+  /**
+	 * This variable sets the name of the field which is to be sorted
+	 */
   order: string;
+  /**
+	 * This variable sets the order to true or false
+	 */
   reverse: boolean;
+  /**
+	 * This variable sets the queryparams on url
+	 */
   queryParams: any;
+  /**
+	 * This variable sets selected batch id, if exist
+	 */
   selectedOption: string;
+  /**
+	 * This variable helps to unsubscribe the params and queryparams
+	 */
   paramSubcription: any;
+  /**
+	 * This variable helps to show the warning div
+	 */
   showWarningDiv = false;
-
   /**
    * To navigate to other pages
    */
   route: Router;
-
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
    */
   private activatedRoute: ActivatedRoute;
-
   /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
-
   /**
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
-
   /**
   * To get user profile of logged-in user
   */
@@ -61,7 +98,6 @@ export class CourseProgressComponent implements OnInit {
   * To get user profile of logged-in user
   */
   public courseProgressService: CourseProgressService;
-
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -93,7 +129,7 @@ export class CourseProgressComponent implements OnInit {
   * To method helps to get all batches related to the course.
   * Then it helps to set flag dependeing on number of batches.
   */
-  populateBatchData() {
+  populateBatchData(): void {
     this.showLoader = true;
     const option = {
       courseId: this.courseId,
@@ -128,16 +164,20 @@ export class CourseProgressComponent implements OnInit {
 
   /**
   * To method helps to set batch id and calls the populateCourseDashboardData
+  *
+	* @param {string} batchId batch identifier
   */
-  setBatchId(batchId: string) {
+  setBatchId(batchId: string): void {
     this.queryParams.batchIdentifier = batchId;
     this.populateCourseDashboardData();
   }
 
   /**
   * To method helps to set time period and calls the populateCourseDashboardData
+  *
+	* @param {string} timePeriod time period
   */
-  setTimePeriod(timePeriod: string) {
+  setTimePeriod(timePeriod: string): void {
     this.queryParams.timePeriod = timePeriod;
     this.populateCourseDashboardData();
   }
@@ -145,7 +185,7 @@ export class CourseProgressComponent implements OnInit {
   /**
   * To method helps to set filter description
   */
-  setFilterDescription() {
+  setFilterDescription(): void {
     const filterDesc = {
       '7d': this.resourceService.messages.imsg.m0022,
       '14d': this.resourceService.messages.imsg.m0023,
@@ -158,14 +198,14 @@ export class CourseProgressComponent implements OnInit {
   /**
   * Method to update the url with selected query params
   */
-  navigate() {
+  navigate(): void {
     this.route.navigate([], { queryParams: this.queryParams });
   }
 
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
-  populateCourseDashboardData() {
+  populateCourseDashboardData(): void {
     this.showWarningDiv = false;
     this.navigate();
     this.setFilterDescription();
@@ -188,8 +228,10 @@ export class CourseProgressComponent implements OnInit {
 
   /**
   * To method helps to set order of a specific field
+  *
+	* @param {string} value Field name that is to be sorted
   */
-  setOrder(value: string) {
+  setOrder(value: string): void {
     this.order = value;
     this.reverse = !this.reverse;
   }
@@ -197,7 +239,7 @@ export class CourseProgressComponent implements OnInit {
   /**
   * To method calls the download API with specific batch id and timeperiod
   */
-  downloadReport() {
+  downloadReport(): void {
     const option = {
       batchIdentifier: this.queryParams.batchIdentifier,
       timePeriod: this.queryParams.timePeriod

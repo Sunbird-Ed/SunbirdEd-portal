@@ -24,6 +24,7 @@ import { OrderModule } from 'ngx-order-pipe';
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
+
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -39,10 +40,8 @@ describe('CourseProgressComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'params': Observable.from([{
-      'contentId': 'do_112470675618004992181',
-      'timePeriod': '7d'
-    }])
+    'params': Observable.from([{ contentId: 'do_112470675618004992181' }]),
+    'queryParams': Observable.from([{ batchIdentifier: '0124963192947507200' , timePeriod: '7d'}])
   };
 
   beforeEach(async(() => {
@@ -63,7 +62,6 @@ describe('CourseProgressComponent', () => {
     fixture = TestBed.createComponent(CourseProgressComponent);
     component = fixture.componentInstance;
   });
-
 
   it('should call userservice, call populateBatchData()', inject([UserService, CourseProgressService],
     (userService, courseService) => {
@@ -106,13 +104,15 @@ describe('CourseProgressComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
     }));
 
-  it('on selection of courseId call setBatchId()', inject([], () => {
+  it('on selection of courseId call setBatchId()', inject([UserService], (userService) => {
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
     fixture.detectChanges();
     component.setBatchId('01248661735846707228');
-    expect(component.batchIdentifier).toEqual('01248661735846707228');
+    expect(component.queryParams.batchIdentifier).toEqual('01248661735846707228');
   }));
 
-  it('on selection of timeperiod call setTimePeriod()', inject([], () => {
+  it('on selection of timeperiod call setTimePeriod()', inject([UserService], (userService) => {
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
     fixture.detectChanges();
     component.setTimePeriod('7d');
     expect(component.queryParams.timePeriod).toEqual('7d');
@@ -120,6 +120,8 @@ describe('CourseProgressComponent', () => {
 
   it('spy on populateCourseDashboardData()', inject([UserService, CourseProgressService],
     (userService, courseService) => {
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
       spyOn(courseService, 'getDashboardData').and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
       component.populateCourseDashboardData();
       expect(component.dashboarData).toBeDefined();
@@ -128,15 +130,18 @@ describe('CourseProgressComponent', () => {
 
   it('spy on populateCourseDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
-      spyOn(courseService, 'getDashboardData').and.callFake(() => Observable.throw({}));
-
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
+      spyOn(courseService, 'getDashboardData').and.callFake(() => Observable.throw(testData.mockUserData.dashboardError));
       spyOn(toasterService, 'error').and.callThrough();
       component.populateCourseDashboardData();
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
+      expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
     }));
 
   it('spy on downloadDashboardData()', inject([UserService, CourseProgressService],
     (userService, courseService) => {
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
       component.downloadReport();
@@ -145,6 +150,8 @@ describe('CourseProgressComponent', () => {
 
   it('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => Observable.throw({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();

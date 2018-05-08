@@ -8,7 +8,7 @@ describe('FilterPipe', () => {
       const pipe = new FilterPipe();
       const searchData = 'test';
       const items = testData.mockRes.userSuccess.result.response.note;
-      const result = pipe.transform(items , searchData, ['userName']);
+      const result = pipe.transform(items , searchData, ['note']);
       const filteredArray = testData.mockRes.filteredArray;
       expect(result[0].note).toBe(filteredArray[0].note);
       expect(FilterPipe).toBeTruthy();
@@ -18,7 +18,7 @@ describe('FilterPipe', () => {
       const pipe = new FilterPipe();
       const searchData = '';
       const items = testData.mockRes.userSuccess.result.response.note;
-      const result = pipe.transform(items , searchData, ['userName']);
+      const result = pipe.transform(items , searchData, ['note']);
       const filteredArray = testData.mockRes.filteredArray;
       expect(result).toBe(items);
       expect(FilterPipe).toBeTruthy();
