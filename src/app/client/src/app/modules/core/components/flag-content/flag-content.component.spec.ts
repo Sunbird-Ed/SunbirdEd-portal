@@ -83,7 +83,6 @@ const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId
    spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successFlag));
    component.showLoader = false;
    contentService.post(requestData).subscribe(data => {
-     console.log(data);
     expect(component.showLoader).toBeFalsy();
    });
    fixture.detectChanges();
