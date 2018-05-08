@@ -43,6 +43,11 @@ export interface IContents {
     * Content contentType
     */
     contentType?: string;
+
+    /**
+    * Content contentType
+    */
+    mimeType?: string;
     /**
     * Content identifier
     */
