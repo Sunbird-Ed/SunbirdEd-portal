@@ -71,10 +71,11 @@ describe('ContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should config content player if content status is "Live"', () => {
+  fit('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
+    serverRes.result.content.status = 'Live';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
