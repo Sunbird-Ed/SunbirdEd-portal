@@ -71,7 +71,7 @@ describe('ContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should config content player if content status is "Live"', () => {
+  it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
