@@ -1,4 +1,4 @@
-import { PageApiService, ISort } from '@sunbird/core';
+import { PageApiService, PlayerService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
@@ -60,7 +60,7 @@ export class ResourceComponent implements OnInit {
    * @param {PageApiService} pageSectionService Reference of pageSectionService.
    * @param {ToasterService} iziToast Reference of toasterService.
    */
-  constructor(pageSectionService: PageApiService, toasterService: ToasterService,
+  constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
@@ -149,5 +149,8 @@ export class ResourceComponent implements OnInit {
         });
         this.populatePageData();
       });
+  }
+  playContent(event) {
+    this.playerService.playContent(event.content);
   }
 }
