@@ -2,6 +2,8 @@ import { ConfigService } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { CollectionHierarchyAPI } from '../../interfaces';
 
 /**
  * Service to provides CRUD methods to make content api request by extending DataService.
@@ -31,4 +33,11 @@ export class ContentService extends DataService {
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
   }
+
+  public getCollectionHierarchy(id: string): Observable<CollectionHierarchyAPI.Get> {
+    return this.get({
+      url: this.config.urlConFig.URLS.COURSE.HIERARCHY + '/' + id
+    });
+  }
+
 }
