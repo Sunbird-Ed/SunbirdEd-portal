@@ -133,7 +133,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   openCollectionEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
@@ -147,8 +146,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       overlayColor: '',
       history: false,
       onClosing: () => {
-        self._zone.run(() => {
-          self.closeModal();
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -227,7 +226,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
      */
     this.editorService.getById(req, qs).subscribe(response => {
       const rspData = response.result.content;
-      rspData.state = 'CreateCollection';
+      rspData.state = this.state;
       rspData.userId = this.userProfile.userId;
       if (this.validateRequest(rspData, validateModal)) {
         this.updateModeAndStatus(response.result.content.status);
@@ -247,9 +246,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   closeModal() {
     this.showModal = true;
-    setTimeout(() => {
+     setTimeout(() => {
       this.navigateToDraft();
-    }, 1000);
+     }, 1000);
   }
 
   navigateToDraft() {
