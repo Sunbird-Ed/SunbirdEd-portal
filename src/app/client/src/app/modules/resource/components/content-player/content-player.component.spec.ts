@@ -75,6 +75,7 @@ describe('ContentPlayerComponent', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
+    serverRes.result.content.status = 'Live';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
