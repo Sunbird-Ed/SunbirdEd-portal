@@ -20,8 +20,8 @@ import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
 import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
+import { DiscussionModule } from '@sunbird/discussion';
 import * as $ from 'jquery';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -46,7 +46,8 @@ import * as $ from 'jquery';
     OrgManagementModule,
     PublicModule,
     ProfileModule,
-    SearchModule
+    SearchModule,
+    DiscussionModule
   ],
   providers: [],
   entryComponents: [AppComponent],

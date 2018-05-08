@@ -13,8 +13,8 @@ import { EditorService } from './../../services';
   styleUrls: ['./content-creation-default-template.component.css']
 })
 export class DefaultTemplateComponent implements OnInit {
-  @Input('formFieldProperties') formFieldProperties: any;
-  @Input('categoryMasterList') categoryMasterList: any;
+  @Input() formFieldProperties: any;
+  @Input() categoryMasterList: any;
 
   /**
     * This variable hepls to show and hide page loader.
@@ -85,8 +85,6 @@ export class DefaultTemplateComponent implements OnInit {
  */
   private editorService: EditorService;
 
-  public resourceType = [];
-
 
 
 
@@ -125,7 +123,6 @@ export class DefaultTemplateComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.resourceType = this.configService.dropDownConfig.FILTER.RESOURCES.resourceType;
     /***
  * Call User service to get user data
  */

@@ -9,7 +9,7 @@ export interface ServerResponse {
     /**
      * response param
     */
-    params: object;
+    params: Params;
     /**
      * response code
     */
@@ -26,4 +26,12 @@ export interface ServerResponse {
      * api version
     */
     ver: string;
+}
+
+export interface Params {
+    resmsgid: string;
+    msgid?: any;
+    err?: any;
+    status: string;
+    errmsg?: any;
 }

@@ -100,7 +100,7 @@ app.all('/logoff', function (req, res) {
 })
 
 // Mobile redirection to app
-require('./helpers/mobileRedirectHelper.js')(app)
+require('./helpers/mobileAppHelper.js')(app)
 
 function indexPage (req, res) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -109,6 +109,7 @@ function indexPage (req, res) {
   res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
 
@@ -135,6 +136,9 @@ app.all('/resources', keycloak.protect(), indexPage)
 app.all('/resources/*', keycloak.protect(), indexPage)
 app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
+app.all('/get', indexPage)
+app.all('/get/*', indexPage)
+app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -205,22 +209,6 @@ app.all('/learner/*',
     }
   }))
 
-app.all('/content/*',
-  proxyUtils.verifyToken(),
-  permissionsHelper.checkPermission(),
-  proxy(contentURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: function (req) {
-      let urlParam = req.params['0']
-      let query = require('url').parse(req.url).query
-      if (query) {
-        return require('url').parse(contentURL + urlParam + '?' + query).path
-      } else {
-        return require('url').parse(contentURL + urlParam).path
-      }
-    }
-  }))
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
 
@@ -258,6 +246,23 @@ app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+app.all('/content/*',
+proxyUtils.verifyToken(),
+permissionsHelper.checkPermission(),
+proxy(contentURL, {
+  limit: reqDataLimitOfContentUpload,
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqPathResolver: function (req) {
+    let urlParam = req.params['0']
+    let query = require('url').parse(req.url).query
+    if (query) {
+      return require('url').parse(contentURL + urlParam + '?' + query).path
+    } else {
+      return require('url').parse(contentURL + urlParam).path
+    }
+  }
+}))
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName

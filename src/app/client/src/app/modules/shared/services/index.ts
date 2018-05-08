@@ -5,4 +5,5 @@ export * from './toaster/toaster.service';
 export * from './file-upload/file-upload.service';
 export * from './navigate/router-navigation.service';
 export * from './window-scroll/window-scroll.service';
+export * from './navigation-helper/navigation-helper.service';
 

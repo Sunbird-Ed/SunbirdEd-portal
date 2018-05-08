@@ -6,78 +6,10 @@
 
 import {
   Component, OnInit, Input, ElementRef,
-  ViewChild, AfterViewInit, OnChanges
+  ViewChild, AfterViewInit, OnChanges, Output, EventEmitter
 } from '@angular/core';
 import * as _ from 'lodash';
-
-/*
-*
-* nodes structure =  {
-  data: {
-    title: 'node 1',
-    children: [{
-      'title': 'node 1.1',
-      'children': []
-    }]
-  }
-}
-*
-*
-* sample options = {
-    folderIcon: 'fa fa-folder-o fa-lg', //font awesome icons
-    fileIcon: 'fa fa-file-o fa-lg', //default
-    customFileIcon: {
-      'video': 'fa fa-file-video-o fa-lg',
-      'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg',
-      'H5P': 'fa fa-html5 fa-lg',
-      'audio': 'fa fa-file-audio-o fa-lg',
-      'ECML': 'fa fa-code-o fa-lg',
-      'HTML': 'fa fa-html5-o fa-lg',
-      'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': '',
-      'doc': ''
-    }
-  };
-*
-*/
-
-
-enum fileType {
-  'application/vnd.ekstep.content-collection' = 'collection',
-  'video/x-youtube' = 'youtube',
-  'application/pdf' = 'pdf',
-  'application/epub' = 'epub',
-  'application/vnd.ekstep.ecml-archive' = 'ECML',
-  'application/vnd.ekstep.ecml-archive+zip' = 'ECML',
-  'application/vnd.ekstep.html-archive+zip' = 'HTML',
-  'application/vnd.ekstep.content-archive+zip' = 'collection',
-  'application/vnd.ekstep.content-collection+zip' = 'collection',
-  'application/vnd.ekstep.h5p-archive+zip' = 'H5P',
-  // 'application/octet-stream' = '',
-  'application/msword' = 'doc',
-  'image/jpeg' = 'image',
-  'image/jpg' = 'image',
-  'image/png' = 'image',
-  'image/tiff' = 'image',
-  'image/bmp' = 'image',
-  'image/gif' = 'image',
-  'image/svg+xml' = 'image',
-  'video/avi' = 'video',
-  'video/mpeg' = 'video',
-  'video/quicktime' = 'video',
-  'video/3gpp' = 'video',
-  'video/mp4' = 'video',
-  'video/ogg' = 'video',
-  'video/webm' = 'video',
-  'audio/mp3' = 'audio',
-  'audio/mp4' = 'audio',
-  'audio/mpeg' = 'audio',
-  'audio/ogg' = 'audio',
-  'audio/webm' = 'audio',
-  'audio/x-wav' = 'audio',
-  'audio/wa' = 'audio'
-}
+import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
 
 @Component({
   selector: 'app-collection-tree',
@@ -86,8 +18,10 @@ enum fileType {
 })
 export class CollectionTreeComponent implements OnInit, OnChanges {
 
-  @Input() public nodes;
-  @Input() public options;
+  @Input() public nodes: ICollectionTreeNodes;
+  @Input() public options: ICollectionTreeOptions;
+  @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
+
   private rootNode: any;
   public rootChildrens: any;
 
@@ -97,6 +31,18 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.initialize();
+  }
+
+  public onNodeClick(node: any) {
+    if (!node.folder) {
+      this.contentSelect.emit({ id: node.id, title: node.title });
+    }
+  }
+
+  public onItemSelect(item: any) {
+    if (!item.folder) {
+      this.contentSelect.emit({ id: item.data.id, title: item.title });
+    }
   }
 
   private initialize() {
@@ -116,7 +62,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private addNodeMeta() {
     if (!this.rootNode) { return; }
     this.rootNode.walk((node) => {
-      node.fileType = fileType[node.model.mimeType];
+      node.fileType = MimeTypeTofileType[node.model.mimeType];
       node.id = node.model.identifier;
       node.title = node.model.name || 'Untitled File';
       if (node.children && node.children.length) {

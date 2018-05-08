@@ -1,4 +1,4 @@
-import { PageApiService, CoursesService, ICourses } from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort} from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash';
@@ -61,6 +61,7 @@ export class LearnPageComponent implements OnInit {
   public redirectUrl: string;
   public filters: any;
   public queryParams: any = {};
+  sortingOptions: Array<ISort>;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -78,11 +79,13 @@ export class LearnPageComponent implements OnInit {
     this.configService = configService;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
+    this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
      * This method calls the enrolled courses API.
      */
   populateEnrolledCourse() {
+    this.showLoader = true;
     this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -118,12 +121,11 @@ export class LearnPageComponent implements OnInit {
    */
   populatePageData() {
     this.caraouselData = [];
-    this.showLoader = true;
     const option = {
       source: 'web',
       name: 'Course',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {}
+      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -181,7 +183,6 @@ export class LearnPageComponent implements OnInit {
  *This method calls the populateEnrolledCourse
  */
   ngOnInit() {
-    this.filters = {};
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
@@ -203,7 +204,12 @@ export class LearnPageComponent implements OnInit {
         })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
-       this.filters = this.queryParams;
+        this.filters = {};
+        _.forIn(this.queryParams, (value, key) => {
+          if (key !== 'sort_by' && key !== 'sortType') {
+            this.filters[key] = value;
+          }
+        });
        this.populateEnrolledCourse();
       });
   }

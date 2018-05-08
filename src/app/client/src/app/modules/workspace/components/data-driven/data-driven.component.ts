@@ -121,19 +121,8 @@ export class DataDrivenComponent implements OnInit {
     this.formService = formService;
     this.activatedRoute.url.subscribe(url => {
       this.contentType = url[0].path;
-      if (this.contentType === 'collection') {
-        this.resourceType = this.configService.appConfig.resourceType.collection;
-      } else
-        if (this.contentType === 'textbook') {
-          this.resourceType = this.configService.appConfig.resourceType.book;
-        } else
-          if (this.contentType === 'course') {
-            this.resourceType = this.configService.appConfig.resourceType.course;
-          } else
-            if (this.contentType === 'lessonplan') {
-              this.resourceType = this.configService.appConfig.resourceType.lessonplan;
-            }
     });
+    this.resourceType =  this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
 
