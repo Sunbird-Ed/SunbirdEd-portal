@@ -48,4 +48,17 @@ export class WorkSpace {
             return requestData.indexOf(content.identifier) === -1;
         });
     }
+    /**
+    * Batchlist  Api call
+    */
+    getBatches(searchParams) {
+        return this.searchService.batchSearch(searchParams);
+    }
+
+    /**
+    * userList  Api call
+    */
+    UserList(searchParams) {
+        return this.searchService.getUserList(searchParams);
+    }
 }

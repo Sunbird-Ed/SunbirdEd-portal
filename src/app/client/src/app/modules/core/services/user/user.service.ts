@@ -167,8 +167,7 @@ export class UserService {
         }
       });
     }
-    const rootOrg = (profileData.rootOrg && !_.isUndefined(profileData.rootOrg.hashTagId)) ? profileData.rootOrg.hashTagId : 'sunbird';
-    this._channel = rootOrg;
+    this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
     this._userProfile = profileData;
@@ -200,7 +199,6 @@ export class UserService {
   get dims() {
     return this._dims;
   }
-
   private setRoleOrgMap(profile) {
     let  roles = [];
     const roleOrgMap = {};
