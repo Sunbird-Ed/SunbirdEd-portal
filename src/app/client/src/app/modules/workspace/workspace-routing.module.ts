@@ -88,15 +88,12 @@ const routes: Routes = [
         path: 'upForReview/:pageNumber', component: UpForReviewComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
-<<<<<<< HEAD
       {
         path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
-=======
       { path: 'batches/:pageNumber', component: BatchListComponent },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
->>>>>>> upstream/angular-migration
       { path: '**', redirectTo: 'create' }
     ]
   },
