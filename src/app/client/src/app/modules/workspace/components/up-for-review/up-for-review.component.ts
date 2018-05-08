@@ -1,4 +1,4 @@
-import { WorkSpace } from './../../classes/workspaceclass';
+import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService, UserService } from '@sunbird/core';
