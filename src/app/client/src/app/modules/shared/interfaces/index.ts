@@ -12,3 +12,5 @@ export * from './appIdEnv';
 export * from './framework';
 export * from './playerConfig';
 export * from './contentDetails';
+export * from './collectionTree';
+export * from './fancyTree';
