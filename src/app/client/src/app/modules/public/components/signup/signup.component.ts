@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
   /**
   * Contains list of languages from config file
   */
-  languages: any;
+  languages: Array<string>;
   /**
   * Boolean value to either show/hide app loader
   */
@@ -45,13 +45,6 @@ export class SignupComponent implements OnInit {
       email: new FormControl(null, [Validators.required,
       Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
       language: new FormControl(null, [Validators.required])
-    });
-    this.signUpForm.valueChanges.map((value) => {
-      if (value.firstName !== null && value.userName !== null) {
-        value.firstName = value.firstName.trim();
-        value.userName = value.userName.trim();
-        return value;
-      }
     });
   }
   /**

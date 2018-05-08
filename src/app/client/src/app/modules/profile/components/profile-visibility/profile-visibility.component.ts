@@ -13,20 +13,13 @@ export class ProfileVisibilityComponent implements OnInit {
    */
   @Input() field: string;
   /**
-   * 
+   *
    */
   isOpen: any;
   /**
    * Contains text to show/hide
    */
-  options = [{
-    text: 'Hide this from everyone',
-    value: 'private'
-  },
-  {
-    text: 'Show this to all',
-    value: 'public'
-  }];
+  options: Array<string>;
   /**
    * Reference of User Profile interface
    */
@@ -40,18 +33,19 @@ export class ProfileVisibilityComponent implements OnInit {
    */
   loader = false;
   constructor(public userService: UserService, public profileService: ProfileService, public resourceService: ResourceService,
-    public toasterService: ToasterService) { }
-    /**
-   * This method is used to fetch user profile details
-   */
+    public toasterService: ToasterService, public configService: ConfigService) { }
+  /**
+ * This method is used to fetch user profile details
+ */
   ngOnInit() {
+    this.options = this.configService.appConfig.PROFILE.options;
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = this.userService.userProfile;
           this.visibility = this.userProfile.profileVisibility[this.field] ? 'private' : 'public';
         }
-    });
+      });
     this.userProfile = this.userService.userProfile;
   }
   /**
@@ -69,8 +63,9 @@ export class ProfileVisibilityComponent implements OnInit {
       this.visibility = value;
       this.toasterService.success(this.resourceService.messages.smsg.m0040);
     },
-    err => {
-      this.loader = false;
-    });
+      err => {
+        this.loader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0048);
+      });
   }
 }

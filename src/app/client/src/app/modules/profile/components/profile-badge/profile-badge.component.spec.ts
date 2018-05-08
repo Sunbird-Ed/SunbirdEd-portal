@@ -35,20 +35,22 @@ describe('ProfileBadgeComponent', () => {
     spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     expect(component.ngOnInit).toHaveBeenCalled();
+    expect(component.badgeArray[0]).toEqual(mockRes.badgeList);
   });
   it('should call toggle method with limit greater than 3', () => {
     const badgeService = TestBed.get(BadgesService);
     const limit = true;
-    spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(mockRes.badgeList));
     component.badgeArray = [];
     component.badgeArray.length = 5;
     component.limit = component.badgeArray.length;
     component.toggle(limit);
     expect(component.viewMore).toBe(false);
+    expect(component.limit).toBeGreaterThan(3);
   });
   it('should call toggle method with limit lesser than 3', () => {
     const limit = false;
     component.toggle(limit);
     expect(component.viewMore).toBe(true);
+    expect(component.limit).toBeLessThanOrEqual(3);
   });
 });

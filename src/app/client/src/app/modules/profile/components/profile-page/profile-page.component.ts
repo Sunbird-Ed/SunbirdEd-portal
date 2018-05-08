@@ -3,6 +3,7 @@ import { UserService, PermissionService, SearchService } from '@sunbird/core';
 import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import { MyContributions } from '../../interfaces';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -27,7 +28,7 @@ export class ProfilePageComponent implements OnInit {
   /**
    * Contains list of contributions
    */
-  contributions: any;
+  contributions: Array<MyContributions>;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,

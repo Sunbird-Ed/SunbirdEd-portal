@@ -32,7 +32,7 @@ export class ProfileBadgeComponent implements OnInit {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public configService: ConfigService) { }
   /**
-   * This method is used to getBadgeData method
+   * This method is used to call getBadgeData method
    */
   ngOnInit() {
     this.getBadgeData();

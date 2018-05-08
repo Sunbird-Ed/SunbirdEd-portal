@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SignupService } from './signup.service';
-import { LearnerService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { LearnerService, CoreModule } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { mockSignupApiResponse } from './signup.service.spec.data';
@@ -9,8 +9,8 @@ import { mockSignupApiResponse } from './signup.service.spec.data';
 describe('SignupService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [SignupService, LearnerService, ConfigService]
+      imports: [HttpClientTestingModule, SharedModule],
+      providers: [SignupService, LearnerService]
     });
   });
 

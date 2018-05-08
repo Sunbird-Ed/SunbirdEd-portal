@@ -25,7 +25,7 @@ describe('UserSkillsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [UserSkillsComponent, EditUserSkillsComponent],
       imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
-      providers: [ResourceService, UserService, ProfileService,
+      providers: [UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -40,7 +40,6 @@ describe('UserSkillsComponent', () => {
   it('should create', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = mockSkillResponse.userProfile;
     userService._userData$.next({ err: null, userProfile: mockSkillResponse.userProfile });
     component.allowedAction = [];
     component.ngOnInit();

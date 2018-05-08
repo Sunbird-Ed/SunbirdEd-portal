@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollService } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollService, IBasicInfo } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ProfileService } from '../../../services/profile/profile.service';
@@ -17,11 +17,11 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   /**
   * Reference of Input annotation
   */
-  @Input() basicInfo: any;
+  @Input() basicInfo: IBasicInfo;
   /**
   * Contains array of subjects which comes from config
   */
-  subjects: any;
+  subjects: Array<string>;
   /**
   * Contains Date object instance
   */
@@ -29,15 +29,15 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   /**
   * Conatins array of languages which comes from config
   */
-  languages: any;
+  languages: Array<string>;
   /**
   * Conatins array of grades which comes from config
   */
-  grades: any;
+  grades: Array<string>;
   /**
   * Contains gender array which comes from config
   */
-  gender: any;
+  gender: Array<string>;
   /**
   * Reference of FormGroup
   */
@@ -68,16 +68,13 @@ export class EditUserAdditionalInfoComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.userProfile.webPages.forEach(element => {
-            this.webPages[element.type] = element.url;
-          });
         }
       });
     if (this.basicInfo) {
       const dob = this.basicInfo.dob ? new Date(this.basicInfo.dob) : undefined;
       this.isEdit = true;
       this.basicInfo.webPages.forEach(element => {
-        this.basicInfo.webPages[element.type] = element.url;
+        this.webPages[element.type] = element.url;
       });
       this.basicInfoForm = new FormGroup({
         firstName: new FormControl(this.basicInfo.firstName, [Validators.required]),
@@ -90,11 +87,12 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         grade: new FormControl(this.basicInfo.grade),
         language: new FormControl(this.basicInfo.language, [Validators.required]),
         subject: new FormControl(this.basicInfo.subject),
-        fb: new FormControl(this.basicInfo.webPages.fb),
-        twitter: new FormControl(this.basicInfo.webPages.twitter),
-        in: new FormControl(this.basicInfo.webPages.in),
-        blog: new FormControl(this.basicInfo.webPages.blog)
+        fb: new FormControl(this.webPages.fb),
+        twitter: new FormControl(this.webPages.twitter),
+        in: new FormControl(this.webPages.in),
+        blog: new FormControl(this.webPages.blog)
       });
+      console.log('info', this.basicInfo.webPages);
     }
   }
 }
