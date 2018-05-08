@@ -1,0 +1,78 @@
+/*get dial code page responsive css*/
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 989898;
+}
+.bars.icon.tablet.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 0.5em;
+    opacity: .7;
+    -webkit-transition: opacity .1s ease;
+    transition: opacity .1s ease;
+}
+.get-page-background {
+  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  height: 100vh;
+}
+.dailcode-page-background {
+  background: #f9f9f9;
+  height: 100vh;
+}
+.bars.icon.mobile.sunbird-hamburger-menu {
+    cursor: pointer;
+    position: absolute;
+    margin: 0;
+    padding-top: 1.5em; 
+}
+.dial-section-header {
+  margin-top: 3em;
+}
+.dail-section-meta {
+  color: white;
+}
+.ui.header.dial-section-header-text {
+  color:#fff;
+}
+.ui.header .sub.header.dial-section-subheader-text {
+  color: #fff;
+  font-size: 1rem;
+}
+.dial-section-input {
+  margin-top: 10em;
+}
+@media screen and  (min-width: 240px) and (max-width: 768px) {
+  .dial-section-input {
+    margin-top: 2em;
+  }
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.header.dial-section-header-text {
+    padding-top: 4em !important;
+  }
+}
+.dial-code-section-bg {
+  background: #fff;
+}
+@media only screen and (max-width: 767px) {
+  .ui.container.public-responvive-container {    
+    margin-right: 0 !important; 
+  } 
+}
+@media only screen and (min-width: 768px) {
+  .closeBtn-dial-code {
+    float:right;
+  }
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+  .ui.small.header.popUp-dial-code-header {
+    font-size: 1.2em;
+  }
+}
+.menu-public-header{
+  border-top: 2px solid rgba(0,0,0,.13);
+}
