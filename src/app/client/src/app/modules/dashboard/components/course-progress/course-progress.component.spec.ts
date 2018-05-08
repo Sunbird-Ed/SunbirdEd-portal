@@ -125,7 +125,7 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'getDashboardData').and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
       component.populateCourseDashboardData();
       expect(component.dashboarData).toBeDefined();
-      expect(component.showLoader).toBeFalsy();
+      expect(component.showLoader).toEqual(false);
     }));
 
   it('spy on populateCourseDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
@@ -145,7 +145,7 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
       component.downloadReport();
-      expect(component.showDownloadModal).toBeTruthy();
+      expect(component.showDownloadModal).toEqual(true);
     }));
 
   it('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
