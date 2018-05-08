@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { IEnrolledCourses } from './../../interfaces/index';
+import { IEnrolledCourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
 /**
  *  Service for course API calls.
@@ -72,12 +72,6 @@ export class CoursesService {
   }
   public initialize() {
     this.getEnrolledCourses();
-  }
-
-  public getCollectionHierarchy(id: string) {
-    return this.contentService.get({
-      url: this.config.urlConFig.URLS.COURSE.HIERARCHY + '/' + id
-    });
   }
 }
 

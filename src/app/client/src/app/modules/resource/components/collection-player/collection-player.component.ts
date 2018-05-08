@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CoursesService, PlayerService } from '@sunbird/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig } from '@sunbird/shared';
+import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions } from '@sunbird/shared';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-collection-player',
   templateUrl: './collection-player.component.html',
   styleUrls: ['./collection-player.component.css']
 })
-export class CollectionPlayerComponent implements OnInit {
+export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private route: ActivatedRoute;
 
@@ -20,7 +22,7 @@ export class CollectionPlayerComponent implements OnInit {
 
   private contentId: string;
 
-  private courseService: CoursesService;
+  private contentService: ContentService;
 
   public collectionTreeNodes: any;
 
@@ -40,12 +42,14 @@ export class CollectionPlayerComponent implements OnInit {
 
   public serviceUnavailable: Boolean = false;
 
+  private subsrciption: Subscription;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
 
-  public collectionTreeOptions: any = {
+  public collectionTreeOptions: ICollectionTreeOptions = {
     fileIcon: 'fa fa-file-o fa-lg',
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',
@@ -61,9 +65,9 @@ export class CollectionPlayerComponent implements OnInit {
     }
   };
 
-  constructor(courseService: CoursesService, route: ActivatedRoute, playerService: PlayerService,
+  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router) {
-    this.courseService = courseService;
+    this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -75,20 +79,26 @@ export class CollectionPlayerComponent implements OnInit {
     this.getContent();
   }
 
-  private initPlayer(id: string) {
+  ngOnDestroy() {
+    if (this.subsrciption) {
+      this.subsrciption.unsubscribe();
+    }
+  }
+
+  private initPlayer(id: string): void {
     this.playerConfig = this.getPlayerConfig(id).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
   }
 
-  public playContent(data: any) {
+  public playContent(data: any): void {
     this.showPlayer = true;
     this.contentTitle = data.title;
     this.initPlayer(data.id);
   }
 
-  private navigateToContent(id: string) {
+  private navigateToContent(id: string): void {
     const navigationExtras: NavigationExtras = {
       queryParams: { 'contentId': id },
       relativeTo: this.route
@@ -119,23 +129,24 @@ export class CollectionPlayerComponent implements OnInit {
     }
   }
 
-  private navigateToErrorPage() {
+  private navigateToErrorPage(): void {
     this.router.navigate(['/error']);
   }
 
-  private getContent() {
-    const subscription = Observable.combineLatest(this.route.params, this.route.queryParams,
+  private getContent(): void {
+    this.subsrciption = Observable.combineLatest(this.route.params, this.route.queryParams,
       (params, qparams) => {
         this.collectionId = params.id;
         this.contentId = qparams.contentId;
         return this.collectionId;
       })
+      .first()
       .flatMap((collectionId) => this.getCollectionHierarchy(collectionId))
       .do((collection) => {
         if (this.contentId) {
           const content = this.findContentById(collection, this.contentId);
           if (content) {
-            this.OnPlayContent({ title: content.model.name, id: content.model.identifier });
+            this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
           } else {
             this.navigateToErrorPage();
           }
@@ -144,7 +155,6 @@ export class CollectionPlayerComponent implements OnInit {
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.loader = false;
-        subscription.unsubscribe();
       }, (error) => {
         const responseCode = _.get(error, 'error.responseCode');
         if (responseCode === 'RESOURCE_NOT_FOUND') {
@@ -153,13 +163,13 @@ export class CollectionPlayerComponent implements OnInit {
           this.loader = false;
           this.serviceUnavailable = true;
         }
-        console.log('error when fetching collection content', error);
+        console.log('error when fetching collection content', (<Error>error).stack);
         return error;
       });
   }
 
-  private getCollectionHierarchy(contentId: string): Observable<any> {
-    return this.courseService.getCollectionHierarchy(contentId)
+  private getCollectionHierarchy(contentId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+    return this.contentService.getCollectionHierarchy(contentId)
       .map((response) => {
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };

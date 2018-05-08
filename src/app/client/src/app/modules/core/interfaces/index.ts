@@ -6,3 +6,4 @@ export * from './permission';
 export * from './conceptData';
 export * from './flag';
 export * from './sort';
+export * from './content.service';
