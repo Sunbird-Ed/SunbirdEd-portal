@@ -92,7 +92,6 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         in: new FormControl(this.webPages.in),
         blog: new FormControl(this.webPages.blog)
       });
-      console.log('info', this.basicInfo.webPages);
     }
   }
 }

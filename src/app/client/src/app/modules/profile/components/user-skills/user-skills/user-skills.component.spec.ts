@@ -52,7 +52,6 @@ describe('UserSkillsComponent', () => {
   it('should pass activated route', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = mockSkillResponse.userProfile;
     userService._userData$.next({ err: null, userProfile: mockSkillResponse.userProfile });
     component.allowedAction = [];
     component.ngOnInit();
@@ -64,7 +63,6 @@ describe('UserSkillsComponent', () => {
   });
   it('should call toggle method', () => {
     const userService = TestBed.get(UserService);
-    userService._userProfile = mockSkillResponse.userProfile;
     userService._userData$.next({ err: null, userProfile: mockSkillResponse.userProfile });
     const lim = true;
     mockSkillResponse.userProfile.skills.length = 1;
@@ -76,7 +74,6 @@ describe('UserSkillsComponent', () => {
   });
   it('should pass else condition in toggle method', () => {
     const userService = TestBed.get(UserService);
-    userService._userProfile = mockSkillResponse.userProfile;
     userService._userData$.next({ err: null, userProfile: mockSkillResponse.userProfile });
     const lim = false;
     mockSkillResponse.userProfile.skills.length = 3;
