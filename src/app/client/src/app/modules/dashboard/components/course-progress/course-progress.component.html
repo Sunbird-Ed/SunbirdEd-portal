@@ -2,22 +2,22 @@
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
-      <span id="dashoardFiltersHolder" *ngIf="courseList && courseList.length > 0">
+      <span id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
         <div class="ui grid">
-          <div class="five wide column float-ContentLeft" *ngIf="courseList.length === 1">
+          <div class="five wide column float-ContentLeft" *ngIf="batchlist.length === 1">
             <span class="dashBoardSectionHeading">
               <i class="large bar chart icon"></i>
             </span>
-            <span class="dashBoardSectionHeading">{{courseList[0].name}}</span>
+            <span class="dashBoardSectionHeading">{{batchlist[0].name}}</span>
           </div>
-          <div class="one wide column" *ngIf="courseList.length > 1">
+          <div class="one wide column" *ngIf="batchlist.length > 1">
             <span class="dashBoardSectionHeading">
               <i class="large bar chart icon padding-top-5"></i>
             </span>
           </div>
-          <div class="four wide column float-ContentLeft" *ngIf="courseList.length > 1">
-            <sui-select class="selection fluid" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption" [options]="courseList"
-              labelField="name" [isSearchable]="true" #select>
+          <div class="four wide column float-ContentLeft" *ngIf="batchlist.length > 1">
+            <sui-select class="selection fluid" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption" [options]="batchlist"
+              labelField="name" valueField="id" [isSearchable]="true" #select>
               <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);">
               </sui-select-option>
             </sui-select>
@@ -30,13 +30,13 @@
             </a>
           </div>
         </div>
-        <div class="ui grid centered margin-top-10" *ngIf="courseList && courseList.length > 0 && batchIdentifier">
+        <div class="ui grid centered margin-top-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showWarningDiv">
           <div class="six wide column">
             <div class="ui text menu float-ContentLeft padding-top-10">
-              <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:timePeriod === '7d'}" (click)="setTimePeriod('7d')">{{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '14d'}" (click)="setTimePeriod('14d')">{{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === '5w'}" (click)="setTimePeriod('5w')">{{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">{{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:queryParams.timePeriod === '7d'}" (click)="setTimePeriod('7d')">{{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '14d'}" (click)="setTimePeriod('14d')">{{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '5w'}" (click)="setTimePeriod('5w')">{{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">{{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
           </div>
           <div class="two wide column"></div>
@@ -44,7 +44,7 @@
           <div class="four wide column">
             <div class="ui category search float-ContentRight">
               <div class="ui icon input">
-                <input class="search-course-data" type="text" title="Search" class="" [(ngModel)]="searchUser" placeholder="Search" autocomplete="off"
+                <input class="search-course-data" type="text" title="Search" class="" [(ngModel)]="searchText" placeholder="Search" autocomplete="off"
                 />
                 <i class="search icon"></i>
               </div>
@@ -53,7 +53,7 @@
         </div>
       </span>
 
-      <div class="table-data-holder" *ngIf="courseList && courseList.length > 0 && batchIdentifier && !showLoader">
+      <div class="table-data-holder" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
         <div class="ui raised segment">
           <div class="eight wide column right floated dashBoardCardText">
             <h3>{{filterText}} </h3>
@@ -114,7 +114,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let student of dashboarData | orderBy: order:reverse:'case-insensitive' | filter: searchUser">
+              <tr *ngFor="let student of dashboarData | orderBy: order:reverse:'case-insensitive' | filter: searchText : ['userName', 'org']">
                 <td *ngIf="student.progress === 100">Done</td>
                 <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
                 <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
@@ -144,7 +144,7 @@
         <app-loader></app-loader>
       </div>
       <!-- Show warning message if no batch selected-->
-      <div class="ui warning message tweleve wide column" *ngIf="courseList && courseList.length > 1 && !batchIdentifier && !showLoader">
+      <div class="ui warning message tweleve wide column" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
         <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
         {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
       </div>

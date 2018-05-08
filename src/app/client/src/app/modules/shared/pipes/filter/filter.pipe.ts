@@ -1,18 +1,24 @@
-
 import { Pipe, PipeTransform } from '@angular/core';
+import * as _ from 'lodash';
 
 @Pipe({
   name: 'filter'
 })
 export class FilterPipe implements PipeTransform {
-  transform(items: any[], searchText: string): any[] {
+  transform(items: any[], searchText: string, searchKeys: Array<string>): any[] {
     if (!items) { return []; }
     if (!searchText) { return items; }
     searchText = searchText.toLowerCase();
-    return items.filter(it => {
-      if (it.userName) { return it.userName.toLowerCase().includes(searchText); } else {
-        return it.note.toLowerCase().includes(searchText) || it.title.toLowerCase().includes(searchText);
-      }
+    const filterItem = [];
+    _.forEach(items, (value, key) => {
+      _.forEach(value, (subValue, subKey) => {
+        if (searchKeys.includes(subKey)) {
+          if (subValue && subValue.toLowerCase().includes(searchText)) {
+            filterItem.push(value);
+          }
+        }
+      });
     });
+    return _.uniq(filterItem);
   }
 }

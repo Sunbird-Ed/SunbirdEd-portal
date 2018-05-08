@@ -32,7 +32,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'dashboard/course/:courseId/:timePeriod', component: CourseProgressComponent
+    path: 'dashboard/course/:courseId', component: CourseProgressComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' },
+      { label: 'Courses', url: '/courses' }, { label: 'Course Progress Dashboard', url: '' }]
+    }
   }
 ];
 
