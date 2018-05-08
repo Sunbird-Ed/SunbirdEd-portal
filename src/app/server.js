@@ -99,6 +99,11 @@ app.all('/logoff', function (req, res) {
   res.redirect('/logout')
 })
 
+app.get('/get/envData', keycloak.protect(), function (req, res) {
+  res.status(200)
+  res.send({ appId: appId, ekstep_env: ekstepEnv })
+  res.end()
+})
 // Mobile redirection to app
 require('./helpers/mobileAppHelper.js')(app)
 
@@ -232,12 +237,6 @@ app.all('/migration/*', keycloak.protect(), permissionsHelper.checkPermission(),
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(path.join(__dirname, 'migration/dist', 'index.ejs'))
-})
-
-app.get('/get/envData', keycloak.protect(), function (req, res) {
-  res.status(200)
-  res.send({ appId: appId, ekstep_env: ekstepEnv })
-  res.end()
 })
 
 // tenant Api's
