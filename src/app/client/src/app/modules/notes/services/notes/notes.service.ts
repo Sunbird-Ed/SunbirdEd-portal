@@ -59,19 +59,6 @@ export class NotesService {
       data: request
     };
     return this.learnerService.post(option).map(data => {
-      const returnObj = {
-        note: request.request.note,
-        userId: request.request.userId,
-        title: request.request.title,
-        courseId: request.request.courseId,
-        contentId: request.request.contentId,
-        createdBy: request.request.createdBy,
-        updatedBy: request.request.updatedBy,
-        createdDate: new Date().toISOString(),
-        updatedDate: new Date().toISOString(),
-        id: data.result.id
-      };
-      this.createEventEmitter.emit(returnObj);
       return data;
     });
   }
@@ -84,7 +71,6 @@ export class NotesService {
       data: request
     };
     return this.learnerService.patch(option).map(data => {
-      this.updateEventEmitter.emit();
       return data;
     });
   }

@@ -1,4 +1,4 @@
-import { NoteListComponent } from './components';
+import { NoteListComponent, NoteCardComponent } from './components';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -8,11 +8,11 @@ const routes: Routes = [{
   // children: [{path: ':mode/:noteId', component: NoteFormComponent},
   //            {path: ':mode', component: NoteFormComponent}]
 },
-// {
-// path: ':courseId/:contentId/noteCard',
-//   // component: NoteCardComponent,
-//   // children: [{path: ':mode', component: NoteFormComponent}]
-// }
+{
+path: 'learn/:courseId/:contentId/noteCard',
+  component: NoteCardComponent
+  // children: [{path: ':mode', component: NoteFormComponent}]
+}
 ];
 
 @NgModule({

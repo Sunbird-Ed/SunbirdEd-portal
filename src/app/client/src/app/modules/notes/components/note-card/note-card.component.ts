@@ -1,4 +1,5 @@
-import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
+import { PopupEditorComponent } from './../popup-editor/popup-editor.component';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
@@ -7,35 +8,33 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, ICourseDetails } from '@sunbird/notes';
+
 /**
- * This component contains 2 sub components
- * 1)NoteForm: Provides an editor to create and update notes.
- * 2)DeleteNote: To delete an existing note.
+ * This component holds the note card widget.
  */
 
 @Component({
-  selector: 'app-note-list',
-  templateUrl: './note-list.component.html',
-  styleUrls: ['./note-list.component.css']
+  selector: 'app-note-card',
+  templateUrl: './note-card.component.html',
+  styleUrls: ['./note-card.component.css']
 })
-export class NoteListComponent implements OnInit {
-
+export class NoteCardComponent implements OnInit {
   @Input() courseDetails: ICourseDetails;
+  @Input() mode: string;
   /**
-   * This variable helps in displaying and hiding page loader.
-   * By default it is assigned a value of 'true'. This ensures that
-   * the page loader is displayed the first time the page is loaded.
-   */
-  showLoader = true;
+ * This variable helps in displaying and hiding page loader.
+ * By default it is assigned a value of 'true'. This ensures that
+ * the page loader is displayed the first time the page is loaded.
+ */
+  showLoader: boolean;
   /**
    * Helps in displaying and hiding create editor.
    */
-  showCreateEditor: boolean;
+  showCreateEditor: false;
   /**
    * Helps in displaying and hiding update editor.
    */
-  showUpdateEditor: boolean;
-
+  showUpdateEditor: false;
   /**
    * The 'sortOrder' variable helps in making sure that the array of notes
    * retrieved while making the search API call is sorted in descending order.
@@ -46,20 +45,13 @@ export class NoteListComponent implements OnInit {
    * The notesList array holds the entire list of existing notes. Each
    * note is saved as an object.
    */
-  notesList: Array<INoteData> = [];
+  notesList: Array<INoteData>;
 
   /**
    *Stores the details of a note selected by the user.
    */
   selectedNote: INoteData;
-  /**
-   * Stores the index of the selected note in notesList array.
-   */
-  selectedIndex = 0;
-  /**
-   * This variable stores the search input from the search bar.
-   */
-  searchData: string;
+
   /**
    * The course id of the selected course.
    */
@@ -69,11 +61,20 @@ export class NoteListComponent implements OnInit {
    */
   contentId: string;
   /**
-   * This variable helps in displaying and dismissing the delete modal.
+   * This variable helps redirecting the user to NotesList view once
+   * a note is created or updated.
    */
-  showDelete: false;
+  route: Router;
   /**
-   * User id from user service.
+   * Stores the index of the selected note in notesList array.
+   */
+  selectedIndex: number;
+  /**
+   * This variable stores the search input from the search bar.
+   */
+  searchData: string;
+  /**
+   * user id from user service.
    */
   userId: string;
   /**
@@ -81,15 +82,15 @@ export class NoteListComponent implements OnInit {
    */
   private activatedRoute: ActivatedRoute;
   /**
-   * To display toast message(if any) after each API call.
+   * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
   /**
-   * Reference of notes service.
+   * To create or update a note.
    */
   noteService: NotesService;
   /**
-   * Reference of user service.
+   * To retrieve user details.
    */
   userService: UserService;
   /**
@@ -99,31 +100,24 @@ export class NoteListComponent implements OnInit {
   /**
    * Reference of resource service.
    */
+
   resourceService: ResourceService;
   /**
    * Reference of modal service.
    */
+
   modalService: SuiModalService;
+
+
   /**
-   * Reference of Router.
-   */
-  route: Router;
-  /**
-   * Reference of Router Navigation Service
-   */
-  routerNavigationService: RouterNavigationService;
-  /**
-   * The constructor - Constructor for Note List Component.
+   * The constructor
    *
-   * @param {ToasterService} toasterService Reference of ToasterService.
-   * @param {UserService} userService Reference of UserService.
-   * @param {ContentService} contentService Reference of ContentService.
-   * @param {ResourceService} resourceService Reference of ResourceService.
-   * @param {SuiModalService} modalService Reference of SuiModalService.
-   * @param {NotesService} noteService Reference of NotesService.
-   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute.
-   * @param {RouterNavigationService} routerNavigationService Reference of RouterNavigationService.
-   * @param {Router} route Reference of Router.
+   * @param {ToasterService} toasterService Reference of toasterService.
+   * @param {UserService} userService Reference of userService.
+   * @param {ContentService} contentService Reference of contentService.
+   * @param {ResourceService} resourceService Reference of resourceService.
+   * @param {SuiModalService} modalService Reference of modalService.
+   * @param {NotesService} notesService Reference of notesService.
    */
 
   constructor(noteService: NotesService,
@@ -133,26 +127,30 @@ export class NoteListComponent implements OnInit {
     modalService: SuiModalService,
     activatedRoute: ActivatedRoute,
     toasterService: ToasterService,
-    route: Router,
-    routerNavigationService: RouterNavigationService) {
+    route: Router) {
     this.toasterService = toasterService;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
+    this.route = route;
     this.noteService = noteService;
+    this.userService = userService;
     this.contentService = contentService;
     this.resourceService = resourceService;
     this.modalService = modalService;
-    this.route = route;
-    this.routerNavigationService = routerNavigationService;
   }
+
   /**
-   * To initialize notesList and showDelete.
-   * Listens to updateNotesListData event as well.
+   * Initializing notesList and selectedNote values.
    */
   ngOnInit() {
-    this.showDelete = false;
-    this.showCreateEditor = false;
-    this.showUpdateEditor = false;
+    this.notesList = [];
+    // this.noteService.updateEventEmitter.subscribe(data => this.showUpdateEditor = false);
+
+    // this.noteService.createEventEmitter.subscribe(data => {
+    //   this.notesList.unshift(data);
+    //   this.showUpdateEditor = false;
+    // });
+
 
     if (this.courseDetails && this.courseDetails.courseId) {
       this.courseId = this.courseDetails.courseId;
@@ -174,7 +172,7 @@ export class NoteListComponent implements OnInit {
   }
 
   /**
-   * This method calls the search API.
+   * To gather existing list of notes.
    */
   public getAllNotes() {
     const requestBody = {
@@ -205,26 +203,13 @@ export class NoteListComponent implements OnInit {
 
   /**
    * This method sets the value of a selected note to the variable 'selectedNote'
-   * and passes it on to notesService.
    * @param note The selected note from list view.
-   * @param index The index of the selectedNote.
+   * @param a Index of selected note.
    */
-  public setSelectedNote(note, index) {
-    this.selectedIndex = index;
+  public setSelectedNote(note, a) {
     this.selectedNote = note;
   }
 
-  /**
-   * This event listener recieves the receives showDeleteModal value once the
-   * delete modal is dismissed.
-   */
-  exitModal(showDeleteModal) {
-    this.showDelete = showDeleteModal;
-  }
-
-  /**
-   * Updating notes list after creating/updating a note.
-   */
   createEventEmitter(data) {
     this.notesList.unshift(data);
     this.setSelectedNote(this.notesList[0], 0);
@@ -240,27 +225,18 @@ export class NoteListComponent implements OnInit {
     this.showUpdateEditor = false;
   }
 
-  exitUpdateEditor() {
-    this.showUpdateEditor = false;
-  }
   /**
-   * This event listener updates the notesList array once a note is removed.
+   * This method redirects the user to notesList view.
    */
-  deleteEventEmitter(noteId) {
-    this.notesList = this.notesList.filter((note) => {
-      return note.id !== noteId;
-    });
-    if (this.selectedIndex === 0) {
-      this.setSelectedNote(this.notesList[0], 0);
-    } else {
-      this.setSelectedNote(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
-    }
+  public viewAllNotes() {
+    this.route.navigate(['learn', this.courseId, this.contentId, 'notes']);
   }
 
-  /**
-   * This method helps in redirecting the user to parent url.
-   */
-  public redirect() {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+  exitModal() {
+    this.showCreateEditor = false;
+    this.showUpdateEditor = false;
   }
+
+
+
 }
