@@ -39,7 +39,9 @@
     <div class="ten wide column">
       <div class="ui stackable four column grid dynamic-section-card ">
         <div class="column" *ngFor="let content of searchResults">
-          <app-content-card [content]="content"></app-content-card>
+          <div (click)="openContent(content)">
+              <app-content-card [content]="content"></app-content-card>
+          </div>         
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ export class GetComponent implements OnInit {
   }
 
   public navigateToSearch() {
-    this.router.navigate(['/get/dial/' + this.searchKeyword]);
+    this.router.navigate(['/get/dial', this.searchKeyword]);
   }
 
 }

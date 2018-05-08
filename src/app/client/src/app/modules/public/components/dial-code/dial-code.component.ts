@@ -84,7 +84,7 @@ export class DialCodeComponent implements OnInit {
     });
   }
 
-  private searchDialCode() {
+  public searchDialCode() {
     this.showLoader = true;
     const searchParams: SearchParam = {
       filters: {
@@ -97,19 +97,27 @@ export class DialCodeComponent implements OnInit {
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
           this.searchResults = apiResponse.result.content;
         } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0015);
+          this.toasterService.error(this.resourceService.messages.stmsg.m0006);
         }
       },
       err => {
         this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0015);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       }
     );
   }
 
   public navigateToSearch() {
     if (this.searchKeyword.length > 0) {
-      this.router.navigate(['/get/dial/' + this.searchKeyword]);
+      this.router.navigate(['/get/dial', this.searchKeyword]);
+    }
+  }
+
+  public openContent(item) {
+    if (item.mimeType === 'application/vnd.ekstep.content-collection') {
+      this.router.navigate(['resources/play/collection', item.identifier]);
+    } else {
+      this.router.navigate(['resources/play/content', item.identifier, item.name]);
     }
   }
 
