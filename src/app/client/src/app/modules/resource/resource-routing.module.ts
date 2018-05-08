@@ -11,7 +11,7 @@ const routes: Routes = [
   }, {
     path: 'resources/play/collection/:id', component: CollectionPlayerComponent
   }, {
-    path: 'resources/play/content/:contentId/:contentName', component: ContentPlayerComponent,
+    path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
     children: [
       { path: 'flag-content', component: FlagContentComponent }
     ]

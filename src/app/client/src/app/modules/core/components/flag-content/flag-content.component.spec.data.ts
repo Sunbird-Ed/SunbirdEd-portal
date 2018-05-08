@@ -7,8 +7,25 @@ export const Response = {
         'versionKey': '1496989757647',
         'name': 'TextBook3-CollectionParentLive',
         'me_averageRating': '3',
-        'description': 'string';
+        'description': 'string'
     },
+    successFlag: {
+        'id': 'api.content.flag',
+        'ver': '1.0',
+        'ts': '2018-05-08T11:35:09.532Z',
+        'params': {
+          'resmsgid': 'dd024fe0-52b3-11e8-8367-9368ab4fb130',
+          'msgid': 'dcf382d0-52b3-11e8-beae-b5aa454719fe',
+          'status': 'successful',
+          'err': null,
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'node_id': 'do_112499052823306240150',
+          'versionKey': '1525779309465'
+        }
+      },
     successContentData: {
         'id': 'api.content.read',
         'ver': '1.0',
@@ -108,7 +125,7 @@ export const Response = {
                     'dob ',
                     'location '
                 ],
-                'lastName ': 'User ',
+                'lastName': 'User',
                 'webPages ': [
                     {
                         'type ': 'fb ',
@@ -575,7 +592,7 @@ export const Response = {
                 'rootOrgId ': 'ORG_001 ',
                 'userId ': '874ed8a5-782e-4f6c-8f36-e0288455901e ',
                 'emailVerified ': null,
-                'firstName ': 'Cretation ',
+                'firstName': 'Cretation',
                 'lastLoginTime ': 1519809987692,
                 'createdDate ': '2017-10-31 10:47:04:723+0000 ',
                 'createdBy ': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45 ',

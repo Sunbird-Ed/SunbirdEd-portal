@@ -25,7 +25,7 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent],
+     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
      SortByComponent, BreadcrumbsComponent, FlagContentComponent],
   providers: [
