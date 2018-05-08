@@ -71,8 +71,8 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchRes));
       component.populateBatchData();
-      expect(component.courseList).toBeDefined();
-      expect(component.courseList.length).toEqual(2);
+      expect(component.batchlist).toBeDefined();
+      expect(component.batchlist.length).toEqual(2);
     }));
 
   it('should call userservice, call populateBatchData() with zero count', inject([UserService, CourseProgressService],
@@ -81,8 +81,8 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchResZero));
       component.populateBatchData();
-      expect(component.courseList).toBeDefined();
-      expect(component.courseList.length).toEqual(0);
+      expect(component.batchlist).toBeDefined();
+      expect(component.batchlist.length).toEqual(0);
     }));
 
   it('should call userservice, call populateBatchData() with count One', inject([UserService, CourseProgressService],
@@ -91,8 +91,8 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchResOne));
       component.populateBatchData();
-      expect(component.courseList).toBeDefined();
-      expect(component.courseList.length).toEqual(1);
+      expect(component.batchlist).toBeDefined();
+      expect(component.batchlist.length).toEqual(1);
     }));
 
   it('should call collectioneditor with error data', inject([CourseProgressService, UserService, ResourceService, ToasterService],
@@ -115,7 +115,7 @@ describe('CourseProgressComponent', () => {
   it('on selection of timeperiod call setTimePeriod()', inject([], () => {
     fixture.detectChanges();
     component.setTimePeriod('7d');
-    expect(component.timePeriod).toEqual('7d');
+    expect(component.queryParams.timePeriod).toEqual('7d');
   }));
 
   it('spy on populateCourseDashboardData()', inject([UserService, CourseProgressService],

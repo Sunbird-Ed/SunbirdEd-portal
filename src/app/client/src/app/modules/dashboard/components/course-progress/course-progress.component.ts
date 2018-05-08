@@ -104,7 +104,7 @@ export class CourseProgressComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.batchlist = apiResponse.result.response.content;
         this.showLoader = false;
-        const isBatchExist = _.find(this.batchlist, (o) => o.id === this.queryParams.batchIdentifier);
+        const isBatchExist = _.find(this.batchlist, (batch) => batch.id === this.queryParams.batchIdentifier);
         if (this.batchlist.length === 0) {
           this.showNoBatch = true;
         } else if (isBatchExist) {
@@ -155,10 +155,11 @@ export class CourseProgressComponent implements OnInit {
     this.filterText = filterDesc[this.queryParams.timePeriod];
   }
 
+  /**
+  * Method to update the url with selected query params
+  */
   navigate() {
-    this.route.navigate(['dashboard/course', this.courseId], {
-      queryParams: this.queryParams
-    });
+    this.route.navigate([], { queryParams: this.queryParams });
   }
 
   /**
@@ -186,12 +187,11 @@ export class CourseProgressComponent implements OnInit {
   }
 
   /**
-  * To method helps to set order of a apecific field
+  * To method helps to set order of a specific field
   */
   setOrder(value: string) {
     this.order = value;
     this.reverse = !this.reverse;
-    this.order = value;
   }
 
   /**

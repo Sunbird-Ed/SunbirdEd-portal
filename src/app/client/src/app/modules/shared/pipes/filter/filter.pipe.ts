@@ -10,12 +10,10 @@ export class FilterPipe implements PipeTransform {
     if (!searchText) { return items; }
     searchText = searchText.toLowerCase();
     const filterItem = [];
-    _.forEach(items, (value, key) => {
-      _.forEach(value, (subValue, subKey) => {
-        if (searchKeys.includes(subKey)) {
-          if (subValue && subValue.toLowerCase().includes(searchText)) {
-            filterItem.push(value);
-          }
+    _.forEach(items, (item) => {
+      _.forEach(item, (subValue, subKey) => {
+        if (searchKeys.includes(subKey) && subValue && subValue.toLowerCase().includes(searchText)) {
+          filterItem.push(item);
         }
       });
     });

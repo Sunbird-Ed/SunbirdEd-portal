@@ -8,14 +8,14 @@ import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
 /**
- * Service to get course consumption dashboard
+ * Service to get course progress dashboard
  *
  * It responsible to make http call
  */
 @Injectable()
 
 /**
- * @class UserSearchService
+ * @class CourseProgressService
  */
 export class CourseProgressService {
 
@@ -29,6 +29,9 @@ export class CourseProgressService {
     this.config = config;
   }
 
+  /**
+   * To method calls the batch list API
+   */
   getBatches(requestParam) {
     const option = {
       url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
@@ -46,6 +49,9 @@ export class CourseProgressService {
     return this.learnerService.post(option);
   }
 
+  /**
+   * To method calls the get dashboard API
+   */
   getDashboardData(requestParam) {
     const option = {
       url: this.config.urlConFig.URLS.DASHBOARD.COURSE_PROGRESS + '/' + requestParam.batchIdentifier,
@@ -56,6 +62,9 @@ export class CourseProgressService {
     return this.learnerService.get(option);
   }
 
+  /**
+   * This method calls the download API
+   */
   downloadDashboardData(requestParam) {
     const option = {
       url: this.config.urlConFig.URLS.DASHBOARD.COURSE_PROGRESS + '/' + requestParam.batchIdentifier + '/export',
@@ -67,6 +76,9 @@ export class CourseProgressService {
     return this.learnerService.get(option);
   }
 
+  /**
+   * This method takes the result and formats it
+   */
   parseDasboardResponse(data) {
     let tableData = [];
     _.forEach(data.series, (seriesData, key) => {
