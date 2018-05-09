@@ -93,7 +93,10 @@ export class WorkSpaceService {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/contentEditor/', content.identifier, state, content.framework]);
     } else {
-      console.log('open content player');
+      if (state === 'upForReview') {
+        console.log('open content player');
+        this.route.navigate(['/workspace/content/upForReview/content', content.identifier]);
+      }
     }
   }
   /**

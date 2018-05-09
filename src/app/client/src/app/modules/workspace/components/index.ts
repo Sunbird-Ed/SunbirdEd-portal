@@ -16,3 +16,4 @@ export * from './flagged/flagged.component';
 export * from './batch-list/batch-list.component';
 export * from './batch-card/batch-card.component';
 export * from './update-batch/update-batch.component';
+export * from './upforreview-contentplayer/upforreview-contentplayer.component';

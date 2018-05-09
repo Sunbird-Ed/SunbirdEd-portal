@@ -4,7 +4,7 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
-   BatchListComponent, UpdateBatchComponent
+   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
@@ -90,6 +90,7 @@ const routes: Routes = [
       },
       { path: 'batches/:pageNumber', component: BatchListComponent },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
+      { path: 'upForReview/content/:contentId', component: UpforreviewContentplayerComponent },
       { path: '**', redirectTo: 'create' }
     ]
   },
