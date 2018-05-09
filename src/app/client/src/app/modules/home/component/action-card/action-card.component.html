@@ -18,7 +18,7 @@
         <div class="sliderCards content">
             <div class="sliderCardDesc fixedRatingCard">
                 {{ enrolledCourses.description | slice:0:55 }}
-                <i *ngIf="enrolledCourses.description.length >= 55" class="ellipsis horizontal icon popup-button link" [attr.data-content]="enrolledCourses.description"
+                <i *ngIf="enrolledCourses.description && enrolledCourses.description.length >= 55" class="ellipsis horizontal icon popup-button link" [attr.data-content]="enrolledCourses.description"
                     [attr.data-variation]="wide"></i>
             </div>
             <button class="ui blue basic right floated button margin-top-10">{{resourceService.frmelmnts?.btn?.resume}}</button>

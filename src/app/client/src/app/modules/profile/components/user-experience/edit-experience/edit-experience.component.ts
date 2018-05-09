@@ -12,17 +12,33 @@ import { ProfileService } from '../../../services';
   styleUrls: ['./edit-experience.component.css']
 })
 export class EditExperienceComponent implements OnInit {
+  /**
+   * Contains reference of Input to get values from parent
+   */
   @Input() experience: any;
+  /**
+   * Contains array of subjects which comes from config
+   */
   subjects: any;
+  /**
+   * Contains Date object
+   */
   initDate = new Date();
+  /**
+   * Contains reference of Output to communicate between parent and child
+   */
   @Output() currentJobChange = new EventEmitter();
+  /**
+   * Reference for formgroup
+   */
+  experienceForm: FormGroup;
   constructor(public resourceService: ResourceService, public windowScrollService: WindowScrollService,
     public userService: UserService, public configService: ConfigService, public profileService: ProfileService) {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
   }
-
-  experienceForm: FormGroup; // new FormGroup({});
-
+  /**
+   * This method is used to create instance of formgroup
+   */
   ngOnInit() {
     this.windowScrollService.smoothScroll('experience');
     if (this.experience) {
@@ -49,10 +65,15 @@ export class EditExperienceComponent implements OnInit {
       });
     }
   }
-
+  /**
+   * This is a getter method used to get formcontrol value
+   */
   get isCurrentJob() {
     return this.experienceForm.get('isCurrentJob').value;
   }
+  /**
+   * This method is used to emit values to parent component
+   */
   currentJobChangeEvent() {
     this.currentJobChange.emit();
   }
