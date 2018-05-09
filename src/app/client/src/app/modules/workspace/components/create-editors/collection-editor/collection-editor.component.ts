@@ -89,7 +89,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     editorService: EditorService,
     activatedRoute: ActivatedRoute,
     route: Router,
-    userService: UserService, public _zone: NgZone,
+    userService: UserService,
+    public _zone: NgZone,
     config: ConfigService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -246,9 +247,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   closeModal() {
     this.showModal = true;
-     setTimeout(() => {
+    setTimeout(() => {
       this.navigateToDraft();
-     }, 1000);
+    }, 1000);
   }
 
   navigateToDraft() {

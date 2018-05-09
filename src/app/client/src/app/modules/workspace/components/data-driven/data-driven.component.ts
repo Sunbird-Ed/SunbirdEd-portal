@@ -245,7 +245,7 @@ createContent() {
       this.editorService.create(requestData).subscribe(res => {
         this.router.navigate(['/workspace/content/edit/content/', res.result.content_id, state, framework]);
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0010);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {
