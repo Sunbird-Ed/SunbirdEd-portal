@@ -10,7 +10,7 @@ import { ConfigService, ResourceService, FileUploadService, ToasterService, Wind
    PaginationService, RouterNavigationService, NavigationHelperService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DateFormatPipe , DateFilterXtimeAgoPipe} from './pipes';
+import { DateFormatPipe , DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
 
@@ -23,10 +23,10 @@ import { CacheService } from 'ng2-cache-service';
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, ContentMetadataComponent],
+     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, ContentMetadataComponent, FilterPipe],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, ContentMetadataComponent],
+    PlayerComponent, ContentMetadataComponent, FilterPipe],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService]
 })

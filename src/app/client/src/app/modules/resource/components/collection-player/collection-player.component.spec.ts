@@ -69,7 +69,7 @@ describe('CollectionPlayerComponent', () => {
     });
   });
 
-  it('should get content based on route/query params', () => {
+  xit('should get content based on route/query params', () => {
     const contentService: ContentService = TestBed.get(ContentService);
     spyOn(contentService, 'getCollectionHierarchy').and
       .returnValue(Observable.of(CollectionHierarchyGetMockResponse));

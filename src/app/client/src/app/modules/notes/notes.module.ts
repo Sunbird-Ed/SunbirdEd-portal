@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
-import { FilterPipe, SharedModule } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { MarkdownModule } from 'ngx-md';
 import { TimeAgoPipe } from 'time-ago-pipe';
 // import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComponent } from './components';
@@ -23,7 +23,7 @@ import { NoteListComponent, NoteFormComponent, NoteCardComponent, DeleteNoteComp
     SharedModule,
     MarkdownModule.forRoot()
   ],
-  declarations: [TimeAgoPipe, FilterPipe, NoteListComponent, NoteFormComponent,
+  declarations: [TimeAgoPipe, NoteListComponent, NoteFormComponent,
     NoteCardComponent, PopupEditorComponent, DeleteNoteComponent],
   providers: [NotesService],
   exports: [NoteListComponent]
