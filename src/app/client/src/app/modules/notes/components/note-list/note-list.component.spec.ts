@@ -1,36 +1,30 @@
-import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
-// import { NoteFormComponent } from './../note-form/note-form.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, ConfigService, FilterPipe, RouterNavigationService } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, FilterPipe } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserService, ContentService, LearnerService } from '@sunbird/core';
+import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
-import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { response } from './note-list-component.spec.data';
 import { NoteListComponent } from './note-list.component';
-import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
 describe('NoteListComponent', () => {
   let component: NoteListComponent;
   let fixture: ComponentFixture<NoteListComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'mode': 'create' }]) };
+  const fakeActivatedRoute = { 'params': Observable.from([{ 'courseId': 'do_212347136096788480178',
+   'contentId': 'do_2123229899264573441612' }]) };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, Ng2IziToastModule ],
-      // declarations: [ NoteListComponent, NoteFormComponent, FilterPipe, TimeAgoPipe ],
+      imports: [ HttpClientTestingModule, OrderModule, SharedModule, CoreModule ],
       declarations: [ NoteListComponent, FilterPipe, TimeAgoPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
-         ConfigService, ContentService, SuiModalService, SuiComponentFactory,
-         RouterNavigationService,
          { provide: Router, useClass: RouterStub },
           { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
@@ -91,5 +85,20 @@ describe('NoteListComponent', () => {
 
   });
 
+  it('Should refresh the values of selectedIndex and selectedNote once a note is created', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.createEventEmitter(response.responseSuccess.result.response.note[0]);
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(component.notesList[0]);
+    expect(component.showCreateEditor).toBeFalsy();
+  });
+
+  it('Should refresh the values of selectedIndex and selectedNote once a note is updated', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.updateEventEmitter(response.responseSuccess.result.response.note[0]);
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(component.notesList[0]);
+    expect(component.showUpdateEditor).toBeFalsy();
+  });
 
 });

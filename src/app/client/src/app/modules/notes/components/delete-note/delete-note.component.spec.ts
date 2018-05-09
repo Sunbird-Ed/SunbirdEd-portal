@@ -41,8 +41,8 @@ describe('DeleteNoteComponent', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
+    spyOn(component.deleteEventEmitter, 'emit');
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -51,6 +51,7 @@ describe('DeleteNoteComponent', () => {
     component.deleteEventEmitter.emit('01245874638382694454');
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+    expect(component.deleteEventEmitter.emit).toHaveBeenCalled();
   });
 
   it('Should make remove api call and get error response', () => {
@@ -60,6 +61,7 @@ describe('DeleteNoteComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
+    spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -67,5 +69,6 @@ describe('DeleteNoteComponent', () => {
     component.removeNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 });

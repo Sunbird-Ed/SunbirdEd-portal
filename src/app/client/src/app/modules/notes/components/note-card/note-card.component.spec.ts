@@ -1,17 +1,15 @@
 import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NoteFormComponent } from './../note-form/note-form.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, ConfigService, FilterPipe } from '@sunbird/shared';
+import { ResourceService, ToasterService, FilterPipe, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserService, ContentService, LearnerService } from '@sunbird/core';
+import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
-import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import { response } from '../note-list/note-list-component.spec.data';
-import { SuiComponentFactory } from 'ng2-semantic-ui/dist';
-import { Ng2IziToastModule } from 'ng2-izitoast';
+import { SuiModal } from 'ng2-semantic-ui';
+import { response } from './note-card-component.spec.data';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
@@ -25,10 +23,9 @@ describe('NoteCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, Ng2IziToastModule ],
-      declarations: [ NoteCardComponent, NoteFormComponent, FilterPipe, TimeAgoPipe ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
+      declarations: [ NoteCardComponent, FilterPipe, TimeAgoPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
-         ConfigService, ContentService, SuiModalService, SuiComponentFactory,
          { provide: ActivatedRoute, useValue: fakeActivatedRoute },
          { provide: Router, useClass: RouterStub } ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -60,13 +57,14 @@ describe('NoteCardComponent', () => {
     expect(component.notesList).toBeDefined();
   });
 
-  it('Should throw error from else statement', () => {
+  it('Should display error message in case of exception in fetching list of notes', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
+    spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     userService.getUserProfile();
     fixture.detectChanges();
@@ -74,6 +72,22 @@ describe('NoteCardComponent', () => {
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
+  it('Should refresh the values of selectedIndex and selectedNote once a note is created', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.createEventEmitter(response.responseSuccess.result.response.note[0]);
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(component.notesList[0]);
+    expect(component.showCreateEditor).toBeFalsy();
+  });
+
+  it('Should refresh the values of selectedIndex and selectedNote once a note is updated', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.updateEventEmitter(response.responseSuccess.result.response.note[0]);
+    expect(component.selectedIndex).toBe(0);
+    expect(component.selectedNote).toBe(component.notesList[0]);
+    expect(component.showUpdateEditor).toBeFalsy();
+  });
 });

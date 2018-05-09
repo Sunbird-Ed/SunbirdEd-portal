@@ -1,7 +1,7 @@
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -33,13 +33,14 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * An event emitter to hide the editor while the 'cross' icon in update editor is clicked.
    */
   @Output() exitUpdateEditor = new EventEmitter<boolean>();
-  @Output() updateEventEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() createEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
-   * This variable helps redirecting the user to NotesList view once
-   * a note is created or updated.
+   * An event emitter to update notes list after updating note.
    */
-  route: Router;
+  @Output() updateEventEmitter: EventEmitter<any> = new EventEmitter();
+  /**
+   * An event emitter to update notes list after creating note.
+   */
+  @Output() createEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
    * To call the resource service.
    */
@@ -48,6 +49,9 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * To bind the user input and modal.
    */
   noteData: INoteData = {};
+  /**
+   * The variable on which update action is carried out on.
+   */
   updateData: INoteData;
   /**
    * This variable holds the entire array of existing notes at any point
@@ -94,10 +98,6 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    */
   private toasterService: ToasterService;
   /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
-  /**
    * Reference of user service.
    */
   userService: UserService;
@@ -119,20 +119,18 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
    * @param {RouterNavigationService} routerNavigationService Reference of activatedRoute.
    */
 
-  constructor(route: Router,
+  constructor(
     resourceService: ResourceService,
     userService: UserService,
     noteService: NotesService,
     activatedRoute: ActivatedRoute,
-    toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    toasterService: ToasterService
+  ) {
     this.noteService = noteService;
     this.userService = userService;
-    this.route = route;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.activatedRoute = activatedRoute;
-    this.routerNavigationService = routerNavigationService;
   }
 
   /**
@@ -215,7 +213,6 @@ export class NoteFormComponent implements OnInit, AfterViewInit {
           updatedDate: new Date().toISOString()
         };
         this.createEventEmitter.emit(returnObj);
-
       },
       (err) => {
         this.showLoader = false;

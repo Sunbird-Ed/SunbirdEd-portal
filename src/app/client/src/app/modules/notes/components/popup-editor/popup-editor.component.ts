@@ -1,8 +1,8 @@
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ActivatedRoute } from '@angular/router';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { INoteData, ICourseDetails } from '@sunbird/notes';
@@ -33,13 +33,14 @@ export class PopupEditorComponent implements OnInit, AfterViewInit {
    * An event emitter to exit editor modal.
    */
   @Output() exitModal = new EventEmitter<boolean>();
-  @Output() updateEventEmitter: EventEmitter<any> = new EventEmitter();
-  @Output() createEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
-   * This variable helps redirecting the user to NotesList view once
-   * a note is created or updated.
+   * An event emitter to update notes list after updating a note.
    */
-  route: Router;
+  @Output() updateEventEmitter: EventEmitter<any> = new EventEmitter();
+  /**
+   * An event emitter to update notes list after creating a note.
+   */
+  @Output() createEventEmitter: EventEmitter<any> = new EventEmitter();
   /**
    * To call the resource service.
    */
@@ -48,6 +49,9 @@ export class PopupEditorComponent implements OnInit, AfterViewInit {
    * To bind the user input and modal.
    */
   noteData: INoteData = {};
+  /**
+   * This variable holds the value of the note to be updated.
+   */
   updateData: INoteData;
   /**
    * This variable holds the entire array of existing notes at any point
@@ -89,10 +93,6 @@ export class PopupEditorComponent implements OnInit, AfterViewInit {
    */
   private toasterService: ToasterService;
   /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
-  /**
    * Reference of user service.
    */
   userService: UserService;
@@ -111,23 +111,19 @@ export class PopupEditorComponent implements OnInit, AfterViewInit {
    * @param {ResourceService} resourceService Reference of resourceService.
    * @param {NotesService} notesService Reference of notesService.
    * @param {ActivatedRoute} activatedRoute Reference of activatedRoute.
-   * @param {RouterNavigationService} routerNavigationService Reference of activatedRoute.
    */
 
-  constructor(route: Router,
+  constructor(
     resourceService: ResourceService,
     userService: UserService,
     noteService: NotesService,
     activatedRoute: ActivatedRoute,
-    toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    toasterService: ToasterService) {
     this.noteService = noteService;
     this.userService = userService;
-    this.route = route;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.activatedRoute = activatedRoute;
-    this.routerNavigationService = routerNavigationService;
   }
 
   /**

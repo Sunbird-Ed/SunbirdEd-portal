@@ -1,16 +1,16 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { response } from './notes-service.spec.data';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotesService } from './notes.service';
-import { UserService, ContentService, LearnerService } from '@sunbird/core';
+import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 
 describe('NotesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [NotesService, LearnerService, ConfigService, UserService]
+      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      providers: [NotesService, LearnerService, UserService]
     });
   });
 

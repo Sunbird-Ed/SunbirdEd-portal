@@ -144,13 +144,6 @@ export class NoteCardComponent implements OnInit {
    */
   ngOnInit() {
     this.notesList = [];
-    // this.noteService.updateEventEmitter.subscribe(data => this.showUpdateEditor = false);
-
-    // this.noteService.createEventEmitter.subscribe(data => {
-    //   this.notesList.unshift(data);
-    //   this.showUpdateEditor = false;
-    // });
-
 
     if (this.courseDetails && this.courseDetails.courseId) {
       this.courseId = this.courseDetails.courseId;
@@ -208,6 +201,7 @@ export class NoteCardComponent implements OnInit {
    */
   public setSelectedNote(note, a) {
     this.selectedNote = note;
+    this.selectedIndex = a;
   }
 
   createEventEmitter(data) {

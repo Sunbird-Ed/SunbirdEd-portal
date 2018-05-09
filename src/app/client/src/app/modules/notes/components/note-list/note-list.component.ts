@@ -261,6 +261,6 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    this.route.navigate(['learn']);
   }
 }
