@@ -1690,9 +1690,10 @@ ul.fancytree-container li {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.contentdetail {
+.content-detail {
   color: #7c7b7b;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .contentMetaDetail {
   color: #7c7b7b;

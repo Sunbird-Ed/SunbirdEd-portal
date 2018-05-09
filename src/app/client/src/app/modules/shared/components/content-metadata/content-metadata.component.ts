@@ -8,15 +8,40 @@ import { ContentData } from './../../interfaces';
   templateUrl: './content-metadata.component.html',
   styleUrls: ['./content-metadata.component.css']
 })
-export class ContentMetadataComponent {
+export class ContentMetadataComponent implements OnInit {
+  readMore = false;
+  contentDataCopy = {};
+  contentFieldData: any;
+  fieldData = [];
+
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService) { }
-/**
- * Fetches concepts
- * @param {any} concepts
- * @returns {string}
- */
-getConceptsNames(concepts): string {
+
+  ngOnInit() {
+    this.validateContent();
+  }
+
+  validateContent() {
+    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords'];
+    _.forEach(this.contentData, (value, key) => {
+      if (_.compact(key) && _.includes(this.fieldData, key)) {
+        if (_.isString(value)) {
+          this.contentFieldData = [value];
+          this.contentDataCopy[key] = (_.isArray(this.contentFieldData)) ? (_.compact(this.contentFieldData).join(', ')) : '';
+        } else {
+          this.contentDataCopy[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
+        }
+        return this.contentDataCopy;
+      }
+    });
+  }
+
+  /**
+   * Fetches concepts
+   * @param {any} concepts
+   * @returns {string}
+   */
+  getConceptsNames(concepts): string {
     const conceptNames = _.map(concepts, 'name');
     if (concepts && conceptNames.length < concepts.length) {
       // const filteredConcepts = _.filter($rootScope.concepts, (p) => {
@@ -24,6 +49,22 @@ getConceptsNames(concepts): string {
       // });
       // conceptNames = _.map(filteredConcepts, 'name');
     }
-    return conceptNames.toString();
+    return conceptNames.join(', ');
+  }
+
+  getResourceTypes(resourceTypes) {
+    if (!resourceTypes) {
+      return false;
+    }
+    if (_.isString(resourceTypes)) {
+      return resourceTypes;
+    } else if (_.isArray(resourceTypes)) {
+      return resourceTypes.join(', ')
+    } else {
+      return false;
+    }
   }
 }
+
+
+
