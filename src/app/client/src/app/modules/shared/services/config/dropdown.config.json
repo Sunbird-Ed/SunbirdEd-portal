@@ -238,6 +238,13 @@
                 "resources": "Library",
                 "profile": "Users"
             },
+            "searchEnabled": [
+                     "home",
+                     "learn",
+                     "resources",
+                     "profile",
+                     "search"
+            ],
             "All": {
                 "DROPDOWN": {
                     "Curriculum": [],
