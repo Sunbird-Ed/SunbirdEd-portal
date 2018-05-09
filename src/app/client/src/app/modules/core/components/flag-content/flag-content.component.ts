@@ -167,7 +167,6 @@ export class FlagContentComponent implements OnInit {
 	 *
 	 */
   redirect(): void {
-    this.showLoader = false;
     this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
   }
   /**
