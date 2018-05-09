@@ -10,16 +10,37 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService
   styleUrls: ['./user-summary.component.css']
 })
 export class UserSummaryComponent implements OnInit {
+  /**
+   * Boolean value to show/hide readMore
+   */
   readMore = false;
+  /**
+   * Reference to User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Boolean value for profile visibility
+   */
   privateProfileFields = true;
+  /**
+   * Contains edit action
+   */
   action: string;
+  /**
+   * Used to bind data
+   */
   editSummury: string;
+  /**
+   * Contains array of actions
+   */
   allowedAction = ['edit'];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public profileService: ProfileService, public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
-
+  /**
+   * This method invokes user service to fetch user summary data
+   * Also used to assign action
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -27,20 +48,23 @@ export class UserSummaryComponent implements OnInit {
           this.userProfile = user.userProfile;
           this.editSummury = this.userProfile.profileSummary;
         }
-    });
+      });
     this.userProfile = this.userService.userProfile;
     this.activatedRoute.params.subscribe(params => {
       if (params.section && params.section === 'summary' &&
-      this.allowedAction.indexOf(params.action) > -1) {
+        this.allowedAction.indexOf(params.action) > -1) {
         this.action = params.action;
-      } else if ( params.section && params.section === 'summary' &&
-      this.allowedAction.indexOf(params.action) === -1 ) {
+      } else if (params.section && params.section === 'summary' &&
+        this.allowedAction.indexOf(params.action) === -1) {
         this.router.navigate(['/profile']);
       } else {
         this.action = 'view';
       }
     });
   }
+  /**
+   * This method is used to edit user summary details
+   */
   editDetails(editedSummury) {
     this.action = 'view';
     const req = {
@@ -51,9 +75,9 @@ export class UserSummaryComponent implements OnInit {
       // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0019);
     },
-    err => {
-      // toaster err
-    });
+      err => {
+        // toaster err
+      });
   }
 
 }

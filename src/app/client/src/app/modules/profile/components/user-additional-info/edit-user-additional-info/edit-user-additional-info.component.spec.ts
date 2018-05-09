@@ -32,7 +32,6 @@ describe('EditUserAdditionalInfoComponent', () => {
     const offsetTop = 'additionaInfo';
     spyOn(windowScrollService, 'smoothScroll').and.returnValue(null);
     const userService = TestBed.get(UserService);
-    userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     component.webPages = mockRes.data.userProfile.webPages;
     expect(component).toBeTruthy();
