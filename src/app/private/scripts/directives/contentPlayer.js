@@ -16,7 +16,8 @@ angular.module('playerApp')
         width: '=',
         ispercentage: '=',
         closeurl: '=',
-        isworkspace: '='
+        isworkspace: '=',
+        contenteditmode: '=?'
       },
             link: function (scope, element, attrs) { //eslint-disable-line
         if (scope.ispercentage) {

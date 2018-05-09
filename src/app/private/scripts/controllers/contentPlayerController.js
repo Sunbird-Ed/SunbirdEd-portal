@@ -121,6 +121,9 @@ angular.module('playerApp')
             'osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,' +
             'attributions,artifactUrl,mimeType,medium,year,publisher,creator'
         }
+        if($scope.contenteditmode) {
+          qs.mode = 'edit'
+        }
         contentService.getById(req, qs).then(function (response) {
           if (response && response.responseCode === 'OK') {
             if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
