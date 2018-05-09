@@ -71,7 +71,7 @@ describe('ContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should config content player if content status is "Live"', () => {
+  it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -82,7 +82,7 @@ describe('ContentPlayerComponent', () => {
     fixture.detectChanges();
     expect(component.playerConfig).toBeTruthy();
   });
-  xit('should config player if content status is "Unlisted"', () => {
+  it('should config player if content status is "Unlisted"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -94,7 +94,7 @@ describe('ContentPlayerComponent', () => {
     fixture.detectChanges();
     expect(component.playerConfig).toBeTruthy();
   });
-  xit('should not config player if content status is not "Live" or "Unlisted"', () => {
+  it('should not config player if content status is not "Live" or "Unlisted"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -113,7 +113,7 @@ describe('ContentPlayerComponent', () => {
     expect(component.toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0027);
     expect(router.navigate).toHaveBeenCalledWith(['/resources']);
   });
-  xit('should throw error if content api throws error', () => {
+  it('should throw error if content api throws error', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
