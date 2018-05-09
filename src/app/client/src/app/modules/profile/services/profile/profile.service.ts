@@ -5,7 +5,9 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse
 export class ProfileService {
   constructor(private learnerService: LearnerService,
     public userService: UserService, public configService: ConfigService) { }
-
+  /**
+   * This method is used to update profile picture of the user
+   */
   public updateAvatar(file) {
     return this.uploadMedia(file).flatMap(results => {
       const req = {
@@ -14,6 +16,9 @@ export class ProfileService {
       return this.updateProfile(req);
     });
   }
+  /**
+   * This method invokes learner service to update user profile
+   */
   public updateProfile(request) {
     const data = this.formatRequest(request);
     const options = {
@@ -29,6 +34,9 @@ export class ProfileService {
       }
     );
   }
+  /**
+   * This method is used to update user profile visibility
+   */
   updateProfileFieldVisibility(request) {
     const data = this.formatRequest(request);
     const options = {
@@ -37,6 +45,9 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
+  /**
+   * This method invokes learner service to upload user profile picture
+   */
   public uploadMedia(file) {
     const options = {
       url: this.configService.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
@@ -44,6 +55,9 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
+  /**
+   * This method is used to format the request
+   */
   private formatRequest(request) {
     request.userId = this.userService.userid;
     return {
@@ -51,6 +65,9 @@ export class ProfileService {
       request: request
     };
   }
+  /**
+   * This method is used to add new skills
+   */
   public add(request) {
     const data = this.formatRequest(request);
     const options = {
@@ -65,6 +82,9 @@ export class ProfileService {
         return res;
       });
   }
+  /**
+   * This method invokes learner service to get user respective skills
+   */
   public getSkills() {
     const options = {
       url: this.configService.urlConFig.URLS.USER.SKILLS

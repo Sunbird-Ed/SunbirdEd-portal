@@ -5,8 +5,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { EditorService } from './../../services';
-import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ResourceService, SharedModule } from '@sunbird/shared';
+import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { DefaultTemplateComponent } from './content-creation-default-template.component';
@@ -37,9 +37,9 @@ describe('DefaultTemplateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
       declarations: [ DefaultTemplateComponent ],
-      providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
+      providers: [UserService, LearnerService,
         CacheService, EditorService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

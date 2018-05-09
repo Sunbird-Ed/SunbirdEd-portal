@@ -31,7 +31,7 @@ describe('WorkSpaceService', () => {
   it('should  launch  content  editor when mime type is content-collection',
     inject([WorkSpaceService, Router], (workSpaceService, route) => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[0], 'draft');
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/contentEditor/', 'do_1124858179748904961134', 'draft', 'NCF']);
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/content/', 'do_1124858179748904961134', 'draft', 'NCF']);
   }));
 
   it('should  launch  collection  editor when mime type is ecml-archive',
