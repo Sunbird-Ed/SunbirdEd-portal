@@ -10,7 +10,7 @@ describe('CourseProgressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule],
-      providers: [CourseProgressService, LearnerService, ConfigService]
+      providers: [CourseProgressService]
     });
   });
 

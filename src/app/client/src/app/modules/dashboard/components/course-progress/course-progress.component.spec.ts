@@ -8,11 +8,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, DateFormatPipe, ServerResponse, FilterPipe
+  ToasterService, ServerResponse, FilterPipe
 } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
@@ -46,10 +46,9 @@ describe('CourseProgressComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule],
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule, CoreModule],
       declarations: [CourseProgressComponent, FilterPipe],
-      providers: [UserService, ConfigService, ToasterService, ConfigService,
-        PaginationService, DateFormatPipe, LearnerService, ContentService, CourseProgressService,
+      providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
