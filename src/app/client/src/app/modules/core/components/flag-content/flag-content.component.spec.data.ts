@@ -9,6 +9,16 @@ export const Response = {
         'me_averageRating': '3',
         'description': 'string'
     },
+    resourceBundle: {
+        'messages': {
+          'fmsg': {
+            'm0050': 'Submiting failed'
+          },
+            'stmsg': {
+              'm0077': 'we are submiting your request'
+            }
+        }
+      },
     successFlag: {
         'id': 'api.content.flag',
         'ver': '1.0',

@@ -1,5 +1,5 @@
 import { ContentService, PlayerService, UserService } from './../../services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService, ContentData,
@@ -21,6 +21,7 @@ import { IFlagReason, IFlagData, IRequestData } from './../../interfaces';
  `],
 })
 export class FlagContentComponent implements OnInit {
+  @ViewChild('modal') modal;
   /**
    * It is type of IFlagReason containing name, value and description
    */
@@ -126,7 +127,7 @@ export class FlagContentComponent implements OnInit {
   /**
    * This method use to Call flag api
    */
-  populateFlagContent(requestData, modal) {
+  populateFlagContent(requestData) {
     this.showLoader = true;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0077,
@@ -137,7 +138,7 @@ export class FlagContentComponent implements OnInit {
     };
     this.contentService.post(option).subscribe(response => {
       this.showLoader = false;
-      modal.deny();
+      this.modal.deny();
       this.redirect();
     }, (err) => {
       this.showLoader = false;
@@ -147,7 +148,7 @@ export class FlagContentComponent implements OnInit {
   /**
    * This method use to create request Data for api call
    */
-  saveMetaData(modal) {
+  saveMetaData() {
     const requestData: IRequestData = {
       flaggedBy: this.userData.firstName + ' ' + this.userData.lastName,
       versionKey: this.contentData.versionKey
@@ -158,7 +159,7 @@ export class FlagContentComponent implements OnInit {
     if (this.flagData.comment) {
       requestData.flags = [this.flagData.comment];
     }
-    this.populateFlagContent(requestData, modal);
+    this.populateFlagContent(requestData);
   }
   /**
    * This method helps to redirect to the parent component

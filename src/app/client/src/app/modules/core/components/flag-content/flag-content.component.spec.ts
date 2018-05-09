@@ -1,5 +1,5 @@
 import { ContentService, PlayerService, UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { SharedModule , ResourceService} from '@sunbird/shared';
+import { SharedModule , ResourceService, ToasterService} from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,25 +13,29 @@ describe('FlagContentComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-  const resourceBundle = {
-    'messages': {
-      'fmsg': {
-        'm0050': 'nnnn'
-      },
-        'stmsg': {
-          'm0077': 'we are submiting your request'
-        }
-    }
-  };
 
-const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId', contentName: 'hello'}) }};
+const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId', contentName: 'hello'}) },
+snapshot: {
+  parent: {
+    url: [
+      {
+        path: 'play',
+      },
+      {
+        path: 'content',
+      },
+      {
+        path: 'do_112498456959754240121',
+      },
+    ],
+  }
+}};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, CoreModule],
       providers: [{ provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle }],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -74,32 +78,33 @@ const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId
   it('should call flag api', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = Response.resourceBundle.messages;
+    const modal = '';
     const requestData = {
       flaggedBy: 'Cretation User',
       versionKey: '1496989757647',
      flagReasons: 'others'
     };
-   component.populateFlagContent(requestData, '');
-   spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successFlag));
-   component.showLoader = false;
-   contentService.post(requestData).subscribe(data => {
-    expect(component.showLoader).toBeFalsy();
-   });
-   fixture.detectChanges();
+    spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successFlag));
+   component.populateFlagContent(requestData);
+   expect(component.showLoader).toBeFalsy();
   });
   it('should  throw error when call flag api', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = Response.resourceBundle.messages;
     const requestData = {
       flaggedBy: 'Cretation User',
       versionKey: '1496989757647'
     };
-   component.populateFlagContent(requestData, '');
-   spyOn(contentService, 'post').and.callFake(() => Observable.throw({}));
-   component.showLoader = false;
-   contentService.post(requestData).subscribe(data => {}, err => {
-    expect(component.showLoader).toBeFalsy();
-   });
+    spyOn(contentService, 'post').and.callFake(() => Observable.throw({}));
+    spyOn(toasterService, 'error').and.callThrough();
+   component.populateFlagContent(requestData);
    fixture.detectChanges();
+   expect(component.showLoader).toBeFalsy();
+   expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0050);
   });
 });
