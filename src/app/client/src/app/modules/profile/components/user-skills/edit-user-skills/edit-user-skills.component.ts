@@ -12,15 +12,26 @@ import * as _ from 'lodash';
   styleUrls: ['./edit-user-skills.component.css']
 })
 export class EditUserSkillsComponent implements OnInit {
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
-  skillForm: FormGroup;
+  /**
+   * Used for binding
+   */
   skill: any;
+  /**
+   * Contains skills data of the user
+   */
   profileData: any;
 
   constructor(public userService: UserService, public resourceService: ResourceService, public router: Router,
     public profileService: ProfileService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService) { }
-
+  /**
+   * This method invokes profile service to fetch all the skills of respective user
+   * Also invokes user service to fetch user profile data
+   */
   ngOnInit() {
     this.windowScrollService.smoothScroll('skills');
     this.profileService.getSkills().subscribe((data) => {
@@ -36,6 +47,9 @@ export class EditUserSkillsComponent implements OnInit {
       });
     this.userProfile = this.userService.userProfile;
   }
+  /**
+   * This method is used to add new skills
+   */
   addSkill(addedSkill) {
     const req = {
       skillName: addedSkill,
@@ -53,6 +67,9 @@ export class EditUserSkillsComponent implements OnInit {
       this.router.navigate(['/profile']);
     }
   }
+  /**
+   * This method is used to navigate back to profile
+   */
   redirect() {
     this.router.navigate(['/profile']);
   }

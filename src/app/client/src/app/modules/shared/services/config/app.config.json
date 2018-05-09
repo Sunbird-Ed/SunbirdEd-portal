@@ -266,6 +266,17 @@
       "email": "profile/additionalInfo/edit",
       "phone": "profile/additionalInfo/edit",
       "language": "profile/additionalInfo/edit"
-    }
+    },
+    "defaultViewMoreLimit": 3,
+    "options": [
+      {
+        "text": "Hide this from everyone",
+        "value": "private"
+      },
+      {
+        "text": "Show this to all",
+        "value": "public"
+      }
+    ]
   }
 }
