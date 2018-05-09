@@ -30,11 +30,11 @@ export class NoteCardComponent implements OnInit {
   /**
    * Helps in displaying and hiding create editor.
    */
-  showCreateEditor: false;
+  showCreateEditor: boolean;
   /**
    * Helps in displaying and hiding update editor.
    */
-  showUpdateEditor: false;
+  showUpdateEditor: boolean;
   /**
    * The 'sortOrder' variable helps in making sure that the array of notes
    * retrieved while making the search API call is sorted in descending order.
@@ -143,6 +143,8 @@ export class NoteCardComponent implements OnInit {
    * Initializing notesList and selectedNote values.
    */
   ngOnInit() {
+    this.showCreateEditor = false;
+    this.showUpdateEditor = false;
     this.notesList = [];
 
     if (this.courseDetails && this.courseDetails.courseId) {

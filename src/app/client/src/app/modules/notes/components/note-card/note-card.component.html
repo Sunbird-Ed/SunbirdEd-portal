@@ -47,7 +47,7 @@
     <div *ngIf="showCreateEditor">
         <app-popup-editor [mode]="'create'" (exitModal)="exitModal($event)" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
     </div>
-    <div *ngIf="showUpdateEditor === true">
+    <div *ngIf="showUpdateEditor">
         <app-popup-editor [mode]="'update'" [selectedNote]="selectedNote" (exitModal)="exitModal($event)" (updateEventEmitter)="updateEventEmitter($event)"></app-popup-editor>
     </div>
 </div>
