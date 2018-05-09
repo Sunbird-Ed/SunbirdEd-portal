@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, FilterPipe } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
@@ -23,7 +23,7 @@ describe('NoteListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, OrderModule, SharedModule, CoreModule ],
-      declarations: [ NoteListComponent, FilterPipe, TimeAgoPipe ],
+      declarations: [ NoteListComponent, TimeAgoPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
          { provide: Router, useClass: RouterStub },
           { provide: ActivatedRoute, useValue: fakeActivatedRoute }

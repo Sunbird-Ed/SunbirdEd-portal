@@ -1,7 +1,7 @@
 import { Routes, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NoteFormComponent } from './../note-form/note-form.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ToasterService, FilterPipe, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
@@ -24,7 +24,7 @@ describe('NoteCardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
-      declarations: [ NoteCardComponent, FilterPipe, TimeAgoPipe ],
+      declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
          { provide: ActivatedRoute, useValue: fakeActivatedRoute },
          { provide: Router, useClass: RouterStub } ],
