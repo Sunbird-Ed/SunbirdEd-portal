@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollService, IBasicInfo } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
-import { ProfileService } from '../../../services/profile/profile.service';
+import { ProfileService } from '../../../services';
 
 @Component({
   selector: 'app-edit-user-additional-info',
