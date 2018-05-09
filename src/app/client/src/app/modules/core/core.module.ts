@@ -11,7 +11,7 @@ import {
   TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService
 } from './services';
 import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent } from './components';
+  ErrorPageComponent, SortByComponent, ContentPlayerMetadataComponent } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
@@ -25,9 +25,9 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent],
+     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, ContentPlayerMetadataComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-     SortByComponent, BreadcrumbsComponent],
+     SortByComponent, BreadcrumbsComponent, ContentPlayerMetadataComponent],
   providers: [
     LearnerService, UserService, TenantService, SearchService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
