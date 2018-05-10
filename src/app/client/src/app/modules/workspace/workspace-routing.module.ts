@@ -9,7 +9,7 @@ import {
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
-    path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],
+    path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard], data: {roles : 'workspace'},
     children: [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
