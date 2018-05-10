@@ -34,10 +34,4 @@ export class ContentService extends DataService {
     this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
   }
 
-  public getCollectionHierarchy(id: string): Observable<CollectionHierarchyAPI.Get> {
-    return this.get({
-      url: this.config.urlConFig.URLS.COURSE.HIERARCHY + '/' + id
-    });
-  }
-
 }
