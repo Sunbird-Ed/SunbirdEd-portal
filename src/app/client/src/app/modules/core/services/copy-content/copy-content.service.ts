@@ -1,4 +1,4 @@
-import { ConfigService, ServerResponse, ContentData, IUserProfile } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -52,7 +52,6 @@ export class CopyContentService extends DataService {
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
    * @param {contentData} ContentData Conetnt data which will be copied
-   * @param {userData} IUserProfile User data of the logged  in user
    */
   copyContent(contentData: ContentData) {
     const param = this.formatData(contentData);
@@ -70,8 +69,7 @@ export class CopyContentService extends DataService {
 
   /**
    * This method prepares the request body for the copy API
-   * @param {contentData} ContentData Conetnt data which will be copied
-   * @param {userData} IUserProfile User data of the logged  in user
+   * @param {contentData} ContentData Content data which will be copied
    */
   formatData(contentData: ContentData) {
     const userData = this.userService.userProfile;
