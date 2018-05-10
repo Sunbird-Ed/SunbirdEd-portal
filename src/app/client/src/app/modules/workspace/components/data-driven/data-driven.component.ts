@@ -219,7 +219,7 @@ export class DataDrivenComponent implements OnInit {
       requestData.description = data.description ? data.description : 'Untitled Collection',
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
-      requestData.organisation = this.userProfile.organisationNmaes,
+      requestData.organisation = this.userProfile.organisationNames,
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
