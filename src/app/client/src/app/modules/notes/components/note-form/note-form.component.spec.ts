@@ -41,9 +41,8 @@ describe('NoteFormComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.createEventEmitter, 'emit');
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
+    userService.getUserProfile();
     component.createNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -59,9 +58,8 @@ describe('NoteFormComponent', () => {
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
+    userService.getUserProfile();
     component.createNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -75,9 +73,8 @@ describe('NoteFormComponent', () => {
     spyOn(component.updateEventEmitter, 'emit');
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
+    userService.getUserProfile();
     component.updateNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -94,9 +91,8 @@ describe('NoteFormComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
+    userService.getUserProfile();
     component.updateNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

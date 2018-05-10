@@ -43,9 +43,8 @@ describe('NoteListComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'search').and.returnValue(Observable.of(response.responseSuccess));
+    userService.getUserProfile();
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -61,9 +60,8 @@ describe('NoteListComponent', () => {
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
+    userService.getUserProfile();
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

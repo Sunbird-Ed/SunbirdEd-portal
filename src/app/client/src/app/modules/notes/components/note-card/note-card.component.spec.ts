@@ -16,7 +16,8 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
   let fixture: ComponentFixture<NoteCardComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'mode': 'create' }]) };
+  const fakeActivatedRoute = { 'params': Observable.from([{ 'courseId': 'do_212347136096788480178',
+   'contentId': 'do_2123229899264573441612' }]) };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
@@ -48,9 +49,8 @@ describe('NoteCardComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const noteService = TestBed.get(NotesService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(noteService, 'search').and.returnValue(Observable.of(response.responseSuccess));
+    userService.getUserProfile();
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -66,9 +66,8 @@ describe('NoteCardComponent', () => {
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
+    userService.getUserProfile();
     component.getAllNotes();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

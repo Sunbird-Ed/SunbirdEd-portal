@@ -44,11 +44,9 @@ describe('DeleteNoteComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     spyOn(component.deleteEventEmitter, 'emit');
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'remove').and.returnValue(Observable.of(response.deleteSuccess));
+    userService.getUserProfile();
     component.removeNote();
-    component.deleteEventEmitter.emit('01245874638382694454');
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.deleteEventEmitter.emit).toHaveBeenCalled();
@@ -63,9 +61,8 @@ describe('DeleteNoteComponent', () => {
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
-    userService.getUserProfile();
-    fixture.detectChanges();
     spyOn(notesService, 'remove').and.callFake(() => Observable.throw(response.deleteFailed));
+    userService.getUserProfile();
     component.removeNote();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
