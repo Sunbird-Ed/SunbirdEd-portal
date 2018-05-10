@@ -140,6 +140,7 @@ app.all('/signup', indexPage)
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
+app.all('/play/*', indexPage)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
