@@ -55,6 +55,7 @@ export interface IUserProfile {
     orgRoleMap?: { [key: string]: Array<string> };
     roleOrgMap?: { [key: string]: string };
     organisationIds?: Array<string>;
+    organisationNmaes?: Array<string>;
 }
 export interface IJobProfile {
     jobName: string;
