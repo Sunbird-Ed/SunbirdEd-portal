@@ -9,8 +9,8 @@ export const Response = {
        'left': {'class': 'ui black right ribbon label', 'name': 'resource'}
           },
       'action': {
-       'right': {'class': 'trash large icon' , 'name': 'right', 'displayType': 'icon'},
-       'left': {'class': 'ui blue basic button margin-top-10' , 'name': 'left', 'displayType': 'button', 'text': 'Resume'}
+       'right': {'class': 'trash large icon' , 'eventName': 'right', 'displayType': 'icon'},
+       'left': {'class': 'ui blue basic button margin-top-10' , 'eventName': 'left', 'displayType': 'button', 'text': 'Resume'}
          }
     },
     defaultData: {

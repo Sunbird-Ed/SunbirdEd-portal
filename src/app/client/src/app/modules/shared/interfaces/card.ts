@@ -15,17 +15,17 @@ export interface ICard {
         right?: {
             class: string,
             text?: string,
-            name: string,
+            eventName: string,
             displayType: string
         };
         left?: {
             class: string,
             text?: string,
-            name: string,
+            eventName: string,
             displayType: string
         };
-        onCard?: {
-            name: string
+        onImage?: {
+            eventName: string
         };
     };
 }
