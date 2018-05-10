@@ -725,6 +725,7 @@ angular.module('playerApp')
         },
         onExit: function ($rootScope) {
           $rootScope.profileActive = ''
+          $('body .modals').remove()
         }
       })
       .state('PreviewCollection', {
