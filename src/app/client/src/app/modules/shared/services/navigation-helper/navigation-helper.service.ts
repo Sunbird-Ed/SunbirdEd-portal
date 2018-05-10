@@ -22,7 +22,7 @@ export class NavigationHelperService {
    * Stores routing history
    * @memberof NavigationHelperService
    */
-  public storeUrlHistory(): void {
+  private storeUrlHistory(): void {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
       const queryParams = this.activatedRoute.root.children[this.activatedRoute.root.children.length - 1].snapshot.queryParams;
       const url = urlAfterRedirects.url.split('?')[0];
@@ -70,7 +70,12 @@ export class NavigationHelperService {
       return {url: '/home'};
     }
   }
-  navigateToPreviousUrl(defaultUrl: string) {
+  /**
+   * Navigates to previous Url
+   * 1. Goes to previous url, If Url and queryParams are present either from local property or session store.
+   * 2. If not, then goes to default url provided.
+   */
+  public navigateToPreviousUrl(defaultUrl: string = '/home') {
     const previousUrl = this.getPreviousUrl();
     if (previousUrl.url === '/home') {
       this.router.navigate([defaultUrl]);
