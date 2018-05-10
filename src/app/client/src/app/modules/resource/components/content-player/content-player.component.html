@@ -26,12 +26,15 @@
                                     [maximum]="5"></sui-rating>&nbsp;&nbsp;
                                 <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
                                     <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
+                                    <span (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope" title="Copy content"><i class="ui large blue clone outline icon"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
-
+                    <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+                        <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+                    </div>
                     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
                     <div class="twelve wide column contentMetaSection">

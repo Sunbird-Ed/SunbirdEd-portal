@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, CopyContentService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
@@ -39,9 +39,18 @@ export class ContentPlayerComponent implements OnInit {
    * contain contentData
    */
   contentData: ContentData;
+  /**
+   * Logged in user data
+   */
+  userData: any;
+  /**
+   * to show loader while copying content
+   */
+  showCopyLoader = false;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
+    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
+    public copyContentService: CopyContentService) {
   }
   /**
    *
@@ -53,6 +62,7 @@ export class ContentPlayerComponent implements OnInit {
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {
+            this.userData = user.userProfile;
             this.getContent();
           }
       });
@@ -102,5 +112,18 @@ export class ContentPlayerComponent implements OnInit {
     } else {
       this.router.navigate([previousUrl]);
     }
+  }
+
+  copyContent(contentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData, this.userData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+    });
   }
 }

@@ -101,7 +101,7 @@ export class PlayerService {
 
       this.router.navigate(['/resources/play/content', content.identifier , content.name]);
 
-    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
+    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.includes(content.mimeType)) {
 
       this.router.navigate(['/resources/play/content', content.identifier , content.name]);
 
