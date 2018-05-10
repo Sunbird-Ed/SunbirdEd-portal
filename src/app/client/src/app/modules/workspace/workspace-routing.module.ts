@@ -96,7 +96,7 @@ const routes: Routes = [
     ]
   },
   { path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent,
-  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]} 
+  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
   }
 ];
 
