@@ -94,7 +94,6 @@ export class WorkSpaceService {
       this.route.navigate(['/workspace/content/edit/content/', content.identifier, state, content.framework]);
     } else {
       if (state === 'upForReview') {
-        console.log('open content player');
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       }
     }

@@ -15,7 +15,7 @@
         </div>
         <div class="two wide column">
           <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
-            <i class="ui remove icon"></i>
+            <i class="ui remove icon" (click)="close()"></i>
           </h5>
         </div>
       </div>
@@ -31,6 +31,13 @@
         <button class="ui right floated primary button mouse-pointer">
           {{resourceService?.frmelmnts?.btn?.requestChanges}}
         </button>
+      </div>
+    </div>
+    <div class="ui grid" *ngIf="!showLoader && contentData">
+      <div class="eight wide column">
+        <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+      </div>
+      <div class="four wide column">
       </div>
     </div>
 
@@ -51,8 +58,5 @@
         </div>
       </div>
     </div>
-
   </div>
-</div>
-<div class="ui grid">
 </div>

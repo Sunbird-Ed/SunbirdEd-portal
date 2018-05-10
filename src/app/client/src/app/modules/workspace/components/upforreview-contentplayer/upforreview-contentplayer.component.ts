@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
-  WindowScrollService, ToasterService
+  WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
 import { PlayerService } from '@sunbird/core';
 @Component({
@@ -69,7 +69,7 @@ export class UpforreviewContentplayerComponent implements OnInit {
   */
   constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     playerService: PlayerService, windowScrollService: WindowScrollService,
-    toasterService: ToasterService) {
+    toasterService: ToasterService, public navigationHelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -92,7 +92,7 @@ export class UpforreviewContentplayerComponent implements OnInit {
     this.showLoader = true;
     this.playerService.getContent(this.contentId).subscribe(
       (response) => {
-        if (response.result.content ) {
+        if (response.result.content) {
           const contentDetails = {
             contentId: this.contentId,
             contentData: response.result.content
@@ -106,10 +106,23 @@ export class UpforreviewContentplayerComponent implements OnInit {
         }
       },
       (err) => {
-         this.showError = true;
-         this.errorMessage = this.resourceService.messages.stmsg.m0009;
+        this.showError = true;
+        this.errorMessage = this.resourceService.messages.stmsg.m0009;
       });
   }
+  /**
+   * retry launching player with same content details
+   * @memberof ContentPlayerComponent
+   */
+  tryAgain() {
+    this.showError = false;
+    this.getContent();
+  }
+  /**
+  * closes conent player and revert to previous url
+  * @memberof ContentPlayerComponent
+  */
   close() {
+    this.navigationHelperService.navigateToPreviousUrl('/workspace/content/upForReview/1');
   }
 }

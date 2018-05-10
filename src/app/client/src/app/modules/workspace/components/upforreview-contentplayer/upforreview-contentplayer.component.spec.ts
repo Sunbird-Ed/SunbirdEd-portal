@@ -5,12 +5,9 @@ import { UpforreviewContentplayerComponent } from './upforreview-contentplayer.c
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
-// Import services
-import { SharedModule,  ToasterService, ResourceService } from '@sunbird/shared';
+import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-// Test data
 import * as mockData from './upforreview-content.component.spce.data';
 const testData = mockData.mockRes;
 describe('UpforreviewContentplayerComponent', () => {
@@ -37,7 +34,7 @@ describe('UpforreviewContentplayerComponent', () => {
       imports: [HttpClientTestingModule, Ng2IziToastModule,
       CoreModule,
       RouterTestingModule, SharedModule],
-      providers: [ ResourceService, ToasterService,
+      providers: [ ResourceService, ToasterService, NavigationHelperService
       { provide: ResourceService, useValue: resourceBundle }
       ]
     })
@@ -50,9 +47,6 @@ describe('UpforreviewContentplayerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
   it('should throw error if content api throws error', () => {
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
