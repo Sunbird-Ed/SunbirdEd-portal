@@ -213,11 +213,11 @@ export class UserService {
         _.forEach(data.result.response.content, (orgData) => {
           this.orgNames.push(orgData.orgName);
         });
-        this._userProfile.organisationNmaes = this.orgNames;
+        this._userProfile.organisationNames = this.orgNames;
       },
       (err: ServerResponse) => {
         this.orgNames = [];
-        this._userProfile.organisationNmaes = this.orgNames;
+        this._userProfile.organisationNames = this.orgNames;
       }
     );
   }
