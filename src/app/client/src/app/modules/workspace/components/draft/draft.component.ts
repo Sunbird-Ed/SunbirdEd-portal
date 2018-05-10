@@ -176,20 +176,32 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content.length > 0) {
-                    this.draftList = data.result.content;
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    _.forEach(this.draftList, (item, key) => {
-                        const action = {
-                            right: {
-                                displayType: 'icon',
-                                classes: 'trash large icon',
-                                actionType: 'delete',
-                                clickable: true
+                    _.forEach(data.result.content, (item, key) => {
+                        this.draftList[key] = {
+                            name: item.name,
+                            image: item.appIcon,
+                            showImage: true,
+                            description: item.description,
+                            ribbon: {
+                                right: {class: 'ui black right ribbon label', name: item.contentType}
+                            },
+                            metaData: {
+                                mimeType: item.mimeType,
+                                contentType: item.contentType,
+                                framework: item.framework,
+                                identifier: item.identifier,
+                            },
+                            action: {
+                                right: {
+                                    class: 'trash large icon',
+                                    displayType: 'icon',
+                                    eventName: 'delete'
+                                },
+                                onImage: {name: 'onImage'}
                             }
                         };
-                        this.draftList[key].action = action;
-
                     });
                     this.showLoader = false;
                 } else {
@@ -214,10 +226,11 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method launch the content editior
     */
     contentClick(param) {
-        if (param.type === 'delete') {
-            this.deleteConfirmModal(param.content.identifier);
+        console.log(param);
+        if (param.action.eventName === 'delete') {
+            this.deleteConfirmModal(param.data.metaData.identifier);
         } else {
-            this.workSpaceService.navigateToContent(param.content, this.state);
+            this.workSpaceService.navigateToContent(param.data.metaData, this.state);
         }
     }
     public deleteConfirmModal(contentIds) {
