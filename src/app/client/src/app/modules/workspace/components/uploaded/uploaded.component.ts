@@ -175,7 +175,6 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-         // this.uploaded = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           _.forEach(data.result.content, (item, key) => {

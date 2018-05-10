@@ -226,7 +226,6 @@ export class DraftComponent extends WorkSpace implements OnInit {
      * This method launch the content editior
     */
     contentClick(param) {
-        console.log(param);
         if (param.action.eventName === 'delete') {
             this.deleteConfirmModal(param.data.metaData.identifier);
         } else {
