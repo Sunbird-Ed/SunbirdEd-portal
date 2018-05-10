@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormService, ContentService, UserService, LearnerService } from '@sunbird/core';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { FormService, ContentService, CoreModule } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import { mockFormData } from './form.mock.spec.data';
 
   describe('FormService', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [FormService, ContentService, ConfigService, ResourceService, UserService, LearnerService]
+        imports: [HttpClientTestingModule, CoreModule, SharedModule],
+        providers: [FormService, ContentService]
       });
     });
 

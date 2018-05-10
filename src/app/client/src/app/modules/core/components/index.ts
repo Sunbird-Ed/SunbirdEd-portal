@@ -5,5 +5,6 @@ export * from './breadcrumbs/breadcrumbs.component';
 export * from './breadcrumbs/breadcrumbs.service';
 export * from './concept-picker/concept-picker.component';
 export * from './data-driven-filter/data-driven-filter.component';
+export * from './flag-content/flag-content.component';
 export * from './error-page/error-page.component';
 export * from './sort-by/sort-by.component';
