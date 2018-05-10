@@ -6,7 +6,7 @@ import {
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { UserService, FrameworkService, FormService } from '@sunbird/core';
+import { UserService, FrameworkService, FormService} from '@sunbird/core';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -219,7 +219,7 @@ export class DataDrivenComponent implements OnInit {
       requestData.description = data.description ? data.description : 'Untitled Collection',
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
-      requestData.organisation = [],
+      requestData.organisation = this.userProfile.organisationNmaes,
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
