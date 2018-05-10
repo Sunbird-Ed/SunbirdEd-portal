@@ -8,4 +8,4 @@ export * from './content-metadata/content-metadata.component';
 export * from './collection-tree/collection-tree.component';
 export * from './fancy-tree/fancy-tree.component';
 export * from './player/player.component';
-
+export * from './card/card.component';

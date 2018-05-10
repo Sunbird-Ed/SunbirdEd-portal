@@ -1,0 +1,31 @@
+export interface ICard {
+    name: string;
+    image?: string;
+    showImage?: boolean;
+    description?: string;
+    maxCount?: number;
+    progress?: number;
+    ribbon?: {
+        right: { class: string, name: string }
+        left: { class: string, name: string }
+    };
+    rating?: number;
+    metaData?: any;
+    action?: {
+        right?: {
+            class: string,
+            text?: string,
+            name: string,
+            displayType: string
+        };
+        left?: {
+            class: string,
+            text?: string,
+            name: string,
+            displayType: string
+        };
+        onCard?: {
+            name: string
+        };
+    };
+}
