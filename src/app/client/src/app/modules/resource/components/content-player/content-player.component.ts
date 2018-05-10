@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ContentService, UserService, PlayerService, CopyContentService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, IUserProfile } from '@sunbird/shared';
 
   /**
    *Component to play content
@@ -42,7 +42,7 @@ export class ContentPlayerComponent implements OnInit {
   /**
    * Logged in user data
    */
-  userData: any;
+  userData: IUserProfile;
   /**
    * to show loader while copying content
    */
@@ -114,16 +114,21 @@ export class ContentPlayerComponent implements OnInit {
     }
   }
 
-  copyContent(contentData) {
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Conetnt data which will be copied
+   */
+  copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData, this.userData).subscribe(
+    this.copyContentService.copyContent(contentData).subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        // this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        this.toasterService.error(err.error.params.errmsg);
     });
   }
 }
