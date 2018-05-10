@@ -82,7 +82,7 @@ export class SearchComponent implements OnInit {
   onEnter(key) {
     this.key = key;
     this.queryParam['key'] = this.key;
-    if (this.key.length > 0) {
+    if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;
     } else {
       delete this.queryParam['key'];
