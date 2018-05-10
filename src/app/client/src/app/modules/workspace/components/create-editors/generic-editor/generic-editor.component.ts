@@ -83,8 +83,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   openGenericEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
-
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
@@ -99,8 +97,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       history: false,
       closeButton: true,
       onClosing: () => {
-        self._zone.run(() => {
-          self.closeModal();
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });

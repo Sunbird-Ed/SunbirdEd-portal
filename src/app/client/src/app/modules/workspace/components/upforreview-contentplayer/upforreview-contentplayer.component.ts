@@ -80,7 +80,6 @@ export class UpforreviewContentplayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showLoader = false;
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.getContent();

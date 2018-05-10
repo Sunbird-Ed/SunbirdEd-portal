@@ -229,13 +229,13 @@ export class DataDrivenComponent implements OnInit {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
     if (this.resourceType) {
-      requestData.resourcetype = this.resourceType;
+      requestData.resourceType = this.resourceType;
     }
 
     return requestData;
   }
 
-  createContent() {
+createContent() {
     const state = 'draft';
     const framework = this.framework;
     const requestData = {
@@ -245,7 +245,7 @@ export class DataDrivenComponent implements OnInit {
       this.editorService.create(requestData).subscribe(res => {
         this.router.navigate(['/workspace/content/edit/content/', res.result.content_id, state, framework]);
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0010);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {

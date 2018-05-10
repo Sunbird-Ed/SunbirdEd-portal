@@ -88,12 +88,16 @@ const routes: Routes = [
         path: 'upForReview/:pageNumber', component: UpForReviewComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
-      { path: 'batches/:pageNumber', component: BatchListComponent },
+      { path: 'batches/:pageNumber', component: BatchListComponent,
+      data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+      },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
-      { path: 'upForReview/content/:contentId', component: UpforreviewContentplayerComponent },
-      { path: '**', redirectTo: 'create' }
+      // { path: '**', redirectTo: 'create' }
     ]
   },
+  { path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent,
+  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]} 
+  }
 ];
 
 @NgModule({
