@@ -3,7 +3,7 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
-  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent, ContentMetadataComponent,
+  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
@@ -23,10 +23,10 @@ import { CacheService } from 'ng2-cache-service';
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, ContentMetadataComponent, CardComponent],
+     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, ContentMetadataComponent, CardComponent],
+    PlayerComponent, CardComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService]
 })
