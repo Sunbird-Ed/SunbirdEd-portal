@@ -15,8 +15,8 @@ angular.module('playerApp')
       previewContent.isShowFlagActionButton =
         $stateParams.backState === 'WorkSpace.FlaggedContent'
       previewContent.checkListConfig = config.CHECK_LIST_CONFIG
-      previewContent.contenteditmode = _.indexOf(['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent'],
-        $stateParams.backState)
+      previewContent.contenteditmode = (_.indexOf(['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent'],
+        $stateParams.backState) > -1)
 
       var validateModal = {
         state: ['WorkSpace.UpForReviewContent', 'WorkSpace.ReviewContent',
