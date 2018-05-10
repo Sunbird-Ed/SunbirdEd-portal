@@ -45,9 +45,9 @@ describe('AuthGardService', () => {
           path: 'workspace',
         }
       ],
+      data: {}
     };
     const result = authservice.canActivate(snapshotroute, RouterStateSnapshot);
-    const res = authservice.canActivateChild(snapshot.state, RouterStateSnapshot);
     expect(result).toBeTruthy();
   });
 });
