@@ -63,18 +63,6 @@ snapshot: {
     expect(component.contentData.name).toEqual('TextBook3-CollectionParentLive');
     expect(component.contentData.versionKey).toEqual('1496989757647');
   });
-  xit('should subscribe to user service', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess));
-    userService.getUserProfile();
-    component.ngOnInit();
-    component.userData.lastName = Response.userSuccess.result.response.lastName;
-    component.userData.firstName = Response.userSuccess.result.response.firstName;
-    expect(component.userData).toBeDefined();
-    expect(component.userData.lastName).toEqual('User');
-    expect(component.userData.firstName).toEqual('Cretation');
-  });
   xit('should call flag api', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
