@@ -1,22 +1,22 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from './../../shared.module';
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ContentMetadataComponent } from './content-metadata.component';
+import { ContentPlayerMetadataComponent } from './content-player-metadata.component';
 
 describe('ContentMetadataComponent', () => {
-  let component: ContentMetadataComponent;
-  let fixture: ComponentFixture<ContentMetadataComponent>;
+  let component: ContentPlayerMetadataComponent;
+  let fixture: ComponentFixture<ContentPlayerMetadataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule, HttpClientTestingModule],
-      declarations: [ ]
+      declarations: [ContentPlayerMetadataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContentMetadataComponent);
+    fixture = TestBed.createComponent(ContentPlayerMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
