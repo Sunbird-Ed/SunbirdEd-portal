@@ -106,12 +106,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close () {
-    const previousUrl = this.navigationHelperService.getPreviousUrl();
-    if (previousUrl === '/home') {
-      this.router.navigate(['/resources']);
-    } else {
-      this.router.navigate([previousUrl]);
-    }
+    this.navigationHelperService.navigateToPreviousUrl('/resources');
   }
 
   /**

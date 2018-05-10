@@ -75,9 +75,6 @@ export class CopyContentService extends DataService {
    */
   formatData(contentData: ContentData) {
     const userData = this.userService.userProfile;
-    contentData.userId = userData.userId;
-    contentData.userName = userData.firstName + ' ' + userData.lastName;
-    contentData.organisationIds = userData.organisationIds;
     if (contentData.description === undefined) {
       contentData.description = '';
     }
@@ -87,10 +84,10 @@ export class CopyContentService extends DataService {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
           code: contentData.code + '.copy',
-          creator: contentData.userName,
-          createdFor: contentData.organisationIds,
-          createdBy: contentData.userId,
-          organization: ['Sunbird']
+          creator: userData.firstName + ' ' + userData.lastName,
+          createdFor: userData.organisationIds,
+          createdBy: userData.userId,
+          organization: userData.organisationNames
         }
       }
     };
@@ -99,7 +96,7 @@ export class CopyContentService extends DataService {
 
   /**
    * This method redirect to the editor page depending on mimetype
-   * @param {contentData} ContentData Conetnt data which will be copied
+   * @param {contentData} ContentData Content data which will be copied
    * @param {copiedIdentifier} string New identifier of the copy content
    */
   redirectToEditor(contentData: ContentData, copiedIdentifier: string) {
