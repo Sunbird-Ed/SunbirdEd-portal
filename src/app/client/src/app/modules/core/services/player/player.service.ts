@@ -99,11 +99,11 @@ export class PlayerService {
 
     } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
 
-      this.router.navigate(['/resources/play/content', content.identifier , content.name]);
+      this.router.navigate(['/resources/play/content', content.identifier]);
 
-    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
+    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.includes(content.mimeType)) {
 
-      this.router.navigate(['/resources/play/content', content.identifier , content.name]);
+      this.router.navigate(['/resources/play/content', content.identifier]);
 
     } else {
       // toaster not valid content type
