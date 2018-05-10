@@ -27,7 +27,7 @@
             </button>
           </a>
           <a *ngIf="data.action.right.displayType == 'icon'"> 
-            <i  class="{{data.action.right.class}}" (click)="onAction(data,data.action.left)">
+            <i  class="{{data.action.right.class}}" (click)="onAction(data,data.action.right)">
             </i>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </a>
