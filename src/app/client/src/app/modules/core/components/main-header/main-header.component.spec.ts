@@ -36,7 +36,7 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     fixture.detectChanges();
     expect(component.userProfile).toBeTruthy();
   });

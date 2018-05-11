@@ -5,7 +5,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SignupService } from '../../services/signup.service';
+import { SignupService } from '../../services';
 import { Router } from '@angular/router';
 import { mockSignUpResponse } from './signup.component.spec.data';
 import { Observable } from 'rxjs/Observable';
