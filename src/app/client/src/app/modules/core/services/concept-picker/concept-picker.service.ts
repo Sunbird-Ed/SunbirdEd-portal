@@ -129,7 +129,7 @@ export class ConceptPickerService {
   searchConceptById(id, concepts, found) {
     _.forEach(concepts, (value) => {
       if (id === value['id']) {
-        found.push({ id: value['id'], name: value['name'] });
+        found.push({ identifier: value['id'], name: value['name'] });
       } else if (value['nodes'].length > 0) {
         this.searchConceptById(id, value['nodes'], found);
       }

@@ -38,7 +38,7 @@ describe('PublicContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should get content player', () => {
+  it('should get content player', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
@@ -48,7 +48,7 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.playerConfig).toBeTruthy();
     expect(component.showPlayer).toBeTruthy();
   });
-  fit('should throw error', () => {
+  it('should throw error', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;

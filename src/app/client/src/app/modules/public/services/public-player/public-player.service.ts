@@ -61,51 +61,33 @@ export class PublicPlayerService {
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     configuration.context.channel = 'in.ekstep';
-    if (_.isUndefined(contentDetails.courseId)) {
-      configuration.context.dims = this.userService.dims;
-    } else {
-      const cloneDims = _.cloneDeep(this.userService.dims) || [];
-      cloneDims.push(contentDetails.courseId);
-      if (contentDetails.batchHashTagId) {
-        cloneDims.push(contentDetails.batchHashTagId);
-      }
-      configuration.context.dims = cloneDims;
-    }
-    configuration.context.tags = _.concat([], configuration.context.channel);
-    configuration.context.app = [configuration.context.channel];
-    if (contentDetails.courseId) {
-      configuration.context.cdata = [{
-        id: contentDetails.courseId,
-        type: 'course'
-      }];
-    }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     return configuration;
   }
-  playContent(content) {
+  // playContent(content) {
 
-    if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+  //   if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
 
-      if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
-        this.router.navigate(['/resources/play/collection', content.identifier]);
-      } else {
-        console.log('course consumption');
-      }
+  //     if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
+  //       this.router.navigate(['/resources/play/collection', content.identifier]);
+  //     } else {
+  //       console.log('course consumption');
+  //     }
 
-    } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
+  //   } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
 
-      this.router.navigate(['/resources/play/content', content.identifier, content.name]);
+  //     this.router.navigate(['/resources/play/content', content.identifier, content.name]);
 
-    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
+  //   } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
 
-      this.router.navigate(['/resources/play/content', content.identifier, content.name]);
+  //     this.router.navigate(['/resources/play/content', content.identifier, content.name]);
 
-    } else {
-      // toaster not valid content type
-    }
-  }
+  //   } else {
+  //     // toaster not valid content type
+  //   }
+  // }
 
 }

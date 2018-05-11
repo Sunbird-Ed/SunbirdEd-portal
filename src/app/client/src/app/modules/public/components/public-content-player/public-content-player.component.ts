@@ -39,9 +39,9 @@ export class PublicContentPlayerComponent implements OnInit {
    * contain contentData
    */
   contentData: ContentData;
-  constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
-    public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PublicPlayerService) {
+  constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
+    public resourceService: ResourceService, public toasterService: ToasterService,
+    public windowScrollService: WindowScrollService, public playerService: PublicPlayerService) {
   }
   /**
    *

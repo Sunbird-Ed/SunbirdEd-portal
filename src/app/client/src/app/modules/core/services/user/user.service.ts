@@ -1,5 +1,6 @@
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
+import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UUID } from 'angular2-uuid';
@@ -67,13 +68,23 @@ export class UserService {
   public _authenticated: boolean;
   public anonymousSid: string;
   /**
+   * Reference of content service.
+   */
+  public contentService: ContentService;
+  /**
+   * Reference of orgNames
+   */
+  private orgNames: Array<string> = [];
+  /**
   * constructor
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient) {
+  constructor(config: ConfigService, learner: LearnerService,
+    private http: HttpClient, contentService: ContentService) {
     this.config = config;
     this.learner = learner;
+    this.contentService = contentService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
@@ -147,8 +158,10 @@ export class UserService {
     return this._env;
   }
 
-  public initialize() {
-    this.getUserProfile();
+  public initialize(loggedIn) {
+    if (loggedIn === true) {
+      this.getUserProfile();
+    }
     this.getAppIdEnv();
   }
   /**
@@ -188,10 +201,41 @@ export class UserService {
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
-    this.setRoleOrgMap(profileData);
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this.getOrganisationDetails(organisationIds);
+    this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
+  /**
+* Get organization details.
+*
+* @param {requestParam} requestParam api request data
+*/
+  getOrganisationDetails(organisationIds) {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: {
+            id: organisationIds,
+          }
+        }
+      }
+    };
+    this.contentService.post(option).subscribe
+      ((data: ServerResponse) => {
+        _.forEach(data.result.response.content, (orgData) => {
+          this.orgNames.push(orgData.orgName);
+        });
+        this._userProfile.organisationNmaes = this.orgNames;
+      },
+      (err: ServerResponse) => {
+        this.orgNames = [];
+        this._userProfile.organisationNmaes = this.orgNames;
+      }
+      );
+  }
+
   get userProfile() {
     return _.cloneDeep(this._userProfile);
   }

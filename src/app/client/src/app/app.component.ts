@@ -76,11 +76,13 @@ export class AppComponent implements OnInit {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
-      this.userService.initialize();
+      this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
        this.conceptPickerService.initialize();
       this.initTelemetryService();
+    } else {
+      this.userService.initialize(false);
     }
 
     this.userService.userData$.subscribe(

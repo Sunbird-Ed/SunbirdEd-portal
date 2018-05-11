@@ -20,14 +20,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row margin-auto padding-top-none">
-                            <div class="twelve wide column">
-                                <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
-                                    [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
-                                    <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
+                        
+                            <div class="row margin-auto padding-top-none">
+                                <div class="twelve wide column">
+                                  <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
+                                  [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
+                                  <a [routerLink]="['flag-content']"> <i class="ui large blue flag outline icon" ></i></a>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
@@ -80,7 +80,7 @@
                             <div class="four wide column">
                                 <div class="row">
                                     <div class="twelve wide column">
-                                        <app-content-metadata [contentData]="contentData"></app-content-metadata>
+                                        <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
                                     </div>
                                     <div class="twelve wide column margin-top-20">
                                         <div class="row">
@@ -114,3 +114,4 @@
     </div>
     <div class="one wide column"></div>
 </div>
+<router-outlet></router-outlet>
