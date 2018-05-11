@@ -136,7 +136,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private getContent(): void {
     this.subsrciption = Observable.combineLatest(this.route.params, this.route.queryParams,
       (params, qparams) => {
-        this.collectionId = params.id;
+        this.collectionId = params.collectionId;
         this.contentId = qparams.contentId;
         return this.collectionId;
       })
@@ -169,7 +169,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(contentId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
-    return this.contentService.getCollectionHierarchy(contentId)
+    return this.playerService.getCollectionHierarchy(contentId)
       .map((response) => {
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
