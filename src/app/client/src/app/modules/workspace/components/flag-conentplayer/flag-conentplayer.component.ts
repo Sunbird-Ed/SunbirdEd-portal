@@ -167,18 +167,10 @@ export class FlagConentplayerComponent implements OnInit {
     };
     this.contentService.post(option).subscribe(response => {
         this.toasterService.success(this.resourceService.messages.smsg.m0008);
-        this.redirect();
+        this.close();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0025);
     });
-  }
-  /**
-   * This method helps to redirect to the parent component
-   * page, i.e, outbox listing page with proper page number
-	 *
-	 */
-  redirect(): void {
-    this.navigationHelperService.navigateToPreviousUrl('/workspace/content/flagged/1');
   }
 }
 
