@@ -17,14 +17,14 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     expect(userService._userProfile).toBeDefined();
   }));
   it('should emit user profile data on success', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.userProfile).toBeDefined();
     });
@@ -33,7 +33,7 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.throw(mockUserData.error));
-    userService.initialize();
+    userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.err).toBeDefined();
     });
@@ -42,7 +42,7 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     const userId = userService.userid;
     expect(userId).toBeDefined();
   }));
@@ -50,7 +50,7 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     const userProfile = userService.userProfile;
     expect(userProfile).toBeDefined();
   }));
@@ -58,14 +58,14 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.rootOrgSuccess));
-    userService.initialize();
+    userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeTruthy();
   }));
   it('should set rootOrgAdmin to false', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    userService.initialize();
+    userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));
 });
