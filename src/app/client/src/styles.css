@@ -755,7 +755,7 @@ legend {
   padding: 0;
 }
 textarea {
-  overflow: auto !important;
+  overflow: auto;
 }
 optgroup {
   font-weight: bold;
