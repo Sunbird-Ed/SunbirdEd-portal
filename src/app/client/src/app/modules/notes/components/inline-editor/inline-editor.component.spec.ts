@@ -1,50 +1,46 @@
+import { IdDetails } from './../../interfaces/notes';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { ActivatedRoute } from '@angular/router';
 import { NotesService } from '../../services';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-import { response } from './note-form-component.spec.data';
-import { NoteFormComponent } from './note-form.component';
+import { response } from './inline-editor-component.spec.data';
+import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
+import { InlineEditorComponent } from './inline-editor.component';
 
-describe('NoteFormComponent', () => {
-  let component: NoteFormComponent;
-  let fixture: ComponentFixture<NoteFormComponent>;
-  const fakeActivatedRoute = {
-    'params': Observable.from([{ 'courseId': 'do_212347136096788480178', 'contentId': 'do_2123229899264573441612' }])
-  };
+describe('InlineEditorComponent', () => {
+  let component: InlineEditorComponent;
+  let fixture: ComponentFixture<InlineEditorComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, FormsModule, SharedModule, CoreModule],
-      declarations: [NoteFormComponent],
-      providers: [UserService, ResourceService, ToasterService, NotesService,
-         LearnerService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
+      declarations: [InlineEditorComponent],
+      providers: [NotesService]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NoteFormComponent);
+    fixture = TestBed.createComponent(InlineEditorComponent);
     component = fixture.componentInstance;
+    const idInfo: IdDetails = { courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'};
+    component.ids = idInfo;
     spyOn(component, 'ngAfterViewInit');
     fixture.detectChanges();
   });
 
 
-  it('Should subscribe to note service while creating a note', () => {
+  it('Should make create API call while creating a note', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.createEventEmitter, 'emit');
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
     userService.getUserProfile();
     component.createNote();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
@@ -61,22 +57,20 @@ describe('NoteFormComponent', () => {
     spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
     userService.getUserProfile();
     component.createNote();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
 
-  it('Should subscribe to note service while updating a note', () => {
+  it('Should make update API call while updating a note', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.updateEventEmitter, 'emit');
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
     userService.getUserProfile();
     component.updateNote();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
@@ -94,7 +88,6 @@ describe('NoteFormComponent', () => {
     spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
     userService.getUserProfile();
     component.updateNote();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });

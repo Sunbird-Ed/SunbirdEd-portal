@@ -22,7 +22,7 @@
                 </h5>
               </div>
               <div *ngIf="showCreateEditor === true" class="padding-top-20">
-                <app-note-form [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-note-form>
+                <app-inline-editor [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
 
             </div>
@@ -61,7 +61,7 @@
                     <div class="right-floated padding-top-10">
                       <i class="large edit icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.edit}} (click)="showUpdateEditor = true;"></i>
                       <i class="right-floated large trash outline icon cursor-pointer" title={{resourceService?.frmelmnts?.lbl?.delete}} (click)="showDelete = true;">
-                        <app-delete-note *ngIf="showDelete === true" [deletePopup]="showDelete" [deleteNote]="selectedNote"  (exitModal)="exitModal($event)" (deleteEventEmitter)="deleteEventEmitter($event)">
+                        <app-delete-note *ngIf="showDelete === true" [deleteNote]="selectedNote"  (exitModal)="showDelete = false" (deleteEventEmitter)="deleteEventEmitter($event)">
                         </app-delete-note>
                       </i>
                     </div>
@@ -80,8 +80,8 @@
             </div>
             <div *ngIf="showUpdateEditor === true" class="eight wide column padding-right-28">
               <div>
-                <app-note-form [mode]="'update'" [selectedNote]="selectedNote" (exitUpdateEditor)="exitUpdateEditor($event)" (updateEventEmitter)="updateEventEmitter($event)"
-                  (createEventEmitter)="createEventEmitter($event)"></app-note-form>
+                <app-inline-editor [mode]="'update'" [selectedNote]="selectedNote" (exitUpdateEditor)="showUpdateEditor = false;" (updateEventEmitter)="updateEventEmitter($event)"
+                  (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
             </div>
           </div>

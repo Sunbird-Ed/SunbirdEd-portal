@@ -1,4 +1,5 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { IdDetails } from './../../interfaces/notes';
+import { Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -8,14 +9,13 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
 import { response } from './note-list-component.spec.data';
+import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteListComponent } from './note-list.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
 describe('NoteListComponent', () => {
   let component: NoteListComponent;
   let fixture: ComponentFixture<NoteListComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'courseId': 'do_212347136096788480178',
-   'contentId': 'do_2123229899264573441612' }]) };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -24,9 +24,8 @@ describe('NoteListComponent', () => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, OrderModule, SharedModule, CoreModule ],
       declarations: [ NoteListComponent, TimeAgoPipe ],
-      providers: [ UserService, ResourceService, ToasterService, NotesService, LearnerService,
-         { provide: Router, useClass: RouterStub },
-          { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+      providers: [ NotesService,
+         { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -34,19 +33,20 @@ describe('NoteListComponent', () => {
     .then(() => {
       fixture = TestBed.createComponent(NoteListComponent);
       component = fixture.componentInstance;
+      const idInfo: IdDetails = { courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'};
+      component.ids = idInfo;
     });
   }));
 
 
-  it('Should subscribe to note service while collecting existing notes', () => {
+  it('Should make search API call while collecting existing notes', () => {
     const notesService = TestBed.get(NotesService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(response.userSuccess));
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     spyOn(notesService, 'search').and.returnValue(Observable.of(response.responseSuccess));
     userService.getUserProfile();
     component.getAllNotes();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.notesList).toBeDefined();
   });
@@ -63,7 +63,6 @@ describe('NoteListComponent', () => {
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
     userService.getUserProfile();
     component.getAllNotes();
-    fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
   });

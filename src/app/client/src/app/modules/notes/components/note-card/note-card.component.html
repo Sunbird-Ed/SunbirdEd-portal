@@ -45,9 +45,9 @@
         </div>
     </div>
     <div *ngIf="showCreateEditor">
-        <app-popup-editor [mode]="'create'" (exitModal)="exitModal($event)" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+        <app-popup-editor [mode]="'create'" (exitModal)="showCreateEditor=false" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
     </div>
     <div *ngIf="showUpdateEditor">
-        <app-popup-editor [mode]="'update'" [selectedNote]="selectedNote" (exitModal)="exitModal($event)" (updateEventEmitter)="updateEventEmitter($event)"></app-popup-editor>
+        <app-popup-editor [mode]="'update'" [selectedNote]="selectedNote" (exitModal)="showUpdateEditor=false" (updateEventEmitter)="updateEventEmitter($event)"></app-popup-editor>
     </div>
 </div>

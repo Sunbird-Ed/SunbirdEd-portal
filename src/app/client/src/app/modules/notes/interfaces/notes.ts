@@ -12,7 +12,7 @@ export interface INoteData {
     userId?: string;
 }
 
-export interface ICourseDetails {
+export interface IdDetails {
     courseId: string;
     contentId?: string;
 }

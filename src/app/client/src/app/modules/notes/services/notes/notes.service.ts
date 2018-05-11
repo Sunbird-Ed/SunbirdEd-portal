@@ -1,4 +1,3 @@
-
 import { LearnerService } from '@sunbird/core';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
@@ -24,22 +23,6 @@ export class NotesService {
     this.config = config;
     this.learnerService = learnerService;
   }
-  /**
-   * An event emitter to update notesList after updating a note.
-   */
-  updateEventEmitter: EventEmitter<any> = new EventEmitter();
-  /**
-   * An event emitter to update notesList after creating a note.
-   */
-  createEventEmitter: EventEmitter<any> = new EventEmitter();
-  /**
-   * An event emitter to update notesList after removing a note.
-   */
-  deleteEventEmitter: EventEmitter<any> = new EventEmitter();
-  /**
-   * An event emitter to emit changes done to the selected note.
-   */
-  selectedNoteData: EventEmitter<any> = new EventEmitter();
   /**
    * API call to gather existing notes.
    */

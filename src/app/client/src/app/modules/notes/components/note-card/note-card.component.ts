@@ -3,11 +3,10 @@ import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
-import { NoteFormComponent } from '../note-form/note-form.component';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import { INoteData, ICourseDetails } from '@sunbird/notes';
+import { INoteData, IdDetails } from '@sunbird/notes';
 
 /**
  * This component holds the note card widget.
@@ -19,27 +18,24 @@ import { INoteData, ICourseDetails } from '@sunbird/notes';
   styleUrls: ['./note-card.component.css']
 })
 export class NoteCardComponent implements OnInit {
-  @Input() courseDetails: ICourseDetails;
-  @Input() mode: string;
   /**
- * This variable helps in displaying and hiding page loader.
- * By default it is assigned a value of 'true'. This ensures that
- * the page loader is displayed the first time the page is loaded.
- */
-  showLoader: boolean;
+   * This variable holds the content and course id.
+   */
+  @Input() ids: IdDetails;
+  /**
+   * This variable helps in displaying and hiding page loader.
+   * By default it is assigned a value of 'true'. This ensures that
+   * the page loader is displayed the first time the page is loaded.
+   */
+  showLoader = true;
   /**
    * Helps in displaying and hiding create editor.
    */
-  showCreateEditor: boolean;
+  showCreateEditor = false;
   /**
    * Helps in displaying and hiding update editor.
    */
-  showUpdateEditor: boolean;
-  /**
-   * The 'sortOrder' variable helps in making sure that the array of notes
-   * retrieved while making the search API call is sorted in descending order.
-   */
-  sortOrder = 'desc';
+  showUpdateEditor = false;
 
   /**
    * The notesList array holds the entire list of existing notes. Each
@@ -51,15 +47,6 @@ export class NoteCardComponent implements OnInit {
    *Stores the details of a note selected by the user.
    */
   selectedNote: INoteData;
-
-  /**
-   * The course id of the selected course.
-   */
-  courseId: string;
-  /**
-   * The content id of the selected course.
-   */
-  contentId: string;
   /**
    * This variable helps redirecting the user to NotesList view once
    * a note is created or updated.
@@ -77,10 +64,6 @@ export class NoteCardComponent implements OnInit {
    * user id from user service.
    */
   userId: string;
-  /**
-   * To get course and note params.
-   */
-  private activatedRoute: ActivatedRoute;
   /**
    * To display toaster(if any) after each API call.
    */
@@ -125,11 +108,9 @@ export class NoteCardComponent implements OnInit {
     contentService: ContentService,
     resourceService: ResourceService,
     modalService: SuiModalService,
-    activatedRoute: ActivatedRoute,
     toasterService: ToasterService,
     route: Router) {
     this.toasterService = toasterService;
-    this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.route = route;
     this.noteService = noteService;
@@ -143,22 +124,7 @@ export class NoteCardComponent implements OnInit {
    * Initializing notesList and selectedNote values.
    */
   ngOnInit() {
-    this.showCreateEditor = false;
-    this.showUpdateEditor = false;
     this.notesList = [];
-
-    if (this.courseDetails && this.courseDetails.courseId) {
-      this.courseId = this.courseDetails.courseId;
-    }
-    if (this.courseDetails && this.courseDetails.contentId) {
-      this.contentId = this.courseDetails.contentId;
-    }
-    if (!this.courseId && !this.contentId) {
-      this.activatedRoute.params.subscribe((params) => {
-        this.courseId = params.courseId;
-        this.contentId = params.contentId;
-      });
-    }
     /**
      * Initializing notesList array
      */
@@ -174,26 +140,30 @@ export class NoteCardComponent implements OnInit {
       request: {
         filter: {
           userid: this.userId,
-          courseid: this.courseId,
-          contentid: this.contentId
+          courseid: this.ids.courseId,
+          contentid: this.ids.courseId
         },
         sort_by: {
-          updatedDate: this.sortOrder
+          updatedDate: 'desc'
         }
       }
     };
 
-    this.noteService.search(requestBody).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.notesList = apiResponse.result.response.note;
-        this.selectedNote = this.notesList[0];
-      },
-      (err) => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+    if (requestBody.request.filter.courseid) {
+      if (requestBody.request.filter.contentid) {
+        this.noteService.search(requestBody).subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.notesList = apiResponse.result.response.note;
+            this.selectedNote = this.notesList[0];
+          },
+          (err) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+          }
+        );
       }
-    );
+    }
   }
 
   /**
@@ -225,14 +195,6 @@ export class NoteCardComponent implements OnInit {
    * This method redirects the user to notesList view.
    */
   public viewAllNotes() {
-    this.route.navigate(['learn', this.courseId, this.contentId, 'notes']);
+    this.route.navigate(['viewallnotes']);
   }
-
-  exitModal() {
-    this.showCreateEditor = false;
-    this.showUpdateEditor = false;
-  }
-
-
-
 }

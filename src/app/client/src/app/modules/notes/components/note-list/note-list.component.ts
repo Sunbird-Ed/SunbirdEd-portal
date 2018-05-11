@@ -2,14 +2,14 @@ import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavi
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
-import { NoteFormComponent } from '../note-form/note-form.component';
+import { InlineEditorComponent } from '../inline-editor/inline-editor.component';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
-import { INoteData, ICourseDetails } from '@sunbird/notes';
+import { INoteData, IdDetails } from '@sunbird/notes';
 /**
  * This component contains 2 sub components
- * 1)NoteForm: Provides an editor to create and update notes.
+ * 1)Inline editor: Provides an editor to create and update notes.
  * 2)DeleteNote: To delete an existing note.
  */
 
@@ -19,8 +19,10 @@ import { INoteData, ICourseDetails } from '@sunbird/notes';
   styleUrls: ['./note-list.component.css']
 })
 export class NoteListComponent implements OnInit {
-
-  @Input() courseDetails: ICourseDetails;
+  /**
+   * This variable holds the content and course id.
+   */
+  @Input() ids: IdDetails;
   /**
    * This variable helps in displaying and hiding page loader.
    * By default it is assigned a value of 'true'. This ensures that
@@ -30,17 +32,11 @@ export class NoteListComponent implements OnInit {
   /**
    * Helps in displaying and hiding create editor.
    */
-  showCreateEditor: boolean;
+  showCreateEditor = false;
   /**
    * Helps in displaying and hiding update editor.
    */
-  showUpdateEditor: boolean;
-
-  /**
-   * The 'sortOrder' variable helps in making sure that the array of notes
-   * retrieved while making the search API call is sorted in descending order.
-   */
-  sortOrder = 'desc';
+  showUpdateEditor = false;
 
   /**
    * The notesList array holds the entire list of existing notes. Each
@@ -61,25 +57,13 @@ export class NoteListComponent implements OnInit {
    */
   searchData: string;
   /**
-   * The course id of the selected course.
-   */
-  courseId: string;
-  /**
-   * The content id of the selected course.
-   */
-  contentId: string;
-  /**
    * This variable helps in displaying and dismissing the delete modal.
    */
-  showDelete: false;
+  showDelete = false;
   /**
    * User id from user service.
    */
   userId: string;
-  /**
-   * To get course and note params.
-   */
-  private activatedRoute: ActivatedRoute;
   /**
    * To display toast message(if any) after each API call.
    */
@@ -121,8 +105,6 @@ export class NoteListComponent implements OnInit {
    * @param {ResourceService} resourceService Reference of ResourceService.
    * @param {SuiModalService} modalService Reference of SuiModalService.
    * @param {NotesService} noteService Reference of NotesService.
-   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute.
-   * @param {RouterNavigationService} routerNavigationService Reference of RouterNavigationService.
    * @param {Router} route Reference of Router.
    */
 
@@ -131,41 +113,21 @@ export class NoteListComponent implements OnInit {
     contentService: ContentService,
     resourceService: ResourceService,
     modalService: SuiModalService,
-    activatedRoute: ActivatedRoute,
     toasterService: ToasterService,
-    route: Router,
-    routerNavigationService: RouterNavigationService) {
+    route: Router) {
     this.toasterService = toasterService;
-    this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.noteService = noteService;
     this.contentService = contentService;
     this.resourceService = resourceService;
     this.modalService = modalService;
     this.route = route;
-    this.routerNavigationService = routerNavigationService;
   }
   /**
    * To initialize notesList and showDelete.
    * Listens to updateNotesListData event as well.
    */
   ngOnInit() {
-    this.showDelete = false;
-    this.showCreateEditor = false;
-    this.showUpdateEditor = false;
-
-    if (this.courseDetails && this.courseDetails.courseId) {
-      this.courseId = this.courseDetails.courseId;
-    }
-    if (this.courseDetails && this.courseDetails.contentId) {
-      this.contentId = this.courseDetails.contentId;
-    }
-    if (!this.courseId && !this.contentId) {
-      this.activatedRoute.params.subscribe((params) => {
-        this.courseId = params.courseId;
-        this.contentId = params.contentId;
-      });
-    }
     /**
      * Initializing notesList array
      */
@@ -181,26 +143,30 @@ export class NoteListComponent implements OnInit {
       request: {
         filter: {
           userid: this.userId,
-          courseid: this.courseId,
-          contentid: this.contentId
+          courseid: this.ids.courseId,
+          contentid: this.ids.contentId
         },
         sort_by: {
-          updatedDate: this.sortOrder
+          updatedDate: 'desc'
         }
       }
     };
 
-    this.noteService.search(requestBody).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.notesList = apiResponse.result.response.note;
-        this.selectedNote = this.notesList[0];
-      },
-      (err) => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+    if (requestBody.request.filter.courseid) {
+      if (requestBody.request.filter.contentid) {
+        this.noteService.search(requestBody).subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.notesList = apiResponse.result.response.note;
+            this.selectedNote = this.notesList[0];
+          },
+          (err) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+          }
+        );
       }
-    );
+    }
   }
 
   /**
@@ -212,14 +178,6 @@ export class NoteListComponent implements OnInit {
   public setSelectedNote(note, index) {
     this.selectedIndex = index;
     this.selectedNote = note;
-  }
-
-  /**
-   * This event listener recieves the receives showDeleteModal value once the
-   * delete modal is dismissed.
-   */
-  exitModal(showDeleteModal) {
-    this.showDelete = showDeleteModal;
   }
 
   /**
@@ -240,9 +198,6 @@ export class NoteListComponent implements OnInit {
     this.showUpdateEditor = false;
   }
 
-  exitUpdateEditor() {
-    this.showUpdateEditor = false;
-  }
   /**
    * This event listener updates the notesList array once a note is removed.
    */

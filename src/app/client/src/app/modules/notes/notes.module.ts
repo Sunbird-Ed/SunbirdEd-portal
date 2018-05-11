@@ -9,8 +9,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { SharedModule } from '@sunbird/shared';
 import { MarkdownModule } from 'ngx-md';
 import { TimeAgoPipe } from 'time-ago-pipe';
-// import { DeleteNoteComponent, NoteCardComponent, NoteFormComponent, NoteListComponent } from './components';
-import { NoteListComponent, NoteFormComponent, NoteCardComponent, DeleteNoteComponent, PopupEditorComponent } from './components';
+import { NoteListComponent, InlineEditorComponent, NoteCardComponent, DeleteNoteComponent, PopupEditorComponent } from './components';
 
 @NgModule({
   imports: [
@@ -23,7 +22,7 @@ import { NoteListComponent, NoteFormComponent, NoteCardComponent, DeleteNoteComp
     SharedModule,
     MarkdownModule.forRoot()
   ],
-  declarations: [TimeAgoPipe, NoteListComponent, NoteFormComponent,
+  declarations: [TimeAgoPipe, NoteListComponent, InlineEditorComponent,
     NoteCardComponent, PopupEditorComponent, DeleteNoteComponent],
   providers: [NotesService],
   exports: [NoteListComponent]
