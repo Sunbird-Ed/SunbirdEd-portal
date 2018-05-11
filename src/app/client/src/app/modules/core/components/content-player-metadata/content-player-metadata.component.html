@@ -1,19 +1,19 @@
 <div class="ui segment">
-        <div class="margin-bottom-20" *ngIf="contentData.description">
+        <div class="margin-bottom-20" *ngIf="metadata.description">
             <div class="header margin-bottom-10">
-                <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.description}} </span>
+                {{resourceService.frmelmnts.lbl.description}}
             </div>
             <div class="description" *ngIf="!readMore">
-                <span class="overflow-word-wrap">{{contentDataCopy.description | slice:0:150 }}&nbsp;</span>
-                <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = !readMore" *ngIf="contentDataCopy.description.length > 150 && readMore === false">{{resourceService.frmelmnts.lbl.readmore}} </span>
+                <span class="overflow-word-wrap">{{metadata.description | slice:0:150 }}&nbsp;</span>
+                <span class="ui view-more mouse-pointer" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">{{resourceService.frmelmnts.lbl.readmore}} </span>
             </div>
             <div class="description" *ngIf="readMore">
-                <span class="overflow-word-wrap">{{contentDataCopy.description}}&nbsp;</span>
-                <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                <span class="overflow-word-wrap">{{metadata.description}}&nbsp;</span>
+                <span class="ui view-more mouse-pointer" (click)="readMore = false">{{resourceService.frmelmnts.lbl.readless}}</span>
             </div>
         </div>
         <div class="header">
-            <span class="header cardsHeading ng-binding">{{resourceService.frmelmnts.lbl.contentinformation}}</span>
+            <span class="header">{{resourceService.frmelmnts.lbl.contentinformation}}</span>
         </div>
         <div class="ui middle aligned list margin-top-0">
             <div class="item padding-top-10 padding-bottom-5">
@@ -24,8 +24,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.name">
-                            {{contentDataCopy.name}}
+                        <div class="content overflow-word-wrap" *ngIf="metadata.name">
+                            {{metadata.name}}
                         </div>
                     </div>
                 </div>
@@ -38,8 +38,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.creator">
-                            {{contentDataCopy.creator}}
+                        <div class="content" *ngIf="metadata.creator">
+                            {{metadata.creator}}
                         </div>
                     </div>
                 </div>
@@ -52,8 +52,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.language">
-                            {{contentDataCopy.language}}
+                        <div class="content" *ngIf="metadata.language">
+                            {{metadata.language}}
                         </div>
                     </div>
                 </div>
@@ -66,8 +66,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.board">
-                            {{contentDataCopy.board}}
+                        <div class="content" *ngIf="metadata.board">
+                            {{metadata.board}}
                         </div>
                     </div>
                 </div>
@@ -80,8 +80,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.gradeLevel">
-                            {{contentDataCopy.gradeLevel}}
+                        <div class="content" *ngIf="metadata.gradeLevel">
+                            {{metadata.gradeLevel}}
                         </div>
                     </div>
                 </div>
@@ -95,14 +95,14 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.subject">
-                            {{contentDataCopy.subject}}
+                        <div class="content" *ngIf="metadata.subject">
+                            {{metadata.subject}}
                         </div>
                     </div>
                 </div>
             </div>
     
-            <div class="item padding-top-10 padding-bottom-5" *ngIf="contentDataCopy.createdOn">
+            <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.createdOn">
                 <div class="ui grid">
                     <div class="three wide column">
                         <div class="content content-detail">
@@ -111,12 +111,12 @@
                     </div>
                     <div class="nine wide column">
                         <div class="content">
-                            {{contentDataCopy.createdOn | dateFormat }}
+                            {{metadata.createdOn | dateFormat }}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="item padding-top-10 padding-bottom-5" *ngIf="contentDataCopy.lastUpdatedOn">
+            <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.lastUpdatedOn">
                 <div class="ui grid">
                     <div class="three wide column">
                         <div class="content content-detail">
@@ -125,7 +125,7 @@
                     </div>
                     <div class="nine wide column">
                         <div class="content">
-                            {{contentDataCopy.lastupdate | dateFormat }}
+                            {{metadata.lastupdate | dateFormat }}
                         </div>
                     </div>
                 </div>
@@ -133,13 +133,13 @@
             <div class="item padding-top-10 padding-bottom-5">
                 <div class="ui grid">
                     <div class="three wide column">
-                        <div class="content content-detail">
+                        <div class="content content-detail overflow-word-wrap">
                             {{resourceService.frmelmnts.lbl.concept}}
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.concepts && contentDataCopy.concepts.length > 0">
-                            {{contentDataCopy.concepts}}
+                        <div class="content" *ngIf="metadata.concepts && metadata.concepts.length > 0">
+                            {{metadata.concepts}}
                         </div>
                     </div>
                 </div>
@@ -152,8 +152,8 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content" *ngIf="contentDataCopy.keywords">
-                            {{contentDataCopy.keywords}}
+                        <div class="content" *ngIf="metadata.keywords">
+                            {{metadata.keywords}}
                         </div>
                     </div>
                 </div>
@@ -166,28 +166,28 @@
                         </div>
                     </div>
                     <div class="nine wide column">
-                        <div class="content"*ngIf="contentDataCopy.resourceType">
-                            {{contentDataCopy.resourceType}}
+                        <div class="content"*ngIf="metadata.resourceType">
+                            {{metadata.resourceType}}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="item padding-top-10 padding-bottom-5" *ngIf="contentDataCopy.status === 'Flagged' && contentDataCopy.flagReasons">
+            <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
                 <div class="ui grid">
                     <div class="three wide column">
-                        <div class="content content-detail">
+                        <div class="content content-detail overflow-word-wrap">
                             {{resourceService.frmelmnts.lbl.flaggedreason}}
                         </div>
                     </div>
                     <div class="nine wide column">
                         <div class="content">
-                            <div class="ui overflow-word-wrap">{{contentDataCopy.flagReasons}}
+                            <div class="ui overflow-word-wrap">{{metadata.flagReasons}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="item padding-top-10 padding-bottom-5" *ngIf="contentDataCopy.status === 'Flagged' && contentDataCopy.flaggedBy">
+            <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flaggedBy">
                 <div class="ui grid">
                     <div class="three wide column">
                         <div class="content content-detail">
@@ -196,21 +196,21 @@
                     </div>
                     <div class="nine wide column">
                         <div class="content">
-                            {{contentDataCopy.flaggedBy}}
+                            {{metadata.flaggedBy}}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="item padding-top-10 padding-bottom-5" *ngIf="contentDataCopy.status === 'Flagged' && contentDataCopy.flags">
+            <div class="item padding-top-10 padding-bottom-5" *ngIf="metadata.status === 'Flagged' && metadata.flags">
                 <div class="ui grid">
                     <div class="three wide column">
-                        <div class="content content-detail">
+                        <div class="content content-detail overflow-word-wrap">
                             {{resourceService.frmelmnts.lbl.flaggeddescription}}
                         </div>
                     </div>
                     <div class="nine wide column">
                         <div class="content">
-                            {{contentDataCopy.flags}}
+                            {{metadata.flags}}
                         </div>
                     </div>
                 </div>

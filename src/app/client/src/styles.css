@@ -2846,4 +2846,15 @@ iframe.iziModal-iframe {
   bottom: 0;
 } 
 
+.overflow-word-wrap {
+  overflow-wrap: break-word;
+}
+
+/* font used for view all and read more*/
+.view-more {
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  color: #007AFF;
+}
+
 

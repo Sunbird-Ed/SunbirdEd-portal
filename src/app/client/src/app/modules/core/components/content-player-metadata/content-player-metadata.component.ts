@@ -10,7 +10,7 @@ import { ContentData, ResourceService } from '@sunbird/shared';
 })
 export class ContentPlayerMetadataComponent implements OnInit {
   readMore = false;
-  contentDataCopy: any;
+  metadata: any;
   contentFieldData: any;
   fieldData = [];
   conceptNames: any;
@@ -20,23 +20,21 @@ export class ContentPlayerMetadataComponent implements OnInit {
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
 
   ngOnInit() {
-    console.log(this.contentData);
-    this.contentDataCopy = {...this.contentData};
+    this.metadata = {...this.contentData};
     this.validateContent();
     this.getConceptsNames();
   }
 
   validateContent() {
     this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords', 'resourceTypes'];
-    _.forEach(this.contentDataCopy, (value, key) => {
+    _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {
           this.contentFieldData = [value];
-          this.contentDataCopy[key] = (_.isArray(this.contentFieldData)) ? (_.compact(this.contentFieldData).join(', ')) : '';
+          this.metadata[key] = (_.isArray(this.contentFieldData)) ? (_.compact(this.contentFieldData).join(', ')) : '';
         } else {
-          this.contentDataCopy[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
+          this.metadata[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
         }
-        return this.contentDataCopy;
       }
     });
   }
@@ -50,14 +48,14 @@ export class ContentPlayerMetadataComponent implements OnInit {
   this.conceptPickerService.conceptData$.subscribe(data => {
       if ( data  && !data.err ) {
         const conceptsData = this.conceptPickerService.concepts;
-        this.conceptNames = _.map(this.contentDataCopy.concepts, 'name');
-        if (this.conceptNames.length < this.contentDataCopy.concepts.length) {
+        this.conceptNames = _.map(this.metadata.concepts, 'name');
+        if (this.conceptNames.length < this.metadata.concepts.length) {
           this.filteredConcepts = _.filter(conceptsData, (p) => {
-            return _.includes(this.contentDataCopy.concepts, p.identifier);
+            return _.includes(this.metadata.concepts, p.identifier);
           });
           this.conceptNames = _.map(this.filteredConcepts, 'name');
         }
-        this.contentDataCopy.concepts =  this.conceptNames.join(', ');
+        this.metadata.concepts =  this.conceptNames.join(', ');
       }
     });
   }
