@@ -1,6 +1,6 @@
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges, ViewEncapsulation } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -13,7 +13,8 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-popup-editor',
   templateUrl: './popup-editor.component.html',
-  styleUrls: ['./popup-editor.component.css']
+  styleUrls: ['./popup-editor.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class PopupEditorComponent implements OnInit, AfterViewInit {

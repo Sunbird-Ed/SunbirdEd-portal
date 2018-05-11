@@ -1,6 +1,6 @@
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -13,7 +13,8 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-inline-editor',
   templateUrl: './inline-editor.component.html',
-  styleUrls: ['./inline-editor.component.css']
+  styleUrls: ['./inline-editor.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class InlineEditorComponent implements OnInit, AfterViewInit {
