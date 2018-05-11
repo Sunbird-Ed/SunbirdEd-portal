@@ -36,7 +36,6 @@ export class ContentPlayerMetadataComponent implements OnInit {
         } else {
           this.contentDataCopy[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
         }
-        console.log(this.contentDataCopy)
         return this.contentDataCopy;
       }
     });
