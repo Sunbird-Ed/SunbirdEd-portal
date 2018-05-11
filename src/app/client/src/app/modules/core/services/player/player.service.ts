@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { ConfigService, IUserData, ResourceService, ServerResponse,
   ContentDetails , PlayerConfig, ContentData
  } from '@sunbird/shared';
+import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -17,6 +18,10 @@ export class PlayerService {
    * stores content details
    */
   contentData: ContentData;
+  /**
+   * stores collection/course details
+   */
+  collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router ) {
   }
@@ -87,6 +92,17 @@ export class PlayerService {
     {} : contentDetails.contentData.body;
     return configuration;
   }
+
+  public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {
+    const req = {
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
+    };
+    return this.contentService.get(req).map((response: ServerResponse) => {
+      this.collectionData = response.result.content;
+      return response;
+    });
+  }
+
   playContent(content) {
 
     if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
@@ -101,12 +117,10 @@ export class PlayerService {
 
       this.router.navigate(['/resources/play/content', content.identifier]);
 
-    } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.includes(content.mimeType)) {
+    } else {
 
       this.router.navigate(['/resources/play/content', content.identifier]);
 
-    } else {
-      // toaster not valid content type
     }
   }
 }
