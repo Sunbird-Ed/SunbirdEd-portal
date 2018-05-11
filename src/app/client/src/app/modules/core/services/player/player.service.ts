@@ -49,6 +49,7 @@ export class PlayerService {
    */
   getContent(contentId: string, option: any = {params: {}}): Observable<ServerResponse> {
     let param = {fields: this.configService.urlConFig.params.contentGet};
+    param = { ...param, ...option.params };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param:  { ...param, ...option.params }
