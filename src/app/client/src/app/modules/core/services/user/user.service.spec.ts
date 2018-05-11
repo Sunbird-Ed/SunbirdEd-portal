@@ -1,15 +1,15 @@
 import { mockUserData } from './user.mock.spec.data';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Observable } from 'rxjs/Observable';
-import { ConfigService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ToasterService, SharedModule} from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { LearnerService, UserService, PermissionService } from '@sunbird/core';
+import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('userService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule],
       providers: [UserService, ConfigService, LearnerService]
     });
   });

@@ -1,14 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ResourceService } from './../../services';
 import * as _ from 'lodash';
-import { ContentData } from './../../interfaces';
+import { ContentData, ResourceService } from '@sunbird/shared';
 
 @Component({
-  selector: 'app-content-metadata',
-  templateUrl: './content-metadata.component.html',
-  styleUrls: ['./content-metadata.component.css']
+  selector: 'app-content-player-metadata',
+  templateUrl: './content-player-metadata.component.html',
+  styleUrls: ['./content-player-metadata.component.css']
 })
-export class ContentMetadataComponent {
+export class ContentPlayerMetadataComponent {
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService) { }
 /**
