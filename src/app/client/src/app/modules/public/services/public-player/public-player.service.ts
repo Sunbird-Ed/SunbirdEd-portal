@@ -67,27 +67,4 @@ export class PublicPlayerService {
       {} : contentDetails.contentData.body;
     return configuration;
   }
-  // playContent(content) {
-
-  //   if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-
-  //     if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
-  //       this.router.navigate(['/resources/play/collection', content.identifier]);
-  //     } else {
-  //       console.log('course consumption');
-  //     }
-
-  //   } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
-
-  //     this.router.navigate(['/resources/play/content', content.identifier, content.name]);
-
-  //   } else if (this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType.include(content.mimeType)) {
-
-  //     this.router.navigate(['/resources/play/content', content.identifier, content.name]);
-
-  //   } else {
-  //     // toaster not valid content type
-  //   }
-  // }
-
 }
