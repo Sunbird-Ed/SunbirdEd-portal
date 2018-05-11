@@ -4,6 +4,9 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "paths": {
+      "sunbird-web-extension": [
+        "libs/sunbird-web-extension/esm5"
+      ],
       "@sunbird/core": [
         "app/modules/core"
       ],

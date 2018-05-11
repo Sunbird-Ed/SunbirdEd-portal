@@ -5,7 +5,7 @@ import {
   OrgManagementModule, OrganizationUploadComponent,
   UserUploadComponent, BulkUploadComponent, StatusComponent
 } from '@sunbird/org-management';
-import { AuthGuard } from '../core/guard/auth-gard.service';
+import { AuthGuard } from '../../modules/core/guard/auth-gard.service';
 
 const routes: Routes = [
   {

@@ -17,10 +17,14 @@ import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
-import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
 import * as $ from 'jquery';
+
+// portal-extensions
+import { BootstrapFramework, WebFrameworkModule } from 'sunbird-web-extension';
+import { WebExtensionsConfig } from './framework.config';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -43,15 +47,17 @@ import * as $ from 'jquery';
     WorkspaceModule,
     OrgManagementModule,
     PublicModule,
-    ProfileModule,
     SearchModule,
-    DiscussionModule
-  ],
+    DiscussionModule,
+    WebFrameworkModule,
+    ...WebExtensionsConfig.plugins.map((data) => data.module)
+    ],
   providers: [],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
+  constructor(bootstrapFramework: BootstrapFramework) {
+    bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }
