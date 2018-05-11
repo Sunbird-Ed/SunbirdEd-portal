@@ -7,7 +7,12 @@ export const Response = {
         'versionKey': '1496989757647',
         'name': 'TextBook3-CollectionParentLive',
         'me_averageRating': '3',
-        'description': 'string'
+        'description': 'string',
+        'code': 'code',
+        'status': 'Live',
+        'userId': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+        'userName': 'Sourav Dey',
+        'framework': 'NCF'
     },
     resourceBundle: {
         'messages': {
