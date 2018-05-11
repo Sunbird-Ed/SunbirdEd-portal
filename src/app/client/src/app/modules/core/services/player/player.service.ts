@@ -48,11 +48,11 @@ export class PlayerService {
    * @returns {Observable<ServerResponse>}
    */
   getContent(contentId: string, option: any = {params: {}}): Observable<ServerResponse> {
-    const param = {fields: this.configService.urlConFig.params.contentGet};
-    const paramField = { ...param, ...option.params };
+    let param = {fields: this.configService.urlConFig.params.contentGet};
+    param = { ...param, ...option.params };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
-      param:  paramField
+      param:  param
     };
     return this.contentService.get(req).map((response: ServerResponse) => {
       this.contentData = response.result.content;
