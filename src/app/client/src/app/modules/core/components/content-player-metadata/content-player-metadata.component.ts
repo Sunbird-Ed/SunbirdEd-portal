@@ -1,3 +1,4 @@
+import { ConceptPickerService } from './../../services';
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { ContentData, ResourceService } from '@sunbird/shared';
@@ -7,22 +8,27 @@ import { ContentData, ResourceService } from '@sunbird/shared';
   templateUrl: './content-player-metadata.component.html',
   styleUrls: ['./content-player-metadata.component.css']
 })
-export class ContentMetadataComponent implements OnInit {
+export class ContentPlayerMetadataComponent implements OnInit {
   readMore = false;
-  contentDataCopy = {};
+  contentDataCopy: any;
   contentFieldData: any;
   fieldData = [];
+  conceptNames: any;
+  filteredConcepts: any;
 
   @Input() contentData: ContentData;
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
 
   ngOnInit() {
+    console.log(this.contentData);
+    this.contentDataCopy = {...this.contentData};
     this.validateContent();
+    this.getConceptsNames();
   }
 
   validateContent() {
-    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords'];
-    _.forEach(this.contentData, (value, key) => {
+    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords', 'resourceTypes'];
+    _.forEach(this.contentDataCopy, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {
           this.contentFieldData = [value];
@@ -30,6 +36,7 @@ export class ContentMetadataComponent implements OnInit {
         } else {
           this.contentDataCopy[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
         }
+        console.log(this.contentDataCopy)
         return this.contentDataCopy;
       }
     });
@@ -40,28 +47,20 @@ export class ContentMetadataComponent implements OnInit {
    * @param {any} concepts
    * @returns {string}
    */
-  getConceptsNames(concepts): string {
-    const conceptNames = _.map(concepts, 'name');
-    if (concepts && conceptNames.length < concepts.length) {
-      // const filteredConcepts = _.filter($rootScope.concepts, (p) => {
-      //   return _.includes(concepts, p.identifier);
-      // });
-      // conceptNames = _.map(filteredConcepts, 'name');
-    }
-    return conceptNames.join(', ');
-  }
-
-  getResourceTypes(resourceTypes) {
-    if (!resourceTypes) {
-      return false;
-    }
-    if (_.isString(resourceTypes)) {
-      return resourceTypes;
-    } else if (_.isArray(resourceTypes)) {
-      return resourceTypes.join(', ')
-    } else {
-      return false;
-    }
+  getConceptsNames() {
+  this.conceptPickerService.conceptData$.subscribe(data => {
+      if ( data  && !data.err ) {
+        const conceptsData = this.conceptPickerService.concepts;
+        this.conceptNames = _.map(this.contentDataCopy.concepts, 'name');
+        if (this.conceptNames.length < this.contentDataCopy.concepts.length) {
+          this.filteredConcepts = _.filter(conceptsData, (p) => {
+            return _.includes(this.contentDataCopy.concepts, p.identifier);
+          });
+          this.conceptNames = _.map(this.filteredConcepts, 'name');
+        }
+        this.contentDataCopy.concepts =  this.conceptNames.join(', ');
+      }
+    });
   }
 }
 
