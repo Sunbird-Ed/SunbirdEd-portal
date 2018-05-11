@@ -150,10 +150,8 @@ export class FlagConentplayerComponent implements OnInit {
       data: { 'request': { versionKey: this.contentData.versionKey} }
     };
     this.contentService.post(option).subscribe(response => {
-      if (response) {
         this.toasterService.success(this.resourceService.messages.smsg.m0007);
         this.redirect();
-      }
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0024);
     });
@@ -168,10 +166,8 @@ export class FlagConentplayerComponent implements OnInit {
       data: { 'request': { } }
     };
     this.contentService.post(option).subscribe(response => {
-      if (response) {
         this.toasterService.success(this.resourceService.messages.smsg.m0008);
         this.redirect();
-      }
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0025);
     });
