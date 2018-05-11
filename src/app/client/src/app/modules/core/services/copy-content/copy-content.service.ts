@@ -1,18 +1,18 @@
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
+import { ContentService } from './../content/content.service';
 
 /**
  * Service to copy content
  */
 @Injectable()
-export class CopyContentService extends DataService {
+export class CopyContentService {
   /**
    * base Url for content api
    */
@@ -32,21 +32,20 @@ export class CopyContentService extends DataService {
   /**
    * reference of lerner service.
    */
-  public http: HttpClient;
+  public contentService: ContentService;
 
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
-   * @param {HttpClient} http HttpClient reference
    * @param {Router} router Router reference
    * @param {UserService} userService UserService reference
+   * @param {ContentService} contentService ContentService reference
    */
-  constructor(config: ConfigService, http: HttpClient, router: Router, userService: UserService) {
-    super(http);
+  constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService) {
     this.config = config;
     this.router = router;
     this.userService = userService;
-    this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
+    this.contentService = contentService;
   }
 
   /**
@@ -59,7 +58,7 @@ export class CopyContentService extends DataService {
       url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
       data: param
     };
-    return this.post(option).map((response: ServerResponse) => {
+    return this.contentService.post(option).map((response: ServerResponse) => {
       _.forEach(response.result.node_id, (value) => {
         this.redirectToEditor(contentData, value);
       });

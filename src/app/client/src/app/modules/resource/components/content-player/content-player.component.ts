@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, CopyContentService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
@@ -46,7 +46,7 @@ export class ContentPlayerComponent implements OnInit {
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
-    public copyContentService: CopyContentService) {
+    public copyContentService: CopyContentService, public permissionService: PermissionService) {
   }
   /**
    *
