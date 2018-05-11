@@ -51,7 +51,7 @@ export class CopyContentService extends DataService {
 
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
-   * @param {contentData} ContentData Conetnt data which will be copied
+   * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
     const param = this.formatData(contentData);
