@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
@@ -39,9 +39,14 @@ export class ContentPlayerComponent implements OnInit {
    * contain contentData
    */
   contentData: ContentData;
+  /**
+   * to show loader while copying content
+   */
+  showCopyLoader = false;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
+    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
+    public copyContentService: CopyContentService, public permissionService: PermissionService) {
   }
   /**
    *
@@ -97,5 +102,23 @@ export class ContentPlayerComponent implements OnInit {
    */
   close () {
     this.navigationHelperService.navigateToPreviousUrl('/resources');
+  }
+
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Content data which will be copied
+   */
+  copyContent(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        // this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        this.toasterService.error(err.error.params.errmsg);
+    });
   }
 }
