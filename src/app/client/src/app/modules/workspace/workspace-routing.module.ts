@@ -96,11 +96,13 @@ const routes: Routes = [
       // { path: '**', redirectTo: 'create' }
     ]
   },
-  { path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent,
-  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  { path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
   },
-  { path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent,
-  data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  { path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
   }
 ];
 

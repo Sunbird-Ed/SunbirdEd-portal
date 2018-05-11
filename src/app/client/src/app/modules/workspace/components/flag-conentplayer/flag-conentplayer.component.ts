@@ -112,7 +112,6 @@ export class FlagConentplayerComponent implements OnInit {
     this.showLoader = true;
     this.playerService.getContent(this.contentId).subscribe(
       (response) => {
-        if (response.result.content) {
           const contentDetails = {
             contentId: this.contentId,
             contentData: response.result.content
@@ -120,14 +119,11 @@ export class FlagConentplayerComponent implements OnInit {
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
           this.showLoader = false;
-        } else {
-          this.toasterService.warning(this.resourceService.messages.imsg.m0027);
-          this.close();
-        }
       },
       (err) => {
         this.showError = true;
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0015);
       });
   }
   /**
@@ -154,11 +150,9 @@ export class FlagConentplayerComponent implements OnInit {
       data: { 'request': { versionKey: this.contentData.versionKey} }
     };
     this.contentService.post(option).subscribe(response => {
-      if (response && response.responseCode === 'OK') {
+      if (response) {
         this.toasterService.success(this.resourceService.messages.smsg.m0007);
         this.redirect();
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0024);
       }
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0024);
@@ -169,17 +163,14 @@ export class FlagConentplayerComponent implements OnInit {
   * discardContentFlag api call
   */
   discardContentFlag() {
-    console.log('discardContentFlag');
     const option = {
       url: `${this.configService.urlConFig.URLS.CONTENT.DISCARD_FLAG}/${this.contentId}`,
       data: { 'request': { } }
     };
     this.contentService.post(option).subscribe(response => {
-      if (response && response.responseCode === 'OK') {
+      if (response) {
         this.toasterService.success(this.resourceService.messages.smsg.m0008);
         this.redirect();
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0025);
       }
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0025);

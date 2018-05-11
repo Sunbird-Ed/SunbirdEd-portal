@@ -17,7 +17,7 @@ describe('FlagConentplayerComponent', () => {
   messages : {
     imsg: { m0027: 'Something went wrong'},
     stmsg: { m0025: 'error' },
-    fmsg: { m0025: 'error' },
+    fmsg: { m0025: 'error', m0015: 'error', },
     smsg: { m0008: 'Discard contnet sucessfully' }
   },
   frmelmnts: {
