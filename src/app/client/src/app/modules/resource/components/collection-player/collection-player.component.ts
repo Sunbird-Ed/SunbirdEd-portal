@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions } from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -66,7 +66,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   };
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
-    windowScrollService: WindowScrollService, router: Router) {
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -174,5 +174,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
       });
+  }
+  closeCollectionPlayer() {
+    this.navigationHelperService.navigateToPreviousUrl('/learn');
+  }
+  closeContentPlayer() {
+    this.showPlayer = false;
+    const navigationExtras: NavigationExtras = {
+      relativeTo: this.route
+    };
+    this.router.navigate([], navigationExtras);
   }
 }
