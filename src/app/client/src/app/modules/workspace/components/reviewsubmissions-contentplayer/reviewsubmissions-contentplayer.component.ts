@@ -113,7 +113,7 @@ export class ReviewsubmissionsContentplayerComponent implements OnInit {
     const option = {
       params: { mode: 'edit' }
     };
-    this.playerService.getContent(this.contentId).subscribe(
+    this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         const contentDetails = {
           contentId: this.contentId,
