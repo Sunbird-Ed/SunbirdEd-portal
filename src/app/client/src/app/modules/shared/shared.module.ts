@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
-  CollectionTreeComponent, FancyTreeComponent, CardComponent,ShareLinkComponent
+  CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
    PaginationService, RouterNavigationService, NavigationHelperService, ContentUtilsServiceService } from './services';
