@@ -90,12 +90,10 @@ const routes: Routes = [
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
       { path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent ,
-      data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] } },
+      data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
+      },
       { path: 'batches/:pageNumber', component: BatchListComponent,
       data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
-      {
-        path: 'batches/:pageNumber', component: BatchListComponent,
-        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] }
       },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
       // { path: '**', redirectTo: 'create' }
