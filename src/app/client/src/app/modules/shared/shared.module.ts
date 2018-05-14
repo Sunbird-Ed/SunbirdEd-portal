@@ -4,10 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
-  CollectionTreeComponent, FancyTreeComponent, CardComponent
+  CollectionTreeComponent, FancyTreeComponent, CardComponent,ShareLinkComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
-   PaginationService, RouterNavigationService, NavigationHelperService } from './services';
+   PaginationService, RouterNavigationService, NavigationHelperService, ContentUtilsServiceService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe , DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
@@ -23,11 +23,12 @@ import { CacheService } from 'ng2-cache-service';
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe],
+     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
+     ShareLinkComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe],
+    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService]
+     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, ContentUtilsServiceService]
 })
 export class SharedModule { }

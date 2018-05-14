@@ -13,7 +13,8 @@ import {
   WorkspacesidebarComponent, DataDrivenComponent, DefaultTemplateComponent,
   FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
-  UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent
+  UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
+  LimitedPublishedComponent
 } from './components';
 
 @NgModule({
@@ -32,8 +33,7 @@ import {
     ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
     DataDrivenComponent, UpForReviewComponent, UpforReviewFilterComponent, DefaultTemplateComponent,
     FlaggedComponent, BatchListComponent, BatchCardComponent, UpdateBatchComponent, UpforreviewContentplayerComponent,
-    FlagConentplayerComponent,
-    ReviewsubmissionsContentplayerComponent
+    FlagConentplayerComponent, LimitedPublishedComponent, ReviewsubmissionsContentplayerComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })
