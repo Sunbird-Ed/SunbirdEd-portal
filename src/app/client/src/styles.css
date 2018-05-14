@@ -4,22 +4,22 @@
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('./assets/common/fonts/OpenSans-Light.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
   font-family: 'sunbirdregularfont';
-  src: url('./assets/common/fonts/OpenSans-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
 }
 /*sunbird Medium font*/
 @font-face {
   font-family: 'sunbirdmediumfont';
-  src: url('./assets/common/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-SemiBold.ttf') format('truetype');
 }
 /*sunbird Bold font*/
 @font-face {
   font-family: 'sunbirdboldfont';
-  src: url('./assets/common/fonts/OpenSans-Bold.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 /*cards fonts*/
 .cardsHeading {
@@ -929,7 +929,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png) !important;
+  content: url(./assets/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -939,7 +939,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png) !important;
+  content: url(./assets/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
