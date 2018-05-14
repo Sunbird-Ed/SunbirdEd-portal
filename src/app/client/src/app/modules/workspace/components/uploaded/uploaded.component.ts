@@ -175,21 +175,24 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.uploaded = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.uploaded, (item, key) => {
-            const action = {
-              right: {
-                displayType: 'icon',
-                classes: 'trash large icon',
-                actionType: 'delete',
-                clickable: true
-              }
-            };
-            this.uploaded[key].action = action;
-
-          });
+          const constantData = {
+            ribbon: {
+                right: { class: 'ui black right ribbon label' }
+            },
+            action: {
+                right: {
+                    class: 'trash large icon',
+                    displayType: 'icon',
+                    eventName: 'delete'
+                },
+                onImage: { eventName: 'onImage' }
+            }
+        };
+        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+        const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+        this.uploaded = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -213,10 +216,10 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    if (param.type === 'delete') {
-      this.deleteConfirmModal(param.contentId);
+    if (param.action.eventName === 'delete') {
+      this.deleteConfirmModal(param.data.metaData.identifier);
     } else {
-      this.workSpaceService.navigateToContent(param.content, this.state);
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 
