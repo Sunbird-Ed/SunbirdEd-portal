@@ -7,7 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent } from './components';
-import { CourseConsumptionService } from './services';
+import { CourseConsumptionService, CourseProgressService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 @NgModule({
@@ -21,7 +21,7 @@ import { DiscussionModule } from '@sunbird/discussion';
     CoreModule,
     DiscussionModule
   ],
-  providers: [CourseConsumptionService],
+  providers: [CourseConsumptionService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent]
 })
 export class LearnModule { }

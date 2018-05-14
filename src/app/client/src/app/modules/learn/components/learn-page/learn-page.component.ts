@@ -4,7 +4,8 @@ import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IConte
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
+import { CourseProgressService } from './../../services';
+import { CacheService } from 'ng2-cache-service';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -62,6 +63,8 @@ export class LearnPageComponent implements OnInit {
   public filters: any;
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
+  public courseProgressService: CourseProgressService;
+  public isCachedDataExists: boolean;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -71,7 +74,9 @@ export class LearnPageComponent implements OnInit {
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, configService: ConfigService) {
+     private activatedRoute: ActivatedRoute, configService: ConfigService,
+     private _cacheService: CacheService,
+     courseProgressService: CourseProgressService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
@@ -79,6 +84,7 @@ export class LearnPageComponent implements OnInit {
     this.configService = configService;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
+    this.courseProgressService = courseProgressService;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   /**
@@ -186,7 +192,23 @@ export class LearnPageComponent implements OnInit {
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
+    const req = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'courseId': ['do_1124785353783377921154'],
+    'contentIds': ['do_112474267785674752118', 'do_112473631695626240110', 'do_11246946881515520012', 'do_11246946840689868811'],
+    'batchId': '01247853957897420815'
+      };
+      const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+      'courseId': 'do_1124785353783377921154',
+      'contentId': 'do_112474267785674752118',
+      'batchId': '01247853957897420815',
+      'status' : 2
+        };
+     this.courseProgressService.getContentsState(req);
+    this.isCachedDataExists = this._cacheService.exists(req1.courseId + '_' + req1.batchId);
+    if (this.isCachedDataExists) {
+    this.courseProgressService.updateCourseState(req1);
   }
+}
 
   /**
    *  to get query parameters

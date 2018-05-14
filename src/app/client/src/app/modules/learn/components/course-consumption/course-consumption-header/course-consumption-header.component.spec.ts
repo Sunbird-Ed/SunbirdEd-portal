@@ -1,14 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CourseConsumptionHeaderComponent } from './course-consumption-header.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
-
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+  'queryParams':  Observable.from([{ subject: ['English'] }])
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseConsumptionHeaderComponent ]
+      declarations: [ CourseConsumptionHeaderComponent ],
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
