@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ICard } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -116,5 +117,33 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
       }
     }
+  }
+
+  getDataForCard(data, staticData, dynamicFields, metaData) {
+    const list: Array<ICard> = [];
+    _.forEach(data, (item, key) => {
+      const card = {
+        name: item.name,
+        image: item.appIcon,
+        description: item.description
+      };
+      _.forIn(staticData, (value, key1) => {
+        card[key1] = value;
+      });
+      _.forIn(metaData, (value, key1) => {
+        card[key1] = _.pick(item, value);
+      });
+        _.forIn(dynamicFields, (fieldData, fieldName) => {
+          const value = _.pick(item, fieldData);
+          _.forIn(value, (val1, key1) => {
+            const name = _.zipObjectDeep([fieldName], [val1]);
+            _.forIn(name, (values, index) => {
+              card[index] =  _.merge(name[index], card[index]);
+            });
+          });
+        });
+      list.push(card);
+    });
+    return <ICard[]>list;
   }
 }

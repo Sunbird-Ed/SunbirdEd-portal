@@ -929,7 +929,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png) !important;
+  content: url(./assets/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -939,7 +939,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png) !important;
+  content: url(./assets/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -995,9 +995,10 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input[type=url],
 .ui.form input:not([type]) {
   border: 0;
-  border-bottom: 1px solid #333333;
-  border-radius: 0;
-  padding: 0.8em 0;
+  border-bottom: 1px solid #333;
+  border-radius: 0 !important;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
 }
 .ui.selection.dropdown {
   border: 0;
