@@ -48,7 +48,7 @@ export class ShareLinkComponent implements OnInit {
   /**
   *Element Ref  for copyLinkData;
   */
-  @ViewChild('copyLinkData') copyLinkData: ElementRef;
+  // @ViewChild('copyLinkData') copyLinkData: ElementRef;
   /**
   * To call resource service which helps to use language constant
   */
@@ -89,20 +89,19 @@ export class ShareLinkComponent implements OnInit {
     if (this.sharelinkModal) {
       setTimeout(() => {
         this.copyLinkButton.nativeElement.click();
-      }, 1000);
+      }, 500);
     }
   }
+
   /**
   * copyLink
   * {object}  copyLinkData -element ref
   * {object}  popup -element ref
   */
   public copyLink(popup: IPopup) {
-    popup.open();
-    setTimeout(() => {
-    this._renderer.invokeElementMethod(this.copyLinkData.nativeElement, 'select', []);
-    }, 0);
-    setTimeout(() => document.execCommand('copy'));
+   popup.open();
+   $('#copyLinkData').select();
+   document.execCommand('copy');
   }
   /**
    * getBase64Url

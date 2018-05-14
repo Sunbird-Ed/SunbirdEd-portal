@@ -5,7 +5,8 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, IContents, ILoaderMessage, INoResultMessage,
+  ContentUtilsServiceService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -115,6 +116,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   */
   private toasterService: ToasterService;
 
+  /**
+  * Reference of ContentUtilsServiceService
+  */
+  private contentUtilsServiceService: ContentUtilsServiceService;
 
   /**
   * To call resource service which helps to use language constant
@@ -137,7 +142,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, contentUtilsServiceService: ContentUtilsServiceService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
@@ -146,6 +151,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.contentUtilsServiceService = contentUtilsServiceService;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0082,
     };
@@ -205,6 +211,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
             this.limitedPublishList[key].action = action;
           });
           this.showLoader = false;
+          const shareLink = this.contentUtilsServiceService.getUnlistedShareUrl();
         } else {
           this.showError = false;
           this.noResult = true;
