@@ -11,6 +11,9 @@ import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
+import {
+  SuiModalService, TemplateModalConfig, ModalTemplate
+} from 'ng2-semantic-ui';
 
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -85,7 +88,8 @@ describe('LimitedPublishedComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871' } };
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+        eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -96,12 +100,42 @@ describe('LimitedPublishedComponent', () => {
           expect(apiResponse.params.status).toBe('successful');
         }
       );
-      spyOn(component, 'delete').and.callThrough();
+      component.deleteConfirmModal('do_2124645735080755201259');
       expect(component.showLoader).toBeTruthy();
       fixture.detectChanges();
+  }));
+
+  it('should generate sharelink ', inject([WorkSpaceService, ActivatedRoute],
+    (workSpaceService, activatedRoute, http) => {
+      spyOn(component, 'contentClick').and.callThrough();
+      const params = { action:  { class: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon', displayType: 'icon',
+        eventName: 'share' }, data: { metaData: { identifier: 'do_2124341006465925121871', type: '',
+        mimeType: 'application/vnd.ekstep.content-collection'} } };
+      component.contentClick(params);
+      expect(component.sharelinkModal).toBeTruthy();
+      fixture.detectChanges();
+  }));
+
+  it('should open collection edition on card action  ', inject([WorkSpaceService, Router],
+    (workSpaceService, route, http) => {
+      spyOn(component, 'contentClick').and.callThrough();
+      const params = {
+        action: {
+         eventName: 'onImage'
+        }, data: {
+          metaData: {
+            identifier: 'do_2124341006465925121871',
+            mimeType: 'application/vnd.ekstep.content-collection',
+            contentType: 'TextBook',
+            framework: 'NCF'
+          }
+        }
+      };
+      component.contentClick(params);
+       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
+    'do_2124341006465925121871', 'TextBook', 'limited/publish', 'NCF']);
+    fixture.detectChanges();
     }));
-  // if  search api's throw's error
-  // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
     component.fetchLimitedPublished(9, 1);
@@ -109,7 +143,6 @@ describe('LimitedPublishedComponent', () => {
     expect(component.limitedPublishList.length).toBeLessThanOrEqual(0);
     expect(component.limitedPublishList.length).toEqual(0);
   }));
-
 
   it('should call setpage method and set proper page number', inject([ConfigService, Router],
     (configService, route) => {

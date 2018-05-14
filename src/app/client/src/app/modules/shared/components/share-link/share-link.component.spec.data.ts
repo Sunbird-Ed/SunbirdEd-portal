@@ -1,9 +1,3 @@
 export const Response = {
-
-    contentShare: {
-        'type': '',
-        'icon': 'linkify',
-        'mimeType': 'application/vnd.ekstep.content-collection',
-        'identifier': 'do_1124786006384066561162',
-    }
+    contentShare: 'http://localhost:3000/unlisted/Y29sbGVjdGlvbi9kb18xMTI0Nzg2MDA2Mzg0MDY2NTYxMTYy'
 };

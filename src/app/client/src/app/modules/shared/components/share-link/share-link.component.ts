@@ -99,6 +99,6 @@ export class ShareLinkComponent implements OnInit {
 
   public closeModal(contentShareModal) {
     contentShareModal.deny();
-     this.close.emit();
+    this.close.emit();
   }
 }

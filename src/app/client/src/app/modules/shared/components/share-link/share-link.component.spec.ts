@@ -24,18 +24,16 @@ describe('ShareLinkComponent', () => {
     fixture = TestBed.createComponent(ShareLinkComponent);
     component = fixture.componentInstance;
   });
-  it('should take content share INPUT and return the base64 link ', () => {
-    component.contentShare = Response.contentShare;
-    spyOn(component, 'getBase64Url').and.callThrough();
-    component.getBase64Url('content', 'do_1124786006384066561162');
-    spyOn(component, 'getUnlistedShareUrl').and.callThrough();
-    component.getUnlistedShareUrl();
-    fixture.detectChanges();
+  it('should take content share link  INPUT  ', () => {
+    component.shareLink = Response.contentShare;
+    expect(component.sharelinkModal).toBeDefined();
+    expect(component.sharelinkModal).toBeFalsy();
+    expect(component.shareLink).toBeDefined();
+    expect(component.shareLink).toBe(Response.contentShare);
   });
   it('Should show the content share model', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.initializeModal();
-    expect(component.sharelinkModal).toBeDefined();
-    expect(component.sharelinkModal).toBeTruthy();
+    expect(component.sharelinkModal).toBeFalsy();
   });
 });

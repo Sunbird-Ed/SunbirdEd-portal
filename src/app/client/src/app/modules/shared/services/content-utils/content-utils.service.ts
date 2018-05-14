@@ -13,7 +13,6 @@ export class ContentUtilsServiceService {
   contentShare: ISharelink;
   constructor() {
      this.baseUrl = document.location.origin + '/';
-     console.log('this.baseUrl', this.baseUrl);
   }
   /**
    * getBase64Url
@@ -46,6 +45,6 @@ export class ContentUtilsServiceService {
   * returns {string} url to share
   */
   getPublicShareUrl(identifier, type) {
-    return this.baseUrl + type + '/' + identifier;
+    return this.baseUrl + '/play' +  type + '/' + identifier;
   }
 }

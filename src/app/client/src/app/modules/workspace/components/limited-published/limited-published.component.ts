@@ -31,7 +31,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
    * To navigate to other pages
    */
   route: Router;
-
+  /**
+  * state for content editior
+ */
+  state: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to unpublished  component
@@ -67,9 +70,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   */
   showError = false;
 
-   /**
-   * To show / hide modal
-  */
+  /**
+  * To show / hide modal
+ */
   sharelinkModal = false;
   /**
    * no result  message
@@ -163,6 +166,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'message': this.resourceService.messages.stmsg.m0008,
       'messageText': this.resourceService.messages.stmsg.m0083
     };
+    this.state = 'limited/publish';
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -194,27 +198,27 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           this.limitedPublishList = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.limitedPublishList, (item, key) => {
-            const action = {
+          const constantData = {
+            ribbon: {
+              right: { class: 'ui black left ribbon label' }
+            },
+            action: {
               right: {
+                class: 'trash large icon',
                 displayType: 'icon',
-                classes: 'trash large icon',
-                actionType: 'delete',
-                clickable: true
+                eventName: 'delete'
               },
               left: {
+                class: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon',
                 displayType: 'icon',
-                actionType: 'shareComponent',
-                icon: 'linkify',
-                classes: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon',
-                mimeType: item.mimeType,
-                identifier: item.identifier,
-                contentType: item.contentType,
-                clickable: true
-              }
-            };
-            this.limitedPublishList[key].action = action;
-          });
+                eventName: 'share'
+              },
+              onImage: { eventName: 'onImage' }
+            }
+          };
+          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+          const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+          this.limitedPublishList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -231,11 +235,13 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     );
   }
   contentClick(param) {
-    if (param.type === 'delete') {
-      this.deleteConfirmModal(param.content.identifier);
-    } else {
-      this.shareLink = this.contentUtilsServiceService.getUnlistedShareUrl(param.content.action.left);
+    if (param.action.eventName === 'delete') {
+      this.deleteConfirmModal(param.data.metaData.identifier);
+    } else if (param.action.eventName === 'share') {
+      this.shareLink = this.contentUtilsServiceService.getUnlistedShareUrl(param.data.metaData);
       this.sharelinkModal = true;
+    } else {
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
   public deleteConfirmModal(contentIds) {
