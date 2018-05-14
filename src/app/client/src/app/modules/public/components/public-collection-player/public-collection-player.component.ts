@@ -17,7 +17,6 @@ import * as _ from 'lodash';
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
-
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -92,7 +91,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   private initPlayer(id: string): void {
     this.playerConfig = this.getPlayerConfig(id).catch((error) => {
-      console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
   }
