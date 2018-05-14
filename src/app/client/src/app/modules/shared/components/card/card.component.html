@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="data.action" class="extra data">
+    <div *ngIf="data.action && (data.action.right || data.action.left)" class="extra data">
       <div *ngIf=" data.action.right" class="right floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
