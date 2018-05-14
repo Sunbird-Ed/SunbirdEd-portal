@@ -5,7 +5,7 @@ import {
   WindowScrollService, ToasterService, NavigationHelperService,
   ConfigService, RouterNavigationService
 } from '@sunbird/shared';
-import { PlayerService, ContentService } from '@sunbird/core';
+import { PlayerService, ContentService, PermissionService, UserService } from '@sunbird/core';
 @Component({
   selector: 'app-flag-conentplayer',
   templateUrl: './flag-conentplayer.component.html',
@@ -25,6 +25,10 @@ export class FlagConentplayerComponent implements OnInit {
    * Flag to show error
    */
   showError = false;
+  /**
+   * isShowFlagActionButton to show button
+   */
+  flagActionButton = false;
   /**
    * content id
    */
@@ -69,11 +73,20 @@ export class FlagConentplayerComponent implements OnInit {
    * reference of ContentService.
    */
   public contentService: ContentService;
+  /**
+    * Refrence of UserService
+  */
+  private userService: UserService;
 
   /**
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
+
+  /**
+   * reference of permissionService service.
+  */
+  public permissionService: PermissionService;
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -81,12 +94,16 @@ export class FlagConentplayerComponent implements OnInit {
   * @param {ToasterService} toasterService Reference of ToasterService
   * @param {ContentService} contentService Reference of contentService
   * @param {configService} configService Reference of configService
+  * @param {PermissionService} permissionService Reference of PermissionService
+  * @param {UserService} UserService Reference of UserService
   */
   constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     playerService: PlayerService, windowScrollService: WindowScrollService,
     toasterService: ToasterService, public navigationHelperService: NavigationHelperService,
     configService: ConfigService, contentService: ContentService,
-    routerNavigationService: RouterNavigationService) {
+    routerNavigationService: RouterNavigationService,
+    permissionService: PermissionService,
+    userService: UserService) {
     this.resourceService = resourceService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -94,6 +111,8 @@ export class FlagConentplayerComponent implements OnInit {
     this.configService = configService;
     this.contentService = contentService;
     this.routerNavigationService = routerNavigationService;
+    this.permissionService = permissionService;
+    this.userService = userService;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
     };
@@ -151,7 +170,7 @@ export class FlagConentplayerComponent implements OnInit {
     };
     this.contentService.post(option).subscribe(response => {
         this.toasterService.success(this.resourceService.messages.smsg.m0007);
-        this.redirect();
+        this.close();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0024);
     });
@@ -167,18 +186,10 @@ export class FlagConentplayerComponent implements OnInit {
     };
     this.contentService.post(option).subscribe(response => {
         this.toasterService.success(this.resourceService.messages.smsg.m0008);
-        this.redirect();
+        this.close();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0025);
     });
-  }
-  /**
-   * This method helps to redirect to the parent component
-   * page, i.e, outbox listing page with proper page number
-	 *
-	 */
-  redirect(): void {
-    this.navigationHelperService.navigateToPreviousUrl('/workspace/content/flagged/1');
   }
 }
 

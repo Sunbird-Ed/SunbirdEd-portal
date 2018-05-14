@@ -4,8 +4,8 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
-  BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent,
-  FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent
+   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
+   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
@@ -104,15 +104,17 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     },
     children: [
+      { path: 'publish', component: PublishedPopupComponent },
       { path: 'requestchanges', component: RequestChangesPopupComponent }
     ]
   },
-  {
-    path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
-    data: {
-      roles: 'workspace',
-      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-    }
+  { path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  },
+  { path: 'workspace/content/review/content/:contentId', component: ReviewsubmissionsContentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
   }
 ];
 

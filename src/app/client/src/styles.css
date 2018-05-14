@@ -1690,14 +1690,10 @@ ul.fancytree-container li {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.contentdetail {
+.content-detail {
   color: #7c7b7b;
-  font-size: 13px;
-}
-.contentMetaDetail {
-  color: #7c7b7b;
-  font-size: 13px;
-  width: 50%;
+  font-size: 14px;
+  font-weight: 600;
 }
 .cardtakenote {
   color: #007AFF;
@@ -2849,5 +2845,16 @@ iframe.iziModal-iframe {
   left: 0;
   bottom: 0;
 } 
+
+.overflow-word-wrap {
+  overflow-wrap: break-word;
+}
+
+/* font used for view all and read more*/
+.view-more {
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  color: #007AFF;
+}
 
 

@@ -120,7 +120,6 @@ export class RequestChangesPopupComponent implements OnInit {
 
   /**
    * This method builds the request body and call the reject API.
-   * It also takes the modal id as input which needs to be closed.
    */
   submitRequestChanges() {
     this.isDisabled = true;
@@ -148,7 +147,7 @@ export class RequestChangesPopupComponent implements OnInit {
   }
 
   /**
-   * reference of ContentService.
+   * Method to redirect to parent url
    */
   redirect() {
     this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);

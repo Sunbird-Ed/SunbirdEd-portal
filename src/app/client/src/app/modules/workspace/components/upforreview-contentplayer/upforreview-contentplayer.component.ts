@@ -12,10 +12,17 @@ import { PlayerService, PermissionService, UserService } from '@sunbird/core';
 })
 export class UpforreviewContentplayerComponent implements OnInit {
   /**
+   * To navigate to other pages
+   */
+  router: Router;
+  /**
    * loader message
   */
-  loaderMessage: ILoaderMessage;
-
+ loaderMessage: ILoaderMessage;
+  /**
+   * To close url
+  */
+ closeUrl: any;
   /**
   * To show / hide loader
   */
@@ -78,13 +85,14 @@ export class UpforreviewContentplayerComponent implements OnInit {
   */
   constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute, userService: UserService,
     playerService: PlayerService, windowScrollService: WindowScrollService, permissionService: PermissionService,
-    toasterService: ToasterService, public navigationHelperService: NavigationHelperService) {
+    toasterService: ToasterService, public navigationHelperService: NavigationHelperService, router: Router) {
     this.resourceService = resourceService;
     this.playerService = playerService;
     this.userService = userService;
     this.windowScrollService = windowScrollService;
     this.permissionService = permissionService;
     this.toasterService = toasterService;
+    this.router = router;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
     };
@@ -99,6 +107,7 @@ export class UpforreviewContentplayerComponent implements OnInit {
           this.getContent();
         });
       }
+      this.closeUrl = this.navigationHelperService.getPreviousUrl();
     });
   }
   /**
@@ -142,6 +151,14 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * @memberof ContentPlayerComponent
   */
   close() {
-    this.navigationHelperService.navigateToPreviousUrl('/workspace/content/upForReview/1');
+    if (this.closeUrl.url !== '/home') {
+      if (this.closeUrl.queryParams) {
+        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
+      } else {
+        this.router.navigate([this.closeUrl.url]);
+      }
+    } else {
+      this.router.navigate(['/workspace/content/upForReview/1']);
+    }
   }
 }

@@ -1,0 +1,51 @@
+<div class="ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class="row" *ngIf="showLoader">
+      <app-loader [data]="loaderMessage"></app-loader>
+    </div>
+
+    <div class="row margin-top-10" *ngIf="!showLoader && contentData">
+
+      <div class="videosegment  ui clearing segment">
+        <div class="ten wide column">
+          <span class="ui HomeAccordianHeading left floated header">
+          {{contentData.name}}
+          </span>
+        </div>
+        <div class="two wide column">
+          <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+            <i class="ui remove icon" (click)="close()"></i>
+          </h5>
+        </div>
+      </div>
+
+      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+    </div>
+    <div class="ui grid" *ngIf="!showLoader && contentData">
+      <div class="eight wide column">
+        <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+      </div>
+      <div class="four wide column">
+      </div>
+    </div>
+
+    <div *ngIf="showError">
+      <div class="ui active dimmer inverted">
+        <div class="content">
+          <div class="center">
+            <h2 class="ui header red">
+              {{errorMessage}}
+            </h2>
+            <span>
+            <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
+            </span>
+            <span>
+              <button class="ui red button" (click)="close()">{{resourceService.frmelmnts.btn.close}}</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

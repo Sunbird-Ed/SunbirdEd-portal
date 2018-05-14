@@ -110,6 +110,52 @@
     },
     "FILTER": {
         "RESOURCES": {
+            "roles": [
+                {
+                    "name": "Announcement Sender",
+                    "id": "ANNOUNCEMENT_SENDER"
+                },
+                {
+                    "name": "Book Creator",
+                    "id": "BOOK_CREATOR"
+                },
+                {
+                    "name": "Book Reviewer",
+                    "id": "BOOK_REVIEWER"
+                },
+                {
+                    "name": "Content Creator",
+                    "id": "CONTENT_CREATOR"
+                },
+                {
+                    "name": "Content Reviewer",
+                    "id": "CONTENT_REVIEWER"
+                },
+                {
+                    "name": "Course Mentor",
+                    "id": "COURSE_MENTOR"
+                },
+                {
+                    "name": "Flag Reviewer",
+                    "id": "FLAG_REVIEWER"
+                },
+                {
+                    "name": "Official TextBook Badge Issuer",
+                    "id": "OFFICIAL_TEXTBOOK_BADGE_ISSUER"
+                },
+                {
+                    "name": "Org Admin",
+                    "id": "ORG_ADMIN"
+                },
+                {
+                    "name": "Public",
+                    "id": "PUBLIC"
+                },
+                {
+                    "name": "Teacher Badge Issuer",
+                    "id": "TEACHER_BADGE_ISSUER"
+                }
+            ],
             "languages": [
                 "Bengali",
                 "English",
@@ -205,20 +251,20 @@
                     "name": "Created On"
                 }
             ],
-        "upForReviewSortingOptions": [
-               {
-                   "field": "lastUpdatedOn",
-                   "name": "Updated On"
-               },
-               {
-                   "field": "createdOn",
-                   "name": "Created On"
-               },
-               {
-                   "field": "name",
-                   "name": "Name A-Z"
-               }
-           ]
+            "upForReviewSortingOptions": [
+                {
+                    "field": "lastUpdatedOn",
+                    "name": "Updated On"
+                },
+                {
+                    "field": "createdOn",
+                    "name": "Created On"
+                },
+                {
+                    "field": "name",
+                    "name": "Name A-Z"
+                }
+            ]
         },
         "SEARCH": {
             "search": {
@@ -239,18 +285,18 @@
                 "profile": "Users"
             },
             "searchEnabled": [
-                     "home",
-                     "learn",
-                     "resources",
-                     "profile",
-                     "search"
+                "home",
+                "learn",
+                "resources",
+                "profile",
+                "search"
             ],
             "All": {
                 "DROPDOWN": {
                     "Curriculum": [],
                     "Subjects": [],
                     "Medium": [],
-                    "Concepts":[]
+                    "Concepts": []
                 },
                 "label": [
                     "Curriculum",
@@ -283,13 +329,28 @@
             }
         },
         "WORKSPACE": {
-            "label": [ { "id": "board", "name": "Curriculum" },
-                { "id": "gradeLevel", "name": "Grades" },
-                { "id": "medium", "name": "Medium" },
-                { "id": "subject", "name": "Subjects" },
-                { "id": "Content", "name": "Content Types" }
-                    
-                ]
+            "label": [
+                {
+                    "id": "board",
+                    "name": "Curriculum"
+                },
+                {
+                    "id": "gradeLevel",
+                    "name": "Grades"
+                },
+                {
+                    "id": "medium",
+                    "name": "Medium"
+                },
+                {
+                    "id": "subject",
+                    "name": "Subjects"
+                },
+                {
+                    "id": "Content",
+                    "name": "Content Types"
+                }
+            ]
         }
     },
     "statusOptions": [

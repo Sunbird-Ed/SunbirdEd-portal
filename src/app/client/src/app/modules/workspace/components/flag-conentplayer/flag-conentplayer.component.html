@@ -25,12 +25,15 @@
 
     <div class="row margin-top-10" *ngIf="!showLoader">
       <div class="margin-top--5 videosegment ui clearing segment">
-        <button class="ui right floated primary button mouse-pointer" (click)="acceptContentFlag()">
+        <div *ngIf="userService.userid !== contentData.createdBy &&  permissionService.permissionAvailable && contentData && contentData.status === 'Flagged'"
+         appPermission [permission]="['FLAG_REVIEWER']">
+          <button class="ui right floated primary button mouse-pointer" (click)="acceptContentFlag()">
           {{resourceService?.frmelmnts?.btn?.accept}}
         </button>
-        <button class="ui right floated primary button mouse-pointer" (click)="discardContentFlag()">
+          <button class="ui right floated primary button mouse-pointer" (click)="discardContentFlag()">
           {{resourceService?.frmelmnts?.btn?.discard}}
         </button>
+        </div>
       </div>
     </div>
     <div class="ui grid" *ngIf="!showLoader && contentData">
