@@ -4,12 +4,13 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService,
-    ResourceService, IContents, ILoaderMessage, INoResultMessage
+    ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 /**
  * The draft component search for all the drafts
 */
@@ -46,7 +47,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
     /**
      * Contains list of published course(s) of logged-in user
     */
-    draftList: Array<IContents> = [];
+    draftList: Array<ICard> = [];
 
     /**
      * To show / hide loader
@@ -167,7 +168,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
             },
             limit: this.pageLimit,
-            offset: (this.pageNumber - 1 ) * (this.pageLimit),
+            offset: (this.pageNumber - 1) * (this.pageLimit),
             sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
@@ -178,31 +179,22 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 if (data.result.count && data.result.content.length > 0) {
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    _.forEach(data.result.content, (item, key) => {
-                        this.draftList[key] = {
-                            name: item.name,
-                            image: item.appIcon,
-                            showImage: true,
-                            description: item.description,
-                            ribbon: {
-                                right: {class: 'ui black right ribbon label', name: item.contentType}
+                    const constantData = {
+                        ribbon: {
+                            right: { class: 'ui black right ribbon label' }
+                        },
+                        action: {
+                            right: {
+                                class: 'trash large icon',
+                                displayType: 'icon',
+                                eventName: 'delete'
                             },
-                            metaData: {
-                                mimeType: item.mimeType,
-                                contentType: item.contentType,
-                                framework: item.framework,
-                                identifier: item.identifier,
-                            },
-                            action: {
-                                right: {
-                                    class: 'trash large icon',
-                                    displayType: 'icon',
-                                    eventName: 'delete'
-                                },
-                                onImage: {name: 'onImage'}
-                            }
-                        };
-                    });
+                            onImage: { eventName: 'onImage' }
+                        }
+                    };
+                    const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                    const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+                    this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {
                     this.showError = false;
