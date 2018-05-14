@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -49,6 +49,11 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   /**
    * loader message
   */
+  /**
+   * userRoles
+  */
+  userRoles = [];
+
   loaderMessage: ILoaderMessage;
 
   /**
@@ -188,8 +193,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       filters: {
         status: ['Review'],
         createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
-              rolesMap['BOOK_REVIEWER'],
-              rolesMap['FLAG_REVIEWER'])),
+          rolesMap['BOOK_REVIEWER'],
+          rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
@@ -204,6 +209,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       query: bothParams.queryParams.query,
       sort_by: this.sort
     };
+    const status = this.getContentStatus();
+    console.log(status);
     if (this.permissionService.checkRolesPermissions(['FLAG_REVIEWER'])) {
       searchParams.filters.status = ['FlagReview'];
       searchParams.filters.contentType.push('TextBook');
@@ -211,7 +218,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       searchParams.filters.contentType = ['TextBook'];
     } else if (this.permissionService.checkRolesPermissions(['BOOK_REVIEWER'])) {
       searchParams.filters.contentType = _.without(searchParams.filters.contentType, 'TextBook');
-    } else if ( this.permissionService.checkRolesPermissions(['FLAG_REVIEWER', 'BOOK_REVIEWER', 'CONTENT_REVIEWER'])) {
+    } else if (this.permissionService.checkRolesPermissions(['FLAG_REVIEWER', 'BOOK_REVIEWER', 'CONTENT_REVIEWER'])) {
       searchParams.filters.status = ['FlagReview', 'Review'];
     }
     this.search(searchParams).subscribe(
@@ -259,4 +266,39 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   contentClick(content) {
     this.workSpaceService.navigateToContent(content, this.state);
   }
+
+  getContentStatus() {
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        console.log(user.userProfile.userRoles);
+        this.userRoles = user.userProfile.userRoles;
+      });
+    const request = {
+      status: [],
+      contentType: []
+    };
+
+    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') === -1) {
+      request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+    }
+
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') === -1 &&
+      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+      request.contentType = ['TextBook'];
+    }
+
+    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1) {
+      request.status = ['FlagReview'];
+      request.contentType.push('TextBook');
+    }
+
+    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1 &&
+      (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1 ||
+        _.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1)) {
+      request.status = ['FlagReview', 'Review'];
+    }
+    console.log('request', request);
+    return request;
+  }
+
 }
