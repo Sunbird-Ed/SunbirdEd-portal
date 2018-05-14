@@ -96,6 +96,10 @@ export class WorkSpaceService {
     } else {
       if (state === 'upForReview') {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
+      } else if (state === 'flagged') {
+        this.route.navigate(['workspace/content/flag/content', content.identifier]);
+      } else if (state === 'review') {
+        this.route.navigate(['workspace/content/review/content', content.identifier]);
       }
     }
   }
@@ -109,7 +113,9 @@ export class WorkSpaceService {
     if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
     } else {
-      console.log('open content player ');
+      if (state === 'review') {
+        this.route.navigate(['workspace/content/review/content', content.identifier]);
+      }
     }
   }
 

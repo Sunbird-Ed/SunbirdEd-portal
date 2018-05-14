@@ -5,7 +5,7 @@ import {
   ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService, ContentData,
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
-import { IFlagReason, IFlagData, IRequestData } from './../../interfaces';
+import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -42,7 +42,9 @@ export class FlagContentComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
-
+  /**
+   * reference of contentService.
+   */
   private contentService: ContentService;
   /**
    * reference of config service.
@@ -57,17 +59,13 @@ export class FlagContentComponent implements OnInit {
    */
   private userService: UserService;
   /**
-   * userData of user of type IUserProfile
+   * stores identifier for content/collection/course
    */
-  public userData: IUserProfile;
-  /**
-   * content id of content
-   */
-  private contentId: string;
+  private identifier: string;
   /**
    * contentdata of content
    */
-  public contentData: ContentData;
+  public contentData: ContentData | CollectionHierarchyAPI.Content;
   /**
    * Input data for request (flagreason and comment)
    */
@@ -116,10 +114,10 @@ export class FlagContentComponent implements OnInit {
    * This method use to get content Data
    */
   getContentData() {
-    if (this.playerService.contentData) {
+    if (this.playerService.contentData && this.playerService.contentData.identifier === this.identifier) {
       this.contentData = this.playerService.contentData;
     } else {
-      this.playerService.getContent(this.contentId).subscribe(response => {
+      this.playerService.getContent(this.identifier).subscribe(response => {
         this.contentData = response.result.content;
       });
     }
@@ -133,7 +131,7 @@ export class FlagContentComponent implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0077,
     };
     const option = {
-      url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.contentId}`,
+      url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.identifier}`,
       data: { 'request': requestData }
     };
     this.contentService.post(option).subscribe(response => {
@@ -150,7 +148,7 @@ export class FlagContentComponent implements OnInit {
    */
   saveMetaData() {
     const requestData: IRequestData = {
-      flaggedBy: this.userData.firstName + ' ' + this.userData.lastName,
+      flaggedBy: this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName,
       versionKey: this.contentData.versionKey
     };
     if (this.flagData.flagReasons) {
@@ -169,18 +167,27 @@ export class FlagContentComponent implements OnInit {
   redirect(): void {
     this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
   }
+  getCollectionHierarchy() {
+    if (this.playerService.collectionData && this.playerService.collectionData.identifier === this.identifier) {
+      this.contentData = this.playerService.collectionData;
+    } else {
+      this.playerService.getCollectionHierarchy(this.identifier).subscribe(response => {
+        this.contentData = response.result.content;
+      });
+    }
+  }
   /**
    * This method sets the annmouncementId and pagenumber from
    * activated route
 	 */
   ngOnInit() {
     this.activatedRoute.parent.params.subscribe(params => {
-      this.contentId = params.contentId;
-    });
-    this.userService.userData$.subscribe(data => {
-      if (data) {
-        this.userData = data.userProfile;
+      if (params.contentId) {
+        this.identifier = params.contentId;
         this.getContentData();
+      } else {
+        this.identifier = params.collectionId ?  params.collectionId :  params.courseId;
+        this.getCollectionHierarchy();
       }
     });
   }

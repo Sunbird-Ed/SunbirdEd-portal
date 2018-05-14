@@ -32,7 +32,12 @@ export class NavigationHelperService {
       } else {
         history = {url, queryParams};
       }
-      this._history = [...this._history, history];
+      const previousUrl = this._history.pop();
+      if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url)) {
+        this._history.push(history);
+      } else {
+        this._history.push(previousUrl, history);
+      }
     });
   }
   /**

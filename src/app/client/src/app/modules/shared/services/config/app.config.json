@@ -104,8 +104,7 @@
       "draft",
       "uploaded",
       "published",
-      "limited-publish",
-      "flagged"
+      "limited-publish"
     ]
   },
   "CONTENT_CONST": {
