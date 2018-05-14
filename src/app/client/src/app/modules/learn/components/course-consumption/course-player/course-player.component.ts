@@ -6,19 +6,18 @@ import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
-
 @Component({
-  selector: 'app-collection-player',
-  templateUrl: './collection-player.component.html',
-  styleUrls: ['./collection-player.component.css']
+  selector: 'app-course-player',
+  templateUrl: './course-player.component.html',
+  styleUrls: ['./course-player.component.css']
 })
-export class CollectionPlayerComponent implements OnInit, OnDestroy {
+export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
 
-  private collectionId: string;
+  private courseId: string;
 
   private contentId: string;
 
@@ -72,7 +71,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
-    this.router.onSameUrlNavigation = 'ignore';
+    // this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
     this.getContent();
@@ -124,7 +123,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
     } else {
-      throw new Error(`unbale to play collection content for ${this.collectionId}`);
+      throw new Error(`unbale to play collection content for ${this.courseId}`);
     }
   }
 
@@ -134,27 +133,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private getContent(): void {
     this.subsrciption = this.route.params
-      // (params) => {
-      //   this.collectionId = params.collectionId;
-      //   // this.contentId = qparams.contentId;
-      //   return this.collectionId;
-      // })
       .first()
       .flatMap((params) => {
-        this.collectionId = params.collectionId;
-        return this.getCollectionHierarchy(params.collectionId);
+        this.courseId = params.courseId;
+        return this.getCourseHierarchy(params.courseId);
       })
-      // .do((collection) => {
-      //   console.log(collection);
-        // if (this.contentId) {
-        //   const content = this.findContentById(collection, this.contentId);
-        //   if (content) {
-        //     this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
-        //   } else {
-        //     this.navigateToErrorPage();
-        //   }
-        // }
-      // })
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.loader = false;
@@ -165,7 +148,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
             if (content) {
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
-              // this.navigateToErrorPage(); toaster error
+              this.navigateToErrorPage();
             }
           } else {
             this.closeContentPlayer();
@@ -174,7 +157,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       }, (error) => {
         const responseCode = _.get(error, 'error.responseCode');
         if (responseCode === 'RESOURCE_NOT_FOUND') {
-          // this.navigateToErrorPage(); toaster error
+          this.navigateToErrorPage();
         } else if (responseCode === 'SERVER_ERROR') {
           this.loader = false;
           this.serviceUnavailable = true;
@@ -184,15 +167,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getCollectionHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(collectionId)
       .map((response) => {
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
       });
-  }
-  closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/learn');
   }
   closeContentPlayer() {
     this.showPlayer = false;
@@ -201,4 +181,5 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     };
     this.router.navigate([], navigationExtras);
   }
+
 }

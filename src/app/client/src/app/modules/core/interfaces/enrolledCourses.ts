@@ -14,6 +14,10 @@ export interface ICourses {
     */
     description: string;
     /**
+    * course batch id
+    */
+    batchId: string;
+    /**
     * number of nodes
     */
     leafNodesCount: number;

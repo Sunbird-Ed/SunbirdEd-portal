@@ -58,7 +58,7 @@
     "preinstall": "npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager  && npm install ./libs/sb_telemetry_util",
     "validate": "npm ls",
     "precommit": "lint-staged",
-    "resource-bundles": "node app/helpers/resourceBundles/build.js",
+    "resource-bundles": "node helpers/resourceBundles/build.js",
     "deploy": "gulp deploy"
   },
   "dependencies": {

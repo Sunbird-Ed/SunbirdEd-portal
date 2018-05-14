@@ -5,7 +5,9 @@ import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LearnPageComponent } from './components';
+import { LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
+  CourseConsumptionPageComponent } from './components';
+import { CourseConsumptionService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 @NgModule({
@@ -19,6 +21,7 @@ import { DiscussionModule } from '@sunbird/discussion';
     CoreModule,
     DiscussionModule
   ],
-  declarations: [LearnPageComponent]
+  providers: [CourseConsumptionService],
+  declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent]
 })
 export class LearnModule { }
