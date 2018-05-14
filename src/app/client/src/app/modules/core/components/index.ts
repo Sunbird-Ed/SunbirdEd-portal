@@ -9,3 +9,4 @@ export * from './flag-content/flag-content.component';
 export * from './error-page/error-page.component';
 export * from './sort-by/sort-by.component';
 export * from './content-player-metadata/content-player-metadata.component';
+export * from './collection-player-metadata/collection-player-metadata.component';

@@ -10,8 +10,11 @@ import {
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
   TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent } from './components';
+import {
+  MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent,
+  CollectionPlayerMetadataComponent
+} from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
@@ -25,15 +28,15 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
     ReactiveFormsModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
-     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
-     ContentPlayerMetadataComponent],
+    DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
+    ContentPlayerMetadataComponent, CollectionPlayerMetadataComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-     SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent],
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent, CollectionPlayerMetadataComponent],
   providers: [
     LearnerService, UserService, TenantService, SearchService, CopyContentService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
     AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
-     { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, ConceptPickerService, BreadcrumbsService, PlayerService]
+    { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, BreadcrumbsService, PlayerService]
 })
 export class CoreModule {
 }
