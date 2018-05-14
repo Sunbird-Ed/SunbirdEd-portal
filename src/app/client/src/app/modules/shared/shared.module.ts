@@ -6,8 +6,10 @@ import {
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent
 } from './components';
-import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
-   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService } from './services';
+import {
+  ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
+  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService
+} from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
@@ -23,12 +25,12 @@ import { CacheService } from 'ng2-cache-service';
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
-     ShareLinkComponent, CollectionPlayerMetadataComponent],
+    CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
+    ShareLinkComponent, CollectionPlayerMetadataComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService]
+    RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService]
 })
 export class SharedModule { }
