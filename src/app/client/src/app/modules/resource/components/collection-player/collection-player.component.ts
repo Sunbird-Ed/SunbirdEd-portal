@@ -138,7 +138,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
-        console.log(data);
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService } from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-course-player',
@@ -39,9 +39,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public loader: Boolean = true;
 
-  public serviceUnavailable: Boolean = false;
-
-  private subsrciption: Subscription;
+  private subscription: Subscription;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -65,21 +63,22 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   };
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
-    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
+  private toasterService: ToasterService, private resourceService: ResourceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
-    // this.router.onSameUrlNavigation = 'ignore';
+    this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
     this.getContent();
   }
 
   ngOnDestroy() {
-    if (this.subsrciption) {
-      this.subsrciption.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -127,12 +126,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private navigateToErrorPage(): void {
-    this.router.navigate(['/error']);
-  }
-
   private getContent(): void {
-    this.subsrciption = this.route.params
+    this.subscription = this.route.params
       .first()
       .flatMap((params) => {
         this.courseId = params.courseId;
@@ -148,22 +143,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             if (content) {
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
-              this.navigateToErrorPage();
+              this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
             }
           } else {
             this.closeContentPlayer();
           }
         });
       }, (error) => {
-        const responseCode = _.get(error, 'error.responseCode');
-        if (responseCode === 'RESOURCE_NOT_FOUND') {
-          this.navigateToErrorPage();
-        } else if (responseCode === 'SERVER_ERROR') {
-          this.loader = false;
-          this.serviceUnavailable = true;
-        }
-        console.log('error when fetching collection content', (<Error>error).stack);
-        return error;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
   }
 
