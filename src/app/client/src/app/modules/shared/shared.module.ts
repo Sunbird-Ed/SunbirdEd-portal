@@ -7,7 +7,7 @@ import {
   CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
-   PaginationService, RouterNavigationService, NavigationHelperService, ContentUtilsServiceService } from './services';
+   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DateFormatPipe , DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
@@ -29,6 +29,6 @@ import { CacheService } from 'ng2-cache-service';
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, ContentUtilsServiceService]
+     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService]
 })
 export class SharedModule { }
