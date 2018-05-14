@@ -67,6 +67,7 @@ export class WorkSpaceService {
  */
   navigateToContent(content, state) {
     const mimeType = content.mimeType;
+    console.log(mimeType);
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
