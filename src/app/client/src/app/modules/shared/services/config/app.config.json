@@ -118,7 +118,7 @@
       "draft",
       "uploaded",
       "published",
-      "limited-publish"
+      "limited/publish"
     ]
   },
   "CONTENT_CONST": {
