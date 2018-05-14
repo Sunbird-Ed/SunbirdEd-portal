@@ -12,8 +12,8 @@ import { UUID } from 'angular2-uuid';
 @Injectable()
 export class PublicPlayerService {
   /**
-     * stores content details
-     */
+   * stores content details
+   */
   contentData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router) {
