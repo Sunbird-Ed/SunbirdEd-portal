@@ -43,6 +43,7 @@ export class ContentPlayerComponent implements OnInit {
    * to show loader while copying content
    */
   showCopyLoader = false;
+  closeUrl: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -53,6 +54,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.userService.userData$.subscribe(
@@ -101,7 +103,15 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close () {
-    this.navigationHelperService.navigateToPreviousUrl('/resources');
+    if (this.closeUrl.url !== '/home') {
+      if (this.closeUrl.queryParams) {
+        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
+      } else {
+        this.router.navigate([this.closeUrl.url]);
+      }
+    } else {
+      this.router.navigate(['/resources']);
+    }
   }
 
   /**
@@ -117,7 +127,7 @@ export class ContentPlayerComponent implements OnInit {
       },
       (err) => {
         this.showCopyLoader = false;
-        // this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.toasterService.error(err.error.params.errmsg);
     });
   }

@@ -68,11 +68,15 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
       if (node.children && node.children.length) {
         if (this.options.folderIcon) {
           node.icon = this.options.folderIcon;
-        } // else default icon is provided
+        }
         node.folder = true;
       } else {
+        if ( node.fileType === MimeTypeTofileType['application/vnd.ekstep.content-collection']) {
+          node.folder = true;
+        } else {
+          node.folder = false;
+        }
         node.icon = this.options.customFileIcon[node.fileType] || this.options.fileIcon;
-        node.folder = false;
       }
     });
   }

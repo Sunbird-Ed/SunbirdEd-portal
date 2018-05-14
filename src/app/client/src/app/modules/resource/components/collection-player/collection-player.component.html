@@ -26,19 +26,7 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
   </div>
-  <div *ngIf="serviceUnavailable" class="row">
-    <div class="eight wide centered column">
-      <div class="ui huge negative message">
-        <div class="header">
-          <span>
-            <i class="fa fa-warning-o fa-lg" aria-hidden="true"></i>
-            Unable to fetch the content details. Please try again later!
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row" *ngIf="!loader && !serviceUnavailable">
+  <div class="row" *ngIf="!loader">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>

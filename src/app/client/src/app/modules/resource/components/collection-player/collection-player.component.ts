@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService } from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -40,9 +40,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public loader: Boolean = true;
 
-  public serviceUnavailable: Boolean = false;
+  private subscription: Subscription;
 
-  private subsrciption: Subscription;
+  private closeUrl: any;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -66,7 +66,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   };
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
-    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
+  private toasterService: ToasterService, private resourceService: ResourceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -75,12 +76,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
+    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.getContent();
   }
 
   ngOnDestroy() {
-    if (this.subsrciption) {
-      this.subsrciption.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -128,34 +130,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private navigateToErrorPage(): void {
-    this.router.navigate(['/error']);
-  }
-
   private getContent(): void {
-    this.subsrciption = this.route.params
-      // (params) => {
-      //   this.collectionId = params.collectionId;
-      //   // this.contentId = qparams.contentId;
-      //   return this.collectionId;
-      // })
+    this.subscription = this.route.params
       .first()
       .flatMap((params) => {
         this.collectionId = params.collectionId;
         return this.getCollectionHierarchy(params.collectionId);
       })
-      // .do((collection) => {
-      //   console.log(collection);
-        // if (this.contentId) {
-        //   const content = this.findContentById(collection, this.contentId);
-        //   if (content) {
-        //     this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
-        //   } else {
-        //     this.navigateToErrorPage();
-        //   }
-        // }
-      // })
       .subscribe((data) => {
+        console.log(data);
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
@@ -165,22 +148,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
             if (content) {
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
-              // this.navigateToErrorPage(); toaster error
+              this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
             }
           } else {
             this.closeContentPlayer();
           }
         });
       }, (error) => {
-        const responseCode = _.get(error, 'error.responseCode');
-        if (responseCode === 'RESOURCE_NOT_FOUND') {
-          // this.navigateToErrorPage(); toaster error
-        } else if (responseCode === 'SERVER_ERROR') {
-          this.loader = false;
-          this.serviceUnavailable = true;
-        }
-        console.log('error when fetching collection content', (<Error>error).stack);
-        return error;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
   }
 
@@ -192,7 +167,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/learn');
+    if (this.closeUrl.url !== '/home') {
+      if (this.closeUrl.queryParams) {
+        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
+      } else {
+        this.router.navigate([this.closeUrl.url]);
+      }
+    } else {
+      this.router.navigate(['/resources']);
+    }
   }
   closeContentPlayer() {
     this.showPlayer = false;
