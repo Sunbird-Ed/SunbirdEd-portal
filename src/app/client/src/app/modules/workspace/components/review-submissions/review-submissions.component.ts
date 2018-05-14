@@ -174,6 +174,17 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.reviewContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
+        const constantData = {
+          ribbon: {
+              right: { class: 'ui black right ribbon label' }
+          },
+          action: {
+              onImage: { eventName: 'onImage' }
+          }
+      };
+      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+      const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+      this.reviewContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -197,7 +208,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    this.workSpaceService.navigateToContent(param.content, this.state);
+    this.workSpaceService.navigateToContent(param.data.metaData, this.state);
   }
 
   /**

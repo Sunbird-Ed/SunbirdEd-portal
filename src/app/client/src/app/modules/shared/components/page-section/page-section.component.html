@@ -5,7 +5,7 @@
     <div>
         <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div ngxSlickItem *ngFor="let content of section.contents" class="slide">    
-                <app-content-card (clickEvent)="playContent($event)"[content]="content"></app-content-card>
+                <app-card (clickEvent)="playContent($event)"[data]="content"></app-card>
             </div>
         </ngx-slick>
     </div>
