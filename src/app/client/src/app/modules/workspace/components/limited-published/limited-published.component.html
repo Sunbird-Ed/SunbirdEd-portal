@@ -41,6 +41,6 @@
     <button class="ui primary button" (click)="modal.approve('approved')" autofocus>Yes</button>
   </div>
 </ng-template>
-<!--<app-share-link [contentShareLink]="contentShareLink" *ngIf ="shareLink" 
-(close)="shareLink = false">
-</app-share-link>-->
+<app-share-link [shareLink]="shareLink" *ngIf ="sharelinkModal" 
+(close)="sharelinkModal = false">
+</app-share-link>

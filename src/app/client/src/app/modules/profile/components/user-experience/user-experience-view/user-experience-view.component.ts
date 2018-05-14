@@ -15,18 +15,40 @@ import * as moment from 'moment';
   styleUrls: ['./user-experience-view.component.css']
 })
 export class UserExperienceViewComponent implements OnInit {
+  /**
+   * Contains reference of ViewChildren
+   */
   @ViewChildren('edit') editChild: QueryList<EditExperienceComponent>;
+  /**
+   * Contains reference of ViewChild
+   */
   @ViewChild('add') addChild: EditExperienceComponent;
+  /**
+   * Contains reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Contains reference of profile visibility
+   */
   privateProfileFields = true;
+  /**
+   * Contains edit/add action
+   */
   action: string;
+  /**
+   * Boolean value to show/hide error message
+   */
   isCurrentJobExist = false;
+  /**
+   * Contains array of actions
+   */
   allowedAction = ['edit', 'add'];
-
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
-
+  /**
+   * This method is used to invoke user service to fetch user profile data
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -45,20 +67,23 @@ export class UserExperienceViewComponent implements OnInit {
       }
     });
   }
-
+  /**
+   * This method is used to delete existing user experience
+   */
   deleteExperience(deletedExp) {
     const request = {
       jobProfile: [deletedExp]
     };
     this.profileService.updateProfile(request).subscribe(res => {
-      // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0015);
     },
       err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0042);
       });
   }
-
+  /**
+   * This method is used to edit existing user experience
+   */
   editExperience() {
     const editedExp = [];
     let formStatus = true;
@@ -97,7 +122,9 @@ export class UserExperienceViewComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
-
+  /**
+   * This method is used to add new user experience
+   */
   addExperience() {
     const addExp: any = {};
     if (this.addChild.experienceForm.touched === true && this.addChild.experienceForm.valid === true) {
@@ -126,6 +153,9 @@ export class UserExperienceViewComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
+  /**
+   * This method watches for the changes and updates the form
+   */
   checkCurrentJob() {
     let curJobId = 0;
     setTimeout(() => {
@@ -141,6 +171,9 @@ export class UserExperienceViewComponent implements OnInit {
       }
     }, 0);
   }
+  /**
+   * This method watches for the changes to add new user experience
+   */
   checkCurrentJobAdd() {
     setTimeout(() => {
       if (this.addChild.experienceForm.value.isCurrentJob === true) {

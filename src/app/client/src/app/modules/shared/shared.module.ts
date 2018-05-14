@@ -3,14 +3,14 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
-  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent, ContentMetadataComponent,
-  CollectionTreeComponent, FancyTreeComponent, ShareLinkComponent
+  PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
+  CollectionTreeComponent, FancyTreeComponent, CardComponent,ShareLinkComponent
 } from './components';
 import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
    PaginationService, RouterNavigationService, NavigationHelperService, ContentUtilsServiceService } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DateFormatPipe , DateFilterXtimeAgoPipe} from './pipes';
+import { DateFormatPipe , DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
 
@@ -23,11 +23,11 @@ import { CacheService } from 'ng2-cache-service';
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, ContentMetadataComponent,
+     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
      ShareLinkComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, ContentMetadataComponent, ShareLinkComponent],
+    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
      RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, ContentUtilsServiceService]
 })

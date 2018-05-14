@@ -13,6 +13,7 @@ declare module '*.json' {
   const sample: any;
   export default sample;
 }
+declare const Markdown;
 declare const EkTelemetry: any;
 
 interface JQuery {

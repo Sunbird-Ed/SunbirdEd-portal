@@ -15,3 +15,4 @@ export * from './playerConfig';
 export * from './contentDetails';
 export * from './collectionTree';
 export * from './fancyTree';
+export * from './card';

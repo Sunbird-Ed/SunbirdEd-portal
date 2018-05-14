@@ -67,6 +67,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   */
   showError = false;
 
+   /**
+   * To show / hide modal
+  */
+  sharelinkModal = false;
   /**
    * no result  message
   */
@@ -89,7 +93,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   /**
   * contentShareLink
   */
-  contentShareLink: string;
+  shareLink: string;
   /**
   * Contains page limit of inbox list
   */
@@ -202,6 +206,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
                 displayType: 'icon',
                 actionType: 'shareComponent',
                 icon: 'linkify',
+                classes: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon',
                 mimeType: item.mimeType,
                 identifier: item.identifier,
                 contentType: item.contentType,
@@ -211,7 +216,6 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
             this.limitedPublishList[key].action = action;
           });
           this.showLoader = false;
-          const shareLink = this.contentUtilsServiceService.getUnlistedShareUrl();
         } else {
           this.showError = false;
           this.noResult = true;
@@ -229,6 +233,9 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   contentClick(param) {
     if (param.type === 'delete') {
       this.deleteConfirmModal(param.content.identifier);
+    } else {
+      this.shareLink = this.contentUtilsServiceService.getUnlistedShareUrl(param.content.action.left);
+      this.sharelinkModal = true;
     }
   }
   public deleteConfirmModal(contentIds) {

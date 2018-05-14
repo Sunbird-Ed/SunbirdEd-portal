@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input, EventEmitter,
-  ElementRef, ViewChild, Renderer
+  ElementRef, ViewChild, Renderer, Output
 } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui';
@@ -25,11 +25,6 @@ export class ShareLinkComponent implements OnInit {
   */
   position: string;
   /**
-  * contentShareLink
-  */
-  ShareLink: string;
-
-  /**
    * To show / hide modal
   */
   sharelinkModal = false;
@@ -40,7 +35,12 @@ export class ShareLinkComponent implements OnInit {
   /**
   *input for Sharelink;
   */
-  @Input() contentShare: ISharelink;
+  @Input() shareLink: string;
+  /**
+  *Output for Sharelink;
+  */
+   @Output('close')
+  close = new EventEmitter<any>();
   /**
   *Element Ref  for copyLinkButton;
   */
@@ -68,11 +68,7 @@ export class ShareLinkComponent implements OnInit {
     this.baseUrl = document.location.origin + '/';
   }
   ngOnInit() {
-    if (this.contentShare.type) {
-      this.ShareLink = this.getPublicShareUrl(this.contentShare.id, this.contentShare.type);
-    } else {
-      this.ShareLink = this.getUnlistedShareUrl();
-    }
+    this.initializeModal();
   }
   /**
   * popDenys
@@ -85,12 +81,9 @@ export class ShareLinkComponent implements OnInit {
   * initializeModal
   */
   initializeModal() {
-    this.sharelinkModal = !this.sharelinkModal;
-    if (this.sharelinkModal) {
-      setTimeout(() => {
+    setTimeout(() => {
         this.copyLinkButton.nativeElement.click();
-      }, 500);
-    }
+    }, 300);
   }
 
   /**
@@ -103,37 +96,9 @@ export class ShareLinkComponent implements OnInit {
    $('#copyLinkData').select();
    document.execCommand('copy');
   }
-  /**
-   * getBase64Url
-   * generate the base url to play unlisted content for public users.
-   * {object} identifier-content or course identifier
-   * returns {string} type - content or course type.
-   */
-  getBase64Url(type, identifier) {
-    return btoa(type + '/' + identifier);
-  }
-  /**
-  * getUnlistedShareUrl
-  * generate the url to play unlisted content for other users.
-  * {object}  cData - content data
-  * returns {string} url to share.
-  */
-  getUnlistedShareUrl() {
-    if (this.contentShare.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', this.contentShare.identifier);
-    } else if (this.contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', this.contentShare.identifier);
-    } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', this.contentShare.identifier);
-    }
-  }
-  /**
-  * getPublicShareUrl
-  * {string}  identifier - content or course identifier
-  * {string}  type - content or course type
-  * returns {string} url to share
-  */
-  getPublicShareUrl(identifier, type) {
-    return this.baseUrl + type + '/' + identifier;
+
+  public closeModal(contentShareModal) {
+    contentShareModal.deny();
+     this.close.emit();
   }
 }

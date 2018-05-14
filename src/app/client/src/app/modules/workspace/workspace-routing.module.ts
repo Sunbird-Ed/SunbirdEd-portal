@@ -4,12 +4,13 @@ import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
-   BatchListComponent, UpdateBatchComponent, LimitedPublishedComponent
+   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
+   FlagConentplayerComponent, LimitedPublishedComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
-    path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard],
+    path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard], data: {roles : 'workspace'},
     children: [
       { path: '', redirectTo: 'create', pathMatch: 'full' },
       {
@@ -90,11 +91,25 @@ const routes: Routes = [
       },
       { path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent ,
       data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }] } },
-      { path: 'batches/:pageNumber', component: BatchListComponent },
+      { path: 'batches/:pageNumber', component: BatchListComponent,
+      data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+      },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
-      { path: '**', redirectTo: 'create' }
+      // { path: '**', redirectTo: 'create' }
     ]
   },
+  { path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  },
+  { path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  },
+  { path: 'workspace/content/review/content/:contentId', component: ReviewsubmissionsContentplayerComponent, canActivate: [AuthGuard],
+  data: { roles : 'workspace',
+   breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+  }
 ];
 
 @NgModule({

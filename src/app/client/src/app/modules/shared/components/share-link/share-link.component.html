@@ -1,12 +1,3 @@
-<span *ngIf="contentShare.icon !== 'linkify' 
-" class="ui mouse-pointer content-font" title="Share" (click)="initializeModal(copyLinkButton)">
-    <i class="large blue share alternate icon"></i>&nbsp;
-</span>
-<span *ngIf="contentShare.icon === 'linkify' 
-" class="ui mouse-pointer content-font" title="View Link" (click)="initializeModal(copyLinkButton)">
-    <i class="linkify large icon float-ContentLeft limitedPublishingLinkIcon"></i>&nbsp;
-</span>
-<div *ngIf="sharelinkModal">
 <sui-modal [isClosable]="false" #contentShareModal >
 
   <div class="header">
@@ -15,7 +6,7 @@
         <span class="ui header">{{resourceService?.frmelmnts?.lbl?.share}}</span>
       </div>
       <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="contentShareModal.deny();popDeny(popup);sharelinkModal=false ">
+        <h5 class="ui basic icon circular button deny" (click)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false ">
           <i class="ui remove icon"></i>
         </h5>
       </div>
@@ -24,7 +15,7 @@
   <div class="content">
     <p class="meta">{{resourceService?.frmelmnts?.lbl?.sharelink}}</p>
     <div class="ui action input shareContent width-100" id="buttonPopUp">
-      <input type="text" id="copyLinkData"   name="title" readonly [(ngModel)]="ShareLink" />
+      <input type="text" id="copyLinkData"   name="title" readonly [(ngModel)]="shareLink" />
       <button   class="ui basic primary button" (click)="copyLink(popup)" #copyLinkButton>
         COPY LINK
       </button>
@@ -33,4 +24,3 @@
     </div>
   </div>
 </sui-modal>
-</div>

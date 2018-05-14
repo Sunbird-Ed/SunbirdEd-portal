@@ -1690,14 +1690,10 @@ ul.fancytree-container li {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.contentdetail {
+.content-detail {
   color: #7c7b7b;
-  font-size: 13px;
-}
-.contentMetaDetail {
-  color: #7c7b7b;
-  font-size: 13px;
-  width: 50%;
+  font-size: 14px;
+  font-weight: 600;
 }
 .cardtakenote {
   color: #007AFF;
@@ -2280,7 +2276,7 @@ ul.fancytree-container li {
 .ui.addSkillsMarginCursor.multiple.dropdown > .label {
   margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
 }
-.addSkillMoreBtn {
+.addViewMoreBtn {
   padding: 10px 10px 14px 15px !important;
 }
 .workspaceicon.ui.header > .icon {
@@ -2750,20 +2746,6 @@ span.dashBoardMenuItem.active {
 ol.ui.list ol li:before {
   margin-left: -2.5em !important;
 }
-@media only screen and (max-width: 1290px) and (min-width: 992px) {
-  .modals.dimmer .ui.tree-picker.scrolling.modal {
-    top: -580px !important;
-    position: relative !important;
-    margin: 0 0 0 -350px !important;
-  }
-}
-@media only screen and (min-width: 1300px) {
-  .modals.dimmer .ui.tree-picker.scrolling.modal {
-    top: 60px !important;
-    position: relative !important;
-    margin: 0 0 0 -373px !important;
-  }
-}
 .createAnnHeaderDesc {
   font-size: small;
   color: #7c7b7b;
@@ -2863,5 +2845,16 @@ iframe.iziModal-iframe {
   left: 0;
   bottom: 0;
 } 
+
+.overflow-word-wrap {
+  overflow-wrap: break-word;
+}
+
+/* font used for view all and read more*/
+.view-more {
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  color: #007AFF;
+}
 
 

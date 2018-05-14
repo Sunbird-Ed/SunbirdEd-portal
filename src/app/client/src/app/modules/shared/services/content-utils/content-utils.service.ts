@@ -13,6 +13,7 @@ export class ContentUtilsServiceService {
   contentShare: ISharelink;
   constructor() {
      this.baseUrl = document.location.origin + '/';
+     console.log('this.baseUrl', this.baseUrl);
   }
   /**
    * getBase64Url
@@ -30,12 +31,12 @@ export class ContentUtilsServiceService {
   * returns {string} url to share.
   */
   getUnlistedShareUrl(contentShare) {
-    if (this.contentShare.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', this.contentShare.identifier);
-    } else if (this.contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', this.contentShare.identifier);
+    if (contentShare.contentType === 'Course') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', contentShare.identifier);
+    } else if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', contentShare.identifier);
     } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', this.contentShare.identifier);
+      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', contentShare.identifier);
     }
   }
   /**

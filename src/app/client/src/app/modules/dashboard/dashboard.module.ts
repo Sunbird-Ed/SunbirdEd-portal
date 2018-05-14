@@ -8,11 +8,12 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 // Custome component(s) and services
 import { CourseConsumptionService, DashboardUtilsService, OrganisationService,
-  RendererService, LineChartService, DownloadService } from './services';
-import { OrganisationComponent, CourseConsumptionComponent } from './components';
+  RendererService, LineChartService, DownloadService, CourseProgressService } from './services';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent } from './components';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   imports: [
@@ -21,15 +22,16 @@ import { SharedModule } from '@sunbird/shared';
     FormsModule,
     ChartsModule,
     SuiModule,
-    SharedModule
+    SharedModule,
+    OrderModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent],
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
   providers: [
     RendererService,
     DashboardUtilsService,
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService]
+    OrganisationService, DownloadService, CourseProgressService]
 })
 export class DashboardModule { }
