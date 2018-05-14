@@ -33,6 +33,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public contentId: string;
   /**
+   * state of the content
+   */
+  public state: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
+  /**
    * user profile details.
    */
   public userProfile: IUserProfile;
@@ -69,6 +77,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
+      this.state = params['state'];
+      this.framework = params['framework'];
+
     });
   }
 
@@ -124,7 +135,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      env: 'genericeditor'
+      env: 'genericeditor',
+      framework: this.framework
     };
 
     /**
@@ -169,12 +181,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToCreate();
+      this.navigateToUploads();
     }, 1000);
   }
 
-  navigateToCreate() {
-    this.router.navigate(['workspace/content']);
+  navigateToUploads() {
+    if (this.state) {
+      this.router.navigate(['workspace/content/', this.state, '1']);
+    } else {
+      this.router.navigate(['workspace/content/uploaded/1']);
+    }
     this.showModal = false;
   }
 

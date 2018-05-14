@@ -90,7 +90,10 @@ export class UpforreviewContentplayerComponent implements OnInit {
    */
   getContent() {
     this.showLoader = true;
-    this.playerService.getContent(this.contentId).subscribe(
+    const option = {
+          params: {mode: 'edit'}
+    };
+    this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         if (response.result.content) {
           const contentDetails = {

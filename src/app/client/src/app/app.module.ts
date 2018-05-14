@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { NotesModule } from '@sunbird/notes';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -38,6 +39,7 @@ import * as $ from 'jquery';
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
+    NotesModule,
     ResourceModule,
     LearnModule,
     WorkspaceModule,
