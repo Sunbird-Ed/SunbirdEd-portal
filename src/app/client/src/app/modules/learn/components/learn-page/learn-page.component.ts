@@ -64,6 +64,7 @@ export class LearnPageComponent implements OnInit {
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
   content: any;
+  courses: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -104,7 +105,7 @@ export class LearnPageComponent implements OnInit {
               }
           };
             const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-            const dynamicFields = {};
+            const dynamicFields = {'maxCount': ['leafNodesCount'], 'progress': ['progress']};
             const courses = this.utilService.getDataForCard(data.enrolledCourses,
               constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
@@ -113,6 +114,7 @@ export class LearnPageComponent implements OnInit {
               contents: courses
             });
           }
+          console.log( this.caraouselData);
           this.populatePageData();
         } else if (data && data.err) {
           this.populatePageData();
@@ -125,7 +127,6 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
-    this.caraouselData = [];
     const option = {
       source: 'web',
       name: 'Course',
@@ -201,6 +202,7 @@ export class LearnPageComponent implements OnInit {
         });
       }
     });
+    console.log(this.caraouselData);
   }
   /**
  *This method calls the populateEnrolledCourse
