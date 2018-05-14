@@ -12,8 +12,7 @@ import {
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent,
-  CollectionPlayerMetadataComponent
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
@@ -29,9 +28,9 @@ import { BreadcrumbsComponent, BreadcrumbsService } from './components';
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
-    ContentPlayerMetadataComponent, CollectionPlayerMetadataComponent],
+    ContentPlayerMetadataComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent, CollectionPlayerMetadataComponent],
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent],
   providers: [
     LearnerService, UserService, TenantService, SearchService, CopyContentService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,

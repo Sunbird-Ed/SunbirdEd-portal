@@ -4,13 +4,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
-  CollectionTreeComponent, FancyTreeComponent, CardComponent
+  CollectionTreeComponent, FancyTreeComponent, CardComponent, CollectionPlayerMetadataComponent
 } from './components';
-import { ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService ,
-   PaginationService, RouterNavigationService, NavigationHelperService, UtilService } from './services';
+import {
+  ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
+  PaginationService, RouterNavigationService, NavigationHelperService, UtilService
+} from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { DateFormatPipe , DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
+import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
 
@@ -21,13 +23,13 @@ import { CacheService } from 'ng2-cache-service';
     SlickModule,
     FormsModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
-     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe],
+  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent,
+    ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CollectionTreeComponent, FancyTreeComponent,
+    PlayerComponent, CardComponent, FilterPipe, CollectionPlayerMetadataComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe],
+    PlayerComponent, CardComponent, FilterPipe, CollectionPlayerMetadataComponent],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-     RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService]
+    RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService]
 })
 export class SharedModule { }

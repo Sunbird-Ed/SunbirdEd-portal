@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { Component, OnInit, Input } from '@angular/core';
+import { ResourceService } from './../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { PlayerService } from './../../services';
 
 @Component({
   selector: 'app-collection-player-metadata',
@@ -9,17 +8,14 @@ import { PlayerService } from './../../services';
   styleUrls: ['./collection-player-metadata.component.css']
 })
 export class CollectionPlayerMetadataComponent implements OnInit {
+  @Input() metaData: object;
   public collectionMeta: any = {};
   public collectionId: string;
-  constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute,
-    public playerService: PlayerService) { }
+  constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
-    });
-    this.playerService.getCollectionHierarchy(this.collectionId).subscribe(response => {
-      this.collectionMeta = response.result.content;
     });
   }
 }

@@ -16,6 +16,7 @@ import * as _ from 'lodash';
   styleUrls: ['./public-collection-player.component.css']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
+  public collectionData: object;
 
   private route: ActivatedRoute;
 
@@ -163,6 +164,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(collectionId)
       .map((response) => {
+        this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
       });

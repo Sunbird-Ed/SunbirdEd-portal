@@ -2,12 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { DateFormatPipe, SharedModule } from '@sunbird/shared';
+import { DateFormatPipe } from './../../pipes';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PlayerService, UserService, LearnerService, ContentService } from './../../services';
+import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
-import { mockResponse } from './collection-player-metadata.component.spec.data';
 
 describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
@@ -18,7 +17,7 @@ describe('CollectionPlayerMetadataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent],
-      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [CoreModule, HttpClientTestingModule, RouterTestingModule],
       providers: [PlayerService, UserService, LearnerService, ContentService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
