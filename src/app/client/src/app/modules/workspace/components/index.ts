@@ -18,3 +18,4 @@ export * from './batch-card/batch-card.component';
 export * from './update-batch/update-batch.component';
 export * from './upforreview-contentplayer/upforreview-contentplayer.component';
 export * from './flag-conentplayer/flag-conentplayer.component';
+export * from './reviewsubmissions-contentplayer/reviewsubmissions-contentplayer.component';
