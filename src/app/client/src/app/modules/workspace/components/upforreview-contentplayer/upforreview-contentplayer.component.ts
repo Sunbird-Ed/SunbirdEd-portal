@@ -4,7 +4,7 @@ import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
   WindowScrollService, ToasterService, NavigationHelperService
 } from '@sunbird/shared';
-import { PlayerService } from '@sunbird/core';
+import { PlayerService, PermissionService, UserService } from '@sunbird/core';
 @Component({
   selector: 'app-upforreview-contentplayer',
   templateUrl: './upforreview-contentplayer.component.html',
@@ -28,7 +28,10 @@ export class UpforreviewContentplayerComponent implements OnInit {
    * content id
    */
   contentId: string;
-
+  /**
+   * user id
+   */
+  userId: string;
   /**
   * contain error message
   */
@@ -36,13 +39,20 @@ export class UpforreviewContentplayerComponent implements OnInit {
   /**
   * To call resource service which helps to use language constant
   */
-  public resourceService: ResourceService;
+ public resourceService: ResourceService;
+  /**
+  * To call user service
+  */
+ public userService: UserService;
 
   /**
   * To call PlayerService service
   */
   public playerService: PlayerService;
-
+  /**
+  * To call Permission service
+  */
+ public permissionService: PermissionService;
   /**
   * To call PlayerService service
   */
@@ -51,7 +61,6 @@ export class UpforreviewContentplayerComponent implements OnInit {
    * contains player configuration
    */
   playerConfig: PlayerConfig;
-
   /**
    * contain contentData
   */
@@ -67,12 +76,14 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * @param {ResourceService} resourceService Reference of resourceService
   * @param {ToasterService} toasterService Reference of ToasterService
   */
-  constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute,
-    playerService: PlayerService, windowScrollService: WindowScrollService,
+  constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute, userService: UserService,
+    playerService: PlayerService, windowScrollService: WindowScrollService, permissionService: PermissionService,
     toasterService: ToasterService, public navigationHelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.playerService = playerService;
+    this.userService = userService;
     this.windowScrollService = windowScrollService;
+    this.permissionService = permissionService;
     this.toasterService = toasterService;
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0025,
@@ -80,9 +91,14 @@ export class UpforreviewContentplayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.contentId = params.contentId;
-      this.getContent();
+    this.userService.userData$.subscribe(userdata => {
+      if (userdata && !userdata.err) {
+        this.userId = userdata.userProfile.userId;
+        this.activatedRoute.params.subscribe((params) => {
+          this.contentId = params.contentId;
+          this.getContent();
+        });
+      }
     });
   }
   /**
