@@ -10,10 +10,6 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     /**
-     *currentUrl
-    */
-    public currentUrl = '';
-    /**
       * reference of permissionService service.
     */
     public permissionService: PermissionService;
@@ -34,7 +30,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     */
     constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService,
     config: ConfigService) {
-        this.currentUrl = '';
         this.permissionService = permissionService;
         this.resourceService = resourceService;
         this.config = config;
@@ -42,22 +37,20 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     /**
     * method CanActivate for guard .
     */
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.getPermission(route.url[0].path);
+    canActivate(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
+        return this.getPermission(activatedRouteSnapshot.data.roles);
     }
-    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.getPermission(state);
+    canActivateChild(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
+        return this.getPermission(activatedRouteSnapshot.url[0].path);
     }
 
-    getPermission(state) {
+    getPermission(roles) {
         return Observable.create(observer => {
             this.permissionService.permissionAvailable$.subscribe(
                 permissionAvailable => {
                     if (permissionAvailable && permissionAvailable === 'success') {
-                        this.currentUrl = state;
-                        const rolePermission = this.config.rolesConfig.ROLES[this.currentUrl];
-                        if (rolePermission) {
-                            if (this.permissionService.checkRolesPermissions(rolePermission)) {
+                        if (roles && this.config.rolesConfig.ROLES[roles]) {
+                            if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
                                 observer.next(true);
                             } else {
                                 this.router.navigate(['home']);

@@ -2,6 +2,26 @@
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10
   },
+  "FLAGREASONS": [
+    {
+    "name": "Inappropriate content",
+    "value": "Inappropriate Content",
+    "description": "Hateful, harmful or explicit lesson that is inappropriate for young learners"
+  }, 
+  {
+    "name": "Copyright violation",
+    "value": "Copyright Violation",
+    "description": "Uses copyrighted work without permission"
+  }, 
+  {
+    "name": "Privacy violation",
+    "value": "Privacy Violation",
+    "description": "Collects sensitive data or personal information about users, such as name \\n address, photo or other personally identifiable information"
+  }, 
+  {
+    "name": "Other",
+    "value": "Other"
+  }],
   "PLAYER_CONFIG":{
     "playerConfig": {
       "context": {
@@ -25,13 +45,27 @@
         "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }, { "id": "org.sunbird.player.endpage", "ver": 1.0, "type": "plugin" }]
       }
     },
+    "contentType": {
+      "Course": "Course"
+    },
     "MIME_TYPE": {
+        "collection": "application/vnd.ekstep.content-collection",
+        "ecmlContent": "application/vnd.ekstep.ecml-archive",        
+        "genericMimeType": [
+          "application/pdf",
+          "video/mp4",
+          "video/x-youtube",
+          "video/youtube",
+          "application/vnd.ekstep.html-archive",
+          "application/epub",
+          "application/vnd.ekstep.h5p-archive",
+          "video/webm"
+        ],
         "pdf": "application/pdf",
         "mp4": "video/mp4",
         "youtube": "video/x-youtube",
         "pYoutube": "video/youtube",
         "html": "application/vnd.ekstep.html-archive",
-        "ecml": "application/vnd.ekstep.ecml-archive",
         "ePub": "application/epub",
         "h5p": "application/vnd.ekstep.h5p-archive",
         "webm": "video/webm"
@@ -70,8 +104,7 @@
       "draft",
       "uploaded",
       "published",
-      "limited-publish",
-      "flagged"
+      "limited-publish"
     ]
   },
   "CONTENT_CONST": {
@@ -232,6 +265,17 @@
       "email": "profile/additionalInfo/edit",
       "phone": "profile/additionalInfo/edit",
       "language": "profile/additionalInfo/edit"
-    }
+    },
+    "defaultViewMoreLimit": 3,
+    "options": [
+      {
+        "text": "Hide this from everyone",
+        "value": "private"
+      },
+      {
+        "text": "Show this to all",
+        "value": "public"
+      }
+    ]
   }
 }
