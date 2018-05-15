@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
 
@@ -43,6 +44,15 @@ export class ContentPlayerComponent implements OnInit {
    * to show loader while copying content
    */
   showCopyLoader = false;
+  /**
+   * To show/hide the note popup editor
+   */
+  showNoteEditor = false;
+  /**
+   * This variable holds the details of the note created
+   */
+  createNoteData: INoteData;
+
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -120,5 +130,9 @@ export class ContentPlayerComponent implements OnInit {
         // this.toasterService.error(this.resourceService.messages.emsg.m0008);
         this.toasterService.error(err.error.params.errmsg);
     });
+  }
+
+  createEventEmitter(data) {
+  this.createNoteData = data;
   }
 }
