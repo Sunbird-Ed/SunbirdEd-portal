@@ -20,6 +20,7 @@ let telemetry = require('./telemetry/telemetryHelper')
 
 const statusConstant = {
     'ACTIVE': 'active',
+    'INACTIVE': 'inactive',
     'CANCELLED': 'cancelled',
     'DRAFT': 'draft'
 }
@@ -62,6 +63,12 @@ const announcementOutboxFieldsMap = {
 const announcementTypeMap = {
     id: "id",
     name: "name"
+}
+
+const announcementTypeMapAdmin = {
+    createdDate: "createddate",
+    status: "status",
+    rootOrgId: "rootorgid"
 }
 
 class AnnouncementController {
@@ -305,20 +312,44 @@ class AnnouncementController {
      *
      * @return  {[type]}  [description]
      */
-    __getAnnouncementTypes(requestObj) {
+    __getAnnouncementTypes(requestObj, manageObj = false) {
         return new Promise((resolve, reject) => {
-            let query = {
-                query: {
-                    'rootorgid': _.get(requestObj, 'body.request.rootOrgId'),
+            let rootorgid = _.get(requestObj, 'body.request.rootOrgId')
+            if (_.isUndefined(rootorgid)) {
+                reject(this.customError({
+                            message: 'Invalid input!',
+                            status: HttpStatus.BAD_REQUEST,
+                            isCustom:true
+                        }))
+            }
+
+
+            let queryParams = {
+                    'rootorgid': rootorgid,
                     'status': statusConstant.ACTIVE
-                },
+            }
+
+            if (manageObj) {
+                queryParams = _.pick(queryParams, ['rootorgid'])
+            }
+            
+
+            let queryObj = {
+                query: queryParams,
                 reqID: requestObj.reqID
             }
-            this.announcementTypeStore.findObject(query)
+
+            this.announcementTypeStore.findObject(queryObj)
                 .then((data) => {
                     if (data) {
 
-                        let transformationMap = this.__getTransformationMap(announcementTypeMap)
+                        let transformationMap = {}
+                        if (manageObj) {
+                            transformationMap = this.__getTransformationMap(announcementTypeMap, announcementTypeMapAdmin)
+                        } else {
+                            transformationMap = this.__getTransformationMap(announcementTypeMap)
+                        }
+
                         let transformedData = this.__transformResponse(data.data.content, transformationMap)
                         
                         resolve(transformedData)
@@ -351,7 +382,7 @@ class AnnouncementController {
                 status = await (this.__isAuthor()(userId, _.get(requestObj, 'body.request.announcementId')))
             } else {
                 throw this.customError({
-                    message: 'Unauthorized User!11',
+                    message: 'Unauthorized User!',
                     status: HttpStatus.UNAUTHORIZED,
                     isCustom:true
                 })
@@ -386,7 +417,7 @@ class AnnouncementController {
                         })
                 } else {
                     reject(this.customError({
-                        message: 'Unauthorized User!22',
+                        message: 'Unauthorized User!',
                         status: HttpStatus.UNAUTHORIZED,
                         isCustom:true
                     }))
@@ -415,7 +446,18 @@ class AnnouncementController {
                 requestObj.body.request.userId = userId
             }
 
-            let userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
+            let userProfile = {}
+
+            try {
+                userProfile = await (this.__getUserProfile(authUserToken, requestObj.reqID))
+            } catch (error) {
+                console.log("Announcement - inbox userprofile - Error", error)
+                return {
+                    count: 0,
+                    announcements: []
+                }
+            }
+
             // Parse the list of Organisations (User > Orgs) from the response
             let targetOrganisations = []
             _.forEach(userProfile.organisations, function(userOrg) {
@@ -442,6 +484,7 @@ class AnnouncementController {
                     announcements: []
                 }
             } catch (error) {
+                console.log("Announcement - inbox geolocations - Error", error)
                 return {
                     count: 0,
                     announcements: []
@@ -466,12 +509,8 @@ class AnnouncementController {
                 let data = await (new Promise((resolve, reject) => {
                     this.announcementStore.findObject(query)
                         .then((data) => {
-                            if (!data) {
-                                throw {
-                                    message: 'Unable to fetch!',
-                                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                                    isCustom:true
-                                }
+                            if (_.size(data) <= 0) {
+                                resolve()
                             } else {
                                 _.forEach(data.data.content, (announcementObj) => {
                                     this.__parseAttachments(announcementObj)
@@ -480,7 +519,8 @@ class AnnouncementController {
                             }
                         })
                         .catch((error) => {
-                            reject(this.customError(error))
+                            console.log("Announcement - inbox get announcements - Error", error)
+                            resolve()
                         })
                 }))
 
@@ -521,7 +561,11 @@ class AnnouncementController {
                 }
 
             } catch (error) {
-                throw this.customError(error)
+                console.log("Announcement - inbox - Error", error)
+                return {
+                    count: 0,
+                    announcements: []
+                }
             }
         })
     }
@@ -1145,6 +1189,158 @@ class AnnouncementController {
             } catch (error) {
                 reject(this.customError(error))
             }
+        })
+    }
+
+    /**
+     * To create an announcement type
+     * @param  Object requestObj Request object
+     * @return Object            Response
+     */
+    createAnnouncementType(requestObj) {
+        return this.__createAnnouncementType()(requestObj)
+    }
+
+    __createAnnouncementType() {
+        return async((requestObj) => {
+            try {
+                let validation = this.announcementTypeModel.validateApi(requestObj.body)
+
+                if (!validation.isValid) throw {
+                    message: validation.error,
+                    status: HttpStatus.BAD_REQUEST,
+                    isCustom:true
+                }
+
+                var newAnnouncementTypeObj = await (this.__saveAnnouncementType(requestObj.body.request))
+                
+                return {
+                    announcementType: newAnnouncementTypeObj.data
+                }
+            } catch (error) {
+                throw this.customError(error)
+            }
+        })
+    }
+
+    __saveAnnouncementType(data) {
+        return new Promise((resolve, reject) => {
+            let announcementTypeId = uuidv1()
+            if (!data) reject(this.customError({
+                message: 'Invalid Request, Values are required.',
+                statusCode: HttpStatus.BAD_REQUEST,
+                isCustom:true
+            }))
+
+            let query = {
+                values: {
+                    'id': announcementTypeId,
+                    'rootorgid': data.rootOrgId,
+                    'name': data.name,
+                    'status': data.status,
+                    'createddate': dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:lo", true),
+                }
+            }
+            this.announcementTypeStore.createObject(query)
+                .then((data) => {
+                    if (data) {
+                        resolve({
+                            data: {
+                                id: announcementTypeId
+                            }
+                        })
+                    } else {
+                        throw {
+                            message: 'Unable to create!',
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            isCustom:true
+                        }
+                    }
+                })
+                .catch((error) => {
+                    reject(this.customError(error))
+                })
+        })
+    }
+
+    /**
+     * List all the announcement types for the given root org. 
+     * @param  Object requestObj Request object
+     * @return Object            Response object
+     */
+    listAnnouncementType(requestObj) {
+        return this.__listAnnouncementType()(requestObj)
+    }
+
+
+    __listAnnouncementType() {
+        return async((requestObj) => {
+            try {
+                let responseObj = {}
+                let announcementTypes = await (this.__getAnnouncementTypes(requestObj, true))
+                responseObj["announcementTypes"] = announcementTypes
+                return responseObj
+            } catch (error) {
+                throw this.customError(error)
+            }
+        })
+    }
+
+    /**
+     * Update announcement type for name, status
+     *
+     * @param   Object  requestObj  Request object
+     *
+     * @return  Object              Response object
+     */
+    updateAnnouncementType(requestObj) {
+        return this.__updateAnnouncementType()(requestObj)
+    }
+
+    __updateAnnouncementType() {
+        return async((requestObj) => {
+
+
+            let validation = this.announcementTypeModel.validateUpdateApi(requestObj.body)
+
+            if (!validation.isValid) throw {
+                message: validation.error,
+                status: HttpStatus.BAD_REQUEST,
+                isCustom:true
+            }
+
+            return new Promise((resolve, reject) => {
+                let newStatus = _.get(requestObj, 'body.request.status')
+                let newName = _.get(requestObj, 'body.request.name')
+
+                let query = {
+                    values: {
+                        id: _.get(requestObj, 'body.request.id'),
+                        name: newName,
+                        status: newStatus
+                    },
+                    reqID: requestObj.reqID
+                }
+
+                this.announcementTypeStore.updateObjectById(query)
+                    .then((data) => {
+                        if (data) {
+                            resolve({
+                                id: requestObj.params.id
+                            })
+                        } else {
+                            throw {
+                                message: 'Unable to process!',
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                isCustom:true
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                        reject(this.customError(error))
+                    })
+                
+            })
         })
     }
 
