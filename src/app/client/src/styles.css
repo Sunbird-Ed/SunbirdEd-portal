@@ -4,22 +4,22 @@
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
-  src: url('./assets/common/fonts/OpenSans-Light.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Light.ttf') format('truetype');
 }
 /*sunbird Regular font*/
 @font-face {
   font-family: 'sunbirdregularfont';
-  src: url('./assets/common/fonts/OpenSans-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
 }
 /*sunbird Medium font*/
 @font-face {
   font-family: 'sunbirdmediumfont';
-  src: url('./assets/common/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-SemiBold.ttf') format('truetype');
 }
 /*sunbird Bold font*/
 @font-face {
   font-family: 'sunbirdboldfont';
-  src: url('./assets/common/fonts/OpenSans-Bold.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
 /*cards fonts*/
 .cardsHeading {
@@ -132,22 +132,9 @@
   color: #7c7b7b;
 }
 /*note card font*/
-.note-card-timeStamp {
+.note-card-time-stamp {
   font-family: 'sunbirdregularfont';
   font-size: 0.625em;
-}
-/* breadcrumb font*/
-.ui.breadcrumb a.breadcrumb-fontColor {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
-}
-.ui.breadcrumb .active.section {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
 }
 .medium-font-text {
   font-size: medium;
@@ -533,15 +520,6 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-.breadcrumppadding.ui.breadcrumb,
-.breadcrumppadding.ui.breadcrumb:last-child,
-.breadcrumppadding.ui.breadcrumb:first-child {
-  margin-left: 10px;
-  line-height: 1.5;
-}
-.ui.breadcrumb .divider {
-  color: #007AFF;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -929,7 +907,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png) !important;
+  content: url(./assets/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -939,7 +917,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png) !important;
+  content: url(./assets/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -1696,7 +1674,7 @@ ul.fancytree-container li {
   font-size: 14px;
   font-weight: 600;
 }
-.cardtakenote {
+.take-note-card {
   color: #007AFF;
   vertical-align: top;
   display: inline-block;
@@ -1706,11 +1684,11 @@ ul.fancytree-container li {
   font-size: 1em;
   text-decoration: underline;
 }
-.cardtakenote img {
+.take-note-card img {
   width: 40px;
   height: 50px;
 }
-.cardtakenote span {
+.take-note-card span {
   display: block;
   padding-top: 8px;
 }
@@ -2129,9 +2107,6 @@ ul.fancytree-container li {
 .userAvtarWrap:hover .img-description-layer {
   visibility: visible !important;
   opacity: 1 !important;
-}
-.breadCrumbsBackground {
-  background-color: #ffffff;
 }
 /*profile image header css*/
 .header-image-profile {

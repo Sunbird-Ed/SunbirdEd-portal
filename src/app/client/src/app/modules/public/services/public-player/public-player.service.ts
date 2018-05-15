@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { ContentService, UserService } from '@sunbird/core';
+import { ContentService, UserService, CollectionHierarchyAPI } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
   ConfigService, IUserData, ResourceService, ServerResponse,
@@ -12,9 +12,13 @@ import { UUID } from 'angular2-uuid';
 @Injectable()
 export class PublicPlayerService {
   /**
-     * stores content details
-     */
+   * stores content details
+   */
   contentData: ContentData;
+  /**
+   * stores collection/course details
+   */
+  collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router) {
   }
@@ -66,5 +70,14 @@ export class PublicPlayerService {
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     return configuration;
+  }
+  public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {
+    const req = {
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
+    };
+    return this.contentService.get(req).map((response: ServerResponse) => {
+      this.collectionData = response.result.content;
+      return response;
+    });
   }
 }

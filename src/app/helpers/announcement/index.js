@@ -27,7 +27,10 @@ const API_IDS = {
     received: 'received',
     read: 'read',
     getresend: 'getresend.id',
-    resend: 'resend'
+    resend: 'resend',
+    createAnnouncementType: 'manage.announcementtype.create',
+    listAnnouncementType: 'manage.announcementtype.list',
+    updateAnnouncementType: 'manage.announcementtype.update'
 }
 
 let announcementController = new controller({
@@ -348,6 +351,62 @@ module.exports = function(keycloak) {
                     sendErrorResponse(responseObj, API_IDS.resend, err.message, err.status)
                 })
         })
+
+        //APIs to manage Announcement types
+        router.post('/manage/announcement-type/create', storeTelemetryData, (requestObj, responseObj, next) => {
+            let config = {apiid: API_IDS.createAnnouncementType}
+            validate()(requestObj, responseObj, next, keycloak, config)
+        }, (requestObj, responseObj, next) => {
+            let config = {
+                apiid: API_IDS.createAnnouncementType
+            }
+            validateRoles()(requestObj, responseObj, next, config)
+        }, (requestObj, responseObj, next) => {
+            announcementController.createAnnouncementType(requestObj)
+                .then((data) => {
+                    sendSuccessResponse(responseObj, API_IDS.createAnnouncementType, data, HttpStatus.OK)
+                })
+                .catch((err) => {
+                    sendErrorResponse(responseObj, API_IDS.createAnnouncementType, err.message, err.status)
+                })
+        })
+
+        router.post('/manage/announcement-type/list', storeTelemetryData, (requestObj, responseObj, next) => {
+            let config = {apiid: API_IDS.listAnnouncementType}
+            validate()(requestObj, responseObj, next, keycloak, config)
+        }, (requestObj, responseObj, next) => {
+            let config = {
+                apiid: API_IDS.listAnnouncementType
+            }
+            validateRoles()(requestObj, responseObj, next, config)
+        }, (requestObj, responseObj, next) => {
+            announcementController.listAnnouncementType(requestObj)
+                .then((data) => {
+                    sendSuccessResponse(responseObj, API_IDS.listAnnouncementType, data, HttpStatus.OK)
+                })
+                .catch((err) => {
+                    sendErrorResponse(responseObj, API_IDS.listAnnouncementType, err.message, err.status)
+                })
+        })
+
+        router.post('/manage/announcement-type/update', storeTelemetryData, (requestObj, responseObj, next) => {
+            let config = {apiid: API_IDS.updateAnnouncementType}
+            validate()(requestObj, responseObj, next, keycloak, config)
+        }, (requestObj, responseObj, next) => {
+            let config = {
+                apiid: API_IDS.updateAnnouncementType
+            }
+            validateRoles()(requestObj, responseObj, next, config)
+        }, (requestObj, responseObj, next) => {
+            announcementController.updateAnnouncementType(requestObj)
+                .then((data) => {
+                    sendSuccessResponse(responseObj, API_IDS.updateAnnouncementType, data, HttpStatus.OK)
+                })
+                .catch((err) => {
+                    sendErrorResponse(responseObj, API_IDS.updateAnnouncementType, err.message, err.status)
+                })
+        })
+
 
         return router
     }
