@@ -1,3 +1,5 @@
+import { ResourceService } from '@sunbird/shared';
+import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
 import { CourseConsumptionService } from './../../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -17,7 +19,8 @@ export class CourseConsumptionPageComponent implements OnInit {
   courseHierarchy: any;
   enrolledCourse: boolean;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-  private coursesService: CoursesService) { }
+  private coursesService: CoursesService, private toasterService: ToasterService,
+  private resourceService: ResourceService, private router: Router) { }
 
   ngOnInit() {
     this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.children[0].params,
@@ -27,41 +30,48 @@ export class CourseConsumptionPageComponent implements OnInit {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
         this.getCourseHierarchy(params.courseId);
-      });
+    });
   }
   private getCourseHierarchy(courseId: string) {
     this.courseConsumptionService.getCourseHierarchy(courseId).subscribe((response) => {
-      if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted' ||
-          response.result.content.status === 'Flagged') {
-        this.courseHierarchy = response.result.content;
+      if (response.status === 'Live' || response.status === 'Unlisted' || response.status === 'Flagged') {
+        this.courseHierarchy = response;
         this.getBatch();
       } else {
-        // warning messages.imsg.m0026
+        this.toasterService.warning(this.resourceService.messages.imsg.m0026);
+        this.router.navigate(['/learn']);
       }
     }, (err) => {
-      // show error messages.fmsg.m0003
+      this.toasterService.error(this.resourceService.messages.fmsg.m0003);
     });
   }
   getBatch() {
-    this.coursesService.enrolledCourseData$.subscribe(data => {
-        if (data && !data.err) {
-          const enrCourse = _.find(data.enrolledCourses, (course, index) => {
-            if ((this.batchId && this.batchId === course.batchId) || course.courseId === this.courseId) {
-              return course;
+    this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
+        if (enrolledCourses && !enrolledCourses.err) {
+          if (this.batchId) {
+            this.showLoader = false;
+            const enrolledCourse = _.find(enrolledCourses.enrolledCourses, (value, index) => {
+              if (this.batchId === value.batchId) {
+                return value;
+              }
+            });
+            if (enrolledCourse && enrolledCourse.batchId) {
+              this.enrolledCourse = true;
+              this.courseHierarchy.progress = enrolledCourse.progress || 0;
+            } else {
+              this.enrolledCourse = false;
+              this.router.navigate([`/learn/course/${this.courseId}`]);
             }
-          });
-          if (enrCourse && enrCourse.batchId) {
-            this.enrolledCourse = true;
-            this.courseHierarchy.progress = enrCourse.progress || 0;
           } else {
+            this.showLoader = false;
             this.enrolledCourse = false;
+            this.router.navigate([`/learn/course/${this.courseId}`]);
           }
-          this.showLoader = false;
-        } else if (data && data.err) {
+        } else if (enrolledCourses && enrolledCourses.err) {
           this.enrolledCourse = false;
           this.showLoader = false;
+          this.router.navigate([`/learn/course/${this.courseId}`]);
         }
     });
   }
-
 }
