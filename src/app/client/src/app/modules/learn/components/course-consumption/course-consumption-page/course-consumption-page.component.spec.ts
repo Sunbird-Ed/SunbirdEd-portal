@@ -5,6 +5,7 @@ import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import {CourseConsumptionService} from '../../../services';
 
 describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
@@ -18,7 +19,8 @@ describe('CourseConsumptionPageComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, CoreModule],
       declarations: [ CourseConsumptionPageComponent ],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        CourseConsumptionService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
