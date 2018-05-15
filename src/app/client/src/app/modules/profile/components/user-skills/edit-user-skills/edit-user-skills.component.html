@@ -1,4 +1,5 @@
-<sui-modal *ngIf="profileData" class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()" #modal>
+<sui-modal *ngIf="profileData" class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()"
+  #modal>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -11,7 +12,8 @@
       <div class="ui form">
         <div class=" field">
           <div class="field">
-            <sui-multi-select [isSearchable]="true" name="skills" class="selection" [(ngModel)]="skill" [options]="profileData.skills" #multiSelect>
+            <sui-multi-select class="ui fluid multiple search selection dropdown" [isSearchable]="true" name="skills" class="selection"
+              [(ngModel)]="skill" [options]="profileData.skills" #multiSelect>
               <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
             </sui-multi-select>
           </div>

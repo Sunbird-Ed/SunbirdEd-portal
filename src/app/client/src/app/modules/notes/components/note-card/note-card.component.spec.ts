@@ -71,14 +71,6 @@ describe('NoteCardComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  it('Should refresh the values of selectedIndex and selectedNote once a note is created', () => {
-    component.notesList = response.responseSuccess.result.response.note;
-    component.createEventEmitter(response.responseSuccess.result.response.note[0]);
-    expect(component.selectedIndex).toBe(0);
-    expect(component.selectedNote).toBe(component.notesList[0]);
-    expect(component.showCreateEditor).toBeFalsy();
-  });
-
   it('Should refresh the values of selectedIndex and selectedNote once a note is updated', () => {
     component.notesList = response.responseSuccess.result.response.note;
     component.updateEventEmitter(response.responseSuccess.result.response.note[0]);

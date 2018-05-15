@@ -1,4 +1,4 @@
-import { Injectable, Input } from '@angular/core';
+import {Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -18,7 +18,6 @@ export class WorkSpaceService {
    * Reference of content service.
   */
   public content: ContentService;
-
   /**
     * To navigate to other pages
   */
@@ -68,6 +67,7 @@ export class WorkSpaceService {
  */
   navigateToContent(content, state) {
     const mimeType = content.mimeType;
+    console.log(mimeType);
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
