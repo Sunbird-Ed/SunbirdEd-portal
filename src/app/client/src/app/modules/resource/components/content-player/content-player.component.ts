@@ -127,8 +127,7 @@ export class ContentPlayerComponent implements OnInit {
       },
       (err) => {
         this.showCopyLoader = false;
-        // this.toasterService.error(this.resourceService.messages.emsg.m0008);
-        this.toasterService.error(err.error.params.errmsg);
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
     });
   }
 
