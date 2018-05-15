@@ -3,10 +3,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { PopupEditorComponent, NoteCardComponent } from '@sunbird/notes'
+import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
-import { INoteData } from '@sunbird/notes';
 
   /**
    *Component to play content
