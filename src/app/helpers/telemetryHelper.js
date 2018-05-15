@@ -5,16 +5,17 @@ const _ = require('lodash')
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const envHelper = require('./environmentVariablesHelper.js')
-const contentURL = envHelper.CONTENT_URL
-const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
-const md5 = require('js-md5')
+const apiToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryPacketSize = envHelper.PORTAL_TELEMETRY_PACKET_SIZE
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
+const appId = envHelper.APPID
 const fs = require('fs')
 const path = require('path')
+const contentURL = envHelper.CONTENT_URL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 
+telemtryEventConfig['pdata']['id'] = appId
 module.exports = {
   /**
    * This function helps to get user spec
@@ -33,10 +34,10 @@ module.exports = {
   /**
    * this function helps to generate session start event
    */
-  logSessionStart: function (req, callback) {
+  logSessionStart: function (req) {
     req.session.orgs = _.compact(req.session.orgs)
     req.session.save()
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
 
@@ -44,15 +45,15 @@ module.exports = {
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
+    context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
     telemetry.start({
       edata: edata,
       context: context,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
-    return callback()
   },
 
   /**
@@ -62,12 +63,16 @@ module.exports = {
     const edata = telemetry.endEventData('session')
     const actor = telemetry.getActorData(req.kauth.grant.access_token.content.sub, 'user')
     var dims = _.clone(req.session.orgs || [])
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
-    dims = dims ? _.concat(dims, channel) : channel
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
+    const context = telemetry.getContextData({ channel: channel, env: 'user' })
+    context.sid = req.sessionID
+    context.did = req.session.deviceId
+    context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,
+      context: context,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -76,14 +81,14 @@ module.exports = {
    */
   logSSOStartEvent: function (req) {
     req.session.orgs = _.compact(req.session.orgs)
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const payload = jwt.decode(req.query['token'])
 
     const edata = telemetry.startEventData('sso')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: { id: 'sso', type: 'sso' } })
+    const context = telemetry.getContextData({ channel: channel, env: 'sso', cdata: [{ id: 'sso', type: 'sso' }] })
     context.sid = req.sessionID
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(payload.sub, 'user')
@@ -92,7 +97,7 @@ module.exports = {
       edata: edata,
       context: context,
       actor: actor,
-      tags: dims
+      tags: _.concat(dims, channel)
     })
   },
 
@@ -103,14 +108,12 @@ module.exports = {
     console.log('logSSOEndEvent')
     const payload = jwt.decode(req.query['token'])
     const edata = telemetry.endEventData('sso')
-    const actor = telemetry.getActorData(payload.sub, 'user')
-    var dims = _.clone(req.session.orgs || [])
-    var channel = req.session.rootOrghashTagId || md5('sunbird')
-    dims = dims ? _.concat(dims, channel) : channel
+    const actor = telemetry.getActorData(payload['sub'], 'user')
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     telemetry.end({
       edata: edata,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -152,23 +155,25 @@ module.exports = {
     }
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
-    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.reqObj.session.orgs || [])
-    dims = dims ? _.concat(dims, channel) : channel
-    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
-    if (req && req.reqObj && req.reqObj.sessionID) {
-      context.sid = req.reqObj.sessionID
+    var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
+    if (channel) {
+      var dims = _.clone(req.reqObj.session.orgs || [])
+      dims = dims ? _.concat(dims, channel) : channel
+      const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+      if (req && req.reqObj && req.reqObj.sessionID) {
+        context.sid = req.reqObj.sessionID
+      }
+      context.rollup = telemetry.getRollUpData(dims)
+      const actor = telemetry.getActorData(req.userId, 'user')
+      console.log('logAPICallEvent')
+      telemetry.log({
+        edata: edata,
+        context: context,
+        object: object,
+        actor: actor,
+        tags: _.concat([], channel)
+      })
     }
-    context.rollup = telemetry.getRollUpData(dims)
-    const actor = telemetry.getActorData(req.userId, 'user')
-    console.log('logAPICallEvent')
-    telemetry.log({
-      edata: edata,
-      context: context,
-      object: object,
-      actor: actor,
-      tags: dims
-    })
   },
 
   /**
@@ -181,7 +186,7 @@ module.exports = {
     const edata = telemetry.logEventData('keyclock_grant', error, message)
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
-    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
+    var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.clone(req.reqObj.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const context = telemetry.getContextData({ channel: channel, env: 'sso' })
@@ -197,7 +202,7 @@ module.exports = {
       context: context,
       object: object,
       actor: actor,
-      tags: dims
+      tags: _.concat([], channel)
     })
   },
 
@@ -218,24 +223,24 @@ module.exports = {
     }
 
     var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
-      req.channel || md5('sunbird')
-
-    var dims = _.clone(req.reqObj.session.orgs || [])
-    dims = dims ? _.concat(dims, channel) : channel
-    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
-    if (req && req.reqObj && req.reqObj.sessionID) {
-      context.sid = req.reqObj.sessionID
+      req.channel || _.get(req, 'headers.X-Channel-Id')
+    if (channel) {
+      var dims = _.clone(req.reqObj.session.orgs || [])
+      dims = dims ? _.concat(dims, channel) : channel
+      const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+      if (req && req.reqObj && req.reqObj.sessionID) {
+        context.sid = req.reqObj.sessionID
+      }
+      context.rollup = telemetry.getRollUpData(dims)
+      const actor = telemetry.getActorData(req.userId, req.type)
+      telemetry.log({
+        edata: edata,
+        context: context,
+        object: object,
+        actor: actor,
+        tags: _.concat([], channel)
+      })
     }
-    context.rollup = telemetry.getRollUpData(dims)
-    const actor = telemetry.getActorData(req.userId, req.type)
-    console.log('logAPIAccessEvent')
-    telemetry.log({
-      edata: edata,
-      context: context,
-      object: object,
-      actor: actor,
-      tags: dims
-    })
   },
 
   /**
@@ -253,23 +258,25 @@ module.exports = {
     }
 
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
-    var channel = req.reqObj.session.rootOrghashTagId || md5('sunbird')
-    var dims = _.clone(req.reqObj.session.orgs || [])
-    dims = dims ? _.concat(dims, channel) : channel
-    const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
-    if (req && req.reqObj && req.reqObj.sessionID) {
-      context.sid = req.reqObj.sessionID
+    var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
+
+    if (channel) {
+      var dims = _.clone(req.reqObj.session.orgs || [])
+      dims = dims ? _.concat(dims, channel) : channel
+      const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
+      if (req && req.reqObj && req.reqObj.sessionID) {
+        context.sid = req.reqObj.sessionID
+      }
+      context.rollup = telemetry.getRollUpData(dims)
+      const actor = telemetry.getActorData(req.userId, 'user')
+      telemetry.log({
+        edata: edata,
+        context: context,
+        object: object,
+        actor: actor,
+        tags: _.concat([], channel)
+      })
     }
-    context.rollup = telemetry.getRollUpData(dims)
-    const actor = telemetry.getActorData(req.userId, 'user')
-    console.log('logAPIErrorEvent')
-    telemetry.log({
-      edata: edata,
-      context: context,
-      object: object,
-      actor: actor,
-      tags: dims
-    })
   },
 
   logSessionEvents: function (req, res) {
@@ -278,7 +285,10 @@ module.exports = {
       req.session['sessionEvents'].push(JSON.parse(req.body.event))
       if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
-          req.session['sessionEvents'] = err ? req.session['sessionEvents'] : []
+          if (err) {
+            console.log('telemetry sync error from  portal', err)
+          }
+          req.session['sessionEvents'] = []
           req.session.save()
         })
       }
@@ -293,7 +303,6 @@ module.exports = {
       'params': {
         'requesterId': req.kauth.grant.access_token.content.sub,
         'did': telemtryEventConfig.default_did,
-        'key': '13405d54-85b4-341b-da2f-eb6b9e546fff',
         'msgid': uuidv1()
       },
       'events': eventsData
@@ -309,19 +318,22 @@ module.exports = {
     var data = this.prepareTelemetryRequestBody(req, eventsData)
     var options = {
       method: 'POST',
-      url: contentURL + 'data/v1/telemetry',
+      url: contentURL + '/data/v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + apiToken
       },
       body: data,
       json: true
     }
     request(options, function (error, response, body) {
+      console.log()
       if (_.isFunction(callback)) {
         if (error) {
+          console.log('telemetry sync error while syncing  portal', error)
           callback(error, false)
         } else if (body && body.params && body.params.err) {
+          console.log('telemetry sync error while syncing  portal', body.params.err)
           callback(body, false)
         } else {
           callback(null, true)
@@ -348,6 +360,16 @@ module.exports = {
   /**
    * This function helps to generate telemetry for proxy api's
    */
+  generateTelemetryForLearnerService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.learnerServiceEnv
+    next()
+  },
+
+  generateTelemetryForContentService: function (req, res, next) {
+    req.telemetryEnv = telemtryEventConfig.contentServiceEnv
+    next()
+  },
+
   generateTelemetryForProxy: function (req, res, next) {
     let params = [
       { 'url': req.originalUrl },
@@ -356,23 +378,24 @@ module.exports = {
       { 'req': req.body }
     ]
     const edata = telemetry.logEventData('api_access', 'INFO', '', params)
+    var channel = (req.session && req.session.rootOrghashTagId) || _.get(req, 'headers.X-Channel-Id')
+    if (channel) {
+      var dims = _.clone(req.session.orgs || [])
+      dims = dims ? _.concat(dims, channel) : channel
 
-    var channel = (req.session && req.session.rootOrghashTagId) || md5('sunbird')
-    var dims = _.clone(req.session.orgs || [])
-    dims = dims ? _.concat(dims, channel) : channel
-
-    const context = telemetry.getContextData({ channel: channel, env: telemtryEventConfig.env })
-    if (req.session && req.session.sessionID) {
-      context.sid = req.session.sessionID
+      const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
+      if (req.session && req.session.sessionID) {
+        context.sid = req.session.sessionID
+      }
+      context.rollup = telemetry.getRollUpData(dims)
+      telemetry.log({
+        edata: edata,
+        context: context,
+        actor: module.exports.getTelemetryActorData(req),
+        tags: _.concat([], channel)
+      })
     }
-    context.rollup = telemetry.getRollUpData(dims)
-    console.log('generateTelemetryForProxy')
-    telemetry.log({
-      edata: edata,
-      context: context,
-      actor: module.exports.getTelemetryActorData(req),
-      tags: dims
-    })
+
     next()
   }
 }

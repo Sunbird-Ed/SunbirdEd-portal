@@ -191,12 +191,12 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     const rolesMap = this.userService.RoleOrgMap;
     const searchParams = {
       filters: {
-        status: ['Review'],
+        status: this.workSpaceService.getContentStatus() && this.workSpaceService.getContentStatus().status,
         createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
           rolesMap['BOOK_REVIEWER'],
           rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        contentType: this.workSpaceService.getContentStatus() &&  this.workSpaceService.getContentStatus().contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
@@ -209,18 +209,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       query: bothParams.queryParams.query,
       sort_by: this.sort
     };
-    const status = this.getContentStatus();
-    console.log(status);
-    if (this.permissionService.checkRolesPermissions(['FLAG_REVIEWER'])) {
-      searchParams.filters.status = ['FlagReview'];
-      searchParams.filters.contentType.push('TextBook');
-    } else if (this.permissionService.checkRolesPermissions(['CONTENT_REVIEWER', 'BOOK_REVIEWER'])) {
-      searchParams.filters.contentType = ['TextBook'];
-    } else if (this.permissionService.checkRolesPermissions(['BOOK_REVIEWER'])) {
-      searchParams.filters.contentType = _.without(searchParams.filters.contentType, 'TextBook');
-    } else if (this.permissionService.checkRolesPermissions(['FLAG_REVIEWER', 'BOOK_REVIEWER', 'CONTENT_REVIEWER'])) {
-      searchParams.filters.status = ['FlagReview', 'Review'];
-    }
+    const content = this.workSpaceService.getContentStatus();
+    console.log(content.status);
+    console.log(content.contentType);
+    console.log(this.workSpaceService.getContentStatus().status);
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {

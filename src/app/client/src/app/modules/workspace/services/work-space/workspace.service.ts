@@ -1,12 +1,13 @@
-import { Injectable, Input } from '@angular/core';
+import {Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { ContentService } from '@sunbird/core';
+import { ConfigService, ServerResponse, ICard, IUserData } from '@sunbird/shared';
+import { ContentService, UserService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -17,7 +18,6 @@ export class WorkSpaceService {
    * Reference of content service.
   */
   public content: ContentService;
-
   /**
     * To navigate to other pages
   */
@@ -29,18 +29,28 @@ export class WorkSpaceService {
   */
   private activatedRoute: ActivatedRoute;
   /**
+   * userRoles
+  */
+  userRoles = [];
+  /**
+    * Refrence of UserService
+  */
+  private userService: UserService;
+  /**
     * Constructor - default method of WorkSpaceService class
     *
     * @param {ConfigService} config ConfigService reference
+    * @param {UserService} userService userService reference
     * @param {HttpClient} http HttpClient reference
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router) {
+    route: Router, userService: UserService) {
     this.content = content;
     this.config = config;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    this.userService = userService;
   }
   /**
   * deleteContent
@@ -67,6 +77,7 @@ export class WorkSpaceService {
  */
   navigateToContent(content, state) {
     const mimeType = content.mimeType;
+    console.log(mimeType);
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
@@ -117,4 +128,67 @@ export class WorkSpaceService {
       }
     }
   }
+
+  getDataForCard(data, staticData, dynamicFields, metaData) {
+    const list: Array<ICard> = [];
+    _.forEach(data, (item, key) => {
+      const card = {
+        name: item.name,
+        image: item.appIcon,
+        description: item.description
+      };
+      _.forIn(staticData, (value, key1) => {
+        card[key1] = value;
+      });
+      _.forIn(metaData, (value, key1) => {
+        card[key1] = _.pick(item, value);
+      });
+        _.forIn(dynamicFields, (fieldData, fieldName) => {
+          const value = _.pick(item, fieldData);
+          _.forIn(value, (val1, key1) => {
+            const name = _.zipObjectDeep([fieldName], [val1]);
+            _.forIn(name, (values, index) => {
+              card[index] =  _.merge(name[index], card[index]);
+            });
+          });
+        });
+      list.push(card);
+    });
+    return <ICard[]>list;
+  }
+
+  getContentStatus() {
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        this.userRoles = user.userProfile.userRoles;
+      });
+    const request = {
+      status: [],
+      contentType: []
+    };
+    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') === -1) {
+      request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+      request.status = ['Review'];
+    }
+
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') === -1 &&
+      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+      request.contentType = ['TextBook'];
+      request.status = ['Review'];
+    }
+
+    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1) {
+      request.status = ['FlagReview'];
+      request.contentType.push('TextBook');
+    }
+
+    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1 &&
+      (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1 ||
+        _.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1)) {
+      request.status = ['FlagReview', 'Review'];
+    }
+    console.log(request);
+    return request;
+  }
+
 }

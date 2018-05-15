@@ -132,22 +132,9 @@
   color: #7c7b7b;
 }
 /*note card font*/
-.note-card-timeStamp {
+.note-card-time-stamp {
   font-family: 'sunbirdregularfont';
   font-size: 0.625em;
-}
-/* breadcrumb font*/
-.ui.breadcrumb a.breadcrumb-fontColor {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
-}
-.ui.breadcrumb .active.section {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
 }
 .medium-font-text {
   font-size: medium;
@@ -533,15 +520,6 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-.breadcrumppadding.ui.breadcrumb,
-.breadcrumppadding.ui.breadcrumb:last-child,
-.breadcrumppadding.ui.breadcrumb:first-child {
-  margin-left: 10px;
-  line-height: 1.5;
-}
-.ui.breadcrumb .divider {
-  color: #007AFF;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -929,7 +907,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png) !important;
+  content: url(./assets/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -939,7 +917,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png) !important;
+  content: url(./assets/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -995,9 +973,10 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input[type=url],
 .ui.form input:not([type]) {
   border: 0;
-  border-bottom: 1px solid #333333;
-  border-radius: 0;
-  padding: 0.8em 0;
+  border-bottom: 1px solid #333;
+  border-radius: 0 !important;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
 }
 .ui.selection.dropdown {
   border: 0;
@@ -1695,7 +1674,7 @@ ul.fancytree-container li {
   font-size: 14px;
   font-weight: 600;
 }
-.cardtakenote {
+.take-note-card {
   color: #007AFF;
   vertical-align: top;
   display: inline-block;
@@ -1705,11 +1684,11 @@ ul.fancytree-container li {
   font-size: 1em;
   text-decoration: underline;
 }
-.cardtakenote img {
+.take-note-card img {
   width: 40px;
   height: 50px;
 }
-.cardtakenote span {
+.take-note-card span {
   display: block;
   padding-top: 8px;
 }
@@ -2128,9 +2107,6 @@ ul.fancytree-container li {
 .userAvtarWrap:hover .img-description-layer {
   visibility: visible !important;
   opacity: 1 !important;
-}
-.breadCrumbsBackground {
-  background-color: #ffffff;
 }
 /*profile image header css*/
 .header-image-profile {
