@@ -169,6 +169,5 @@ export class ResourceComponent implements OnInit {
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);
-    console.log(event, event.data.metaData );
   }
 }
