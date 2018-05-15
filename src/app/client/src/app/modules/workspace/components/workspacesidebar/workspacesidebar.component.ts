@@ -24,6 +24,11 @@ export class WorkspacesidebarComponent implements OnInit {
    * reference of config service.
   */
   public config: ConfigService;
+
+  /*
+  roles allowed to create content
+  */
+  createRole: Array<string>;
   /**
    * Draft  access roles
   */
