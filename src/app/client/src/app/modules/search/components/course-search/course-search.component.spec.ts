@@ -113,7 +113,7 @@ describe('CourseSearchComponent', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.noResult));
     // component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
-    component.searchList = Response.noResult.result.course;
+    // component.searchList = Response.noResult.result.course;
     component.totalCount = Response.noResult.result.count;
     component.populateCourseSearch();
     fixture.detectChanges();

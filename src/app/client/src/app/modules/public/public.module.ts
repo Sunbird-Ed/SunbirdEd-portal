@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
-import { LandingPageComponent, SignupComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent} from './components';
+import {
+  LandingPageComponent, SignupComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent
+} from './components';
 import { Routes, RouterModule } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +23,7 @@ const routes: Routes = [
   { path: 'get', component: GetComponent },
   { path: 'get/dial/:dialCode', component: DialCodeComponent },
   { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
-  { path: 'play/collection/:id', component: PublicCollectionPlayerComponent }
+  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent }
 ];
 
 @NgModule({

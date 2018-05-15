@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
+import { NoteListComponent } from '@sunbird/notes';
 
 const routes: Routes = [
   {
@@ -18,6 +19,8 @@ const routes: Routes = [
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
+  }, {
+    path: 'resources/play/content/:contentId/note', component: NoteListComponent
   }
 ];
 

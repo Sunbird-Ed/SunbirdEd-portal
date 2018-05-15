@@ -1,0 +1,36 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+  <div class="header">
+      <div class="ui two column grid">
+          <div class="row">
+              <div class="column">
+                  <span>{{checkListData.publish.title}}</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="scrolling content">
+      <div class="ui small header">
+          <h4>{{checkListData.publish.subtitle}}</h4>
+      </div>
+      <div class="ui three column grid">
+          <div class="column" *ngFor="let list of checkListData.publish.contents">
+              <h5 class="ui tiny header">{{list.name}}</h5>
+              <div class="ui list" *ngFor="let item of list.checkList;">
+                  <div class="item">
+                      <div class="ui checkbox checklist">
+                          <input type="checkbox" #inputFields class="listItem" (click)="createCheckedArray(item)">
+                          <label>{{item}}</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="actions footer">
+      <div class="ui buttons">
+          <button class="ui orange button" type="button " (click)="redirect();modal.deny();">{{checkListData.publish.buttons.cancel}}</button>
+          <div class="or"></div>
+          <button class="ui blue button " type="button " [disabled]="isDisabled" (click)="submitPublishChanges()">{{checkListData.publish.buttons.proceed}}</button>
+      </div>
+  </div>
+</sui-modal>

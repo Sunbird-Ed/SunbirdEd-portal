@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
+import {CourseConsumptionService } from './../../../services';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -15,9 +16,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private route: ActivatedRoute;
 
-  public showPlayer: Boolean = false;
-
   private courseId: string;
+
+  private batchId: string;
+
+  private enrolledCourse = false;
 
   private contentId: string;
 
@@ -31,16 +34,30 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public playerConfig: Observable<any>;
 
-  private playerService: PlayerService;
-
   private windowScrollService: WindowScrollService;
 
   private router: Router;
 
   public loader: Boolean = true;
 
+  showError = false;
+
   private subscription: Subscription;
 
+  enableContentPlayer = false;
+
+  courseHierarchy: any;
+
+  readMore = false;
+
+  contentIds  = [];
+
+  contentDetails = [];
+
+  treeModel: any;
+  nextPlaylistItem: any;
+  prevPlaylistItem: any;
+  noContentToPlay =  'No content to play';
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -62,37 +79,46 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
-    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-  private toasterService: ToasterService, private resourceService: ResourceService) {
+  constructor(contentService: ContentService, route: ActivatedRoute,
+    private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
+    router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
+    private toasterService: ToasterService, private resourceService: ResourceService) {
     this.contentService = contentService;
     this.route = route;
-    this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
-    this.getContent();
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
-      console.log(`unable to get player config for content ${id}`, error);
-      return error;
+    this.subscription = this.route.params.first()
+      .flatMap((params) => {
+        this.courseId = params.courseId;
+        this.batchId = params.batchId;
+        return this.getCourseHierarchy(params.courseId);
+      })
+      .do((response) => {
+        if (this.batchId) {
+          this.enrolledCourse = true;
+          this.parseChildContent(response.data);
+          this.fetchContentStatus(response.data);
+          this.subscribeToQueryParam(response.data);
+        }
+      })
+      .subscribe((data) => {
+        this.collectionTreeNodes = data;
+        this.loader = false;
+      }, (error) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
     });
   }
 
   public playContent(data: any): void {
-    this.showPlayer = true;
+    this.enableContentPlayer = true;
     this.contentTitle = data.title;
-    this.initPlayer(data.id);
+    this.playerConfig = this.getPlayerConfig(data.id).catch((error) => {
+      console.log(`unable to get player config for content ${data.id}`, error);
+      return error;
+    });
   }
 
   private navigateToContent(id: string): void {
@@ -104,69 +130,88 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    return this.playerService.getConfigByContent(contentId);
+    return this.courseConsumptionService.getConfigByContent(contentId);
   }
 
-  private findContentById(collection: any, id: string) {
-    const model = new TreeModel();
-    return model.parse(collection.data).first((node) => {
+  private findContentById(id: string) {
+    return this.treeModel.first((node) => {
       return node.model.identifier === id;
     });
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id) {
+    if (content && content.id && this.enrolledCourse) {
+      this.contentId = content.id;
+      this.setContentNavigators();
       this.navigateToContent(content.id);
       this.playContent(content);
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
     } else {
-      throw new Error(`unbale to play collection content for ${this.courseId}`);
     }
   }
-
-  private getContent(): void {
-    this.subscription = this.route.params
-      .first()
-      .flatMap((params) => {
-        this.courseId = params.courseId;
-        return this.getCourseHierarchy(params.courseId);
-      })
-      .subscribe((data) => {
-        this.collectionTreeNodes = data;
-        this.loader = false;
-        this.route.queryParams.subscribe((queryParams) => {
-          this.contentId = queryParams.contentId;
-          if (this.contentId) {
-            const content = this.findContentById(data, this.contentId);
-            if (content) {
-              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
-            } else {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-            }
-          } else {
-            this.closeContentPlayer();
-          }
-        });
-      }, (error) => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-      });
+  setContentNavigators() {
+    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+    this.prevPlaylistItem = this.contentDetails[index - 1];
+    this.nextPlaylistItem = this.contentDetails[index + 1];
   }
 
+  subscribeToQueryParam(data) {
+    this.route.queryParams.subscribe((queryParams) => {
+      this.contentId = queryParams.contentId;
+      if (this.contentId) {
+        const content = this.findContentById(this.contentId);
+        if (content) {
+          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
+        }
+      } else {
+        this.closeContentPlayer();
+      }
+    });
+  }
+  parseChildContent(tree) {
+    const model = new TreeModel();
+    this.treeModel = model.parse(tree);
+    this.treeModel.walk((node) => {
+      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+        this.contentDetails.push({id: node.model.identifier, title: node.model.name});
+        this.contentIds.push(node.model.identifier);
+      }
+    });
+  }
+  fetchContentStatus(data) {
+    const req = {
+      userId: this.userService.userid,
+      courseId: this.courseId,
+      contentIds: this.contentIds,
+      batchId: this.batchId
+    };
+    this.courseConsumptionService.getContentStatus(req);
+  }
   private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId)
+    return this.courseConsumptionService.getCourseHierarchy(collectionId)
       .map((response) => {
-        this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
-        return { data: response.result.content };
+        this.courseHierarchy = response;
+        return { data: response};
       });
   }
   closeContentPlayer() {
-    this.showPlayer = false;
-    const navigationExtras: NavigationExtras = {
-      relativeTo: this.route
-    };
-    this.router.navigate([], navigationExtras);
+    if (this.enableContentPlayer === true) {
+      const navigationExtras: NavigationExtras = {
+        relativeTo: this.route
+      };
+      this.enableContentPlayer = false;
+      this.router.navigate([], navigationExtras);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }
