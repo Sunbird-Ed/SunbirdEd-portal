@@ -157,7 +157,7 @@ describe('CreateComponent', () => {
       expect(res).toEqual(true);
     }));
 
-  it('should validate form state/data and redirect to step 1', inject([Router],
+  xit('should validate form state/data and redirect to step 1', inject([Router],
     (route) => {
       spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
