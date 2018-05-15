@@ -46,7 +46,7 @@ describe('AppComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockData.success));
-    userService.initialize();
+    userService.initialize(true);
     const tenantService = TestBed.get(TenantService);
     spyOn(tenantService, 'get').and.returnValue(Observable.of(mockData.tenantSuccess));
     spyOn(document, 'querySelector').and.returnValue({

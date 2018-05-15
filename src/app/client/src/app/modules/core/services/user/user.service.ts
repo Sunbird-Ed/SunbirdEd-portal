@@ -45,9 +45,9 @@ export class UserService {
    * reference of lerner service.
    */
   public learner: LearnerService;
-    /**
-   * Contains hashTag id
-   */
+  /**
+ * Contains hashTag id
+ */
   private _hashTagId: string;
   /**
  * Reference of appId
@@ -65,30 +65,42 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-    /**
+  public _authenticated: boolean;
+  public anonymousSid: string;
+  /**
    * Reference of content service.
    */
   public contentService: ContentService;
-    /**
+  /**
    * Reference of orgNames
    */
   private orgNames: Array<string> = [];
-   /**
-   * constructor
-   * @param {ConfigService} config ConfigService reference
-   * @param {LearnerService} learner LearnerService reference
-   */
+  /**
+  * constructor
+  * @param {ConfigService} config ConfigService reference
+  * @param {LearnerService} learner LearnerService reference
+  */
   constructor(config: ConfigService, learner: LearnerService,
-     private http: HttpClient, contentService: ContentService) {
+    private http: HttpClient, contentService: ContentService) {
     this.config = config;
     this.learner = learner;
     this.contentService = contentService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      this._authenticated = true;
     } catch (error) {
+      this._authenticated = false;
+      this.anonymousSid = UUID.UUID();
     }
   }
+  /**
+   * get method to fetch userid.
+   */
+  get authentication(): boolean {
+    return this._authenticated;
+  }
+
   /**
    * get method to fetch userid.
    */
@@ -118,15 +130,15 @@ export class UserService {
       }
     );
   }
-/**
-    * method to fetch appId and Ekstep_env from server.
-    */
-    public getAppIdEnv(): void {
-      const url = this.config.appConfig.APPID_EKSTEPENV;
-      this.http.get(url).subscribe((res: IAppIdEnv) => {
-        this._appId = res.appId;
-        this._env = res.ekstep_env;
-      },
+  /**
+      * method to fetch appId and Ekstep_env from server.
+      */
+  public getAppIdEnv(): void {
+    const url = this.config.appConfig.APPID_EKSTEPENV;
+    this.http.get(url).subscribe((res: IAppIdEnv) => {
+      this._appId = res.appId;
+      this._env = res.ekstep_env;
+    },
       (error) => {
         console.log(error);
       }
@@ -146,8 +158,10 @@ export class UserService {
     return this._env;
   }
 
-  public initialize() {
-    this.getUserProfile();
+  public initialize(loggedIn) {
+    if (loggedIn === true) {
+      this.getUserProfile();
+    }
     this.getAppIdEnv();
   }
   /**
@@ -192,11 +206,11 @@ export class UserService {
     this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
-      /**
-   * Get organization details.
-   *
-   * @param {requestParam} requestParam api request data
-   */
+  /**
+* Get organization details.
+*
+* @param {requestParam} requestParam api request data
+*/
   getOrganisationDetails(organisationIds) {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
@@ -219,7 +233,7 @@ export class UserService {
         this.orgNames = [];
         this._userProfile.organisationNames = this.orgNames;
       }
-    );
+      );
   }
 
   get userProfile() {
@@ -242,7 +256,7 @@ export class UserService {
     return this._dims;
   }
   private setRoleOrgMap(profile) {
-    let  roles = [];
+    let roles = [];
     const roleOrgMap = {};
     _.forEach(profile.organisations, (org) => {
       roles = roles.concat(org.roles);
@@ -257,7 +271,7 @@ export class UserService {
     });
     this._userProfile.roleOrgMap = roleOrgMap;
   }
-  get RoleOrgMap () {
+  get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);
   }
 }

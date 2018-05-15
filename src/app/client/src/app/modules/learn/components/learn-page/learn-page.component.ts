@@ -1,6 +1,7 @@
 import { PageApiService, CoursesService, ICourses, ISort} from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
+  UtilService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -62,6 +63,8 @@ export class LearnPageComponent implements OnInit {
   public filters: any;
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
+  content: any;
+  courses: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -71,7 +74,7 @@ export class LearnPageComponent implements OnInit {
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, configService: ConfigService) {
+     private activatedRoute: ActivatedRoute, configService: ConfigService, public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
@@ -90,24 +93,28 @@ export class LearnPageComponent implements OnInit {
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
-            const action = {
-              right: {
-                displayType: 'button',
-                classes: 'ui blue basic button',
-                text: 'Resume'
-              },
-              left: { displayType: 'rating' }
-            };
             this.enrolledCourses = data.enrolledCourses;
-            _.forEach(this.enrolledCourses, (value, index) => {
-              this.enrolledCourses[index].action = action;
-            });
+            const constantData = {
+              action: {
+                right: {
+                  class: 'ui blue basic button',
+                   eventName: 'Resume',
+                   displayType: 'button',
+                   text: 'Resume'},
+                  onImage: { eventName: 'onImage' }
+              }
+          };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const dynamicFields = {'maxCount': ['leafNodesCount'], 'progress': ['progress']};
+            const courses = this.utilService.getDataForCard(data.enrolledCourses,
+              constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
               name: 'My Courses',
-              length: this.enrolledCourses.length,
-              contents: this.enrolledCourses
+              length: courses.length,
+              contents: courses
             });
           }
+          console.log( this.caraouselData);
           this.populatePageData();
         } else if (data && data.err) {
           this.populatePageData();
@@ -120,7 +127,6 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
-    this.caraouselData = [];
     const option = {
       source: 'web',
       name: 'Course',
@@ -152,32 +158,51 @@ export class LearnPageComponent implements OnInit {
     _.forEach(this.caraouselData, (value, index) => {
       if (value.name !== 'My Courses') {
         _.forEach(this.caraouselData[index].contents, (value1, index1) => {
-          delete this.caraouselData[index].contents[index1].contentType;
-          delete this.caraouselData[index].contents[index1].resourceType;
+          this.content = this.caraouselData[index].contents;
           if (this.enrolledCourses && this.enrolledCourses.length > 0) {
             _.forEach(this.enrolledCourses, (value2, index2) => {
               if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                const action = {
-                  right: {
-                    displayType: 'button',
-                    classes: 'ui blue basic button',
-                    text: 'Resume'
-                  },
-                  left: { displayType: 'rating' }
-                };
-                this.caraouselData[index].contents[index1].action = action;
+                const constantData = {
+                  action: {
+                    right: {
+                      class: 'ui blue basic button',
+                       eventName: 'Resume',
+                       displayType: 'button',
+                       text: 'Resume'},
+                      onImage: { eventName: 'onImage' }
+                  }
+              };
+                const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                const dynamicFields = {};
+                this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+                  constantData, dynamicFields, metaData);
               } else {
-                const action = { left: { displayType: 'rating' } };
-                this.caraouselData[index].contents[index1].action = action;
+                const constantData = {
+                  action: {
+                      onImage: { eventName: 'onImage' }
+                  }
+              };
+                const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                const dynamicFields = {};
+                this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+                  constantData, dynamicFields, metaData);
               }
             });
           } else {
-            const action = { left: { displayType: 'rating' } };
-            this.caraouselData[index].contents[index1].action = action;
+            const constantData = {
+              action: {
+                  onImage: { eventName: 'onImage' }
+              }
+          };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const dynamicFields = {};
+            this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+              constantData, dynamicFields, metaData);
           }
         });
       }
     });
+    console.log(this.caraouselData);
   }
   /**
  *This method calls the populateEnrolledCourse

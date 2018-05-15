@@ -12,7 +12,7 @@ import { ContentService, UserService, LearnerService, CoreModule } from '@sunbir
 
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, ServerResponse, FilterPipe
+  ToasterService, ServerResponse
 } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
@@ -47,7 +47,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule, CoreModule],
-      declarations: [CourseProgressComponent, FilterPipe],
+      declarations: [CourseProgressComponent],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

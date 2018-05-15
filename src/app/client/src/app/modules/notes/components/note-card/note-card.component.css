@@ -1,0 +1,12 @@
+.notes-card-heading {
+    font-family: 'sunbirdboldfont';
+    font-size: 0.9em;
+    color: #007AFF;
+}
+.notes-card-section {
+    width: 100%;
+}
+.notes-card-section .content .header a {
+    color: #007AFF !important;
+    font-size: 0.9em !important;
+}
