@@ -222,6 +222,8 @@ app.all('/content/data/v1/telemetry',
     }
 }))
 
+// proxy urls
+require('./proxy/contentEditorProxy.js')(app, keycloak)
 
 app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
   telemetryHelper.generateTelemetryForProxy)
@@ -272,9 +274,6 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
 // tenant Api's
 app.get('/v1/tenant/info', tenantHelper.getInfo)
 app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
-
-// proxy urls
-require('./proxy/contentEditorProxy.js')(app, keycloak)
 
 // healthcheck
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)

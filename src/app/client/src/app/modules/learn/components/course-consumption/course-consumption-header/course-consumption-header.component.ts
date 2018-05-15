@@ -15,7 +15,7 @@ export class CourseConsumptionHeaderComponent implements OnInit {
   @Input() enrolledCourse: boolean;
   permission = ['CONTENT_CREATOR'];
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    private resourceService: ResourceService, private router: Router) {
+    public resourceService: ResourceService, private router: Router) {
 
     }
 
