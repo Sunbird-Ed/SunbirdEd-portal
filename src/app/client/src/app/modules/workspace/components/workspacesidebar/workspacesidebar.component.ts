@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
-
+import {Router, ActivatedRoute} from '@angular/router';
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
@@ -63,6 +63,11 @@ export class WorkspacesidebarComponent implements OnInit {
   */
   startRole: Array<string>;
 
+   /**
+   * reference of Router.
+   */
+  private router: Router;
+
   /**
   * Constructor to create injected service(s) object
      Default method of Draft Component class
@@ -70,10 +75,12 @@ export class WorkspacesidebarComponent implements OnInit {
      * @param {PermissionService} permissionService Reference of PermissionService
      * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService) {
+  constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService,
+   router: Router) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.config = config;
+    this.router = router;
   }
 
   ngOnInit() {

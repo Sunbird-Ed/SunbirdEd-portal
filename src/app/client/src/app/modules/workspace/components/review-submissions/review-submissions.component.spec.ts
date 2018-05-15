@@ -106,7 +106,8 @@ describe('ReviewSubmissionsComponent', () => {
 
   it('should call contentClick to open content player ', inject([Router],
     (route) => {
-      const params = { type: 'notdelete', content: { identifier: 'do_2124341006465925121871' } };
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+        eventName: 'onImage' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
       component.contentClick(params);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);

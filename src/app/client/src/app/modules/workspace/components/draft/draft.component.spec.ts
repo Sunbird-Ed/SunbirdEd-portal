@@ -131,9 +131,10 @@ describe('DraftComponent', () => {
     expect(component.showLoader).toBeFalsy();
   }));
 
-  it('should call navigateToContent to open content player when action type is not delete', inject([Router],
+  it('should call navigateToContent to open content player when action type is onImage', inject([Router],
     (route) => {
-      const params = { type: 'notdelete', content: { identifier: 'do_2124341006465925121871' } };
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+        eventName: 'onImage' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
       component.contentClick(params);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);

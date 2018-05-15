@@ -77,7 +77,6 @@ export class WorkSpaceService {
  */
   navigateToContent(content, state) {
     const mimeType = content.mimeType;
-    console.log(mimeType);
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
@@ -187,7 +186,6 @@ export class WorkSpaceService {
         _.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1)) {
       request.status = ['FlagReview', 'Review'];
     }
-    console.log(request);
     return request;
   }
 

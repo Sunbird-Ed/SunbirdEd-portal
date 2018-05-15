@@ -49,11 +49,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   /**
    * loader message
   */
-  /**
-   * userRoles
-  */
-  userRoles = [];
-
   loaderMessage: ILoaderMessage;
 
   /**
@@ -209,10 +204,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       query: bothParams.queryParams.query,
       sort_by: this.sort
     };
-    const content = this.workSpaceService.getContentStatus();
-    console.log(content.status);
-    console.log(content.contentType);
-    console.log(this.workSpaceService.getContentStatus().status);
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
@@ -258,39 +249,4 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   contentClick(content) {
     this.workSpaceService.navigateToContent(content, this.state);
   }
-
-  getContentStatus() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        console.log(user.userProfile.userRoles);
-        this.userRoles = user.userProfile.userRoles;
-      });
-    const request = {
-      status: [],
-      contentType: []
-    };
-
-    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') === -1) {
-      request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
-    }
-
-    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') === -1 &&
-      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-      request.contentType = ['TextBook'];
-    }
-
-    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1) {
-      request.status = ['FlagReview'];
-      request.contentType.push('TextBook');
-    }
-
-    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1 &&
-      (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1 ||
-        _.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1)) {
-      request.status = ['FlagReview', 'Review'];
-    }
-    console.log('request', request);
-    return request;
-  }
-
 }
