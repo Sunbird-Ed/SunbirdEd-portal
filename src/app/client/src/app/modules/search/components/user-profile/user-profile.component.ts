@@ -189,8 +189,10 @@ export class UserProfileComponent implements OnInit {
         }
       });
       this.disableEndorsementButton = false;
+      this.toasterService.success(this.resourceService.messages.smsg.m0043);
     }, (err) => {
       this.disableEndorsementButton = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
