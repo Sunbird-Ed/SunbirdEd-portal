@@ -22,6 +22,9 @@
       "@sunbird/announcement": [
         "app/modules/announcement"
       ],
+      "@sunbird/notes": [
+        "app/modules/notes"
+      ],
       "@sunbird/resource": [
         "app/modules/resource"
       ],
@@ -36,6 +39,9 @@
       ],
       "@sunbird/profile": [
         "app/modules/profile"
+      ],
+      "@sunbird/discussion": [
+        "app/modules/discussion"
       ]
     },
     "sourceMap": true,

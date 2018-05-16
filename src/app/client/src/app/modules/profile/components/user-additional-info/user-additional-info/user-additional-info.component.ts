@@ -18,29 +18,29 @@ import * as moment from 'moment';
 export class UserAdditionalInfoComponent implements OnInit {
   @ViewChild('edit') editChild: EditUserAdditionalInfoComponent;
   /**
- * Reference of User Profile interface
- */
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
   /**
- * Contains social media links
- */
+   * Contains social media links
+   */
   webPages: any = {};
   /**
- * Contains action performed - add/edit/view
- */
+   * Contains action performed - add/edit/view
+   */
   action: string;
   /**
- * Stores actions that are allowed
- */
+   * Stores actions that are allowed
+   */
   allowedAction = ['edit'];
 
   constructor(public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     public router: Router, public userService: UserService, public profileService: ProfileService,
     public toasterService: ToasterService) { }
   /**
-* Invokes user service to fetch user data and user profile data
-*
-*/
+  * Invokes user service to fetch user data and user profile data
+  *
+  */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -64,6 +64,9 @@ export class UserAdditionalInfoComponent implements OnInit {
       }
     });
   }
+  /**
+  * Invokes profile service to edit additional information of the user
+  */
   editBasicInfo() {
     const editedInfo = [];
     let formStatus = true;
@@ -71,8 +74,8 @@ export class UserAdditionalInfoComponent implements OnInit {
     const addInfo: any = {};
     if (this.editChild.basicInfoForm.valid === true) {
       _.forIn(this.editChild.basicInfoForm.controls, (value, key) => {
-        if (value !== undefined && value !== null) {
-          if (key === 'dob') {
+        if (value && value !== undefined && value !== null) {
+          if (key === 'dob' && value.value !== null) {
             addInfo[key] = moment(value.value).format('YYYY-MM-DD');
           } else if ((value.value !== null && value.value !== '' && value.value !== undefined) && (key === 'fb' || key === 'in'
             || key === 'twitter' || key === 'blog')) {

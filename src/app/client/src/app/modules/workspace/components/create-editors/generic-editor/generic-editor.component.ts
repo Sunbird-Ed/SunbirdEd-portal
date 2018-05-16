@@ -4,11 +4,6 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
-import { EditorService } from './../../../services/editors/editor.service';
-
-declare var jQuery: any;
-declare let window: CustomWindow;
 
 @Component({
   selector: 'app-generic-editor',
@@ -30,10 +25,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     */
   public resourceService: ResourceService;
   /**
-   * To make inbox API calls
-   */
-  private editorService: EditorService;
-  /**
   * user profile details.
   */
   userService: UserService;
@@ -41,6 +32,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Id of the content created
    */
   public contentId: string;
+  /**
+   * state of the content
+   */
+  public state: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
   /**
    * user profile details.
    */
@@ -78,6 +77,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
+      this.state = params['state'];
+      this.framework = params['framework'];
+
     });
   }
 
@@ -92,8 +94,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   openGenericEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
-
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
@@ -107,14 +107,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlayColor: '',
       history: false,
       closeButton: true,
-      onClosing: function () {
-        self._zone.run(() => {
-          self.closeModal();
+      onClosing: () => {
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
 
-    setTimeout(function () {
+    setTimeout(() => {
       jQuery('#genericEditor').iziModal('open');
     }, 100);
 
@@ -135,7 +135,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      env: 'genericeditor'
+      env: 'genericeditor',
+      framework: this.framework
     };
 
     /**
@@ -180,12 +181,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToCreate();
+      this.navigateToUploads();
     }, 1000);
   }
 
-  navigateToCreate() {
-    this.router.navigate(['workspace/content']);
+  navigateToUploads() {
+    if (this.state) {
+      this.router.navigate(['workspace/content/', this.state, '1']);
+    } else {
+      this.router.navigate(['workspace/content/uploaded/1']);
+    }
     this.showModal = false;
   }
 

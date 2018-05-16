@@ -1,0 +1,18 @@
+<div class="ui link cards margin-right-20 margin-top-15">
+  <div class="link card mouse-pointer">
+    <div class="image imageInCardsResponsive" (click)="onAction(batch)">
+      <div class="ui top right attached black label" >Batch of {{batch.label}} </div>
+      <div class="ui fluid image">
+        <img src="{{'/assets/images/default.png'}}">
+      </div>
+      <div class="cardImageText center aligned sliderCardHeading text-cencapitalize">
+        {{batch.name}}
+      </div>
+    </div>
+    <div *ngIf="batch.userName" class="sliderCards content sliderCardSubDesc">
+      By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
+      <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
+      </i>
+    </div>
+  </div>
+</div>

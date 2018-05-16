@@ -68,9 +68,10 @@ describe('PublishedComponent', () => {
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, resourceService, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
-      spyOn(component, 'deletePublishedContent').and.callThrough();
-      const params = { type: 'delete', contentId: 'do_2124341006465925121871' };
-      component.deletePublishedContent(params);
+      spyOn(component, 'contentClick').and.callThrough();
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+      eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124341006465925121871']
       };

@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService,
-    ResourceService, IContents, ILoaderMessage, INoResultMessage
+    ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+
 /**
  * The draft component search for all the drafts
 */
@@ -23,6 +24,10 @@ export class DraftComponent extends WorkSpace implements OnInit {
 
     @ViewChild('modalTemplate')
     public modalTemplate: ModalTemplate<{ data: string }, string, string>;
+    /**
+     * state for content editior
+    */
+    state: string;
 
     /**
      * To navigate to other pages
@@ -42,7 +47,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
     /**
      * Contains list of published course(s) of logged-in user
     */
-    draftList: Array<IContents> = [];
+    draftList: Array<ICard> = [];
 
     /**
      * To show / hide loader
@@ -140,6 +145,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.toasterService = toasterService;
         this.resourceService = resourceService;
         this.config = config;
+        this.state = 'draft';
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -162,8 +168,8 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
             },
             limit: this.pageLimit,
-            pageNumber: this.pageNumber,
-            params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+            offset: (this.pageNumber - 1) * (this.pageLimit),
+            sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
         this.loaderMessage = {
             'loaderMessage': this.resourceService.messages.stmsg.m0011,
@@ -171,21 +177,24 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content.length > 0) {
-                    this.draftList = data.result.content;
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    _.forEach(this.draftList, (item, key) => {
-                        const action = {
+                    const constantData = {
+                        ribbon: {
+                            right: { class: 'ui black right ribbon label' }
+                        },
+                        action: {
                             right: {
+                                class: 'trash large icon',
                                 displayType: 'icon',
-                                classes: 'trash large icon',
-                                actionType: 'delete',
-                                clickable: true
-                            }
-                        };
-                        this.draftList[key].action = action;
-
-                    });
+                                eventName: 'delete'
+                            },
+                            onImage: { eventName: 'onImage' }
+                        }
+                    };
+                    const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                    const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+                    this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {
                     this.showError = false;
@@ -205,9 +214,14 @@ export class DraftComponent extends WorkSpace implements OnInit {
             }
         );
     }
-    deleteDraft(param) {
-        if (param.type === 'delete') {
-            this.deleteConfirmModal(param.contentId);
+    /**
+     * This method launch the content editior
+    */
+    contentClick(param) {
+        if (param.action.eventName === 'delete') {
+            this.deleteConfirmModal(param.data.metaData.identifier);
+        } else {
+            this.workSpaceService.navigateToContent(param.data.metaData, this.state);
         }
     }
     public deleteConfirmModal(contentIds) {

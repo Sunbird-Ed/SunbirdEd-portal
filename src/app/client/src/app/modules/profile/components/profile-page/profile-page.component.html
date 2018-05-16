@@ -17,9 +17,8 @@
                     <app-user-address></app-user-address>
                     <app-user-education></app-user-education>
                     <app-user-skills></app-user-skills>
-                    <app-profile-badge *ngIf="userProfile.badgeAssertions.length > 0"></app-profile-badge>
+                    <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
                     <app-user-additional-info></app-user-additional-info>
-                    <!-- Certifications & Awards -->
                 </div>
                 <div class=" four wide column margin-top-20">
                     <div class="ui grid ">
@@ -40,7 +39,6 @@
                                         </sui-progress>
                                     </div>
                                     <div class="item" *ngFor="let field of userProfile.missingFields | slice:0:3;">
-                                        <!-- | limitTo:3" -->
                                         <div class="iniformationcontent content">
                                             <a (click)="updateAction(field)">
                                                 <h5 class="ui blue header profileUpdateAddDetails">+ Add {{resourceService.frmelmnts.lbl[field] || field}}</h5>
@@ -52,7 +50,7 @@
                         </div>
 
                         <div class="twelve wide column" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole'>
-                            <a routerLink="workspace/content">
+                            <a routerLink="/workspace/content">
                                 <div class="workspacebutton workspacecontentProfile ui link card ">
                                     <div class="content ">
                                         <div class="WorkSpaceTextContent ">
@@ -73,7 +71,7 @@
                                 <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                                     <div class="item" *ngFor="let item of contributions">
                                         <!-- implement preview for content on click-->
-                                        <img class="ui avatar image " src="{{item.posterImage || 'assets/common/images/zipFileIcon.png'}}">
+                                        <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png'}}">
                                         <div class="content ">
                                             <a class=" header ">{{item.name}}</a>
                                             <div class="metadata ">
@@ -95,7 +93,7 @@
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Teachers Association</a>
@@ -106,7 +104,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -117,7 +115,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -138,7 +136,7 @@
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>
@@ -150,7 +148,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>
@@ -162,7 +160,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img ng-src="assets/common/images/school.png ">
+                                            <img ng-src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>

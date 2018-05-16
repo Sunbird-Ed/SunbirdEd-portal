@@ -2,7 +2,8 @@
   "params": {
     "userReadParam": {
       "fields": "completeness,missingFields,lastLoginTime"
-    }
+    },
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework"
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
@@ -46,7 +47,8 @@
       "REJECT": "content/v1/reject",
       "FLAG": "content/v1/flag",
       "ACCEPT_FLAG": "content/v1/flag/accept",
-      "DISCARD_FLAG": "content/v1/flag/reject"
+      "DISCARD_FLAG": "content/v1/flag/reject",
+      "COPY": "content/v1/copy"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",
@@ -111,6 +113,9 @@
     },
     "FRAMEWORK": {
       "READ": "framework/v1/read"
+    },
+    "dataDrivenForms": {
+      "READ": "data/v1/form/read"
     },
     "GEO_EXPLORER": {
       "LOCATION_READ": "org/v1/location/read/"

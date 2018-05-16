@@ -17,13 +17,26 @@ export class ProfileHeaderComponent implements OnInit {
  * reference of config service.
  */
   public config: ConfigService;
+  /**
+* Contains action performed - add/edit/view
+*/
+  action: string;
+  /**
+  * Stores actions that are allowed
+  */
+  allowedAction = ['update'];
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public profileService: ProfileService, config: ConfigService) {
     this.config = config;
   }
-
+  /**
+   * This method is used to fetch user profile details
+   */
   ngOnInit() {
     this.admin = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.userService.userData$.subscribe(
@@ -33,8 +46,11 @@ export class ProfileHeaderComponent implements OnInit {
         }
       });
   }
+  /**
+   * This method calls profile service to update profile picture of the user
+   */
   updateAvatar(image) {
-    if (image[0]  && image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000) {
+    if (image[0] && image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000) {
       const formData = new FormData();
       formData.append('file', image[0]);
       formData.append('container', 'user/' + this.userService.userid);
@@ -46,7 +62,7 @@ export class ProfileHeaderComponent implements OnInit {
           this.toasterService.error(err.params.errmsg);
         }
       );
-    } else {
+    } else if (image[0] && !(image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000)) {
       this.toasterService.error(this.resourceService.messages.imsg.m0005);
     }
   }

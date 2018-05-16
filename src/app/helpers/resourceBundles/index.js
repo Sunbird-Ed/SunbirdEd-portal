@@ -67,7 +67,6 @@ function getErrorCode (httpCode) {
 module.exports = function (express) {
   var router = express.Router()
   router.get('/read/:lang?', (requestObj, responseObj, next) => {
-    console.log(requestObj.params)
     var lang = requestObj.params['lang'] || envHelper.PORTAL_DEFAULT_LANGUAGE
 
     try {

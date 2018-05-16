@@ -33,6 +33,10 @@ export class SearchComponent implements OnInit {
    * option selected on dropdown
    */
   selectedOption: string;
+/**
+ * show input field
+ */
+  showInput: boolean;
   /**
    * input keyword depending on url
    */
@@ -78,6 +82,11 @@ export class SearchComponent implements OnInit {
   onEnter(key) {
     this.key = key;
     this.queryParam['key'] = this.key;
+    if (this.key && this.key.length > 0) {
+      this.queryParam['key'] = this.key;
+    } else {
+      delete this.queryParam['key'];
+    }
     this.route.navigate([this.search[this.selectedOption], 1], {
       queryParams: this.queryParam
     });
@@ -92,13 +101,18 @@ export class SearchComponent implements OnInit {
     });
     this.route.events
       .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
-        this.value = params.url.split('/', 3);
-        if (this.searchUrl[this.value[1]]) {
+        const currUrl = this.route.url.split('?');
+        this.value = currUrl[0].split('/', 3);
+        const  searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;
+        if (this.searchUrl[this.value[1]] && searchEnabledStates.includes(this.value[1])) {
           this.selectedOption = this.searchUrl[this.value[1]];
-        } else if (this.value[1] === 'search') {
+          this.showInput = true;
+        } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
           this.selectedOption = this.value[2];
+          this.showInput = true;
         } else {
           this.selectedOption = 'All';
+          this.showInput = false;
         }
       });
   }

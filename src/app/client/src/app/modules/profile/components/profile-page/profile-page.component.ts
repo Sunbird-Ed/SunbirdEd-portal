@@ -2,24 +2,40 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService, SearchService } from '@sunbird/core';
 import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
+import { MyContributions } from '../../interfaces';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Contains roles
+   */
   workSpaceRole: Array<string>;
+  /**
+   * Contains loader message to display
+   */
   loaderMessage = {
     headerMessage: '',
     loaderMessage: 'Loading profile ...'
   };
-  contributions: any;
+  /**
+   * Contains list of contributions
+   */
+  contributions: Array<MyContributions>;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
     public searchService: SearchService) { }
-
+  /**
+   * This method is used to fetch user profile details
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -30,24 +46,20 @@ export class ProfilePageComponent implements OnInit {
       });
     this.workSpaceRole = this.configService.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
+  /**
+   * This method is used to update user actions
+   */
   updateAction(field) {
-    const actions = {
-      profileSummary: 'profile/summary/edit',
-      jobProfile: 'profile/experience/add',
-      address: 'profile/address/add',
-      education: 'profile/education/add',
-      location: 'profile/additionalInfo/edit',
-      dob: 'profile/additionalInfo/edit',
-      subject: 'profile/additionalInfo/edit',
-      grade: 'profile/additionalInfo/edit',
-      gender: 'profile/additionalInfo/edit',
-      lastName: 'profile/additionalInfo/edit',
-      email: 'profile/additionalInfo/edit',
-      phone: 'profile/additionalInfo/edit',
-      language: 'profile/additionalInfo/edit'
-    };
-    this.router.navigate([actions[field]]);
+    if (field === 'avatar') {
+      $('#iconImageInput').click();
+    } else {
+      const actions = this.configService.appConfig.PROFILE.profileField;
+      this.router.navigate([actions[field]]);
+    }
   }
+  /**
+   * This method is used to get user content
+   */
   getMyContent(): void {
     // First check local storage
     const response = this.searchService.searchedContentList;

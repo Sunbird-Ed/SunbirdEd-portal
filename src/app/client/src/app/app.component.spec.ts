@@ -1,9 +1,9 @@
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, CoursesService, PermissionService, TenantService,
-  TelemetryService, TELEMETRY_PROVIDER
+  TelemetryService, TELEMETRY_PROVIDER, ConceptPickerService, SearchService, ContentService
 } from '@sunbird/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
@@ -12,19 +12,20 @@ import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { RouterTestingModule } from '@angular/router/testing';
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, RouterTestingModule],
       declarations: [
         AppComponent
       ],
       providers: [ToasterService, TenantService,
         UserService, ConfigService, LearnerService,
         PermissionService, ResourceService, CoursesService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }],
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -45,7 +46,7 @@ describe('AppComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockData.success));
-    userService.initialize();
+    userService.initialize(true);
     const tenantService = TestBed.get(TenantService);
     spyOn(tenantService, 'get').and.returnValue(Observable.of(mockData.tenantSuccess));
     spyOn(document, 'querySelector').and.returnValue({

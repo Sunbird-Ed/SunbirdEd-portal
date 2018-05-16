@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService,
@@ -28,6 +28,10 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 export class PublishedComponent extends WorkSpace implements OnInit {
   @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
+  /**
+  * state for content editior
+  */
+  state: string;
   /**
     * To navigate to other pages
   */
@@ -140,6 +144,7 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
+    this.state = 'published';
   }
 
   ngOnInit() {
@@ -162,9 +167,9 @@ export class PublishedComponent extends WorkSpace implements OnInit {
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
       },
-      pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0021,
@@ -175,18 +180,22 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           this.publishedContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.publishedContent, (item, key) => {
-            const action = {
-              right: {
-                displayType: 'icon',
-                classes: 'trash large icon',
-                actionType: 'delete',
-                clickable: true
-              }
-            };
-            this.publishedContent[key].action = action;
-
-          });
+          const constantData = {
+            ribbon: {
+                right: { class: 'ui black right ribbon label' }
+            },
+            action: {
+                right: {
+                    class: 'trash large icon',
+                    displayType: 'icon',
+                    eventName: 'delete'
+                },
+                onImage: { eventName: 'onImage' }
+            }
+        };
+        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+        const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+        this.publishedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -205,10 +214,14 @@ export class PublishedComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
-  deletePublishedContent(param) {
-    if (param.type === 'delete') {
-      this.deleteConfirmModal(param.contentId);
+  /**
+    * This method launch the content editior
+  */
+  contentClick(param) {
+    if (param.action.eventName === 'delete') {
+      this.deleteConfirmModal(param.data.metaData.identifier);
+    } else {
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 

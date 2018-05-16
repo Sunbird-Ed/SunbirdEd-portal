@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkSpace } from '../../classes/workspaceclass';
+import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
@@ -20,6 +20,10 @@ import * as _ from 'lodash';
   styleUrls: ['./review-submissions.component.css']
 })
 export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
+  /**
+  * state for content editior
+ */
+  state: string;
   /**
     * To navigate to other pages
   */
@@ -134,6 +138,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.config = config;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.state = 'review';
   }
 
   ngOnInit() {
@@ -156,9 +161,9 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
       },
-      pageNumber: this.pageNumber,
       limit: this.pageLimit,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0018,
@@ -169,6 +174,17 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.reviewContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
+        const constantData = {
+          ribbon: {
+              right: { class: 'ui black right ribbon label' }
+          },
+          action: {
+              onImage: { eventName: 'onImage' }
+          }
+      };
+      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+      const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+      this.reviewContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -188,8 +204,11 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       }
     );
   }
-
-  actionClick(event) {
+  /**
+    * This method launch the content editior
+  */
+  contentClick(param) {
+    this.workSpaceService.navigateToContent(param.data.metaData, this.state);
   }
 
   /**

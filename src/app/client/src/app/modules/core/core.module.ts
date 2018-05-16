@@ -3,30 +3,39 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
-import { FormsModule } from '@angular/forms';
 import {
-  UserService, LearnerService, PermissionService, AnnouncementService,
+  UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService
 } from './services';
-import { MainHeaderComponent, MainMenuComponent, SearchComponent } from './components';
+import {
+  MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent
+} from './components';
 import { AuthGuard } from './guard/auth-gard.service';
-
+import { CacheService } from 'ng2-cache-service';
+import { BreadcrumbsComponent, BreadcrumbsService } from './components';
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     SharedModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective],
-  exports: [MainHeaderComponent, PermissionDirective],
+  declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
+    DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
+    ContentPlayerMetadataComponent],
+  exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent],
   providers: [
-    LearnerService, UserService, TenantService,
+    LearnerService, UserService, TenantService, SearchService, CopyContentService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
+    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
+    { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, BreadcrumbsService, PlayerService]
 })
 export class CoreModule {
 }

@@ -12,7 +12,6 @@ import { ContentService, UserService, LearnerService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
 
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces/custom.window';
 
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
@@ -88,7 +87,7 @@ describe('CollectionEditorComponent', () => {
 
     it('test to navigate to drafts', inject([Router], (router) => () => {
       component.closeModal();
-      setTimeout(function () {
+      setTimeout(() => {
         component.navigateToDraft();
       }, 1000);
 

@@ -55,12 +55,12 @@ export class TenantService extends DataService {
   public getTenantInfo(orgSlug?) {
     if (orgSlug) {
       const option = {
-        url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}${orgSlug}`
+        url: `${this.config.urlConFig.URLS.TENANT.INFO}/${orgSlug}`
       };
       this.tenantApi(option);
     } else {
       const option = {
-        url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}`
+        url: `${this.config.urlConFig.URLS.TENANT.INFO}/${undefined}`
       };
       this.tenantApi(option);
     }

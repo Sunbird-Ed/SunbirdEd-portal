@@ -2,17 +2,12 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CustomWindow } from './../../../interfaces';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
-declare var jQuery: any;
-declare let window: CustomWindow;
-
 
 @Component({
   selector: 'app-collection-editor',
@@ -94,7 +89,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     editorService: EditorService,
     activatedRoute: ActivatedRoute,
     route: Router,
-    userService: UserService, public _zone: NgZone,
+    userService: UserService,
+    public _zone: NgZone,
     config: ConfigService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -138,7 +134,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   openCollectionEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
@@ -151,9 +146,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosing: function () {
-        self._zone.run(() => {
-          self.closeModal();
+      onClosing: () => {
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -212,7 +207,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFlagReviewer = true;
     }
-    setTimeout(function () {
+    setTimeout(() => {
       jQuery('#collectionEditor').iziModal('open');
     }, 100);
 
@@ -232,7 +227,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
      */
     this.editorService.getById(req, qs).subscribe(response => {
       const rspData = response.result.content;
-      rspData.state = 'CreateCollection';
+      rspData.state = this.state;
       rspData.userId = this.userProfile.userId;
       if (this.validateRequest(rspData, validateModal)) {
         this.updateModeAndStatus(response.result.content.status);
@@ -240,10 +235,10 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         this.toasterService.error(this.resourceService.messages.emsg.m0004);
       }
     },
-    error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0004);
-    }
-  );
+      error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0004);
+      }
+    );
   }
 
 

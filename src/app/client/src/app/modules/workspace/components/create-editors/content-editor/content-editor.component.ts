@@ -1,16 +1,11 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import * as  iziModal from 'izimodal/js/iziModal';
+import * as iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, PermissionService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
-import { CustomWindow } from './../../../interfaces';
-
-
-declare var jQuery: any;
-declare let window: CustomWindow;
 
 @Component({
   selector: 'app-content-editor',
@@ -51,6 +46,14 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * state of the content
    */
   public state: string;
+  /**
+  * type for editor
+  */
+  public type: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
   /**
    * reference of UserService service.
    */
@@ -101,6 +104,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
       this.state = params['state'];
+      this.type = params['type'];
+      this.framework = params['framework'];
     });
 
     this.setRenderer();
@@ -126,7 +131,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     /**
     * Launch the generic editor after window load
     */
-    const self = this;
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
       title: '',
@@ -141,9 +145,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlay: false,
       overlayColor: '',
       history: false,
-      onClosing: function () {
-        self._zone.run(() => {
-          self.closeModal();
+      onClosing: () => {
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -174,7 +178,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         ver: '1.0'
       },
       tags: this.userService.dims,
-      channel: this.userProfile.rootOrgId
+      channel: this.userProfile.rootOrgId,
+      framework: this.framework,
     };
 
 
@@ -252,7 +257,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Check the Access and Launch the content Editor
    */
   getContentData() {
-    const state = 'UpForReview';
+    const state = this.state;
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
@@ -278,9 +283,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   closeModal() {
     this.showModal = true;
-    setTimeout(() => {
+     setTimeout(() => {
       this.navigateToDraft();
-    }, 1000);
+     }, 1000);
   }
 
   navigateToDraft() {

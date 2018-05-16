@@ -1,0 +1,43 @@
+<div class="ui grid">
+  <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
+    <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="field" [ngClass]="{ 'disabled':!field.editable}">
+      <label>
+        {{field.name}}
+      </label>
+      <div class="field">
+        <input name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" placeholder={{field.placeholder}}>
+      </div>
+    </div>
+    <div *ngIf="field.inputType==='select' && field.code!='year'" class="field" [ngClass]="{ 'disabled':!field.editable}">
+      <label>{{field.name}}</label>
+      <div class="field">
+        <sui-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})">
+          <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option.name"></sui-select-option>
+        </sui-select>
+      </div>
+    </div>
+    <div *ngIf="field.inputType==='multiSelect'" class="field" [ngClass]="{ 'disabled':!field.editable}">
+      <label>{{field.name}}</label>
+      <div class="field">
+        <sui-multi-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})"
+          #multiSelect>
+          <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option.name"> </sui-select-option>
+        </sui-multi-select>
+      </div>
+    </div>
+    <div *ngIf="field.code==='year'" class="field" [ngClass]="{ 'disabled':!field.editable}">
+      <label>{{field.name}}</label>
+      <div class="field">
+        <sui-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
+          <sui-select-option *ngFor="let option of years" [value]="option"> </sui-select-option>
+        </sui-select>
+      </div>
+    </div>
+    <div *ngIf="field.code==='concept'" class="field" [ngClass]="{ 'disabled':!field.editable}">
+        <form class="conceptSelector ui form">
+            <label>{{field.name}}</label>
+          <app-concept-picker [selectedConcepts]="formInputData[field.code]" [conceptPickerClass]="'content-creation-concept-picker'" (Concepts)="concepts($event)"></app-concept-picker>
+        </form>
+      </div>
+  </div>
+</div>
