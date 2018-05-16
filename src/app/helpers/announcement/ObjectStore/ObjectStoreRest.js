@@ -60,13 +60,18 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
+                console.log("Announcement - create object - Request", JSON.stringify(options))
+
                 //Generate api call event
                 telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/create')
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - create object - Response", result)
                 return {
                     data: _.get(result, 'body.result'),
                 }
             } catch (error) {
+                console.log("Announcement - create object - Error", error)
                 throw error
             }
         })
@@ -101,14 +106,19 @@ class ObjectStoreRest extends ObjectStore {
                         json: true
                     }
                     options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
+                    console.log("Announcement - find object - Request", JSON.stringify(options))
+
                     telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/search')
                     let result = await (this.service.call(options))
+
+                    console.log("Announcement - find object - Response", result)
                     return _.get(result, 'body.result.response.count') > 0 ? {
                         data: _.get(result, 'body.result.response')
                     } : {
                         data: []
                     }
                 } catch (error) {
+                    console.log("Announcement - find object - Error", error)
                     throw error
                 }
             })
@@ -147,12 +157,17 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true
                 }
+
+                console.log("Announcement - update object - Request", JSON.stringify(options))
                 telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/update')
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - find object - Response", result)
                 return {
                     data: result
                 }
             } catch (error) {
+                console.log("Announcement - find object - Error", error)
                 throw error
             }
         })
@@ -182,10 +197,14 @@ class ObjectStoreRest extends ObjectStore {
                     },
                     json: true,
                 }
-                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/metrics')
                 options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
+
+                console.log("Announcement - get metrics - Request", JSON.stringify(options))
+                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/metrics')
                 
                 let result = await (this.service.call(options))
+
+                console.log("Announcement - get metrics - Response", result)
                 let response = _.get(result, 'body.responseCode') === 'OK' ? {
                                         data: _.get(result, 'body.result.response')
                                     } : false
@@ -210,6 +229,7 @@ class ObjectStoreRest extends ObjectStore {
 
                 return metricsData
             } catch (error) {
+                console.log("Announcement - get metrics - Error", error)
                 throw error
             }
         })

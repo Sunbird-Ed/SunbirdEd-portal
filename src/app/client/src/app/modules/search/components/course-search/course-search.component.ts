@@ -1,6 +1,6 @@
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, IContents
+  ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ICourses, SearchParam , ISort} from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
@@ -38,7 +38,7 @@ export class CourseSearchComponent implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
    */
-  searchList: Array<IContents> = [];
+  searchList: Array<ICard> = [];
   /**
    * To navigate to other pages
    */
@@ -124,7 +124,7 @@ export class CourseSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService, coursesService: CoursesService) {
+    config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
     this.route = route;
     this.coursesService = coursesService;
@@ -171,10 +171,9 @@ export class CourseSearchComponent implements OnInit {
         if (apiResponse.result.count && apiResponse.result.course.length > 0) {
           this.showLoader = false;
           this.noResult = false;
-          this.searchList = apiResponse.result.course;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          this.processActionObject();
+          this.processActionObject(apiResponse.result.course);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -197,30 +196,44 @@ export class CourseSearchComponent implements OnInit {
   /**
   * This method process the action object.
   */
-  processActionObject() {
-    _.forEach(this.searchList, (value, index) => {
-      delete value.contentType;
-      delete value.resourceType;
+  processActionObject(course) {
+    _.forEach(course, (value, index) => {
       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
         _.forEach(this.enrolledCourses, (value1, index1) => {
-          if (this.searchList[index].identifier === this.enrolledCourses[index1].courseId) {
-            const action = {
-              right: {
-                displayType: 'button',
-                classes: 'ui blue basic button',
-                text: 'Resume'
-              },
-              left: { displayType: 'rating' }
-            };
-            this.searchList[index].action = action;
+          if (course[index].identifier === this.enrolledCourses[index1].courseId) {
+            const constantData = {
+              action: {
+                right: {
+                  class: 'ui blue basic button',
+                   eventName: 'Resume',
+                   displayType: 'button',
+                   text: 'Resume'},
+                  onImage: { eventName: 'onImage' }
+              }
+          };
+          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+          const dynamicFields = {};
+          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
           } else {
-            const action = { left: { displayType: 'rating' } };
-            this.searchList[index].action = action;
+            const constantData = {
+              action: {
+                  onImage: { eventName: 'onImage' }
+              }
+          };
+          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+          const dynamicFields = {};
+          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
           }
         });
       } else {
-        const action = { left: { displayType: 'rating' } };
-        this.searchList[index].action = action;
+        const constantData = {
+          action: {
+              onImage: { eventName: 'onImage' }
+          }
+      };
+      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+      const dynamicFields = {};
+      this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
       }
     });
   }

@@ -1,6 +1,6 @@
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, IContents
+  ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
@@ -37,7 +37,7 @@ export class LibrarySearchComponent implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
    */
-  searchList: Array<IContents> = [];
+  searchList: Array<ICard> = [];
   /**
    * To navigate to other pages
    */
@@ -113,7 +113,7 @@ export class LibrarySearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService, public utilService: UtilService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -145,6 +145,18 @@ export class LibrarySearchComponent implements OnInit {
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
+          const constantData = {
+            ribbon: {
+                right: { class: 'ui black right ribbon label' },
+                left: { class: 'ui blue left ribbon label' }
+            },
+            action: {
+                onImage: { eventName: 'onImage' }
+            }
+        };
+        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+        const dynamicFields = { 'ribbon.right.name': ['contentType'], 'ribbon.left.name': ['badgeAssertions[0].badgeClassName']};
+        this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -219,6 +231,6 @@ export class LibrarySearchComponent implements OnInit {
       });
   }
   playContent(event) {
-    this.playerService.playContent(event.content);
+    this.playerService.playContent(event.data.metaData);
   }
 }

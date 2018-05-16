@@ -1,6 +1,9 @@
-import { PageApiService, CoursesService, ICourses, ISort} from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
+import {
+  ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
+  UtilService, INoResultMessage
+} from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -45,6 +48,10 @@ export class LearnPageComponent implements OnInit {
    */
   showLoader = true;
   /**
+   * no result  message
+  */
+  noResultMessage: INoResultMessage;
+  /**
     * To show / hide no result message when no result found
    */
   noResult = false;
@@ -62,6 +69,7 @@ export class LearnPageComponent implements OnInit {
   public filters: any;
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
+  content: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -71,7 +79,7 @@ export class LearnPageComponent implements OnInit {
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
     toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, configService: ConfigService) {
+    private activatedRoute: ActivatedRoute, configService: ConfigService, public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
@@ -90,22 +98,26 @@ export class LearnPageComponent implements OnInit {
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
-            const action = {
-              right: {
-                displayType: 'button',
-                classes: 'ui blue basic button',
-                text: 'Resume'
-              },
-              left: { displayType: 'rating' }
-            };
             this.enrolledCourses = data.enrolledCourses;
-            _.forEach(this.enrolledCourses, (value, index) => {
-              this.enrolledCourses[index].action = action;
-            });
+            const constantData = {
+              action: {
+                right: {
+                  class: 'ui blue basic button',
+                  eventName: 'Resume',
+                  displayType: 'button',
+                  text: 'Resume'
+                },
+                onImage: { eventName: 'onImage' }
+              }
+            };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const dynamicFields = { 'maxCount': ['leafNodesCount'], 'progress': ['progress'] };
+            const courses = this.utilService.getDataForCard(data.enrolledCourses,
+              constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
               name: 'My Courses',
-              length: this.enrolledCourses.length,
-              contents: this.enrolledCourses
+              length: courses.length,
+              contents: courses
             });
           }
           this.populatePageData();
@@ -120,12 +132,11 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
-    this.caraouselData = [];
     const option = {
       source: 'web',
       name: 'Course',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
+      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
@@ -140,6 +151,11 @@ export class LearnPageComponent implements OnInit {
 
       },
       err => {
+        this.noResult = true;
+        this.noResultMessage = {
+          'message': this.resourceService.messages.stmsg.m0007,
+          'messageText': this.resourceService.messages.stmsg.m0006
+        };
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
       }
@@ -151,31 +167,50 @@ export class LearnPageComponent implements OnInit {
   processActionObject() {
     _.forEach(this.caraouselData, (value, index) => {
       if (value.name !== 'My Courses') {
-        _.forEach(this.caraouselData[index].contents, (value1, index1) => {
-          delete this.caraouselData[index].contents[index1].contentType;
-          delete this.caraouselData[index].contents[index1].resourceType;
-          if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-            _.forEach(this.enrolledCourses, (value2, index2) => {
-              if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                const action = {
-                  right: {
-                    displayType: 'button',
-                    classes: 'ui blue basic button',
-                    text: 'Resume'
-                  },
-                  left: { displayType: 'rating' }
-                };
-                this.caraouselData[index].contents[index1].action = action;
-              } else {
-                const action = { left: { displayType: 'rating' } };
-                this.caraouselData[index].contents[index1].action = action;
-              }
-            });
-          } else {
-            const action = { left: { displayType: 'rating' } };
-            this.caraouselData[index].contents[index1].action = action;
-          }
-        });
+          _.forEach(this.caraouselData[index].contents, (value1, index1) => {
+            this.content = this.caraouselData[index].contents;
+            if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+              _.forEach(this.enrolledCourses, (value2, index2) => {
+                if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
+                  const constantData = {
+                    action: {
+                      right: {
+                        class: 'ui blue basic button',
+                        eventName: 'Resume',
+                        displayType: 'button',
+                        text: 'Resume'
+                      },
+                      onImage: { eventName: 'onImage' }
+                    }
+                  };
+                  const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                  const dynamicFields = {};
+                  this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+                    constantData, dynamicFields, metaData);
+                } else {
+                  const constantData = {
+                    action: {
+                      onImage: { eventName: 'onImage' }
+                    }
+                  };
+                  const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                  const dynamicFields = {};
+                  this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+                    constantData, dynamicFields, metaData);
+                }
+              });
+            } else {
+              const constantData = {
+                action: {
+                  onImage: { eventName: 'onImage' }
+                }
+              };
+              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+              const dynamicFields = {};
+              this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+                constantData, dynamicFields, metaData);
+            }
+          });
       }
     });
   }
@@ -194,14 +229,14 @@ export class LearnPageComponent implements OnInit {
   getQueryParams() {
     Observable
       .combineLatest(
-        this.activatedRoute.params,
-        this.activatedRoute.queryParams,
-        (params: any, queryParams: any) => {
-          return {
-            params: params,
-            queryParams: queryParams
-          };
-        })
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams,
+      (params: any, queryParams: any) => {
+        return {
+          params: params,
+          queryParams: queryParams
+        };
+      })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
         this.filters = {};
@@ -210,7 +245,8 @@ export class LearnPageComponent implements OnInit {
             this.filters[key] = value;
           }
         });
-       this.populateEnrolledCourse();
+        this.caraouselData = [];
+        this.populateEnrolledCourse();
       });
   }
 }

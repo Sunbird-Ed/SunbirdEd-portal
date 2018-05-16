@@ -1,6 +1,6 @@
 import { PageApiService, PlayerService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService} from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
@@ -54,6 +54,7 @@ export class ResourceComponent implements OnInit {
   private router: Router;
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  contents: any;
   /**
    * The "constructor"
    *
@@ -61,7 +62,8 @@ export class ResourceComponent implements OnInit {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
-    resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router) {
+    resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
+  public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -84,18 +86,24 @@ export class ResourceComponent implements OnInit {
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse) {
-          this.noResultMessage = {
-            'message': this.resourceService.messages.stmsg.m0007,
-            'messageText': this.resourceService.messages.stmsg.m0006
-          };
           let noResultCounter = 0;
           this.showLoader = false;
           this.caraouselData = apiResponse.result.response.sections;
           _.forEach(this.caraouselData, (value, index) => {
-              _.forEach(this.caraouselData[index].contents, (item, key) => {
-                const action = { left: { displayType: 'rating' } };
-                this.caraouselData[index].contents[key].action = action;
-              });
+              if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
+                const constantData = {
+                  ribbon: {
+                      right: { class: 'ui black right ribbon label' }
+                  },
+                  action: {
+                      onImage: { eventName: 'onImage' }
+                  }
+              };
+                const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                const dynamicFields = { 'ribbon.right.name': ['contentType']};
+                this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
+                  constantData, dynamicFields, metaData);
+              }
           });
           if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {
@@ -106,11 +114,19 @@ export class ResourceComponent implements OnInit {
           }
           if (noResultCounter === this.caraouselData.length) {
             this.noResult = true;
+            this.noResultMessage = {
+              'message': this.resourceService.messages.stmsg.m0007,
+              'messageText': this.resourceService.messages.stmsg.m0006
+            };
           }
         }
       },
       err => {
         this.noResult = true;
+        this.noResultMessage = {
+          'message': this.resourceService.messages.stmsg.m0007,
+          'messageText': this.resourceService.messages.stmsg.m0006
+        };
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
@@ -147,10 +163,11 @@ export class ResourceComponent implements OnInit {
             this.filters[key] = value;
           }
         });
+        this.caraouselData = [];
         this.populatePageData();
       });
   }
   playContent(event) {
-    this.playerService.playContent(event.content);
+    this.playerService.playContent(event.data.metaData);
   }
 }

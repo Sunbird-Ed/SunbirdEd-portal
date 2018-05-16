@@ -20,15 +20,21 @@
                                 </div>
                             </div>
                         </div>
-                        
-                            <div class="row margin-auto padding-top-none">
-                                <div class="twelve wide column">
-                                  <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
-                                  [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                  <a [routerLink]="['flag-content']"> <i class="ui large blue flag outline icon" ></i></a>
-                                  <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope" title="Copy content"><i class="ui large blue clone outline icon"></i></span>
-                                </div>
+
+                        <div class="row margin-auto padding-top-none">
+                            <div class="twelve wide column">
+                                <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
+                                    [maximum]="5"></sui-rating>&nbsp;&nbsp;
+                                <a [routerLink]="['flag-content']">
+                                    <i class="ui large blue flag outline icon"></i>
+                                </a>
+                                <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+                                    (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
+                                    title="Copy content">
+                                    <i class="ui large blue clone outline icon"></i>
+                                </span>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
@@ -47,7 +53,11 @@
                                             <div class="four wide column "></div>
                                             <div class="four wide column ">
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
-                                                    <!-- <add-note shownoteinlecture="true" contentid="contentData.identifier" visibility="showModalInLectureView"></add-note> -->
+                                                    <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                                        <img src="assets/images/takenote.png">
+                                                        <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
+                                                    </a>
                                                 </h2>
                                             </div>
                                         </div>
@@ -70,13 +80,7 @@
                                 </div>
                             </div>
                             <div class="four wide column">
-                                <div class="row">
-                                    <div class="twelve wide column margin-top-20">
-                                        <div class="row">
-                                            <!-- <note-card shownotecard="true" contentid="contentData.identifier"></note-card> -->
-                                        </div>
-                                    </div>
-                                </div>
+                                <app-note-card [ids]="{contentId:contentId}" [createNoteData]="createNoteData"></app-note-card>
                             </div>
                         </div>
                     </div>

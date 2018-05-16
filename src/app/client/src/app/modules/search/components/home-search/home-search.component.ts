@@ -1,5 +1,5 @@
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-   IContents } from '@sunbird/shared';
+   IContents, ICard, UtilService } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { Component, OnInit,  NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,7 +33,7 @@ export class HomeSearchComponent implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
    */
-  searchList: Array<IContents> = [];
+  searchList: Array<ICard> = [];
   /**
    * To navigate to other pages
    */
@@ -100,7 +100,7 @@ export class HomeSearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService, public utilService: UtilService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -132,16 +132,16 @@ export class HomeSearchComponent implements OnInit {
         if (apiResponse.result.count && apiResponse.result.content.length > 0) {
           this.showLoader = false;
           this.noResult = false;
-          this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.searchList, (item, key) => {
-            delete item.contentType;
-            delete item.resourceType;
-            delete item.badgeAssertions;
-            const action = { left: { displayType: 'rating' } };
-            this.searchList[key].action = action;
-          });
+          const constantData = {
+            action: {
+                onImage: { eventName: 'onImage' }
+            }
+        };
+        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+        const dynamicFields = {};
+        this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.noResult = true;
           this.showLoader = false;
