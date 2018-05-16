@@ -55,7 +55,7 @@
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
                                                     <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                                        <img src="assets/common/images/takenote.png">
+                                                        <img src="assets/images/takenote.png">
                                                         <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
                                                     </a>
                                                 </h2>

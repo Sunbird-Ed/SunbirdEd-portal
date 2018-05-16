@@ -140,6 +140,7 @@ app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
+app.all('*/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 
@@ -223,9 +224,17 @@ app.all('/content/data/v1/telemetry',
 }))
 
 
+  // tenant Api's
+  app.get('/v1/tenant/info', tenantHelper.getInfo)
+  app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
+  
+  // proxy urls
+  require('./proxy/contentEditorProxy.js')(app, keycloak)
+  
+
 app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
   telemetryHelper.generateTelemetryForProxy)
-
+  
 app.all('/content/*',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -269,12 +278,7 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
   res.status(200)
   res.end()
 })
-// tenant Api's
-app.get('/v1/tenant/info', tenantHelper.getInfo)
-app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
 
-// proxy urls
-require('./proxy/contentEditorProxy.js')(app, keycloak)
 
 // healthcheck
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
