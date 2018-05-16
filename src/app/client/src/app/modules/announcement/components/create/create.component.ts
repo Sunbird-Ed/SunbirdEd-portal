@@ -251,8 +251,11 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   enableSelectRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
-    if (this.announcementForm.status === 'VALID' && (data.links.length || data.description
-      || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
+    const emptyLinkArray = _.filter(data.links, (links) => {
+      return links.url === '';
+    });
+    if (this.announcementForm.status === 'VALID' && ((data.links.length && emptyLinkArray.length === 0)
+      || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
