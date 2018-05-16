@@ -189,7 +189,23 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req);
+    const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'courseId': 'do_1124785353783377921154',
+    'contentId': 'do_112474267785674752118',
+    'batchId': '01247853957897420815',
+    'status' : 1
+      };
+    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
+      console.log('res', res);
+      if (res !== undefined) {
+        this.courseConsumptionService.updateContentsState(req1).subscribe((updatedRes) => {
+          console.log('res', updatedRes);
+        });
+      }
+    });
+  }
+  public contentProgressEvent(event) {
+    console.log('event', event);
   }
   private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
     return this.courseConsumptionService.getCourseHierarchy(collectionId)

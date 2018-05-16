@@ -12,7 +12,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './learn-page.component.spec.data';
 import { LearnPageComponent } from './learn-page.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseProgressService } from '../../services';
 
 
 describe('LearnPageComponent', () => {
@@ -31,7 +30,7 @@ describe('LearnPageComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
       declarations: [ LearnPageComponent ],
       providers: [{ provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute }, CourseProgressService],
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

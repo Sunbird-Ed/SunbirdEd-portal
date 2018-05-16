@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import {ServerResponse} from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
+import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 @Injectable()
 export class CourseConsumptionService {
 
   courseHierarchy: any;
 
-  constructor(private playerService: PlayerService) { }
+  constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 
   getCourseHierarchy(courseId) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
@@ -25,6 +26,9 @@ export class CourseConsumptionService {
     return this.playerService.getConfigByContent(contentId);
   }
   getContentStatus(req) {
-
+    return this.courseProgressService.getContentsState(req);
+  }
+  updateContentsState(req) {
+    return this.courseProgressService.updateContentsState(req);
   }
 }

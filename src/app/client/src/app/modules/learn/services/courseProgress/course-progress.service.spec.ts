@@ -104,4 +104,12 @@ describe('CourseProgressService', () => {
       }
     );
   });
+
+  xit('should update completed Count', () => {
+    const service = TestBed.get(CourseProgressService);
+    const contentService = TestBed.get(ContentService);
+    service.prepareContentObject(Response.successData.result.contentList);
+    const courseId_batchId = Response.successData.result.contentList[0].courseId + '_' + Response.successData.result.contentList[0].batchId;
+    expect(service.localContentState[courseId_batchId]).toBeDefined();
+  });
 });

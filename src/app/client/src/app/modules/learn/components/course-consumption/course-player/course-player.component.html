@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="ui grid">
                                   <div class="twelve wide column">
-                                    <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+                                    <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig | async"></app-player>
                                   </div>
                                 </div>
                               </div>
