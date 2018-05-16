@@ -79,6 +79,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   };
 
+  curriculum = [];
+
   constructor(contentService: ContentService, route: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -174,13 +176,24 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   parseChildContent(tree) {
     const model = new TreeModel();
+    const mimeTypeCount = {};
     this.treeModel = model.parse(tree);
     this.treeModel.walk((node) => {
       if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+        if (mimeTypeCount[node.model.mimeType]) {
+          mimeTypeCount[node.model.mimeType] = + 1;
+        } else {
+          mimeTypeCount[node.model.mimeType] = 1;
+        }
         this.contentDetails.push({id: node.model.identifier, title: node.model.name});
         this.contentIds.push(node.model.identifier);
       }
     });
+    console.log('mimeTypeCount', mimeTypeCount);
+    _.forEach(mimeTypeCount, (value, key) => {
+      this.curriculum.push({mimeType: key, count: value});
+    });
+    console.log('this.curriculum', this.curriculum);
   }
   fetchContentStatus(data) {
     const req = {
@@ -193,7 +206,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     'courseId': 'do_1124785353783377921154',
     'contentId': 'do_112474267785674752118',
     'batchId': '01247853957897420815',
-    'status' : 1
+    'status' : 2
       };
     this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
       console.log('res', res);
@@ -204,7 +217,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     });
   }
-  public contentProgressEvent(event) {
+  public contentProgressEventnew(event) {
     console.log('event', event);
   }
   private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {

@@ -11,3 +11,7 @@
     overflow: hidden;   
     overflow-wrap: break-word;
 }
+
+.ui.cards>.card.workspace-card {
+    width: 240px;
+}

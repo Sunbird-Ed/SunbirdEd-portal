@@ -21,7 +21,7 @@
                   {{resourceService?.frmelmnts?.btn?.resumecourse}} <i class="caret right icon"></i>
                   </button>
               </div>
-              <div appPermission [permission]="permission">
+              <div *ngIf="permissionService.permissionAvailable" appPermission [permission]="permission">
                  <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
               </div>
           </div>

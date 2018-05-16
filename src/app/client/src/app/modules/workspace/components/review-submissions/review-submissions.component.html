@@ -7,7 +7,7 @@
   <div class="twelve wide column">
     <div class="ui three stackable cards">
       <div *ngFor="let content of reviewContent">
-        <app-card [data]="content" (clickEvent)="contentClick($event)"></app-card>
+        <app-card [data]="content" (clickEvent)="contentClick($event)" [customClass]="'card workspace-card'"></app-card>
       </div>
     </div>
     <div *ngIf="noResult">

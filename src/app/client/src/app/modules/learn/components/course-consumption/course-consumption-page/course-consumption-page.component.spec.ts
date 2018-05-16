@@ -6,6 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {CourseConsumptionService} from '../../../services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
@@ -17,7 +18,7 @@ describe('CourseConsumptionPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule, CoreModule],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
         CourseConsumptionService],

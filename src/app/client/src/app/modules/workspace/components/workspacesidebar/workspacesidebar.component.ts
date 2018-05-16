@@ -24,6 +24,11 @@ export class WorkspacesidebarComponent implements OnInit {
    * reference of config service.
   */
   public config: ConfigService;
+
+  /*
+  roles allowed to create content
+  */
+  createRole: Array<string>;
   /**
    * Draft  access roles
   */
@@ -72,6 +77,7 @@ export class WorkspacesidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
     this.inreviewRole = this.config.rolesConfig.workSpaceRole.inreviewRole;
     this.publishedRole = this.config.rolesConfig.workSpaceRole.publishedRole;

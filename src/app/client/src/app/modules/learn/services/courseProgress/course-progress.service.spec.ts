@@ -22,7 +22,7 @@ describe('CourseProgressService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should get CourseState FromAPI', () => {
+  it('should get course state from API', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successData));
@@ -37,7 +37,7 @@ describe('CourseProgressService', () => {
       }
     );
   });
-  it('should not get CourseState FromAPI', () => {
+  it('should not get course state from API', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.errorData));
@@ -53,34 +53,29 @@ describe('CourseProgressService', () => {
     );
   });
 
-  it('should update CourseState InServer ', () => {
+  it('should update content state in server ', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.returnValue(Observable.of(Response.updateData));
+    const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'courseId': 'do_1124785353783377921154',
+    'contentId': 'do_112474267785674752118',
+    'batchId': '01247853957897420815',
+    'status' : 2
+      };
     const reqData = {
       'userId': '0f451be5-2c83-4688-9089-fc329ce3bc18',
-    'contents': [
-            {
-            'contentId': 'do_2122528233578250241233',
-            'batchId': '115',
-            'status': 2,
-            'lastAccessTime': '2017-05-15 10:58:07:509+0530',
-             'courseId': 'do_212282810437918720179',
-             'result': 'pass',
-             'score': '10',
-             'grade': 'B'
-            }
-     ]
+    'contents': [req1]
     };
-    service.updateCourseStateInServer();
-    service.updateCourseStateInServer(reqData).subscribe(
+    service.updateContentStateInServer(req1);
+    service.updateContentStateInServer(reqData).subscribe(
       apiResponse => {
          expect(apiResponse.params.status).toBe('success');
       }
     );
   });
 
-  it('should not update CourseState InServer ', () => {
+  it('should not update content state in server ', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.returnValue(Observable.of(Response.UpdateDataError));
@@ -97,19 +92,17 @@ describe('CourseProgressService', () => {
             }
      ]
     };
-    service.updateCourseStateInServer();
-    service.updateCourseStateInServer(reqData).subscribe(
+    const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'courseId': 'do_1124785353783377921154',
+    'contentId': 'do_112474267785674752118',
+    'batchId': '01247853957897420815',
+    'status' : 2
+      };
+    service.updateContentStateInServer(req1);
+    service.updateContentStateInServer(reqData).subscribe(
       apiResponse => {
          expect(apiResponse.params.status).not.toBe('success');
       }
     );
-  });
-
-  xit('should update completed Count', () => {
-    const service = TestBed.get(CourseProgressService);
-    const contentService = TestBed.get(ContentService);
-    service.prepareContentObject(Response.successData.result.contentList);
-    const courseId_batchId = Response.successData.result.contentList[0].courseId + '_' + Response.successData.result.contentList[0].batchId;
-    expect(service.localContentState[courseId_batchId]).toBeDefined();
   });
 });

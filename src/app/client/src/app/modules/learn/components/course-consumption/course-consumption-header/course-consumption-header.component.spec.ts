@@ -4,6 +4,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {CourseConsumptionService} from '../../../services';
+import {SharedModule} from '@sunbird/shared';
+import {CoreModule} from '@sunbird/core';
 
 describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
@@ -15,6 +17,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseConsumptionHeaderComponent ],
+      imports: [SharedModule, CoreModule],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
         CourseConsumptionService],
       schemas: [NO_ERRORS_SCHEMA]

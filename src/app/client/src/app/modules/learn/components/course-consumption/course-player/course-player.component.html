@@ -31,9 +31,9 @@
                                 <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                                 <!-- <course-discussions showaskquestion="true"></course-discussions> -->
                             </div>
-                            <!-- <div class='three wide column'>
-                                <batch-card ng-show="toc.batchCardShow" showbatchcard="true" coursecreatedby="courseHierarchy.createdBy"></batch-card>
-                                <div ng-show="toc.batchDetailsShow">
+                            <div class='three wide column'>
+                                <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
+                                <!-- <div ng-show="toc.batchDetailsShow">
                                     <div class="rightSideSectionCards ui card">
                                         <div class="content">
                                             <div class="header">{{resourceService.frmelmnts.lbl.batchdetails}}</div>
@@ -54,24 +54,25 @@
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15 margin-top-15">
+                                </div> -->
+                                <!-- <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15 margin-top-15">
                                     <add-note shownoteincourse="true" courseid="toc.courseId"></add-note>
-                                </div>
-                                <div>
+                                </div> -->
+                                <!-- <div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
-                                </div>
-                                <div>
+                                </div> -->
+                                <!-- <div>
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div>
-                                </div>
+                                </div> -->
                                 <br>
-                                <div ng-include=" 'views/course/facultyCard.html'" class="margin-bottom-15"></div>
-                                <div class="courseupdate">
+                                <app-carriculum-card *ngIf="curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                                <br>
+                                <!-- <div class="courseupdate">
                                     <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFilterWithMDY}}</b>
                                     <br>
                                     <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFilterWithMDY}}</b>
-                                </div>
-                            </div> -->
+                                </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +93,7 @@
                                 </div>
                                 <div class="ui grid">
                                   <div class="twelve wide column">
-                                    <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig | async"></app-player>
+                                    <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig | async"></app-player>
                                   </div>
                                 </div>
                               </div>

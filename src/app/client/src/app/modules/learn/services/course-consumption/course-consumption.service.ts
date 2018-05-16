@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, } from '@sunbird/core';
 import {ServerResponse} from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import { CourseProgressService } from '../courseProgress/course-progress.service';

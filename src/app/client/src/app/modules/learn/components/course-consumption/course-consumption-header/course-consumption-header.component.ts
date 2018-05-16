@@ -3,7 +3,7 @@ import { CourseConsumptionService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CollectionHierarchyAPI, ContentService, CoursesService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
@@ -13,9 +13,9 @@ import { ResourceService } from '@sunbird/shared';
 export class CourseConsumptionHeaderComponent implements OnInit {
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
-  permission = ['CONTENT_CREATOR'];
+  permission = ['COURSE_MENTOR'];
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    private resourceService: ResourceService, private router: Router) {
+    public resourceService: ResourceService, private router: Router, public permissionService: PermissionService) {
 
     }
 

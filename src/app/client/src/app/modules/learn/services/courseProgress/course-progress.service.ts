@@ -22,19 +22,6 @@ export class CourseProgressService {
    * Reference of config service
    */
   public configService: ConfigService;
-  /**
-   * BehaviorSubject Containing framework data.
-   */
-  private _courseStatesData: CourseProgress;
-  /**
-   * BehaviorSubject Containing framework data.
-   */
-  private _courseStatesData$ = new BehaviorSubject<CourseStates>(undefined);
-  /**
-   * Read only observable Containing framework data.
-   */
-  public readonly courseStatesData$: Observable<CourseStates> = this._courseStatesData$.asObservable();
-
 
   public courseProgress: any = {};
 
@@ -64,7 +51,6 @@ export class CourseProgressService {
     };
     return this.contentService.post(channelOptions).map(
       (courseStates: ServerResponse) => {
-        console.log('courseStates api res', courseStates);
         return courseStates;
       });
   }
@@ -129,7 +115,6 @@ export class CourseProgressService {
 * @instance
 */
   public getContentsState(req) {
-    console.log('req', req);
     const reqData = {
       userId: req.userId,
       courseId: req.courseId,
@@ -138,7 +123,6 @@ export class CourseProgressService {
     this.totalContentCount = req.contentIds.length;
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
-    console.log('courseProgress', courseProgress);
     if (courseProgress !== undefined) {
       return Observable.of(courseProgress);
     } else {
@@ -154,11 +138,9 @@ export class CourseProgressService {
               totalCount: this.totalContentCount
             };
           }
-          console.log('this.courseProgress', this.courseProgress);
           return this.courseProgress[courseId_batchId];
         }).catch(
         (err: ServerResponse) => {
-          console.log('err', err);
           return Observable.of(err);
         }
         );
@@ -166,16 +148,12 @@ export class CourseProgressService {
   }
 
   public updateContentsState(req) {
-    console.log('req', req);
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
     if (courseProgress !== undefined) {
       const i = _.findIndex(courseProgress.content,
         { contentId: req.contentId, courseId: req.courseId });
-      console.log('i', i);
-      console.log(' courseProgress.content[i].status', courseProgress.content[i].status);
-      if (req.status < courseProgress.content[i].status) {
-        console.log('update');
+      if (req.status > courseProgress.content[i].status) {
         courseProgress.content[i].status = req.status;
         this.prepareContentObject(courseProgress.content, courseId_batchId);
         return this.updateContentStateInServer(courseProgress.content[i]).map(
@@ -183,12 +161,10 @@ export class CourseProgressService {
             return this.courseProgress[courseId_batchId];
           }).catch(
           (err: ServerResponse) => {
-            console.log('err', err);
             return Observable.of(err);
           }
           );
       } else {
-        console.log('no update');
         return Observable.of(this.courseProgress[courseId_batchId]);
       }
     } else {
