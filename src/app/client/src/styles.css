@@ -2828,11 +2828,12 @@ iframe.iziModal-iframe {
   cursor: pointer;
 }
 
-.ui.fluid.search.dropdown img {
-  width: 2.1666em !important;
+.ui.fluid.search.dropdown .menu > .item > img {
+  width: 2.1666em;
   vertical-align: middle;
-  height: 2.1666em !important;
+  height: 2.1666em;
 }
+
 .ui.label > img {
   width: 2.1666em !important;
   vertical-align: middle;
