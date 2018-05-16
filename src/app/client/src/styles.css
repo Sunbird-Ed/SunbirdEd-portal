@@ -376,7 +376,7 @@
   float: right !important;
 }
 .right-float {
-  float: right;
+  float: right !important;
 }
 .width-100 {
   width: 100% !important;
@@ -2180,9 +2180,10 @@ ul.fancytree-container li {
   font-size: 0.89em!important;
   line-height: 14px!important;
 }
-.addeditprofile {
+.add-edit-btn-profile {
   float: right;
   margin: 0 0 0 1em;
+  cursor: pointer;
 }
 .profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:last-child) {
   padding: 12px 0 12px 0;
@@ -2253,7 +2254,7 @@ ul.fancytree-container li {
 .ui.basic.label:hover {
   border-color: #007AFF !important;
 }
-.ui.bottom.attached.tabular.menu.userSkillMore {
+.ui.bottom.attached.tabular.menu.expand-or-minimize-btn {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -2261,24 +2262,17 @@ ul.fancytree-container li {
   min-height: 1.28571429em;
   margin-top: -0.1em;
 }
-.userSkillMoreIcon {
-  margin-right: -0.4em !important;
+
+.ui.bottom.attached.tabular.menu .item.expand-or-minimize-btn-pad {
+  padding: 10px 10px 14px 15px;
 }
-.ProfilePagePermissionBtn {
-  border-radius: 3px !important;
-  font-size: 1.1em !important;
-  height: 1.5em !important;
-  padding: 3px !important;
-  margin-left: 10px !important;
-}
-.ProfilePermissionBtnTop {
-  top: 17px !important;
-}
-.ui.addSkillsMarginCursor.multiple.dropdown > .label {
-  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
-}
-.addViewMoreBtn {
-  padding: 10px 10px 14px 15px !important;
+
+.ui.icon.button.profile-page-permission-btn {
+  border-radius: 3px ;
+  font-size: 1.1em;
+  height: 1.5em;
+  padding: 3px;
+  margin-left: 10px;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
@@ -2848,14 +2842,46 @@ iframe.iziModal-iframe {
 } 
 
 .overflow-word-wrap {
-  overflow-wrap: break-word;
+  overflow-wrap: break-word !important;
 }
 
 /* font used for view all and read more*/
-.view-more {
+.expand-or-minimize {
   font-family: 'sunbirdboldfont';
   font-size: 1em;
   color: #007AFF;
+  cursor: pointer;
 }
 
+.ui.fluid.search.dropdown img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
+.ui.label > img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
 
+.primary-text-color-sunbird {
+  color: #333 !important;
+}
+.secondary-text-color-sunbird {
+  color: #7c7b7b !important;
+}
+
+.ui.card .card-desc-fixed-height {
+  color: #7c7b7b;
+  font-family: 'sunbirdregularfont';
+  font-size: 1em;
+  height: 2.8em;
+  max-height: 2.8em;
+  overflow-wrap: break-word;
+}
+
+.ui.segment .segment-heading {
+  font-family: 'sunbirdboldfont';
+  font-weight: 700;
+  font-size: 1.25em;
+}

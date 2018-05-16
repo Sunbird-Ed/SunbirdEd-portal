@@ -49,16 +49,16 @@
       <!--Profile summary-->
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
         <div class="margin-top-20 ui raised segment">
-          <div class="header announcementCard-header">
-            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
+          <div class="header">
+            <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
           <div class="description">
             <div *ngIf="!descriptionReadMore">
               <span>{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
+              <span class="ui add-edit-btn-profile" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
             </div>
             <div *ngIf="descriptionReadMore"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
+              <span class="ui add-edit-btn-profile" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
             </div>
           </div>
         </div>
@@ -161,8 +161,8 @@
             </div>
           </div>
         </div>
-        <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="userDetails.skills.length >= skillLimit">
-          <div class="active item addViewMoreBtn">
+        <div class="ui bottom attached tabular menu  expand-or-minimize-btn ng-scope " *ngIf="userDetails.skills.length >= skillLimit">
+          <div class="active item  expand-or-minimize-btn-pad">
             <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewmore}}
