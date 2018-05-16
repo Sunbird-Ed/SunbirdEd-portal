@@ -31,8 +31,8 @@
           </div>
       </div>
     </div>
-    <!-- <div class="ui bottom attached batchCard button" ui-sref="CreateBatch({courseId: batch.courseId, coursecreatedby: batch.coursecreatedby})" ng-show="batch.isMentor" ng-click="resourceService.generateInteractEvent('batch',batch.courseId,'create-batch','1.0','add-batch','batch-add')">
+    <div class="ui bottom attached batchCard button" (click)="createBatch()" *ngIf="courseMentor">
       <a><i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</a>
-    </div> -->
+    </div>
   </div>
   <!-- <batch-details></batch-details> -->

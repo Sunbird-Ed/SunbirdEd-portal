@@ -43,6 +43,7 @@ export class BatchDetailsComponent implements OnInit {
     }
   }
   fetchBatchList() {
+    this.getAllCourseBatchDetails();
     console.log('batchStatus', this.batchStatus);
   }
   getAllCourseBatchDetails() {
@@ -99,6 +100,9 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   batchUpdate(batch) {
+
+  }
+  createBatch() {
 
   }
   batchDetails(batch) {
