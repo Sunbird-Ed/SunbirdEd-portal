@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -67,7 +67,8 @@ export class DialCodeComponent implements OnInit {
   searchResults: Array<any>;
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
-    searchService: SearchService, toasterService: ToasterService) {
+    searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
+    public utilService: UtilService) {
     this.resourceService = resourceService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -95,7 +96,19 @@ export class DialCodeComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
-          this.searchResults = apiResponse.result.content;
+          // this.searchResults = apiResponse.result.content;
+          const constantData = {
+            ribbon: {
+              right: { class: 'ui black right ribbon label' },
+              left: { class: 'ui blue left ribbon label' }
+            },
+            action: {
+              onImage: { eventName: 'onImage' }
+            }
+          };
+          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+          const dynamicFields = { 'ribbon.right.name': ['contentType'] , 'ribbon.left.name': ['badgeAssertions.0.badgeClassName']};
+          this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.toasterService.error(this.resourceService.messages.stmsg.m0006);
         }
@@ -113,11 +126,19 @@ export class DialCodeComponent implements OnInit {
     }
   }
 
-  public openContent(item) {
-    if (item.mimeType === 'application/vnd.ekstep.content-collection') {
-      this.router.navigate(['resources/play/collection', item.identifier]);
+  // public openContent(item) {
+  //   if (item.mimeType === 'application/vnd.ekstep.content-collection') {
+  //     this.router.navigate(['resources/play/collection', item.identifier]);
+  //   } else {
+  //     this.router.navigate(['resources/play/content', item.identifier, item.name]);
+  //   }
+  // }
+  public getEvent(event) {
+    console.log('event', event);
+    if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      this.router.navigate(['play/collection', event.data.metaData.identifier]);
     } else {
-      this.router.navigate(['resources/play/content', item.identifier, item.name]);
+      this.router.navigate(['play/content', event.data.metaData.identifier]);
     }
   }
 
