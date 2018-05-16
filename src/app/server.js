@@ -140,6 +140,7 @@ app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
+app.all('*/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 
