@@ -52,10 +52,20 @@ export class TenantService extends DataService {
    * API call to gather organization details.
    * @param orgSlug Organization details passed from main-header component.
    */
-  public getTenantInfo(orgSlug) {
-    const option = {
-      url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}${orgSlug}`
-    };
+  public getTenantInfo(orgSlug?) {
+    if (orgSlug) {
+      const option = {
+        url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}${orgSlug}`
+      };
+      this.tenantApi(option);
+    } else {
+      const option = {
+        url: `${this.config.urlConFig.URLS.TENANT.INFO + '/'}`
+      };
+      this.tenantApi(option);
+    }
+  }
+  public tenantApi(option) {
     this.get(option).subscribe(
       (apiResponse: ServerResponse) => {
         this._tenantData$.next({ err: null, tenantData: apiResponse.result });
@@ -64,6 +74,5 @@ export class TenantService extends DataService {
         this._tenantData$.next({ err: err, tenantData: undefined });
       }
     );
-
   }
 }

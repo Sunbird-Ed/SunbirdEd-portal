@@ -76,23 +76,41 @@ export class AppComponent implements OnInit {
       this.permissionService.initialize();
       this.courseService.initialize();
       this.initTelemetryService();
+      this.userService.userData$.subscribe(
+        (user: IUserData) => {
+          if (user && !user.err) {
+            const slug = _.get(user, 'userProfile.rootOrg.slug');
+            this.initTenantService(slug);
+          }
+        });
+    } else {
+      // this.tenantService.getTenantInfo(); // move to a function
+      // this.tenantService.tenantData$.subscribe( // move to a function
+      //   data => {
+      //     if (data && !data.err) {
+      //       document.title = data.tenantData.titleName;
+      //       document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
+      //     }
+      //   }
+      // );
+      this.initTenantService();
     }
 
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          const slug = _.get(user, 'userProfile.rootOrg.slug');
-          this.tenantService.getTenantInfo(slug);
-          this.tenantService.tenantData$.subscribe(
-            data => {
-              if (data && !data.err) {
-                document.title = data.tenantData.titleName;
-                document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
-              }
-            }
-          );
-        }
-      });
+    // this.userService.userData$.subscribe(
+    //   (user: IUserData) => {
+    //     if (user && !user.err) {
+    //       const slug = _.get(user, 'userProfile.rootOrg.slug');
+    //       this.tenantService.getTenantInfo(slug);
+    //       this.tenantService.tenantData$.subscribe(
+    //         data => {
+    //           if (data && !data.err) {
+    //             document.title = data.tenantData.titleName;
+    //             document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
+    //           }
+    //         }
+    //       );
+    //     }
+    //   });
   }
 
   public initTelemetryService() {
@@ -140,5 +158,17 @@ export class AppComponent implements OnInit {
         }
       });
     });
+  }
+
+  private initTenantService(slug?) {
+    this.tenantService.getTenantInfo(slug);
+    this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          document.title = data.tenantData.titleName;
+          document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
+        }
+      }
+    );
   }
 }
