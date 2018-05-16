@@ -10,6 +10,7 @@ import { LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderCompo
 import { CourseConsumptionService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
+import { BatchDetailsComponent } from './components/batch/batch-details/batch-details.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,6 +23,7 @@ import { DiscussionModule } from '@sunbird/discussion';
     DiscussionModule
   ],
   providers: [CourseConsumptionService],
-  declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent]
+  declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
+    CourseConsumptionPageComponent, BatchDetailsComponent]
 })
 export class LearnModule { }
