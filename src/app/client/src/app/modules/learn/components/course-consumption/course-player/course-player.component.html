@@ -33,28 +33,6 @@
                             </div>
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
-                                <!-- <div ng-show="toc.batchDetailsShow">
-                                    <div class="rightSideSectionCards ui card">
-                                        <div class="content">
-                                            <div class="header">{{resourceService.frmelmnts.lbl.batchdetails}}</div>
-                                        </div>
-                                        <div class="content">
-                                            <div class="header">{{toc.selectedBatchInfo.name}}</div>
-                                            <div class="selectedBatchMeta meta">
-                                                <span class="date">{{toc.selectedBatchInfo.startDate | date: "dd MMM yyyy"}} - {{toc.selectedBatchInfo.endDate | date: "dd MMM yyyy"}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="selectedBatchContent extra content">
-                                            <span class="right floated">
-                                                {{toc.selectedParticipants}}
-                                                {{resourceService.frmelmnts.lbl.learners}}
-                                            </span>
-                                            <span>
-                                                {{toc.selectedBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <!-- <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15 margin-top-15">
                                     <add-note shownoteincourse="true" courseid="toc.courseId"></add-note>
                                 </div> -->
@@ -65,11 +43,11 @@
                                     <div ng-include=" 'views/course/carriculumCard.html'"></div>
                                 </div> -->
                                 <br>
-                                <!-- <div class="courseupdate">
-                                    <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFilterWithMDY}}</b>
+                                <div class="courseupdate">
+                                    <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
                                     <br>
-                                    <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFilterWithMDY}}</b>
-                                </div> -->
+                                    <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,5 +128,6 @@
         <div class="one wide column"></div>
     </div>
 </div>
+<router-outlet></router-outlet>
 
 

@@ -65,7 +65,6 @@ export class CourseConsumptionPageComponent implements OnInit {
           } else {
             this.showLoader = false;
             this.enrolledCourse = false;
-            this.router.navigate([`/learn/course/${this.courseId}`]);
           }
         } else if (enrolledCourses && enrolledCourses.err) {
           this.enrolledCourse = false;

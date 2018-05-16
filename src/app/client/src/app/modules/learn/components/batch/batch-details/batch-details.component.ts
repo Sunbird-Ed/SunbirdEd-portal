@@ -1,3 +1,4 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService, BatchService } from '@sunbird/core';
@@ -19,13 +20,15 @@ export class BatchDetailsComponent implements OnInit {
   showLoader = true;
   showError = false;
   userNames = {};
-  noBatchsFound = false;
+  showBatchList = false;
+  enrolledBatchInfo: any;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
   ];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-  public userService: UserService, public batchService: BatchService, public toasterService: ToasterService) {
+  public userService: UserService, public batchService: BatchService, public toasterService: ToasterService,
+  public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
@@ -39,48 +42,49 @@ export class BatchDetailsComponent implements OnInit {
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
     } else {
-      this.getAllCourseBatchDetails();
+      this.getAllBatchDetails();
     }
   }
   fetchBatchList() {
-    this.getAllCourseBatchDetails();
-    console.log('batchStatus', this.batchStatus);
+    this.getAllBatchDetails();
   }
-  getAllCourseBatchDetails() {
-    this.noBatchsFound = true;
-    const request: any = {
-      request: {
-        filters: {
-          status: this.batchStatus.toString(),
-          courseId: this.courseId
-        },
-        sort_by: { createdDate: 'desc' }
-      }
+  getAllBatchDetails() {
+    this.showBatchList = false;
+    this.batchList = [];
+    const searchParams: any = {
+      filters: {
+        status: this.batchStatus.toString(),
+        courseId: this.courseId
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
     };
     if (this.courseMentor) {
-      request.request.filters.createdBy = this.userService.userid;
+      searchParams.filters.createdBy = this.userService.userid;
     } else {
-      request.request.filters.enrollmentType = 'open';
+      searchParams.filters.enrollmentType = 'open';
     }
-    this.batchService.getBatchDetails(request).subscribe((data: ServerResponse) => {
-      console.log(data);
+    this.batchService.getAllBatchDetails(searchParams).subscribe((data: ServerResponse) => {
       if (data.result.response.content && data.result.response.content.length > 0) {
         this.batchList = data.result.response.content;
         this.fetchUserDetails();
       } else {
-        this.noBatchsFound = true;
-        this.showError = false;
+        this.showBatchList = true;
         this.showLoader = false;
       }
     },
     (err: ServerResponse) => {
+      this.showBatchList = true;
       this.showLoader = false;
-      this.showError = true;
       this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
   getEnrolledCourseBatchDetails() {
-
+    this.batchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
+      this.enrolledBatchInfo = data.result.response;
+      this.enrolledBatchInfo.participant = _.isUndefined(this.enrolledBatchInfo.participant) ? []
+      : this.enrolledBatchInfo.participant;
+    });
   }
   fetchUserDetails() {
     _.forEach(this.batchList, (val) => {
@@ -96,16 +100,21 @@ export class BatchDetailsComponent implements OnInit {
       _.forEach(res.result.response.content, (user) =>  {
         this.userNames[user.identifier] = user;
       });
-      console.log(this.batchList, this.userNames);
+      this.showBatchList = true;
+    }, (err) => {
+      this.showBatchList = true;
     });
   }
   batchUpdate(batch) {
-
+    this.router.navigate(['update/batch', this.batchId]);
+    console.log('Update batch', batch);
   }
   createBatch() {
-
+    console.log('create batch');
+    this.router.navigate(['create/batch']);
   }
-  batchDetails(batch) {
-
+  enrollBatch(batch) {
+    this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
+    console.log('show batch details', batch);
   }
 }
