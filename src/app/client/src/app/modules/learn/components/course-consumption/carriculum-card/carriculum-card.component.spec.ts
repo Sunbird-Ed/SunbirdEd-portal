@@ -1,13 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CarriculumCardComponent } from './carriculum-card.component';
-
+import {SharedModule} from '@sunbird/shared';
+import {CoreModule} from '@sunbird/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('CarriculumCardComponent', () => {
   let component: CarriculumCardComponent;
   let fixture: ComponentFixture<CarriculumCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, SharedModule, CoreModule],
       declarations: [ CarriculumCardComponent ]
     })
     .compileComponents();

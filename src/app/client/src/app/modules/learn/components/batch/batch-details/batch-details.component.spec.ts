@@ -3,6 +3,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
 import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
+import { SuiModule } from 'ng2-semantic-ui';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
@@ -10,8 +12,9 @@ describe('BatchDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, CoreModule],
-      declarations: [ BatchDetailsComponent ]
+      imports: [HttpClientTestingModule, SharedModule, CoreModule, SuiModule],
+      declarations: [ BatchDetailsComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -15,13 +15,16 @@ describe('CourseConsumptionPageComponent', () => {
     'params': Observable.from([{ pageNumber: '1' }]),
   'queryParams':  Observable.from([{ subject: ['English'] }])
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, CoreModule],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        CourseConsumptionService],
+        CourseConsumptionService,  { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

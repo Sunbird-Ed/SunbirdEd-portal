@@ -4,6 +4,7 @@ import {CoreModule} from '@sunbird/core';
 import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 describe('CourseConsumptionService', () => {
   class RouterStub {
@@ -13,7 +14,8 @@ describe('CourseConsumptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, CoreModule],
-      providers: [CourseConsumptionService, { provide: Router, useClass: RouterStub }]
+      providers: [CourseConsumptionService, CourseProgressService,
+        { provide: Router, useClass: RouterStub }]
     });
   });
 

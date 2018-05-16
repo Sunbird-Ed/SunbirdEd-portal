@@ -6,10 +6,12 @@ import { CoreModule } from '@sunbird/core';
 
 import { SharedModule } from '@sunbird/shared';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 describe('BatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule, CoreModule],
       providers: [BatchService]
     });
   });
