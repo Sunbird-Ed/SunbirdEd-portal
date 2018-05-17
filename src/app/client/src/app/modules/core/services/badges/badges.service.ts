@@ -65,7 +65,7 @@ export class BadgesService {
           for (const detailedAssertion of detailedAssertions) {
             const badgeFound: any = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId });
             if (badgeFound) {
-                detailedAssertion.description = badgeFound.description;
+              detailedAssertion.description = badgeFound.description;
             }
             observer.next(detailedAssertion);
           }
@@ -73,5 +73,12 @@ export class BadgesService {
         }
       });
     });
+  }
+  public addBadge(req) {
+    const option = {
+      url: this.config.urlConFig.URLS.BADGE.CREATE,
+      data: {request: req}
+    };
+    return this.learner.post(option);
   }
 }

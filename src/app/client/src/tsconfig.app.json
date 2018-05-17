@@ -51,6 +51,9 @@
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"
+      ],
+      "@sunbird/badge": [
+        "app/modules/content-badge"
       ]
     },
     "module": "es2015",
