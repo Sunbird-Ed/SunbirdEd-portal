@@ -142,8 +142,9 @@ export class LearnPageComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         if (apiResponse && apiResponse.result.response.sections.length > 0) {
           this.showLoader = false;
-          this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
-          this.processActionObject();
+         // const sections = apiResponse.result.response.sections;
+         const sections = this.processActionObject(apiResponse.result.response.sections);
+         this.caraouselData = this.caraouselData.concat(sections);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -164,55 +165,48 @@ export class LearnPageComponent implements OnInit {
   /**
    * This method process the action object.
    */
-  processActionObject() {
-    _.forEach(this.caraouselData, (value, index) => {
-      if (value.name !== 'My Courses') {
-          _.forEach(this.caraouselData[index].contents, (value1, index1) => {
-            this.content = this.caraouselData[index].contents;
-            if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-              _.forEach(this.enrolledCourses, (value2, index2) => {
-                if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                  const constantData = {
-                    action: {
-                      right: {
-                        class: 'ui blue basic button',
-                        eventName: 'Resume',
-                        displayType: 'button',
-                        text: 'Resume'
-                      },
-                      onImage: { eventName: 'onImage' }
-                    }
-                  };
-                  const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-                  const dynamicFields = {};
-                  this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
+  processActionObject(sections) {
+  const enrolledCoursesId = [];
+  _.forEach(this.enrolledCourses, (value, index) => {
+   enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
+  });
+  console.log(enrolledCoursesId);
+  _.forEach(sections, (value, index) => {
+     _.forEach(sections[index].contents, (value2, index2) => {
+       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+        if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) === 0 ) {
+          const constantData = {
+            action: {
+              right: this.configService.appConfig.action.right,
+              onImage:  this.configService.appConfig.action.onImage
+            }  };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                   const dynamicFields = {};
+                   sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                     constantData, dynamicFields, metaData);
-                } else {
-                  const constantData = {
-                    action: {
-                      onImage: { eventName: 'onImage' }
-                    }
-                  };
-                  const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-                  const dynamicFields = {};
-                  this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
-                    constantData, dynamicFields, metaData);
-                }
-              });
-            } else {
-              const constantData = {
-                action: {
-                  onImage: { eventName: 'onImage' }
-                }
-              };
-              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-              const dynamicFields = {};
-              this.caraouselData[index].contents = this.utilService.getDataForCard(this.content,
-                constantData, dynamicFields, metaData);
-            }
-          });
+        } else {
+          const constantData = {
+            action: {
+              onImage:  this.configService.appConfig.action.onImage
+            }  };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                   const dynamicFields = {};
+                   sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+                     constantData, dynamicFields, metaData);
+        }
+       } else {
+        const constantData = {
+          action: {
+            onImage:  this.configService.appConfig.action.onImage
+          }  };
+          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                 const dynamicFields = {};
+                 sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+                   constantData, dynamicFields, metaData);
       }
-    });
+     });
+  });
+    return sections;
   }
   /**
  *This method calls the populateEnrolledCourse
