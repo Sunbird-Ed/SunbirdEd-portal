@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from './../config/config.service';
 import { FineUploader, UIOptions } from 'fine-uploader';
 import { ToasterService } from './../toaster/toaster.service';
@@ -11,7 +11,10 @@ import * as _ from 'lodash';
  * @class FileUploadService
  */
 export class FileUploadService {
-
+  /**
+   * To listen event after adding/removing files
+   */
+  uploadEvent = new EventEmitter();
   /**
    * File uploader
    */
@@ -124,6 +127,7 @@ export class FileUploadService {
             fileDetails.mimetype = this.getFile(id).type;
             fileDetails.size = self.formatFileSize(this.getSize(id));
             self.attachedFiles.push({ ...fileDetails });
+            self.uploadEvent.emit('uploaded');
           }
         },
         onSubmitted: function (id, name) {
@@ -133,6 +137,7 @@ export class FileUploadService {
           _.forEach(self.attachedFiles, (value, key) => {
             if ( value && value.name === name) {
               self.attachedFiles.splice(key, 1);
+              self.uploadEvent.emit('removed');
             }
           });
         }

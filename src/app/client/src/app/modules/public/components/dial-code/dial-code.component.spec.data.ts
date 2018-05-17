@@ -6,5 +6,61 @@ export const Response = {
       'resmsgid': 'e3a9d900-5284-11e8-a042-f5d5c4eb1686', 'msgid': 'e3a39770-5284-11e8-b0c4-bb12c891d4ac', 'status': 'successful',
       'err': null, 'errmsg': null
     }, 'responseCode': 'OK', 'result': { 'count': 0, 'content': [] }
+  },
+  resultdata: [{
+    'ribbon': {
+      'left': {
+        'class': 'ui blue left ribbon label',
+        'name': undefined
+      },
+      'right': {
+        'class': 'ui black right ribbon label',
+        'name': 'LessonPlan'
+      }
+    },
+    'description': undefined,
+    'image': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112485067337392128145/artifact/2_1466416664900.thumb.jpg`,
+    'action': {
+      'onImage': { eventName: 'onImage' }
+    },
+    'metaData': {
+      'contentType': 'LessonPlan',
+      'framework': 'NCF',
+      'identifier': 'do_112485067337392128145',
+      'mimeType': 'application/vnd.ekstep.content-collection'
+    },
+    'name': 'lp test 4',
+    'rating': '0'
+  }],
+
+  event: {
+    action: {
+      eventName: 'onImage'
+    },
+    data: {
+      'ribbon': {
+        'left': {
+          'class': 'ui blue left ribbon label',
+          'name': undefined
+        },
+        'right': {
+          'class': 'ui black right ribbon label',
+          'name': 'LessonPlan'
+        }
+      },
+      'description': undefined,
+      'image': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_112485067337392128145/artifact/2_1466416664900.thumb.jpg`,
+      'action': {
+        'onImage': { eventName: 'onImage' }
+      },
+      'metaData': {
+        'contentType': 'LessonPlan',
+        'framework': 'NCF',
+        'identifier': 'do_112485067337392128145',
+        'mimeType': 'application/vnd.ekstep.content-collection'
+      },
+      'name': 'lp test 4',
+      'rating': '0'
+    }
   }
 };
