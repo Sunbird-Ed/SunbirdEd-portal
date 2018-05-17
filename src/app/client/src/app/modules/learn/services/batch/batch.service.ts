@@ -7,7 +7,7 @@ import {SearchParam, LearnerService, UserService, ContentService, SearchService 
 
 @Injectable()
 export class BatchService {
-
+  private _enrollBatchDetails: any;
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
@@ -45,5 +45,12 @@ export class BatchService {
       url: `${this.config.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
     };
     return this.learnerService.get(option);
+  }
+  set enrollBatchDetails(enrollBatchDetails: any) {
+    this._enrollBatchDetails = enrollBatchDetails;
+  }
+  getEnrollBatchDetails(bathId) {
+    if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifer) {
+    }
   }
 }

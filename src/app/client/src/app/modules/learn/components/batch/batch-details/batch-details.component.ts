@@ -85,18 +85,18 @@ export class BatchDetailsComponent implements OnInit {
       this.enrolledBatchInfo = data.result.response;
       this.enrolledBatchInfo.participant = _.isUndefined(this.enrolledBatchInfo.participant) ? []
       : this.enrolledBatchInfo.participant;
-    });
+    }, );
   }
   fetchUserDetails() {
     _.forEach(this.batchList, (val) => {
       this.userList.push(val.createdBy);
     });
     this.userList = _.compact(_.uniq(this.userList));
-        const request =  {
-          filters: {
-            identifier: this.userList
-          }
-      };
+    const request =  {
+      filters: {
+        identifier: this.userList
+      }
+    };
     this.batchService.getUserDetails(request).subscribe((res) => {
       _.forEach(res.result.response.content, (user) =>  {
         this.userNames[user.identifier] = user;
@@ -107,15 +107,13 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   batchUpdate(batch) {
-    this.router.navigate(['update/batch', this.batchId]);
-    console.log('Update batch', batch);
+    this.router.navigate(['update/batch', this.batchId], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
-    console.log('create batch');
-    this.router.navigate(['create/batch']);
+    this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
-    console.log('show batch details', batch);
+    this.batchService.enrollBatchDetails(batch);
   }
 }
