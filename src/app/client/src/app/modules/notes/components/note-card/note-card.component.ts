@@ -138,6 +138,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.createNoteData) {
+    this.notesList = this.notesList || [];
     this.notesList.unshift(this.createNoteData);
     this.setSelectedNote(this.notesList[0], 0);
     this.showCreateEditor = false;

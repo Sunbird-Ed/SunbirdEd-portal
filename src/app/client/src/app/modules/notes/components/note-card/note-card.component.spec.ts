@@ -97,4 +97,9 @@ describe('NoteCardComponent', () => {
     expect(component.notesList).toBeUndefined();
   });
 
+  it('Should not update notesList value if notesList is unavailable and  createNoteData is available', () => {
+    component.createNoteData = response.testNote;
+    component.ngOnChanges();
+    expect(component.notesList[0]).toBe(component.createNoteData);
+  });
 });
