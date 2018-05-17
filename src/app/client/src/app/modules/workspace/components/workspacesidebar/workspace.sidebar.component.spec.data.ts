@@ -37,7 +37,7 @@ export const mockRes = {
       'CONTENT_REVIEWER',
       'CONTENT_REVIEW'
     ],
-    'startRole': [
+    'createRole': [
     'CONTENT_CREATOR',
     'CONTENT_CREATION',
     'CONTENT_REVIEWER',
