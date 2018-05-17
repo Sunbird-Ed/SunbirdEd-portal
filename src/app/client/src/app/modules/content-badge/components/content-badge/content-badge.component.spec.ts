@@ -29,7 +29,7 @@ describe('ContentBadgeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should get collectionId from activated route, should get user data', () => {
+  it('should get collectionId from activated route, should get user data', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(BadgesService);
     const resourceService = TestBed.get(ResourceService);
@@ -39,7 +39,7 @@ describe('ContentBadgeComponent', () => {
     expect(component.contentId).toBe(fakeActivatedRoute.params['collectionId']);
     fixture.detectChanges();
   });
-  fit('should call assign method and make service call, should return success response', () => {
+  it('should call assign method and make service call, should return success response', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(ContentBadgeService);
     const resourceService = TestBed.get(ResourceService);
