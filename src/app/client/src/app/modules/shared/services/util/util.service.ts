@@ -7,6 +7,7 @@ export class UtilService {
   getDataForCard(data, staticData, dynamicFields, metaData) {
     const list: Array<ICard> = [];
     _.forEach(data, (item, key) => {
+      let fieldValue: any;
       const card = {
         name: item.name || item.courseName,
         image: item.appIcon || item.courseLogoUrl,
@@ -19,15 +20,19 @@ export class UtilService {
       _.forIn(metaData, (value, key1) => {
         card[key1] = _.pick(item, value);
       });
-        _.forIn(dynamicFields, (fieldData, fieldName) => {
-          const value = _.pick(item, fieldData);
-          _.forIn(value, (val1, key1) => {
-            const name = _.zipObjectDeep([fieldName], [val1]);
-            _.forIn(name, (values, index) => {
-              card[index] =  _.merge(name[index], card[index]);
-            });
+      _.forIn(dynamicFields, (fieldData, fieldName) => {
+        if (_.isArray(fieldData) && _.includes(fieldData[0], '.')) {
+          fieldValue = {0: _.get(item, fieldData[0])};
+        } else {
+          fieldValue = _.pick(item, fieldData);
+        }
+        _.forIn(fieldValue, (val1, key1) => {
+          const name = _.zipObjectDeep([fieldName], [val1]);
+          _.forIn(name, (values, index) => {
+            card[index] = _.merge(name[index], card[index]);
           });
         });
+      });
       list.push(card);
     });
     return <ICard[]>list;
