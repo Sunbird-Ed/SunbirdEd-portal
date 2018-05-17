@@ -1,7 +1,8 @@
+import { BatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
-import { PermissionService, UserService, BatchService } from '@sunbird/core';
+import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 
 @Component({

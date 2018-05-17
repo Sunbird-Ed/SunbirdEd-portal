@@ -1,13 +1,10 @@
-import { SearchService } from './../search/search.service';
 import { Injectable, Input } from '@angular/core';
-import { UserService } from './../user/user.service';
-import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { SearchParam } from './../../interfaces/search';
-import { LearnerService } from './../learner/learner.service';
+import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+
 @Injectable()
 export class BatchService {
 
