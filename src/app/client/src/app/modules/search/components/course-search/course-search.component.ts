@@ -173,7 +173,7 @@ export class CourseSearchComponent implements OnInit {
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          this.processActionObject(apiResponse.result.course);
+          this.searchList  = this.processActionObject(apiResponse.result.course);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -197,45 +197,44 @@ export class CourseSearchComponent implements OnInit {
   * This method process the action object.
   */
   processActionObject(course) {
+    const enrolledCoursesId = [];
+    _.forEach(this.enrolledCourses, (value, index) => {
+     enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
+    });
     _.forEach(course, (value, index) => {
-      if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-        _.forEach(this.enrolledCourses, (value1, index1) => {
-          if (course[index].identifier === this.enrolledCourses[index1].courseId) {
+         if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+          if (_.indexOf(enrolledCoursesId, course[index].identifier) === 0 ) {
             const constantData = {
               action: {
-                right: {
-                  class: 'ui blue basic button',
-                   eventName: 'Resume',
-                   displayType: 'button',
-                   text: 'Resume'},
-                  onImage: { eventName: 'onImage' }
-              }
-          };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = {};
-          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
+                right: this.config.appConfig.action.right,
+                onImage:  this.config.appConfig.action.onImage
+              }  };
+              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                     const dynamicFields = {};
+                     course[index] = this.utilService.processContent(course[index],
+                      constantData, dynamicFields, metaData);
           } else {
             const constantData = {
               action: {
-                  onImage: { eventName: 'onImage' }
-              }
-          };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = {};
-          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
+                onImage:  this.config.appConfig.action.onImage
+              }  };
+              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                     const dynamicFields = {};
+                     course[index] = this.utilService.processContent(course[index],
+                       constantData, dynamicFields, metaData);
           }
-        });
-      } else {
-        const constantData = {
-          action: {
-              onImage: { eventName: 'onImage' }
-          }
-      };
-      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-      const dynamicFields = {};
-      this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
-      }
+         } else {
+          const constantData = {
+            action: {
+              onImage:  this.config.appConfig.action.onImage
+            }  };
+            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+                   const dynamicFields = {};
+                   course[index] = this.utilService.processContent(course[index],
+                     constantData, dynamicFields, metaData);
+        }
     });
+      return course;
   }
   /**
   * This method helps to navigate to different pages.

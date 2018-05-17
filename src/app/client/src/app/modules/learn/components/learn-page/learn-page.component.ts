@@ -142,7 +142,6 @@ export class LearnPageComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         if (apiResponse && apiResponse.result.response.sections.length > 0) {
           this.showLoader = false;
-         // const sections = apiResponse.result.response.sections;
          const sections = this.processActionObject(apiResponse.result.response.sections);
          this.caraouselData = this.caraouselData.concat(sections);
         } else {
@@ -170,7 +169,6 @@ export class LearnPageComponent implements OnInit {
   _.forEach(this.enrolledCourses, (value, index) => {
    enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
   });
-  console.log(enrolledCoursesId);
   _.forEach(sections, (value, index) => {
      _.forEach(sections[index].contents, (value2, index2) => {
        if (this.enrolledCourses && this.enrolledCourses.length > 0) {

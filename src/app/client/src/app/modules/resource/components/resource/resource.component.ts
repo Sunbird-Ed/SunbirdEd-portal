@@ -107,7 +107,9 @@ export class ResourceComponent implements OnInit {
           });
           if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {
-              if (this.caraouselData[key].contents === undefined) {
+              if (this.caraouselData[key].contents === null) {
+                noResultCounter++;
+              } else if (this.caraouselData[key].contents === undefined) {
                 noResultCounter++;
               }
             });
