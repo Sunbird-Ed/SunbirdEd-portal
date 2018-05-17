@@ -15,6 +15,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;
+  readMore = false;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
   public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
   public configService: ConfigService) { }

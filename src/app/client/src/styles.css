@@ -2861,3 +2861,13 @@ iframe.iziModal-iframe {
   font-weight: 700;
   font-size: 1.25em;
 }
+
+.fancy_tree_black{
+  color:black;
+}
+.fancy_tree_blue{
+  color:blue;
+}
+.fancy_tree_green{
+  color:green;
+}

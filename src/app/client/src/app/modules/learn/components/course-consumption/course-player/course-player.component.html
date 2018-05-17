@@ -27,9 +27,9 @@
                                         {{resourceService.frmelmnts.lbl.coursestructure}}
                                     </b>
                                 </div>
-                                <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
+                                <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions" [contentStatus]="contentStatus"></app-collection-tree>
                                 <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
-                                <!-- <course-discussions showaskquestion="true"></course-discussions> -->
+                                <!-- <app-course-discussions></app-course-discussions> -->
                             </div>
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>

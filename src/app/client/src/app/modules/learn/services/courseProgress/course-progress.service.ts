@@ -49,10 +49,7 @@ export class CourseProgressService {
         request: req
       }
     };
-    return this.contentService.post(channelOptions).map(
-      (courseStates: ServerResponse) => {
-        return courseStates;
-      });
+    return this.contentService.post(channelOptions);
   }
 
   /**
@@ -127,9 +124,12 @@ export class CourseProgressService {
     _.forEach(req.contentIds, (contentId) => {
       reqContentIds.push({ 'contentId': contentId });
     });
+    console.log('---------getContentsState-----', reqData);
     if (courseProgress !== undefined) {
+      console.log('---------got content in local-----', reqData);
       return Observable.of(courseProgress);
     } else {
+      console.log('------in else part ------', this.courseProgress[courseId_batchId]);
       return this.getCourseStateFromAPI(reqData).map(
         (res: ServerResponse) => {
           if (res.result.contentList.length > 0) {
@@ -138,9 +138,6 @@ export class CourseProgressService {
             _.forEach(res.result.contentList, (contentList) => {
               resContentIds.push({ 'contentId': contentList.contentId });
             });
-            console.log('resContentIds', resContentIds);
-            console.log('reqContentIds', reqContentIds);
-            console.log('_.difference', _.differenceBy(reqContentIds, resContentIds, 'contentId'));
             this.getEmptyContentStatus(reqContentIds, resContentIds, req.courseId, req.batchId );
           } else {
             this.courseProgress[courseId_batchId] = {
@@ -158,11 +155,13 @@ export class CourseProgressService {
                  });
             });
           }
+          console.log('------made api call ------', this.courseProgress[courseId_batchId]);
           return this.courseProgress[courseId_batchId];
         }).catch(
-        (err: ServerResponse) => {
-          return Observable.of(err);
-        }
+          (err: ServerResponse) => {
+            console.log('------made api fail ------', this.courseProgress[courseId_batchId]);
+            return Observable.throw(err);
+          }
         );
     }
   }
@@ -171,8 +170,7 @@ export class CourseProgressService {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
     if (courseProgress !== undefined) {
-      const i = _.findIndex(courseProgress.content,
-        { contentId: req.contentId, courseId: req.courseId });
+      const i = _.findIndex(courseProgress.content, { contentId: req.contentId, courseId: req.courseId });
       if (req.status > courseProgress.content[i].status) {
         courseProgress.content[i].status = req.status;
         this.prepareContentObject(courseProgress.content, courseId_batchId);
@@ -181,7 +179,7 @@ export class CourseProgressService {
             return this.courseProgress[courseId_batchId];
           }).catch(
           (err: ServerResponse) => {
-            return Observable.of(err);
+            return Observable.throw(err);
           }
           );
       } else {
