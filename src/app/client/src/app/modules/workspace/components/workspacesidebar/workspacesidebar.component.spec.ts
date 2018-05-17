@@ -43,7 +43,7 @@ describe('WorkspacesidebarComponent', () => {
     expect(component.upForReviewRole).toBeDefined();
     expect(component.flaggedRole).toBeDefined();
     expect(component.coursebacthesRole).toBeDefined();
-     expect(component.startRole).toBeDefined();
+     expect(component.createRole).toBeDefined();
     fixture.detectChanges();
   });
 });
