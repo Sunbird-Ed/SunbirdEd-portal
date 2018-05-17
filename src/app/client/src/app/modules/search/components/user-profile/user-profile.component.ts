@@ -174,7 +174,7 @@ export class UserProfileComponent implements OnInit {
     const requestBody = {
       request: {
         skillName: [skillName],
-        endorsedUserId: this.loggedInUserId
+        endorsedUserId: this.userId
       }
     };
     const option = {
