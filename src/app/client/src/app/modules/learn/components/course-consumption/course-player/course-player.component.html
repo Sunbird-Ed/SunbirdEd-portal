@@ -39,14 +39,11 @@
                                 <!-- <div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
                                 </div> -->
-                                <!-- <div>
-                                    <div ng-include=" 'views/course/carriculumCard.html'"></div>
-                                </div> -->
                                 <br>
-                                <app-carriculum-card *ngIf="curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                                    <app-carriculum-card *ngIf="curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
                                 <br>
-                                <!-- <div class="courseupdate">
-                                    <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFilterWithMDY}}</b>
+                                <div class="courseupdate">
+                                    <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
                                     <br>
                                     <b>{{resourceService.frmelmnts.lbl.updatedon}}: {{courseHierarchy.lastUpdatedOn | dateFormat}}</b>
                                 </div>
