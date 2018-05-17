@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
    * user profile details.
    */
   userProfile: IUserProfile;
-  slug: string;
   /**
    * reference of TenantService.
    */
@@ -143,7 +142,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initTenantService(slug?) {
+  private initTenantService(slug?: string) {
     this.tenantService.getTenantInfo(slug);
     this.tenantService.tenantData$.subscribe(
       data => {

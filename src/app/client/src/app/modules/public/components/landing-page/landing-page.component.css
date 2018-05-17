@@ -25,14 +25,3 @@
     font-family: 'sunbirdboldfont';
     font-size: 1.25em;
 }
-.ui.segment .segment-heading {
-    font-family: 'sunbirdboldfont';
-    font-weight: 700;
-    font-size: 1.25em;
-   }
-.expand-or-minimize {
-    font-family: 'sunbirdboldfont';
-    font-size: 1em;
-    color: #007AFF;
-    cursor: pointer;
-   }
