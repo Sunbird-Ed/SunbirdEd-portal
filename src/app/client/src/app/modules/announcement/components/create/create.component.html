@@ -84,6 +84,10 @@
                     <label>{{resource?.frmelmnts?.lbl?.anncmntdesc}}</label>
                     <div class="field">
                       <input formControlName="description" placeholder="{{resource?.frmelmnts?.instn?.t0052}}">
+                      <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['description'].errors && announcementForm.controls['description'].errors.maxlength && !announcementForm.controls['description'].pristine">
+                        {{resource?.messages?.stmsg?.m0108}}
+                      </div>
+                      <section *ngIf="announcementForm.value.description.length" class="float-ContentRight">{{announcementForm.value.description.length}} / 1200</section>
                     </div>
                   </div>
                   <!-- Links -->
@@ -94,6 +98,9 @@
                         <div [formGroupName]="i" class="ui action input">
                           <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
                           <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                        </div>
+                        <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['links'].controls[i].status === 'INVALID'">
+                          {{resource?.messages?.stmsg?.m0101}}
                         </div>
                       </div>
                     </div>
@@ -214,7 +221,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div #closeAnnouncementModal class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
           <div class="ui primary button announcementButton btn-width-34" (click)="modalName = 'create'">{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>
