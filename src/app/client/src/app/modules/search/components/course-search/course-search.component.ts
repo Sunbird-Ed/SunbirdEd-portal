@@ -174,7 +174,6 @@ export class CourseSearchComponent implements OnInit {
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           this.searchList  = this.processActionObject(apiResponse.result.course);
-          console.log(this.searchList);
         } else {
           this.noResult = true;
           this.showLoader = false;
