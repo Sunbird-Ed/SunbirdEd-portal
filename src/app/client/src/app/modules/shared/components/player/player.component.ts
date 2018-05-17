@@ -40,10 +40,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
       this.contentProgressEvent.emit(event);
     });
-    document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', (event: any) => {
-      console.log('-------renderer:telemetry:event--------', event.detail.telemetryData);
-      this.contentProgressEvent.emit(event);
-    });
+    // document.getElementById('contentPlayer').addEventListener('renderer:telemetry:event', (event: any) => {
+    //   console.log('-------renderer:telemetry:event--------', event.detail.telemetryData);
+    //   this.contentProgressEvent.emit(event);
+    // });
   }
   /**
    * Adjust player height after load

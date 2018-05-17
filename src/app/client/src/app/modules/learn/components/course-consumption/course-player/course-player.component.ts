@@ -202,22 +202,31 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    const req1 = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'courseId': 'do_1124785353783377921154',
-    'contentId': 'do_112474267785674752118',
-    'batchId': '01247853957897420815',
-    'status' : 2
-      };
     this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
-      if (res !== undefined) {
-        this.courseConsumptionService.updateContentsState(req1).subscribe((updatedRes) => {
-          console.log('res', updatedRes);
-        });
-      }
+      console.log('res', res);
     });
   }
   public contentProgressEventnew(event) {
-    console.log('event', event);
+    console.log('event', event.detail.telemetryData.eid);
+    const eid = event.detail.telemetryData.eid;
+    const req1 = {
+      userId: event.detail.telemetryData.actor.id,
+      contentId: event.detail.telemetryData.object.id,
+      courseId: this.courseId,
+      batchId: this.batchId,
+      status: 0
+    };
+    if (eid === 'START') {
+      req1.status = 1;
+      this.courseConsumptionService.updateContentsState(req1).subscribe((updatedRes) => {
+        console.log('res', updatedRes);
+      });
+    } else if (eid === 'END') {
+      req1.status = 2;
+      this.courseConsumptionService.updateContentsState(req1).subscribe((updatedRes) => {
+        console.log('res', updatedRes);
+      });
+    }
   }
   private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
     return this.courseConsumptionService.getCourseHierarchy(collectionId)
