@@ -78,4 +78,23 @@ describe('NoteCardComponent', () => {
     expect(component.selectedNote).toBe(component.notesList[0]);
     expect(component.showUpdateEditor).toBeFalsy();
   });
+
+  it('Should update notesList value if createNoteData and notesList is available', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.createNoteData = response.testNote;
+    component.ngOnChanges();
+    expect(component.notesList[0]).toBe(response.testNote);
+  });
+
+  it('Should not update notesList value if createNoteData is unavailable and notesList is available', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.ngOnChanges();
+    expect(component.notesList).toBe(response.responseSuccess.result.response.note);
+  });
+
+  it('Should not update notesList value if createNoteData and notesList is unavailable', () => {
+    component.ngOnChanges();
+    expect(component.notesList).toBeUndefined();
+  });
+
 });
