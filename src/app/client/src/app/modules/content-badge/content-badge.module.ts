@@ -4,6 +4,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { ContentBadgeComponent } from './components';
+import { ContentBadgeService } from './services';
 @NgModule({
     imports: [
         CommonModule,
@@ -12,7 +13,7 @@ import { ContentBadgeComponent } from './components';
     ],
     declarations: [ContentBadgeComponent],
     exports: [ContentBadgeComponent],
-    providers: []
+    providers: [ContentBadgeService]
 })
 export class ContentBadgeModule {
 

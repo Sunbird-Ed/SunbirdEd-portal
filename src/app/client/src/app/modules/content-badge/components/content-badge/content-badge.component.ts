@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, BadgesService } from '@sunbird/core';
+import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 
@@ -25,7 +26,7 @@ export class ContentBadgeComponent implements OnInit {
   public allBadgeList: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public toasterService: ToasterService,
-    public activatedRoute: ActivatedRoute) { }
+    public activatedRoute: ActivatedRoute, public contentBadgeService: ContentBadgeService) { }
 
   ngOnInit() {
     this.getBadgeDetails();
@@ -71,7 +72,7 @@ export class ContentBadgeComponent implements OnInit {
       'recipientId': this.contentId,
       'recipientType': 'content'
     };
-    this.badgeService.addBadge(req).subscribe((response) => {
+    this.contentBadgeService.addBadge(req).subscribe((response) => {
       if (this.data === undefined) {
         this.data = [];
       }

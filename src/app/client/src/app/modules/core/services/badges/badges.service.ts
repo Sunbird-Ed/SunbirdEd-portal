@@ -74,11 +74,4 @@ export class BadgesService {
       });
     });
   }
-  public addBadge(req) {
-    const option = {
-      url: this.config.urlConFig.URLS.BADGE.CREATE,
-      data: {request: req}
-    };
-    return this.learner.post(option);
-  }
 }

@@ -92,7 +92,6 @@ describe('DialCodeComponent', () => {
     const route = TestBed.get(Router);
     const item = Response.event;
     item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-    console.log('item', item);
     component.getEvent(item);
     expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier]);
   });

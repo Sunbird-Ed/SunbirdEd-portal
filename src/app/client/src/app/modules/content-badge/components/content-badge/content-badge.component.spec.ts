@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { mockResponse } from './content-badge.component.spec.data';
+import { ContentBadgeService } from './../../services';
 
 describe('ContentBadgeComponent', () => {
   let component: ContentBadgeComponent;
@@ -18,7 +19,7 @@ describe('ContentBadgeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ContentBadgeComponent],
       imports: [SuiModule, CoreModule, SharedModule, HttpClientTestingModule],
-      providers: [ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+      providers: [ContentBadgeService, ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })
       .compileComponents();
   }));
@@ -28,7 +29,7 @@ describe('ContentBadgeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should get collectionId from activated route, should get user data', () => {
+  fit('should get collectionId from activated route, should get user data', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(BadgesService);
     const resourceService = TestBed.get(ResourceService);
@@ -38,9 +39,9 @@ describe('ContentBadgeComponent', () => {
     expect(component.contentId).toBe(fakeActivatedRoute.params['collectionId']);
     fixture.detectChanges();
   });
-  it('should call assign method and make service call, should return success response', () => {
+  fit('should call assign method and make service call, should return success response', () => {
     const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(BadgesService);
+    const badgeService = TestBed.get(ContentBadgeService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
     const toasterService = TestBed.get(ToasterService);
