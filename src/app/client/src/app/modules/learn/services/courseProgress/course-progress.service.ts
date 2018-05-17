@@ -70,7 +70,7 @@ export class CourseProgressService {
       batchId: data.batchId,
       status: data.status,
       courseId: data.courseId,
-      lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+      lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
     };
     const channelOptions = {
       url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE,
@@ -123,6 +123,10 @@ export class CourseProgressService {
     this.totalContentCount = req.contentIds.length;
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
+    const reqContentIds = [];
+    _.forEach(req.contentIds, (contentId) => {
+      reqContentIds.push({ 'contentId': contentId });
+    });
     if (courseProgress !== undefined) {
       return Observable.of(courseProgress);
     } else {
@@ -130,13 +134,29 @@ export class CourseProgressService {
         (res: ServerResponse) => {
           if (res.result.contentList.length > 0) {
             this.prepareContentObject(res.result.contentList, courseId_batchId);
+            const resContentIds = [];
+            _.forEach(res.result.contentList, (contentList) => {
+              resContentIds.push({ 'contentId': contentList.contentId });
+            });
+            console.log('resContentIds', resContentIds);
+            console.log('reqContentIds', reqContentIds);
+            console.log('_.difference', _.differenceBy(reqContentIds, resContentIds, 'contentId'));
+            this.getEmptyContentStatus(reqContentIds, resContentIds, req.courseId, req.batchId );
           } else {
             this.courseProgress[courseId_batchId] = {
-              content: [],
               progress: 0,
               completedCount: 0,
               totalCount: this.totalContentCount
             };
+            this.courseProgress[courseId_batchId].content = [];
+            _.forEach(_.differenceBy(reqContentIds, [], 'contentId'), (value, key) => {
+              this.courseProgress[courseId_batchId].content.push({
+                'contentId': value['contentId'],
+                 'status': 0,
+                 'courseId': req.courseId,
+                 'batchId:': req.batchId
+                 });
+            });
           }
           return this.courseProgress[courseId_batchId];
         }).catch(
@@ -170,5 +190,17 @@ export class CourseProgressService {
     } else {
       return Observable.of(this.courseProgress[courseId_batchId]);
     }
+  }
+
+  getEmptyContentStatus(reqContentIds, resContentIds, courseId , batchId) {
+    const courseId_batchId = courseId + '_' + batchId;
+    _.forEach(_.differenceBy(reqContentIds, resContentIds, 'contentId'), (value, key) => {
+      this.courseProgress[courseId_batchId].content.push(
+        { 'contentId': value['contentId'],
+       'status': 0,
+       'courseId': courseId,
+        'batchId:': batchId
+       });
+    });
   }
 }
