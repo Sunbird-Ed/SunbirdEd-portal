@@ -7,6 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import {BatchService} from '../../../services';
 
 describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
@@ -22,7 +23,7 @@ describe('BatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, CoreModule, SuiModule],
       declarations: [ BatchDetailsComponent ],
-      providers: [  { provide: Router, useClass: RouterStub },
+      providers: [ BatchService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
