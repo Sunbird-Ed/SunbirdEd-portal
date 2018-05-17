@@ -110,7 +110,7 @@ export class LearnPageComponent implements OnInit {
                 onImage: { eventName: 'onImage' }
               }
             };
-            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const metaData = { metaData: ['batchId', 'courseId'] };
             const dynamicFields = { 'maxCount': ['leafNodesCount'], 'progress': ['progress'] };
             const courses = this.utilService.getDataForCard(data.enrolledCourses,
               constantData, dynamicFields, metaData);
@@ -178,7 +178,7 @@ export class LearnPageComponent implements OnInit {
               right: this.configService.appConfig.action.right,
               onImage:  this.configService.appConfig.action.onImage
             }  };
-            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const metaData = { metaData: this.configService.appConfig.metaData };
                    const dynamicFields = {};
                    sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                     constantData, dynamicFields, metaData);
@@ -187,7 +187,7 @@ export class LearnPageComponent implements OnInit {
             action: {
               onImage:  this.configService.appConfig.action.onImage
             }  };
-            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const metaData = { metaData:  this.configService.appConfig.metaData };
                    const dynamicFields = {};
                    sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                      constantData, dynamicFields, metaData);
@@ -197,7 +197,7 @@ export class LearnPageComponent implements OnInit {
           action: {
             onImage:  this.configService.appConfig.action.onImage
           }  };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+          const metaData = { metaData:  this.configService.appConfig.metaData };
                  const dynamicFields = {};
                  sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                    constantData, dynamicFields, metaData);

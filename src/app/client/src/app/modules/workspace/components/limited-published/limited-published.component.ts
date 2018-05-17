@@ -200,24 +200,16 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           const constantData = {
             ribbon: {
-              right: { class: 'ui black left ribbon label' }
+              right: { class:  this.config.appConfig.ribbon.right.class  }
             },
             action: {
-              right: {
-                class: 'trash large icon',
-                displayType: 'icon',
-                eventName: 'delete'
-              },
-              left: {
-                class: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon',
-                displayType: 'icon',
-                eventName: 'share'
-              },
-              onImage: { eventName: 'onImage' }
+              right: this.config.appConfig.workspaceAction.right,
+              left: this.config.appConfig.workspaceAction.left,
+              onImage: this.config.appConfig.action.onImage
             }
           };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+          const metaData = { metaData: this.config.appConfig.metaData };
+          const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name};
           this.limitedPublishList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {

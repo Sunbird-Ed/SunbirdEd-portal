@@ -177,14 +177,14 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
           this.showLoader = false;
           const constantData = {
             ribbon: {
-                right: { class: 'ui black right ribbon label' }
+                right: { class: this.config.appConfig.ribbon.right.class }
             },
             action: {
-                onImage: { eventName: 'onImage' }
+                onImage: this.config.appConfig.action.onImage
             }
         };
-        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-        const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+        const metaData = { metaData: this.config.appConfig.metaData };
+        const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name };
         this.flaggedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         } else {
           this.showError = false;

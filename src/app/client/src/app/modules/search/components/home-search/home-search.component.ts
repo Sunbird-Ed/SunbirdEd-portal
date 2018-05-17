@@ -136,10 +136,10 @@ export class HomeSearchComponent implements OnInit {
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           const constantData = {
             action: {
-                onImage: { eventName: 'onImage' }
+                onImage: this.config.appConfig.action.onImage
             }
         };
-        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+        const metaData = { metaData: this.config.appConfig.metaData };
         const dynamicFields = {};
         this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {

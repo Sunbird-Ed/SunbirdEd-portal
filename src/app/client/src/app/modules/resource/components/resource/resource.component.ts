@@ -93,14 +93,14 @@ export class ResourceComponent implements OnInit {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
                 const constantData = {
                   ribbon: {
-                      right: { class: 'ui black right ribbon label' }
+                      right: this.config.appConfig.ribbon.right.class
                   },
                   action: {
-                      onImage: { eventName: 'onImage' }
+                      onImage: this.config.appConfig.action.onImage
                   }
               };
-                const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-                const dynamicFields = { 'ribbon.right.name': ['contentType']};
+                const metaData = { metaData: this.config.appConfig.metaData };
+                const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name};
                 this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
                   constantData, dynamicFields, metaData);
               }

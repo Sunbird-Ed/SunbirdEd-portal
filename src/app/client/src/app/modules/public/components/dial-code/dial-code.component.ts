@@ -98,15 +98,16 @@ export class DialCodeComponent implements OnInit {
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
           const constantData = {
             ribbon: {
-              right: { class: 'ui black right ribbon label' },
-              left: { class: 'ui blue left ribbon label' }
+              right: { class: this.configService.appConfig.ribbon.right.class },
+              left: { class: this.configService.appConfig.ribbon.left.class }
             },
             action: {
-              onImage: { eventName: 'onImage' }
+              onImage: this.configService.appConfig.action.onImage
             }
           };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = { 'ribbon.right.name': ['contentType'] , 'ribbon.left.name': ['badgeAssertions[0].badgeClassName']};
+          const metaData = { metaData: this.configService.appConfig.metaData };
+          const dynamicFields = { 'ribbon.right.name': this.configService.appConfig.ribbon.right.name,
+            'ribbon.left.name': this.configService.appConfig.ribbon.left.name};
           this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.toasterService.error(this.resourceService.messages.stmsg.m0006);

@@ -27,17 +27,11 @@ export class UtilService {
         content[key1] = _.pick(data, value);
       });
       _.forIn(dynamicFields, (fieldData, fieldName) => {
-        if (_.isArray(fieldData) && _.includes(fieldData[0], '.')) {
-          fieldValue = {0: _.get(data, fieldData[0])};
-        } else {
-          fieldValue = _.pick(data, fieldData);
-        }
-        _.forIn(fieldValue, (val1, key1) => {
-          const name = _.zipObjectDeep([fieldName], [val1]);
+          fieldValue =  _.get(data, fieldData);
+          const name = _.zipObjectDeep([fieldName], [fieldValue]);
           _.forIn(name, (values, index) => {
             content[index] = _.merge(name[index], content[index]);
           });
-        });
       });
      return content;
   }

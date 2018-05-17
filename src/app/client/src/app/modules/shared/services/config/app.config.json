@@ -1,12 +1,29 @@
 {
+  "metaData": ["identifier", "mimeType", "framework", "contentType"],
+  "ribbon": {
+    "right":{"class": "ui black right ribbon label", "name": "contentType"},
+    "left": {"class":  "ui blue left ribbon label", "name": "badgeAssertions[0].badgeClassName"}
+  },
   "action": {
-                       "right": {
-                       "class": "ui blue basic button",
-                         "eventName": "Resume",
-                         "displayType": "button",
-                         "text": "Resume"
+    "right": {
+       "class": "ui blue basic button",
+       "eventName": "Resume",
+       "displayType": "button",
+       "text": "Resume"
     },
-                      "onImage": { "eventName": "onImage"}
+    "onImage": { "eventName": "onImage"}
+  },
+  "workspaceAction": {
+    "right": {
+       "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"
+    },
+    "left": {
+      "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
+       "eventName": "share",
+       "displayType": "icon"
+    }
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10

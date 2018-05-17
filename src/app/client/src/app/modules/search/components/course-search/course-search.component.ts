@@ -174,6 +174,7 @@ export class CourseSearchComponent implements OnInit {
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
           this.searchList  = this.processActionObject(apiResponse.result.course);
+          console.log(this.searchList);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -209,7 +210,7 @@ export class CourseSearchComponent implements OnInit {
                 right: this.config.appConfig.action.right,
                 onImage:  this.config.appConfig.action.onImage
               }  };
-              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+              const metaData = { metaData: this.config.appConfig.metaData };
                      const dynamicFields = {};
                      course[index] = this.utilService.processContent(course[index],
                       constantData, dynamicFields, metaData);
@@ -218,7 +219,7 @@ export class CourseSearchComponent implements OnInit {
               action: {
                 onImage:  this.config.appConfig.action.onImage
               }  };
-              const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+              const metaData = { metaData: this.config.appConfig.metaData };
                      const dynamicFields = {};
                      course[index] = this.utilService.processContent(course[index],
                        constantData, dynamicFields, metaData);
@@ -228,7 +229,7 @@ export class CourseSearchComponent implements OnInit {
             action: {
               onImage:  this.config.appConfig.action.onImage
             }  };
-            const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
+            const metaData = { metaData: this.config.appConfig.metaData };
                    const dynamicFields = {};
                    course[index] = this.utilService.processContent(course[index],
                      constantData, dynamicFields, metaData);

@@ -182,19 +182,15 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           const constantData = {
             ribbon: {
-                right: { class: 'ui black right ribbon label' }
+                right: { class: this.config.appConfig.ribbon.right.class }
             },
             action: {
-                right: {
-                    class: 'trash large icon',
-                    displayType: 'icon',
-                    eventName: 'delete'
-                },
-                onImage: { eventName: 'onImage' }
+                right: this.config.appConfig.workspaceAction.right,
+                onImage: this.config.appConfig.action.onImage
             }
         };
-        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-        const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+        const metaData = { metaData: this.config.appConfig.metaData };
+        const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name };
         this.publishedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
