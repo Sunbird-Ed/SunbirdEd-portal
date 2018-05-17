@@ -29,6 +29,11 @@
                   </div>
               </div>
           </div>
+           <div *ngIf="showError">
+                <div class="ui success message">
+                    <div class="header">{{resourceService.messages.stmsg.m0081}}</div>
+                </div>
+           </div>
       </div>
     </div>
     <div class="ui bottom attached batchCard button" (click)="createBatch()" *ngIf="courseMentor">

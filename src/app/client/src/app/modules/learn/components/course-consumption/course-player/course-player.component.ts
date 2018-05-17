@@ -191,11 +191,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds.push(node.model.identifier);
       }
     });
-    console.log('mimeTypeCount', mimeTypeCount);
     _.forEach(mimeTypeCount, (value, key) => {
       this.curriculum.push({mimeType: key, count: value});
     });
-    console.log('this.curriculum', this.curriculum);
   }
   fetchContentStatus(data) {
     const req = {

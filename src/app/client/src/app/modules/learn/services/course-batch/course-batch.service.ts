@@ -60,4 +60,11 @@ export class CourseBatchService {
       });
     }
   }
+  enrollToCourse(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
 }

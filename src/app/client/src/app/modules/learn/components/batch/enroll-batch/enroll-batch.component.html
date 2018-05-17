@@ -1,13 +1,8 @@
-<sui-modal ngIf='batchDetails' [size]="'small'" [isClosable]="true" #successModal>
+<sui-modal *ngIf='showEnrollDetails && batchDetails' (dismissed)="redirect()" [isClosable]="true" #enrollBatch>
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
-                <span class="ui header">{{batchDetails.batchInfo.name}}</span>
-            </div>
-            <div class="one wide column actions">
-                <h5 class="ui basic icon circular button deny">
-                    <i class="ui remove icon"></i>
-                </h5>
+                <span class="ui header">{{batchDetails.name}}</span>
             </div>
         </div>
     </div>
@@ -19,7 +14,7 @@
                         <div class="two wide column ">
                             <div class="ui card float right">
                                 <div class="ui fluid image">
-                                    <img ng-src="/common/images/default.png">
+                                    <img src="{{'assets/images/default.png'}}">
                                 </div>
                             </div>
                         </div>
@@ -29,14 +24,14 @@
                                     <label>{{resourceService.frmelmnts.lbl.batchdescription}}</label>
                                     <div class="des-content" ng-if="!batch.readMore">
                                         <p>
-                                            {{ batchDetails.batchInfo.description }}&nbsp;
-                                            <span class="ui cardsKnowMore mouse-pointer" ng-if="batch.batchInfo.description.length > 200 && batch.readMore === false"
-                                                ng-click="batch.readMore = !batch.readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                            {{ batchDetails.description }}&nbsp;
+                                            <!-- <span class="ui cardsKnowMore mouse-pointer" ng-if="batch.batchInfo.description.length > 200 && batch.readMore === false"
+                                                ng-click="batch.readMore = !batch.readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span> -->
                                         </p>
                                     </div>
                                 </div>
-                                <div class="four wide column" ng-show="batch.showEnroll">
-                                    <div class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" ng-click="batch.enrollUserToCourse(batch.batchInfo.id)">
+                                <div class="four wide column">
+                                    <div class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" (click)="enrollToCourse()">
                                         <span class="text">{{resourceService.frmelmnts.lbl.enrollcourse}}</span>
                                     </div>
                                 </div>
@@ -44,25 +39,25 @@
                             <div class="ui grid batch-date">
                                 <div class="six wide column  start-date">
                                     <label>{{resourceService.frmelmnts.lbl.startdate}}</label>
-                                    <span class="padding-left-10">{{batchDetails.batchInfo.startDate }}</span>
+                                    <span class="padding-left-10">{{batchDetails.startDate }}</span>
                                 </div>
                                 <div class="six wide column  end-date">
                                     <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
-                                    <span class="padding-left-10">{{batchDetails.batchInfo.endDate }}</span>
+                                    <span class="padding-left-10">{{batchDetails.endDate }}</span>
                                 </div>
                             </div>
-                            <div>
-                                <!-- <div class="member padding-top-20">
+                            <div *ngIf="batchDetails.participantDetails && batchDetails.participantDetails.length" >
+                                <div class="member padding-top-20">
                                     <label>{{resourceService.frmelmnts.lbl.batchmembers}}</label>
                                 </div>
                                 <div class="ui very relaxed list padding-top-10 batch-list-items">
-                                    <div class="item" ng-repeat='user in batch.batchInfo.userList'>
-                                        <img class="ui avatar  image" ng-src="{{user.thumbnail || '/common/images/user_logo.png'}}">
+                                    <div class="item" *ngFor='let user of batchDetails.participantDetails'>
+                                        <img class="ui avatar  image" src="{{user.thumbnail || 'assets/images/user_logo.png'}}">
                                         <div class="content padding-top-10">
                                             <div class="header">{{user.firstName}} {{user.lastName}}</div>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
