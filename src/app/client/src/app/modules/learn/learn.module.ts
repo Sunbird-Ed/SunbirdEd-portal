@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
    UpdateBatchComponent } from './components';
-import { CourseConsumptionService, BatchService } from './services';
+import { CourseConsumptionService, CourseBatchService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 
@@ -23,7 +23,7 @@ import { DiscussionModule } from '@sunbird/discussion';
     CoreModule,
     DiscussionModule
   ],
-  providers: [CourseConsumptionService, BatchService],
+  providers: [CourseConsumptionService, CourseBatchService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent, UpdateBatchComponent]
 })

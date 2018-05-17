@@ -1,4 +1,4 @@
-import { BatchService } from './../../../services';
+import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
@@ -28,7 +28,7 @@ export class BatchDetailsComponent implements OnInit {
     { name: 'Upcoming', value: 0 }
   ];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-  public userService: UserService, public batchService: BatchService, public toasterService: ToasterService,
+  public userService: UserService, public batchService: CourseBatchService, public toasterService: ToasterService,
   public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
@@ -113,7 +113,7 @@ export class BatchDetailsComponent implements OnInit {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
+    this.batchService.setEnrollBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
-    this.batchService.enrollBatchDetails(batch);
   }
 }
