@@ -204,31 +204,21 @@ export class CourseSearchComponent implements OnInit {
     _.forEach(course, (value, index) => {
          if (this.enrolledCourses && this.enrolledCourses.length > 0) {
           if (_.indexOf(enrolledCoursesId, course[index].identifier) === 0 ) {
-            const constantData = {
-              action: {
-                right: this.config.appConfig.action.right,
-                onImage:  this.config.appConfig.action.onImage
-              }  };
-              const metaData = { metaData: this.config.appConfig.metaData };
+            const constantData = this.config.appConfig.CourseSearch.enrolledCourses.constantData;
+              const metaData = this.config.appConfig.CourseSearch.metaData;
                      const dynamicFields = {};
                      course[index] = this.utilService.processContent(course[index],
                       constantData, dynamicFields, metaData);
           } else {
-            const constantData = {
-              action: {
-                onImage:  this.config.appConfig.action.onImage
-              }  };
-              const metaData = { metaData: this.config.appConfig.metaData };
+            const constantData = this.config.appConfig.CourseSearch.otherCourses.constantData;
+              const metaData = this.config.appConfig.CourseSearch.metaData;
                      const dynamicFields = {};
                      course[index] = this.utilService.processContent(course[index],
                        constantData, dynamicFields, metaData);
           }
          } else {
-          const constantData = {
-            action: {
-              onImage:  this.config.appConfig.action.onImage
-            }  };
-            const metaData = { metaData: this.config.appConfig.metaData };
+          const constantData = this.config.appConfig.CourseSearch.otherCourses.constantData;
+            const metaData = this.config.appConfig.CourseSearch.metaData;
                    const dynamicFields = {};
                    course[index] = this.utilService.processContent(course[index],
                      constantData, dynamicFields, metaData);

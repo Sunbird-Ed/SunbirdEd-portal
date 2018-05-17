@@ -91,16 +91,9 @@ export class ResourceComponent implements OnInit {
           this.caraouselData = apiResponse.result.response.sections;
           _.forEach(this.caraouselData, (value, index) => {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
-                const constantData = {
-                  ribbon: {
-                      right: this.config.appConfig.ribbon.right.class
-                  },
-                  action: {
-                      onImage: this.config.appConfig.action.onImage
-                  }
-              };
-                const metaData = { metaData: this.config.appConfig.metaData };
-                const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name};
+                const constantData = this.config.appConfig.Library.constantData;
+                const metaData = this.config.appConfig.Library.metaData;
+                const dynamicFields = this.config.appConfig.Library.dynamicFields;
                 this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
                   constantData, dynamicFields, metaData);
               }

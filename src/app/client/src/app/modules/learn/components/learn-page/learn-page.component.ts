@@ -99,19 +99,10 @@ export class LearnPageComponent implements OnInit {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
             this.enrolledCourses = data.enrolledCourses;
-            const constantData = {
-              action: {
-                right: {
-                  class: 'ui blue basic button',
-                  eventName: 'Resume',
-                  displayType: 'button',
-                  text: 'Resume'
-                },
-                onImage: { eventName: 'onImage' }
-              }
-            };
-            const metaData = { metaData: ['batchId', 'courseId'] };
-            const dynamicFields = { 'maxCount': ['leafNodesCount'], 'progress': ['progress'] };
+            const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+            const dynamicFields = { 'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
+             'progress': this.configService.appConfig.Course.enrolledCourses.progress };
             const courses = this.utilService.getDataForCard(data.enrolledCourses,
               constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
@@ -173,31 +164,21 @@ export class LearnPageComponent implements OnInit {
      _.forEach(sections[index].contents, (value2, index2) => {
        if (this.enrolledCourses && this.enrolledCourses.length > 0) {
         if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) === 0 ) {
-          const constantData = {
-            action: {
-              right: this.configService.appConfig.action.right,
-              onImage:  this.configService.appConfig.action.onImage
-            }  };
-            const metaData = { metaData: this.configService.appConfig.metaData };
+          const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData =  this.configService.appConfig.Course.otherCourse.metaData;
                    const dynamicFields = {};
                    sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                     constantData, dynamicFields, metaData);
         } else {
-          const constantData = {
-            action: {
-              onImage:  this.configService.appConfig.action.onImage
-            }  };
-            const metaData = { metaData:  this.configService.appConfig.metaData };
+          const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+            const metaData = this.configService.appConfig.Course.otherCourse.metaData;
                    const dynamicFields = {};
                    sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                      constantData, dynamicFields, metaData);
         }
        } else {
-        const constantData = {
-          action: {
-            onImage:  this.configService.appConfig.action.onImage
-          }  };
-          const metaData = { metaData:  this.configService.appConfig.metaData };
+        const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+          const metaData = this.configService.appConfig.Course.otherCourse.metaData;
                  const dynamicFields = {};
                  sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
                    constantData, dynamicFields, metaData);

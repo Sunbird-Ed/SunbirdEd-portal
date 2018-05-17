@@ -145,18 +145,9 @@ export class LibrarySearchComponent implements OnInit {
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          const constantData = {
-            ribbon: {
-                right: { class: this.config.appConfig.ribbon.right.class },
-                left: { class:  this.config.appConfig.ribbon.left.class }
-            },
-            action: {
-                onImage: this.config.appConfig.action.onImage
-            }
-        };
-        const metaData = { metaData: this.config.appConfig.metaData };
-        const dynamicFields = { 'ribbon.right.name': this.config.appConfig.ribbon.right.name,
-         'ribbon.left.name': this.config.appConfig.ribbon.left.name};
+          const constantData = this.config.appConfig.LibrarySearch.constantData;
+        const metaData = this.config.appConfig.LibrarySearch.metaData;
+        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
         this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.noResult = true;

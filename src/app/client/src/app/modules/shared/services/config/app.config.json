@@ -1,29 +1,93 @@
 {
-  "metaData": ["identifier", "mimeType", "framework", "contentType"],
-  "ribbon": {
-    "right":{"class": "ui black right ribbon label", "name": "contentType"},
-    "left": {"class":  "ui blue left ribbon label", "name": "badgeAssertions[0].badgeClassName"}
-  },
-  "action": {
-    "right": {
-       "class": "ui blue basic button",
-       "eventName": "Resume",
-       "displayType": "button",
-       "text": "Resume"
+  "Course": {
+    "otherCourse": {
+      "constantData": {
+        "action": {
+            "onImage": { "eventName": "onImage" }
+        }
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
     },
-    "onImage": { "eventName": "onImage"}
-  },
-  "workspaceAction": {
-    "right": {
-       "class": "trash large icon",
-       "eventName": "delete",
-       "displayType": "icon"
-    },
-    "left": {
-      "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
-       "eventName": "share",
-       "displayType": "icon"
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        }
+      },
+      "metaData": ["batchId", "courseId"],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
     }
+  },
+  "Library": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType"}
+  },
+  "GetPage":{
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui blue left ribbon label"} }
+       },
+     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+  },
+  "HomeSearch": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+  },
+  "CourseSearch": {
+    "otherCourses":{
+      "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        }
+       }
+    },"enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      }
+    },
+   "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+  },
+  "LibrarySearch":{
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui blue left ribbon label"} }
+       },
+     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10
@@ -145,7 +209,101 @@
       "uploaded",
       "published",
       "limited/publish"
-    ]
+    ],
+    "Draft": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Published": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Uploaded": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Flagged": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "ReviewSubmission": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "LimitedPublishing": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "left": {
+      "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
+       "eventName": "share",
+       "displayType": "icon"
+    },
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    }
+
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
