@@ -39,9 +39,8 @@
                                 <!-- <div>
                                     <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
                                 </div> -->
-                                <!-- <div>
-                                    <div ng-include=" 'views/course/carriculumCard.html'"></div>
-                                </div> -->
+                                <br>
+                                    <app-carriculum-card *ngIf="curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
                                 <br>
                                 <div class="courseupdate">
                                     <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
@@ -69,7 +68,7 @@
                                 </div>
                                 <div class="ui grid">
                                   <div class="twelve wide column">
-                                    <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+                                    <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig | async"></app-player>
                                   </div>
                                 </div>
                               </div>

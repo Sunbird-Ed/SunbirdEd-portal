@@ -1,6 +1,6 @@
 <div *ngIf="!enrolledCourse" class="rightSideSectionCards ui card">
     <div class="header batchCardAlign">
-      <span class="header headerBatchCard">{{resourceService.frmelmnts.lbl.batches}}</span>
+      <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
       <a>
         <sui-select  (selectedOptionChange)= "fetchBatchList()" class="batchCardDropDown" 
         [(ngModel)]="batchStatus" [options]="statusOptions" valueField ="value" labelField="name" #batchStatusSelect>
