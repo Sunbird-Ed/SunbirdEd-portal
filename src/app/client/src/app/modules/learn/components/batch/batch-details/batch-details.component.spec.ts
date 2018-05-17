@@ -5,15 +5,25 @@ import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
-
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+  'queryParams':  Observable.from([{ subject: ['English'] }])
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, CoreModule, SuiModule],
       declarations: [ BatchDetailsComponent ],
+      providers: [  { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -22,7 +32,6 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -5,8 +5,9 @@ import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {CourseConsumptionService} from '../../../services';
+import {CourseConsumptionService, CourseProgressService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Ng2IziToastModule } from 'ng2-izitoast';
 
 describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
@@ -21,10 +22,11 @@ describe('CourseConsumptionPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule, CoreModule, Ng2IziToastModule],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        CourseConsumptionService,  { provide: Router, useClass: RouterStub }],
+        CourseConsumptionService,  { provide: Router, useClass: RouterStub },
+        CourseProgressService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -33,7 +35,6 @@ describe('CourseConsumptionPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseConsumptionPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

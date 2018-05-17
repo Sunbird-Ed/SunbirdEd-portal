@@ -16,7 +16,6 @@ export class CarriculumCardComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('curriculum', this.curriculum);
   }
 
 }
