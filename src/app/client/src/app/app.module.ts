@@ -22,7 +22,7 @@ import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
 import * as $ from 'jquery';
-import { ContentBadgeModule } from '@sunbird/badge';
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   declarations: [
     AppComponent
@@ -49,7 +49,7 @@ import { ContentBadgeModule } from '@sunbird/badge';
     ProfileModule,
     SearchModule,
     DiscussionModule,
-    ContentBadgeModule
+    BadgingModule
   ],
   providers: [],
   entryComponents: [AppComponent],

@@ -1,3 +1,3 @@
 export * from './components';
-export * from './content-badge.module';
+export * from './badging.module';
 export * from './services';

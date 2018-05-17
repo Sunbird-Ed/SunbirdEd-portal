@@ -53,7 +53,7 @@
         "app/modules/discussion"
       ],
       "@sunbird/badge": [
-        "app/modules/content-badge"
+        "app/modules/badging"
       ]
     },
     "module": "es2015",

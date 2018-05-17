@@ -15,6 +15,6 @@ import { ContentBadgeService } from './services';
     exports: [ContentBadgeComponent],
     providers: [ContentBadgeService]
 })
-export class ContentBadgeModule {
+export class BadgingModule {
 
 }
