@@ -119,7 +119,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public playContent(data: any): void {
     this.enableContentPlayer = true;
     this.contentTitle = data.title;
-    this.playerConfig = this.getPlayerConfig(data.id).catch((error) => {
+    this.playerConfig = this.courseConsumptionService.getConfigByContent(data.id).catch((error) => {
       console.log(`unable to get player config for content ${data.id}`, error);
       return error;
     });
@@ -131,10 +131,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
-  }
-
-  private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    return this.courseConsumptionService.getConfigByContent(contentId);
   }
 
   private findContentById(id: string) {
@@ -183,7 +179,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.treeModel.walk((node) => {
       if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
         if (mimeTypeCount[node.model.mimeType]) {
-          mimeTypeCount[node.model.mimeType] = + 1;
+          mimeTypeCount[node.model.mimeType] += 1;
         } else {
           mimeTypeCount[node.model.mimeType] = 1;
         }
