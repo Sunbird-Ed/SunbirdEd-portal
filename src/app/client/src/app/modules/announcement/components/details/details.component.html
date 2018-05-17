@@ -13,10 +13,10 @@
         </p>
       </div>
       <div class="header padding-top-5">
-        <div class="header padding-top-10 announcementHomeCard-header" *ngIf="announcementDetails.title">
+        <div class="padding-top-10 segment-heading" *ngIf="announcementDetails.title">
           {{announcementDetails.title}}
         </div>
-        <div class="ng-binding annOrgName padding-top-10" *ngIf="announcementDetails.from">
+        <div class="ng-binding announcement-org-name padding-top-10" *ngIf="announcementDetails.from">
           {{announcementDetails.from}}
         </div>
         <div class="padding-top-20 announcement-description" *ngIf="announcementDetails.description">
@@ -32,9 +32,9 @@
         <div class="padding-top-10 tweleve wide column">
           <div *ngFor="let link of announcementDetails.links">
             <p>
-              <a class="annUrlLinks" href="{{link}}" target="_blank">
+              <a class="expand-or-minimize" href="{{link}}" target="_blank">
                 {{link | slice:0:70}}
-                <span class="announcementBlueText" *ngIf="link && link.length > 70">...</span>
+                <span class="blue-text-color-sunbird" *ngIf="link && link.length > 70">...</span>
               </a>
             </p>
           </div>

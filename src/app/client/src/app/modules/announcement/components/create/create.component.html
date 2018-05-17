@@ -97,7 +97,7 @@
                       <div class="field" *ngFor="let item of announcementForm.get('links')['controls']; let i = index;">
                         <div [formGroupName]="i" class="ui action input">
                           <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
-                          <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                          <i class="trash icon blue-text-color-sunbird margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
                         </div>
                         <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['links'].controls[i].status === 'INVALID'">
                           {{resource?.messages?.stmsg?.m0101}}
@@ -107,13 +107,13 @@
                   </div>
                   <div class="field">
                     <span (click)="addNewLink('')">
-                      <i class="plus icon createAnnBlueClass cursor-pointer"></i>
+                      <i class="plus icon blue-text-color-sunbird cursor-pointer"></i>
                       <span *ngIf="announcementForm.get('links')['controls'].length === 0">
-                        <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddlink}}</span>
+                        <span class="cursor-pointer blue-text-color-sunbird">{{resource?.frmelmnts?.lbl?.anncmntaddlink}}</span>
                         <span>{{resource?.frmelmnts?.lbl?.anncmntaddlinkdesc}}</span>
                       </span>
                       <span *ngIf="announcementForm.get('links')['controls'].length > 0">
-                        <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
+                        <span class="cursor-pointer blue-text-color-sunbird">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
                       </span>
                     </span>
                   </div>
