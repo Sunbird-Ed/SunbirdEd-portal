@@ -18,7 +18,6 @@ export class BatchDetailsComponent implements OnInit {
   courseMentor = false;
   batchList = [];
   userList = [];
-  showLoader = true;
   showError = false;
   userNames = {};
   showBatchList = false;
@@ -34,7 +33,6 @@ export class BatchDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Batch Input', this.batchId, this.courseId, this.enrolledCourse);
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -71,12 +69,10 @@ export class BatchDetailsComponent implements OnInit {
         this.fetchUserDetails();
       } else {
         this.showBatchList = true;
-        this.showLoader = false;
       }
     },
     (err: ServerResponse) => {
-      this.showBatchList = true;
-      this.showLoader = false;
+      this.showError = true;
       this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
@@ -103,11 +99,11 @@ export class BatchDetailsComponent implements OnInit {
       });
       this.showBatchList = true;
     }, (err) => {
-      this.showBatchList = true;
+      this.showError = true;
     });
   }
   batchUpdate(batch) {
-    this.router.navigate(['update/batch', this.batchId], {relativeTo: this.activatedRoute} );
+    this.router.navigate(['update/batch', batch.batchId], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});

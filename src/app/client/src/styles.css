@@ -2599,7 +2599,7 @@ i.edit.icon.editIcon-fontSize {
   position: absolute !important;
 }
 .batch-des label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2612,7 +2612,7 @@ i.edit.icon.editIcon-fontSize {
   padding-top: 12px;
 }
 .batch-date label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2648,7 +2648,7 @@ i.edit.icon.editIcon-fontSize {
   height: 4em;
 }
 .member label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;

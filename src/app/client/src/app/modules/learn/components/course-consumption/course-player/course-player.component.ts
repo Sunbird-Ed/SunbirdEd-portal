@@ -104,6 +104,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.parseChildContent(response.data);
           this.fetchContentStatus(response.data);
           this.subscribeToQueryParam(response.data);
+        } else {
+          this.parseChildContent(response.data);
         }
       })
       .subscribe((data) => {
@@ -189,11 +191,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds.push(node.model.identifier);
       }
     });
-    console.log('mimeTypeCount', mimeTypeCount);
     _.forEach(mimeTypeCount, (value, key) => {
       this.curriculum.push({mimeType: key, count: value});
     });
-    console.log('this.curriculum', this.curriculum);
   }
   fetchContentStatus(data) {
     const req = {
@@ -209,7 +209,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     'status' : 2
       };
     this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
-      console.log('res', res);
       if (res !== undefined) {
         this.courseConsumptionService.updateContentsState(req1).subscribe((updatedRes) => {
           console.log('res', updatedRes);
