@@ -34,7 +34,7 @@ describe('WorkspacesidebarComponent', () => {
     component.flaggedRole = testData.workSpaceRole.flaggedRole;
     component.limitedPublishingRole = testData.workSpaceRole.limitedPublishingRole;
     component.coursebacthesRole = testData.workSpaceRole.coursebacthesRole;
-    component.startRole =  testData.workSpaceRole.startRole;
+    component.createRole =  testData.workSpaceRole.createRole;
     component.ngOnInit();
     expect(component.draftRole).toBeDefined();
     expect(component.inreviewRole).toBeDefined();
