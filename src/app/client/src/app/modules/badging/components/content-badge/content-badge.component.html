@@ -6,7 +6,7 @@
   </div>
   <div class="six wide column margin-top-0 text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
     <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
-    <button class="ui small basic primary compact button margin-left-10" *ngFor="let badge of allBadgeList" (click)="getBadgeName(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
+    <button class="ui small basic primary compact button margin-left-10" *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="header">
       <div class="ui grid">
         <div class="eleven wide column">
-          <h4>{{resourceService.frmelmnts.lbl.markas}} '{{clickedBadge.name | uppercase}}'</h4>
+          <h4>{{resourceService.frmelmnts.lbl.markas}} '{{badge.name | uppercase}}'</h4>
         </div>
       </div>
     </div>
@@ -30,6 +30,6 @@
     </div>
     <div class="actions">
       <div class="ui basic blue small compact button left floated" (click)="modal.deny();showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
-      <div class="ui small primary compact button " (click)="assignBadge(clickedBadge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
+      <div class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
     </div>
 </sui-modal>

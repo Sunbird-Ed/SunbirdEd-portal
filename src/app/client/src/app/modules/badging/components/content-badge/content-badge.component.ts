@@ -22,7 +22,7 @@ export class ContentBadgeComponent implements OnInit {
    * all user role
    */
   private userRoles: Array<string> = [];
-  public clickedBadge: string;
+  public badge: object;
   public allBadgeList: any;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public toasterService: ToasterService,
@@ -59,10 +59,12 @@ export class ContentBadgeComponent implements OnInit {
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       }
+    }, (err) => {
+      this.toasterService.error(err.error.params.errmsg);
     });
   }
-  public getBadgeName(badgeName) {
-    this.clickedBadge = badgeName;
+  public setBadge(Badge) {
+    this.badge = Badge;
   }
   public assignBadge(badge) {
     this.showBadgeAssingModel = false;
