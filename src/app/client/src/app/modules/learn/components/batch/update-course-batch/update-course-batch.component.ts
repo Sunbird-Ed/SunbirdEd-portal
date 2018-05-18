@@ -57,7 +57,7 @@ export class UpdateCourseBatchComponent extends WorkSpace implements OnInit {
   * To navigate to other pages
   */
   route: Router;
-
+  showUpdateModal = false;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to update batch  component
