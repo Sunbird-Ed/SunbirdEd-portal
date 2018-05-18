@@ -85,7 +85,9 @@ angular.module('playerApp')
             $scope.gotoBottom()
           }
         }, 0)
-
+        org.sunbird.portal.eventManager.addEventListener('sunbird:player:closeOnNext', function (event, data) {
+          $scope.close()
+        })
         /**
          * @event 'sunbird:portal:telemetryend'
          * Listen for this event to get the telemetry OE_END event

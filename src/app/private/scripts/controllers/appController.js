@@ -20,6 +20,7 @@ angular.module('playerApp').controller('AppCtrl', ['$scope', 'permissionsService
     telemetryService.setConfigData('env', 'home')
     telemetryService.setConfigData('message', 'Content read')
     org.sunbird.portal.appid = $('#producerId').attr('value')
+    $rootScope.extContWhitelistedDomains = $('#extContWhitelistedDomains').attr('value')
     /**
      * This function contentModelSetBackLink is to store back link value for modal popup close dynamically.
      * **/

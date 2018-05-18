@@ -32,6 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
+const externalWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
 const defaultTenant = envHelper.DEFAUULT_TENANT
 const portal = this
 const Telemetry = require('sb_telemetry_util')
@@ -39,7 +40,6 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
-
 let memoryStore = null
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
@@ -97,6 +97,7 @@ app.all('/public', function (req, res) {
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
   res.locals.instance = process.env.sunbird_instance
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -129,6 +130,7 @@ app.all('/', function (req, res) {
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
   res.locals.instance = process.env.sunbird_instance
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -244,6 +246,7 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.contentChannelFilterType = envHelper.CONTENT_CHANNEL_FILTER_TYPE
   res.locals.producerId = producerId
+  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
   res.render(path.join(__dirname, 'private', 'index.ejs'))
 })
 
@@ -356,6 +359,29 @@ resourcesBundlesHelper.buildResources(function (err, result) {
     console.error('please set environment variable sunbird_environment, ' +
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
     process.exit(1)
+  }
+  if (externalWhitelistedDomains === undefined) {
+    console.error('please set SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN environment' +
+                  ' variable which is used to allow external content')
+    process.exit(1)
+  } else if (externalWhitelistedDomains.length) {
+    let domainRegex = RegExp('^(?=.{4,253}$)[a-z0-9]{1,63}([-.]{0,1}[a-z0-9]{1,62})*[.]{1}[a-z]{2,32}$', 'i')
+    let domainsList = externalWhitelistedDomains.split(',')
+
+    for (let i = 0; i < domainsList.length; i++) {
+      // Trim the excess whitespace.
+      let domain = domainsList[i].replace(/^\s*/, '').replace(/\s*$/, '')
+      // Validate the domain
+      if (!domainRegex.test(domain)) {
+        console.error('"' + domain + '" does not seem to be a valid domain. Please fix the' +
+                      ' SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN environment variable before proceeding.')
+        process.exit(1)
+      }
+    }
+  } else {
+    console.info('Continuing without a value in SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN ' +
+                 'environment variable. User will be unable to add content from external domains.' +
+                 ' To modify the behavior, please fix the mentioned environment variable and restart portal service.')
   }
   console.log('building resource bundles ......')
   if (err) {
