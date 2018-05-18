@@ -70,7 +70,6 @@ export class CreateContentComponent implements OnInit {
   ngOnInit() {
     this.frameworkService.initialize();
     this.textBookRole = this.configService.rolesConfig.workSpaceRole.textBookRole;
-    console.log(this.textBookRole);
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.lessonRole = this.configService.rolesConfig.workSpaceRole.lessonRole;
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
