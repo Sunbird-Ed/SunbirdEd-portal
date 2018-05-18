@@ -36,9 +36,13 @@ describe('BatchService', () => {
         ]
       };
       spyOn(learnerService, 'patch').and.callFake(() => Observable.throw({}));
-      batchService.updateBatchDetails(requestParam);
-      expect(batchService).toBeTruthy();
-      expect(learnerService.patch).toHaveBeenCalled();
+      spyOn(batchService, 'updateBatchDetails').and.callFake(() => Observable.of(Response.updateSucess));
+      batchService.updateBatchDetails(requestParam).subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.params.status).toBe('success');
+        }
+      );
     }));
 
   it('should call addUsers method to add the user ', inject([BatchService, LearnerService],
@@ -49,10 +53,15 @@ describe('BatchService', () => {
           '6f3897a4-29d9-4a37-b4cb-5ad6c64ac3c5'
         ]
       };
+      spyOn(batchService, 'addUsers').and.callFake(() => Observable.of(Response.addUserSucess));
       spyOn(learnerService, 'post').and.callFake(() => Observable.throw({}));
-      batchService.addUsers(requestParam, '0124963527344947201');
+      batchService.addUsers(requestParam, '0124963527344947201').subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.params.status).toBe('success');
+        }
+      );
       expect(batchService).toBeTruthy();
-      expect(learnerService.post).toHaveBeenCalled();
     }));
 
   it('should call getBatchDetailsById method to fetch the batchdetails  ', inject([BatchService, LearnerService],
@@ -60,10 +69,15 @@ describe('BatchService', () => {
       const requestParam = {
         'batchId': '0124963527344947201'
       };
+      spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.of(Response.getbatchDetailSucess));
       spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-      batchService.getBatchDetailsById(requestParam);
+       batchService.getBatchDetailsById(requestParam).subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.params.status).toBe('success');
+        }
+      );
       expect(batchService).toBeTruthy();
-      expect(learnerService.get).toHaveBeenCalled();
     }));
   it('should call filterUserSearchResult method to return userdata  ', inject([BatchService, LearnerService],
     (batchService: BatchService, learnerService: LearnerService) => {

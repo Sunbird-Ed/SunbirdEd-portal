@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { ConfigService, ServerResponse, ICard, IUserData } from '@sunbird/shared';
-import { ContentService, UserService } from '@sunbird/core';
+import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -28,14 +28,7 @@ export class WorkSpaceService {
     * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
-  /**
-   * userRoles
-  */
-  userRoles = [];
-  /**
-    * Refrence of UserService
-  */
-  private userService: UserService;
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -45,12 +38,11 @@ export class WorkSpaceService {
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router, userService: UserService) {
+    route: Router) {
     this.content = content;
     this.config = config;
     this.route = route;
     this.activatedRoute = activatedRoute;
-    this.userService = userService;
   }
   /**
   * deleteContent
