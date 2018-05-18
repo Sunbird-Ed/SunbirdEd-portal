@@ -49,7 +49,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
       if ( data  && !data.err ) {
         const conceptsData = this.conceptPickerService.concepts;
         this.conceptNames = _.map(this.metadata.concepts, 'name');
-        if (this.conceptNames.length < this.metadata.concepts.length) {
+        if (this.conceptNames && this.metadata.concepts && this.conceptNames.length < this.metadata.concepts.length) {
           this.filteredConcepts = _.filter(conceptsData, (p) => {
             return _.includes(this.metadata.concepts, p.identifier);
           });

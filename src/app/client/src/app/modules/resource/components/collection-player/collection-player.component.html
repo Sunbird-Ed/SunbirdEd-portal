@@ -26,19 +26,7 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
   </div>
-  <div *ngIf="serviceUnavailable" class="row">
-    <div class="eight wide centered column">
-      <div class="ui huge negative message">
-        <div class="header">
-          <span>
-            <i class="fa fa-warning-o fa-lg" aria-hidden="true"></i>
-            Unable to fetch the content details. Please try again later!
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row" *ngIf="!loader && !serviceUnavailable">
+  <div class="row" *ngIf="!loader">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
@@ -50,8 +38,10 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-      <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
-          <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
+      <span class="ui mouse-pointer content-font">
+          <i class="large blue share alternate icon"></i>&nbsp;
+      </span>
+      <a routerLink="flag"> <i class="ui large blue flag outline icon" ></i></a>
     </div>
     <div class="one wide column"></div>
   </div>
@@ -70,3 +60,4 @@
     <div class="one wide column"></div>
   </div>
 </div>
+<router-outlet></router-outlet>
