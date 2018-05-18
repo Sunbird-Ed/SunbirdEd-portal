@@ -69,4 +69,14 @@ export class CourseBatchService {
     };
     return this.learnerService.post(options);
   }
+
+  createBatch(request) {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.CREATE,
+      data: {
+        request: request
+      }
+    };
+    return this.learnerService.post(option);
+  }
 }

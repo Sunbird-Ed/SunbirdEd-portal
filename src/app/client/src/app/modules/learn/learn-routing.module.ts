@@ -1,5 +1,5 @@
 import { LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent, UpdateBatchComponent } from './components';
+  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent } from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -20,8 +20,8 @@ const routes: Routes = [
         path: ':courseId', component: CoursePlayerComponent,
         children: [{path: 'flag', component: FlagContentComponent},
         {path: 'enroll/batch/:batchId', component: EnrollBatchComponent},
-        {path: 'update/batch/:batchId', component: CreateBatchComponent},
-        {path: 'create/batch', component: UpdateBatchComponent}]
+        {path: 'update/batch/:batchId', component: UpdateCourseBatchComponent},
+        {path: 'create/batch', component: CreateBatchComponent}]
       },
       {
         path: ':courseId/dashboard', component: CourseProgressComponent
