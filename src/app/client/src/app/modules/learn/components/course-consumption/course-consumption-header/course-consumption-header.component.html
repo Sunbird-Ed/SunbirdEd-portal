@@ -1,0 +1,41 @@
+<div class="ui">
+    <div class="ui grid margin-top-4rem courseStructureHeader">
+      <div class="one wide column"></div>
+      <div class="ten wide column padding-top-none">
+        <div class="ui grid">
+          <div class="eight wide column padding-top-none">
+            <div class="courseStructureHeaderText courseStructureSectionHeading">{{courseHierarchy.name}}</div>
+            <br>
+            <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
+            [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
+            <span class="ui mouse-pointer content-font">
+                <i class="large blue share alternate icon"></i>&nbsp;
+            </span>
+            <span (click)="flagCourse()"> <i class="ui large blue flag outline icon" ></i></span>
+            <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
+          </div>
+          <div class="four wide column">
+              <div *ngIf="enrolledCourse" class="margin-top-Negative30">
+                  <span><p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{courseHierarchy.progress}}%</p></span>
+                  <button class="fluid blue right floated  ui button courseHeaderButton margin-top-0" (click)="resumeCourse()">
+                  {{resourceService?.frmelmnts?.btn?.resumecourse}} <i class="caret right icon"></i>
+                  </button>
+              </div>
+              <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="permission">
+                 <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="one wide column "></div>
+    </div>
+  </div>
+  <div class="ui grid margin-bottom-20 " *ngIf="enrolledCourse">
+    <div class="row">
+      <div class="twelve wide column padding-none ">
+        <sui-progress class="ui tiny progress orange" [value]="courseHierarchy.progress" [maximum]="100"></sui-progress>
+      </div>
+    </div>
+  </div>
+
+  

@@ -13,10 +13,10 @@
         </p>
       </div>
       <div class="header padding-top-5">
-        <div class="header padding-top-10 announcementHomeCard-header" *ngIf="announcementDetails.title">
+        <div class="padding-top-10 segment-heading" *ngIf="announcementDetails.title">
           {{announcementDetails.title}}
         </div>
-        <div class="ng-binding annOrgName padding-top-10" *ngIf="announcementDetails.from">
+        <div class="ng-binding announcement-org-name padding-top-10" *ngIf="announcementDetails.from">
           {{announcementDetails.from}}
         </div>
         <div class="padding-top-20 announcement-description" *ngIf="announcementDetails.description">
@@ -25,16 +25,16 @@
       </div>
       <div *ngIf="announcementDetails.links && announcementDetails.links.length">
         <div class="padding-top-20">
-          <strong class="annMediumText ng-binding">
+          <strong>
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsweblinks}}
           </strong>
         </div>
         <div class="padding-top-10 tweleve wide column">
           <div *ngFor="let link of announcementDetails.links">
             <p>
-              <a class="annUrlLinks" href="{{link}}" target="_blank">
+              <a class="ann-link-or-attachment" href="{{link}}" target="_blank">
                 {{link | slice:0:70}}
-                <span class="announcementBlueText" *ngIf="link && link.length > 70">...</span>
+                <span class="blue-text-color-sunbird" *ngIf="link && link.length > 70">...</span>
               </a>
             </p>
           </div>
@@ -42,34 +42,34 @@
       </div>
       <div *ngIf="announcementDetails.attachments && announcementDetails.attachments.length">
         <div class="padding-top-20">
-          <strong class="annMediumText ng-binding">
+          <strong>
             {{resourceService?.frmelmnts?.lbl?.anncmntdtlsattachments}}
           </strong>
         </div>
-        <div class="sixteen wide column margin-bottom-20 padding-top-20">
+        <div class="sixteen wide column margin-bottom-20">
           <div class="ui items">
             <div class="ui item box" *ngFor="let attachment of announcementDetails.attachments">
               <div class="ui grid">
                 <div class="column">
-                  <div class="attachmentPlacementBgr" [ngSwitch]="attachment.mimetype">
-                    <i *ngSwitchCase="'application/pdf'" class="file pdf announcementAttachmentsIcon big outline icon"></i>
-                    <i *ngSwitchDefault class="file image outline icon big announcementAttachmentsIcon"></i>
+                  <div [ngSwitch]="attachment.mimetype">
+                    <i *ngSwitchCase="'application/pdf'" class="file pdf ann-details-icon big outline icon"></i>
+                    <i *ngSwitchDefault class="file image outline icon big ann-details-icon"></i>
                   </div>
                 </div>
               </div>
               <div class="middle aligned content padding-left-none">
-                <div class="ui float-ContentRight">
-                  <a class="ui primary basic button announcementButton" href="{{attachment.link}}" target="_blank">
-                    <span class="announcementButtonText">
+                <div class="ui right-float">
+                  <a class="ui primary basic button announcement-button" href="{{attachment.link}}" target="_blank">
+                    <span class="announcement-button-text">
                       {{resourceService?.frmelmnts?.btn?.anncmntdtlsview}}
                     </span>
                   </a>
                 </div>
-                <p class="annAttaFilename annAttaFileName" title="{{attachment.name}}">
+                <p class="ann-attachment-detail-heading" title="{{attachment.name}}">
                   {{attachment.name | slice:0:50}}
                   <span *ngIf="attachment.name.length > 50">...</span>
                 </p>
-                <p class="annAttaFilesize annAttaFileSize" *ngIf="attachment.size">
+                <p class="ann-attachment-detail-meta" *ngIf="attachment.size">
                   {{attachment.size | uppercase}}
                 </p>
               </div>
@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      <div class="gray-full-width announcementSentOnDate" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
+      <div class="ann-details-sent-date-bg" *ngIf="announcementDetails.createdDate && !announcementDetails.hideDate">
         <span class="ng-binding announcement-description">
           {{resourceService?.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcementDetails.createdDate | dateFormat}}
         </span>

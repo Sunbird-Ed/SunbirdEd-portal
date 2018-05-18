@@ -13,9 +13,9 @@
       </div>
       <br/>
       <br/>
-      <button class="ui basic button announcementButton btn-width-26 announcementButtonText" (click)="modal.approve('done'); deleteAnnouncement();">
+      <button class="ui basic button announcement-button btn-width-26 announcement-button-text" (click)="modal.approve('done'); deleteAnnouncement();">
       {{resourceService?.frmelmnts?.btn?.yes}} </button>
-      <button class="ui button primary announcementButton btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
+      <button class="ui button primary announcement-button btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
     </div>
   </div>
 </sui-modal>

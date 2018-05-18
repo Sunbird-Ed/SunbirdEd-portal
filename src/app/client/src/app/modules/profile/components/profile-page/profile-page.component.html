@@ -1,7 +1,7 @@
 <div class="ui" *ngIf="userProfile">
     <app-profile-header></app-profile-header>
 </div>
-<div class="ui grid">
+<div class="ui stackable grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="twelve wide column">
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div *ngIf="userProfile">
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="eight wide column">
                     <app-user-summary></app-user-summary>
                     <app-user-experience-view></app-user-experience-view>
@@ -21,7 +21,7 @@
                     <app-user-additional-info></app-user-additional-info>
                 </div>
                 <div class=" four wide column margin-top-20">
-                    <div class="ui grid ">
+                    <div class="ui stackable grid ">
 
                         <div class="twelve wide column" *ngIf="userProfile.completeness">
                             <div class="ui raised segment">
@@ -64,9 +64,9 @@
 
                         <div class="twelve wide column" *ngIf="contributions && contributions.length > 0">
                             <div class="ui raised segment">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading">{{resourceService.frmelmnts.scttl.contributions}}</span>
-                                    <span class="addeditprofile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
+                                <div class="header">
+                                    <span class="segment-heading">{{resourceService.frmelmnts.scttl.contributions}}</span>
+                                    <span class="add-edit-btn-profile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
                                 </div>
                                 <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                                     <div class="item" *ngFor="let item of contributions">
@@ -87,8 +87,8 @@
 
                         <div class="twelve wide column">
                             <div class="ui raised segment blur-content">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading ">Member of</span>
+                                <div class="header">
+                                    <span class="segment-heading">Member of</span>
                                 </div>
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">
@@ -130,8 +130,8 @@
 
                         <div class="twelve wide column blur-content">
                             <div class="ui raised segment ">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading ">Member of</span>
+                                <div class="header">
+                                    <span class="segment-heading">Member of</span>
                                 </div>
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">

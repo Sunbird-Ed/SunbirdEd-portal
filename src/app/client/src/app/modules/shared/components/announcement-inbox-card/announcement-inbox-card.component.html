@@ -1,26 +1,24 @@
-<div class="ui raised segment annGridPadding cursor-pointer margin-bottom-10" [ngClass]="{'announcementCardLeftBorder':announcement.read  === false}">
+<div class="ui raised segment padding-10 cursor-pointer margin-bottom-10" [ngClass]="{'ann-segment-left-border':announcement.read  === false}">
   <div>
     <p class="ui grey label annType" *ngIf="announcement.type">
       {{announcement.type | uppercase}}
     </p>
   </div>
-  <div class="header announcementHomeCard-header">
-    <span class="header">
+  <div class="header padding-top-5 segment-heading">   
       {{announcement.title}}
-    </span>
   </div>
   <div>
-    <p class="annOrgName">
+    <p class="announcement-org-name">
       {{announcement.from}}
     </p>
   </div>
   <div class="padding-top-5">
-    <span class=" announcement-description">
+    <span class="announcement-description">
       {{announcement.description | slice:0:180}}
     </span>
     <span *ngIf="announcement.description.length > 180">
       ...
-      <span class="announcementBlueText">
+      <span class="blue-text-color-sunbird">
         {{resourceService.frmelmnts?.lbl?.anncmntreadmore}}
       </span>
     </span>
@@ -30,7 +28,7 @@
       <div *ngIf="first">
         <i class="linkify icon opacity04">
         </i>
-        <span class="cursor-pointer annUrlLinks">
+        <span class="ann-link-or-attachment">
           {{links | slice:0:70}}
           <span *ngIf="links.length > 70">
             ...
@@ -38,7 +36,7 @@
         </span>
       </div>
       <div *ngIf="last">
-        <span class="margin-left-30 annLinksAttachmentsMore annSmallText" *ngIf="announcement.links && (announcement.links.length - 1) > 0">
+        <span class="margin-left-30 announcement-meta-data announcement-extra-data" *ngIf="announcement.links && (announcement.links.length - 1) > 0">
           {{announcement.links.length - 1}} more weblink(s)
         </span>
       </div>
@@ -49,10 +47,10 @@
       <div *ngIf="first">
         <i class="file text outline icon opacity04">
         </i>
-        <span class=" annAttachment cursor-pointer">
+        <span class="ann-link-or-attachment">
           {{attachment.name | slice:0:30}}
         </span>
-        <span class="annLinksAttachmentsMore">
+        <span class="announcement-meta-data">
           <small [ngSwitch]="attachment.mimetype">
             <span *ngSwitchCase="'application/png'">(PNG, {{attachment.size | uppercase}})</span>
             <span *ngSwitchCase="'application/pdf'">(PDF, {{attachment.size | uppercase}})</span>
@@ -66,7 +64,7 @@
         </span>
       </div>
       <div *ngIf="last">
-        <span class="margin-left-30 announcement-description annSmallText" *ngIf="(announcement.attachments.length - 1) > 0">
+        <span class="margin-left-30 announcement-extra-data" *ngIf="(announcement.attachments.length - 1) > 0">
           {{announcement.attachments.length - 1}} more attachment(s)
         </span>
       </div>
@@ -75,7 +73,7 @@
   <div class="ui divider">
   </div>
   <div>
-    <span class="annCreatedDate">
+    <span class="announcement-meta-data">
       {{resourceService.frmelmnts?.lbl?.anncmntdtlssenton}} {{announcement.createdDate | dateFormat}}
     </span>
   </div>

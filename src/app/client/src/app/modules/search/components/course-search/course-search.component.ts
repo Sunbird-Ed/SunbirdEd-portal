@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam , ISort} from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam , ISort, PlayerService} from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -121,7 +121,7 @@ export class CourseSearchComponent implements OnInit {
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
    */
-  constructor(searchService: SearchService, route: Router,
+  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
@@ -173,7 +173,7 @@ export class CourseSearchComponent implements OnInit {
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          this.processActionObject(apiResponse.result.course);
+          this.searchList  = this.processActionObject(apiResponse.result.course);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -197,45 +197,34 @@ export class CourseSearchComponent implements OnInit {
   * This method process the action object.
   */
   processActionObject(course) {
-    _.forEach(course, (value, index) => {
-      if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-        _.forEach(this.enrolledCourses, (value1, index1) => {
-          if (course[index].identifier === this.enrolledCourses[index1].courseId) {
-            const constantData = {
-              action: {
-                right: {
-                  class: 'ui blue basic button',
-                   eventName: 'Resume',
-                   displayType: 'button',
-                   text: 'Resume'},
-                  onImage: { eventName: 'onImage' }
-              }
-          };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = {};
-          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
-          } else {
-            const constantData = {
-              action: {
-                  onImage: { eventName: 'onImage' }
-              }
-          };
-          const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-          const dynamicFields = {};
-          this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
-          }
-        });
-      } else {
-        const constantData = {
-          action: {
-              onImage: { eventName: 'onImage' }
-          }
-      };
-      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-      const dynamicFields = {};
-      this.searchList = this.utilService.getDataForCard(course, constantData, dynamicFields, metaData);
-      }
+    const enrolledCoursesId = [];
+    _.forEach(this.enrolledCourses, (value, index) => {
+     enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
     });
+    _.forEach(course, (value, index) => {
+         if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+          if (_.indexOf(enrolledCoursesId, course[index].identifier) === 0 ) {
+            const constantData = this.config.appConfig.CourseSearch.enrolledCourses.constantData;
+              const metaData = this.config.appConfig.CourseSearch.metaData;
+                     const dynamicFields = {};
+                     course[index] = this.utilService.processContent(course[index],
+                      constantData, dynamicFields, metaData);
+          } else {
+            const constantData = this.config.appConfig.CourseSearch.otherCourses.constantData;
+              const metaData = this.config.appConfig.CourseSearch.metaData;
+                     const dynamicFields = {};
+                     course[index] = this.utilService.processContent(course[index],
+                       constantData, dynamicFields, metaData);
+          }
+         } else {
+          const constantData = this.config.appConfig.CourseSearch.otherCourses.constantData;
+            const metaData = this.config.appConfig.CourseSearch.metaData;
+                   const dynamicFields = {};
+                   course[index] = this.utilService.processContent(course[index],
+                     constantData, dynamicFields, metaData);
+        }
+    });
+      return course;
   }
   /**
   * This method helps to navigate to different pages.
@@ -289,4 +278,7 @@ export class CourseSearchComponent implements OnInit {
         this.populateEnrolledCourse();
       });
   }
+  playContent(event) {
+     this.playerService.playContent(event.data.metaData);
+   }
 }

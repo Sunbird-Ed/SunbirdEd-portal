@@ -174,16 +174,9 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
           this.reviewContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-        const constantData = {
-          ribbon: {
-              right: { class: 'ui black right ribbon label' }
-          },
-          action: {
-              onImage: { eventName: 'onImage' }
-          }
-      };
-      const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-      const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+          const constantData = this.config.appConfig.WORKSPACE.ReviewSubmission.constantData;
+        const metaData = this.config.appConfig.WORKSPACE.ReviewSubmission.metaData;
+        const dynamicFields = this.config.appConfig.WORKSPACE.ReviewSubmission.dynamicFields;
       this.reviewContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {

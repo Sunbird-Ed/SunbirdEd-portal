@@ -187,10 +187,10 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
-        if (profileData.rootOrgId) {
-          organisationIds.push(profileData.rootOrgId);
-        }
       });
+    }
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
     }
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
