@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import { ActionCard } from './../../interfaces/index';
 /**
@@ -18,6 +18,13 @@ export class ActionCardComponent {
    * This is used to render the enrolled courses values in the view.
    */
   @Input() enrolledCourses: ActionCard;
+
+  @Output('clickEvent')
+clickEvent = new EventEmitter<any>();
+
+public onAction(data) {
+  this.clickEvent.emit({'data': data});
+}
   /**
    * The constructor
    * @param {ResourceService} resourceService Reference of ResourceService.

@@ -21,7 +21,7 @@
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
-                                            <app-action-card [enrolledCourses]="item"></app-action-card>
+                                            <app-action-card [enrolledCourses]="item"  (clickEvent)="playContent($event)"></app-action-card>
                                     </div>
                                 </div>
                             </ngx-slick>
