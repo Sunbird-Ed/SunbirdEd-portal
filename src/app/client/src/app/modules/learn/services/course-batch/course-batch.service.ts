@@ -51,11 +51,9 @@ export class CourseBatchService {
   }
   getEnrollBatchDetails(bathId) {
     if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifier) {
-      console.log('batch found', this._enrollBatchDetails);
       return Observable.of(this._enrollBatchDetails);
     } else {
       return this.getBatchDetails(bathId).map((date) => {
-        console.log('fetching batch details from api', date);
         return date.result.response;
       });
     }

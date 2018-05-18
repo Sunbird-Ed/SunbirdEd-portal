@@ -124,12 +124,9 @@ export class CourseProgressService {
     _.forEach(req.contentIds, (contentId) => {
       reqContentIds.push({ 'contentId': contentId });
     });
-    console.log('---------getContentsState-----', reqData);
     if (courseProgress !== undefined) {
-      console.log('---------got content in local-----', reqData);
       return Observable.of(courseProgress);
     } else {
-      console.log('------in else part ------', this.courseProgress[courseId_batchId]);
       return this.getCourseStateFromAPI(reqData).map(
         (res: ServerResponse) => {
           if (res.result.contentList.length > 0) {
@@ -155,11 +152,9 @@ export class CourseProgressService {
                  });
             });
           }
-          console.log('------made api call ------', this.courseProgress[courseId_batchId]);
           return this.courseProgress[courseId_batchId];
         }).catch(
           (err: ServerResponse) => {
-            console.log('------made api fail ------', this.courseProgress[courseId_batchId]);
             return Observable.throw(err);
           }
         );

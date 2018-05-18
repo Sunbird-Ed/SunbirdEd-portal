@@ -198,21 +198,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    console.log('-----calling getContentStatus------- ', req);
     this.courseConsumptionService.getContentStatus(req).subscribe(
       (res) => {
       this.updateCourseProgress(res);
     }, (err) => {
-      console.log('------fetching content state failed', err);
     });
   }
   updateCourseProgress(res) {
     const contentStatus = res.content;
     this.contentStatus = res.content;
-    console.log('-----course progress result-----', contentStatus);
   }
   public contentProgressEventnew(event) {
-    console.log('event', event.detail.telemetryData.eid);
     const eid = event.detail.telemetryData.eid;
     const request: any = {
       userId: this.userService.userid,
