@@ -34,10 +34,10 @@
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
                                 <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
-                                    <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note>
+                                    <!-- <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note> -->
                                 </div>
                                 <div>
-                                    <app-note-card *ngIf="enrolledCourse"></app-note-card>
+                                    <!-- <app-note-card *ngIf="enrolledCourse"></app-note-card> -->
                                 </div>
                                 <br>
                                     <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
