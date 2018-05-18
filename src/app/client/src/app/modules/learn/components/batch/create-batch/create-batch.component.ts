@@ -1,4 +1,3 @@
-import { BatchService } from './../../../services/batch/batch.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
@@ -7,7 +6,7 @@ import { WorkSpaceService } from './../../../../workspace/services';
 import { SearchService, UserService, LearnerService } from '@sunbird/core';
 import { IMenter, Ibatch } from './../../../../workspace/interfaces';
 import { WorkSpace } from './../../../../workspace/classes/workspace';
-import { CourseConsumptionService } from './../../../services';
+import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-create-batch',
@@ -77,7 +76,7 @@ export class CreateBatchComponent implements OnInit {
   /**
   * Refrence of UserService
   */
-  private batchService: BatchService;
+  private batchService: CourseBatchService;
   /**
     * Reference for WorkSpaceService
   */
@@ -114,7 +113,7 @@ export class CreateBatchComponent implements OnInit {
     route: Router, workSpaceService: WorkSpaceService,
     resourceService: ResourceService, userService: UserService,
     public searchService: SearchService,
-    batchService: BatchService,
+    batchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService) {
     this.routerNavigationService = routerNavigationService;
@@ -175,7 +174,7 @@ export class CreateBatchComponent implements OnInit {
         'endDate': data.startDate,
         'createdBy': this.userId,
         'createdFor': this.orgIds,
-        'mentors': data.startDate
+        'mentors': data.mentors
       }
     };
 

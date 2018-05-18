@@ -27,21 +27,20 @@
                                         {{resourceService.frmelmnts.lbl.coursestructure}}
                                     </b>
                                 </div>
-                                <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
+                                <app-collection-tree (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions" [contentStatus]="contentStatus"></app-collection-tree>
                                 <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
-                                <!-- <course-discussions showaskquestion="true"></course-discussions> -->
+                                <!-- <app-course-discussions></app-course-discussions> -->
                             </div>
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
-                                <!-- <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15 margin-top-15">
-                                    <add-note shownoteincourse="true" courseid="toc.courseId"></add-note>
-                                </div> -->
-                                <!-- <div>
-                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
-                                </div> -->
-                                <!-- <div>
-                                    <div ng-include=" 'views/course/carriculumCard.html'"></div>
-                                </div> -->
+                                <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
+                                    <!-- <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note> -->
+                                </div>
+                                <div>
+                                    <!-- <app-note-card *ngIf="enrolledCourse"></app-note-card> -->
+                                </div>
+                                <br>
+                                    <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
                                 <br>
                                 <div class="courseupdate">
                                     <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>
@@ -69,14 +68,14 @@
                                 </div>
                                 <div class="ui grid">
                                   <div class="twelve wide column">
-                                    <app-player class="content-player" [playerConfig]="playerConfig | async"></app-player>
+                                    <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig | async"></app-player>
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <div class="ui row padding-top-none">
                                 <div class="three wide column ">
-                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="OnPlayContent(prevPlaylistItem)" 
+                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" 
                                       [disabled]="prevPlaylistItem === undefined">
                                         <div class="toc-left-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
@@ -92,7 +91,7 @@
                                 </div>
                                 <div class="two wide column "></div>
                                 <div class="three wide column ">
-                                    <button class="ui blue button right floated  fluid" (click)="OnPlayContent(nextPlaylistItem)" 
+                                    <button class="ui blue button right floated  fluid" (click)="navigateToContent(nextPlaylistItem)" 
                                       [disabled]="nextPlaylistItem === undefined">
                                         <div class="toc-right-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}

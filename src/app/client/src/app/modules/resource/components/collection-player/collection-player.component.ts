@@ -42,8 +42,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
+  private subsrciption: Subscription;
+  public contentType: string;
+  public badgeData: Array<object>;
   private closeUrl: any;
-
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -54,14 +56,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     customFileIcon: {
       'video': 'fa fa-file-video-o fa-lg',
       'pdf': 'fa fa-file-pdf-o fa-lg',
-      'youtube': 'fa fa-youtube fa-lg',
+      'youtube': 'fa fa-youtube fa-lg fancy_tree_red',
       'H5P': 'fa fa-html5 fa-lg',
       'audio': 'fa fa-file-audio-o fa-lg',
       'ECML': 'fa fa-file-code-o fa-lg',
-      'HTML': 'fa fa-html5-o fa-lg',
+      'HTML': 'fa fa-html5 fa-lg',
       'collection': 'fa fa-file-archive-o fa-lg',
-      'epub': 'fa fa-text-o fa-lg',
-      'doc': 'fa fa-text-o fa-lg'
+      'epub': 'fa fa-file-text fa-lg',
+      'doc': 'fa fa-file-text fa-lg'
     }
   };
 
@@ -161,7 +163,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private getCollectionHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(collectionId)
       .map((response) => {
+        this.contentType = _.get(response, 'result.content.contentType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
+        this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       });
   }

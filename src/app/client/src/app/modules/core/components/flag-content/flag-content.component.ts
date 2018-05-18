@@ -184,7 +184,6 @@ export class FlagContentComponent implements OnInit, OnDestroy {
         this.identifier = params.contentId;
         this.getContentData();
       } else {
-        console.log(params);
         this.identifier = params.collectionId ?  params.collectionId :  params.courseId;
         this.getCollectionHierarchy();
       }

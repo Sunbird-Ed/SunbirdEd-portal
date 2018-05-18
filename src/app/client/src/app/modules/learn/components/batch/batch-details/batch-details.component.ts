@@ -1,4 +1,4 @@
-import { BatchService } from './../../../services';
+import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
@@ -18,7 +18,6 @@ export class BatchDetailsComponent implements OnInit {
   courseMentor = false;
   batchList = [];
   userList = [];
-  showLoader = true;
   showError = false;
   userNames = {};
   showBatchList = false;
@@ -28,13 +27,12 @@ export class BatchDetailsComponent implements OnInit {
     { name: 'Upcoming', value: 0 }
   ];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-  public userService: UserService, public batchService: BatchService, public toasterService: ToasterService,
+  public userService: UserService, public batchService: CourseBatchService, public toasterService: ToasterService,
   public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
   ngOnInit() {
-    console.log('Batch Input', this.batchId, this.courseId, this.enrolledCourse);
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -71,12 +69,10 @@ export class BatchDetailsComponent implements OnInit {
         this.fetchUserDetails();
       } else {
         this.showBatchList = true;
-        this.showLoader = false;
       }
     },
     (err: ServerResponse) => {
-      this.showBatchList = true;
-      this.showLoader = false;
+      this.showError = true;
       this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
@@ -103,17 +99,18 @@ export class BatchDetailsComponent implements OnInit {
       });
       this.showBatchList = true;
     }, (err) => {
-      this.showBatchList = true;
+      this.showError = true;
     });
   }
   batchUpdate(batch) {
-    this.router.navigate(['update/batch', this.batchId], {relativeTo: this.activatedRoute} );
+    this.batchService.setUpdateBatchDetails(batch);
+    this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
+    this.batchService.setEnrollBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
-    this.batchService.enrollBatchDetails(batch);
   }
 }

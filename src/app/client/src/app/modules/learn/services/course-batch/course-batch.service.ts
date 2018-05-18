@@ -6,8 +6,9 @@ import 'rxjs/add/observable/throw';
 import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 
 @Injectable()
-export class BatchService {
+export class CourseBatchService {
   private _enrollBatchDetails: any;
+  private _enrollUpdateDetails: any;
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
@@ -46,12 +47,27 @@ export class BatchService {
     };
     return this.learnerService.get(option);
   }
-  set enrollBatchDetails(enrollBatchDetails: any) {
+  setEnrollBatchDetails(enrollBatchDetails: any) {
     this._enrollBatchDetails = enrollBatchDetails;
   }
+  setUpdateBatchDetails(enrollBatchDetails: any) {
+    this._enrollUpdateDetails = enrollBatchDetails;
+  }
   getEnrollBatchDetails(bathId) {
-    if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifer) {
+    if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifier) {
+      return Observable.of(this._enrollBatchDetails);
+    } else {
+      return this.getBatchDetails(bathId).map((date) => {
+        return date.result.response;
+      });
     }
+  }
+  enrollToCourse(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
+      data: data
+    };
+    return this.learnerService.post(options);
   }
 
   createBatch(request) {

@@ -21,10 +21,14 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Input() public nodes: ICollectionTreeNodes;
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
-
+  @Input() contentStatus: any;
   private rootNode: any;
   public rootChildrens: any;
-
+  private iconColor = {
+    '0': 'fancy-tree-grey',
+    '1': 'fancy-tree-blue',
+    '2': 'fancy-tree-green'
+  };
   ngOnInit() {
     this.initialize();
   }
@@ -74,9 +78,18 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
         if ( node.fileType === MimeTypeTofileType['application/vnd.ekstep.content-collection']) {
           node.folder = true;
         } else {
+          const indexOf = _.findIndex(this.contentStatus, { });
+          if (this.contentStatus) {
+            const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier});
+            const status = content.status.toString();
+            node.iconColor = this.iconColor[status];
+          } else {
+            node.iconColor = this.iconColor['0'];
+          }
           node.folder = false;
         }
         node.icon = this.options.customFileIcon[node.fileType] || this.options.fileIcon;
+        node.icon = `${node.icon} ${node.iconColor}`;
       }
     });
   }

@@ -16,6 +16,7 @@ export class CourseConsumptionPageComponent implements OnInit {
   courseId: string;
   batchId: string;
   showLoader = true;
+  showError = false;
   courseHierarchy: any;
   enrolledCourse: boolean;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
@@ -42,6 +43,8 @@ export class CourseConsumptionPageComponent implements OnInit {
         this.router.navigate(['/learn']);
       }
     }, (err) => {
+      this.showLoader = false;
+      this.showError = true;
       this.toasterService.error(this.resourceService.messages.fmsg.m0003);
     });
   }
@@ -69,6 +72,9 @@ export class CourseConsumptionPageComponent implements OnInit {
         } else if (enrolledCourses && enrolledCourses.err) {
           this.enrolledCourse = false;
           this.showLoader = false;
+          if (this.batchId) {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0001);
+          }
           this.router.navigate([`/learn/course/${this.courseId}`]);
         }
     });

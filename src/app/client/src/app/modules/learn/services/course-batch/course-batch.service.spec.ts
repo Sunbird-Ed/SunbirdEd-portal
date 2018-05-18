@@ -1,0 +1,22 @@
+import { TestBed, inject } from '@angular/core/testing';
+
+import { CourseBatchService } from './course-batch.service';
+
+import { CoreModule } from '@sunbird/core';
+
+import { SharedModule } from '@sunbird/shared';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+describe('BatchService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      providers: [CourseBatchService]
+    });
+  });
+
+  it('should be created', inject([CourseBatchService], (service: CourseBatchService) => {
+    expect(service).toBeTruthy();
+  }));
+});

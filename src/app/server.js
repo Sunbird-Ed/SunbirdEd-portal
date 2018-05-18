@@ -113,6 +113,11 @@ function indexPage (req, res) {
   res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
+app.get('/get/envData', keycloak.protect(), function (req, res) {
+  res.status(200)
+  res.send({ appId: appId, ekstep_env: ekstepEnv })
+  res.end()
+})
 
 app.all('/', indexPage)
 app.all('/home', keycloak.protect(), indexPage)
@@ -265,11 +270,6 @@ app.all('/private/*', function (req, res) {
   res.redirect('/home')
 })
 
-app.get('/get/envData', keycloak.protect(), function (req, res) {
-  res.status(200)
-  res.send({ appId: appId, ekstep_env: ekstepEnv })
-  res.end()
-})
 
 app.get('/v1/user/session/start/:deviceId', function (req, res) {
   if (req.session.logSession === false) {
