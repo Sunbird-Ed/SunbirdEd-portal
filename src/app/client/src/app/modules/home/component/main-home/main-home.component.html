@@ -13,7 +13,7 @@
                     </span>
                     <div class="ui active homePage" [suiCollapse]="collapse">
                         <div class="regular slider padding-top-10">
-                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                                 <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
                                     <div *ngIf="item.type === 'profile'">
                                         <a routerLink="/profile">
