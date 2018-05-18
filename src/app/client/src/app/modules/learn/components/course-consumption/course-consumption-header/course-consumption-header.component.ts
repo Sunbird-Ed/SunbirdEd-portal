@@ -14,6 +14,7 @@ export class CourseConsumptionHeaderComponent implements OnInit {
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
   permission = ['COURSE_MENTOR'];
+  courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
@@ -23,6 +24,9 @@ export class CourseConsumptionHeaderComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.activatedRoute.firstChild.params.subscribe((param) => {
+      this.courseId = param.courseId;
+    });
     this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {
       this.courseHierarchy.progress = courseProgressData.progress;
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
@@ -30,7 +34,7 @@ export class CourseConsumptionHeaderComponent implements OnInit {
     });
   }
   showDashboard() {
-    this.router.navigate(['dashboard'], {relativeTo: this.activatedRoute.firstChild});
+    this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
   resumeCourse() {
     this.navigateToContent(this.lastPlayedContentId);
