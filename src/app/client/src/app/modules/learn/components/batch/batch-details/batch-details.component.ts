@@ -103,7 +103,8 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   batchUpdate(batch) {
-    this.router.navigate(['update/batch', batch.batchId], {relativeTo: this.activatedRoute} );
+    this.batchService.setUpdateBatchDetails(batch);
+    this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});

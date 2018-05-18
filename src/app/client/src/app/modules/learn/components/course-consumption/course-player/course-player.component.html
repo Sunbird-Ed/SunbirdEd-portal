@@ -33,14 +33,14 @@
                             </div>
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
-                                <!-- <div ng-if="toc.courseType === 'ENROLLED_COURSE'" class="margin-bottom-15 margin-top-15">
-                                    <add-note shownoteincourse="true" courseid="toc.courseId"></add-note>
-                                </div> -->
-                                <!-- <div>
-                                    <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId"></note-card>
-                                </div> -->
+                                <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
+                                    <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note>
+                                </div>
+                                <div>
+                                    <app-note-card *ngIf="enrolledCourse"></app-note-card>
+                                </div>
                                 <br>
-                                    <app-carriculum-card *ngIf="curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
+                                    <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
                                 <br>
                                 <div class="courseupdate">
                                     <b>{{resourceService.frmelmnts.lbl.coursecreatedon}}: {{courseHierarchy.createdOn | dateFormat}}</b>

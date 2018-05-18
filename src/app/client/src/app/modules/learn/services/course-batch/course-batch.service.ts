@@ -8,6 +8,7 @@ import {SearchParam, LearnerService, UserService, ContentService, SearchService 
 @Injectable()
 export class CourseBatchService {
   private _enrollBatchDetails: any;
+  private _enrollUpdateDetails: any;
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
@@ -48,6 +49,9 @@ export class CourseBatchService {
   }
   setEnrollBatchDetails(enrollBatchDetails: any) {
     this._enrollBatchDetails = enrollBatchDetails;
+  }
+  setUpdateBatchDetails(enrollBatchDetails: any) {
+    this._enrollUpdateDetails = enrollBatchDetails;
   }
   getEnrollBatchDetails(bathId) {
     if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifier) {
