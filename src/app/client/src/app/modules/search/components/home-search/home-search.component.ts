@@ -1,6 +1,6 @@
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
    IContents, ICard, UtilService } from '@sunbird/shared';
-import { SearchService } from '@sunbird/core';
+import { SearchService, PlayerService } from '@sunbird/core';
 import { Component, OnInit,  NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -97,7 +97,7 @@ export class HomeSearchComponent implements OnInit {
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
    */
-  constructor(searchService: SearchService, route: Router,
+  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, public utilService: UtilService) {
@@ -194,6 +194,9 @@ export class HomeSearchComponent implements OnInit {
         this.queryParams = { ...bothParams.queryParams };
         this.populateCompositeSearch();
       });
+  }
+  playContent(event) {
+    this.playerService.playContent(event.data.metaData);
   }
 
 }
