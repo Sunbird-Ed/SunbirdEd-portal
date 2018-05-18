@@ -7,7 +7,7 @@ import { IPopup } from 'ng2-semantic-ui';
 import { ISharelink } from './../../interfaces';
 @Component({
   selector: 'app-share-link',
-  templateUrl: './share-link.component.html',
+  templateUrl: './share-link.component.html'
 })
 export class ShareLinkComponent implements OnInit {
   /**
