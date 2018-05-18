@@ -7,7 +7,6 @@ import {
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -194,7 +193,7 @@ export class LearnPageComponent implements OnInit {
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
-  }
+}
 
   /**
    *  to get query parameters

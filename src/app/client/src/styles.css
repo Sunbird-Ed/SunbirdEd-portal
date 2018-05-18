@@ -2483,7 +2483,7 @@ i.edit.icon.editIcon-fontSize {
   position: absolute !important;
 }
 .batch-des label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2496,7 +2496,7 @@ i.edit.icon.editIcon-fontSize {
   padding-top: 12px;
 }
 .batch-date label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2532,7 +2532,7 @@ i.edit.icon.editIcon-fontSize {
   height: 4em;
 }
 .member label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2715,3 +2715,13 @@ iframe.iziModal-iframe {
   font-family: 'sunbirdboldfont';
   font-size: 1.4em;
 }
+
+.fancy-tree-grey{
+  color:#929292;
+}
+.fancy-tree-blue{
+  color:#55b2f7;
+}
+.fancy-tree-green{
+  color:#54d40f
+};

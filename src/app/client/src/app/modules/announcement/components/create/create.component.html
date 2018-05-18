@@ -87,7 +87,7 @@
                     <div class="field">
                       <input formControlName="description" placeholder="{{resource?.frmelmnts?.instn?.t0052}}">
                       <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['description'].errors && announcementForm.controls['description'].errors.maxlength && !announcementForm.controls['description'].pristine">
-                        {{resource?.messages?.stmsg?.m0108}}
+                        {{resource?.messages?.stmsg?.m0109}}
                       </div>
                       <section *ngIf="announcementForm.value.description.length" class="float-ContentRight">{{announcementForm.value.description.length}} / 1200</section>
                     </div>

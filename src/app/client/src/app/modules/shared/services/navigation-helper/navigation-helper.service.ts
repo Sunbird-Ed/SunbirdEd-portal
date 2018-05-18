@@ -33,7 +33,8 @@ export class NavigationHelperService {
         history = {url, queryParams};
       }
       const previousUrl = this._history.pop();
-      if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url)) {
+      if (previousUrl === undefined || (previousUrl && (previousUrl.url === history.url || previousUrl.url.includes(history.url)
+      || history.url.includes(previousUrl.url)))) {
         this._history.push(history);
       } else {
         this._history.push(previousUrl, history);
