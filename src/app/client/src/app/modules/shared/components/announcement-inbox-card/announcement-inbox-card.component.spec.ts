@@ -39,8 +39,7 @@ describe('AnnouncementInboxCardComponent', () => {
     expect(fixture.nativeElement.querySelector('div .annType').innerText).toEqual('CIRCULAR');
     expect(fixture.nativeElement.querySelector('div .announcement-org-name').innerText).toEqual('for');
     expect(fixture.nativeElement.querySelector('div .announcement-description').innerText).toEqual('');
-    expect(fixture.nativeElement.querySelector('div.last span.announcement-description').innerText).toEqual('1 more attachment(s)');
-    expect(fixture.nativeElement.querySelector('div .announcement-meta-data').innerText).toEqual('15th January 2018');
+    expect(fixture.nativeElement.querySelector('div.last span.announcement-extra-data').innerText).toEqual('1 more weblink(s)');
   });
 
   it('should show TEST INPUT for news type', () => {
@@ -50,7 +49,5 @@ describe('AnnouncementInboxCardComponent', () => {
     expect(fixture.nativeElement.querySelector('div .expand-or-minimize')).toEqual(null);
     expect(fixture.nativeElement.querySelector('div .ann-link-or-attachment').innerText).toEqual('');
     expect(fixture.nativeElement.querySelector('div .announcement-description').innerText).toEqual('hi');
-    expect(fixture.nativeElement.querySelector('div .announcement-meta-data').innerText).toEqual('Invalid date');
   });
-
 });

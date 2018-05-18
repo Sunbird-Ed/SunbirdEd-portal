@@ -323,6 +323,9 @@
 .margin-right-15 {
   margin-right: 15px !important;
 }
+.margin-left-0 {
+  margin-left: 0 !important;
+}
 .margin-left-10 {
   margin-left: 10px !important;
 }
@@ -446,13 +449,6 @@
   background: 0 0!important;
   color: #007AFF !important;
   text-shadow: none !important;
-}
-.disabledButton {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-.overFlowWordRap {
-  overflow-wrap: break-word !important;
 }
 h4.ui.header.sectionHeading {
   font-family: 'sunbirdboldfont';
@@ -1179,61 +1175,61 @@ i.large.icon.limitedPublishingLinkIcon {
   font-family: 'sunbirdregularfont';
   font-size: 0.8em;
 }
-.showingAllSentAnn {
+.showing-all-sent-ann {
   color: #333333;
   font-family: 'sunbirdregularfont';
-  font-size: 15px;
+  font-size: 1.13em;
   line-height: 19px;
 }
-.announcementTableHeading {
+.ann-table-heading {
   color: #7c7b7b;
   font-family: 'sunbirdregularfont';
-  font-size: 15px;
+  font-size: 1.1em;
   line-height: 19px;
 }
-.tableListNameAnn {
+.table-list-name-ann {
   color: #333333;
   font-family: 'sunbirdregularfont';
-  font-size: 14px;
+  font-size: 1.05em;
   line-height: 19px;
 }
-.announcementDataText {
+.ann-data-text {
   color: #333333;
   font-family: 'sunbirdregularfont';
-  font-size: 15px;
+  font-size: 1em;
   line-height: 19px;
 }
-ui.primary.basic.button.announcementButton {
+ui.primary.basic.button.announcement-button {
   border: 1px solid #007AFF;
   border-radius: 4px;
 }
-.announcementButtonText {
+.announcement-button-text {
   color: #007AFF;
   font-family: 'sunbirdboldfont';
   font-size: 1em;
   line-height: 17px;
 }
-.announcementSeeAllBtn {
-  padding: 8px;
-}
-.annMediumText {
+ui.primary.basic.button.ann-upload-attachment {
+  border: 1px solid #007AFF;
+  border-radius: 4px;
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
   font-size: 1em;
-  font-weight: 600;
-  font-family: sunbirdmediumfont;
+  line-height: 17px;
+}
+.ann-upload-attachment-text {
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  line-height: 17px; 
 }
 .linkify.icon.opacity04 {
   opacity: 0.4;
 }
-.annSmallText {
-  font-size: 0.8em;
-}
-.ui.segment.annGridPadding {
-  padding: 0.9em;
-}
-.gray-full-width {
+.ann-details-sent-date-bg {
   background-color: #F5F5F5;
   padding: 15px 20px;
-  margin: 10px -20px;
+  margin: 10px -20px -25px -15px;
 }
 .ui.items > .item.box {
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
@@ -1241,9 +1237,6 @@ ui.primary.basic.button.announcementButton {
   padding: 1em 1em;
   border-radius: .28571429rem;
   border: 1px solid rgba(34, 36, 38, 0.15);
-}
-.announcementSentOnDate {
-  margin-bottom: -25px;
 }
 .width-100 {
   width: 100%;
@@ -1255,17 +1248,14 @@ ui.primary.basic.button.announcementButton {
 .btn-width-26 {
   width: 26%;
 }
-i.file.pdf.announcementAttachmentsIcon {
+i.file.pdf.ann-details-icon {
   width: 44px;
   height: 44px;
   padding-top: 3px;
   padding-left: 4px;
   margin-top: 10px;
 }
-.attachmentPlacementBgr {
-  background-color: rgba(86, 61, 124, 0.1);
-}
-.announcementSeeAllLink {
+.announcement-list-see-all {
   font-family: 'sunbirdboldfont';
   font-size: 1.2em ;
   padding-top: 15px ;
@@ -1276,14 +1266,14 @@ i.file.pdf.announcementAttachmentsIcon {
   background-color: #9a9a9a !important;
   border-color: #9a9a9a !important;
 }
-.ui.items > .item > .content p.annAttaFilesize {
+.ui.items > .item > .content p.ann-attachment-detail-meta {
   margin-left: 10px;
   margin-top: -5px;
   font-family: 'sunbirdregularfont';
   font-size: 1em ;
   color: #7c7b7b;
 }
-.ui.items > .item > .content p.annAttaFilename {
+.ui.items > .item > .content p.ann-attachment-detail-heading {
   font-family: 'sunbirdregularfont';
   font-size: 1.2em ;
   margin-bottom: 0px;
@@ -1365,18 +1355,7 @@ h5.ui.header {
 .ann-fileupload-extra {
   font-style: italic;
 }
-.anncmnt-fileupload-or-text {
-  margin-top: -3.5em;
-}
-.anncmnt-fileupload-negative-margin {
-  margin-bottom: -3em;
-}
-.anncmnt-upload-file-btn {
-  position: relative;
-  overflow: hidden;
-  direction: ltr;
-}
-.anncmnt-fileupload-input-field {
+.ann-fileupload-input-field {
   position: absolute;
   right: 0px;
   top: 0px;
@@ -1397,10 +1376,6 @@ h5.ui.header {
 .qq-upload-list li.qq-upload-success.qq-upload-success {
   background-color: #ffffff;
   padding: 15px;
-}
-.anncmnt-upload-file-are {
-  margin-top: -2.5em;
-  padding-bottom: 75px;
 }
 .qq-uploader {
   border: 2px dashed #cccccc;
@@ -2287,6 +2262,7 @@ ul.fancytree-container li {
     white-space: pre-line;
   }
 }
+
 .WorkSpaceTextContent i.icon {
   font-size: 2em;
   padding-right: 10px;
@@ -2295,9 +2271,7 @@ ul.fancytree-container li {
   font-size: 1.3em;
   font-family: 'sunbirdboldfont';
 }
-.selectuploadfile .ui.button {
-  margin: 32px 0 0 0;
-}
+
 /*trashIcon in address css*/
 i.trash.outline.icon.trashIcon-fontSize {
   font-size: 1.5em !important;
@@ -2310,11 +2284,11 @@ i.trash.outline.icon.trashIcon-fontSize {
   white-space: nowrap;
   font-family: "Open Sans";
 }
-.orinstuction {
+.ann-fileupload-or-text {
   text-align: center;
   color: #7c7b7b;
-  font-size: 12px;
-  padding-top: 40px;
+  font-size: 1em;
+  padding-top: 20px;
 }
 /*draft content pagination positioning */
 .paginationAlignment {
@@ -2632,63 +2606,31 @@ span.dashBoardMenuItem.active {
 ol.ui.list ol li:before {
   margin-left: -2.5em !important;
 }
-.createAnnHeaderDesc {
-  font-size: small;
+.create-ann-header-desc {
+  font-size: 0.9em;
   color: #7c7b7b;
 }
-.createAnnStepsIndicator {
-  margin-left: 75px;
-  background-color: #F5F5F5;
-  margin-bottom: auto;
-  padding: 10px 20px;
+.ui.label.ann-step-notifier{
+  border-radius: 0;
+  padding: 14px;
 }
-.createAnnFormScroller {
+.create-ann-form-scroller {
   max-height: 400px;
   overflow-y: auto;
   height: 327px;
 }
-.createAnnAttchementHolder {
-  overflow-x: hidden;
-  max-height: 330px;
-  overflow-y: auto;
-}
-.createAnnErrorMsg {
-  border-color: red;
-  color: red;
-  margin-top: 5px;
-}
-.createAnnErrorDiv {
-  border-color: red ;
-  color: red;
-}
-.announcementHeadingSection {
-  font-family: 'sunbirdboldfont';
-  font-size: smaller;
+.announcement-heading-section {
+  font-size: 1.5em;
 }
 /* .ui.modal .announcementForm input.ng-dirty.ng-invalid {
   border-color: red !important;
 } */
 
-.dropdown-margin-left {
-  margin-left: 1px !important;
-}
-.createAnnSelectedRecepient {
-  font-size: small;
-}
-.createAnnBackBtnWidth {
-  width: 15%;
-}
-.createAnnMargin5 {
-  margin: 5px;
-}
-.createAnnGrayShade {
-  color: #7c7b7b;
+.create-ann-Selected-secepient {
+  font-size: 1em;
 }
 .line-height-20 {
   line-height: 20px;
-}
-.annRecipientsSearchIcon {
-  margin-left: -10px !important;
 }
 .btn-width-34 {
   width: 34%;
@@ -2729,26 +2671,22 @@ iframe.iziModal-iframe {
   color: #007AFF;
   cursor: pointer;
 }
-
 .ui.fluid.search.dropdown .menu > .item > img {
   width: 2.1666em;
   vertical-align: middle;
   height: 2.1666em;
 }
-
 .ui.label > img {
   width: 2.1666em !important;
   vertical-align: middle;
   height: 2.1666em !important;
 }
-
 .primary-text-color-sunbird {
   color: #333 !important;
 }
 .secondary-text-color-sunbird {
   color: #7c7b7b !important;
 }
-
 .ui.card .card-desc-fixed-height {
   color: #7c7b7b;
   font-family: 'sunbirdregularfont';
@@ -2757,21 +2695,23 @@ iframe.iziModal-iframe {
   max-height: 2.8em;
   overflow-wrap: break-word;
 }
-
 .ui.segment .segment-heading {
   font-family: 'sunbirdboldfont';
   font-weight: 700;
   font-size: 1.25em;
 }
-
 .ui.styled.accordion.align-content {
   margin-top: 10px;
   margin-bottom: 20px;
   padding:16px;
   width: 100%;
 }
-
 .ui.styled.accordion>.header.accordian-heading {
   font-family: 'sunbirdboldfont';
   font-size: 1.375em;
+}
+
+.ann-section-heading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.4em;
 }

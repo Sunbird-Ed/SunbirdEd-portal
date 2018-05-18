@@ -85,7 +85,7 @@ describe('AnnouncementInboxCardComponent', () => {
     expect(fixture.nativeElement.querySelector('div p.annType').innerText).toEqual('CIRCULAR');
     expect(fixture.nativeElement.querySelector('div .segment-heading').innerText).toEqual('Test title');
     expect(fixture.nativeElement.querySelector('div .announcement-description').innerText).toEqual('Test description');
-    expect(fixture.nativeElement.querySelector('div .announcementSentOnDate').innerText).toEqual('25th February 2018');
+    expect(fixture.nativeElement.querySelector('div .ann-details-sent-date-bg').innerText).toEqual('25th February 2018');
   });
 });
 
