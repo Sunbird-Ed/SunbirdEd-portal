@@ -125,9 +125,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
   }
 
-  private navigateToContent(id: string): void {
+  private navigateToContent(content: { title: string, id: string }): void {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': id },
+      queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
     this.router.navigate([], navigationExtras);
@@ -143,7 +143,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (content && content.id && this.enrolledCourse) {
       this.contentId = content.id;
       this.setContentNavigators();
-      this.navigateToContent(content.id);
       this.playContent(content);
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');

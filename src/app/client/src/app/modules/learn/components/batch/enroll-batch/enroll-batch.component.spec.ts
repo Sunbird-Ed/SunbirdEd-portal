@@ -1,4 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DashboardModule } from './../../../../dashboard/dashboard.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LearnModule } from '@sunbird/learn';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { EnrollBatchComponent } from './enroll-batch.component';
 
@@ -14,8 +19,9 @@ describe('EnrollBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EnrollBatchComponent ],
-      imports: [SharedModule, CoreModule, SuiModule],
+      declarations: [],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [SharedModule, CoreModule, SuiModule, LearnModule, RouterTestingModule, DashboardModule, HttpClientTestingModule],
     })
     .compileComponents();
   }));

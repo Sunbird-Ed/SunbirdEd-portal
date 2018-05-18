@@ -2862,12 +2862,12 @@ iframe.iziModal-iframe {
   font-size: 1.25em;
 }
 
-.fancy_tree_black{
-  color:black;
+.fancy-tree-grey{
+  color:#929292;
 }
-.fancy_tree_blue{
-  color:blue;
+.fancy-tree-blue{
+  color:#55b2f7;
 }
-.fancy_tree_green{
-  color:green;
+.fancy-tree-green{
+  color:#54d40f;
 }

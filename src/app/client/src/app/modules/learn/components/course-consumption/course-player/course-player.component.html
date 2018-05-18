@@ -27,7 +27,7 @@
                                         {{resourceService.frmelmnts.lbl.coursestructure}}
                                     </b>
                                 </div>
-                                <app-collection-tree (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions" [contentStatus]="contentStatus"></app-collection-tree>
+                                <app-collection-tree (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions" [contentStatus]="contentStatus"></app-collection-tree>
                                 <div class="ui fitted divider margin-bottom-20 margin-top-30"></div>
                                 <!-- <app-course-discussions></app-course-discussions> -->
                             </div>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="ui row padding-top-none">
                                 <div class="three wide column ">
-                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="OnPlayContent(prevPlaylistItem)" 
+                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" 
                                       [disabled]="prevPlaylistItem === undefined">
                                         <div class="toc-left-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="two wide column "></div>
                                 <div class="three wide column ">
-                                    <button class="ui blue button right floated  fluid" (click)="OnPlayContent(nextPlaylistItem)" 
+                                    <button class="ui blue button right floated  fluid" (click)="navigateToContent(nextPlaylistItem)" 
                                       [disabled]="nextPlaylistItem === undefined">
                                         <div class="toc-right-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}

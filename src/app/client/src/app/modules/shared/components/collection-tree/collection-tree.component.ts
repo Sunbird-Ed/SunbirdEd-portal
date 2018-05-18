@@ -25,9 +25,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   private rootNode: any;
   public rootChildrens: any;
   private iconColor = {
-    '0': 'fancy_tree_black',
-    '1': 'fancy_tree_blue',
-    '2': 'fancy_tree_green'
+    '0': 'fancy-tree-grey',
+    '1': 'fancy-tree-blue',
+    '2': 'fancy-tree-green'
   };
   ngOnInit() {
     this.initialize();
@@ -83,10 +83,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
             const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier});
             const status = content.status.toString();
             node.iconColor = this.iconColor[status];
-            console.log('in if', content, node.iconColor);
           } else {
             node.iconColor = this.iconColor['0'];
-            console.log('in else', node.model.identifier);
           }
           node.folder = false;
         }
