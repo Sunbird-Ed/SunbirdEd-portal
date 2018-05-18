@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 import { NotesModule } from '@sunbird/notes';
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,7 +20,8 @@ import { NotesModule } from '@sunbird/notes';
     FormsModule,
     CoreModule,
     DiscussionModule,
-    NotesModule
+    NotesModule,
+    BadgingModule
   ],
   declarations: [ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent]
 })

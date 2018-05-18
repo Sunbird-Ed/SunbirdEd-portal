@@ -1,0 +1,27 @@
+.landing-page-section {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(206, 197, 197, 0.79);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
+}
+.landing-page-image {
+    margin: 40px 0 40px 0;
+}
+.landing-page-image img {
+    border-radius: 0.65em;
+}
+.landing-page-description {
+    padding-top: 3em;
+}
+.landing-page-description p {
+    margin: 0;
+    font-size: 14px;
+}
+.ui.card>.card-opacity {
+    opacity: 0.2;
+}
+.ui.card .article-header-padding {
+    padding: 0 0 1em 1em;
+    font-family: 'sunbirdboldfont';
+    font-size: 1.25em;
+}
