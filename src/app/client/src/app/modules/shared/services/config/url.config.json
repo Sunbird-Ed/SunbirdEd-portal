@@ -87,6 +87,7 @@
     "BADGE": {
       "GET": "org/v1/badges/list",
       "ASSIGN": "user/v1/badges/add",
+      "CREATE": "badging/v1/issuer/badge/assertion/create",
       "BADGE_CLASS_SEARCH": "badging/v1/issuer/badge/search"
     },
     "ORG_TYPE": {

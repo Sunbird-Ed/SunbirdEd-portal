@@ -43,6 +43,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public serviceUnavailable: Boolean = false;
 
   private subsrciption: Subscription;
+  public contentType: string;
+  public badgeData: Array<object>;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -171,7 +173,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private getCollectionHierarchy(contentId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(contentId)
       .map((response) => {
+        this.contentType = _.get(response, 'result.content.contentType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
+        this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       });
   }
