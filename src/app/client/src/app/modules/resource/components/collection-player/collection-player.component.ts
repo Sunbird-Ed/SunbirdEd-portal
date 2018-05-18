@@ -3,8 +3,10 @@ import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService } from '@sunbird/shared';
+import {
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService, ContentUtilsServiceService
+} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -66,9 +68,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       'doc': 'fa fa-text-o fa-lg'
     }
   };
+  /**
+   * contains link that can be shared
+   */
+  shareLink: string;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
-    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -170,7 +177,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getCollectionHierarchy(contentId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCollectionHierarchy(contentId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(contentId)
       .map((response) => {
         this.contentType = _.get(response, 'result.content.contentType');
@@ -188,5 +195,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
+  }
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, 'collection');
   }
 }

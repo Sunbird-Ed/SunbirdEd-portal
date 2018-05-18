@@ -50,6 +50,9 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [maximum]="5"></sui-rating>&nbsp;&nbsp;
+      <a (click)="onShareLink();sharelinkModal=true;">
+        <i class="cursor-pointer large blue share alternate icon"></i>
+      </a>
       <!-- <app-content-share type=" 'content' " id="contentData.identifier"></content-share>&nbsp;
           <app-content-flag type=" 'content' " contentid="contentData.identifier" contentname="contentData.name" versionkey="contentData.versionKey" redirect="closeurl"></content-flag> -->
     </div>
@@ -70,3 +73,5 @@
     <div class="one wide column"></div>
   </div>
 </div>
+<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>

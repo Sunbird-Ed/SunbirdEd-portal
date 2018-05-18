@@ -45,6 +45,6 @@ export class ContentUtilsServiceService {
   * returns {string} url to share
   */
   getPublicShareUrl(identifier, type) {
-    return this.baseUrl + '/play' +  type + '/' + identifier;
+    return this.baseUrl + 'play' + '/' + type + '/' + identifier;
   }
 }
