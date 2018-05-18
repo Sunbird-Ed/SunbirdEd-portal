@@ -5,17 +5,22 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import 'rxjs/add/operator/mergeMap';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService } from '@sunbird/core';
+import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
+   PlayerService } from '@sunbird/core';
 import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { MainHomeComponent } from './main-home.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './main-home-component.spec.data';
 import { CacheService } from 'ng2-cache-service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const testData = mockData.mockRes;
 describe('MainHomeComponent', () => {
   let component: MainHomeComponent;
   let fixture: ComponentFixture<MainHomeComponent>;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -29,7 +34,8 @@ describe('MainHomeComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, Ng2IziToastModule],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
-         ToasterService, FrameworkService, CacheService, ContentService,
+         ToasterService, FrameworkService, CacheService, ContentService, PlayerService,
+         { provide: Router, useClass: RouterStub },
          { provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })
