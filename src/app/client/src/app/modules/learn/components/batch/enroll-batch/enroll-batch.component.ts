@@ -1,4 +1,4 @@
-import { UserService, LearnerService } from '@sunbird/core';
+import { UserService, LearnerService, CoursesService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -18,7 +18,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   readMore = false;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
   public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
-  public configService: ConfigService) { }
+  public configService: ConfigService, public coursesService: CoursesService) { }
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.batchId = params.batchId;
@@ -66,10 +66,19 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       }
     };
     this.courseBatchService.enrollToCourse(request).subscribe((data) => {
-      this.toasterService.success(this.resourceService.messages.smsg.m0036);
-      this.router.navigate(['/learn']);
+      this.fetchEnrolledCourseData();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.emsg.m0001);
     });
+  }
+  fetchEnrolledCourseData() {
+    setTimeout(() => {
+      this.coursesService.getEnrolledCourses().subscribe(() => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0036);
+        this.router.navigate(['/learn/course', this.batchDetails.courseId,  this.batchDetails.identifier]);
+      }, (err) => {
+        this.router.navigate(['/learn']);
+      });
+    }, 2000);
   }
 }
