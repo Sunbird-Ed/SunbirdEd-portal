@@ -79,8 +79,7 @@ export class BatchDetailsComponent implements OnInit {
   getEnrolledCourseBatchDetails() {
     this.batchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data.result.response;
-      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? []
-      : this.enrolledBatchInfo.participant;
+      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? this.enrolledBatchInfo.participant : [];
     }, () => {
       // handle error
     });
