@@ -155,38 +155,4 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
-
-  getContentStatus() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        this.userRoles = user.userProfile.userRoles;
-      });
-    const request = {
-      status: [],
-      contentType: []
-    };
-    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') === -1) {
-      request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
-      request.status = ['Review'];
-    }
-
-    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') === -1 &&
-      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-      request.contentType = ['TextBook'];
-      request.status = ['Review'];
-    }
-
-    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1) {
-      request.status = ['FlagReview'];
-      request.contentType.push('TextBook');
-    }
-
-    if (_.indexOf(this.userRoles, 'FLAG_REVIEWER') !== -1 &&
-      (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1 ||
-        _.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1)) {
-      request.status = ['FlagReview', 'Review'];
-    }
-    return request;
-  }
-
 }

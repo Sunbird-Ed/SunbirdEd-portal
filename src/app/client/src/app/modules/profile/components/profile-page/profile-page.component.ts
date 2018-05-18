@@ -4,6 +4,7 @@ import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -80,5 +81,13 @@ export class ProfilePageComponent implements OnInit {
         }
       );
     }
+  }
+  navigateToWorkspace() {
+    const authroles = _.find(this.configService.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
+      if (this.permissionService.checkRolesPermissions(role.roles)) {
+        return role;
+      }
+    });
+   this.router.navigate([authroles.url]);
   }
 }

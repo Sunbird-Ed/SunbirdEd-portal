@@ -186,12 +186,12 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     const rolesMap = this.userService.RoleOrgMap;
     const searchParams = {
       filters: {
-        status: this.workSpaceService.getContentStatus() && this.workSpaceService.getContentStatus().status,
+        status: ['Review'],
         createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
           rolesMap['BOOK_REVIEWER'],
           rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
-        contentType: this.workSpaceService.getContentStatus() &&  this.workSpaceService.getContentStatus().contentType,
+        contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,

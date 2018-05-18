@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService , ConfigService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FrameworkService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { FrameworkService, UserService, LearnerService, ContentService, PermissionService } from '@sunbird/core';
 import { CreateContentComponent } from './create-content.component';
 import { CacheService } from 'ng2-cache-service';
 
@@ -15,7 +15,7 @@ describe('CreateContentComponent', () => {
       imports: [RouterTestingModule, SharedModule, HttpClientTestingModule ],
       declarations: [ CreateContentComponent ],
       providers: [ResourceService, FrameworkService, UserService, LearnerService,
-         ContentService, CacheService]
+         ContentService, CacheService, ConfigService, PermissionService]
     })
     .compileComponents();
   }));
