@@ -8,16 +8,6 @@ import { ISharelink } from './../../interfaces';
 @Component({
   selector: 'app-share-link',
   templateUrl: './share-link.component.html',
-  styles: [`
-    >>> .ui.popup{
-      background-color: #007AFF !important;
-      background:#007AFF !important
-    }
-    >>> .arrow{
-      background-color: #007AFF !important;
-      background:#007AFF !important
-    }
-  `],
 })
 export class ShareLinkComponent implements OnInit {
   /**
