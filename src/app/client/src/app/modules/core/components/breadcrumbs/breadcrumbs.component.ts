@@ -1,6 +1,6 @@
 import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
 
 /**
@@ -37,6 +37,7 @@ export class BreadcrumbsComponent implements OnInit {
      * Reference of BreadcrumbService.
      */
     breadcrumbsService: BreadcrumbsService;
+    private subscription;
 
 
     /**
@@ -55,7 +56,7 @@ export class BreadcrumbsComponent implements OnInit {
      * To initialize breadcrumbs data.
      */
     ngOnInit() {
-
+        // this.breadcrumbsInit();
 
         /**
          * The breadcrumb data is gathered from router and by looping through each
@@ -86,9 +87,11 @@ export class BreadcrumbsComponent implements OnInit {
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data =>
+        this.subscription = this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data =>
             this.breadCrumbsData.push(data)
         );
+
+        // this.breadcrumbsService.unsubscribe();
 
     }
 
@@ -99,6 +102,5 @@ export class BreadcrumbsComponent implements OnInit {
     openLink(url) {
         this.router.navigateByUrl(url);
     }
-
 }
 

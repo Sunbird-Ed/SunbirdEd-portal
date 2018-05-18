@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService } from '@sunbird/core';
@@ -72,6 +72,7 @@ export class UserProfileComponent implements OnInit {
    * To pass dynamic breadcrumb data.
    */
   public breadcrumbsService: BreadcrumbsService;
+  router: Router;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -91,7 +92,8 @@ export class UserProfileComponent implements OnInit {
     resourceService: ResourceService,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
-    breadcrumbsService: BreadcrumbsService) {
+    breadcrumbsService: BreadcrumbsService,
+    router: Router) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
@@ -99,6 +101,7 @@ export class UserProfileComponent implements OnInit {
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.breadcrumbsService = breadcrumbsService;
+    this.router.onSameUrlNavigation = 'reload';
   }
 
   /**
@@ -111,7 +114,8 @@ export class UserProfileComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
-          this.breadcrumbsService.setBreadcrumbs({label: this.userDetails.firstName, url: ''});
+          // this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+          this.breadcrumbsService.setBreadcrumbs({ label: 'test', url: '' });
           this.populateBadgeDescription();
           this.showLoader = false;
         },
@@ -122,7 +126,8 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
-      this.breadcrumbsService.setBreadcrumbs({label: this.userDetails.firstName, url: ''});
+      // this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+      this.breadcrumbsService.setBreadcrumbs({ label: 'test', url: '' });
       this.populateBadgeDescription();
       this.showLoader = false;
     }
