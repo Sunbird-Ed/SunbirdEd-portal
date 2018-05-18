@@ -177,21 +177,9 @@ export class UploadedComponent extends WorkSpace implements OnInit {
         if (data.result.count && data.result.content.length > 0) {
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          const constantData = {
-            ribbon: {
-                right: { class: 'ui black right ribbon label' }
-            },
-            action: {
-                right: {
-                    class: 'trash large icon',
-                    displayType: 'icon',
-                    eventName: 'delete'
-                },
-                onImage: { eventName: 'onImage' }
-            }
-        };
-        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-        const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+          const constantData = this.config.appConfig.WORKSPACE.Uploaded.constantData;
+        const metaData = this.config.appConfig.WORKSPACE.Uploaded.metaData;
+        const dynamicFields = this.config.appConfig.WORKSPACE.Uploaded.dynamicFields;
         this.uploaded = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
