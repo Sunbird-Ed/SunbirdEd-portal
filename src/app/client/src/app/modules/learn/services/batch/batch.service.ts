@@ -53,4 +53,14 @@ export class BatchService {
     if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifer) {
     }
   }
+
+  createBatch(request) {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.CREATE,
+      data: {
+        request: request
+      }
+    };
+    return this.learnerService.post(option);
+  }
 }

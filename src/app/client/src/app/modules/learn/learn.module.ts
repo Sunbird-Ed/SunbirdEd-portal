@@ -7,7 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-   UpdateBatchComponent } from './components';
+  UpdateCourseBatchComponent } from './components';
 import { CourseConsumptionService, BatchService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
@@ -21,10 +21,12 @@ import { DiscussionModule } from '@sunbird/discussion';
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    DiscussionModule
+    DiscussionModule,
+    ReactiveFormsModule
   ],
   providers: [CourseConsumptionService, BatchService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
-    CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent, UpdateBatchComponent]
+    CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent,
+    CreateBatchComponent, UpdateCourseBatchComponent]
 })
 export class LearnModule { }
