@@ -9,9 +9,10 @@
 
                 <img src="{{ enrolledCourses.appIcon || enrolledCourses.courseLogoUrl || '/assets/images/default.png' }}">
             </div>
-            <div class="cardImageText center aligned "> 
+            <div class="cardImageText center aligned " suiPopup popupText="{{enrolledCourses.courseName}}"> 
                 <span class="sliderCardHeading text-cencapitalize">
                     {{enrolledCourses.courseName | slice:0:14}}
+                    <i class="ellipsis horizontal icon" *ngIf="enrolledCourses.courseName && enrolledCourses.courseName.length >= 20" ></i>
                 </span>
             </div>
         </div>
