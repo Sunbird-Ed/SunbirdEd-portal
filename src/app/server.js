@@ -96,11 +96,8 @@ app.all('/public', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
-<<<<<<< a745b276316fd88d87a213c07981860f79ec7bbc
   res.locals.instance = process.env.sunbird_instance
-=======
   res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
->>>>>>> Issue #SB-2302 Sunbird can manage content which is hosted externally
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -132,11 +129,8 @@ app.all('/', function (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.producerId = producerId
-<<<<<<< a745b276316fd88d87a213c07981860f79ec7bbc
   res.locals.instance = process.env.sunbird_instance
-=======
   res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAIN
->>>>>>> Issue #SB-2302 Sunbird can manage content which is hosted externally
   res.render(path.join(__dirname, 'public', 'index.ejs'))
 })
 
@@ -362,13 +356,8 @@ keycloak.deauthenticated = function (request) {
 
 resourcesBundlesHelper.buildResources(function (err, result) {
   if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-<<<<<<< a745b276316fd88d87a213c07981860f79ec7bbc
     console.error('please set environment variable sunbird_environment, ' +
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
-=======
-    console.error('please set environment variable sunbird_environment, sunbird_instance' +
-                 'start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
->>>>>>> Issue #SB-2302 Sunbird can manage content which is hosted externally
     process.exit(1)
   }
   if (externalWhitelistedDomains === undefined) {
