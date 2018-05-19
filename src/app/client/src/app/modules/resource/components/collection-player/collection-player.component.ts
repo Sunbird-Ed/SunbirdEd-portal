@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -40,6 +40,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public loader: Boolean = true;
 
+  public showCopyLoader: Boolean = false;
+
   private subscription: Subscription;
 
   private subsrciption: Subscription;
@@ -69,7 +71,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-  private toasterService: ToasterService, private resourceService: ResourceService) {
+  private toasterService: ToasterService, private resourceService: ResourceService,
+  public permissionService: PermissionService, public copyContentService: CopyContentService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -186,5 +189,22 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
+  }
+
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Content data which will be copied
+   */
+  copyContent(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
   }
 }
