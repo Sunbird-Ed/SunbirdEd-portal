@@ -1,7 +1,7 @@
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 /**
  * Main header component
@@ -101,12 +101,10 @@ export class MainHeaderComponent implements OnInit {
         }
       });
   }
-   navigateToWorkspace() {
-    const authroles = _.find(this.config.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
-      if (this.permissionService.checkRolesPermissions(role.roles)) {
-        return role;
-      }
-    });
-   this.router.navigate([authroles.url]);
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      this.router.navigate([authroles.url]);
+    }
   }
 }

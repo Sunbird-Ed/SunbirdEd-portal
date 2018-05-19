@@ -83,11 +83,9 @@ export class ProfilePageComponent implements OnInit {
     }
   }
   navigateToWorkspace() {
-    const authroles = _.find(this.configService.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
-      if (this.permissionService.checkRolesPermissions(role.roles)) {
-        return role;
-      }
-    });
-   this.router.navigate([authroles.url]);
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      this.router.navigate([authroles.url]);
+    }
   }
 }

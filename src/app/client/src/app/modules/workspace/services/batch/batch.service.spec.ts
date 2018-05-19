@@ -90,9 +90,11 @@ describe('BatchService', () => {
   it('should call getUserOtherDetail method to update the userdata ', inject([BatchService, LearnerService],
     (batchService: BatchService, learnerService: LearnerService) => {
       const userData = {
-        'phone': '9955210096'
+        'phone': '9955210096',
+        'email': 'sy@gmail.com'
       };
-      batchService.getUserOtherDetail(userData.phone);
+      const userOtherDetail =  batchService.getUserOtherDetail(userData);
+      expect(userOtherDetail).toBe(' (sy@gmail.com, 9955210096)');
       expect(batchService).toBeTruthy();
   }));
 
@@ -105,7 +107,10 @@ describe('BatchService', () => {
 
   it('should call getBatchData method to get the batch data  ', inject([BatchService, LearnerService],
     (batchService: BatchService, learnerService: LearnerService) => {
-     batchService.getBatchData();
+    batchService.setBatchData(Response.batchlistSucessData);
+    const batchData = batchService.getBatchData();
+    expect(batchData).toBeDefined();
+    expect(batchService.batchDetails).toBe(batchData);
     expect(batchService).toBeTruthy();
   }));
 
