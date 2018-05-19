@@ -3,20 +3,25 @@ import { CourseConsumptionService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
   styleUrls: ['./course-consumption-header.component.css']
 })
 export class CourseConsumptionHeaderComponent implements OnInit {
+  /**
+   * to show loader while copying content
+   */
+  showCopyLoader = false;
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
   permission = ['COURSE_MENTOR'];
   courseId: string;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    public resourceService: ResourceService, private router: Router, public permissionService: PermissionService) {
+    public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
+    public toasterService: ToasterService, public copyContentService: CopyContentService) {
 
     }
 
@@ -33,5 +38,22 @@ export class CourseConsumptionHeaderComponent implements OnInit {
   }
   flagCourse() {
     this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});
+  }
+
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Content data which will be copied
+   */
+  copyContent(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
   }
 }
