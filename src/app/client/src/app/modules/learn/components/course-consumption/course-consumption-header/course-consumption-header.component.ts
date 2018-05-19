@@ -48,15 +48,13 @@ export class CourseConsumptionHeaderComponent implements OnInit {
   flagCourse() {
     this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});
   }
-
-<<<<<<< HEAD
-    private navigateToContent( id: string ): void {
+  private navigateToContent( id: string ): void {
     const navigationExtras: NavigationExtras = {
       queryParams: { 'contentId': id },
       relativeTo: this.activatedRoute
     };
     this.router.navigate([], navigationExtras);
-=======
+  }
   /**
    * This method calls the copy API service
    * @param {contentData} ContentData Content data which will be copied
@@ -72,6 +70,5 @@ export class CourseConsumptionHeaderComponent implements OnInit {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
->>>>>>> 29beccd65938d4acaa68cecb020e6b6f969a6b58
   }
 }
