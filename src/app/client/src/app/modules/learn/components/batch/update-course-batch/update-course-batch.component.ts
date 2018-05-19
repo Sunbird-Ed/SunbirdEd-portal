@@ -132,7 +132,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   createBatch() {
-    console.log(this.batchAddUserForm);
     const requestBody = {
       'courseId': this.courseId,
       'name': this.batchAddUserForm.value.name,
