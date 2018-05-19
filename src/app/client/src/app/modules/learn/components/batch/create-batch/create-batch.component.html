@@ -1,11 +1,11 @@
-<sui-modal *ngIf='showCreateModal' [isClosable]="false" #updateCourseModal>
+<sui-modal *ngIf='showCreateModal' (dismissed)="redirect()" [isClosable]="true" #updateBatch>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">Create Batch Details</span>
       </div>
       <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="redirectTobatches();updateCourseModal.deny()">
+        <h5 class="ui basic icon circular button deny" (click)="redirect();">
           <i class="ui remove icon"></i>
         </h5>
       </div>
@@ -35,11 +35,11 @@
           </div>
         </div>
         <div class="field" *ngIf="courseCreatedBy === userId">
-            <div class="ui radio checkbox">
-              <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-              <label>Open</label>
-            </div>
+          <div class="ui radio checkbox">
+            <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
+            <label>Open</label>
           </div>
+        </div>
       </div>
 
       <div class="two fields">
@@ -69,7 +69,7 @@
           <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
         </ng-template>
         <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-          [options]="menterList" #templated class="selection ">
+          [options]="mentorList" #templated class="selection ">
           <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
           </sui-select-option>
         </sui-multi-select>
@@ -90,7 +90,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="clearForm()">Clear</button>
+    <button class="ui secondary button" (click)="batchAddUserForm.reset()">Clear</button>
     <button class="ui primary button" [disabled]="disableSubmitBtn" (click)="createBatch()">Create</button>
   </div>
 </sui-modal>

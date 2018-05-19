@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WorkSpaceService } from './../../../../workspace/services';
-import { SearchService, UserService, LearnerService } from '@sunbird/core';
-import { IMenter, Ibatch } from './../../../../workspace/interfaces';
+import { UserService } from '@sunbird/core';
 import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import * as _ from 'lodash';
+
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
   styleUrls: ['./create-batch.component.css']
 })
-export class CreateBatchComponent implements OnInit {
+export class CreateBatchComponent implements OnInit, OnDestroy {
 
+  @ViewChild('updateBatch') updateBatch;
   /**
   * batchId
   */
@@ -22,20 +23,11 @@ export class CreateBatchComponent implements OnInit {
   showCreateModal = false;
   disableSubmitBtn = true;
   courseId: string;
-  courseCreatedBy: string;
   orgIds: Array<string>;
   /**
-  * coursecreatedby
+  * courseCreatedBy
   */
-  coursecreatedby: string;
-  /**
-  * selectedUsers for mentorlist
-  */
-  selectedUsers = [];
-  /**
-  * selectedMentors for mentorlist
-  */
-  selectedMentors = [];
+  courseCreatedBy: string;
   /**
   * userList for mentorlist
   */
@@ -44,11 +36,11 @@ export class CreateBatchComponent implements OnInit {
   /**
   * batchData for form
   */
-  batchData: Ibatch;
+  batchData: any;
   /**
   * menterList for mentors in the batch
   */
-  menterList: Array<IMenter> = [];
+  mentorList: Array<any> = [];
 
   /**
   * userId for checking the enrollment type.
@@ -58,12 +50,10 @@ export class CreateBatchComponent implements OnInit {
    * form group for batchAddUserForm
   */
   batchAddUserForm: FormGroup;
-
   /**
   * To navigate to other pages
   */
-  route: Router;
-
+  router: Router;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to update batch  component
@@ -76,15 +66,7 @@ export class CreateBatchComponent implements OnInit {
   /**
   * Refrence of UserService
   */
-  private batchService: CourseBatchService;
-  /**
-    * Reference for WorkSpaceService
-  */
-  public workSpaceService: WorkSpaceService;
-  /**
-   * To navigate back to parent component
-  */
-  public routerNavigationService: RouterNavigationService;
+  private courseBatchService: CourseBatchService;
   /**
   * To call resource service which helps to use language constant
   */
@@ -95,34 +77,25 @@ export class CreateBatchComponent implements OnInit {
   private toasterService: ToasterService;
 
   public courseConsumptionService: CourseConsumptionService;
-  public learnerService: LearnerService;
-
-
-
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-   * @param {WorkSpaceService} WorkSpaceService Reference of WorkSpaceService
-   * @param {Router} route Reference of Router
+   * @param {Router} router Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {UserService} UserService Reference of UserService
-   * @param {SearchService} SearchService Reference of SearchService
   */
   constructor(routerNavigationService: RouterNavigationService,
     activatedRoute: ActivatedRoute,
-    route: Router, workSpaceService: WorkSpaceService,
+    route: Router,
     resourceService: ResourceService, userService: UserService,
-    public searchService: SearchService,
-    batchService: CourseBatchService,
+    courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService) {
-    this.routerNavigationService = routerNavigationService;
-    this.workSpaceService = workSpaceService;
     this.resourceService = resourceService;
-    this.route = route;
+    this.router = route;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
-    this.batchService = batchService;
+    this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
   }
@@ -135,68 +108,74 @@ export class CreateBatchComponent implements OnInit {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.orgIds = userdata.userProfile.organisationIds;
+        this.initializeFormFields();
       }
     });
-
     this.getUserList();
     this.activatedRoute.parent.params.subscribe(params => {
       this.courseId = params.courseId;
       this.getCourseData();
     });
   }
-
-  getCourseData () {
-
-
-    this.courseConsumptionService.getCourseHierarchy(this.courseId).subscribe(
-      (res) => {
-        console.log('res', res);
-        this.courseCreatedBy = res.createdBy;
-      },
-      (err) => {
+  ngOnDestroy() {
+    if (this.updateBatch && this.updateBatch.deny) {
+      this.updateBatch.deny();
+    }
+  }
+  getCourseData() {
+    this.courseConsumptionService.getCourseHierarchy(this.courseId).subscribe((res) => {
+      this.courseCreatedBy = res.createdBy;
+    },
+    (err) => {
         // this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      }
-    );
-
-
+    });
   }
 
-
-  createBatch () {
-    const data = this.batchAddUserForm ? this.batchAddUserForm.value : '';
+  createBatch() {
+    console.log(this.batchAddUserForm);
     const requestBody = {
-      'request': {
-        'courseId': this.courseId,
-        'name': data.name,
-        'description': data.description,
-        'enrollmentType': data.enrollmentType,
-        'startDate': data.startDate,
-        'endDate': data.startDate,
-        'createdBy': this.userId,
-        'createdFor': this.orgIds,
-        'mentors': data.mentors
-      }
+      'courseId': this.courseId,
+      'name': this.batchAddUserForm.value.name,
+      'description': this.batchAddUserForm.value.description,
+      'enrollmentType': this.batchAddUserForm.value.enrollmentType,
+      'startDate': this.batchAddUserForm.value.startDate,
+      'endDate': this.batchAddUserForm.value.endDate,
+      'createdBy': this.userId,
+      'createdFor': this.orgIds,
+      'mentors': this.batchAddUserForm.value.mentors
     };
-
-    this.batchService.createBatch(requestBody).subscribe(
-      (res) => {
-        console.log('res', res);
-        // this.courseCreatedBy = res.createdBy;
+    this.courseBatchService.createBatch(requestBody).subscribe((response) => {
+      if (this.batchAddUserForm.value.users && this.batchAddUserForm.value.users.length > 0) {
+        this.addUserToBatch(response.result.batchId);
+      } else {
+        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+        this.reload();
+      }
+    },
+    (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+    });
+  }
+  addUserToBatch(batchId) {
+    const userRequest = {
+      userIds: this.batchAddUserForm.value.users
+    };
+    setTimeout(() => {
+      this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+        this.reload();
       },
       (err) => {
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0053);
       }
     );
-
-    console.log('requestBody', requestBody);
+    }, 1000);
   }
-  /**
-  * Used to redirect user to batchlist   page.
-  *
-  * Function gets executed when user click close icon of batchAddUserForm form
-  */
-  redirectTobatches(): void {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+  redirect() {
+    this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
+  }
+  reload() {
+    this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
   }
 
   /**
@@ -213,10 +192,12 @@ export class CreateBatchComponent implements OnInit {
       users: new FormControl(''),
     });
     this.showCreateModal = true;
-    this.onFormValueChanges();
+    this.batchAddUserForm.valueChanges.subscribe(val => {
+      this.enableButton();
+    });
   }
 
-  filterUserSearchResult(userData, query) {
+  filterUserSearchResult(userData, query?) {
     if (query) {
       const fname = userData.firstName !== null && userData.firstName.includes(query);
       const lname = userData.lastName !== null && userData.lastName.includes(query);
@@ -228,6 +209,50 @@ export class CreateBatchComponent implements OnInit {
     }
   }
 
+  enableButton() {
+    const data = this.batchAddUserForm ? this.batchAddUserForm.value : '';
+    if (this.batchAddUserForm.status === 'VALID' && (data.name && data.startDate)) {
+      this.disableSubmitBtn = false;
+    } else {
+      this.disableSubmitBtn = true;
+    }
+  }
+  /**
+  *  api call to get user list
+  */
+  getUserList() {
+    const requestBody = {
+      filters: {}
+    };
+    this.courseBatchService.getUserList(requestBody).subscribe((res: ServerResponse) => {
+      this.formatUserList(res);
+    },
+    (err: ServerResponse) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+    });
+  }
+  formatUserList(res) {
+    if (res.result.response.content && res.result.response.content.length > 0) {
+      _.forEach(res.result.response.content, (userData) => {
+        if (userData.identifier !== this.userService.userid) {
+          const user = {
+            id: userData.identifier,
+            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+            avatar: userData.avatar,
+            otherDetail: this.getUserOtherDetail(userData)
+          };
+          _.forEach(userData.organisations, (userOrgData) => {
+            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+              this.mentorList.push(user);
+            }
+          });
+          this.userList.push(user);
+        }
+      });
+      this.userList = _.uniqBy(this.userList, 'id');
+      this.mentorList = _.uniqBy(this.mentorList, 'id');
+    }
+  }
   getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';
@@ -238,81 +263,6 @@ export class CreateBatchComponent implements OnInit {
     if (!userData.email && userData.phone) {
       return ' (' + userData.phone + ')';
     }
-  }
-
-  enableButton() {
-    const data = this.batchAddUserForm ? this.batchAddUserForm.value : '';
-
-    console.log('this.batchAddUserForm', this.batchAddUserForm);
-    console.log('data', data);
-
-
-
-    if (this.batchAddUserForm.status === 'VALID' && (data.name && data.startDate)) {
-      this.disableSubmitBtn = false;
-    } else {
-      this.disableSubmitBtn = true;
-    }
-  }
-
-  /**
-  * Function used to detect form input value changes.
-  * Set meta data modified flag to true when user enter new value
-  */
-  onFormValueChanges(): void {
-    this.batchAddUserForm.valueChanges.subscribe(val => {
-      this.enableButton();
-    });
-  }
-
-  /**
-  *  api call to get user list
-  */
-  getUserList(query?: string, users?: string[]) {
-    // const request = this.batchService.getRequestBodyForUserSearch(query, users);
-    const userId = this.userService.userid;
-    const requestBody = {
-      filters: {}
-    };
-    this.batchService.getUserList(requestBody).subscribe(
-      (res: ServerResponse) => {
-        if (res.result.response.count && res.result.response.content.length > 0) {
-          _.forEach(res.result.response.content, (userData) => {
-            if (userData.identifier !== userId) {
-              if (this.filterUserSearchResult(userData, query)) {
-                const user = {
-                  id: userData.identifier,
-                  name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
-                  avatar: userData.avatar,
-                  otherDetail: this.getUserOtherDetail(userData)
-                };
-                _.forEach(userData.organisations, (userOrgData) => {
-                  if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-                    this.menterList.push(user);
-                  }
-                });
-                this.userList.push(user);
-              }
-            }
-          });
-          this.userList = _.uniqBy(this.userList, 'id');
-          this.menterList = _.uniqBy(this.menterList, 'id');
-          this.initializeFormFields();
-        } else {
-          this.initializeFormFields();
-        }
-      },
-      (err: ServerResponse) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      }
-    );
-  }
-
-  /**
-  *  reset the Form
-  */
-  clearForm() {
-    this.batchAddUserForm.reset();
   }
 }
 

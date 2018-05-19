@@ -79,4 +79,13 @@ export class CourseBatchService {
     };
     return this.learnerService.post(option);
   }
+  addUsersToBatch(request, batchId) {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
+      data: {
+        request: request
+      }
+    };
+    return this.learnerService.post(option);
+  }
 }
