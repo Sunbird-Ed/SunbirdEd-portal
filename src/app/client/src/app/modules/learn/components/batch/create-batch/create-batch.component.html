@@ -14,7 +14,7 @@
 
   <div class="scrolling content">
     <form [formGroup]="createBatchUserForm" class="ui form batchAddUserForm">
-      <div class="one field" [ngClass]="{'error':createBatchUserForm.controls['name'].errors && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine }">
+      <div class="one field" [ngClass]="createBatchUserForm.controls['name'].invalid && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
           <input type="text" name="name" formControlName="name">

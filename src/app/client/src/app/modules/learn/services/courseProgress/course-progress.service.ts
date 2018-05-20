@@ -157,7 +157,8 @@ export class CourseProgressService {
             this.courseProgress[courseId_batchId] = {
               progress: 0,
               completedCount: 0,
-              totalCount: this.totalContentCount
+              totalCount: this.totalContentCount,
+              lastPlayedContentId : reqData.contentIds[0]
             };
             this.courseProgress[courseId_batchId].content = [];
             _.forEach(_.differenceBy(reqContentIds, [], 'contentId'), (value, key) => {

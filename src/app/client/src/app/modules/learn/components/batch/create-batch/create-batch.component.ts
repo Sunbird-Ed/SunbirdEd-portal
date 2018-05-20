@@ -190,6 +190,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
   }
   reload() {
+    this.courseBatchService.updateEvent.emit({event: 'create'});
     this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
   }
 

@@ -14,7 +14,7 @@
   
     <div class="scrolling content">
       <form [formGroup]="batchUpdateForm" class="ui form batchUpdateForm">
-        <div class="one field" [ngClass]="{'error':batchUpdateForm.controls['name'].errors && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine }">
+        <div class="one field" [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
             <input type="text" name="name" formControlName="name">
