@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,7 @@ import { ResourceService, ToasterService, ContentData } from '@sunbird/shared';
   templateUrl: './course-consumption-header.component.html',
   styleUrls: ['./course-consumption-header.component.css']
 })
-export class CourseConsumptionHeaderComponent implements OnInit {
+export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   /**
    * to show loader while copying content
    */
@@ -32,8 +32,11 @@ export class CourseConsumptionHeaderComponent implements OnInit {
     this.activatedRoute.firstChild.params.subscribe((param) => {
       this.courseId = param.courseId;
     });
+  }
+  ngAfterViewInit() {
     this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {
-      this.courseHierarchy.progress = courseProgressData.progress;
+      this.courseHierarchy.progress = courseProgressData.progress ?  Math.round(courseProgressData.progress) :
+       this.courseHierarchy.progress;
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
       this.showResumeCourse = false;
     });
@@ -43,7 +46,6 @@ export class CourseConsumptionHeaderComponent implements OnInit {
   }
   resumeCourse() {
     this.navigateToContent(this.lastPlayedContentId);
-    console.log('resume course');
   }
   flagCourse() {
     this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});

@@ -34,7 +34,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public contentTitle: string;
 
-  public playerConfig: Observable<any>;
+  public playerConfig: any;
 
   private windowScrollService: WindowScrollService;
 
@@ -119,12 +119,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public playContent(data: any): void {
-    this.enableContentPlayer = true;
-    this.contentTitle = data.title;
-    this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
-    this.playerConfig = this.courseConsumptionService.getConfigByContent(data.id).catch((error) => {
-      console.log(`unable to get player config for content ${data.id}`, error);
-      return error;
+    this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+      this.playerConfig = config;
+      this.enableContentPlayer = true;
+      this.contentTitle = data.title;
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
+      setTimeout(() => {
+        this.windowScrollService.smoothScroll('app-player-collection-renderer');
+      }, 10);
+    }, (err) => {
+      this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
   }
 
@@ -147,9 +151,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
     } else {
     }
   }
@@ -201,14 +202,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
-      (res) => {
-        this.updateCourseProgress(res);
-      }, (err) => {
-      });
+    (res) => {
+      this.contentStatus = res.content;
+      this.resumeContent(res);
+    }, (err) => {
+    });
   }
-  updateCourseProgress(res) {
-    const contentStatus = res.content;
-    this.contentStatus = res.content;
+  resumeContent(res) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'contentId': res.lastPlayedContentId },
+      relativeTo: this.activatedRoute
+    };
+    this.router.navigate([], navigationExtras);
   }
   public contentProgressEventnew(event) {
     const eid = event.detail.telemetryData.eid;
@@ -220,7 +225,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       status: eid === 'END' ? 2 : 1
     };
     this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
-      this.updateCourseProgress(updatedRes);
+      this.contentStatus = updatedRes.content;
     });
   }
   private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {

@@ -81,7 +81,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
           const indexOf = _.findIndex(this.contentStatus, { });
           if (this.contentStatus) {
             const content: any = _.find(this.contentStatus, { 'contentId': node.model.identifier});
-            const status = content.status.toString();
+            const status = (content && content.status) ? content.status.toString() : 0;
             node.iconColor = this.iconColor[status];
           } else {
             node.iconColor = this.iconColor['0'];

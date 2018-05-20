@@ -16,7 +16,7 @@ export interface ICourses {
     /**
     * course batch id
     */
-    batchId: string;
+    batchId?: string;
     /**
     * number of nodes
     */
@@ -24,7 +24,7 @@ export interface ICourses {
     /**
     * course progress
     */
-    progress: number;
+    progress?: number;
      /**
     * course image
     */

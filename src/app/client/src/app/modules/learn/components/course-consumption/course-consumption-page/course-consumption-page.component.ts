@@ -54,14 +54,14 @@ export class CourseConsumptionPageComponent implements OnInit {
         if (enrolledCourses && !enrolledCourses.err) {
           if (this.batchId) {
             this.showLoader = false;
-            const enrolledCourse = _.find(enrolledCourses.enrolledCourses, (value, index) => {
+            const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, (value, index) => {
               if (this.batchId === value.batchId) {
                 return value;
               }
             });
-            if (enrolledCourse && enrolledCourse.batchId) {
+            if (enrollCourse && enrollCourse.batchId) {
               this.enrolledCourse = true;
-              this.courseHierarchy.progress = enrolledCourse.progress || 0;
+              this.courseHierarchy.progress = enrollCourse.progress || 0;
             } else {
               this.enrolledCourse = false;
               this.router.navigate([`/learn/course/${this.courseId}`]);
