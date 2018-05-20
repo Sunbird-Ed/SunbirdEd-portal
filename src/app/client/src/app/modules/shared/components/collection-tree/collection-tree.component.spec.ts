@@ -30,8 +30,7 @@ describe('CollectionTreeComponent', () => {
         }, {
           id: '1.2',
           title: 'node1.2',
-          children: [
-            {
+          children: [{
               id: '1.2.1',
               title: 'node1.2.1'
             }]

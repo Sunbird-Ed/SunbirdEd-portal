@@ -3,9 +3,9 @@
         <span class="ui red circular inline label">{{section.contents.length}}</span>
     </h4>
     <div>
-        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div ngxSlickItem *ngFor="let content of section.contents" class="slide">    
-                <app-content-card [content]="content"></app-content-card>
+                <app-card (clickEvent)="playContent($event)"[data]="content"></app-card>
             </div>
         </ngx-slick>
     </div>

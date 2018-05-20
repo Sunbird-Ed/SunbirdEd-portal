@@ -1,38 +1,84 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { CoursesService, PlayerService, UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
 import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
+import { inject } from '@angular/core/src/render3';
+import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
   let fixture: ComponentFixture<CollectionPlayerComponent>;
+  const collectionId = 'do_112270591840509952140';
+  const contentId = 'domain_44689';
+
+  const fakeActivatedRoute = {
+    params: Observable.of({ id: collectionId }),
+    queryParams: Observable.of({ contentId: contentId })
+  };
 
   beforeEach(async(() => {
-    const fakeActivatedRoute = {
-      snapshot: { data: {} }
-    } as ActivatedRoute;
-
     TestBed.configureTestingModule({
-      declarations: [ CollectionPlayerComponent ],
-      imports: [ SuiModule, HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule ],
+      declarations: [CollectionPlayerComponent],
+      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionPlayerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    component.ngOnDestroy();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.showPlayer).toBeFalsy();
+    expect(component.serviceUnavailable).toBeFalsy();
+    expect(component.loader).toBeTruthy();
+    expect(component.loaderMessage).toEqual({
+      headerMessage: 'Please wait...',
+      loaderMessage: 'Fetching content details!'
+    });
+    expect(component.collectionTreeOptions).toEqual({
+      fileIcon: 'fa fa-file-o fa-lg',
+      customFileIcon: {
+        'video': 'fa fa-file-video-o fa-lg',
+        'pdf': 'fa fa-file-pdf-o fa-lg',
+        'youtube': 'fa fa-youtube fa-lg',
+        'H5P': 'fa fa-html5 fa-lg',
+        'audio': 'fa fa-file-audio-o fa-lg',
+        'ECML': 'fa fa-file-code-o fa-lg',
+        'HTML': 'fa fa-html5-o fa-lg',
+        'collection': 'fa fa-file-archive-o fa-lg',
+        'epub': 'fa fa-text-o fa-lg',
+        'doc': 'fa fa-text-o fa-lg'
+      }
+    });
   });
+
+  xit('should get content based on route/query params', () => {
+    const playerService: PlayerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'getCollectionHierarchy').and
+      .returnValue(Observable.of(CollectionHierarchyGetMockResponse));
+    component.ngOnInit();
+    expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
+    expect(component.loader).toBeFalsy();
+  });
+
+  xit('should navigate to error page on invalid collection id', () => {});
+  xit('should navigate to error page on valid collection id but invalid content id', () => {});
+  xit('should show service unavailable message on API server error', () => {});
 });

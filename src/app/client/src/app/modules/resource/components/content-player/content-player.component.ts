@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import { ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
 
@@ -39,9 +40,24 @@ export class ContentPlayerComponent implements OnInit {
    * contain contentData
    */
   contentData: ContentData;
+  /**
+   * to show loader while copying content
+   */
+  showCopyLoader = false;
+  /**
+   * To show/hide the note popup editor
+   */
+  showNoteEditor = false;
+  /**
+   * This variable holds the details of the note created
+   */
+  createNoteData: INoteData;
+
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
-    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService) {
+    public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
+    public copyContentService: CopyContentService, public permissionService: PermissionService,
+    public breadcrumbsService: BreadcrumbsService) {
   }
   /**
    *
@@ -73,6 +89,7 @@ export class ContentPlayerComponent implements OnInit {
           this.contentData = response.result.content;
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
+          this.breadcrumbsService.setBreadcrumbs({ label: this.contentData.name, url: '' });
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();
@@ -96,11 +113,27 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close () {
-    const previousUrl = this.navigationHelperService.getPreviousUrl();
-    if (previousUrl === '/home') {
-      this.router.navigate(['/resources']);
-    } else {
-      this.router.navigate([previousUrl]);
-    }
+    this.navigationHelperService.navigateToPreviousUrl('/resources');
+  }
+
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Content data which will be copied
+   */
+  copyContent(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+    });
+  }
+
+  createEventEmitter(data) {
+  this.createNoteData = data;
   }
 }

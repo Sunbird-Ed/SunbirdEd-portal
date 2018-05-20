@@ -8,7 +8,7 @@
         {{content.badgeAssertions[0].badgeClassName}}</a>
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
-      <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/common/images/default.png' }}">
+      <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/images/default.png' }}">
       <div class="cardImageText center aligned ">
         <span class="sliderCardHeading text-cencapitalize">{{content.name || content.courseName}}</span>
       </div>
@@ -37,14 +37,19 @@
             </a>
           </span>
       </div>
-      <div *ngIf="content.action.left" class="content.action.left" class="left floated">
+      <div *ngIf="content.action.left"  class="left floated">
         <span *ngIf="content.action.left.displayType == 'rating'">
           <sui-rating class="courseHeader-rating star" [ngModel]="content.me_averageRating | number:0" [maximum]="5" [isReadonly]="true"></sui-rating>
         </span>
         <span *ngIf="content.action.left.displayType == 'icon' ">
           <a>
-            <i *ngIf="(content.action.left.clickable) && (contnet.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
-            <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes.icon}}"></i>
+          <i *ngIf="(content.action.left.clickable) && (content.action.left.actionType == 'shareComponent')" 
+           class="{{content.action.left.classes}}"  (click)="onAction(content,content.action.left.actionType)">
+          <!--<app-share-link [contentShare]="content.action.left" (close)="shareLink = false">
+          </app-share-link>-->
+          </i>
+          <i *ngIf="(content.action.left.clickable) && (content.action.left.actionType == 'share')" class="{{content.action.left.classes.icon}}"></i>
+          <i *ngIf="!content.action.left.clickable" class="{{content.action.left.classes.icon}}"></i>
           </a>
         </span>
       </div>

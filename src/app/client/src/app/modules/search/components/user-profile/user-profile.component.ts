@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
-import { BadgesService, BreadcrumbsService } from '@sunbird/core';
+import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 
 /**
@@ -30,6 +30,8 @@ export class UserProfileComponent implements OnInit {
   descriptionReadMore = false;
   skillViewMore = true;
   skillLimit = 4;
+  loggedInUserId: string;
+  disableEndorsementButton = false;
 
   /**
 	 * Contains announcement details returned from API or object called from
@@ -75,17 +77,32 @@ export class UserProfileComponent implements OnInit {
   router: Router;
 
   /**
-	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of DeleteComponent class
-	 *
-   * @param {UserSearchService} userSearchService Reference of UserSearchService
-   * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
-   * @param {ResourceService} resourceService Reference of ResourceService
-   * @param {ToasterService} toasterService Reference of ToasterService
-   * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
-   * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService
-	 */
+   * To call API
+   */
+  public learnerService: LearnerService;
+  /**
+   * To get url, app configs
+   */
+  public configService: ConfigService;
+  /**
+  * To get user profile of logged-in user
+  */
+  public userService: UserService;
+  /**
+  * Constructor to create injected service(s) object
+  *
+  * Default method of DeleteComponent class
+  *
+  * @param {UserSearchService} userSearchService Reference of UserSearchService
+  * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
+  * @param {ResourceService} resourceService Reference of ResourceService
+  * @param {ToasterService} toasterService Reference of ToasterService
+  * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
+  * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService
+  * @param {LearnerService} learnerService Reference of LearnerService
+  * @param {ConfigService} config Reference of ConfigService
+  * @param {UserService} userService Reference of contentService
+  */
   constructor(userSearchService: UserSearchService,
     badgesService: BadgesService,
     activatedRoute: ActivatedRoute,
@@ -93,6 +110,9 @@ export class UserProfileComponent implements OnInit {
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService,
     breadcrumbsService: BreadcrumbsService,
+    learnerService: LearnerService,
+    configService: ConfigService,
+    userService: UserService,
     router: Router) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
@@ -101,7 +121,10 @@ export class UserProfileComponent implements OnInit {
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.breadcrumbsService = breadcrumbsService;
-    this.router.onSameUrlNavigation = 'reload';
+    // this.router.onSameUrlNavigation = 'reload';
+    this.learnerService = learnerService;
+    this.configService = configService;
+    this.userService = userService;
   }
 
   /**
@@ -114,8 +137,8 @@ export class UserProfileComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
-          // this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-          this.breadcrumbsService.setBreadcrumbs({ label: 'test', url: '' });
+          this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+          this.formatEndorsementList();
           this.populateBadgeDescription();
           this.showLoader = false;
         },
@@ -126,16 +149,60 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
-      // this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-      this.breadcrumbsService.setBreadcrumbs({ label: 'test', url: '' });
+      this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+      this.formatEndorsementList();
       this.populateBadgeDescription();
       this.showLoader = false;
     }
   }
 
   /**
+   * This method helps to show the endorsement button
+	 */
+  formatEndorsementList() {
+    if (this.userDetails && this.userDetails.skills && this.userDetails.skills.length) {
+      _.each(this.userDetails.skills, (skill) => {
+        if (skill.endorsersList) {
+          const userIds = _.map(skill.endorsersList, 'userId');
+          skill.isEndorsable = _.includes(userIds, this.loggedInUserId);
+        }
+      });
+    }
+  }
+
+  /**
+   * This method submits the clicked endorsement
+	 */
+  submitEndorsement(skillName) {
+    this.disableEndorsementButton = true;
+    const requestBody = {
+      request: {
+        skillName: [skillName],
+        endorsedUserId: this.userId
+      }
+    };
+    const option = {
+      url: this.configService.urlConFig.URLS.USER.ADD_SKILLS,
+      data: requestBody
+    };
+    this.learnerService.post(option).subscribe(response => {
+      _.each(this.userDetails.skills, (skill) => {
+        if (skill.skillName === skillName) {
+          skill.isEndorsable = true;
+          skill.endorsementcount = skill.endorsementcount + 1;
+        }
+      });
+      this.disableEndorsementButton = false;
+      this.toasterService.success(this.resourceService.messages.smsg.m0043);
+    }, (err) => {
+      this.disableEndorsementButton = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  /**
    * This method fetches the badge details with the badge id and
-   * populates with the userdetails object
+   * populates with the user details object
 	 */
   populateBadgeDescription() {
     const badgeList = [];
@@ -174,10 +241,15 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.userId = params.userId;
-      this.populateUserProfile();
+    this.userService.userData$.subscribe(userdata => {
+      if (userdata && !userdata.err) {
+        this.loggedInUserId = userdata.userProfile.userId;
+        this.activatedRoute.params.subscribe(params => {
+          this.userId = params.userId;
+          this.populateUserProfile();
+        });
+        this.queryParams = this.activatedRoute.snapshot.queryParams;
+      }
     });
-    this.queryParams = this.activatedRoute.snapshot.queryParams;
   }
 }

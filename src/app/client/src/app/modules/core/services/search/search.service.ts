@@ -5,7 +5,8 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { SearchParam } from '@sunbird/core';
+import { SearchParam } from './../../interfaces/search';
+import { LearnerService } from './../learner/learner.service';
 /**
  * Service to search content
  */
@@ -32,16 +33,23 @@ export class SearchService {
    */
   public config: ConfigService;
   /**
+   * Reference of learner service
+   */
+  public learnerService: LearnerService;
+  /**
    * Default method of OrganisationService class
    *
    * @param {UserService} user user service reference
    * @param {ContentService} content content service reference
    * @param {ConfigService} config config service reference
+   * @param {LearnerService} config learner service reference
    */
-  constructor(user: UserService, content: ContentService, config: ConfigService) {
+  constructor(user: UserService, content: ContentService, config: ConfigService,
+    learnerService: LearnerService) {
     this.user = user;
     this.content = content;
     this.config = config;
+    this.learnerService = learnerService;
   }
   /**
    * Search content by user id.
@@ -142,7 +150,7 @@ export class SearchService {
           limit: requestParam.limit,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           query: requestParam.query,
-          softConstraints: {badgeAssertions: 1}
+          softConstraints: { badgeAssertions: 1 }
         }
       }
     };
@@ -200,11 +208,46 @@ export class SearchService {
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
-          softConstraints: {badgeAssertions: 1}
+          softConstraints: { badgeAssertions: 1 }
         }
       }
     };
     return this.content.post(option);
+  }
+  /**
+  * Batch Search.
+  *
+  * @param {SearchParam} requestParam api request data
+ */
+  batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          offset: (requestParam.pageNumber - 1) * requestParam.limit,
+          limit: requestParam.limit,
+          sort_by: requestParam.sort_by
+        }
+      }
+    };
+    return this.learnerService.post(option);
+  }
+  /**
+   * getUserList.
+   *
+   * @param {SearchParam} requestParam api request data
+  */
+  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters
+        }
+      }
+    };
+    return this.learnerService.post(option);
   }
 }
 

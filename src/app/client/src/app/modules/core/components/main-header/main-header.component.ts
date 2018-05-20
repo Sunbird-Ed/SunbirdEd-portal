@@ -1,6 +1,7 @@
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
+import {Router} from '@angular/router';
 /**
  * Main header component
  */
@@ -69,7 +70,7 @@ export class MainHeaderComponent implements OnInit {
   /*
   * constructor
   */
-  constructor(config: ConfigService, resourceService: ResourceService,
+  constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService) {
     this.config = config;
     this.resourceService = resourceService;

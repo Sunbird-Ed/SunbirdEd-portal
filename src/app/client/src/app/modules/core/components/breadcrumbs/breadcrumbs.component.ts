@@ -1,7 +1,9 @@
+import { Subscription } from 'rxjs/Subscription';
 import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
+import * as _ from 'lodash';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -37,7 +39,6 @@ export class BreadcrumbsComponent implements OnInit {
      * Reference of BreadcrumbService.
      */
     breadcrumbsService: BreadcrumbsService;
-    private subscription;
 
 
     /**
@@ -46,52 +47,48 @@ export class BreadcrumbsComponent implements OnInit {
      * @param {Router} router Reference of Router.
      * @param {BreadcrumbsService} breadcrumbsService Reference of BreadcrumbsService.
      */
-    constructor(activatedRoute: ActivatedRoute, router: Router, breadcrumbsService: BreadcrumbsService) {
+    constructor(activatedRoute: ActivatedRoute, router: Router, breadcrumbsService: BreadcrumbsService,
+        private cdr: ChangeDetectorRef) {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.breadcrumbsService = breadcrumbsService;
+        this.cdr = cdr;
     }
 
     /**
      * To initialize breadcrumbs data.
      */
     ngOnInit() {
-        // this.breadcrumbsInit();
-
         /**
          * The breadcrumb data is gathered from router and by looping through each
          * child component.
          */
-        this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+        this.router.events.filter(event => event instanceof NavigationEnd)
+            .subscribe(event => {
+                this.breadCrumbsData = [];
+                let currentRoute = this.activatedRoute.root;
+                while (currentRoute.children.length > 0) {
+                    const child: ActivatedRoute[] = currentRoute.children;
+                    let breadCrumbLabel: any = [];
+                    child.forEach(route => {
+                        currentRoute = route;
+                        breadCrumbLabel = route.snapshot.data;
+                        if (route.snapshot.data.breadcrumbs) {
+                            this.breadCrumbsData = [...route.snapshot.data.breadcrumbs];
+                        }
+                    });
+                }
 
-            this.breadCrumbsData = [];
-
-            let currentRoute = this.activatedRoute.root;
-
-            while (currentRoute.children.length > 0) {
-                const child: ActivatedRoute[] = currentRoute.children;
-
-                let breadCrumbLabel: any = [];
-                child.forEach(route => {
-                    currentRoute = route;
-                    breadCrumbLabel = route.snapshot.data;
-                    if (route.snapshot.data.breadcrumbs) {
-                        this.breadCrumbsData = route.snapshot.data.breadcrumbs;
-                    }
-                });
-            }
-
-
-        });
+            });
         /**
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.subscription = this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data =>
-            this.breadCrumbsData.push(data)
+        this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
+            this.breadCrumbsData.push(data);
+            this.cdr.detectChanges();
+        }
         );
-
-        // this.breadcrumbsService.unsubscribe();
 
     }
 

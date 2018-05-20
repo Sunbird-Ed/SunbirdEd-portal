@@ -1,0 +1,51 @@
+<div class="ui grid">
+  <div class="row">
+    <div class="six wide computer twelve wide mobile eight wide tablet column centered padding-top-10">
+      <div class="ui fluid icon input">
+        <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="Search for content"
+          title="Search" />
+        <i class="search icon" (click)="navigateToSearch();"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="twelve wide column" *ngIf="showLoader">
+        <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div *ngIf="!showLoader" class="row dial-code-section-bg">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div style="font-weight: 650 !important;" class="ui tiny header"> Dial code '{{dialCode}}'
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div *ngIf="searchResults.length > 0" class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> Linked contents ({{searchResults.length}})
+      </div>
+
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="ui stackable four column grid dynamic-section-card ">
+        <div class="column" *ngFor="let content of searchResults">
+          <div>
+              <app-card [data]="content" (clickEvent)="getEvent($event)"></app-card>
+          </div>         
+        </div>
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+</div>
+<app-public-footer [instanceName]="instanceName"></app-public-footer>

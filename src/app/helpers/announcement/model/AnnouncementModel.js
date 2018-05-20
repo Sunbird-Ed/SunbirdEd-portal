@@ -29,7 +29,7 @@ let apiSchema = Joi.object().keys({
   request: Joi.object().keys({
     sourceId: Joi.string().required(),
     title: Joi.string().required(),
-    from: Joi.string().max(200).required(),
+    from: Joi.string().required(),
     type: Joi.string().required(),
     description: Joi.string().min(0).max(1200).allow('').optional(),
     target: Joi.object().min(1).required(),

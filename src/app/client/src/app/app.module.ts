@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { NotesModule } from '@sunbird/notes';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -21,6 +22,7 @@ import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
 import * as $ from 'jquery';
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   declarations: [
     AppComponent
@@ -38,6 +40,7 @@ import * as $ from 'jquery';
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
+    NotesModule,
     ResourceModule,
     LearnModule,
     WorkspaceModule,
@@ -45,7 +48,8 @@ import * as $ from 'jquery';
     PublicModule,
     ProfileModule,
     SearchModule,
-    DiscussionModule
+    DiscussionModule,
+    BadgingModule
   ],
   providers: [],
   entryComponents: [AppComponent],

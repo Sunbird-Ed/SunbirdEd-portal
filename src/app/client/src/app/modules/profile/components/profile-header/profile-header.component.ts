@@ -25,22 +25,30 @@ export class ProfileHeaderComponent implements OnInit {
   * Stores actions that are allowed
   */
   allowedAction = ['update'];
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public profileService: ProfileService, config: ConfigService) {
     this.config = config;
   }
-
+  /**
+   * This method is used to fetch user profile details
+   */
   ngOnInit() {
     this.admin = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = this.userService.userProfile;
+          this.userProfile = user.userProfile;
         }
       });
   }
+  /**
+   * This method calls profile service to update profile picture of the user
+   */
   updateAvatar(image) {
     if (image[0] && image[0].name.match(/.(png|jpg|jpeg)$/i) && image[0].size < 4000000) {
       const formData = new FormData();
