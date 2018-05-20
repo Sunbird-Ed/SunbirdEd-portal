@@ -173,15 +173,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    if (this.closeUrl.url !== '/home') {
-      if (this.closeUrl.queryParams) {
-        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
-      } else {
-        this.router.navigate([this.closeUrl.url]);
-      }
-    } else {
-      this.router.navigate(['/resources']);
-    }
+    this.router.navigate(['/resources']);
   }
   closeContentPlayer() {
     this.showPlayer = false;
