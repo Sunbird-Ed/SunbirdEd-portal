@@ -100,8 +100,7 @@ app.all('/logoff', endSession, function (req, res) {
   res.redirect('/logout')
 })
 
-// Mobile redirection to app
-require('./helpers/mobileAppHelper.js')(app)
+
 
 function indexPage (req, res) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -143,11 +142,15 @@ app.all('/resources/*', keycloak.protect(), indexPage)
 app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
+app.all('/get/dial/:dialCode', indexPage)
+app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
-app.all('/get/*', indexPage)
 app.all('*/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
+
+// Mobile redirection to app
+require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
