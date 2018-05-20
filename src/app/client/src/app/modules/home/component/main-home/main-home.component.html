@@ -3,17 +3,17 @@
     <div class="ten wide column">
         <div class="row">
             <div class="twelve wide column">
-                <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion margin-top-10 accordian-left-bottomMargin width-100 homeHeaderPadding">
-                    <span class="ui header HomeAccordianHeading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
+                <div *ngIf="toDoList.length > 0 && !showLoader" class="ui styled accordion align-content">
+                    <span class="ui header accordian-heading">{{resourceService.frmelmnts?.scttl?.todo}}</span>
                     <span class="todolabel ui red circular inline label ">{{toDoList.length}}</span>
-                    <span class="removeline title title-padding-left accordian-HomeLeft-text active float-ContentRight" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
+                    <span class="removeline title title-padding-left active right-float" suiPopup popupHeader="{{collapse==true?'Expand':'Collapse'}}"
                         popupInverted>
-                        <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add angle down icon down-arrow-accordion float-ContentRight"
+                        <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon padding-top-5 right-float"
                             (click)="collapse = !collapse"></i>
                     </span>
                     <div class="ui active homePage" [suiCollapse]="collapse">
                         <div class="regular slider padding-top-10">
-                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                                 <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
                                     <div *ngIf="item.type === 'profile'">
                                         <a routerLink="/profile">
@@ -21,7 +21,7 @@
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
-                                            <app-action-card [enrolledCourses]="item"></app-action-card>
+                                            <app-action-card [enrolledCourses]="item"  (clickEvent)="playContent($event)"></app-action-card>
                                     </div>
                                 </div>
                             </ngx-slick>

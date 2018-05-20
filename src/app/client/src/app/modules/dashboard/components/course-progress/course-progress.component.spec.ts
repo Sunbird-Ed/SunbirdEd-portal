@@ -1,3 +1,4 @@
+import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
@@ -46,8 +47,8 @@ describe('CourseProgressComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule, CoreModule],
-      declarations: [CourseProgressComponent],
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule, CoreModule, DashboardModule],
+      declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

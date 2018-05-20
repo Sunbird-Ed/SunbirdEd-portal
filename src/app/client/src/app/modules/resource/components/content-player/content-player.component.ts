@@ -52,7 +52,7 @@ export class ContentPlayerComponent implements OnInit {
    * This variable holds the details of the note created
    */
   createNoteData: INoteData;
-
+  closeUrl: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -64,6 +64,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.userService.userData$.subscribe(
@@ -113,7 +114,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close () {
-    this.navigationHelperService.navigateToPreviousUrl('/resources');
+    this.router.navigate(['/resources']);
   }
 
   /**
@@ -129,7 +130,7 @@ export class ContentPlayerComponent implements OnInit {
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 

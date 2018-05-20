@@ -1,3 +1,5 @@
+<br>
+<br>
 <div class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
@@ -25,8 +27,8 @@
           <!-- Blank six wide column-->
           <div class="six wide column padding-top-20 ng-scope"></div>
           <div class="one wide column padding-top-20 padding-right-5">
-            <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
-              <i class="ui remove icon CloseButtonFont"></i>
+            <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
+              <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
             </a>
           </div>
         </div>
@@ -151,7 +153,7 @@
       <!-- Show message if no batch is created-->
       <div class="ui grid" *ngIf="showNoBatch">
         <div class="twelve wide column">
-          <a class="ui item basic icon circular float-ContentRight" href="Javascript:void(0);" data-tooltip="Close the dashboard">
+          <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
             <i class="ui remove icon CloseButtonFont"></i>
           </a>
         </div>
