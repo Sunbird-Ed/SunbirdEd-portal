@@ -233,6 +233,12 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.route.navigate(['/resources/play/content/', this.contentId]);
+    this.activatedRoute.url.subscribe(url => {
+      if (url[0].path === 'learn') {
+        this.route.navigate(['/learn/course/', this.courseId]);
+      } else {
+        this.route.navigate(['/resources/play/content/', this.contentId]);
+      }
+    });
   }
 }

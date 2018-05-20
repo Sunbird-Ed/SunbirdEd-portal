@@ -4,7 +4,7 @@ import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 
@@ -94,6 +94,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
    */
 
   modalService: SuiModalService;
+  activatedRoute: ActivatedRoute;
 
 
   /**
@@ -113,7 +114,8 @@ export class NoteCardComponent implements OnInit, OnChanges {
     resourceService: ResourceService,
     modalService: SuiModalService,
     toasterService: ToasterService,
-    route: Router) {
+    route: Router,
+    activatedRoute: ActivatedRoute) {
     this.toasterService = toasterService;
     this.userService = userService;
     this.route = route;
@@ -122,6 +124,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
     this.contentService = contentService;
     this.resourceService = resourceService;
     this.modalService = modalService;
+    this.activatedRoute = activatedRoute;
   }
 
   /**
@@ -200,6 +203,12 @@ export class NoteCardComponent implements OnInit, OnChanges {
    * This method redirects the user to notesList view.
    */
   public viewAllNotes() {
-    this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
+    this.activatedRoute.parent.url.subscribe(url => {
+      if (url[0].path === 'learn') {
+        this.route.navigate(['/learn/course/note/', this.ids.courseId]);
+      } else {
+        this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
+      }
+    });
   }
 }
