@@ -25,7 +25,7 @@
           <div class="four wide column">
               <div *ngIf="enrolledCourse" class="margin-top-Negative30">
                   <span><p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{courseHierarchy.progress}}%</p></span>
-                  <button class="fluid blue right floated  ui button courseHeaderButton margin-top-0" (click)="resumeCourse()">
+                  <button class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
                   {{resourceService?.frmelmnts?.btn?.resumecourse}} <i class="caret right icon"></i>
                   </button>
               </div>

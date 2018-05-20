@@ -1,20 +1,20 @@
-<sui-modal *ngIf='showCreateModal' [isClosable]="false" #updateCourseModal>
+<sui-modal *ngIf='showCreateModal' (dismissed)="redirect()" [isClosable]="true" #createBatchModel>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">Create Batch Details</span>
+        <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
       </div>
-      <div class="one wide column actions">
-        <h5 class="ui basic icon circular button deny" (click)="redirectTobatches();updateCourseModal.deny()">
+      <!-- <div class="one wide column actions">
+        <h5 class="ui basic icon circular button deny" (click)="redirect();">
           <i class="ui remove icon"></i>
         </h5>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="scrolling content">
-    <form [formGroup]="batchAddUserForm" class="ui form batchAddUserForm">
-      <div class="one field" [ngClass]="{'error':batchAddUserForm.controls['name'].errors && batchAddUserForm.controls['name'].errors.required && !batchAddUserForm.controls['name'].pristine }">
+    <form [formGroup]="createBatchUserForm" class="ui form batchAddUserForm">
+      <div class="one field" [ngClass]="{'error':createBatchUserForm.controls['name'].errors && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine }">
         <div class="required field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
           <input type="text" name="name" formControlName="name">
@@ -35,11 +35,11 @@
           </div>
         </div>
         <div class="field" *ngIf="courseCreatedBy === userId">
-            <div class="ui radio checkbox">
-              <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-              <label>Open</label>
-            </div>
+          <div class="ui radio checkbox">
+            <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
+            <label>Open</label>
           </div>
+        </div>
       </div>
 
       <div class="two fields">
@@ -48,7 +48,7 @@
           <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input suiDatepicker formControlName="startDate" [pickerMode]="'date'">
+              <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
           </div>
         </div>
@@ -57,25 +57,25 @@
           <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input suiDatepicker formControlName="endDate" [pickerMode]="'date'">
+              <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
             </div>
           </div>
         </div>
       </div>
 
-      <div class="one field">
+      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <ng-template let-mentor #optionTemplate>
           <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
         </ng-template>
         <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-          [options]="menterList" #templated class="selection ">
+          [options]="mentorList" #templated class="selection ">
           <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
           </sui-select-option>
         </sui-multi-select>
       </div>
 
-      <div class="one field">
+      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <ng-template let-user #useroptionTemplate>
           <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -90,7 +90,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="clearForm()">Clear</button>
+    <button class="ui secondary button" (click)="createBatchUserForm.reset()">Clear</button>
     <button class="ui primary button" [disabled]="disableSubmitBtn" (click)="createBatch()">Create</button>
   </div>
 </sui-modal>

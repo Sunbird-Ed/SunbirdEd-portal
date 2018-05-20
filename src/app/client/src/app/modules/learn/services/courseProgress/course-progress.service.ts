@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
   CourseStates, CourseProgressData, CourseProgress, ContentList, IUserData, IUserProfile
@@ -32,6 +32,16 @@ export class CourseProgressService {
   public userService: UserService;
 
   public totalContentCount: number;
+
+  public lastAccessTimeOfContentId: any = [];
+
+  public lastPlayedContentId: any;
+
+   /**
+   * An event emitter to emit course progress data from a service.
+   */
+  courseProgressData: EventEmitter<any> = new EventEmitter();
+
 
   constructor(contentService: ContentService, configService: ConfigService,
     private _cacheService: CacheService,
@@ -99,6 +109,13 @@ export class CourseProgressService {
     const progress = ((this.courseProgress[courseId_batchId].completedCount /
       this.courseProgress[courseId_batchId].totalCount) * 100);
     this.courseProgress[courseId_batchId].progress = progress;
+    _.forEach(res, (e) => {
+      this.lastAccessTimeOfContentId.push(e.lastAccessTime);
+    });
+    const i = _.findIndex(res, { lastAccessTime: this.lastAccessTimeOfContentId.sort().reverse()[0] });
+    this.lastPlayedContentId = res[i].contentId;
+    this.courseProgress[courseId_batchId].lastPlayedContentId = this.lastPlayedContentId;
+    this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
   }
   /**
 * @method getContentsState
@@ -135,7 +152,7 @@ export class CourseProgressService {
             _.forEach(res.result.contentList, (contentList) => {
               resContentIds.push({ 'contentId': contentList.contentId });
             });
-            this.getEmptyContentStatus(reqContentIds, resContentIds, req.courseId, req.batchId );
+            this.getEmptyContentStatus(reqContentIds, resContentIds, req.courseId, req.batchId);
           } else {
             this.courseProgress[courseId_batchId] = {
               progress: 0,
@@ -146,17 +163,18 @@ export class CourseProgressService {
             _.forEach(_.differenceBy(reqContentIds, [], 'contentId'), (value, key) => {
               this.courseProgress[courseId_batchId].content.push({
                 'contentId': value['contentId'],
-                 'status': 0,
-                 'courseId': req.courseId,
-                 'batchId:': req.batchId
-                 });
+                'status': 0,
+                'courseId': req.courseId,
+                'batchId:': req.batchId,
+                'lastAccessTime': null
+              });
             });
           }
           return this.courseProgress[courseId_batchId];
         }).catch(
-          (err: ServerResponse) => {
-            return Observable.throw(err);
-          }
+        (err: ServerResponse) => {
+          return Observable.throw(err);
+        }
         );
     }
   }
@@ -164,9 +182,9 @@ export class CourseProgressService {
   public updateContentsState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
-    if (courseProgress !== undefined) {
+    if (courseProgress !== undefined && req.contentId !== undefined && req.status !== undefined) {
       const i = _.findIndex(courseProgress.content, { contentId: req.contentId, courseId: req.courseId });
-      if (req.status > courseProgress.content[i].status) {
+      if (req.status >= courseProgress.content[i].status && courseProgress.content[i].status !== 2) {
         courseProgress.content[i].status = req.status;
         this.prepareContentObject(courseProgress.content, courseId_batchId);
         return this.updateContentStateInServer(courseProgress.content[i]).map(
@@ -185,15 +203,17 @@ export class CourseProgressService {
     }
   }
 
-  getEmptyContentStatus(reqContentIds, resContentIds, courseId , batchId) {
+  getEmptyContentStatus(reqContentIds, resContentIds, courseId, batchId) {
     const courseId_batchId = courseId + '_' + batchId;
     _.forEach(_.differenceBy(reqContentIds, resContentIds, 'contentId'), (value, key) => {
       this.courseProgress[courseId_batchId].content.push(
-        { 'contentId': value['contentId'],
-       'status': 0,
-       'courseId': courseId,
-        'batchId:': batchId
-       });
+        {
+          'contentId': value['contentId'],
+          'status': 0,
+          'courseId': courseId,
+          'batchId:': batchId,
+          'lastAccessTime': null
+        });
     });
   }
 }
