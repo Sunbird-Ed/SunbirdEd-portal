@@ -137,6 +137,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   }
 
   createBatch() {
+    this.disableSubmitBtn = false;
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchUserForm.value.name,
@@ -157,6 +158,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       }
     },
     (err) => {
+      this.disableSubmitBtn = true;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -174,6 +176,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
         this.reload();
       },
       (err) => {
+        this.disableSubmitBtn = true;
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
