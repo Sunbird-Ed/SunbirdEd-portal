@@ -4,18 +4,25 @@ import { Router } from '@angular/router';
 import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import { ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData } from '@sunbird/shared';
+import {
+  ConfigService, IUserData, ResourceService, ToasterService,
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService
+} from '@sunbird/shared';
 
-  /**
-   *Component to play content
-   */
+/**
+ *Component to play content
+ */
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  sharelinkModal: boolean;
+  /**
+   * contains link that can be shared
+   */
+  shareLink: string;
   /**
    * content id
    */
@@ -56,7 +63,8 @@ export class ContentPlayerComponent implements OnInit {
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
-    public copyContentService: CopyContentService, public permissionService: PermissionService) {
+    public copyContentService: CopyContentService, public permissionService: PermissionService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
   }
   /**
    *
@@ -71,7 +79,7 @@ export class ContentPlayerComponent implements OnInit {
           if (user && !user.err) {
             this.getContent();
           }
-      });
+        });
     });
   }
   /**
@@ -97,7 +105,7 @@ export class ContentPlayerComponent implements OnInit {
       (err) => {
         this.showError = true;
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
-    });
+      });
   }
   /**
    * retry launching player with same content details
@@ -111,7 +119,7 @@ export class ContentPlayerComponent implements OnInit {
    * closes conent player and revert to previous url
    * @memberof ContentPlayerComponent
    */
-  close () {
+  close() {
     this.router.navigate(['/resources']);
   }
 
@@ -129,10 +137,12 @@ export class ContentPlayerComponent implements OnInit {
       (err) => {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+      });
   }
-
   createEventEmitter(data) {
-  this.createNoteData = data;
+    this.createNoteData = data;
+  }
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
   }
 }

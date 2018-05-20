@@ -1,7 +1,7 @@
 <br>
 <div class="ui grid">
   <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-      <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+    <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
   </div>
   <div *ngIf="showPlayer" class="row">
     <div class="twelve wide column">
@@ -41,19 +41,21 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-      <span class="ui mouse-pointer content-font">
-          <i class="large blue share alternate icon"></i>&nbsp;
+      <a (click)="onShareLink();sharelinkModal=true;">
+        <i class="cursor-pointer large blue share alternate icon"></i>
+      </a>
+      <a routerLink="flag">
+        <i class="ui large blue flag outline icon"></i>
+      </a>
+      <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
+        [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
+        title="Copy content">
+        <i class="ui large blue clone outline icon"></i>
       </span>
-      <a routerLink="flag"> <i class="ui large blue flag outline icon" ></i></a>
-      <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-          (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
-          title="Copy content">
-          <i class="ui large blue clone outline icon"></i>
-      </span>
-      <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission [permission]="['BOOK_CREATOR']"
-          (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
-          title="Copy content">
-          <i class="ui large blue clone outline icon"></i>
+      <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+        [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
+        title="Copy content">
+        <i class="ui large blue clone outline icon"></i>
       </span>
     </div>
     <div class="one wide column"></div>
@@ -73,4 +75,6 @@
     <div class="one wide column"></div>
   </div>
 </div>
+<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>
 <router-outlet></router-outlet>

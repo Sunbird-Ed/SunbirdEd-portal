@@ -3,8 +3,11 @@ import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionServic
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData } from '@sunbird/shared';
+import {
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
+  ContentUtilsServiceService
+} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -46,6 +49,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private subsrciption: Subscription;
   public contentType: string;
+  public mimeType: string;
+  public sharelinkModal: boolean;
   public badgeData: Array<object>;
   private closeUrl: any;
   public loaderMessage: ILoaderMessage = {
@@ -68,11 +73,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       'doc': 'fa fa-file-text fa-lg'
     }
   };
+  /**
+   * contains link that can be shared
+   */
+  shareLink: string;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-  private toasterService: ToasterService, private resourceService: ResourceService,
-  public permissionService: PermissionService, public copyContentService: CopyContentService) {
+    private toasterService: ToasterService, private resourceService: ResourceService,
+    public permissionService: PermissionService, public copyContentService: CopyContentService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -163,10 +173,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getCollectionHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(collectionId)
       .map((response) => {
         this.contentType = _.get(response, 'result.content.contentType');
+        this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
@@ -197,6 +208,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       (err) => {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+      });
+  }
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
   }
 }
