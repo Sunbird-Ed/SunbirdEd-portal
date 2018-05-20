@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 })
 export class CreateBatchComponent implements OnInit, OnDestroy {
 
-  @ViewChild('updateBatch') updateBatch;
+  @ViewChild('createBatchModel') createBatchModel;
   /**
   * batchId
   */
@@ -118,8 +118,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    if (this.updateBatch && this.updateBatch.deny) {
-      this.updateBatch.deny();
+    if (this.createBatchModel && this.createBatchModel.deny) {
+      this.createBatchModel.deny();
     }
   }
   getCourseData() {
@@ -127,12 +127,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       this.courseCreatedBy = res.createdBy;
     },
     (err) => {
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
     });
   }
 
   createBatch() {
-    console.log(this.batchAddUserForm);
     const requestBody = {
       'courseId': this.courseId,
       'name': this.batchAddUserForm.value.name,
@@ -153,7 +156,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       }
     },
     (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+      }
     });
   }
   addUserToBatch(batchId) {
@@ -166,7 +173,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
         this.reload();
       },
       (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0053);
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0053);
+        }
       }
     );
     }, 1000);
@@ -224,11 +235,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     const requestBody = {
       filters: {}
     };
-    this.courseBatchService.getUserList(requestBody).subscribe((res: ServerResponse) => {
+    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
       this.formatUserList(res);
     },
-    (err: ServerResponse) => {
-      this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+    (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
     });
   }
   formatUserList(res) {

@@ -1,8 +1,8 @@
-<sui-modal *ngIf='showCreateModal' (dismissed)="redirect()" [isClosable]="true" #updateBatch>
+<sui-modal *ngIf='showCreateModal' (dismissed)="redirect()" [isClosable]="true" #createBatchModel>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
-        <span class="ui header">Create Batch Details</span>
+        <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
       </div>
       <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny" (click)="redirect();">
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div class="one field">
+      <div *ngIf="batchAddUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <ng-template let-mentor #optionTemplate>
           <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
@@ -75,7 +75,7 @@
         </sui-multi-select>
       </div>
 
-      <div class="one field">
+      <div *ngIf="batchAddUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <ng-template let-user #useroptionTemplate>
           <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}

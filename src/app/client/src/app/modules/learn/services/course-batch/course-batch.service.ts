@@ -8,7 +8,7 @@ import {SearchParam, LearnerService, UserService, ContentService, SearchService 
 @Injectable()
 export class CourseBatchService {
   private _enrollBatchDetails: any;
-  private _enrollUpdateDetails: any;
+  private _updateBatchDetails: any;
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
@@ -51,11 +51,20 @@ export class CourseBatchService {
     this._enrollBatchDetails = enrollBatchDetails;
   }
   setUpdateBatchDetails(enrollBatchDetails: any) {
-    this._enrollUpdateDetails = enrollBatchDetails;
+    this._updateBatchDetails = enrollBatchDetails;
   }
   getEnrollBatchDetails(bathId) {
     if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifier) {
       return Observable.of(this._enrollBatchDetails);
+    } else {
+      return this.getBatchDetails(bathId).map((date) => {
+        return date.result.response;
+      });
+    }
+  }
+  getUpdateBatchDetails(bathId) {
+    if (this._updateBatchDetails && bathId === this._updateBatchDetails.identifier) {
+      return Observable.of(this._updateBatchDetails);
     } else {
       return this.getBatchDetails(bathId).map((date) => {
         return date.result.response;
@@ -78,6 +87,15 @@ export class CourseBatchService {
       }
     };
     return this.learnerService.post(option);
+  }
+  updateBatch(request) {
+    const option = {
+      url: this.config.urlConFig.URLS.BATCH.UPDATE,
+      data: {
+        request: request
+      }
+    };
+    return this.learnerService.patch(option);
   }
   addUsersToBatch(request, batchId) {
     const option = {

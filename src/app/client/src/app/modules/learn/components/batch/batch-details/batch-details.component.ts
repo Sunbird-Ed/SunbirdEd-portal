@@ -49,6 +49,7 @@ export class BatchDetailsComponent implements OnInit {
   }
   getAllBatchDetails() {
     this.showBatchList = false;
+    this.showError = false;
     this.batchList = [];
     const searchParams: any = {
       filters: {
