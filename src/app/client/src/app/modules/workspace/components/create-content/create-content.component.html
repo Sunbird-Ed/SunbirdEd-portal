@@ -1,8 +1,10 @@
     <div class="ui grid">
         <div class="twelve wide column ">
             <div class="ui grid">
-                <div class="three wide column">
-                    <div class="ui link card workspacecontent" routerLink="textbook">
+                <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='textBookRole'>
+                    <div class="ui link card workspacecontent" 
+                     routerLink="textbook">
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon file text outline icon '></i>
@@ -12,8 +14,9 @@
                     </div>
                     <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.textbookdescription}}</p>
                 </div>
-                <div class="three wide column">
-                    <div class="ui link card workspacecontent" routerLink="course">
+                <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='courseRole'>
+                    <div class="ui link card workspacecontent" routerLink="course" >
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon file text outline icon'></i>
@@ -23,8 +26,9 @@
                     </div>
                     <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.coursedescription}}</p>
                 </div>
-                <div class="three wide column">
-                    <div class="ui link card workspacecontent" routerLink="studymaterial">
+                <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='lessonRole'>
+                    <div class="ui link card workspacecontent" routerLink="studymaterial" >
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon file text icon'></i>
@@ -34,8 +38,9 @@
                     </div>
                     <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessondescription}}</p>
                 </div>
-                <div class="three wide column">
-                    <div class="ui link card workspacecontent" routerLink="collection">
+                <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='collectionRole'>
+                    <div class="ui link card workspacecontent" routerLink="collection" >
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon folder open outline icon'></i>
@@ -49,8 +54,9 @@
         </div>
         <div class="twelve wide column ">
             <div class="ui grid">
-                <div class="three wide column">
-                    <div class="ui link card workspacecontent" routerLink="lessonplan">
+                <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='lessonplanRole'>
+                    <div class="ui link card workspacecontent" routerLink="lessonplan" >
                         <div class="content">
                             <div class="textcontent">
                                 <i class='my-icon file text outline icon'></i>
@@ -60,7 +66,8 @@
                     </div>
                     <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.lessonplandescription}}</p>
                 </div>
-                <div class="three wide column">
+                <div class="three wide column"  *ngIf='permissionService.permissionAvailable' appPermission 
+                    [permission]='contentUploadRole'>
                     <div class="ui link card workspacecontent" routerLink="../edit/generic/">
                         <div class="content">
                             <div class="textcontent">

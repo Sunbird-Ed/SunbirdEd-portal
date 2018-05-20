@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam , ISort} from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam , ISort, PlayerService} from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -121,7 +121,7 @@ export class CourseSearchComponent implements OnInit {
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
    */
-  constructor(searchService: SearchService, route: Router,
+  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
@@ -278,4 +278,7 @@ export class CourseSearchComponent implements OnInit {
         this.populateEnrolledCourse();
       });
   }
+  playContent(event) {
+     this.playerService.playContent(event.data.metaData);
+   }
 }

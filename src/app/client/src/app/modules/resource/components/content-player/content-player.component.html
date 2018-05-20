@@ -28,7 +28,7 @@
                                 <a (click)="onShareLink();sharelinkModal=true;">
                                     <i class="cursor-pointer large blue share alternate icon"></i>
                                 </a>
-                                <a [routerLink]="['flag-content']">
+                                <a routerLink="flag">
                                     <i class="ui large blue flag outline icon"></i>
                                 </a>
                                 <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
