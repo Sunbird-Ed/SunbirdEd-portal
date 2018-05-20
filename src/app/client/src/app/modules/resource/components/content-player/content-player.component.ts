@@ -90,7 +90,7 @@ export class ContentPlayerComponent implements OnInit {
           this.contentData = response.result.content;
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
-          this.breadcrumbsService.setBreadcrumbs({ label: this.contentData.name, url: '' });
+          this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();

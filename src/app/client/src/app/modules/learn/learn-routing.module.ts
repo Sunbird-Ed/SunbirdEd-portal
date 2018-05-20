@@ -1,5 +1,7 @@
-import { LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent } from './components';
+import {
+  LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
+  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent
+} from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -18,16 +20,19 @@ const routes: Routes = [
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,
-        children: [{path: 'flag', component: FlagContentComponent},
-        {path: 'enroll/batch/:batchId', component: EnrollBatchComponent},
-        {path: 'update/batch/:batchId', component: UpdateCourseBatchComponent},
-        {path: 'create/batch', component: CreateBatchComponent}]
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
+        children: [{ path: 'flag', component: FlagContentComponent },
+        { path: 'enroll/batch/:batchId', component: EnrollBatchComponent },
+        { path: 'update/batch/:batchId', component: UpdateCourseBatchComponent },
+        { path: 'create/batch', component: CreateBatchComponent }]
       },
       {
         path: ':courseId/dashboard', component: CourseProgressComponent
       },
-      { path: ':courseId/:batchId', component: CoursePlayerComponent,
-        children: [{path: 'flag', component: FlagContentComponent}]
+      {
+        path: ':courseId/:batchId', component: CoursePlayerComponent,
+        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
+        children: [{ path: 'flag', component: FlagContentComponent }]
       }
     ]
   }

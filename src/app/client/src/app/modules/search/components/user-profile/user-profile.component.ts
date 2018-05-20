@@ -137,7 +137,7 @@ export class UserProfileComponent implements OnInit {
       this.userSearchService.getUserById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
-          this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+          this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
           this.formatEndorsementList();
           this.populateBadgeDescription();
           this.showLoader = false;
@@ -149,7 +149,7 @@ export class UserProfileComponent implements OnInit {
       );
     } else {
       this.userDetails = this.userSearchService.userDetailsObject;
-      this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
       this.formatEndorsementList();
       this.populateBadgeDescription();
       this.showLoader = false;

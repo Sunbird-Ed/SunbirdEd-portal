@@ -85,7 +85,11 @@ export class BreadcrumbsComponent implements OnInit {
          * a selected component.
          */
         this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
-            this.breadCrumbsData.push(data);
+            if (data.length > 0) {
+            data.forEach(breadcrumb => {
+            this.breadCrumbsData.push(breadcrumb);
+            });
+            }
             this.cdr.detectChanges();
         }
         );

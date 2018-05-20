@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
+import {
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
-import {CourseConsumptionService } from './../../../services';
+import { CourseConsumptionService } from './../../../services';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -50,14 +52,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   readMore = false;
 
-  contentIds  = [];
+  contentIds = [];
   contentStatus: any;
   contentDetails = [];
 
   treeModel: any;
   nextPlaylistItem: any;
   prevPlaylistItem: any;
-  noContentToPlay =  'No content to play';
+  noContentToPlay = 'No content to play';
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -84,7 +86,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
-    private toasterService: ToasterService, private resourceService: ResourceService) {
+    private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -113,12 +115,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
       }, (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-    });
+      });
   }
 
   public playContent(data: any): void {
     this.enableContentPlayer = true;
     this.contentTitle = data.title;
+    this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
     this.playerConfig = this.courseConsumptionService.getConfigByContent(data.id).catch((error) => {
       console.log(`unable to get player config for content ${data.id}`, error);
       return error;
@@ -182,12 +185,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         } else {
           mimeTypeCount[node.model.mimeType] = 1;
         }
-        this.contentDetails.push({id: node.model.identifier, title: node.model.name});
+        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
         this.contentIds.push(node.model.identifier);
       }
     });
     _.forEach(mimeTypeCount, (value, key) => {
-      this.curriculum.push({mimeType: key, count: value});
+      this.curriculum.push({ mimeType: key, count: value });
     });
   }
   fetchContentStatus(data) {
@@ -199,9 +202,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
       (res) => {
-      this.updateCourseProgress(res);
-    }, (err) => {
-    });
+        this.updateCourseProgress(res);
+      }, (err) => {
+      });
   }
   updateCourseProgress(res) {
     const contentStatus = res.content;
@@ -214,17 +217,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentId: this.contentId,
       courseId: this.courseId,
       batchId: this.batchId,
-      status : eid === 'END' ? 2 : 1
+      status: eid === 'END' ? 2 : 1
     };
     this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
       this.updateCourseProgress(updatedRes);
     });
   }
-  private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.courseConsumptionService.getCourseHierarchy(collectionId)
       .map((response) => {
         this.courseHierarchy = response;
-        return { data: response};
+        return { data: response };
       });
   }
   closeContentPlayer() {
