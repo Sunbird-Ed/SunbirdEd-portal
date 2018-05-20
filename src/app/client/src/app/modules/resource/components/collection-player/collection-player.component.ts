@@ -50,6 +50,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private subsrciption: Subscription;
   public contentType: string;
   public mimeType: string;
+  public sharelinkModal: boolean;
   public badgeData: Array<object>;
   private closeUrl: any;
   public loaderMessage: ILoaderMessage = {

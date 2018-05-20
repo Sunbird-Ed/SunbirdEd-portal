@@ -18,6 +18,7 @@ import {
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  sharelinkModal: boolean;
   /**
    * contains link that can be shared
    */
@@ -118,7 +119,7 @@ export class ContentPlayerComponent implements OnInit {
    * closes conent player and revert to previous url
    * @memberof ContentPlayerComponent
    */
-  close () {
+  close() {
     this.router.navigate(['/resources']);
   }
 
@@ -136,7 +137,7 @@ export class ContentPlayerComponent implements OnInit {
       (err) => {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+      });
   }
   createEventEmitter(data) {
     this.createNoteData = data;
