@@ -141,6 +141,6 @@ export class ContentPlayerComponent implements OnInit {
     this.createNoteData = data;
   }
   onShareLink() {
-    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, 'content');
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
   }
 }

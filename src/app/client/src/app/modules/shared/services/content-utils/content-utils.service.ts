@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
+import { ConfigService } from './../config/config.service';
 
 @Injectable()
 export class ContentUtilsServiceService {
@@ -11,8 +12,8 @@ export class ContentUtilsServiceService {
   *input for Sharelink;
   */
   contentShare: ISharelink;
-  constructor() {
-     this.baseUrl = document.location.origin + '/';
+  constructor(public configService: ConfigService) {
+    this.baseUrl = document.location.origin + '/';
   }
   /**
    * getBase64Url
@@ -45,6 +46,12 @@ export class ContentUtilsServiceService {
   * returns {string} url to share
   */
   getPublicShareUrl(identifier, type) {
-    return this.baseUrl + 'play' + '/' + type + '/' + identifier;
+    let playertype: string;
+    if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      playertype = 'collection';
+    } else {
+      playertype = 'content';
+    }
+    return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
   }
 }
