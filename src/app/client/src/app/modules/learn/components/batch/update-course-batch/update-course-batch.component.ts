@@ -257,27 +257,15 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0053);
         }
-      }
-    );
+      });
     }, 1000);
   }
   redirect() {
     this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
   }
   reload() {
+    this.courseBatchService.updateEvent.emit({event: 'update'});
     this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
-  }
-
-  filterUserSearchResult(userData, query?) {
-    if (query) {
-      const fname = userData.firstName !== null && userData.firstName.includes(query);
-      const lname = userData.lastName !== null && userData.lastName.includes(query);
-      const email = userData.email !== null && userData.email.includes(query);
-      const phone = userData.phone !== null && userData.phone.includes(query);
-      return fname || lname || email || phone;
-    } else {
-      return true;
-    }
   }
 
   enableButton() {

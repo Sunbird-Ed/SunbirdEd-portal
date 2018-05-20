@@ -49,7 +49,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   /**
    * form group for batchAddUserForm
   */
-  batchAddUserForm: FormGroup;
+  createBatchUserForm: FormGroup;
   /**
   * To navigate to other pages
   */
@@ -77,6 +77,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   private toasterService: ToasterService;
 
   public courseConsumptionService: CourseConsumptionService;
+  pickerMinDate = new Date();
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -138,17 +139,17 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   createBatch() {
     const requestBody = {
       'courseId': this.courseId,
-      'name': this.batchAddUserForm.value.name,
-      'description': this.batchAddUserForm.value.description,
-      'enrollmentType': this.batchAddUserForm.value.enrollmentType,
-      'startDate': this.batchAddUserForm.value.startDate,
-      'endDate': this.batchAddUserForm.value.endDate,
+      'name': this.createBatchUserForm.value.name,
+      'description': this.createBatchUserForm.value.description,
+      'enrollmentType': this.createBatchUserForm.value.enrollmentType,
+      'startDate': this.createBatchUserForm.value.startDate,
+      'endDate': this.createBatchUserForm.value.endDate,
       'createdBy': this.userId,
       'createdFor': this.orgIds,
-      'mentors': this.batchAddUserForm.value.mentors
+      'mentors': this.createBatchUserForm.value.mentors
     };
     this.courseBatchService.createBatch(requestBody).subscribe((response) => {
-      if (this.batchAddUserForm.value.users && this.batchAddUserForm.value.users.length > 0) {
+      if (this.createBatchUserForm.value.users && this.createBatchUserForm.value.users.length > 0) {
         this.addUserToBatch(response.result.batchId);
       } else {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
@@ -165,7 +166,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   }
   addUserToBatch(batchId) {
     const userRequest = {
-      userIds: this.batchAddUserForm.value.users
+      userIds: this.createBatchUserForm.value.users
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
@@ -193,7 +194,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   * It helps to initialize form fields and apply field level validation
   */
   initializeFormFields(): void {
-    this.batchAddUserForm = new FormGroup({
+    this.createBatchUserForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
       enrollmentType: new FormControl('invite-only', [Validators.required]),
@@ -203,26 +204,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       users: new FormControl(''),
     });
     this.showCreateModal = true;
-    this.batchAddUserForm.valueChanges.subscribe(val => {
+    this.createBatchUserForm.valueChanges.subscribe(val => {
       this.enableButton();
     });
   }
 
-  filterUserSearchResult(userData, query?) {
-    if (query) {
-      const fname = userData.firstName !== null && userData.firstName.includes(query);
-      const lname = userData.lastName !== null && userData.lastName.includes(query);
-      const email = userData.email !== null && userData.email.includes(query);
-      const phone = userData.phone !== null && userData.phone.includes(query);
-      return fname || lname || email || phone;
-    } else {
-      return true;
-    }
-  }
-
   enableButton() {
-    const data = this.batchAddUserForm ? this.batchAddUserForm.value : '';
-    if (this.batchAddUserForm.status === 'VALID' && (data.name && data.startDate)) {
+    const data = this.createBatchUserForm ? this.createBatchUserForm.value : '';
+    if (this.createBatchUserForm.status === 'VALID' && (data.name && data.startDate)) {
       this.disableSubmitBtn = false;
     } else {
       this.disableSubmitBtn = true;

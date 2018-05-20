@@ -4,17 +4,17 @@
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts.lbl.createnewbatch}}</span>
       </div>
-      <div class="one wide column actions">
+      <!-- <div class="one wide column actions">
         <h5 class="ui basic icon circular button deny" (click)="redirect();">
           <i class="ui remove icon"></i>
         </h5>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="scrolling content">
-    <form [formGroup]="batchAddUserForm" class="ui form batchAddUserForm">
-      <div class="one field" [ngClass]="{'error':batchAddUserForm.controls['name'].errors && batchAddUserForm.controls['name'].errors.required && !batchAddUserForm.controls['name'].pristine }">
+    <form [formGroup]="createBatchUserForm" class="ui form batchAddUserForm">
+      <div class="one field" [ngClass]="{'error':createBatchUserForm.controls['name'].errors && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine }">
         <div class="required field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
           <input type="text" name="name" formControlName="name">
@@ -48,7 +48,7 @@
           <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input suiDatepicker formControlName="startDate" [pickerMode]="'date'">
+              <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
           </div>
         </div>
@@ -57,13 +57,13 @@
           <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
             <div class="ui input left icon">
               <i class="calendar icon date-calendar"></i>
-              <input suiDatepicker formControlName="endDate" [pickerMode]="'date'">
+              <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
             </div>
           </div>
         </div>
       </div>
 
-      <div *ngIf="batchAddUserForm.value.enrollmentType !== 'open'" class="one field">
+      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <ng-template let-mentor #optionTemplate>
           <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
@@ -75,7 +75,7 @@
         </sui-multi-select>
       </div>
 
-      <div *ngIf="batchAddUserForm.value.enrollmentType !== 'open'" class="one field">
+      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <ng-template let-user #useroptionTemplate>
           <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -90,7 +90,7 @@
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="batchAddUserForm.reset()">Clear</button>
+    <button class="ui secondary button" (click)="createBatchUserForm.reset()">Clear</button>
     <button class="ui primary button" [disabled]="disableSubmitBtn" (click)="createBatch()">Create</button>
   </div>
 </sui-modal>

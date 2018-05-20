@@ -43,9 +43,9 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       this.getAllBatchDetails();
     }
-  }
-  fetchBatchList() {
-    this.getAllBatchDetails();
+    this.batchService.updateEvent.subscribe((data) => {
+      this.getAllBatchDetails();
+    });
   }
   getAllBatchDetails() {
     this.showBatchList = false;

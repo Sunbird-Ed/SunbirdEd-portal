@@ -1,4 +1,4 @@
-import { Injectable, Input } from '@angular/core';
+import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,6 +9,7 @@ import {SearchParam, LearnerService, UserService, ContentService, SearchService 
 export class CourseBatchService {
   private _enrollBatchDetails: any;
   private _updateBatchDetails: any;
+  public updateEvent = new EventEmitter();
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
