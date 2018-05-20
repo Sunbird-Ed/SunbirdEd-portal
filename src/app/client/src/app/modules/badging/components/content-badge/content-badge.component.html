@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<sui-modal [isClosable]="true" [size]="'small'" *ngIf="showBadgeAssingModel" #modal>
+<sui-modal [isClosable]="true" [size]="'small'" (dismissed)="showBadgeAssingModel=false" *ngIf="showBadgeAssingModel" #modal>
     <div class="header">
       <div class="ui grid">
         <div class="eleven wide column">
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui basic blue small compact button left floated" (click)="modal.deny();showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
+      <div class="ui basic blue small compact button left floated" (click)="showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
       <div class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
     </div>
 </sui-modal>
