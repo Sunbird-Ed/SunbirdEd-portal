@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
+import {
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
+  ContentUtilsServiceService
+} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -40,10 +43,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public loader: Boolean = true;
 
+  public showCopyLoader: Boolean = false;
+
   private subscription: Subscription;
 
   private subsrciption: Subscription;
   public contentType: string;
+  public mimeType: string;
+  public sharelinkModal: boolean;
   public badgeData: Array<object>;
   private closeUrl: any;
   public loaderMessage: ILoaderMessage = {
@@ -66,10 +73,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       'doc': 'fa fa-file-text fa-lg'
     }
   };
+  /**
+   * contains link that can be shared
+   */
+  shareLink: string;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-  private toasterService: ToasterService, private resourceService: ResourceService) {
+    private toasterService: ToasterService, private resourceService: ResourceService,
+    public permissionService: PermissionService, public copyContentService: CopyContentService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -160,25 +173,18 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getCollectionHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.playerService.getCollectionHierarchy(collectionId)
       .map((response) => {
         this.contentType = _.get(response, 'result.content.contentType');
+        this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       });
   }
   closeCollectionPlayer() {
-    if (this.closeUrl.url !== '/home') {
-      if (this.closeUrl.queryParams) {
-        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
-      } else {
-        this.router.navigate([this.closeUrl.url]);
-      }
-    } else {
-      this.router.navigate(['/resources']);
-    }
+    this.router.navigate(['/resources']);
   }
   closeContentPlayer() {
     this.showPlayer = false;
@@ -186,5 +192,25 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.route
     };
     this.router.navigate([], navigationExtras);
+  }
+
+  /**
+   * This method calls the copy API service
+   * @param {contentData} ContentData Content data which will be copied
+   */
+  copyContent(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyContent(contentData).subscribe(
+      (response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      },
+      (err) => {
+        this.showCopyLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+  }
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
   }
 }
