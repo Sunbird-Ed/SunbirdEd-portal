@@ -2243,30 +2243,21 @@ ul.fancytree-container li {
 .my-icon {
   vertical-align: middle;
 }
-.workspacecontentProfile {
-  line-height: 22px;
-}
-.workspacecontentProfile.ui.card {
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-}
-.WorkSpaceTextContent {
+.workspace-navigate {
   display: inline-block;
   margin: 16px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {
-  .WorkSpaceTextContent {
+  .workspace-navigate  {
     white-space: pre-line;
   }
 }
-
-.WorkSpaceTextContent i.icon {
-  font-size: 2em;
-  padding-right: 10px;
-}
-.WorkSpaceTextContent .my-text {
+.workspace-navigate-heading {
   font-size: 1.3em;
   font-family: 'sunbirdboldfont';
+  color: #333333;
+  vertical-align: middle;
 }
 
 /*trashIcon in address css*/
