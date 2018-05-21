@@ -1,4 +1,4 @@
-<div id="content-player" class="ui grid">
+<div id="content-player" class="ui stackable grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class='margin-top--5 videosegment ui segment'>
@@ -44,35 +44,11 @@
             <div class="twelve wide column">
               <div class="ui divider"></div>
             </div>
-            <div class="ui grid">
+            <div class="ui stackable grid">
               <div class="eight wide column">
-                <div class="row">
-                  <div class="twelve wide column" *ngIf="contentData.description">
-                    <div class="ui raised segment">
-                      <div class="header announcementCard-header">
-                        <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.description}} </span>
-                      </div>
-                      <div class="description padding-top-5">
-                        <p>
-                          {{contentData.description}}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="twelve wide column margin-top-20">
-                    <app-discussions></app-discussions>
-                  </div>
-                </div>
-              </div>
-              <div class="four wide column">
                 <div class="row">
                   <div class="twelve wide column">
                     <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
-                  </div>
-                  <div class="twelve wide column margin-top-20">
-                    <div class="row">
-                      <!-- <note-card shownotecard="true" contentid="contentData.identifier"></note-card> -->
-                    </div>
                   </div>
                 </div>
               </div>

@@ -146,6 +146,9 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.resourceService = resourceService;
         this.config = config;
         this.state = 'draft';
+        this.loaderMessage = {
+            'loaderMessage': this.resourceService.messages.stmsg.m0011,
+        };
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -162,7 +165,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.pageLimit = limit;
         const searchParams = {
             filters: {
-                status: ['Draft'],
+                status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
                 contentType: this.config.appConfig.WORKSPACE.contentType,
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
@@ -171,29 +174,14 @@ export class DraftComponent extends WorkSpace implements OnInit {
             offset: (this.pageNumber - 1) * (this.pageLimit),
             sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
         };
-        this.loaderMessage = {
-            'loaderMessage': this.resourceService.messages.stmsg.m0011,
-        };
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content.length > 0) {
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    const constantData = {
-                        ribbon: {
-                            right: { class: 'ui black right ribbon label' }
-                        },
-                        action: {
-                            right: {
-                                class: 'trash large icon',
-                                displayType: 'icon',
-                                eventName: 'delete'
-                            },
-                            onImage: { eventName: 'onImage' }
-                        }
-                    };
-                    const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-                    const dynamicFields = { 'ribbon.right.name': ['contentType'] };
+                    const constantData =  this.config.appConfig.WORKSPACE.Draft.constantData;
+                    const metaData = this.config.appConfig.WORKSPACE.Draft.metaData;
+                    const dynamicFields = this.config.appConfig.WORKSPACE.Draft.dynamicFields;
                     this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {

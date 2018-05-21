@@ -20,7 +20,7 @@
                 </h5>
               </div>
               <div *ngIf="showCreateEditor === true" class="padding-top-20">
-                <app-inline-editor [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
+                <app-inline-editor [ids]="{contentId:contentId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
 
             </div>

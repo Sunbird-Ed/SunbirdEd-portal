@@ -260,6 +260,19 @@ export const response = {
             'm0033': 'Fetching note is failed, please try again later...'
           }
         }
+      },
+
+      testNote: {
+        'note': 'Test',
+        'identifier': '01236258171482931279',
+        'updatedBy': '659b011a-06ec-4107-84ad-955e16b0a48a',
+        'createdDate': '2017-10-27 11:22:28:388+0000',
+        'createdBy': '659b011a-06ec-4107-84ad-955e16b0a48a',
+        'contentId': 'do_2123208084795310081772',
+        'id': '01236258171482931279',
+        'updatedDate': '2017-10-27 11:22:28:388+0000',
+        'title': 'Test Note',
+        'userId': '659b011a-06ec-4107-84ad-955e16b0a48a'
       }
 
     };

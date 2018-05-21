@@ -126,9 +126,11 @@ export class LibrarySearchComponent implements OnInit {
   /**
    * This method sets the make an api call to get all search data with page No and offset
    */
-  populateContentSearch() {
+  populateContentSearch(filters: object) {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
+    console.log('this.filters', this.filters);
+    this.filters = filters || this.filters;
     const requestParams = {
       filters:  _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
@@ -137,25 +139,18 @@ export class LibrarySearchComponent implements OnInit {
       softConstraints: { badgeAssertions: 1 },
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
+    console.log('requestParams', requestParams);
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
           this.noResult = false;
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-          const constantData = {
-            ribbon: {
-                right: { class: 'ui black right ribbon label' },
-                left: { class: 'ui blue left ribbon label' }
-            },
-            action: {
-                onImage: { eventName: 'onImage' }
-            }
-        };
-        const metaData = { metaData: ['identifier', 'mimeType', 'framework', 'contentType'] };
-        const dynamicFields = { 'ribbon.right.name': ['contentType'], 'ribbon.left.name': ['badgeAssertions[0].badgeClassName']};
+          const constantData = this.config.appConfig.LibrarySearch.constantData;
+        const metaData = this.config.appConfig.LibrarySearch.metaData;
+        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
         this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.noResult = true;
@@ -198,9 +193,7 @@ export class LibrarySearchComponent implements OnInit {
     this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    this.filters = {
-      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-    };
+
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -216,6 +209,7 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        this.filters = {};
         if (_.isEmpty(this.queryParams)) {
           this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
@@ -224,10 +218,14 @@ export class LibrarySearchComponent implements OnInit {
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
             if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
               this.filters[queryParam] = queryValue;
+              console.log(' this.filters[queryParam]',  this.filters);
             }
           });
         }
-        this.populateContentSearch();
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+          this.queryParams.sortType = this.queryParams.sortType.toString();
+        }
+        this.populateContentSearch(this.filters);
       });
   }
   playContent(event) {

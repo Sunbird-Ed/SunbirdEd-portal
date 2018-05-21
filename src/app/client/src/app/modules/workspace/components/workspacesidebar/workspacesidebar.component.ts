@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
-
+import {Router, ActivatedRoute} from '@angular/router';
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
@@ -24,6 +24,11 @@ export class WorkspacesidebarComponent implements OnInit {
    * reference of config service.
   */
   public config: ConfigService;
+
+  /*
+  roles allowed to create content
+  */
+  createRole: Array<string>;
   /**
    * Draft  access roles
   */
@@ -54,9 +59,19 @@ export class WorkspacesidebarComponent implements OnInit {
   flaggedRole: Array<string>;
 
   /**
-    * flaggedRole  access roles
+    * limitedPublishingRole  access roles
   */
   limitedPublishingRole: Array<string>;
+
+  /**
+    * start  access roles
+  */
+  startRole: Array<string>;
+
+   /**
+   * reference of Router.
+   */
+  private router: Router;
 
   /**
   * Constructor to create injected service(s) object
@@ -65,13 +80,16 @@ export class WorkspacesidebarComponent implements OnInit {
      * @param {PermissionService} permissionService Reference of PermissionService
      * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService) {
+  constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService,
+   router: Router) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.config = config;
+    this.router = router;
   }
 
   ngOnInit() {
+    this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
     this.inreviewRole = this.config.rolesConfig.workSpaceRole.inreviewRole;
     this.publishedRole = this.config.rolesConfig.workSpaceRole.publishedRole;
@@ -80,6 +98,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.coursebacthesRole = this.config.rolesConfig.workSpaceRole.coursebacthesRole;
     this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
     this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
+    this.startRole = this.config.rolesConfig.workSpaceRole.startRole;
   }
 
 }
