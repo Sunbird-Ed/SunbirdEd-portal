@@ -1,12 +1,9 @@
-<br>
-<br>
-<div class="ui grid">
+<div class="ui stackable grid margin-top-20">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div>
             <div *ngIf="!enableContentPlayer && !loader">
                 <div class="content">
-                    <div class='ui grid'>
+                    <div class="ui stackable grid">
                         <div class="row">
                             <div class='nine wide column'>
                                 <div class="ui header">
@@ -53,7 +50,7 @@
                 </div>
             </div>
             <div *ngIf="enableContentPlayer && !loader">
-                <div class="ui grid">
+                <div class="ui stackable grid">
                     <div class="twelve wide column">
                         <div class="ui grid">
                             <div class="row">
@@ -117,7 +114,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <div *ngIf="loader">
             <app-loader [data]="loaderMessage"></app-loader>
         </div>

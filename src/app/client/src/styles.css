@@ -396,8 +396,8 @@
 .padding-right-50 {
   padding-right: 3rem !important;
 }
-.contentVisibility-hidden {
-  visibility: hidden !important;
+.vertical-align-middle {
+  vertical-align: middle !important;
 }
 .right-floated {
   float: right !important;
@@ -1393,10 +1393,7 @@ body ::-webkit-scrollbar {
 .qq-upload-list {
   overflow-y: hidden;
 }
-.down-arrow-accordion {
-  float: right !important;
-  font-size: large !important;
-}
+
 ul {
   list-style: none;
 }
@@ -1527,10 +1524,10 @@ span.fancytree-title {
   margin-bottom: 1em;
 }
 .accordian-left-text {
-  padding: 2% !important;
-  font-size: 16px !important;
-  color: black !important;
-  font-family: 'sunbirdregularfont' !important;
+  padding: 8px;
+  font-size: 1.2em;
+  color: #333;
+  font-family: 'sunbirdregularfont';
 }
 .toc-left-nav-btn-content {
   text-align: left;
