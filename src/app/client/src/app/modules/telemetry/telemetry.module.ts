@@ -1,3 +1,4 @@
+import { TelemetryService, TELEMETRY_PROVIDER } from './services';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TelemetryInteractDirective } from './directives/telemetry-interact.directive';
@@ -6,6 +7,7 @@ import { TelemetryInteractDirective } from './directives/telemetry-interact.dire
   imports: [
     CommonModule
   ],
-  declarations: [TelemetryInteractDirective]
+  declarations: [TelemetryInteractDirective],
+  providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
 })
 export class TelemetryModule { }
