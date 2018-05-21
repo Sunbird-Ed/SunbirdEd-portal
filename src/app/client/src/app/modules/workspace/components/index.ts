@@ -22,3 +22,5 @@ export * from './flag-conentplayer/flag-conentplayer.component';
 export * from './reviewsubmissions-contentplayer/reviewsubmissions-contentplayer.component';
 export * from './published-popup/published-popup.component';
 export * from './request-changes-popup/request-changes-popup.component';
+export * from './unlisted-contentplayer/unlisted-contentplayer.component';
+export * from './unlisted-collectionplayer/unlisted-collectionplayer.component';
