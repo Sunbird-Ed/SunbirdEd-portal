@@ -173,6 +173,9 @@ export class CourseProgressService {
           }
           this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
           return this.courseProgress[courseId_batchId];
+        }).catch((err) => {
+          this.courseProgressData.emit({lastPlayedContentId: reqData.contentIds[0]});
+            return err;
         });
     }
   }
