@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse, ICard } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ICard, IUserData } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,10 +28,12 @@ export class WorkSpaceService {
     * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
     * @param {ConfigService} config ConfigService reference
+    * @param {UserService} userService userService reference
     * @param {HttpClient} http HttpClient reference
   */
   constructor(config: ConfigService, content: ContentService,
@@ -67,7 +69,6 @@ export class WorkSpaceService {
  */
   navigateToContent(content, state) {
     const mimeType = content.mimeType;
-    console.log(mimeType);
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
@@ -110,11 +111,15 @@ export class WorkSpaceService {
    * @param {string}  state - Present state
   */
   openGenericEditor(content, state) {
-    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
+   if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
     } else {
       if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'upForReview') {
+        this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
+      } else if (state === 'flagged') {
+        this.route.navigate(['workspace/content/flag/content', content.identifier]);
       }
     }
   }

@@ -43,12 +43,13 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       this.getAllBatchDetails();
     }
-  }
-  fetchBatchList() {
-    this.getAllBatchDetails();
+    this.batchService.updateEvent.subscribe((data) => {
+      this.getAllBatchDetails();
+    });
   }
   getAllBatchDetails() {
     this.showBatchList = false;
+    this.showError = false;
     this.batchList = [];
     const searchParams: any = {
       filters: {
@@ -79,8 +80,7 @@ export class BatchDetailsComponent implements OnInit {
   getEnrolledCourseBatchDetails() {
     this.batchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data.result.response;
-      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? []
-      : this.enrolledBatchInfo.participant;
+      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? this.enrolledBatchInfo.participant : [];
     }, () => {
       // handle error
     });
@@ -106,10 +106,10 @@ export class BatchDetailsComponent implements OnInit {
   }
   batchUpdate(batch) {
     this.batchService.setUpdateBatchDetails(batch);
-    // this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
+    this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
-    // this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
+    this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
     this.batchService.setEnrollBatchDetails(batch);

@@ -1,10 +1,10 @@
 import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -113,7 +113,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   * To call resource service which helps to use language constant
  */
   public resourceService: ResourceService;
-
+  /**
+    * reference of permissionService service.
+  */
+  public permissionService: PermissionService;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -123,6 +126,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     * @param {PaginationService} paginationService Reference of PaginationService
     * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
     * @param {ConfigService} config Reference of ConfigService
+    * @param {permissionService} permissionService Refrence of permission service to check permission
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
@@ -130,7 +134,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, permissionService: PermissionService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
@@ -143,6 +147,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       'loaderMessage': this.resourceService.messages.stmsg.m0032,
     };
     this.state = 'upForReview';
+    this.permissionService = permissionService;
   }
 
   ngOnInit() {
@@ -168,19 +173,23 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   * This method sets the make an api call to get all UpForReviewContent with page No and offset
   */
   fecthUpForReviewContent(limit: number, pageNumber: number, bothParams) {
-    console.log(bothParams);
     this.showLoader = true;
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
-      const sortType = bothParams.queryParams.sortIcon;
+      const sortType = bothParams.queryParams.sortType;
       this.sort = {
-        [sort_by] : sortType
+        [sort_by]: sortType
       };
+    } else {
+      this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
+    const rolesMap = this.userService.RoleOrgMap;
     const searchParams = {
       filters: {
         status: ['Review'],
-        createdFor: this.userService.RoleOrgMap && this.userService.RoleOrgMap['CONTENT_REVIEWER'],
+        createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
+          rolesMap['BOOK_REVIEWER'],
+          rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
@@ -191,7 +200,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         Content: bothParams.queryParams.Content
       },
       limit: limit,
-      offset: (pageNumber - 1 ) * (limit),
+      offset: (pageNumber - 1) * (limit),
       query: bothParams.queryParams.query,
       sort_by: this.sort
     };
