@@ -126,11 +126,9 @@ export class LibrarySearchComponent implements OnInit {
   /**
    * This method sets the make an api call to get all search data with page No and offset
    */
-  populateContentSearch(filters: object) {
+  populateContentSearch() {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
-    console.log('this.filters', this.filters);
-    this.filters = filters || this.filters;
     const requestParams = {
       filters:  _.pickBy(this.filters, value => value.length > 0),
       limit: this.pageLimit,
@@ -139,7 +137,6 @@ export class LibrarySearchComponent implements OnInit {
       softConstraints: { badgeAssertions: 1 },
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
-    console.log('requestParams', requestParams);
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.content) {
@@ -218,14 +215,13 @@ export class LibrarySearchComponent implements OnInit {
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
             if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
               this.filters[queryParam] = queryValue;
-              console.log(' this.filters[queryParam]',  this.filters);
             }
           });
         }
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
         }
-        this.populateContentSearch(this.filters);
+        this.populateContentSearch();
       });
   }
   playContent(event) {
