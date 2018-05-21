@@ -118,6 +118,8 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
       } else if (state === 'upForReview') {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
+      } else if (state === 'flagged') {
+        this.route.navigate(['workspace/content/flag/content', content.identifier]);
       }
     }
   }
