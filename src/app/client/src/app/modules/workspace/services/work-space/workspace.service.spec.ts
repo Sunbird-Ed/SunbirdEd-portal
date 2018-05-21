@@ -77,9 +77,4 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
-  it('should  launch  content player  when mime type is video/x-youtube and state is flagged ',
-    inject([WorkSpaceService, Router], (workSpaceService, route) => {
-      workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
-  }));
 });
