@@ -95,6 +95,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
 
   modalService: SuiModalService;
   activatedRoute: ActivatedRoute;
+  batchId: string;
 
 
   /**
@@ -203,9 +204,12 @@ export class NoteCardComponent implements OnInit, OnChanges {
    * This method redirects the user to notesList view.
    */
   public viewAllNotes() {
+    this.activatedRoute.params.subscribe(params => {
+      this.batchId = params.batchId;
+    });
     this.activatedRoute.parent.url.subscribe(url => {
       if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/note/', this.ids.courseId]);
+        this.route.navigate(['/learn/course/note/', this.ids.courseId, this.batchId]);
       } else {
         this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
       }

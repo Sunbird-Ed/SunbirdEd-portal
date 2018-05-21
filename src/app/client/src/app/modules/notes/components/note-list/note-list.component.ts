@@ -72,6 +72,7 @@ export class NoteListComponent implements OnInit {
    * content id details
    */
   contentId: string;
+  batchId: string;
   /**
    * To display toast message(if any) after each API call.
    */
@@ -233,9 +234,12 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
+    this.activatedRoute.params.subscribe(params => {
+      this.batchId = params.batchId;
+    });
     this.activatedRoute.url.subscribe(url => {
       if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/', this.courseId]);
+        this.route.navigate(['/learn/course/', this.courseId, this.batchId]);
       } else {
         this.route.navigate(['/resources/play/content/', this.contentId]);
       }

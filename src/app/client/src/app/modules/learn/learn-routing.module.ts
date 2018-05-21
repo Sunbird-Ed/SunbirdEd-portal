@@ -15,7 +15,7 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] }
   },
   {
-    path: 'learn/course/note/:courseId', component: NoteListComponent
+    path: 'learn/course/note/:courseId/:batchId', component: NoteListComponent
   },
   {
     path: 'learn/course', component: CourseConsumptionPageComponent,

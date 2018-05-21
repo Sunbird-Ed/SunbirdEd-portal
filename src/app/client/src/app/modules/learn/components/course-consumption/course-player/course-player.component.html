@@ -37,18 +37,18 @@
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
                                 <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
                                     <!-- <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note> -->
-                                </div>
-                                <div>
-                                    <br>
-                                    <span (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
-                                        <i class="circular icon margin-right-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
-                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
-                                            (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                    </span>
-                                    <br>
-                                    <br>
-                                    <!-- <app-note-card *ngIf="enrolledCourse"></app-note-card> -->
-                                    <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
+                                    <div>
+                                        <br>
+                                        <span (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
+                                            <i class="circular icon margin-right-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
+                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
+                                                (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                        </span>
+                                        <br>
+                                        <br>
+                                        <!-- <app-note-card *ngIf="enrolledCourse"></app-note-card> -->
+                                        <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
+                                    </div>
                                 </div>
                                 <br>
                                 <app-carriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-carriculum-card>
@@ -96,7 +96,12 @@
                                 <div class="two wide column "></div>
                                 <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                     <h2 class="ui center aligned icon tiny header toc-note">
-                                        <!-- <add-note></add-note> -->
+                                        <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
+                                                (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                            <img src="assets/images/takenote.png">
+                                            <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
+                                        </a>
                                     </h2>
                                 </div>
                                 <div class="two wide column "></div>
