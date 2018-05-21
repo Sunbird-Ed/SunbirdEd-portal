@@ -144,12 +144,13 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   * It helps to initialize form fields and apply field level validation
   */
   initializeFormFields(): void {
+    const endDate = this.batchData.endDate ? new Date(this.batchData.endDate) : null;
     this.batchAddUserForm = new FormGroup({
       name: new FormControl(this.batchData.name, [Validators.required]),
       description: new FormControl(this.batchData.description),
       enrollmentType: new FormControl(this.batchData.enrollmentType, [Validators.required]),
       startDate: new FormControl(new Date(this.batchData.startDate), [Validators.required]),
-      endDate: new FormControl(new Date(this.batchData.endDate), [Validators.required]),
+      endDate: new FormControl(endDate),
       mentors: new FormControl(''),
       users: new FormControl(''),
     });
