@@ -88,6 +88,8 @@ export class OutboxComponent implements OnInit {
    */
   public config: ConfigService;
 
+  public telemetryIntract:any;
+
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -115,6 +117,21 @@ export class OutboxComponent implements OnInit {
     this.paginationService = paginationService;
     this.toasterService = toasterService;
     this.config = config;
+    this.telemetryIntract = {
+    context: {
+      env: 'announcement'
+    },
+    object: {
+      id: '',
+      type: 'announcement',
+      ver: '1.0'
+    },
+    edata: {
+      id: 'create-announcement',
+      type: 'CLICK',
+      pageid: 'announcement-create',
+    }
+  };
   }
 
   /**

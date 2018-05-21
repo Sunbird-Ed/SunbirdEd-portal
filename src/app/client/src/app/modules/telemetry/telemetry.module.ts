@@ -8,6 +8,7 @@ import { TelemetryInteractDirective } from './directives/telemetry-interact.dire
     CommonModule
   ],
   declarations: [TelemetryInteractDirective],
+  exports: [TelemetryInteractDirective],
   providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
 })
 export class TelemetryModule { }

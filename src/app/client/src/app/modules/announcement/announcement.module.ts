@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,13 +10,13 @@ import { AnnouncementService} from '@sunbird/core';
 import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
   DetailsPopupComponent, InboxComponent, CreateComponent, FileUploaderComponent } from './components';
   import { GeoExplorerService, CreateService } from './services';
-
 @NgModule({
   imports: [
     CommonModule,
     AnnouncementRoutingModule,
     SharedModule, FormsModule,
-    SuiModule, ReactiveFormsModule
+    SuiModule, ReactiveFormsModule,
+    TelemetryModule
   ],
   declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent,
      CreateComponent, FileUploaderComponent],
