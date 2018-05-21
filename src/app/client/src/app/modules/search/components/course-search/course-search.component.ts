@@ -275,6 +275,9 @@ export class CourseSearchComponent implements OnInit {
             this.filters[queryParam] = queryValue;
           }
         });
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+          this.queryParams.sortType = this.queryParams.sortType.toString();
+        }
         this.populateEnrolledCourse();
       });
   }

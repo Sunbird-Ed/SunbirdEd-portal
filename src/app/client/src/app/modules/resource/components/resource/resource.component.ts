@@ -156,9 +156,13 @@ export class ResourceComponent implements OnInit {
         _.forIn(this.queryParams, (value, key) => {
           if (key !== 'sort_by' && key !== 'sortType') {
             this.filters[key] = value;
+            console.log('this.filters[key]', this.filters[key]);
           }
         });
         this.caraouselData = [];
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+          this.queryParams.sortType = this.queryParams.sortType.toString();
+        }
         this.populatePageData();
       });
   }

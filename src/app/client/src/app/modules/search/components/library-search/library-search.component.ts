@@ -139,7 +139,7 @@ export class LibrarySearchComponent implements OnInit {
     };
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
           this.noResult = false;
           this.searchList = apiResponse.result.content;
@@ -190,9 +190,7 @@ export class LibrarySearchComponent implements OnInit {
     this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    this.filters = {
-      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-    };
+
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -208,6 +206,7 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        this.filters = {};
         if (_.isEmpty(this.queryParams)) {
           this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
@@ -218,6 +217,9 @@ export class LibrarySearchComponent implements OnInit {
               this.filters[queryParam] = queryValue;
             }
           });
+        }
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+          this.queryParams.sortType = this.queryParams.sortType.toString();
         }
         this.populateContentSearch();
       });
