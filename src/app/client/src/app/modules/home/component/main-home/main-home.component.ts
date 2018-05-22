@@ -47,7 +47,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   /**
   * Slider setting to display number of cards on the slider.
   */
-  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
+  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4, infinite: false };
   /**
    * The "constructor"
    *
