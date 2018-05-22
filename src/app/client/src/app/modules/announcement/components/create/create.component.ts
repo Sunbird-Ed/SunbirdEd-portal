@@ -258,7 +258,7 @@ export class CreateComponent implements OnInit {
     const emptyLinkArray = _.filter(data.links, (links) => {
       return links.url === '';
     });
-    if (data.title.length && data.from.length && ((data.links.length && emptyLinkArray.length === 0)
+    if (data.title.length && data.from.length && data.type.length && ((data.links.length && emptyLinkArray.length === 0)
       || data.description.length || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
