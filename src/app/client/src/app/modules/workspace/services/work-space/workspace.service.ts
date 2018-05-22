@@ -111,11 +111,15 @@ export class WorkSpaceService {
    * @param {string}  state - Present state
   */
   openGenericEditor(content, state) {
-    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
+   if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
     } else {
       if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'upForReview') {
+        this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
+      } else if (state === 'flagged') {
+        this.route.navigate(['workspace/content/flag/content', content.identifier]);
       }
     }
   }
