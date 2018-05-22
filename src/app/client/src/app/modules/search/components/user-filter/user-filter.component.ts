@@ -74,7 +74,7 @@ export class UserFilterComponent implements OnInit {
 
   setFilters() {
     _.forIn(this.queryParams, (value, key) => {
-      if (typeof value === 'string') {
+      if (typeof value === 'string' && key !== 'Location') {
         this.queryParams[key] = [value];
       }
     });
@@ -87,14 +87,8 @@ export class UserFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setFilters();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
-      _.forIn(this.queryParams, (value, key) => {
-        if (typeof value === 'string') {
-          this.queryParams[key] = [value];
-        }
-      });
       this.setFilters();
     });
   }
