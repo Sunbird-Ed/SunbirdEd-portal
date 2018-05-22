@@ -27,9 +27,10 @@ export class UserProfileComponent implements OnInit {
 	 * Contains page number of outbox list
 	 */
   pageNumber = 1;
-  descriptionReadMore = false;
+  descriptionReadMore = true;
   skillViewMore = true;
   skillLimit = 4;
+  defaultLimit = 4;
   loggedInUserId: string;
   disableEndorsementButton = false;
 
@@ -132,28 +133,20 @@ export class UserProfileComponent implements OnInit {
 	 */
   populateUserProfile() {
     this.showLoader = true;
-    if (this.userSearchService.userDetailsObject === undefined) {
-      const option = { userId: this.userId };
-      this.userSearchService.getUserById(option).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.userDetails = apiResponse.result.response;
-          this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
-          this.formatEndorsementList();
-          this.populateBadgeDescription();
-          this.showLoader = false;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.showLoader = false;
-        }
-      );
-    } else {
-      this.userDetails = this.userSearchService.userDetailsObject;
-      this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
-      this.formatEndorsementList();
-      this.populateBadgeDescription();
-      this.showLoader = false;
-    }
+    const option = { userId: this.userId };
+    this.userSearchService.getUserById(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.userDetails = apiResponse.result.response;
+        this.formatEndorsementList();
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
+        this.populateBadgeDescription();
+        this.showLoader = false;
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.showLoader = false;
+      }
+    );
   }
 
   /**
@@ -235,8 +228,8 @@ export class UserProfileComponent implements OnInit {
     if (lim === true) {
       this.skillViewMore = false;
     } else {
-      this.skillViewMore = true;
       this.skillLimit = 4;
+      this.skillViewMore = true;
     }
   }
 

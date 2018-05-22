@@ -51,11 +51,11 @@
 
                         <div class="twelve wide column" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole'>
                             <a (click)="navigateToWorkspace()">
-                                <div class="workspacebutton workspacecontentProfile ui link card ">
+                                <div class="ui link card width-100">
                                     <div class="content ">
-                                        <div class="WorkSpaceTextContent ">
-                                            <i class='my-icon database icon '></i>
-                                            <span class="my-text ">{{resourceService.frmelmnts.lbl.viewworkspace}}</span>
+                                        <div class="workspace-navigate">
+                                            <i class='database big icon primary-text-color-sunbird'></i>
+                                            <span class="workspace-navigate-heading">{{resourceService.frmelmnts.lbl.viewworkspace}}</span>
                                         </div>
                                     </div>
                                 </div>

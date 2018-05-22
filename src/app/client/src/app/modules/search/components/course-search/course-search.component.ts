@@ -168,7 +168,7 @@ export class CourseSearchComponent implements OnInit {
 
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.course.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.course) {
           this.showLoader = false;
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
@@ -275,6 +275,9 @@ export class CourseSearchComponent implements OnInit {
             this.filters[queryParam] = queryValue;
           }
         });
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+                  this.queryParams.sortType = this.queryParams.sortType.toString();
+               }
         this.populateEnrolledCourse();
       });
   }

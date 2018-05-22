@@ -72,6 +72,7 @@ export class NoteListComponent implements OnInit {
    * content id details
    */
   contentId: string;
+  batchId: string;
   /**
    * To display toast message(if any) after each API call.
    */
@@ -160,10 +161,10 @@ export class NoteListComponent implements OnInit {
   public getAllNotes() {
     const requestBody = {
       request: {
-        filter: {
-          userid: this.userId,
-          courseid: this.courseId,
-          contentid: this.contentId
+        filters: {
+          userId: this.userId,
+          courseId: this.courseId,
+          contentId: this.contentId
         },
         sort_by: {
           updatedDate: 'desc'
@@ -171,7 +172,7 @@ export class NoteListComponent implements OnInit {
       }
     };
 
-    if (requestBody.request.filter.contentid || requestBody.request.filter.courseid) {
+    if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
       this.noteService.search(requestBody).subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -233,6 +234,15 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.route.navigate(['/resources/play/content/', this.contentId]);
+    this.activatedRoute.params.subscribe(params => {
+      this.batchId = params.batchId;
+    });
+    this.activatedRoute.url.subscribe(url => {
+      if (url[0].path === 'learn') {
+        this.route.navigate(['/learn/course/', this.courseId, this.batchId]);
+      } else {
+        this.route.navigate(['/resources/play/content/', this.contentId]);
+      }
+    });
   }
 }

@@ -13,10 +13,6 @@ export class ProfileVisibilityComponent implements OnInit {
    */
   @Input() field: string;
   /**
-   *
-   */
-  isOpen: any;
-  /**
    * Contains text to show/hide
    */
   options: Array<string>;
