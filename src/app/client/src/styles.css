@@ -2698,18 +2698,21 @@ iframe.iziModal-iframe {
   font-family: 'sunbirdboldfont';
   font-size: 1.375em;
 }
-
 .ann-section-heading {
   font-family: 'sunbirdboldfont';
   font-size: 1.4em;
 }
-
-.fancy-tree-grey{
+.fancy-tree-grey {
   color:#929292;
 }
-.fancy-tree-blue{
+.fancy-tree-blue {
   color:#55b2f7;
 }
-.fancy-tree-green{
-  color:#54d40f
-};
+.fancy-tree-green {
+  color:#54d40f;
+}
+
+/*adding outline none because router link of angular is adding extra outline, */
+.remove-outline {
+  outline: none !important;
+}

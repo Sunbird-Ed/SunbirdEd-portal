@@ -7,9 +7,9 @@
         <div class="ui left floated header margin-auto ">
           <p class="serch-allresult">Showing results
             <span class="lower-case" *ngIf="this.queryParams.key">
-               for {{this.queryParams.key}}
+              for {{this.queryParams.key}}
             </span>
-             in "users"
+            in "users"
           </p>
         </div>
         <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
@@ -34,15 +34,15 @@
                 <div class="content ">
                   <a class="header " [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
 
-                  <a *ngIf="user.status===1 && user.isEditableProfile" class="float-ContentRight">
+                  <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                     <!-- update user roles -->
-                    <span [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
-                <i class="edit icon editIcon-fontSize"></i>
-              </span>
+                    <span class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                      <i class="edit large icon remove-outline"></i>
+                    </span>
                     <!-- delete user -->
-                    <span>
-                <i class="trash outline icon trashIcon-fontSize" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
-              </span>
+                    <span class="remove-outline">
+                      <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
+                    </span>
                   </a>
 
                   <!-- organization Name -->
