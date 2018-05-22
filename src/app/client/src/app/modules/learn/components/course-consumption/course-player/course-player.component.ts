@@ -7,6 +7,7 @@ import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerCon
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import {CourseConsumptionService } from './../../../services';
+import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -49,6 +50,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseHierarchy: any;
 
   readMore = false;
+
+  createNoteData: INoteData;
+
+  /**
+   * To show/hide the note popup editor
+   */
+  showNoteEditor = false;
 
   contentIds  = [];
   contentStatus: any;
@@ -240,6 +248,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.enableContentPlayer = false;
       this.router.navigate([], navigationExtras);
     }
+  }
+
+  createEventEmitter(data) {
+    this.createNoteData = data;
   }
 
   ngOnDestroy() {

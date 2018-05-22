@@ -1,5 +1,5 @@
 import { IdDetails } from '@sunbird/notes';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -17,6 +17,9 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
   let fixture: ComponentFixture<NoteCardComponent>;
+  const fakeActivatedRoute = {
+    'params' : Observable.from([{courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'}])
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
@@ -26,7 +29,8 @@ describe('NoteCardComponent', () => {
       imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
-         { provide: Router, useClass: RouterStub } ],
+         { provide: Router, useClass: RouterStub },
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents()
