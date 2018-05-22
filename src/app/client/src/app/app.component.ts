@@ -118,7 +118,8 @@ export class AppComponent implements OnInit {
             uid: userOrg.userId,
             sid: this.userService.sessionId,
             channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
-            env: 'home' // default value
+            env: 'home', // default value
+            batchsize: 1
           }
         };
         resolve(config);
