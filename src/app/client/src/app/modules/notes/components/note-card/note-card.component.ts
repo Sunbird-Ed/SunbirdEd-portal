@@ -155,10 +155,10 @@ export class NoteCardComponent implements OnInit, OnChanges {
   public getAllNotes() {
     const requestBody = {
       request: {
-        filter: {
-          userid: this.userId,
-          courseid: this.ids.courseId,
-          contentid: this.ids.contentId
+        filters: {
+          userId: this.userId,
+          courseId: this.ids.courseId,
+          contentId: this.ids.contentId
         },
         sort_by: {
           updatedDate: 'desc'
@@ -166,7 +166,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
       }
     };
 
-      if (requestBody.request.filter.contentid || requestBody.request.filter.courseid) {
+      if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
         this.noteService.search(requestBody).subscribe(
           (apiResponse: ServerResponse) => {
             this.showLoader = false;

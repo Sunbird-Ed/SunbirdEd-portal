@@ -36,7 +36,6 @@
                             <div class='three wide column'>
                                 <app-batch-details [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
                                 <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
-                                    <!-- <app-add-note shownoteincourse="true" courseid="toc.courseId"></app-add-note> -->
                                     <div>
                                         <br>
                                         <span (click)="showNoteEditor=!showNoteEditor" class="cursor-pointer">
@@ -46,7 +45,6 @@
                                         </span>
                                         <br>
                                         <br>
-                                        <!-- <app-note-card *ngIf="enrolledCourse"></app-note-card> -->
                                         <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
                                     </div>
                                 </div>
