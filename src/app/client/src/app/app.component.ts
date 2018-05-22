@@ -117,8 +117,8 @@ export class AppComponent implements OnInit {
             apislug: '/data/v1/telemetry',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId'),
-            env: 'home',   // default value
+            channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
+            env: 'home', // default value
             batchsize: 1
           }
         };
