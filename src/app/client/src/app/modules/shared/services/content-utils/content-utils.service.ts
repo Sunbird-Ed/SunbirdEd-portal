@@ -32,11 +32,11 @@ export class ContentUtilsServiceService {
   */
   getUnlistedShareUrl(contentShare) {
     if (contentShare.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', contentShare.identifier);
+      return this.baseUrl + 'unlisted' + '/content' + '/' + contentShare.identifier;
     } else if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', contentShare.identifier);
+      return this.baseUrl + 'unlisted'  + '/collection' + '/' + contentShare.identifier;
     } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', contentShare.identifier);
+      return this.baseUrl + 'unlisted' + '/content' + '/'  + contentShare.identifier;
     }
   }
   /**

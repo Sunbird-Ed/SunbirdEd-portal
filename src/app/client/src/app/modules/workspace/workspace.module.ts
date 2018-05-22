@@ -14,8 +14,10 @@ import {
   FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
-  PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent
+  PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent, UnlistedContentplayerComponent,
+  UnlistedCollectionplayerComponent
 } from './components';
+
 
 @NgModule({
   imports: [
@@ -37,7 +39,10 @@ import {
     ReviewsubmissionsContentplayerComponent,
     PublishedPopupComponent,
     RequestChangesPopupComponent,
-    LimitedPublishedComponent
+    LimitedPublishedComponent,
+    UnlistedContentplayerComponent,
+    UnlistedCollectionplayerComponent,
+    UnlistedCollectionplayerComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })
