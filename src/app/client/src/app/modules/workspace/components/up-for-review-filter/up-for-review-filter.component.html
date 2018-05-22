@@ -48,18 +48,18 @@
     </div>
 </ng-template>
 <div class="ui grid">
-    <div class="ten wide column content" *ngIf='queryParams != undefined'>
-            <span *ngFor="let value of label">
-              <span class="padded chip" *ngIf='queryParams[value.id] && queryParams[value.id].length > 0'>
-                {{value.name}}:
-                <span *ngFor="let item of queryParams[value.id] ">
-                  <a class="ui label margin-top--5">
-                    {{item}}
-                    <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
-                  </a>
-                </span>
-              </span>
+    <div class="twelve wide column content" *ngIf='queryParams != undefined'>
+        <span *ngFor="let value of label">
+          <span class="padded chip padding-right-5" *ngIf='queryParams[value.id] && queryParams[value.id].length > 0'>
+            {{value.name}}:
+            <span *ngFor="let item of queryParams[value.id] ">
+              <a class="ui label margin-top--5">
+                {{item}}
+                <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
+              </a>
             </span>
+          </span>
+        </span>
     </div>
-  </div>
+</div>
   
