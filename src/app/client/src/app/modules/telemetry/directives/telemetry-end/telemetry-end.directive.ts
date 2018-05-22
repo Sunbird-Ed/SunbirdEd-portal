@@ -1,18 +1,16 @@
 import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
-import { IInteractEventInput } from '../../interfaces';
+import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
-/**
- * TelemetryInteract Directive
- */
 @Directive({
-  selector: '[appTelemetryInteract]'
+  selector: '[appTelemetryEnd]'
 })
-export class TelemetryInteractDirective implements OnInit, OnChanges {
+export class TelemetryEndDirective implements OnInit, OnChanges {
+
   /**
    * Interact event input
   */
-  @Input('appTelemetryInteract') appTelemetryInteract: IInteractEventInput;
+  @Input('appTelemetryEnd') appTelemetryEnd: IEndEventInput;
   /**
    * reference of permissionService service.
   */
@@ -26,19 +24,18 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-    if (this.appTelemetryInteract) {
-      this.interact();
+    if (this.appTelemetryEnd) {
+      this.telemetryEnd();
     }
   }
-  interact() {
-    console.log('call TelemetryInteract method ');
-    this.telemetryService.interact(this.appTelemetryInteract);
+  telemetryEnd() {
+    console.log('call TelemetryEnd method ');
+    this.telemetryService.end(this.appTelemetryEnd);
   }
 
   ngOnChanges() {
-    if (this.appTelemetryInteract) {
+    if (this.appTelemetryEnd) {
     }
   }
+
 }
-
-

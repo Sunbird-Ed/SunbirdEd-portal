@@ -88,7 +88,7 @@ export class OutboxComponent implements OnInit {
    */
   public config: ConfigService;
 
-  public telemetryIntract:any;
+  public telemetryIntract: any;
 
   /**
 	 * Constructor to create injected service(s) object
