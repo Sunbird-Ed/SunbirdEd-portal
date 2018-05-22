@@ -46,10 +46,11 @@
                   </a>
 
                   <!-- organization Name -->
-                  <div class="meta ">
+                  <div class="meta">
                     <span class="cinema ">
-                      <span *ngFor="let org of user.organisations; let last = last;">{{org.orgName}}
-                        <span *ngIf="!last">,</span>
+                      <span *ngFor="let org of user.organisations; let last = last;">
+                        <span *ngIf="org.orgName">{{org.orgName}}</span>
+                        <span *ngIf="!last && org.orgName">,</span>
                       </span>
                     </span>
                   </div>
