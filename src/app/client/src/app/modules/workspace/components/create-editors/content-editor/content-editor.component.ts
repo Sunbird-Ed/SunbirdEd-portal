@@ -175,7 +175,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userProfile.rootOrgId,
@@ -198,7 +199,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.2',
+          ver: '1.4',
           type: 'plugin'
         },
         {
@@ -208,6 +209,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         },
         {
           id: 'org.ekstep.metadata',
+          ver: '1.0',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.questionset',
           ver: '1.0',
           type: 'plugin'
         }

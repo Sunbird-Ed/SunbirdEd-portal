@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
+import { OrderModule } from 'ngx-order-pipe';
 import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent, HomeFilterComponent,
    OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent, LibrarySearchComponent } from './components';
 
@@ -16,7 +17,8 @@ import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDele
     SharedModule,
     SuiModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    OrderModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
