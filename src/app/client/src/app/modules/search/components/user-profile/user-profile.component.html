@@ -52,13 +52,13 @@
           <div class="header">
             <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
-          <div class="description">
-            <div *ngIf="!descriptionReadMore">
-              <span>{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui add-edit-btn-profile" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
+          <div class="description padding-top-10">
+            <div *ngIf="descriptionReadMore && userDetails.profileSummary.length > 120">
+              <span class="overflow-word-wrap">{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
             </div>
-            <div *ngIf="descriptionReadMore"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui add-edit-btn-profile" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
+            <div class="overflow-word-wrap" *ngIf="!descriptionReadMore && userDetails.profileSummary.length > 120"> {{userDetails.profileSummary}}&nbsp;
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list">
-            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit">
+            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit | orderBy:'addedAt':true">
               <div class="ui label">
                 {{skill.skillName}}
                 <div class="detail">
@@ -161,7 +161,7 @@
             </div>
           </div>
         </div>
-        <div class="ui bottom attached tabular menu  expand-or-minimize-btn ng-scope " *ngIf="userDetails.skills.length > skillLimit">
+        <div class="ui bottom attached tabular menu  expand-or-minimize-btn ng-scope " *ngIf="userDetails.skills.length > defaultLimit">
           <div class="active item  expand-or-minimize-btn-pad">
             <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
               <span class="cursor-pointer">
@@ -169,7 +169,7 @@
                 <i class="chevron down icon"></i>
               </span>
             </a>
-            <a (click)="toggle(false)" *ngIf="skillViewMore ===false">
+            <a (click)="toggle(false)" *ngIf="!skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewless}}
                 <i class="chevron up icon"></i>
