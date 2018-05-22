@@ -131,7 +131,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
@@ -152,7 +153,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.2',
+        ver: '1.4',
         type: 'plugin'
       }, {
         id: 'org.ekstep.sunbirdmetadata',
