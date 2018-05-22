@@ -148,6 +148,7 @@ app.all('/get', indexPage)
 app.all('*/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
+app.all('/unlisted/*', indexPage)
 
 // Mobile redirection to app
 require('./helpers/mobileAppHelper.js')(app)

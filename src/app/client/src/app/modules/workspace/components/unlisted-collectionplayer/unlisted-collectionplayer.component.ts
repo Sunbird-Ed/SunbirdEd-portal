@@ -1,160 +1,183 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import {
-  ResourceService, ILoaderMessage, PlayerConfig, ContentData,
-  WindowScrollService, ToasterService, NavigationHelperService
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService
 } from '@sunbird/shared';
-import { PlayerService, PermissionService, UserService } from '@sunbird/core';
+import { Subscription } from 'rxjs/Subscription';
+import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import * as _ from 'lodash';
+import { PublicPlayerService } from '../../../public/services';
 
 @Component({
   selector: 'app-unlisted-collectionplayer',
   templateUrl: './unlisted-collectionplayer.component.html',
   styleUrls: ['./unlisted-collectionplayer.component.css']
 })
-export class UnlistedCollectionplayerComponent implements OnInit {
+export class UnlistedCollectionplayerComponent implements OnInit, OnDestroy {
+  public collectionData: object;
 
-  /**
-    * To navigate to other pages
-    */
-  router: Router;
-  /**
-   * loader message
-  */
-  loaderMessage: ILoaderMessage;
-  /**
-   * To close url
-  */
-  closeUrl: any;
-  /**
-  * To show / hide loader
-  */
-  showLoader = true;
-  /**
-   * Flag to show error
-   */
-  showError = false;
-  /**
-   * content id
-   */
-  contentId: string;
-  /**
-   * user id
-   */
-  userId: string;
-  /**
-  * contain error message
-  */
-  errorMessage: string;
-  /**
-  * To call resource service which helps to use language constant
-  */
-  public resourceService: ResourceService;
-  /**
-  * To call user service
-  */
-  public userService: UserService;
+  private route: ActivatedRoute;
 
-  /**
-  * To call PlayerService service
-  */
-  public playerService: PlayerService;
-  /**
-  * To call Permission service
-  */
-  public permissionService: PermissionService;
-  /**
-  * To call PlayerService service
-  */
-  public windowScrollService: WindowScrollService;
-  /**
-   * contains player configuration
-   */
-  playerConfig: PlayerConfig;
-  /**
-   * contain contentData
-  */
-  contentData: ContentData;
-  /**
-  * To show toaster(error, success etc) after any API calls
-  */
-  private toasterService: ToasterService;
+  public showPlayer: Boolean = false;
 
+  private collectionId: string;
+
+  private contentId: string;
   /**
-  * Constructor to create injected service(s) object
-  Default method of Draft Component class
-  * @param {ResourceService} resourceService Reference of resourceService
-  * @param {ToasterService} toasterService Reference of ToasterService
-  */
-  constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute, userService: UserService,
-    playerService: PlayerService, windowScrollService: WindowScrollService, permissionService: PermissionService,
-    toasterService: ToasterService, public navigationHelperService: NavigationHelperService, router: Router) {
-    this.resourceService = resourceService;
+   * Refrence of Content service
+   * @private
+   * @type {ContentService}
+   */
+  private contentService: ContentService;
+
+  public collectionTreeNodes: any;
+
+  public collectionTitle: string;
+
+  public contentTitle: string;
+
+  public playerConfig: Observable<any>;
+
+  private playerService: PublicPlayerService;
+
+  private windowScrollService: WindowScrollService;
+
+  private router: Router;
+
+  public loader: Boolean = true;
+
+  private subsrciption: Subscription;
+
+  public loaderMessage: ILoaderMessage = {
+    headerMessage: 'Please wait...',
+    loaderMessage: 'Fetching content details!'
+  };
+
+  public collectionTreeOptions: ICollectionTreeOptions = {
+    fileIcon: 'fa fa-file-o fa-lg',
+    customFileIcon: {
+      'video': 'fa fa-file-video-o fa-lg',
+      'pdf': 'fa fa-file-pdf-o fa-lg',
+      'youtube': 'fa fa-youtube fa-lg',
+      'H5P': 'fa fa-html5 fa-lg',
+      'audio': 'fa fa-file-audio-o fa-lg',
+      'ECML': 'fa fa-file-code-o fa-lg',
+      'HTML': 'fa fa-html5-o fa-lg',
+      'collection': 'fa fa-file-archive-o fa-lg',
+      'epub': 'fa fa-text-o fa-lg',
+      'doc': 'fa fa-text-o fa-lg'
+    }
+  };
+
+  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
+    this.contentService = contentService;
+    this.route = route;
     this.playerService = playerService;
-    this.userService = userService;
     this.windowScrollService = windowScrollService;
-    this.permissionService = permissionService;
-    this.toasterService = toasterService;
     this.router = router;
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0025,
-    };
+    this.router.onSameUrlNavigation = 'ignore';
   }
-
   ngOnInit() {
-    this.userService.userData$.subscribe(userdata => {
-      if (userdata && !userdata.err) {
-        this.userId = userdata.userProfile.userId;
-        this.activatedRoute.params.subscribe((params) => {
-          this.contentId = params.collectionId;
-          this.getContent();
-        });
-      }
-      this.closeUrl = this.navigationHelperService.getPreviousUrl();
-    });
-  }
-  /**
-   * used to fetch content details and player config. On success launches player.
-   */
-  getContent() {
-    this.showLoader = true;
-    const option = {
-      params: { mode: 'edit' }
-    };
-    this.playerService.getContent(this.contentId, option).subscribe(
-      (response) => {
-        if (response.result.content) {
-          const contentDetails = {
-            contentId: this.contentId,
-            contentData: response.result.content
-          };
-          this.playerConfig = this.playerService.getConfig(contentDetails);
-          this.contentData = response.result.content;
-          this.showLoader = false;
-        } else {
-          this.toasterService.warning(this.resourceService.messages.imsg.m0027);
-          this.close();
-        }
-      },
-      (err) => {
-        this.showError = true;
-        this.errorMessage = this.resourceService.messages.stmsg.m0009;
-      });
-  }
-  /**
-   * retry launching player with same content details
-   * @memberof ContentPlayerComponent
-   */
-  tryAgain() {
-    this.showError = false;
     this.getContent();
   }
-  /**
-  * closes conent player and revert to previous url
-  * @memberof ContentPlayerComponent
-  */
-  close() {
-     this.router.navigate(['/resources']);
+
+  ngOnDestroy() {
+    if (this.subsrciption) {
+      this.subsrciption.unsubscribe();
+    }
   }
 
+  private initPlayer(id: string): void {
+    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
+      return error;
+    });
+  }
+
+  public playContent(data: any): void {
+    this.showPlayer = true;
+    this.contentTitle = data.title;
+    this.initPlayer(data.id);
+  }
+
+  private navigateToContent(id: string): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'contentId': id },
+      relativeTo: this.route
+    };
+    this.router.navigate([], navigationExtras);
+  }
+
+  private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
+    return this.playerService.getConfigByContent(contentId);
+  }
+
+  private findContentById(collection: any, id: string) {
+    const model = new TreeModel();
+    return model.parse(collection.data).first((node) => {
+      return node.model.identifier === id;
+    });
+  }
+
+  public OnPlayContent(content: { title: string, id: string }) {
+    if (content && content.id) {
+      this.navigateToContent(content.id);
+      this.playContent(content);
+      setTimeout(() => {
+        this.windowScrollService.smoothScroll('app-player-collection-renderer');
+      }, 10);
+    } else {
+      throw new Error(`unbale to play collection content for ${this.collectionId}`);
+    }
+  }
+
+  private getContent(): void {
+    this.subsrciption = this.route.params
+      .first()
+      .flatMap((params) => {
+        this.collectionId = params.collectionId;
+        return this.getCollectionHierarchy(params.collectionId);
+      })
+      .subscribe((data) => {
+        this.collectionTreeNodes = data;
+        this.loader = false;
+        this.route.queryParams.subscribe((queryParams) => {
+          this.contentId = queryParams.contentId;
+          if (this.contentId) {
+            const content = this.findContentById(data, this.contentId);
+            if (content) {
+              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+            } else {
+              // show toaster error
+            }
+          } else {
+            this.closeContentPlayer();
+          }
+        });
+      }, (error) => {
+        // toster error
+      });
+  }
+
+  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
+    return this.playerService.getCollectionHierarchy(collectionId)
+      .map((response) => {
+        this.collectionData = response.result.content;
+        this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
+        return { data: response.result.content };
+      });
+  }
+  closeCollectionPlayer() {
+    this.navigationHelperService.navigateToPreviousUrl('/learn'); // give url in angular 1
+  }
+  closeContentPlayer() {
+    this.showPlayer = false;
+    const navigationExtras: NavigationExtras = {
+      relativeTo: this.route
+    };
+    this.router.navigate([], navigationExtras);
+  }
 
 }
