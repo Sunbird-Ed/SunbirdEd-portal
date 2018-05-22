@@ -23,6 +23,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private collectionId: string;
 
+  public collectionStatus: string;
+
   private contentId: string;
 
   private contentService: ContentService;
@@ -91,7 +93,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
-    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.getContent();
   }
 
@@ -150,6 +151,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       .first()
       .flatMap((params) => {
         this.collectionId = params.collectionId;
+        this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
@@ -174,7 +176,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId)
+    const option: any = {};
+    if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
+      option.params = {mode: 'edit'};
+    }
+    return this.playerService.getCollectionHierarchy(collectionId, option)
       .map((response) => {
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
@@ -184,7 +190,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.router.navigate(['/resources']);
+    this.navigationHelperService.navigateToResource();
   }
   closeContentPlayer() {
     this.showPlayer = false;

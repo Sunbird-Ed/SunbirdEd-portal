@@ -26,8 +26,10 @@ const routes: Routes = [
       {
         path: ':courseId/dashboard', component: CourseProgressComponent
       },
-      { path: ':courseId/:batchId', component: CoursePlayerComponent,
+      { path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
         children: [{path: 'flag', component: FlagContentComponent}]
+      },
+      { path: ':courseId/:courseStatus', component: CoursePlayerComponent,
       }
     ]
   }

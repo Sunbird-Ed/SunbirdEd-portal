@@ -9,13 +9,13 @@
           <div class="eight wide column padding-top-none">
             <div class="courseStructureHeaderText courseStructureSectionHeading">{{courseHierarchy.name}}</div>
             <br>
-            <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
+            <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
             [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
             <!-- <span class="ui mouse-pointer content-font">
                 <i class="large blue share alternate icon"></i>&nbsp;
             </span> -->
-            <span (click)="flagCourse()"> <i class="ui large blue flag outline icon" ></i></span>
-            <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+            <span *ngIf="enrolledCourse && courseStatus !== 'Unlisted'" (click)="flagCourse()"> <i class="ui large blue flag outline icon" ></i></span>
+            <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
                 (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
                 title="Copy content">
                 <i class="ui large blue clone outline icon"></i>
@@ -24,7 +24,7 @@
           </div>
           <div class="four wide column">
               <div *ngIf="enrolledCourse" class="margin-top-Negative30">
-                  <span><p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{courseHierarchy.progress}}%</p></span>
+                  <span><p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p></span>
                   <button class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
                   {{resourceService?.frmelmnts?.btn?.resumecourse}} <i class="caret right icon"></i>
                   </button>
@@ -41,7 +41,7 @@
   <div class="ui grid margin-bottom-20 " *ngIf="enrolledCourse">
     <div class="row">
       <div class="twelve wide column padding-none ">
-        <sui-progress class="ui tiny progress orange" [value]="courseHierarchy.progress" [maximum]="100"></sui-progress>
+        <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
       </div>
     </div>
   </div>

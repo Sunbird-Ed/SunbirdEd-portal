@@ -162,11 +162,12 @@ export class LearnPageComponent implements OnInit {
   _.forEach(sections, (value, index) => {
      _.forEach(sections[index].contents, (value2, index2) => {
        if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-        if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) === 0 ) {
+        if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1 ) {
           const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
-            const metaData =  this.configService.appConfig.Course.otherCourse.metaData;
+            const metaData =  { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
                    const dynamicFields = {};
-                   sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+                   const enrolledCourses = _.find(this.enrolledCourses, ['courseId', sections[index].contents[index2].identifier]);
+                   sections[index].contents[index2] = this.utilService.processContent(enrolledCourses,
                     constantData, dynamicFields, metaData);
         } else {
           const constantData = this.configService.appConfig.Course.otherCourse.constantData;

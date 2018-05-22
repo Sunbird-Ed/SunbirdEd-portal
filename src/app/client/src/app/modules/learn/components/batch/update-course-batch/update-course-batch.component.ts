@@ -151,8 +151,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       enrollmentType: new FormControl(this.batchDetails.enrollmentType, [Validators.required]),
       startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
       endDate: new FormControl(endDate),
-      mentors: new FormControl(''),
-      users: new FormControl('')
+      mentors: new FormControl(),
+      users: new FormControl()
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       this.enableButton();
@@ -215,9 +215,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       'description': this.batchUpdateForm.value.description,
       'enrollmentType': this.batchUpdateForm.value.enrollmentType,
       'startDate': this.batchUpdateForm.value.startDate,
-      'endDate': this.batchUpdateForm.value.endDate,
+      'endDate': this.batchUpdateForm.value.endDate || '',
       'createdFor': this.orgIds,
-      'mentors': this.batchUpdateForm.value.mentors
+      'mentors': this.batchUpdateForm.value.mentors ? this.batchUpdateForm.value.mentors : []
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
