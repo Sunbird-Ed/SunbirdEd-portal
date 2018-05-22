@@ -123,7 +123,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
-      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId },
+       { label: this.contentTitle, url: '' }]);
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
@@ -202,11 +203,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
-    (res) => {
-      this.contentStatus = res.content;
-      this.resumeContent(res);
-    }, (err) => {
-    });
+      (res) => {
+        this.contentStatus = res.content;
+        this.resumeContent(res);
+      }, (err) => {
+      });
   }
   resumeContent(res) {
     const navigationExtras: NavigationExtras = {

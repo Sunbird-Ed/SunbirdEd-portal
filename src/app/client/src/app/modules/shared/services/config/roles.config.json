@@ -42,7 +42,8 @@
        "coursebacthesRole":["COURSE_MENTOR"],
        "flaggedRole":["FLAG_REVIEWER"],
        "limitedPublishingRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
-       "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"]
+       "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
+       "orgType": ["SYSTEM_ADMINISTRATION"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
