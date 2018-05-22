@@ -195,22 +195,22 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         id: 'org.ekstep.suggestcontent',
         ver: '1.0',
         type: 'plugin'
-      })
+      });
       window.config.nodeDisplayCriteria = {
         contentType: ['TextBookUnit']
-      }
+      };
     } else if (this.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
         contentType: ['CourseUnit']
-      }
+      };
     } else if (this.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {
         contentType: ['LessonPlanUnit']
-      }
+      };
     } else {
       window.config.nodeDisplayCriteria = {
         contentType: ['Collection']
-      }
+      };
     }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;

@@ -75,7 +75,7 @@ describe('CreateComponent', () => {
       expect(component.announcementTypes.length).not.toEqual(0);
     }));
 
-    it('should return selected recipients', inject([],
+  it('should return selected recipients', inject([],
     () => {
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       const resourceService = TestBed.get(ResourceService);
@@ -141,6 +141,16 @@ describe('CreateComponent', () => {
       fixture.detectChanges();
       expect(component.setResendFormValues).toHaveBeenCalled();
       expect(data).toEqual(false);
+    }));
+
+  it('should not enable recipients button when empty title is passed', inject([],
+    () => {
+      component.announcementForm = component.sbFormBuilder.group({
+        title: [''], from: ['test user'], type: ['News'], description: ['test']
+      });
+      const data = component.announcementForm.value;
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
+      expect(component.formErrorFlag).toEqual(true);
     }));
 
   it('should not enable recipients button', inject([Router],
