@@ -9,7 +9,7 @@ import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { IEndEventInput } from '@sunbird/telemetry';
+import { IEndEventInput, IStartEventInput, IInteractEventInput } from '@sunbird/telemetry';
 /**
  * This component helps to create and resend announcement
  */
@@ -78,9 +78,9 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
-  telemetryIntract: any;
+  telemetryIntract: IInteractEventInput;
   // telemetryEnd: any;
-  telemetryStart: any;
+  telemetryStart: IStartEventInput;
   // public telemetryEnd$: Observable<IEndEventInput>;
   public telemetryEnd: IEndEventInput;
   /**
@@ -169,21 +169,6 @@ export class CreateComponent implements OnInit {
         id: 'create-announcement',
         type: 'CLICK',
         pageid: 'announcement-create',
-      }
-    };
-    this.telemetryStart = {
-      context: {
-        env: 'announcement'
-      },
-      object: {
-        id: '',
-        type: 'announcement',
-        ver: '1.0'
-      },
-      edata: {
-        type: 'workflow',
-        pageid: 'announcement-create',
-        mode: 'create'
       }
     };
   }
@@ -468,7 +453,22 @@ export class CreateComponent implements OnInit {
         this.toasterService.error(this.resource.messages.emsg.m0005);
       }
     });
-
+    this.telemetryStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+     object: {
+        id: this.identifier ? this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode:  this.activatedRoute.snapshot.data.telemetry.mode
+      }
+    };
+    console.log(this.telemetryStart);
     this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
