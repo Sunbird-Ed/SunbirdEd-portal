@@ -14,7 +14,7 @@ describe('TelemetryImpressionDirective', () => {
     const directive = new TelemetryImpressionDirective(telemetryService);
     expect(directive).toBeTruthy();
   });
-  fit('should take input', () => {
+  it('should take input', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryImpressionDirective(telemetryService);
     directive.appTelemetryImpression = eventData.inputData;

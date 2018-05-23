@@ -14,7 +14,7 @@ describe('TelemetryShareDirective', () => {
     const directive = new TelemetryShareDirective(telemetryService);
     expect(directive).toBeTruthy();
   });
-  fit('should take input', () => {
+  it('should take input', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryShareDirective(telemetryService);
     directive.appTelemetryShare = eventData.inputData;
