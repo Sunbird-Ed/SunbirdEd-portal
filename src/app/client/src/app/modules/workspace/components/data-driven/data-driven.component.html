@@ -21,9 +21,17 @@
                             {{resourceService?.frmelmnts?.btn?.startcreating}}
                         </button>
                     </p>
+                    <div [ngSwitch]="creationFormLable">
+                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createtextbook'">{{resourceService?.frmelmnts?.lbl?.bookfillater}}</h4>
+                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'designcourse'">{{resourceService?.frmelmnts?.lbl?.coursefilllater}}</h4>
+                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createcollection'">{{resourceService?.frmelmnts?.lbl?.collectionfillater}}</h4>
+                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createlessontext'">{{resourceService?.frmelmnts?.lbl?.lessonfillater}}</h4>
+                        <h4 class="text-align-center margin-top-10" *ngSwitchCase="'createlessonplan'">{{resourceService?.frmelmnts?.lbl?.lpfilllater}}</h4>
+                        <h4 *ngSwitchDefault></h4>
+                    </div>
                     <div>
                         <label>
-                            <p class="text-align-center">
+                            <p class="text-align-center margin-top-10">
                                 {{resourceService?.frmelmnts?.lbl?.agreeandproceedtext}}
                             </p>
                         </label>
