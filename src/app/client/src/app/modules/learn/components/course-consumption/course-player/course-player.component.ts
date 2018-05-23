@@ -21,12 +21,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private courseId: string;
 
-  private batchId: string;
+  public batchId: string;
 
-  private enrolledCourse = false;
+  public enrolledCourse = false;
 
-  private contentId: string;
-
+  public contentId: string;
+  public courseStatus: string;
   private contentService: ContentService;
 
   public collectionTreeNodes: any;
@@ -106,6 +106,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .flatMap((params) => {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
+        this.courseStatus = params.courseStatus;
         return this.getCourseHierarchy(params.courseId);
       })
       .do((response) => {
@@ -113,6 +114,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.enrolledCourse = true;
           this.parseChildContent(response.data);
           this.fetchContentStatus(response.data);
+          this.subscribeToQueryParam(response.data);
+        } else if (this.courseStatus === 'Unlisted') {
+          this.parseChildContent(response.data);
           this.subscribeToQueryParam(response.data);
         } else {
           this.parseChildContent(response.data);
@@ -146,7 +150,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    this.router.navigate([], navigationExtras);
+    if (this.batchId || this.courseStatus === 'Unlisted') {
+      this.router.navigate([], navigationExtras);
+    }
   }
 
   private findContentById(id: string) {
@@ -156,7 +162,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id && this.enrolledCourse) {
+    if (content && content.id && (this.enrolledCourse || this.courseStatus === 'Unlisted')) {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
@@ -211,31 +217,25 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
-      (res) => {
-        this.contentStatus = res.content;
-        this.resumeContent(res);
-      }, (err) => {
-      });
-  }
-  resumeContent(res) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': res.lastPlayedContentId },
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate([], navigationExtras);
+    (res) => {
+      this.contentStatus = res.content;
+    }, (err) => {
+    });
   }
   public contentProgressEventnew(event) {
-    const eid = event.detail.telemetryData.eid;
-    const request: any = {
-      userId: this.userService.userid,
-      contentId: this.contentId,
-      courseId: this.courseId,
-      batchId: this.batchId,
-      status: eid === 'END' ? 2 : 1
-    };
-    this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
-      this.contentStatus = updatedRes.content;
-    });
+    if (this.batchId) {
+      const eid = event.detail.telemetryData.eid;
+      const request: any = {
+        userId: this.userService.userid,
+        contentId: this.contentId,
+        courseId: this.courseId,
+        batchId: this.batchId,
+        status : eid === 'END' ? 2 : 1
+      };
+      this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+        this.contentStatus = updatedRes.content;
+      });
+    }
   }
   private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.courseConsumptionService.getCourseHierarchy(collectionId)

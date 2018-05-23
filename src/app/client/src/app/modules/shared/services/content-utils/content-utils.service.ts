@@ -31,12 +31,14 @@ export class ContentUtilsServiceService {
   * returns {string} url to share.
   */
   getUnlistedShareUrl(contentShare) {
-    if (contentShare.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', contentShare.identifier);
-    } else if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', contentShare.identifier);
+    if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
+      if (contentShare.contentType === 'Course') {
+        return `${this.baseUrl}learn/course/${contentShare.identifier}/Unlisted`;
+      } else {
+        return `${this.baseUrl}resources/play/collection/${contentShare.identifier}/Unlisted`;
+      }
     } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', contentShare.identifier);
+      return `${this.baseUrl}resources/play/content/${contentShare.identifier}/Unlisted`;
     }
   }
   /**
