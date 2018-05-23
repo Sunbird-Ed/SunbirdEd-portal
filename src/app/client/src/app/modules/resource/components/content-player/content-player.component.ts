@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
+import { ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import {
@@ -66,7 +66,7 @@ export class ContentPlayerComponent implements OnInit {
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService) {
   }
   /**
    *
@@ -104,6 +104,7 @@ export class ContentPlayerComponent implements OnInit {
           this.contentData = response.result.content;
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
+          this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();
