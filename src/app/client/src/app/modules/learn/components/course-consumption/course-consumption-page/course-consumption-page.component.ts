@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CollectionHierarchyAPI, ContentService, CoursesService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, CoursesService, BreadcrumbsService } from '@sunbird/core';
 @Component({
   selector: 'app-course-consumption-page',
   templateUrl: './course-consumption-page.component.html',
@@ -21,7 +21,7 @@ export class CourseConsumptionPageComponent implements OnInit {
   enrolledCourse: boolean;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
   private coursesService: CoursesService, private toasterService: ToasterService,
-  private resourceService: ResourceService, private router: Router) { }
+  private resourceService: ResourceService, private router: Router, public breadcrumbsService: BreadcrumbsService) { }
 
   ngOnInit() {
     this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.children[0].params,
@@ -37,6 +37,7 @@ export class CourseConsumptionPageComponent implements OnInit {
     this.courseConsumptionService.getCourseHierarchy(courseId).subscribe((response) => {
       if (response.status === 'Live' || response.status === 'Unlisted' || response.status === 'Flagged') {
         this.courseHierarchy = response;
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId }]);
         this.getBatch();
       } else {
         this.toasterService.warning(this.resourceService.messages.imsg.m0026);
@@ -52,7 +53,6 @@ export class CourseConsumptionPageComponent implements OnInit {
     this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
         if (enrolledCourses && !enrolledCourses.err) {
           if (this.batchId) {
-            this.showLoader = false;
             const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, (value, index) => {
               if (this.batchId === value.batchId) {
                 return value;
@@ -65,6 +65,7 @@ export class CourseConsumptionPageComponent implements OnInit {
               this.enrolledCourse = false;
               this.router.navigate([`/learn/course/${this.courseId}`]);
             }
+            this.showLoader = false;
           } else {
             this.showLoader = false;
             this.enrolledCourse = false;

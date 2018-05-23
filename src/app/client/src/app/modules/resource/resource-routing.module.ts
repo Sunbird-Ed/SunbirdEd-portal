@@ -15,12 +15,17 @@ const routes: Routes = [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
+    path: 'resources/play/collection/:collectionId/:collectionStatus', component: CollectionPlayerComponent,
+  }, {
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }] },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
     path: 'resources/play/content/:contentId/note', component: NoteListComponent
+  }, {
+    path: 'resources/play/content/:contentId/:contentStatus', component: ContentPlayerComponent,
   }
 ];
 

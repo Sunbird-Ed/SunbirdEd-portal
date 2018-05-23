@@ -1,5 +1,5 @@
 import { TelemetryService } from '@sunbird/telemetry';
-import { ResourceService, IUserData, IUserProfile, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, IUserOrgDetails,
@@ -51,12 +51,17 @@ export class AppComponent implements OnInit {
    */
   public telemetryService: TelemetryService;
   /**
+    * To get url, app configs
+   */
+  public config: ConfigService;
+  /**
    * constructor
    */
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
+    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService,
+    config: ConfigService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -64,6 +69,7 @@ export class AppComponent implements OnInit {
     this.conceptPickerService = conceptPickerService;
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
+    this.config = config;
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -113,16 +119,15 @@ export class AppComponent implements OnInit {
           config: {
             // TODO: get pdata from document object
             pdata: { id: '', ver: '', pid: '' },
-            endpoint: window.location.origin,
-            apislug: '/data/v1/telemetry',
+            endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+            apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+            host: '',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
             channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
-            env: 'home', // default value
-            batchsize: 1
-          }
+            env: 'home' // default value
+           }
         };
-        console.log('config', config);
         resolve(config);
       }).catch((error) => {
         reject(error);

@@ -2,7 +2,7 @@
     <div class="sliderCards ui card margin-right-20 margin-top-15">
         <div class="image imageInCardsResponsive">
             <div *ngIf="enrolledCourses.leafNodesCount  && enrolledCourses.progress > 0" class="course-progress ui tiny progress  progressBar-margin orange">
-                <sui-progress class="top attached  active" [value]="enrolledCourses.progress" [maximum]="enrolledCourses.leafNodesCount"></sui-progress>
+                <sui-progress class="top attached  active orange" [value]="enrolledCourses.progress" [maximum]="enrolledCourses.leafNodesCount"></sui-progress>
             </div>
             <div class="ui fluid image" (click)="onAction(enrolledCourses)">
                 <a class="ui black right ribbon label">{{resourceService.frmelmnts?.bdge?.course}}</a>

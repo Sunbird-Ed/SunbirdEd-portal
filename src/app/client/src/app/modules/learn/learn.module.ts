@@ -12,6 +12,7 @@ import {
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
+import { NotesModule } from '@sunbird/notes';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { DiscussionModule } from '@sunbird/discussion';
     LearnRoutingModule,
     CoreModule,
     DiscussionModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NotesModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,

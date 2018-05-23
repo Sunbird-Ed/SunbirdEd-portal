@@ -3,7 +3,7 @@ import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails , PlayerConfig, ContentData
+  ContentDetails , PlayerConfig, ContentData, NavigationHelperService
  } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
@@ -23,7 +23,7 @@ export class PlayerService {
    */
   collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService, public router: Router ) {
+    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService ) {
   }
 
   /**
@@ -32,8 +32,8 @@ export class PlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string): Observable<PlayerConfig> {
-    return this.getContent(id)
+  getConfigByContent(id: string, option: any = {params: {}}): Observable<PlayerConfig> {
+    return this.getContent(id, option)
       .flatMap((contentDetails) => {
         return Observable.of(this.getConfig({
           contentId: contentDetails.result.content.identifier,
@@ -95,9 +95,10 @@ export class PlayerService {
     return configuration;
   }
 
-  public getCollectionHierarchy(identifier: string): Observable<CollectionHierarchyAPI.Get> {
+  public getCollectionHierarchy(identifier: string, option: any = {params: {}}): Observable<CollectionHierarchyAPI.Get> {
     const req = {
-      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      param: option.params
     };
     return this.contentService.get(req).map((response: ServerResponse) => {
       this.collectionData = response.result.content;
@@ -106,17 +107,15 @@ export class PlayerService {
   }
 
   playContent(content) {
-
+    this.navigationHelperService.storeResourceCloseUrl();
     if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-
       if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
         this.router.navigate(['/resources/play/collection', content.identifier]);
       } else if (content.batchId) {
-        this.router.navigate(['/learn/course', content.courseId, content.batchId]);
+        this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
       } else {
         this.router.navigate(['/learn/course', content.identifier]);
       }
-
     } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
 
       this.router.navigate(['/resources/play/content', content.identifier]);

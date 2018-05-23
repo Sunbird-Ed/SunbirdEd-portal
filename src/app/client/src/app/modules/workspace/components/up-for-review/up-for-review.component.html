@@ -48,7 +48,7 @@
 </table>
 <div class="ui grid">
   <div class="two wide column"></div>
-  <div class="nine wide column padding-top-none">
+  <div class="ten wide column">
     <div class="padding-bottom-10" *ngIf="upForReviewContentData && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
       <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
@@ -59,5 +59,4 @@
       </div>
     </div>
   </div>
-  <div class="one wide column"></div>
 </div>

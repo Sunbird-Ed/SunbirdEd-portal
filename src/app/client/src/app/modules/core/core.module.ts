@@ -8,15 +8,15 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService
+  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent, BreadcrumbsComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-import { BreadcrumbsComponent, BreadcrumbsService } from './components';
+
 @NgModule({
   imports: [
     CommonModule,

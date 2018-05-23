@@ -9,7 +9,7 @@ import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-
+import { IEndEventInput } from '@sunbird/telemetry';
 /**
  * This component helps to create and resend announcement
  */
@@ -78,7 +78,11 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
-
+  telemetryIntract: any;
+  // telemetryEnd: any;
+  telemetryStart: any;
+  // public telemetryEnd$: Observable<IEndEventInput>;
+  public telemetryEnd: IEndEventInput;
   /**
    * To show / hide modal
    */
@@ -152,6 +156,36 @@ export class CreateComponent implements OnInit {
     this.createService = createService;
     this.user = user;
     this.config = config;
+    this.telemetryIntract = {
+      context: {
+        env: 'announcement'
+      },
+      object: {
+        id: '',
+        type: 'announcement',
+        ver: '1.0'
+      },
+      edata: {
+        id: 'create-announcement',
+        type: 'CLICK',
+        pageid: 'announcement-create',
+      }
+    };
+    this.telemetryStart = {
+      context: {
+        env: 'announcement'
+      },
+      object: {
+        id: '',
+        type: 'announcement',
+        ver: '1.0'
+      },
+      edata: {
+        type: 'workflow',
+        pageid: 'announcement-create',
+        mode: 'create'
+      }
+    };
   }
 
   /**
@@ -258,8 +292,8 @@ export class CreateComponent implements OnInit {
     const emptyLinkArray = _.filter(data.links, (links) => {
       return links.url === '';
     });
-    if (this.announcementForm.status === 'VALID' && ((data.links.length && emptyLinkArray.length === 0)
-      || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
+    if (data.title.length && data.from.length && data.type.length && ((data.links.length && emptyLinkArray.length === 0)
+      || data.description.length || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
@@ -273,13 +307,13 @@ export class CreateComponent implements OnInit {
     this.announcementDetails.target = this.recipientsList;
     this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
-        (res: ServerResponse) => {
-          this.modalName = 'success';
-        },
-        (err: ServerResponse) => {
-          this.toasterService.error(this.resource.messages.emsg.m0005);
-          this.formErrorFlag = false;
-        }
+      (res: ServerResponse) => {
+        this.modalName = 'success';
+      },
+      (err: ServerResponse) => {
+        this.toasterService.error(this.resource.messages.emsg.m0005);
+        this.formErrorFlag = false;
+      }
       );
   }
 
@@ -289,15 +323,43 @@ export class CreateComponent implements OnInit {
    * Function gets executed when user click close icon of announcement form
    */
   redirectToOutbox(): void {
-    this.route.navigate(['announcement/outbox/1']);
+  this.route.navigate(['announcement/outbox/1']);
   }
-
+  telemetryEndTest(): void {
+    const endEvent = {
+      object: {
+        id: this.identifier,
+        type: 'announcement',
+        ver: '1.0'
+      },
+      context: {
+        env: 'announcement'
+      },
+      edata: {
+        type: 'workflow',
+        mode: 'edit',
+        pageid: 'announcement-outbox',
+        contentId: this.identifier
+      }
+    };
+    this.telemetryEnd = endEvent;
+    this.telemetryEnd = Object.assign({}, this.telemetryEnd);
+    console.log(this.telemetryEnd);
+  }
   /**
    * Function used to detect form input value changes.
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges.subscribe(val => {
+    this.announcementForm.valueChanges
+    .map((value) => {
+        value.title = value.title.trim();
+        value.from = value.from.trim();
+        value.description = value.description.trim();
+        return value;
+    })
+    .filter((value) => this.announcementForm.valid)
+    .subscribe((value) => {
       this.enableSelectRecipientsBtn();
     });
   }

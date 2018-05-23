@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
@@ -27,9 +27,10 @@ export class UserProfileComponent implements OnInit {
 	 * Contains page number of outbox list
 	 */
   pageNumber = 1;
-  descriptionReadMore = false;
+  descriptionReadMore = true;
   skillViewMore = true;
   skillLimit = 4;
+  defaultLimit = 4;
   loggedInUserId: string;
   disableEndorsementButton = false;
 
@@ -74,6 +75,8 @@ export class UserProfileComponent implements OnInit {
    * To pass dynamic breadcrumb data.
    */
   public breadcrumbsService: BreadcrumbsService;
+  router: Router;
+
   /**
    * To call API
    */
@@ -110,7 +113,8 @@ export class UserProfileComponent implements OnInit {
     breadcrumbsService: BreadcrumbsService,
     learnerService: LearnerService,
     configService: ConfigService,
-    userService: UserService) {
+    userService: UserService,
+    router: Router) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
@@ -118,6 +122,7 @@ export class UserProfileComponent implements OnInit {
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.breadcrumbsService = breadcrumbsService;
+    // this.router.onSameUrlNavigation = 'reload';
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
@@ -128,28 +133,20 @@ export class UserProfileComponent implements OnInit {
 	 */
   populateUserProfile() {
     this.showLoader = true;
-    if (this.userSearchService.userDetailsObject === undefined) {
-      const option = { userId: this.userId };
-      this.userSearchService.getUserById(option).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.userDetails = apiResponse.result.response;
-          this.formatEndorsementList();
-          this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-          this.populateBadgeDescription();
-          this.showLoader = false;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.showLoader = false;
-        }
-      );
-    } else {
-      this.userDetails = this.userSearchService.userDetailsObject;
-      this.formatEndorsementList();
-      this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-      this.populateBadgeDescription();
-      this.showLoader = false;
-    }
+    const option = { userId: this.userId };
+    this.userSearchService.getUserById(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.userDetails = apiResponse.result.response;
+        this.formatEndorsementList();
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
+        this.populateBadgeDescription();
+        this.showLoader = false;
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.showLoader = false;
+      }
+    );
   }
 
   /**
@@ -231,8 +228,8 @@ export class UserProfileComponent implements OnInit {
     if (lim === true) {
       this.skillViewMore = false;
     } else {
-      this.skillViewMore = true;
       this.skillLimit = 4;
+      this.skillViewMore = true;
     }
   }
 
