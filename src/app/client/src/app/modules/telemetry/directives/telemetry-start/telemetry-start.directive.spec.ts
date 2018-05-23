@@ -2,7 +2,6 @@ import { TelemetryStartDirective } from './telemetry-start.directive';
 import { IStartEventInput } from '../../interfaces';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
-import {  ElementRef } from '@angular/core';
 import {eventData} from './telemetry-start.directive.spec.data';
 describe('TelemetryStartDirective', () => {
   beforeEach(() => {
