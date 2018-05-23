@@ -9,7 +9,7 @@ import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
     component: ViewOrgTypeComponent,
-    data: { roles: 'orgType', breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Organization Type', url: '' }] },
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Organization Type', url: '' }] },
     children: [
       { path: 'create', component: CreateOrgTypeComponent },
       { path: 'update/:orgId', component: CreateOrgTypeComponent },
