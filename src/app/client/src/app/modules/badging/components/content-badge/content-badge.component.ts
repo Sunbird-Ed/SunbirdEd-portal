@@ -29,20 +29,21 @@ export class ContentBadgeComponent implements OnInit {
     public activatedRoute: ActivatedRoute, public contentBadgeService: ContentBadgeService) { }
 
   ngOnInit() {
-    this.getBadgeDetails();
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+          this.userRoles = user.userProfile.userRoles;
+          this.getBadgeDetails();
+        }
+      });
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.collectionId;
     });
   }
 
   public getBadgeDetails() {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-          this.userRoles = user.userProfile.userRoles;
-        }
-      });
+
     const req = {
       request: {
         filters: {
@@ -54,13 +55,13 @@ export class ContentBadgeComponent implements OnInit {
       }
     };
     this.badgeService.getAllBadgeList(req).subscribe((response) => {
-      if (response && response.responseCode === 'OK') {
         this.allBadgeList = _.differenceBy(response.result.badges, this.data, 'badgeId');
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0078);
-      }
     }, (err) => {
-      this.toasterService.error(err.error.params.errmsg);
+      if (err && err.error && err.error.params) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0080);
+      }
     });
   }
   public setBadge(Badge) {

@@ -27,6 +27,8 @@ export class ContentPlayerComponent implements OnInit {
    * content id
    */
   contentId: string;
+
+  contentStatus: string;
   /**
    * contains player configuration
    */
@@ -71,9 +73,9 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
+      this.contentStatus = params.contentStatus;
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {
@@ -86,13 +88,18 @@ export class ContentPlayerComponent implements OnInit {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.playerService.getContent(this.contentId).subscribe(
+    const option: any = {};
+    if (this.contentStatus && this.contentStatus === 'Unlisted') {
+      option.params = {mode: 'edit'};
+    }
+    this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
           const contentDetails = {
             contentId: this.contentId,
             contentData: response.result.content
           };
+
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
           this.showPlayer = true;
@@ -120,7 +127,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.router.navigate(['/resources']);
+    this.navigationHelperService.navigateToResource();
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -109,10 +109,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.orgIds = userdata.userProfile.organisationIds;
+        this.getUserList();
         this.initializeFormFields();
       }
     });
-    this.getUserList();
     this.activatedRoute.parent.params.subscribe(params => {
       this.courseId = params.courseId;
       this.getCourseData();
@@ -147,10 +147,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       'endDate': this.createBatchUserForm.value.endDate,
       'createdBy': this.userId,
       'createdFor': this.orgIds,
-      'mentors': this.createBatchUserForm.value.mentors
+      'mentors': this.createBatchUserForm.value.mentors ? this.createBatchUserForm.value.mentors : []
     };
     this.courseBatchService.createBatch(requestBody).subscribe((response) => {
-      if (this.createBatchUserForm.value.users && this.createBatchUserForm.value.users.length > 0) {
+      if (this.createBatchUserForm.value.users && this.createBatchUserForm.value.users.length &&
+        this.createBatchUserForm.value.users.length > 0) {
         this.addUserToBatch(response.result.batchId);
       } else {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
@@ -204,8 +205,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       enrollmentType: new FormControl('invite-only', [Validators.required]),
       startDate: new FormControl(new Date(), [Validators.required]),
       endDate: new FormControl(new Date()),
-      mentors: new FormControl(''),
-      users: new FormControl(''),
+      mentors: new FormControl(),
+      users: new FormControl(),
     });
     this.showCreateModal = true;
     this.createBatchUserForm.valueChanges.subscribe(val => {
@@ -240,6 +241,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
     });
   }
   formatUserList(res) {
+    // this.userList = [];
+    // this.mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
         if (userData.identifier !== this.userService.userid) {
