@@ -22,7 +22,7 @@ export class TelemetryStartDirective implements OnInit {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor(private elRef: ElementRef, telemetryService: TelemetryService) {
+  constructor( telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
@@ -31,7 +31,7 @@ export class TelemetryStartDirective implements OnInit {
     }
   }
   interact() {
-    console.log('call TelemetryInteract method ');
+    console.log('call TelemetryStart method ');
     this.telemetryService.start(this.appTelemetryStart);
   }
 }

@@ -22,7 +22,7 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor(private elRef: ElementRef, telemetryService: TelemetryService) {
+  constructor( telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
