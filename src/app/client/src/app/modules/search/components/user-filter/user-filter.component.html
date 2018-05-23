@@ -12,7 +12,7 @@
             <div content>
               <div class="twelve wide column content margin-bottom-15">
                 <span *ngFor="let value of label">
-                        <span class="padded chip" *ngIf='queryParams[value] && queryParams[value].length > 0'>
+                        <span class="padded chip padding-right-5" *ngIf='queryParams[value] && queryParams[value].length > 0'>
                           {{value}}:
                           <a class="ui label margin-top--5" *ngFor="let item of queryParams[value] ">
                             {{item}}
