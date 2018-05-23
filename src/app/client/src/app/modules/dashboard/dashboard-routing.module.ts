@@ -7,7 +7,7 @@ const routes: Routes = [
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Profile', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {

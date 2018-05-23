@@ -18,6 +18,7 @@ const routes: Routes = [
     path: 'resources/play/collection/:collectionId/:collectionStatus', component: CollectionPlayerComponent,
   }, {
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }] },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
