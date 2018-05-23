@@ -8,6 +8,6 @@ import { TelemetryInteractDirective,  TelemetryStartDirective, TelemetryEndDirec
   ],
   declarations: [TelemetryInteractDirective, TelemetryStartDirective, TelemetryEndDirective],
   providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }],
-  exports: [TelemetryInteractDirective, TelemetryStartDirective, TelemetryInteractDirective]
+  exports: [TelemetryInteractDirective, TelemetryStartDirective, TelemetryEndDirective]
 })
 export class TelemetryModule { }

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnChanges  } from '@angular/core';
 import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -20,22 +20,21 @@ export class TelemetryEndDirective implements OnInit, OnChanges {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor(private elRef: ElementRef, telemetryService: TelemetryService) {
+  constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
-  ngOnInit() {
+  ngOnChanges() {
+    console.log(this.appTelemetryEnd);
     if (this.appTelemetryEnd) {
-      this.telemetryEnd();
+       this.telemetryEnd();
     }
+  }
+  ngOnInit() {
+    console.log(this.appTelemetryEnd);
   }
   telemetryEnd() {
-    console.log('call TelemetryEnd method ');
+    console.log('call TelemetryEnd method ', this.appTelemetryEnd);
     this.telemetryService.end(this.appTelemetryEnd);
-  }
-
-  ngOnChanges() {
-    if (this.appTelemetryEnd) {
-    }
   }
 
 }
