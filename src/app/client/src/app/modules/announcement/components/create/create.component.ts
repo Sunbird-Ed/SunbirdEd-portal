@@ -292,8 +292,8 @@ export class CreateComponent implements OnInit {
     const emptyLinkArray = _.filter(data.links, (links) => {
       return links.url === '';
     });
-    if (this.announcementForm.status === 'VALID' && ((data.links.length && emptyLinkArray.length === 0)
-      || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
+    if (data.title.length && data.from.length && data.type.length && ((data.links.length && emptyLinkArray.length === 0)
+      || data.description.length || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
@@ -351,7 +351,15 @@ export class CreateComponent implements OnInit {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges.subscribe(val => {
+    this.announcementForm.valueChanges
+    .map((value) => {
+        value.title = value.title.trim();
+        value.from = value.from.trim();
+        value.description = value.description.trim();
+        return value;
+    })
+    .filter((value) => this.announcementForm.valid)
+    .subscribe((value) => {
       this.enableSelectRecipientsBtn();
     });
   }

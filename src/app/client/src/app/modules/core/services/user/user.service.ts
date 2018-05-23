@@ -269,6 +269,9 @@ export class UserService {
         roleOrgMap[role].push(org.organisationId);
       });
     });
+    _.forEach(this._userProfile.roles, (value, index) => {
+      roleOrgMap[value] = _.union(roleOrgMap[value], [this.rootOrgId]);
+    });
     this._userProfile.roleOrgMap = roleOrgMap;
   }
   get RoleOrgMap() {

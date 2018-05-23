@@ -31,8 +31,8 @@ describe('BreadcrumbsService', () => {
   }));
 
   it('should emit the data passed from a component', inject([BreadcrumbsService], (service: BreadcrumbsService) => {
-    spyOn(service.dynamicBreadcrumbs, 'emit').and.returnValue({ label: 'Home', url: '/home' });
-    service.setBreadcrumbs({ label: 'Home', url: '/home' });
-    expect(service.dynamicBreadcrumbs.emit).toHaveBeenCalledWith({ label: 'Home', url: '/home' });
+    spyOn(service.dynamicBreadcrumbs, 'emit').and.returnValue([{ label: 'Home', url: '/home' }]);
+    service.setBreadcrumbs([{ label: 'Home', url: '/home' }]);
+    expect(service.dynamicBreadcrumbs.emit).toHaveBeenCalledWith([{ label: 'Home', url: '/home' }]);
   }));
 });
