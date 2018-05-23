@@ -239,7 +239,7 @@ export class NoteListComponent implements OnInit {
     });
     this.activatedRoute.url.subscribe(url => {
       if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/', this.courseId, this.batchId]);
+        this.route.navigate(['/learn/course/', this.courseId, 'batch', this.batchId]);
       } else {
         this.route.navigate(['/resources/play/content/', this.contentId]);
       }
