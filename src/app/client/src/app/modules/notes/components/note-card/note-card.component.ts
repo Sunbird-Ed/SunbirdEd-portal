@@ -209,7 +209,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
     });
     this.activatedRoute.parent.url.subscribe(url => {
       if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/note/', this.ids.courseId, this.batchId]);
+        this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'note-list']);
       } else {
         this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
       }
