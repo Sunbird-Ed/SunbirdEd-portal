@@ -9,7 +9,7 @@ describe('TelemetryErrorDirective', () => {
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
     });
   });
-  fit('should create an instance', () => {
+  it('should create an instance', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryErrorDirective(telemetryService);
     expect(directive).toBeTruthy();
