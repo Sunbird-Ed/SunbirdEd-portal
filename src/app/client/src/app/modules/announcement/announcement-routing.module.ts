@@ -5,7 +5,8 @@ import {
   InboxComponent, CreateComponent
 } from './components';
 import { AuthGuard } from './../core/guard/auth-gard.service';
-
+const telemetryEnv = 'announcement';
+const objectType = 'announcement';
 const routes: Routes = [
   {
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
@@ -25,11 +26,13 @@ const routes: Routes = [
   },
   {
     path: 'announcement/create/:stepNumber', component: CreateComponent,
-    canActivate: [AuthGuard], data: { roles : 'announcement'}
+    canActivate: [AuthGuard], data: { telemetry: {env: telemetryEnv, pageid: 'announcement-create',
+    type: 'workflow',  mode: 'create', object: {  type: objectType, ver: '1.0' }}, roles : 'announcement'}
   },
   {
     path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent,
-    canActivate: [AuthGuard], data: { roles : 'announcement'}
+    canActivate: [AuthGuard], data: { telemetry: {env: telemetryEnv, pageid: 'announcement-resend',
+    type: 'workflow',  mode: 'resend', object: {  type: objectType, ver: '1.0' }}, roles : 'announcement'}
   }
 ];
 
