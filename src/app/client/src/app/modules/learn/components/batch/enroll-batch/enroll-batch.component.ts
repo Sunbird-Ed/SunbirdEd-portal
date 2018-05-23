@@ -16,6 +16,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   batchDetails: any;
   showEnrollDetails = false;
   readMore = false;
+  disableSubmitBtn: boolean;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
   public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
   public configService: ConfigService, public coursesService: CoursesService) { }
@@ -66,16 +67,18 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       }
     };
     this.courseBatchService.enrollToCourse(request).subscribe((data) => {
+      this.disableSubmitBtn = true;
       this.fetchEnrolledCourseData();
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.emsg.m0001);
     });
+    this.disableSubmitBtn = false;
   }
   fetchEnrolledCourseData() {
     setTimeout(() => {
       this.coursesService.getEnrolledCourses().subscribe(() => {
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
-        this.router.navigate(['/learn/course', this.batchDetails.courseId,  this.batchDetails.identifier]);
+        this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
       }, (err) => {
         this.router.navigate(['/learn']);
       });
