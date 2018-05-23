@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
+      <!-- <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <ng-template let-mentor #optionTemplate>
           <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
@@ -73,9 +73,23 @@
           <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
           </sui-select-option>
         </sui-multi-select>
+      </div> -->
+      <div class="one field " *ngIf="createBatchUserForm.value.enrollmentType !== 'open'">
+          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+          <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
+              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+              <input id="mentorSelList">
+              <i class="dropdown icon"></i>
+              <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+              <div class="menu">
+                  <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
+                      <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
+                  </div>
+              </div>
+          </div>
       </div>
 
-      <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
+      <!-- <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <ng-template let-user #useroptionTemplate>
           <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -85,6 +99,20 @@
           <sui-select-option *ngFor="let user of userselect.filteredOptions " [value]="user">
           </sui-select-option>
         </sui-multi-select>
+      </div> -->
+      <div class="one field " *ngIf="createBatchUserForm.value.enrollmentType !== 'open'">
+          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+          <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users"
+              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+              <input id="userSelList">
+              <i class="dropdown icon"></i>
+              <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+              <div class="menu">
+                  <div class="item" *ngFor="let user of userList" [attr.data-value]="user.id">
+                      <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
+                  </div>
+              </div>
+          </div>
       </div>
 
     </form>
