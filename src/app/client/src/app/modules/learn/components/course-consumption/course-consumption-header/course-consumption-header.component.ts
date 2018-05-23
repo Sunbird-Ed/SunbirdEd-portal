@@ -89,7 +89,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
     });
   }
 }
