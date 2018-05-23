@@ -32,7 +32,8 @@
                   <img [src]="user.avatar || './assets/images/user_logo.png'">
                 </div>
                 <div class="content ">
-                  <a class="header " [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  <a class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  <span class="header" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</span>
 
                   <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                     <!-- update user roles -->
