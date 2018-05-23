@@ -3,7 +3,8 @@
     <div *ngIf="!createForm" class="header">{{resourceService?.frmelmnts?.lbl?.updateorgtype}}</div>
     <div class="content">
         <div class="ui fluid icon input">
-            <input class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
+            <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
+            <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
         </div>
     </div>
     <div class="actions">
