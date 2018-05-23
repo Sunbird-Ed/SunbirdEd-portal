@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -15,15 +15,19 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
    * to show loader while copying content
    */
   showCopyLoader = false;
+  onPageLoadResume = true;
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
+  batchId: any;
   permission = ['COURSE_MENTOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
+  progress: number;
+  courseStatus: string;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
-    public toasterService: ToasterService, public copyContentService: CopyContentService,
+    public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService) {
 
     }
@@ -31,31 +35,46 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.activatedRoute.firstChild.params.subscribe((param) => {
       this.courseId = param.courseId;
+      this.batchId = param.batchId;
+      this.courseStatus = param.courseStatus;
+      this.progress = this.courseHierarchy.progress;
+      if (this.batchId) {
+        this.enrolledCourse = true;
+      }
     });
+  }
+  ngOnchanges() {
+
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {
-      this.courseHierarchy.progress = courseProgressData.progress ?  Math.round(courseProgressData.progress) :
-       this.courseHierarchy.progress;
+      this.enrolledCourse = true;
+      this.progress = courseProgressData.progress ?  Math.round(courseProgressData.progress) :
+       this.progress;
+       this.changeDetectorRef.detectChanges();
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
       this.showResumeCourse = false;
+      if (this.onPageLoadResume) {
+        this.onPageLoadResume = false;
+        this.resumeCourse();
+      }
     });
   }
+
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
+
   resumeCourse() {
-    this.navigateToContent(this.lastPlayedContentId);
-  }
-  flagCourse() {
-    this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});
-  }
-  private navigateToContent( id: string ): void {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': id },
+      queryParams: { 'contentId': this.lastPlayedContentId },
       relativeTo: this.activatedRoute
     };
     this.router.navigate([], navigationExtras);
+  }
+
+  flagCourse() {
+    this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});
   }
   /**
    * This method calls the copy API service
@@ -70,7 +89,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
     });
   }
 }
