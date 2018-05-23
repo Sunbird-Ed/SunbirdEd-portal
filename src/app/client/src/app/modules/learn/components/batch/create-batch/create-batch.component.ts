@@ -159,7 +159,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService.getUserList(requestBody).subscribe((res) => {
       const list = this.formatUserList(res);
       if (type) {
-        console.log(this[type]);
         if (type === 'userList') {
           this.userList = list.userList;
         } else {
