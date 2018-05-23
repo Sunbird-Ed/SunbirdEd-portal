@@ -59,6 +59,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
+  public collectionData: object;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
     fileIcon: 'fa fa-file-o fa-lg',
@@ -178,10 +179,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const option: any = {};
     if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     return this.playerService.getCollectionHierarchy(collectionId, option)
       .map((response) => {
+        this.collectionData = response.result.content;
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
