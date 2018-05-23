@@ -1,15 +1,17 @@
 <div class="ui link cards margin-right-20 margin-top-15">
   <div class="link card workspace-card mouse-pointer">
-    <div class="image imageInCardsResponsive" (click)="onAction(batch)">
-      <div class="ui top right attached black label" >Batch of {{batch.label}} </div>
+    <div class="image" (click)="onAction(batch)">
       <div class="ui fluid image">
+          <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
         <img src="{{'/assets/images/default.png'}}">
       </div>
-      <div class="cardImageText center aligned sliderCardHeading text-cencapitalize">
-        {{batch.name}}
+      <div class="batch-content" suiPopup popupText="{{batch.name}}">
+        <span class="batch-content-description">{{batch.name | slice:0:20}}
+            <i class="ellipsis horizontal icon" *ngIf="batch.name && batch.name.length >= 20" ></i>
+        </span>
       </div>
     </div>
-    <div *ngIf="batch.userName" class="sliderCards content sliderCardSubDesc">
+    <div *ngIf="batch.userName" class="content batch-content-meta">
       By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
       <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
       </i>

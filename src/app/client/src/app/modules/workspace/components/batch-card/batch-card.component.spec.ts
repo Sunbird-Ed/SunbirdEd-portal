@@ -70,7 +70,7 @@ describe('BatchCardComponent', () => {
   it('should take Batch INPUT', () => {
     component.batch = Response.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div .text-cencapitalize').innerText).toEqual('FSDF');
+    expect(fixture.nativeElement.querySelector('div .batch-content-description').innerText).toEqual('FSDF');
   });
   it('should set batchDetails', inject([Router],
     (route) => {
