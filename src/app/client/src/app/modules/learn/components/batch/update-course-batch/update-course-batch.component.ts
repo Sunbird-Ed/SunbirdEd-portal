@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,7 +12,7 @@ import * as _ from 'lodash';
   templateUrl: './update-course-batch.component.html',
   styleUrls: ['./update-course-batch.component.css']
 })
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('updateBatchModal') updateBatchModal;
   /**
@@ -20,11 +20,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   */
   batchId: string;
   showUpdateModal = false;
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   courseId: string;
   orgIds: Array<string>;
   selectedUsers: any = [];
   selectedMentors: any = [];
+  userSearchTime: any;
   /**
   * courseCreatedBy
   */
@@ -109,9 +110,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.orgIds = userdata.userProfile.organisationIds;
+        this.getUserList();
       }
     });
-    this.getUserList();
     Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       (params, parentParams) => { return { ...params, ...parentParams };
     }).subscribe((params) => {
@@ -120,6 +121,93 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
         this.getCourseData();
         this.getBatchDetails();
     });
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      $('#users').dropdown({
+        forceSelection: false,
+        fullTextSearch: true,
+        onAdd: () =>  {
+        }
+      });
+      $('#mentors').dropdown({
+        fullTextSearch: true,
+        forceSelection: false,
+        onAdd: () =>  {
+        }
+      });
+      $('#users input.search').on('keyup', (e) =>  {
+        this.getUserListWithQuery($('#users input.search').val(), 'userList');
+      });
+      $('#mentors input.search').on('keyup', (e) => {
+        this.getUserListWithQuery($('#mentors input.search').val(), 'mentorList');
+      });
+    }, 1000);
+  }
+  getUserListWithQuery(query, type) {
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
+  }
+  /**
+  *  api call to get user list
+  */
+  getUserList(query: string = '', type?) {
+    const requestBody = {
+      filters: {},
+      query: query
+    };
+    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
+      const list = this.formatUserList(res);
+      if (type) {
+        if (type === 'userList') {
+          this.userList = list.userList;
+        } else {
+          this.mentorList = list.mentorList;
+        }
+        this[type] = list[type];
+      } else {
+        this.userList = list.userList;
+        this.mentorList = list.mentorList;
+      }
+
+    },
+    (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
+    });
+  }
+  formatUserList(res) {
+    const userList = [];
+    const mentorList = [];
+    if (res.result.response.content && res.result.response.content.length > 0) {
+      _.forEach(res.result.response.content, (userData) => {
+        if (userData.identifier !== this.userService.userid) {
+          const user = {
+            id: userData.identifier,
+            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+            avatar: userData.avatar,
+            otherDetail: this.getUserOtherDetail(userData)
+          };
+          _.forEach(userData.organisations, (userOrgData) => {
+            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+              mentorList.push(user);
+            }
+          });
+          userList.push(user);
+        }
+      });
+    }
+    return {
+      userList: _.uniqBy(userList, 'id'),
+      mentorList: _.uniqBy(mentorList, 'id')
+    };
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
@@ -154,9 +242,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       mentors: new FormControl(),
       users: new FormControl()
     });
-    this.batchUpdateForm.valueChanges.subscribe(val => {
-      this.enableButton();
-    });
+    // this.batchUpdateForm.valueChanges.subscribe(val => {
+    //   this.enableButton();
+    // });
   }
 
   fetchParticipantsMentorsDetails() {
@@ -209,6 +297,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   }
 
   updateBatch() {
+    const users = $('#users').dropdown('get value').split(',');
+    const mentors = $('#mentors').dropdown('get value').split(',');
     const requestBody = {
       'id': this.batchId,
       'name': this.batchUpdateForm.value.name,
@@ -217,18 +307,18 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       'startDate': this.batchUpdateForm.value.startDate,
       'endDate': this.batchUpdateForm.value.endDate || '',
       'createdFor': this.orgIds,
-      'mentors': this.batchUpdateForm.value.mentors ? this.batchUpdateForm.value.mentors : []
+      'mentors': _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
       _.forEach(this.selectedMentors, (value) => {
         selected.push(value.id);
       });
-      requestBody['mentors'] = _.concat(_.compact(this.batchUpdateForm.value.mentors), selected);
+      requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     }
     this.courseBatchService.updateBatch(requestBody).subscribe((response) => {
-      if (this.batchUpdateForm.value.users && this.batchUpdateForm.value.users.length > 0) {
-        this.updateUserToBatch(this.batchId);
+      if (users && users.length > 0) {
+        this.updateUserToBatch(this.batchId, users);
       } else {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
@@ -242,9 +332,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       }
     });
   }
-  updateUserToBatch(batchId) {
+  updateUserToBatch(batchId, users) {
     const userRequest = {
-      userIds: this.batchUpdateForm.value.users
+      userIds: _.compact(users)
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
@@ -279,50 +369,50 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
   /**
   *  api call to get user list
   */
-  getUserList() {
-    const requestBody = {
-      filters: {}
-    };
-    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
-      const users = this.formatUserList(res);
-      this.userList = users.userList;
-      this.mentorList = users.mentorList;
-    },
-    (err) => {
-      if (err.params && err.errorparams.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      }
-      this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-    });
-  }
-  formatUserList(res) {
-    const userList = [];
-    const mentorList = [];
-    if (res.result.response.content && res.result.response.content.length > 0) {
-      _.forEach(res.result.response.content, (userData) => {
-        if (userData.identifier !== this.userService.userid) {
-          const user = {
-            id: userData.identifier,
-            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
-            avatar: userData.avatar,
-            otherDetail: this.getUserOtherDetail(userData)
-          };
-          _.forEach(userData.organisations, (userOrgData) => {
-            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-              mentorList.push(user);
-            }
-          });
-          userList.push(user);
-        }
-      });
-      return {
-        userList : _.uniqBy(userList, 'id'),
-        mentorList : _.uniqBy(mentorList, 'id')
-      };
-    }
-  }
+  // getUserList() {
+  //   const requestBody = {
+  //     filters: {}
+  //   };
+  //   this.courseBatchService.getUserList(requestBody).subscribe((res) => {
+  //     const users = this.formatUserList(res);
+  //     this.userList = users.userList;
+  //     this.mentorList = users.mentorList;
+  //   },
+  //   (err) => {
+  //     if (err.params && err.errorparams.errmsg) {
+  //       this.toasterService.error(err.error.params.errmsg);
+  //     } else {
+  //       this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+  //     }
+  //     this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+  //   });
+  // }
+  // formatUserList(res) {
+  //   const userList = [];
+  //   const mentorList = [];
+  //   if (res.result.response.content && res.result.response.content.length > 0) {
+  //     _.forEach(res.result.response.content, (userData) => {
+  //       if (userData.identifier !== this.userService.userid) {
+  //         const user = {
+  //           id: userData.identifier,
+  //           name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+  //           avatar: userData.avatar,
+  //           otherDetail: this.getUserOtherDetail(userData)
+  //         };
+  //         _.forEach(userData.organisations, (userOrgData) => {
+  //           if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+  //             mentorList.push(user);
+  //           }
+  //         });
+  //         userList.push(user);
+  //       }
+  //     });
+  //     return {
+  //       userList : _.uniqBy(userList, 'id'),
+  //       mentorList : _.uniqBy(mentorList, 'id')
+  //     };
+  //   }
+  // }
   getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';

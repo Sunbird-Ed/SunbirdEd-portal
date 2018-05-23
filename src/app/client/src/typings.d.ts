@@ -19,6 +19,7 @@ declare const EkTelemetry: any;
 interface JQuery {
   treePicker(options?: any);
   iziModal(options?: any);
+  dropdown(options?: any);
 }
 
 // TreeModel helps to manipulate and traverse through the tree model.

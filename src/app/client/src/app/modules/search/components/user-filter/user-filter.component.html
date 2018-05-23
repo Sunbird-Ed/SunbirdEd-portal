@@ -4,7 +4,7 @@
     <div class="ui grid">
       <div class="tweleve wide column">
         <sui-accordion [closeOthers]="false">
-          <sui-accordion-panel>
+          <sui-accordion-panel [isOpen]="isAccordianOpen">
             <div title>
               <i alt="Filter" class="icon filter"></i> {{resourceService.frmelmnts?.lbl?.filters}}
               <i class="dropdown icon"></i>
