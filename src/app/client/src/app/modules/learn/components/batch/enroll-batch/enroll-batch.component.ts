@@ -16,9 +16,10 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   batchDetails: any;
   showEnrollDetails = false;
   readMore = false;
+  disableSubmitBtn = false;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
-  public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
-  public configService: ConfigService, public coursesService: CoursesService) { }
+    public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
+    public configService: ConfigService, public coursesService: CoursesService) { }
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.batchId = params.batchId;
@@ -37,11 +38,11 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
     }
   }
   redirect() {
-    this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
   fetchParticipantsDetails() {
     if (!_.isUndefined(this.batchDetails.participant)) {
-      const request =  {
+      const request = {
         filters: {
           identifier: _.keys(this.batchDetails.participant)
         }
@@ -66,10 +67,13 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       }
     };
     this.courseBatchService.enrollToCourse(request).subscribe((data) => {
+      this.disableSubmitBtn = true;
       this.fetchEnrolledCourseData();
     }, (err) => {
+      this.disableSubmitBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);
     });
+    this.disableSubmitBtn = false;
   }
   fetchEnrolledCourseData() {
     setTimeout(() => {
