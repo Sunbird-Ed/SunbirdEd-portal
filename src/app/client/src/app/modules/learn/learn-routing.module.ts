@@ -1,3 +1,4 @@
+import { NoteListComponent } from '@sunbird/notes';
 import { LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
   EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent } from './components';
 import { NgModule } from '@angular/core';
@@ -14,6 +15,9 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] }
   },
   {
+    path: 'learn/course/note/:courseId/:batchId', component: NoteListComponent
+  },
+  {
     path: 'learn/course', component: CourseConsumptionPageComponent,
     children: [
       {
@@ -26,8 +30,10 @@ const routes: Routes = [
       {
         path: ':courseId/dashboard', component: CourseProgressComponent
       },
-      { path: ':courseId/:batchId', component: CoursePlayerComponent,
+      { path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
         children: [{path: 'flag', component: FlagContentComponent}]
+      },
+      { path: ':courseId/:courseStatus', component: CoursePlayerComponent,
       }
     ]
   }

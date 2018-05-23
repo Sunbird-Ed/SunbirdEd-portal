@@ -52,7 +52,6 @@ export class CourseConsumptionPageComponent implements OnInit {
     this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
         if (enrolledCourses && !enrolledCourses.err) {
           if (this.batchId) {
-            this.showLoader = false;
             const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, (value, index) => {
               if (this.batchId === value.batchId) {
                 return value;
@@ -65,6 +64,7 @@ export class CourseConsumptionPageComponent implements OnInit {
               this.enrolledCourse = false;
               this.router.navigate([`/learn/course/${this.courseId}`]);
             }
+            this.showLoader = false;
           } else {
             this.showLoader = false;
             this.enrolledCourse = false;

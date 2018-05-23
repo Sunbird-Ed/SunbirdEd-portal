@@ -1,7 +1,7 @@
 <div class="ui link cards margin-right-20 margin-top-15">
   <div class="card">
     <div class="top attached indicating active " *ngIf="content.leafNodesCount && content.progress > 0">
-      <sui-progress class="top attached active" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
+      <sui-progress class="top attached active orange" [value]="content.progress" [maximum]="content.leafNodesCount"></sui-progress>
     </div>
     <div class="ui image "  (click)="onAction(content,'openContent')">
       <a class="ui blue left ribbon label " *ngIf="content.badgeAssertions && content.badgeAssertions.length>0 && content.badgeAssertions[0].badgeClassName">
