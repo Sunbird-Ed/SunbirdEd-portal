@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
@@ -75,6 +75,8 @@ export class UserProfileComponent implements OnInit {
    * To pass dynamic breadcrumb data.
    */
   public breadcrumbsService: BreadcrumbsService;
+  router: Router;
+
   /**
    * To call API
    */
@@ -111,7 +113,8 @@ export class UserProfileComponent implements OnInit {
     breadcrumbsService: BreadcrumbsService,
     learnerService: LearnerService,
     configService: ConfigService,
-    userService: UserService) {
+    userService: UserService,
+    router: Router) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
@@ -119,6 +122,7 @@ export class UserProfileComponent implements OnInit {
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.breadcrumbsService = breadcrumbsService;
+    // this.router.onSameUrlNavigation = 'reload';
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
@@ -134,7 +138,7 @@ export class UserProfileComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.userDetails = apiResponse.result.response;
         this.formatEndorsementList();
-        this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
         this.populateBadgeDescription();
         this.showLoader = false;
       },

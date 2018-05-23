@@ -4,13 +4,18 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
-import { ResourceService, ToasterService, ContentData } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
   styleUrls: ['./course-consumption-header.component.css']
 })
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
+  sharelinkModal: boolean;
+  /**
+   * contains link that can be shared
+   */
+  shareLink: string;
   /**
    * to show loader while copying content
    */
@@ -28,9 +33,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
-    private courseProgressService: CourseProgressService) {
+    private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService) {
 
-    }
+  }
 
   ngOnInit() {
     this.activatedRoute.firstChild.params.subscribe((param) => {
@@ -49,9 +54,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {
       this.enrolledCourse = true;
-      this.progress = courseProgressData.progress ?  Math.round(courseProgressData.progress) :
-       this.progress;
-       this.changeDetectorRef.detectChanges();
+      this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) :
+        this.progress;
+      this.changeDetectorRef.detectChanges();
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
       this.showResumeCourse = false;
       if (this.onPageLoadResume) {
@@ -74,7 +79,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   }
 
   flagCourse() {
-    this.router.navigate(['flag'], {relativeTo: this.activatedRoute.firstChild});
+    this.router.navigate(['flag'], { relativeTo: this.activatedRoute.firstChild });
   }
   /**
    * This method calls the copy API service
@@ -90,6 +95,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       (err) => {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
-    });
+      });
+  }
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.courseId, this.courseHierarchy.mimeType);
   }
 }

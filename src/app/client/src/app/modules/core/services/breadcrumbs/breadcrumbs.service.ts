@@ -1,4 +1,4 @@
-import { IBreadcrumb } from './interfaces/breadcrumbs';
+import { IBreadcrumb } from '../../interfaces';
 import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class BreadcrumbsService {
    * The data passed should be of the following format,
    * {label: 'Breadcrumb Label', url: '/redirectUrl'}
    */
-  public setBreadcrumbs(data: IBreadcrumb) {
+  public setBreadcrumbs(data: IBreadcrumb[]) {
     this.dynamicBreadcrumbs.emit(data);
   }
 

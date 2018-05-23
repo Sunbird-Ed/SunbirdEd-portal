@@ -74,6 +74,13 @@
     </div>
     <div class="one wide column"></div>
   </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <app-collection-player-metadata *ngIf=!showPlayer [metaData]="collectionData"></app-collection-player-metadata>
+    </div>
+    <div class="one wide column"></div>
+  </div>
 </div>
 <app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
