@@ -21,7 +21,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   userSearchTime: any;
   batchId: string;
   showCreateModal = false;
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   courseId: string;
   orgIds: Array<string>;
   /**
