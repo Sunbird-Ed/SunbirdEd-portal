@@ -75,7 +75,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.coursesService.getEnrolledCourses().subscribe(() => {
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
-        this.router.navigate(['/learn/course', this.batchDetails.courseId,  this.batchDetails.identifier]);
+        this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
       }, (err) => {
         this.router.navigate(['/learn']);
       });
