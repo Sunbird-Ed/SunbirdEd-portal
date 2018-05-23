@@ -361,6 +361,7 @@
         "email": "email",
         "userName": "userName",
         "password": "password",
+        "externalId": "externalId",
         "provider": "provider",
         "phoneVerified": "phoneVerified",
         "emailVerified": "emailVerified",
