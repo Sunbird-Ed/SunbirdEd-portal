@@ -166,7 +166,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this[type] = list[type];
       } else {
-        console.log('in else');
         this.userList = list.userList;
         this.mentorList = list.mentorList;
       }

@@ -80,7 +80,15 @@ export class BatchDetailsComponent implements OnInit {
   getEnrolledCourseBatchDetails() {
     this.batchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data.result.response;
-      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? this.enrolledBatchInfo.participant : [];
+      if (this.enrolledBatchInfo.participant) {
+        const participant = [];
+        _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+          participant.push(key);
+        });
+        this.enrolledBatchInfo.participant = participant;
+      } else {
+        this.enrolledBatchInfo.participant = [];
+      }
     }, () => {
       // handle error
     });
