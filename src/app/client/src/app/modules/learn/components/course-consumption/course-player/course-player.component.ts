@@ -135,8 +135,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
-      this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId },
-       { label: this.contentTitle, url: '' }]);
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
