@@ -63,7 +63,7 @@
           </div>
         </div>
   
-        <div class="one field">
+        <div *ngIf="batchUpdateForm.value.enrollmentType !== 'open'" class="one field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
           <ng-template let-mentor #optionTemplate>
             <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
