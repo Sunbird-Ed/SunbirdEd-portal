@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
+import { Directive, Input, OnInit, OnChanges } from '@angular/core';
 import { IInteractEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -22,7 +22,7 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor(private elRef: ElementRef, telemetryService: TelemetryService) {
+  constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
@@ -37,5 +37,3 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
     this.telemetryService.interact(this.appTelemetryInteract);
   }
 }
-
-

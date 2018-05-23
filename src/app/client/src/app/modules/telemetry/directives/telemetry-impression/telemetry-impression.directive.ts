@@ -1,18 +1,18 @@
-import { Directive, ElementRef, Input, OnInit , OnChanges } from '@angular/core';
-import { IStartEventInput } from '../../interfaces';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { IImpressionEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
 /**
  * TelemetryInteract Directive
  */
 @Directive({
-  selector: '[appTelemetryStart]'
+  selector: '[appTelemetryImpression]'
 })
-export class TelemetryStartDirective implements OnInit, OnChanges {
+export class TelemetryImpressionDirective implements OnInit {
   /**
    * Interact event input
   */
-  @Input('appTelemetryStart') appTelemetryStart: IStartEventInput;
+  @Input('appTelemetryImpression') appTelemetryImpression: IImpressionEventInput;
   /**
    * reference of permissionService service.
   */
@@ -26,16 +26,12 @@ export class TelemetryStartDirective implements OnInit, OnChanges {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-  }
-  ngOnChanges() {
-   if (this.appTelemetryStart) {
-      this.start();
+    if (this.appTelemetryImpression) {
+      this.impression();
     }
   }
-  start() {
-    console.log('call Telemetrystart method ', this.appTelemetryStart);
-    this.telemetryService.start(this.appTelemetryStart);
+  impression() {
+    console.log('call TelemetryImpression method ');
+    this.telemetryService.impression(this.appTelemetryImpression);
   }
 }
-
-

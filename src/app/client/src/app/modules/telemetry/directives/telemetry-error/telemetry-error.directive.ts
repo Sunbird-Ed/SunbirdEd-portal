@@ -1,18 +1,18 @@
-import { Directive, ElementRef, Input, OnInit , OnChanges } from '@angular/core';
-import { IStartEventInput } from '../../interfaces';
+import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
+import { IErrorEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
 /**
  * TelemetryInteract Directive
  */
 @Directive({
-  selector: '[appTelemetryStart]'
+  selector: '[appTelemetryError]'
 })
-export class TelemetryStartDirective implements OnInit, OnChanges {
+export class TelemetryErrorDirective implements OnInit {
   /**
    * Interact event input
   */
-  @Input('appTelemetryStart') appTelemetryStart: IStartEventInput;
+  @Input('appTelemetryError') appTelemetryError: IErrorEventInput;
   /**
    * reference of permissionService service.
   */
@@ -26,16 +26,16 @@ export class TelemetryStartDirective implements OnInit, OnChanges {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-  }
-  ngOnChanges() {
-   if (this.appTelemetryStart) {
-      this.start();
+    if (this.appTelemetryError) {
+      this.error();
     }
   }
-  start() {
-    console.log('call Telemetrystart method ', this.appTelemetryStart);
-    this.telemetryService.start(this.appTelemetryStart);
+  error() {
+    console.log('call TelemetryError method ');
+    this.telemetryService.error(this.appTelemetryError);
   }
-}
+  }
+
+
 
 

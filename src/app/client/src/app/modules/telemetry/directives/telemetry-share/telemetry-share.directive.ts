@@ -1,18 +1,18 @@
-import { Directive, ElementRef, Input, OnInit , OnChanges } from '@angular/core';
-import { IStartEventInput } from '../../interfaces';
+import { Directive, Input, OnInit } from '@angular/core';
+import { IShareEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
 /**
  * TelemetryInteract Directive
  */
 @Directive({
-  selector: '[appTelemetryStart]'
+  selector: '[appTelemetryShare]'
 })
-export class TelemetryStartDirective implements OnInit, OnChanges {
+export class TelemetryShareDirective implements OnInit {
   /**
    * Interact event input
   */
-  @Input('appTelemetryStart') appTelemetryStart: IStartEventInput;
+  @Input('appTelemetryShare') appTelemetryShare: IShareEventInput;
   /**
    * reference of permissionService service.
   */
@@ -26,16 +26,12 @@ export class TelemetryStartDirective implements OnInit, OnChanges {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-  }
-  ngOnChanges() {
-   if (this.appTelemetryStart) {
-      this.start();
+    if (this.appTelemetryShare) {
+      this.share();
     }
   }
-  start() {
-    console.log('call Telemetrystart method ', this.appTelemetryStart);
-    this.telemetryService.start(this.appTelemetryStart);
+  share() {
+    console.log('call TelemetryShare method ');
+    this.telemetryService.share(this.appTelemetryShare);
   }
 }
-
-
