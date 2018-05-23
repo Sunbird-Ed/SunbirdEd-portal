@@ -45,9 +45,9 @@
         </div>
         <div class="one wide column "></div>
     </div>
-</div>
-<div class="ui grid" *ngIf="enrolledCourse">
-    <div class="twelve wide column padding-none ">
+  </div>
+  <div class="ui grid progress-bar-margin" *ngIf="enrolledCourse">
+      <div class="twelve wide column padding-none ">
         <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
     </div>
 </div>

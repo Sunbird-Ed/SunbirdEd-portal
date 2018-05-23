@@ -215,7 +215,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
   }
   onShareLink() {
