@@ -32,9 +32,9 @@
                                     </div>
                                 </div>
                                 <div class="four wide column">
-                                    <div class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" (click)="enrollToCourse()">
+                                    <button [disabled]="disableSubmitBtn" class="ui fluid blue right floated  ui button margin-top-0" id="enrollToCourse" (click)="enrollToCourse()">
                                         <span class="text">{{resourceService.frmelmnts.lbl.enrollcourse}}</span>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                             <div class="ui grid batch-date">
