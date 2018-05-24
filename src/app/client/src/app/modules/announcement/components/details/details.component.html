@@ -1,4 +1,4 @@
-<div class="ui right aligned grid">
+<div class="ui right aligned grid"  [appTelemetryImpression]="telemetryImpression">
   <div class="ui raised segment width-100">
     <div class="ui warning message tweleve wide column" *ngIf="announcementDetails && !announcementDetails.title">
       <div class="header">

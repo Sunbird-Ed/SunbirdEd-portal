@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-
+import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The announcement inbox component displays all
  * the announcement which is received by the logged in user
@@ -38,6 +38,10 @@ export class InboxComponent implements OnInit {
 	 * Current page number of inbox list
 	 */
   pageNumber = 1;
+  /**
+	 * telemetryInteract
+	*/
+  telemetryImpression: IImpressionEventInput;
 
   /**
 	 * Contains returned object of the pagination service
@@ -199,6 +203,22 @@ export class InboxComponent implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+       object: {
+        id: '',
+        type: '',
+        ver: ''
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: '/announcement/inbox' + this.pageNumber
+      }
+    };
   }
 }
 

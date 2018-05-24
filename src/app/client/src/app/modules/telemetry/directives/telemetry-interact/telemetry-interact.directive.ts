@@ -29,11 +29,8 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
   }
   ngOnChanges() {
     if (this.appTelemetryInteract) {
-      this.interact();
-    }
-  }
-  interact() {
     console.log('call TelemetryInteract method ');
     this.telemetryService.interact(this.appTelemetryInteract);
+    }
   }
 }
