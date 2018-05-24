@@ -3,7 +3,7 @@ import { CourseConsumptionPageComponent } from './course-consumption-page.compon
 import {SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {CourseConsumptionService, CourseProgressService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -16,8 +16,12 @@ describe('CourseConsumptionPageComponent', () => {
     'params': Observable.from([{ pageNumber: '1' }]),
   'queryParams':  Observable.from([{ subject: ['English'] }])
   };
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
+  class MockRouter {
+    public navigationEnd = new NavigationEnd(1, '/learn', '/learn');
+    public events = new Observable(observer => {
+      observer.next(this.navigationEnd);
+      observer.complete();
+    });
   }
 
   beforeEach(async(() => {
@@ -25,7 +29,7 @@ describe('CourseConsumptionPageComponent', () => {
       imports: [HttpClientTestingModule, SharedModule, CoreModule, Ng2IziToastModule],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        CourseConsumptionService,  { provide: Router, useClass: RouterStub },
+        CourseConsumptionService,  { provide: Router, useClass: MockRouter },
         CourseProgressService],
       schemas: [NO_ERRORS_SCHEMA]
     })
