@@ -232,8 +232,8 @@ export class InboxComponent implements OnInit {
       },
        object: {
         id: '',
-        type: '',
-        ver: ''
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

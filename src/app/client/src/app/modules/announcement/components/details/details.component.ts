@@ -54,9 +54,9 @@ export class DetailsComponent {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
       object: {
-        id: '',
-        type: '',
-        ver: ''
+        id: this.activatedRoute.snapshot.params.announcementId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

@@ -39,7 +39,7 @@ const routes: Routes = [
     path: 'announcement/create/:stepNumber', component: CreateComponent,
     canActivate: [AuthGuard], data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'announcement-create',
+        env: telemetryEnv, pageid: 'announcement-create', uri: '/announcement/create/',
         type: 'workflow', mode: 'create', object: { type: objectType, ver: '1.0' }
       }, roles: 'announcement'
     }
@@ -48,7 +48,7 @@ const routes: Routes = [
     path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent,
     canActivate: [AuthGuard], data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'announcement-resend',
+        env: telemetryEnv, pageid: 'announcement-resend', uri: '/announcement/create/',
         type: 'workflow', mode: 'resend', object: { type: objectType, ver: '1.0' }
       }, roles: 'announcement'
     }
