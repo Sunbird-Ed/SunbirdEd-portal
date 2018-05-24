@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryInteract]'
 })
-export class TelemetryInteractDirective implements OnInit, OnChanges {
+export class TelemetryInteractDirective implements OnChanges {
   /**
    * Interact event input
   */
@@ -24,8 +24,6 @@ export class TelemetryInteractDirective implements OnInit, OnChanges {
   */
   constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
-  }
-  ngOnInit() {
   }
   ngOnChanges() {
     if (this.appTelemetryInteract) {

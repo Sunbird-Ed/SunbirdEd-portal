@@ -21,8 +21,8 @@ describe('TelemetryStartDirective', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryInteractDirective(telemetryService);
     spyOn(telemetryService, 'interact').and.callFake(() => Observable.of(eventData.inputData));
-    directive.ngOnChanges();
     directive.appTelemetryInteract = eventData.inputData;
+    directive.ngOnChanges();
     expect(directive.appTelemetryInteract).toBeDefined();
     expect(directive.appTelemetryInteract).toBe(eventData.inputData);
     expect(telemetryService.interact).toHaveBeenCalled();
