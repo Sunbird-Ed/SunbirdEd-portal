@@ -209,6 +209,7 @@ export class CourseConsumptionComponent {
     const response = this.searchService.searchedContentList;
     if (response && response.count) {
       this.myCoursesList = response.content;
+      this.showLoader = false;
     } else {
       // Make search api call
       const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
