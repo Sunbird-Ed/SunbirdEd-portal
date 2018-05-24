@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,7 +14,8 @@ import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../inter
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })
-export class StatusComponent implements OnInit {
+export class StatusComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */
@@ -115,5 +116,8 @@ export class StatusComponent implements OnInit {
  */
   getStatusResult(status) {
     return status;
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }

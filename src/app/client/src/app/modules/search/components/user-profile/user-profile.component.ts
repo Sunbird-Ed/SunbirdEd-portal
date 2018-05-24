@@ -33,7 +33,10 @@ export class UserProfileComponent implements OnInit {
   defaultLimit = 4;
   loggedInUserId: string;
   disableEndorsementButton = false;
-
+  /**
+   * Booloean value to hide/show awards
+   */
+  badgeViewMore = true;
   /**
 	 * Contains announcement details returned from API or object called from
    * announcement service
@@ -90,6 +93,14 @@ export class UserProfileComponent implements OnInit {
   */
   public userService: UserService;
   /**
+   * Contains default limit to show awards
+   */
+  badgeDefaultLimit: number;
+  /**
+   * Used to store limit to show/hide awards
+   */
+  badgeLimit: number;
+  /**
   * Constructor to create injected service(s) object
   *
   * Default method of DeleteComponent class
@@ -125,6 +136,8 @@ export class UserProfileComponent implements OnInit {
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
+    this.badgeDefaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+    this.badgeLimit = this.badgeDefaultLimit;
   }
 
   /**
@@ -243,5 +256,17 @@ export class UserProfileComponent implements OnInit {
         this.queryParams = this.activatedRoute.snapshot.queryParams;
       }
     });
+  }
+  /**
+   * This method is used to show/hide ViewMore based on the limit
+   */
+  badgeToggle(viewMore) {
+    if (viewMore === true) {
+      this.badgeLimit = this.userDetails.badgeArray.length;
+      this.badgeViewMore = false;
+    } else {
+      this.badgeViewMore = true;
+      this.badgeLimit = this.defaultLimit;
+    }
   }
 }
