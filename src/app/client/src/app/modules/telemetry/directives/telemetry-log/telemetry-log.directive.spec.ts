@@ -15,7 +15,7 @@ describe('TelemetryLogDirective', () => {
     const directive = new TelemetryLogDirective(telemetryService);
     expect(directive).toBeTruthy();
   });
-  fit('should take input', () => {
+  it('should take input', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryLogDirective(telemetryService);
     spyOn(telemetryService, 'log').and.callFake(() => Observable.of(eventData.inputData));
