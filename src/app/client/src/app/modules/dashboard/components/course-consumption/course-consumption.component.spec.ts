@@ -166,4 +166,13 @@ describe('CourseConsumptionComponent', () => {
     fixture.detectChanges();
     expect(component.showGraph).toEqual(1);
   });
+
+  it('should call getMyContent when content length is 1', inject([SearchService, Router],
+  (searchService, route) => {
+    searchService._searchedContentList = testData.searchSuccess.result;
+    component.myCoursesList = testData.searchSuccess.result.content;
+    component.getMyContent();
+    expect(route.navigate).toHaveBeenCalledWith(['dashboard/course/consumption', component.identifier, '7d']);
+    expect(component.showLoader).toEqual(false);
+  }));
 });

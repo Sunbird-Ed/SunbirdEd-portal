@@ -1,3 +1,4 @@
+import { response } from './../../../profile/components/user-experience/edit-experience/edit-experience.component.spec.data';
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -131,9 +132,9 @@ describe('OrganisationComponent', () => {
     const selectedOrgId = 'do_2124319530479697921602';
     component.datasetType = creationDataset;
     component.identifier = 'do_21243195304796979216021'; // Previously selected org
-    const response = component.onAfterOrgChange(selectedOrgId, 'Org 1');
+    const serResponse = component.onAfterOrgChange(selectedOrgId, 'Org 1');
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.identifier === selectedOrgId).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, 'creation', selectedOrgId, '7d']);
   }));
@@ -144,9 +145,9 @@ describe('OrganisationComponent', () => {
     // Selected org.
     const selectedOrgId = 'do_2124319530479697921602';
     // If both org are same then it should not load data again
-    const response = component.onAfterOrgChange('do_2124319530479697921602', 'Test 1');
+    const serResponse = component.onAfterOrgChange('do_2124319530479697921602', 'Test 1');
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.identifier === selectedOrgId).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
@@ -156,9 +157,9 @@ describe('OrganisationComponent', () => {
     component.identifier = 'do_1234';
     component.timePeriod = '7d'; // Previous timePeriod
     const selectedTimePeriod = '14'; // Selected timePeriod
-    const response = component.onAfterFilterChange(selectedTimePeriod);
+    const serResponse = component.onAfterFilterChange(selectedTimePeriod);
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.timePeriod === selectedTimePeriod).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, selectedTimePeriod]);
   }));
@@ -166,18 +167,18 @@ describe('OrganisationComponent', () => {
   it('should display selected timePeriod data', inject([Router], (router) => {
     component.timePeriod = '7d'; // Previous timePeriod
     const selectedTimePeriod = '7d'; // Selected timePeriod
-    const response = component.onAfterFilterChange(selectedTimePeriod);
+    const serResponse = component.onAfterFilterChange(selectedTimePeriod);
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.timePeriod === selectedTimePeriod).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
 
   it('should not change dataset type', inject([Router], (router) => {
     component.datasetType = consumptionDataset;
-    const response = component.onAfterDatasetChange(consumptionDataset);
+    const serResponse = component.onAfterDatasetChange(consumptionDataset);
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.datasetType === consumptionDataset).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
@@ -185,9 +186,9 @@ describe('OrganisationComponent', () => {
   it('should not change dataset type', inject([Router], (router) => {
     component.datasetType = consumptionDataset;
     component.identifier = 'do_123';
-    const response = component.onAfterDatasetChange(creationDataset);
+    const serResponse = component.onAfterDatasetChange(creationDataset);
     fixture.detectChanges();
-    expect(response).toBeFalsy();
+    expect(serResponse).toBeFalsy();
     expect(component.datasetType === creationDataset).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, creationDataset, component.identifier, '7d']);
   }));
@@ -218,5 +219,18 @@ describe('OrganisationComponent', () => {
     component.downloadReport();
     fixture.detectChanges();
     expect(component.disabledClass).toEqual(false);
+  }));
+
+  it('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
+  (router, searchService, userService) => {
+    userService._userProfile = {'organisationIds': ['01229679766115942443']};
+    searchService._searchedOrganisationList = testData.orgDetailsSuccess.result.response;
+    component.datasetType = creationDataset;
+    component.timePeriod = '7d';
+    component.myOrganizations = testData.orgDetailsSuccess.result.response.content;
+    component.identifier = component.myOrganizations[0];
+    component.getMyOrganisations();
+    expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, '7d']);
+    expect(component.showLoader).toBe(false);
   }));
 });
