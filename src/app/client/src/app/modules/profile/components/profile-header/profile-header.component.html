@@ -31,7 +31,7 @@
                                 <div class="meta">
                                     <div class="ui label" *ngIf="userProfile.userName">Username: {{userProfile.userName}}
                                     </div>
-                                    <a class="ui link label" *ngIf="userProfile.rootOrg && userProfile.rootOrg.orgName && userProfile.rootOrg.contactDetail.length > 0" href="mailto:{{user.rootOrg.contactDetail[0].email}}"
+                                    <a class="ui link label" *ngIf="userProfile.rootOrg && userProfile.rootOrg.orgName && userProfile.rootOrg.contactDetail.length > 0" href="mailto:{{userProfile.rootOrg.contactDetail[0].email}}"
                                         title="Contact Admin">{{userProfile.rootOrg.orgName}}
                                         <i class="mail outline icon"></i>
                                         <!-- && user.rootOrg.contactDetail[0].email -->
