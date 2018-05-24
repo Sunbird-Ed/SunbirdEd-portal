@@ -8,7 +8,7 @@
                         <div class="two wide column padding-top-none">
                             <div class="userAvtarWrap field link ui small circular image header-image-profile">
                                 <img class="ui small circular image header-image-profile" src="{{userProfile.avatar || '/assets/images/user_logo.png'}}"
-                                    (click)="user.openImageBrowser();">
+                                    >
                                 <div class="img-description-layer ui small circular image header-image-profile">
                                     <label>
                                         <a id="file" class="cursor-pointer" (click)="imageInput.click()">
@@ -31,7 +31,7 @@
                                 <div class="meta">
                                     <div class="ui label" *ngIf="userProfile.userName">Username: {{userProfile.userName}}
                                     </div>
-                                    <a class="ui link label" *ngIf="userProfile.rootOrg && userProfile.rootOrg.orgName && userProfile.rootOrg.contactDetail.length > 0" href="mailto:{{userProfile.rootOrg.contactDetail[0].email}}"
+                                    <a class="ui link label" *ngIf="userProfile.rootOrg && userProfile.rootOrg.orgName && userProfile.rootOrg.contactDetail && userProfile.rootOrg.contactDetail.length > 0" href="mailto:{{userProfile.rootOrg.contactDetail[0].email}}"
                                         title="Contact Admin">{{userProfile.rootOrg.orgName}}
                                         <i class="mail outline icon"></i>
                                         <!-- && user.rootOrg.contactDetail[0].email -->
