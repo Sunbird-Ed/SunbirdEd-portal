@@ -84,4 +84,9 @@ describe('StatusComponent', () => {
     component.getStatusResult('success');
     fixture.detectChanges();
   });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
+  });
 });

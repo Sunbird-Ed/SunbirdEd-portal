@@ -123,4 +123,9 @@ describe('UserUploadComponent', () => {
     spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(mockRes.errorResponse));
     component.uploadUsersCSV(mockRes.errorfile);
   });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
+  });
 });
