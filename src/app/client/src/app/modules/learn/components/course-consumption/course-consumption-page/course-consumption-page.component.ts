@@ -22,17 +22,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   eventSubscription: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, private toasterService: ToasterService,
-    private resourceService: ResourceService, private router: Router, public breadcrumbsService: BreadcrumbsService) {
-    this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-        if (this.courseHierarchy) {
-          this.breadcrumbsService.setBreadcrumbs([{
-            label: this.courseHierarchy.name,
-            url: '/learn/course/' + this.courseId
-          }]);
-        }
-      });
-  }
+    private resourceService: ResourceService, private router: Router, public breadcrumbsService: BreadcrumbsService) { }
 
   ngOnInit() {
     this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.children[0].params,
@@ -42,6 +32,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
         this.getCourseHierarchy(params.courseId);
+      });
+
+      this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
+      .subscribe(event => {
+        if (this.courseHierarchy) {
+          this.breadcrumbsService.setBreadcrumbs([{label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId
+          }]);
+        }
       });
   }
   private getCourseHierarchy(courseId: string) {
