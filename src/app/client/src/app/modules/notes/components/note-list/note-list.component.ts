@@ -138,6 +138,7 @@ export class NoteListComponent implements OnInit {
     this.modalService = modalService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    // this.route.onSameUrlNavigation = 'reload';
   }
   /**
    * To initialize notesList and showDelete.
@@ -236,7 +237,10 @@ export class NoteListComponent implements OnInit {
    */
   public redirect() {
     if (this.batchId) {
-      this.route.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+      const navigationExtras = {
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
     } else {
       this.route.navigate(['/resources/play/content/', this.contentId]);
     }

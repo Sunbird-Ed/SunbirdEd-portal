@@ -36,7 +36,7 @@ const routes: Routes = [
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
       {
-        path: ':courseId/batch/:batchId/note-list', component: NoteListComponent,
+        path: ':courseId/batch/:batchId/notes', component: NoteListComponent,
         data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
