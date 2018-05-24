@@ -65,7 +65,7 @@ export class BadgesService {
           for (const detailedAssertion of detailedAssertions) {
             const badgeFound: any = _.find(badgeSearchResponse.result.badges, { 'badgeId': detailedAssertion.badgeId });
             if (badgeFound) {
-                detailedAssertion.description = badgeFound.description;
+              detailedAssertion.description = badgeFound.description;
             }
             observer.next(detailedAssertion);
           }

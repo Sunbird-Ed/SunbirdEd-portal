@@ -3,10 +3,8 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CoreModule } from '@sunbird/core';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import { SharedModule} from '@sunbird/shared';
+import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as mockData from './workspace.sidebar.component.spec.data';
-const testData = mockData.mockRes;
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
@@ -14,7 +12,7 @@ describe('WorkspacesidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
-      providers: [ Ng2IzitoastService],
+      providers: [ Ng2IzitoastService, ConfigService],
       imports: [RouterTestingModule, HttpClientTestingModule, CoreModule]
     })
     .compileComponents();
@@ -26,14 +24,16 @@ describe('WorkspacesidebarComponent', () => {
   });
 
   it('should set the role for content  ', () => {
-    component.draftRole = testData.workSpaceRole.draftRole;
-    component.inreviewRole = testData.workSpaceRole.inreviewRole;
-    component.publishedRole = testData.workSpaceRole.publishedRole;
-    component.alluploadsRole = testData.workSpaceRole.alluploadsRole;
-    component.upForReviewRole = testData.workSpaceRole.upForReviewRole;
-    component.flaggedRole = testData.workSpaceRole.flaggedRole;
-    component.limitedPublishingRole = testData.workSpaceRole.limitedPublishingRole;
-    component.coursebacthesRole = testData.workSpaceRole.coursebacthesRole;
+   const configService = TestBed.get(ConfigService);
+    component.draftRole = configService.rolesConfig.workSpaceRole.draftRole;
+    component.inreviewRole = configService.rolesConfig.workSpaceRole.inreviewRole;
+    component.publishedRole = configService.rolesConfig.workSpaceRole.publishedRole;
+    component.alluploadsRole = configService.rolesConfig.workSpaceRole.alluploadsRole;
+    component.upForReviewRole = configService.rolesConfig.workSpaceRole.upForReviewRole;
+    component.flaggedRole = configService.rolesConfig.workSpaceRole.flaggedRole;
+    component.limitedPublishingRole = configService.rolesConfig.workSpaceRole.limitedPublishingRole;
+    component.coursebacthesRole = configService.rolesConfig.workSpaceRole.coursebacthesRole;
+    component.createRole =  configService.rolesConfig.workSpaceRole.createRole;
     component.ngOnInit();
     expect(component.draftRole).toBeDefined();
     expect(component.inreviewRole).toBeDefined();
@@ -42,6 +42,7 @@ describe('WorkspacesidebarComponent', () => {
     expect(component.upForReviewRole).toBeDefined();
     expect(component.flaggedRole).toBeDefined();
     expect(component.coursebacthesRole).toBeDefined();
+     expect(component.createRole).toBeDefined();
     fixture.detectChanges();
   });
 });

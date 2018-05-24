@@ -187,10 +187,10 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
-        if (profileData.rootOrgId) {
-          organisationIds.push(profileData.rootOrgId);
-        }
       });
+    }
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
     }
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
@@ -268,6 +268,9 @@ export class UserService {
         if (_.indexOf(org.roles, role) > -1) { }
         roleOrgMap[role].push(org.organisationId);
       });
+    });
+    _.forEach(this._userProfile.roles, (value, index) => {
+      roleOrgMap[value] = _.union(roleOrgMap[value], [this.rootOrgId]);
     });
     this._userProfile.roleOrgMap = roleOrgMap;
   }

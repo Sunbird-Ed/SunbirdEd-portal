@@ -6,5 +6,7 @@ export * from './page-section/page-section.component';
 export * from './player/player.component';
 export * from './collection-tree/collection-tree.component';
 export * from './fancy-tree/fancy-tree.component';
+export * from './share-link/share-link.component';
 export * from './player/player.component';
 export * from './card/card.component';
+export * from './collection-player-metadata/collection-player-metadata.component';

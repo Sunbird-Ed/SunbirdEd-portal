@@ -151,41 +151,39 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
    * This method calls the create API.
   */
   public createNote() {
-    if (this.ids.courseId) {
-      if (this.ids.contentId) {
-        const requestData = {
-          request: {
-            note: this.noteData.note,
-            userId: this.userService.userid,
-            title: this.noteData.title,
-            courseId: this.ids.courseId,
-            contentId: this.ids.contentId,
-            createdBy: this.userService.userid,
-            updatedBy: this.userService.userid
-          }
-        };
-        this.noteService.create(requestData).subscribe(
-          (apiResponse: ServerResponse) => {
-            this.showLoader = false;
-            const returnObj = {
-              note: requestData.request.note,
-              userId: requestData.request.userId,
-              title: requestData.request.title,
-              courseId: requestData.request.courseId,
-              contentId: requestData.request.contentId,
-              createdBy: requestData.request.createdBy,
-              updatedBy: requestData.request.updatedBy,
-              createdDate: new Date().toISOString(),
-              updatedDate: new Date().toISOString()
-            };
-            this.createEventEmitter.emit(returnObj);
-          },
-          (err) => {
-            this.showLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-          }
-        );
-      }
+    if (this.ids.contentId || this.ids.courseId) {
+      const requestData = {
+        request: {
+          note: this.noteData.note,
+          userId: this.userService.userid,
+          title: this.noteData.title,
+          courseId: this.ids.courseId,
+          contentId: this.ids.contentId,
+          createdBy: this.userService.userid,
+          updatedBy: this.userService.userid
+        }
+      };
+      this.noteService.create(requestData).subscribe(
+        (apiResponse: ServerResponse) => {
+          this.showLoader = false;
+          const returnObj = {
+            note: requestData.request.note,
+            userId: requestData.request.userId,
+            title: requestData.request.title,
+            courseId: requestData.request.courseId,
+            contentId: requestData.request.contentId,
+            createdBy: requestData.request.createdBy,
+            updatedBy: requestData.request.updatedBy,
+            createdDate: new Date().toISOString(),
+            updatedDate: new Date().toISOString()
+          };
+          this.createEventEmitter.emit(returnObj);
+        },
+        (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0030);
+        }
+      );
     }
   }
 

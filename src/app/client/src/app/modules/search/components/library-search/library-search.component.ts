@@ -1,6 +1,6 @@
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, IContents
+  ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
@@ -37,7 +37,7 @@ export class LibrarySearchComponent implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
    */
-  searchList: Array<IContents> = [];
+  searchList: Array<ICard> = [];
   /**
    * To navigate to other pages
    */
@@ -113,7 +113,7 @@ export class LibrarySearchComponent implements OnInit {
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService, public utilService: UtilService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -139,12 +139,16 @@ export class LibrarySearchComponent implements OnInit {
     };
     this.searchService.contentSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.content) {
           this.showLoader = false;
           this.noResult = false;
           this.searchList = apiResponse.result.content;
           this.totalCount = apiResponse.result.count;
           this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
+          const constantData = this.config.appConfig.LibrarySearch.constantData;
+        const metaData = this.config.appConfig.LibrarySearch.metaData;
+        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
+        this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -204,6 +208,7 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
+        this.filters = {};
         if (_.isEmpty(this.queryParams)) {
           this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
@@ -215,10 +220,13 @@ export class LibrarySearchComponent implements OnInit {
             }
           });
         }
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+                  this.queryParams.sortType = this.queryParams.sortType.toString();
+                }
         this.populateContentSearch();
       });
   }
   playContent(event) {
-    this.playerService.playContent(event.content);
+    this.playerService.playContent(event.data.metaData);
   }
 }

@@ -17,7 +17,7 @@
           <div class="ui grid">
             <div class="two wide column padding-top-none">
               <div class="userAvtarWrap field link ui small circular image header-image-profile">
-                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || './assets/common/images/user_logo.png'">
+                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || './assets/images/user_logo.png'">
               </div>
             </div>
             <div class="ten wide column profile-header-text padding-top-none">
@@ -49,16 +49,16 @@
       <!--Profile summary-->
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
         <div class="margin-top-20 ui raised segment">
-          <div class="header announcementCard-header">
-            <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
+          <div class="header">
+            <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
           </div>
-          <div class="description">
-            <div *ngIf="!descriptionReadMore">
-              <span>{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui cardsKnowMore mouse-pointer" *ngIf="userDetails.profileSummary.length > 120 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
+          <div class="description padding-top-10">
+            <div *ngIf="descriptionReadMore && userDetails.profileSummary.length > 120">
+              <span class="overflow-word-wrap">{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
             </div>
-            <div *ngIf="descriptionReadMore"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
+            <div class="overflow-word-wrap" *ngIf="!descriptionReadMore && userDetails.profileSummary.length > 120"> {{userDetails.profileSummary}}&nbsp;
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
           </div>
           <div class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let address of userDetails.address">
-              <img class="ui avatar image" [src]="'./assets/common/images/location.png'">
+              <img class="ui avatar image" [src]="'./assets/images/location.png'">
               <div class="content">
                 <p class=" header">{{address.addType}}</p>
                 <div class="description"> {{address.addressLine1}}
@@ -95,7 +95,7 @@
           </div>
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let experience of userDetails.jobProfile">
-              <img class="ui avatar image" [src]="'./assets/common/images/businessman.png'">
+              <img class="ui avatar image" [src]="'./assets/images/businessman.png'">
               <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}
@@ -125,7 +125,7 @@
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let education of userDetails.education">
 
-              <img class="ui avatar image" [src]="'./assets/common/images/businessman.png'">
+              <img class="ui avatar image" [src]="'./assets/images/businessman.png'">
               <div class="content">
                 <a class=" header">{{education.degree}}</a>
                 <div class="description"> {{education.yearOfPassing}}
@@ -147,29 +147,30 @@
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list">
-            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit">
+            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit | orderBy:'addedAt':true">
               <div class="ui label">
-                {{skill?.skillName}}
+                {{skill.skillName}}
                 <div class="detail">
                   <span *ngIf="skill.endorsementcount !== 0">|&nbsp;</span>
-                  <span *ngIf="skill.endorsementcount !== 0">{{skill?.endorsementcount}}</span>
+                  <span>{{skill.endorsementcount}}</span>
                 </div>
               </div>
-              <!--<div *ngIf="skill.isEndorsable" class="ui circular labels float-ContentRight ">
-                <a class="ui basic label" (click)="publicProfile.endorsement(skill.skillName)"> +1  </a>
-              </div>-->
+              <div *ngIf="!skill.isEndorsable" class="ui circular labels float-ContentRight ">
+                <a class="ui basic label" (click)="submitEndorsement(skill.skillName)" [ngClass]="{'not-active': disableEndorsementButton }">
+                  +1 </a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="userDetails.skills.length >= skillLimit">
-          <div class="active item addViewMoreBtn">
+        <div class="ui bottom attached tabular menu  expand-or-minimize-btn ng-scope " *ngIf="userDetails.skills.length > defaultLimit">
+          <div class="active item  expand-or-minimize-btn-pad">
             <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewmore}}
                 <i class="chevron down icon"></i>
               </span>
             </a>
-            <a (click)="toggle(false)" *ngIf="skillViewMore ===false">
+            <a (click)="toggle(false)" *ngIf="!skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewless}}
                 <i class="chevron up icon"></i>
@@ -186,7 +187,7 @@
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
           </div>
           <div class="ui items margin-top-10">
-            <div class="item" *ngFor="let badge of userDetails.badgeArray">
+            <div class="item" *ngFor="let badge of userDetails.badgeArray | slice:0:badgeLimit">
               <img class="ui avatar image" [src]="badge.image || badge.badgeClassImage">
               <div class="middle aligned content padding-left-10">
                 <div class="ui huge sub header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
@@ -199,6 +200,22 @@
               </div>
               <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat: 'MMM YYYY'}}</div>
             </div>
+          </div>
+        </div>
+        <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userDetails.badgeArray.length > badgeDefaultLimit">
+          <div class="active item expand-or-minimize-btn-pad">
+            <a (click)="badgeToggle(true)" *ngIf="badgeViewMore">
+              <span class="cursor-pointer">
+                {{resourceService?.frmelmnts?.btn?.viewmore}}
+                <i class="chevron down icon"></i>
+              </span>
+            </a>
+            <a (click)="badgeToggle(false)" *ngIf="!badgeViewMore">
+              <span class="cursor-pointer">
+                {{resourceService?.frmelmnts?.btn?.viewless}}
+                <i class="chevron up icon"></i>
+              </span>
+            </a>
           </div>
         </div>
       </div>

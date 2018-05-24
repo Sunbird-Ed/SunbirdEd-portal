@@ -8,6 +8,7 @@ interface UrlHistory {
 }
 @Injectable()
 export class NavigationHelperService {
+  private _resourceCloseUrl: UrlHistory;
   /**
    * Stores routing history
    */
@@ -32,8 +33,27 @@ export class NavigationHelperService {
       } else {
         history = {url, queryParams};
       }
-      this._history = [...this._history, history];
+      const previousUrl = this._history.pop();
+      if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url )) {
+        this._history.push(history);
+      } else {
+        this._history.push(previousUrl, history);
+      }
     });
+  }
+  storeResourceCloseUrl() {
+    this._resourceCloseUrl = this._history[this._history.length - 1];
+  }
+  public navigateToResource(defaultUrl: string = '/home') {
+    if (this._resourceCloseUrl && this._resourceCloseUrl.url) {
+      if (this._resourceCloseUrl.queryParams) {
+        this.router.navigate([this._resourceCloseUrl.url], {queryParams: this._resourceCloseUrl.queryParams});
+      } else {
+        this.router.navigate([this._resourceCloseUrl.url]);
+      }
+    } else {
+      this.router.navigate([defaultUrl]);
+    }
   }
   /**
    * returns routing history

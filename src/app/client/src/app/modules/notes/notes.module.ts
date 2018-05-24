@@ -25,6 +25,6 @@ import { NoteListComponent, InlineEditorComponent, NoteCardComponent, DeleteNote
   declarations: [TimeAgoPipe, NoteListComponent, InlineEditorComponent,
     NoteCardComponent, PopupEditorComponent, DeleteNoteComponent],
   providers: [NotesService],
-  exports: [NoteListComponent]
+  exports: [NoteListComponent, PopupEditorComponent, NoteCardComponent]
 })
 export class NotesModule { }

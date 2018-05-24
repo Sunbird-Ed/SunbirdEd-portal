@@ -1,5 +1,5 @@
 import { IdDetails } from '@sunbird/notes';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -17,6 +17,9 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
   let fixture: ComponentFixture<NoteCardComponent>;
+  const fakeActivatedRoute = {
+    'params' : Observable.from([{courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'}])
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
@@ -26,7 +29,8 @@ describe('NoteCardComponent', () => {
       imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
-         { provide: Router, useClass: RouterStub } ],
+         { provide: Router, useClass: RouterStub },
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents()
@@ -71,19 +75,35 @@ describe('NoteCardComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  it('Should refresh the values of selectedIndex and selectedNote once a note is created', () => {
-    component.notesList = response.responseSuccess.result.response.note;
-    component.createEventEmitter(response.responseSuccess.result.response.note[0]);
-    expect(component.selectedIndex).toBe(0);
-    expect(component.selectedNote).toBe(component.notesList[0]);
-    expect(component.showCreateEditor).toBeFalsy();
-  });
-
   it('Should refresh the values of selectedIndex and selectedNote once a note is updated', () => {
     component.notesList = response.responseSuccess.result.response.note;
     component.updateEventEmitter(response.responseSuccess.result.response.note[0]);
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(component.notesList[0]);
     expect(component.showUpdateEditor).toBeFalsy();
+  });
+
+  it('Should update notesList value if createNoteData and notesList is available', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.createNoteData = response.testNote;
+    component.ngOnChanges();
+    expect(component.notesList[0]).toBe(response.testNote);
+  });
+
+  it('Should not update notesList value if createNoteData is unavailable and notesList is available', () => {
+    component.notesList = response.responseSuccess.result.response.note;
+    component.ngOnChanges();
+    expect(component.notesList).toBe(response.responseSuccess.result.response.note);
+  });
+
+  it('Should not update notesList value if createNoteData and notesList is unavailable', () => {
+    component.ngOnChanges();
+    expect(component.notesList).toBeUndefined();
+  });
+
+  it('Should not update notesList value if notesList is unavailable and  createNoteData is available', () => {
+    component.createNoteData = response.testNote;
+    component.ngOnChanges();
+    expect(component.notesList[0]).toBe(component.createNoteData);
   });
 });

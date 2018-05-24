@@ -10,7 +10,7 @@
       <div class="videosegment  ui clearing segment">
         <div class="ten wide column">
           <span class="ui HomeAccordianHeading left floated header">
-          {{contentData.name}}
+            {{contentData.name}}
           </span>
         </div>
         <div class="two wide column">
@@ -25,12 +25,14 @@
 
     <div class="row margin-top-10" *ngIf="!showLoader">
       <div class="margin-top--5 videosegment ui clearing segment">
-        <button class="ui right floated primary button mouse-pointer">
-          {{resourceService?.frmelmnts?.btn?.publish}}
-        </button>
-        <button class="ui right floated primary button mouse-pointer">
-          {{resourceService?.frmelmnts?.btn?.requestChanges}}
-        </button>
+        <div *ngIf="permissionService.permissionAvailable && contentData && contentData.status === 'Review' && userId !== contentData.createdBy" appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW']">
+          <button [routerLink]="['publish']" class="ui right floated primary button mouse-pointer">
+            {{resourceService?.frmelmnts?.btn?.publish}}
+          </button>
+          <button [routerLink]="['requestchanges']" class="ui right floated primary button mouse-pointer">
+            {{resourceService?.frmelmnts?.btn?.requestChanges}}
+          </button>
+        </div>
       </div>
     </div>
     <div class="ui grid" *ngIf="!showLoader && contentData">
@@ -49,7 +51,7 @@
               {{errorMessage}}
             </h2>
             <span>
-            <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
+              <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
             </span>
             <span>
               <button class="ui red button" (click)="close()">{{resourceService.frmelmnts.btn.close}}</button>
@@ -60,3 +62,4 @@
     </div>
   </div>
 </div>
+<router-outlet></router-outlet>

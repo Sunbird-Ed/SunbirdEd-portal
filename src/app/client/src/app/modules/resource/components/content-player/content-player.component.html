@@ -20,15 +20,24 @@
                                 </div>
                             </div>
                         </div>
-                        
-                            <div class="row margin-auto padding-top-none">
-                                <div class="twelve wide column">
-                                  <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" 
-                                  [ngModel]="contentData.me_averageRating || 0" [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                  <a [routerLink]="['flag-content']"> <i class="ui large blue flag outline icon" ></i></a>
-                                  <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope" title="Copy content"><i class="ui large blue clone outline icon"></i></span>
-                                </div>
+
+                        <div *ngIf="contentStatus !== 'Unlisted'" class="row margin-auto padding-top-none">
+                            <div class="twelve wide column">
+                                <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
+                                    [maximum]="5"></sui-rating>&nbsp;&nbsp;
+                                <a (click)="onShareLink();sharelinkModal=true;">
+                                    <i class="cursor-pointer large blue share alternate icon"></i>
+                                </a>
+                                <a routerLink="flag">
+                                    <i class="ui large blue flag outline icon"></i>
+                                </a>
+                                <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+                                    (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
+                                    title="Copy content">
+                                    <i class="ui large blue clone outline icon"></i>
+                                </span>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
@@ -38,7 +47,7 @@
                     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
                     <div class="twelve wide column contentMetaSection">
-                        <div class="ui grid margin-top-10">
+                        <div class="ui stackable grid margin-top-10">
                             <div class="row">
                                 <div class="three wide column "></div>
                                 <div class="six wide column center aligned">
@@ -47,7 +56,12 @@
                                             <div class="four wide column "></div>
                                             <div class="four wide column ">
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
-                                                    <!-- <add-note shownoteinlecture="true" contentid="contentData.identifier" visibility="showModalInLectureView"></add-note> -->
+                                                    <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
+                                                            (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                                        <img src="assets/images/takenote.png">
+                                                        <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
+                                                    </a>
                                                 </h2>
                                             </div>
                                         </div>
@@ -60,37 +74,17 @@
                         <div class="twelve wide column ">
                             <div class="ui divider"></div>
                         </div>
-                        <div class="ui grid">
+                        <div class="ui stackable grid">
                             <div class="eight wide column">
-                                <div class="row">
-                                    <div class="twelve wide column" *ngIf="contentData.description">
-                                        <div class="ui raised segment">
-                                            <div class="header announcementCard-header">
-                                                <span class="header cardsHeading ng-binding"> {{resourceService.frmelmnts.lbl.description}} </span>
-                                            </div>
-                                            <div class="description padding-top-5">
-                                                <p>
-                                                    {{contentData.description}}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="twelve wide column margin-top-20">
-                                        <app-discussions></app-discussions>
-                                    </div>
+                                <div class="twelve wide column">
+                                    <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+                                </div>
+                                <div class="twelve wide column margin-top-20">
+                                    <app-discussions></app-discussions>
                                 </div>
                             </div>
-                            <div class="four wide column">
-                                <div class="row">
-                                    <div class="twelve wide column">
-                                        <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
-                                    </div>
-                                    <div class="twelve wide column margin-top-20">
-                                        <div class="row">
-                                            <!-- <note-card shownotecard="true" contentid="contentData.identifier"></note-card> -->
-                                        </div>
-                                    </div>
-                                </div>
+                            <div *ngIf="contentStatus !== 'Unlisted'" class="four wide column">
+                                <app-note-card [ids]="{contentId:contentId}" [createNoteData]="createNoteData"></app-note-card>
                             </div>
                         </div>
                     </div>
@@ -117,4 +111,6 @@
     </div>
     <div class="one wide column"></div>
 </div>
+<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>
 <router-outlet></router-outlet>

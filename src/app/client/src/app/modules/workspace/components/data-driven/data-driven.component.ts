@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
@@ -16,9 +16,9 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
   templateUrl: './data-driven.component.html',
   styleUrls: ['./data-driven.component.css']
 })
-export class DataDrivenComponent implements OnInit {
+export class DataDrivenComponent implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;
-
+  @ViewChild('modal') modal;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -142,7 +142,12 @@ export class DataDrivenComponent implements OnInit {
         }
       });
   }
-  /**
+  ngOnDestroy() {
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
+  }
+/**
 * fetchFrameworkMetaData is gives form config data
 */
   fetchFrameworkMetaData() {

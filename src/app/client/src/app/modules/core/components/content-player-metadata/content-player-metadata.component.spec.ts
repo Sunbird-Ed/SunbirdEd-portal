@@ -1,3 +1,4 @@
+import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,8 +10,8 @@ describe('ContentMetadataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule],
-      declarations: [ContentPlayerMetadataComponent ]
+      imports: [SharedModule, HttpClientTestingModule, CoreModule],
+      declarations: []
     })
     .compileComponents();
   }));
@@ -18,7 +19,6 @@ describe('ContentMetadataComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentPlayerMetadataComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

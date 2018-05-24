@@ -12,6 +12,7 @@ export class CardComponent {
 * content is used to render IContents value on the view
 */
 @Input() data: ICard;
+@Input() customClass: string;
 @Output('clickEvent')
 clickEvent = new EventEmitter<any>();
 

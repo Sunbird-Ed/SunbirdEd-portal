@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="three wide column" *ngIf="announcementlist && announcementlist.announcements.length > 0 && !showLoader">
-      <a class="ui right floated announcementSeeAllLink float-ContentRight" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
+      <a class="ui right floated announcement-list-see-all right-float" [routerLink]="['../announcement/inbox/1']">{{resourceService.frmelmnts?.lbl?.anncmntinboxseeall}}</a>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>

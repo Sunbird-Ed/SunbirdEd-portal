@@ -28,7 +28,7 @@ describe('ResourceComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
+  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
   };
 
   beforeEach(async(() => {
@@ -53,6 +53,8 @@ describe('ResourceComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
     component.populatePageData();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();

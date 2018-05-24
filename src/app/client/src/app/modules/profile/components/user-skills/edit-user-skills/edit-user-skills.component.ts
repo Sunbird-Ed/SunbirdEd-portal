@@ -1,17 +1,18 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, AfterViewInit, ElementRef } from '@angular/core';
 import { ResourceService, IUserProfile, IUserData, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProfileService } from '../../../services';
 import * as _ from 'lodash';
-
+// import * as $ from 'jquery';
+declare var jQuery: any;
 @Component({
   selector: 'app-edit-user-skills',
   templateUrl: './edit-user-skills.component.html',
   styleUrls: ['./edit-user-skills.component.css']
 })
-export class EditUserSkillsComponent implements OnInit {
+export class EditUserSkillsComponent implements OnInit, AfterViewInit {
   /**
    * Reference of User Profile interface
    */
@@ -27,7 +28,7 @@ export class EditUserSkillsComponent implements OnInit {
 
   constructor(public userService: UserService, public resourceService: ResourceService, public router: Router,
     public profileService: ProfileService, public toasterService: ToasterService,
-    public windowScrollService: WindowScrollService) { }
+    public windowScrollService: WindowScrollService, private elementRef: ElementRef) { }
   /**
    * This method invokes profile service to fetch all the skills of respective user
    * Also invokes user service to fetch user profile data
@@ -39,13 +40,10 @@ export class EditUserSkillsComponent implements OnInit {
         this.profileData = data.result;
       }
     });
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
     this.userProfile = this.userService.userProfile;
+  }
+  ngAfterViewInit() {
+    jQuery(this.elementRef.nativeElement).find('sui-multi-select').dropdown({ allowTab: false });
   }
   /**
    * This method is used to add new skills

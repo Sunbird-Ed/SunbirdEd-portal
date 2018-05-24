@@ -35,7 +35,7 @@
         "../node_modules/pagedown-core/Markdown.Converter.js",
         "../node_modules/pagedown-core/Markdown.Editor.js",
         "../node_modules/pagedown-core/Markdown.Sanitizer.js",
-        "assets/common/js/telemetry.min.js",
+        "assets/libs/telemetry.min.js",
         "../node_modules/fine-uploader/fine-uploader/fine-uploader.min.js",
         "assets/libs/semantic.min.js",
         "assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",

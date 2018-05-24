@@ -1,10 +1,12 @@
-import { PageApiService, CoursesService, ICourses, ISort} from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort , PlayerService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService } from '@sunbird/shared';
+import {
+  ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
+  UtilService, INoResultMessage
+} from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -45,6 +47,10 @@ export class LearnPageComponent implements OnInit {
    */
   showLoader = true;
   /**
+   * no result  message
+  */
+  noResultMessage: INoResultMessage;
+  /**
     * To show / hide no result message when no result found
    */
   noResult = false;
@@ -62,6 +68,7 @@ export class LearnPageComponent implements OnInit {
   public filters: any;
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
+  content: any;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -70,8 +77,8 @@ export class LearnPageComponent implements OnInit {
    * @param {CoursesService} courseService  Reference of courseService.
 	 */
   constructor(pageSectionService: PageApiService, coursesService: CoursesService,
-    toasterService: ToasterService, resourceService: ResourceService, router: Router,
-     private activatedRoute: ActivatedRoute, configService: ConfigService) {
+    toasterService: ToasterService, resourceService: ResourceService, router: Router, private playerService: PlayerService,
+    private activatedRoute: ActivatedRoute, configService: ConfigService, public utilService: UtilService) {
     this.pageSectionService = pageSectionService;
     this.coursesService = coursesService;
     this.toasterService = toasterService;
@@ -90,22 +97,17 @@ export class LearnPageComponent implements OnInit {
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
-            const action = {
-              right: {
-                displayType: 'button',
-                classes: 'ui blue basic button',
-                text: 'Resume'
-              },
-              left: { displayType: 'rating' }
-            };
             this.enrolledCourses = data.enrolledCourses;
-            _.forEach(this.enrolledCourses, (value, index) => {
-              this.enrolledCourses[index].action = action;
-            });
+            const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+            const dynamicFields = { 'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
+             'progress': this.configService.appConfig.Course.enrolledCourses.progress };
+            const courses = this.utilService.getDataForCard(data.enrolledCourses,
+              constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
               name: 'My Courses',
-              length: this.enrolledCourses.length,
-              contents: this.enrolledCourses
+              length: courses.length,
+              contents: courses
             });
           }
           this.populatePageData();
@@ -120,19 +122,18 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
-    this.caraouselData = [];
     const option = {
       source: 'web',
       name: 'Course',
       filters: _.pickBy(this.filters, value => value.length > 0),
-      sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
+      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse && apiResponse.result.response.sections.length > 0) {
           this.showLoader = false;
-          this.caraouselData = this.caraouselData.concat(apiResponse.result.response.sections);
-          this.processActionObject();
+         const sections = this.processActionObject(apiResponse.result.response.sections);
+         this.caraouselData = this.caraouselData.concat(sections);
         } else {
           this.noResult = true;
           this.showLoader = false;
@@ -140,6 +141,11 @@ export class LearnPageComponent implements OnInit {
 
       },
       err => {
+        this.noResult = true;
+        this.noResultMessage = {
+          'message': this.resourceService.messages.stmsg.m0007,
+          'messageText': this.resourceService.messages.stmsg.m0006
+        };
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
       }
@@ -148,36 +154,38 @@ export class LearnPageComponent implements OnInit {
   /**
    * This method process the action object.
    */
-  processActionObject() {
-    _.forEach(this.caraouselData, (value, index) => {
-      if (value.name !== 'My Courses') {
-        _.forEach(this.caraouselData[index].contents, (value1, index1) => {
-          delete this.caraouselData[index].contents[index1].contentType;
-          delete this.caraouselData[index].contents[index1].resourceType;
-          if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-            _.forEach(this.enrolledCourses, (value2, index2) => {
-              if (this.caraouselData[index].contents[index1].identifier === this.enrolledCourses[index2].courseId) {
-                const action = {
-                  right: {
-                    displayType: 'button',
-                    classes: 'ui blue basic button',
-                    text: 'Resume'
-                  },
-                  left: { displayType: 'rating' }
-                };
-                this.caraouselData[index].contents[index1].action = action;
-              } else {
-                const action = { left: { displayType: 'rating' } };
-                this.caraouselData[index].contents[index1].action = action;
-              }
-            });
-          } else {
-            const action = { left: { displayType: 'rating' } };
-            this.caraouselData[index].contents[index1].action = action;
-          }
-        });
+  processActionObject(sections) {
+  const enrolledCoursesId = [];
+  _.forEach(this.enrolledCourses, (value, index) => {
+   enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
+  });
+  _.forEach(sections, (value, index) => {
+     _.forEach(sections[index].contents, (value2, index2) => {
+       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+        if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1 ) {
+          const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData =  { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+                   const dynamicFields = {};
+                   const enrolledCourses = _.find(this.enrolledCourses, ['courseId', sections[index].contents[index2].identifier]);
+                   sections[index].contents[index2] = this.utilService.processContent(enrolledCourses,
+                    constantData, dynamicFields, metaData);
+        } else {
+          const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+            const metaData = this.configService.appConfig.Course.otherCourse.metaData;
+                   const dynamicFields = {};
+                   sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+                     constantData, dynamicFields, metaData);
+        }
+       } else {
+        const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+          const metaData = this.configService.appConfig.Course.otherCourse.metaData;
+                 const dynamicFields = {};
+                 sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+                   constantData, dynamicFields, metaData);
       }
-    });
+     });
+  });
+    return sections;
   }
   /**
  *This method calls the populateEnrolledCourse
@@ -186,7 +194,7 @@ export class LearnPageComponent implements OnInit {
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
-  }
+}
 
   /**
    *  to get query parameters
@@ -194,14 +202,14 @@ export class LearnPageComponent implements OnInit {
   getQueryParams() {
     Observable
       .combineLatest(
-        this.activatedRoute.params,
-        this.activatedRoute.queryParams,
-        (params: any, queryParams: any) => {
-          return {
-            params: params,
-            queryParams: queryParams
-          };
-        })
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams,
+      (params: any, queryParams: any) => {
+        return {
+          params: params,
+          queryParams: queryParams
+        };
+      })
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
         this.filters = {};
@@ -210,7 +218,18 @@ export class LearnPageComponent implements OnInit {
             this.filters[key] = value;
           }
         });
-       this.populateEnrolledCourse();
+        this.caraouselData = [];
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+                 this.queryParams.sortType = this.queryParams.sortType.toString();
+              }
+        this.populateEnrolledCourse();
       });
   }
+  playContent(event) {
+       if (event.data.metaData.batchId) {
+          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+          event.data.metaData.contentType = 'Course';
+        }
+        this.playerService.playContent(event.data.metaData);
+      }
 }

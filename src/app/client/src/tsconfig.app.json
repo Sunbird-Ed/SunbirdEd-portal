@@ -52,8 +52,13 @@
       "@sunbird/discussion": [
         "app/modules/discussion"
       ],
+<<<<<<< HEAD
       "@sunbird/telemetry": [
         "app/modules/telemetry"
+=======
+      "@sunbird/badge": [
+        "app/modules/badging"
+>>>>>>> upstream/angular-migration
       ]
     },
     "module": "es2015",

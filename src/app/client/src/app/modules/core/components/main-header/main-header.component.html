@@ -3,7 +3,7 @@
         <div class="one wide column"></div>
         <div class="two wide column">
             <a routerLink="home">
-                <img [class.header-logoBeforeLogin]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}} ">
             </a>
         </div>
@@ -16,7 +16,7 @@
             <i class="float-ContentLeft alarm-icon-header alarm icon large alaramIconColor"></i>
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
              header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
-                <img src="{{ userProfile?.avatar || '/assets/common/images/user_logo.png'}}" class="ui circular image logged-in-user" />
+                <img src="{{ userProfile?.avatar || '/assets/images/user_logo.png'}}" class="ui circular image logged-in-user" />
                 <div class="menu" suiDropdownMenu>
                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                     <div *ngIf='userProfile' class="ui divider"></div>
@@ -24,7 +24,7 @@
                     <a class="item" routerLink="profile">{{resourceService.frmelmnts?.lnk?.profile}}</a>
                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' routerLink="orgDashboard">{{resourceService.frmelmnts?.lnk?.dashboard}}</a>
                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='announcementRole' routerLink="announcement/outbox/1">{{resourceService.frmelmnts?.lnk?.announcement}}</a>
-                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' routerLink="workspace/content">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
+                    <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole' (click)="navigateToWorkspace()">{{resourceService.frmelmnts?.lnk?.workSpace}}</a>
                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole' routerLink="myActivity">{{resourceService.frmelmnts?.lnk?.myactivity}}</a>
                     <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgSetupRole' routerLink="orgType">{{resourceService.frmelmnts?.lbl?.orgtypes}}</a>
                     <a class="item" href="/logoff">{{resourceService.frmelmnts?.lnk?.logout}}</a>
@@ -35,7 +35,7 @@
         <ng-template #showLoginBtn>
             <div class="right floated one wide column tablet computer only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-                    <button class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>

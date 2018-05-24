@@ -171,10 +171,14 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.flaggedContent = data.result.content;
+          // this.flaggedContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           this.showLoader = false;
+          const constantData = this.config.appConfig.WORKSPACE.Flagged.constantData;
+        const metaData = this.config.appConfig.WORKSPACE.Flagged.metaData;
+        const dynamicFields = this.config.appConfig.WORKSPACE.Flagged.dynamicFields;
+        this.flaggedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         } else {
           this.showError = false;
           this.showLoader = false;
@@ -197,7 +201,7 @@ export class FlaggedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    this.workSpaceService.navigateToContent(param.content, this.state);
+    this.workSpaceService.navigateToContent(param.data.metaData, this.state);
   }
 
   /**

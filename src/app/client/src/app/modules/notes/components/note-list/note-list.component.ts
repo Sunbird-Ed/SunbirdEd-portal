@@ -4,7 +4,7 @@ import { UserService, ContentService } from '@sunbird/core';
 import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
 import { InlineEditorComponent } from '../inline-editor/inline-editor.component';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 /**
@@ -65,6 +65,15 @@ export class NoteListComponent implements OnInit {
    */
   userId: string;
   /**
+   * course id details
+   */
+  courseId: string;
+  /**
+   * content id details
+   */
+  contentId: string;
+  batchId: string;
+  /**
    * To display toast message(if any) after each API call.
    */
   private toasterService: ToasterService;
@@ -93,6 +102,10 @@ export class NoteListComponent implements OnInit {
    */
   route: Router;
   /**
+   * Reference of ActivatedRoute.
+   */
+  activatedRoute: ActivatedRoute;
+  /**
    * Reference of Router Navigation Service
    */
   routerNavigationService: RouterNavigationService;
@@ -106,6 +119,7 @@ export class NoteListComponent implements OnInit {
    * @param {SuiModalService} modalService Reference of SuiModalService.
    * @param {NotesService} noteService Reference of NotesService.
    * @param {Router} route Reference of Router.
+   * @param {ActivatedRouter} activatedRoute Reference of ActivatedRouter.
    */
 
   constructor(noteService: NotesService,
@@ -114,7 +128,8 @@ export class NoteListComponent implements OnInit {
     resourceService: ResourceService,
     modalService: SuiModalService,
     toasterService: ToasterService,
-    route: Router) {
+    route: Router,
+    activatedRoute: ActivatedRoute) {
     this.toasterService = toasterService;
     this.userService = userService;
     this.noteService = noteService;
@@ -122,6 +137,8 @@ export class NoteListComponent implements OnInit {
     this.resourceService = resourceService;
     this.modalService = modalService;
     this.route = route;
+    this.activatedRoute = activatedRoute;
+    // this.route.onSameUrlNavigation = 'reload';
   }
   /**
    * To initialize notesList and showDelete.
@@ -132,6 +149,11 @@ export class NoteListComponent implements OnInit {
      * Initializing notesList array
      */
     this.userId = this.userService.userid;
+    this.activatedRoute.params.subscribe(params => {
+      this.contentId = params.contentId;
+      this.courseId = params.courseId;
+      this.batchId = params.batchId;
+    });
     this.getAllNotes();
   }
 
@@ -141,10 +163,10 @@ export class NoteListComponent implements OnInit {
   public getAllNotes() {
     const requestBody = {
       request: {
-        filter: {
-          userid: this.userId,
-          courseid: this.ids.courseId,
-          contentid: this.ids.contentId
+        filters: {
+          userId: this.userId,
+          courseId: this.courseId,
+          contentId: this.contentId
         },
         sort_by: {
           updatedDate: 'desc'
@@ -152,20 +174,18 @@ export class NoteListComponent implements OnInit {
       }
     };
 
-    if (requestBody.request.filter.courseid) {
-      if (requestBody.request.filter.contentid) {
-        this.noteService.search(requestBody).subscribe(
-          (apiResponse: ServerResponse) => {
-            this.showLoader = false;
-            this.notesList = apiResponse.result.response.note;
-            this.selectedNote = this.notesList[0];
-          },
-          (err) => {
-            this.showLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0033);
-          }
-        );
-      }
+    if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
+      this.noteService.search(requestBody).subscribe(
+        (apiResponse: ServerResponse) => {
+          this.showLoader = false;
+          this.notesList = apiResponse.result.response.note;
+          this.selectedNote = this.notesList[0];
+        },
+        (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+        }
+      );
     }
   }
 
@@ -216,6 +236,13 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.route.navigate(['learn']);
+    if (this.batchId) {
+      const navigationExtras = {
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    } else {
+      this.route.navigate(['/resources/play/content/', this.contentId]);
+    }
   }
 }

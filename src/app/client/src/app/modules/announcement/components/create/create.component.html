@@ -3,51 +3,53 @@
   <i class="close icon" (click)="modalName = 'cancel'"></i>
   <div class="ui segment margin-top-10">
     <div class="margin-bottom-15">
-      <div class="ui grid">
+      <div class="ui stackable grid">
         <div class="ten wide column">
-          <span class="ui header">
             <!-- Step 1 -->
-            <span class="ui" *ngIf="stepNumber === 1">
-              <span class="text announcementHeadingSection">{{ identifier ? resource?.frmelmnts?.lbl?.anncmntttlresend : resource?.frmelmnts?.lbl?.createnewanncmnt }}</span>
+            <span *ngIf="stepNumber === 1">
+              <span class="text announcement-heading-section">{{ identifier ? resource?.frmelmnts?.lbl?.anncmntttlresend : resource?.frmelmnts?.lbl?.createnewanncmnt }}</span>
               <br/>
-              <span class="createAnnHeaderDesc">{{ identifier ? resource?.frmelmnts?.lbl?.resendanncmntdesc : resource?.frmelmnts?.lbl?.createnewanncmntdesc}}</span>
-              <span class="createAnnHeaderDesc">{{resource?.frmelmnts?.instn?.t0054}}</span>
+              <br/>
+              <span class="create-ann-header-desc">{{ identifier ? resource?.frmelmnts?.lbl?.resendanncmntdesc : resource?.frmelmnts?.lbl?.createnewanncmntdesc}}</span>
+              <span class="create-ann-header-desc">{{resource?.frmelmnts?.instn?.t0054}}</span>
             </span>
             <!-- Step 2 -->
-            <span class="ui" *ngIf="stepNumber === 2">
-              <span class="text announcementHeadingSection">{{resource?.frmelmnts?.lbl?.selectrecipient}}</span>
+            <span *ngIf="stepNumber === 2">
+              <span class="text announcement-heading-section">{{resource?.frmelmnts?.lbl?.selectrecipient}}</span>
               <br/>
-              <span class="createAnnHeaderDesc">{{ identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.selectrecipientdesc}}</span>
+              <br/>
+              <span class="create-ann-header-desc">{{ identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.selectrecipientdesc}}</span>
             </span>
             <!-- Step 3 -->
             <span *ngIf="stepNumber === 3">
-              <span class="text announcementHeadingSection">{{identifier ? resource?.frmelmnts?.lbl?.selectrecipient: resource?.frmelmnts?.lbl?.confirmrecipient}}</span>
+              <span class="text announcement-heading-section">{{identifier ? resource?.frmelmnts?.lbl?.selectrecipient: resource?.frmelmnts?.lbl?.confirmrecipient}}</span>
               <br/>
-              <span class="createAnnHeaderDesc">{{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}</span>
+              <br/>
+              <span class="create-ann-header-desc">{{identifier ? resource?.frmelmnts?.lbl?.editrecipientdesc : resource?.frmelmnts?.lbl?.confirmrecipientdesc}}</span>
             </span>
             <!-- Step 4 -->
             <span *ngIf="stepNumber === 4">
-              <span class="text announcementHeadingSection">{{resource?.frmelmnts?.lbl?.previewanncmnt}}</span>
+              <span class="text announcement-heading-section">{{resource?.frmelmnts?.lbl?.previewanncmnt}}</span>
               <br/>
-              <span class="createAnnHeaderDesc">{{resource?.frmelmnts?.lbl?.previewanncmntdesc}}</span>
+              <br/>
+              <span class="create-ann-header-desc">{{resource?.frmelmnts?.lbl?.previewanncmntdesc}}</span>
             </span>
-          </span>
         </div>
         <div class="two wide column">
-          <div class="createAnnStepsIndicator">
-            <h6 class="createAnnMargin5 createAnnGrayShade">{{resource?.frmelmnts?.lbl?.anncmntstep}}</h6>
-            <span> {{stepNumber}}</span>
-            <span class="createAnnGrayShade"> / 4</span>
+          <div class="ui label text-align-center ann-step-notifier right-float">
+              <span class="detail margin-left-0">{{resource?.frmelmnts?.lbl?.anncmntstep}}</span>
+              <br/>
+              <span class="detail margin-left-0 margin-top-10">{{stepNumber}} / 4</span>
           </div>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="" [ngStyle]="{'display': (stepNumber === 1 && !showResendLoader) ? 'block' : 'none'}">
-        <div class="ui grid">
+        <div class="ui stackable grid">
           <div class="eight wide column">
             <form class="ui form announcementForm" [formGroup]="announcementForm">
-              <div class="createAnnFormScroller">
+              <div class="create-ann-form-scroller">
                 <div class="padding-right-25">
                   <div class="field required padding-top-5">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttitle}}</label>
@@ -60,7 +62,7 @@
                     </div>
                     <section *ngIf="announcementForm.value.title.length" class="float-ContentRight">{{announcementForm.value.title.length}} / 100</section>
                   </div>
-                  <div class="field required dropdown-margin-left">
+                  <div class="field required">
                     <label>{{resource?.frmelmnts?.lbl?.anncmntfrom}}</label>
                     <div class="field">
                       <input formControlName="from" placeholder="{{resource?.frmelmnts?.lbl?.anncmntfromDesc}}">
@@ -70,7 +72,7 @@
                     </div>
                   </div>
                   <!-- Type -->
-                  <div class="field required dropdown-margin-left">
+                  <div class="field required">
                     <label>{{resource?.frmelmnts?.lbl?.anncmnttype}}</label>
                     <sui-select class="selection" formControlName="type" [placeholder]="'Select announcement type'">
                       <sui-select-option *ngFor="let type of announcementTypes" [value]="type"></sui-select-option>
@@ -80,33 +82,40 @@
                     </div>
                   </div>
                   <!-- Description -->
-                  <div class="field dropdown-margin-left">
+                  <div class="field">
                     <label>{{resource?.frmelmnts?.lbl?.anncmntdesc}}</label>
                     <div class="field">
                       <input formControlName="description" placeholder="{{resource?.frmelmnts?.instn?.t0052}}">
+                      <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['description'].errors && announcementForm.controls['description'].errors.maxlength && !announcementForm.controls['description'].pristine">
+                        {{resource?.messages?.stmsg?.m0109}}
+                      </div>
+                      <section *ngIf="announcementForm.value.description.length" class="float-ContentRight">{{announcementForm.value.description.length}} / 1200</section>
                     </div>
                   </div>
                   <!-- Links -->
-                  <div class="field form-group dropdown-margin-left">
+                  <div class="field form-group">
                     <label>{{resource?.frmelmnts?.lbl?.anncmntlink}}</label>
                     <div formArrayName="links">
                       <div class="field" *ngFor="let item of announcementForm.get('links')['controls']; let i = index;">
                         <div [formGroupName]="i" class="ui action input">
                           <input formControlName="url" placeholder="{{resource?.frmelmnts?.instn?.t0053}}">
-                          <i class="trash icon createAnnBlueClass margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                          <i class="trash icon blue-text-color-sunbird margin-top-10 cursor-pointer" (click)="removeLink(i)"></i>
+                        </div>
+                        <div class="ui pointing red basic label below" *ngIf="announcementForm.controls['links'].controls[i].status === 'INVALID'">
+                          {{resource?.messages?.stmsg?.m0101}}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="field">
                     <span (click)="addNewLink('')">
-                      <i class="plus icon createAnnBlueClass cursor-pointer"></i>
+                      <i class="plus icon blue-text-color-sunbird cursor-pointer"></i>
                       <span *ngIf="announcementForm.get('links')['controls'].length === 0">
-                        <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddlink}}</span>
+                        <span class="cursor-pointer blue-text-color-sunbird">{{resource?.frmelmnts?.lbl?.anncmntaddlink}}</span>
                         <span>{{resource?.frmelmnts?.lbl?.anncmntaddlinkdesc}}</span>
                       </span>
                       <span *ngIf="announcementForm.get('links')['controls'].length > 0">
-                        <span class="cursor-pointer createAnnBlueClass">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
+                        <span class="cursor-pointer blue-text-color-sunbird">{{resource?.frmelmnts?.lbl?.anncmntaddmorelink}}</span>
                       </span>
                     </span>
                   </div>
@@ -136,16 +145,16 @@
         </div>
         <!-- Preview announcement -->
         <div *ngIf="stepNumber === 3" class="ui list ui grid">
-          <div class="eight wide column createAnnFormScroller">
+          <div class="eight wide column create-ann-form-scroller">
             <div class="ui message padding-10" *ngFor="let item of recipientsList">
               <i class="close icon" (click)="removeRecipient(item);"></i>
-              <span class="createAnnSelectedRecepient">{{item.location}}</span>
+              <span class="create-ann-Selected-secepient">{{item.location}}</span>
             </div>
           </div>
         </div>
         <!-- Preview announcement -->
         <div *ngIf="stepNumber === 4" class="ui grid margin-right-none">
-          <div class="box width-100 eight wide column createAnnFormScroller">
+          <div class="box width-100 eight wide column create-ann-form-scroller">
             <app-details [announcementDetails]="announcementDetails"></app-details>
           </div>
         </div>
@@ -154,7 +163,7 @@
   </div>
   <div class="actions">
     <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1))">
-      <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.back}}</span>
+      <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
     <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients();">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
     <div class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage();">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
@@ -185,8 +194,8 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcementButton btn-width-34 approve" (click)="successModal.deny(); redirectToOutbox();">
-            <span class="announcementButtonText">{{resource?.frmelmnts?.btn?.anncmntgotit}}</span>
+          <button class="ui primary basic button announcement-button btn-width-34 approve" (click)="successModal.deny(); redirectToOutbox();">
+            <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.anncmntgotit}}</span>
           </button>
         </div>
       </div>
@@ -214,10 +223,12 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div #closeAnnouncementModal class="ui primary basic button announcementButton btn-width-34" (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
-          <div class="ui primary button announcementButton btn-width-34" (click)="modalName = 'create'">{{resource?.frmelmnts?.btn?.no}}</div>
+          <div class="ui primary basic button announcement-button btn-width-34" (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create'">{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>
     </div>
   </div>
 </sui-modal>
+
+

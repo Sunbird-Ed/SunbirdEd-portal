@@ -46,7 +46,6 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.sucessData.result.content[2], 'draft');
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/generic/', 'do_1124858179748904961134', 'draft' , 'NCF']);
   }));
-
   it('should call delete api and get success response', inject([WorkSpaceService],
     (workSpaceService) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
@@ -72,5 +71,10 @@ describe('WorkSpaceService', () => {
           expect(err.responseCode).toBe('UNAUTHORIZED_ACCESS');
         }
       );
+  }));
+  it('should  launch  content player  when mime type is video/x-youtube and state is upForReview ',
+    inject([WorkSpaceService, Router], (workSpaceService, route) => {
+      workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
 });

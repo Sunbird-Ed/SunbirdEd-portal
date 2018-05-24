@@ -175,21 +175,12 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.uploaded = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.uploaded, (item, key) => {
-            const action = {
-              right: {
-                displayType: 'icon',
-                classes: 'trash large icon',
-                actionType: 'delete',
-                clickable: true
-              }
-            };
-            this.uploaded[key].action = action;
-
-          });
+          const constantData = this.config.appConfig.WORKSPACE.Uploaded.constantData;
+        const metaData = this.config.appConfig.WORKSPACE.Uploaded.metaData;
+        const dynamicFields = this.config.appConfig.WORKSPACE.Uploaded.dynamicFields;
+        this.uploaded = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -213,10 +204,10 @@ export class UploadedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    if (param.type === 'delete') {
-      this.deleteConfirmModal(param.contentId);
+    if (param.action.eventName === 'delete') {
+      this.deleteConfirmModal(param.data.metaData.identifier);
     } else {
-      this.workSpaceService.navigateToContent(param.content, this.state);
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 

@@ -1,5 +1,5 @@
 import { IdDetails } from './../../interfaces/notes';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -19,13 +19,17 @@ describe('NoteListComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const fakeActivatedRoute = {
+    'params' : Observable.from([{courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'}])
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, OrderModule, SharedModule, CoreModule ],
       declarations: [ NoteListComponent, TimeAgoPipe ],
       providers: [ NotesService,
-         { provide: Router, useClass: RouterStub }
+         { provide: Router, useClass: RouterStub },
+         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -45,6 +49,8 @@ describe('NoteListComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
     spyOn(notesService, 'search').and.returnValue(Observable.of(response.responseSuccess));
+    component.courseId = 'do_212347136096788480178';
+    component.contentId = 'do_112498388508524544160';
     userService.getUserProfile();
     component.getAllNotes();
     expect(component.showLoader).toBeFalsy();
@@ -61,6 +67,8 @@ describe('NoteListComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
+    component.courseId = 'do_212347136096788480178';
+    component.contentId = 'do_112498388508524544160';
     userService.getUserProfile();
     component.getAllNotes();
     expect(component.showLoader).toBeFalsy();

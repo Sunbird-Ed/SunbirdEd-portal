@@ -16,9 +16,10 @@ let PERMISSIONS_HELPER = {
     'course/publish': ['CONTENT_REVIEWER', 'CONTENT_REVIEW'],
     'content/retire': ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'FLAG_REVIEWER'],
     'content/reject': ['CONTENT_REVIEWER', 'CONTENT_REVIEW'],
-    'content/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
-    'content/update': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
-    'content/review': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW'],
+    'content/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'BOOK_CREATOR'],
+    'content/update': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'BOOK_CREATOR'],
+    'content/review': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW',
+      'BOOK_CREATOR', 'BOOK_REVIEWER', 'FLAG_REVIEWER'],
     'content/publish': ['CONTENT_REVIEWER', 'CONTENT_REVIEW'],
     'content/flag/accept': ['FLAG_REVIEWER'],
     'content/flag/reject': ['FLAG_REVIEWER'],
@@ -64,7 +65,7 @@ let PERMISSIONS_HELPER = {
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
       if (!error && body && body.responseCode === 'OK') {
-        module.exports.setRoleUrls(body.result)
+        // module.exports.setRoleUrls(body.result)
       } else {
         telemetryData.resp = body
         telemetryHelper.logAPIErrorEvent(telemetryData)
@@ -85,6 +86,34 @@ let PERMISSIONS_HELPER = {
         })
       })
     })
+  },
+
+  setUserSessionData (reqObj, body) {
+    try {
+      if (body.responseCode === 'OK') {
+        reqObj.session.userId = body.result.response.identifier
+        reqObj.session.roles = body.result.response.roles
+        if (body.result.response.organisations) {
+          _.forEach(body.result.response.organisations, function (org) {
+            if (org.roles && _.isArray(org.roles)) {
+              reqObj.session.roles = _.union(reqObj.session.roles, org.roles)
+            }
+            if (org.organisationId) {
+              reqObj.session.orgs.push(org.organisationId)
+            }
+          })
+        }
+        reqObj.session.orgs = _.uniq(reqObj.session.orgs)
+        reqObj.session.roles = _.uniq(reqObj.session.roles)
+
+        if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
+          reqObj.session.rootOrgId = body.result.response.rootOrg.id
+          reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   getCurrentUserRoles: function (reqObj, callback) {
@@ -116,30 +145,7 @@ let PERMISSIONS_HELPER = {
       reqObj.session.orgs = []
 
       if (!error && body) {
-        try {
-          if (body.responseCode === 'OK') {
-            reqObj.session.userId = body.result.response.identifier
-            reqObj.session.roles = body.result.response.roles
-            if (body.result.response.organisations) {
-              _.forEach(body.result.response.organisations, function (org) {
-                if (org.roles && _.isArray(org.roles)) {
-                  reqObj.session.roles = _.union(reqObj.session.roles, org.roles)
-                }
-                if (org.organisationId) {
-                  reqObj.session.orgs.push(org.organisationId)
-                }
-              })
-            }
-            if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
-              reqObj.session.rootOrgId = body.result.response.rootOrg.id
-              reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
-            }
-          }
-        } catch (e) {
-          telemetryData.resp = body
-          telemetryHelper.logAPIErrorEvent(telemetryData)
-          console.log(e)
-        }
+        module.exports.setUserSessionData(reqObj, body)
       }
       reqObj.session.save()
 

@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
    * user profile details.
    */
   userProfile: IUserProfile;
-  slug: string;
   /**
    * reference of TenantService.
    */
@@ -41,9 +40,9 @@ export class AppComponent implements OnInit {
    * reference of courseService service.
    */
   public courseService: CoursesService;
- /**
-  * reference of conceptPickerService service.
-   */
+  /**
+   * reference of conceptPickerService service.
+    */
   public conceptPickerService: ConceptPickerService;
   /**
    * reference of telemetryService service.
@@ -79,27 +78,21 @@ export class AppComponent implements OnInit {
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-       this.conceptPickerService.initialize();
+      this.conceptPickerService.initialize();
       this.initTelemetryService();
+      this.userService.userData$.subscribe(
+        (user: IUserData) => {
+          if (user && !user.err) {
+            const slug = _.get(user, 'userProfile.rootOrg.slug');
+            this.initTenantService(slug);
+          } else {
+            this.initTenantService();
+          }
+        });
     } else {
+      this.initTenantService();
       this.userService.initialize(false);
     }
-
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          const slug = _.get(user, 'userProfile.rootOrg.slug');
-          this.tenantService.getTenantInfo(slug);
-          this.tenantService.tenantData$.subscribe(
-            data => {
-              if (data && !data.err) {
-                document.title = data.tenantData.titleName;
-                document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
-              }
-            }
-          );
-        }
-      });
   }
 
   public initTelemetryService() {
@@ -122,7 +115,7 @@ export class AppComponent implements OnInit {
             apislug: '/data/v1/telemetry',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
+            channel: _.get(userOrg, 'rootOrg.hashTagId'),
             env: 'home' // default value
           }
         };
@@ -147,6 +140,18 @@ export class AppComponent implements OnInit {
         }
       });
     });
+  }
+
+  private initTenantService(slug?: string) {
+    this.tenantService.getTenantInfo(slug);
+    this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          document.title = data.tenantData.titleName;
+          document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
+        }
+      }
+    );
   }
 }
 

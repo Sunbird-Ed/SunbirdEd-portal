@@ -7,9 +7,9 @@
         <div class="ui left floated header margin-auto ">
           <p class="serch-allresult">Showing results
             <span class="lower-case" *ngIf="this.queryParams.key">
-               for {{this.queryParams.key}}
+              for {{this.queryParams.key}}
             </span>
-             in "users"
+            in "users"
           </p>
         </div>
         <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
@@ -29,27 +29,29 @@
             <div class="ui items">
               <div class="item">
                 <div class="ui tiny image userSearchImage">
-                  <img [src]="user.avatar || './assets/common/images/user_logo.png'">
+                  <img [src]="user.avatar || './assets/images/user_logo.png'">
                 </div>
                 <div class="content ">
-                  <a class="header " [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  <a class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  <span class="header" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</span>
 
-                  <a *ngIf="user.status===1 && user.isEditableProfile" class="float-ContentRight">
+                  <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                     <!-- update user roles -->
-                    <span [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
-                <i class="edit icon editIcon-fontSize"></i>
-              </span>
+                    <span class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                      <i class="edit large icon remove-outline"></i>
+                    </span>
                     <!-- delete user -->
-                    <span>
-                <i class="trash outline icon trashIcon-fontSize" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
-              </span>
+                    <span class="remove-outline">
+                      <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
+                    </span>
                   </a>
 
                   <!-- organization Name -->
-                  <div class="meta ">
+                  <div class="meta">
                     <span class="cinema ">
-                      <span *ngFor="let org of user.organisations; let last = last;">{{org.orgName}}
-                        <span *ngIf="!last">,</span>
+                      <span *ngFor="let org of user.organisations; let last = last;">
+                        <span *ngIf="org.orgName">{{org.orgName}}</span>
+                        <span *ngIf="!last && org.orgName">,</span>
                       </span>
                     </span>
                   </div>

@@ -77,12 +77,13 @@ export class UserAdditionalInfoComponent implements OnInit {
         if (value && value !== undefined && value !== null) {
           if (key === 'dob' && value.value !== null) {
             addInfo[key] = moment(value.value).format('YYYY-MM-DD');
-          } else if ((value.value !== null && value.value !== '' && value.value !== undefined) && (key === 'fb' || key === 'in'
+          } else if ((value.value !== null && value.value !== undefined) && (key === 'fb' || key === 'in'
             || key === 'twitter' || key === 'blog')) {
             if (updatedInfo['webPages'] === undefined) {
               updatedInfo['webPages'] = [];
             }
             updatedInfo['webPages'].push({ type: key, url: value.value });
+            updatedInfo['webPages'] = _.reject(updatedInfo['webPages'], ['url', '']);
           } else {
             addInfo[key] = value.value;
           }

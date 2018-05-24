@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './user-profile.component.spec.data';
-
+import { OrderModule } from 'ngx-order-pipe';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -36,7 +36,7 @@ describe('UserProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule, RouterTestingModule, OrderModule],
       declarations: [ UserProfileComponent ],
       providers: [ ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,

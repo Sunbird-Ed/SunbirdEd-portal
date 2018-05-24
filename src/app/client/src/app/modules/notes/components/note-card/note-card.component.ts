@@ -2,9 +2,9 @@ import { PopupEditorComponent } from './../popup-editor/popup-editor.component';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 
@@ -17,11 +17,15 @@ import { INoteData, IdDetails } from '@sunbird/notes';
   templateUrl: './note-card.component.html',
   styleUrls: ['./note-card.component.css']
 })
-export class NoteCardComponent implements OnInit {
+export class NoteCardComponent implements OnInit, OnChanges {
   /**
    * This variable holds the content and course id.
    */
   @Input() ids: IdDetails;
+  /**
+   * This variable holds the created note details
+   */
+  @Input() createNoteData: INoteData;
   /**
    * This variable helps in displaying and hiding page loader.
    * By default it is assigned a value of 'true'. This ensures that
@@ -90,6 +94,8 @@ export class NoteCardComponent implements OnInit {
    */
 
   modalService: SuiModalService;
+  activatedRoute: ActivatedRoute;
+  batchId: string;
 
 
   /**
@@ -109,7 +115,8 @@ export class NoteCardComponent implements OnInit {
     resourceService: ResourceService,
     modalService: SuiModalService,
     toasterService: ToasterService,
-    route: Router) {
+    route: Router,
+    activatedRoute: ActivatedRoute) {
     this.toasterService = toasterService;
     this.userService = userService;
     this.route = route;
@@ -118,6 +125,7 @@ export class NoteCardComponent implements OnInit {
     this.contentService = contentService;
     this.resourceService = resourceService;
     this.modalService = modalService;
+    this.activatedRoute = activatedRoute;
   }
 
   /**
@@ -132,16 +140,25 @@ export class NoteCardComponent implements OnInit {
     this.getAllNotes();
   }
 
+  ngOnChanges() {
+    if (this.createNoteData) {
+    this.notesList = this.notesList || [];
+    this.notesList.unshift(this.createNoteData);
+    this.setSelectedNote(this.notesList[0], 0);
+    this.showCreateEditor = false;
+    }
+  }
+
   /**
    * To gather existing list of notes.
    */
   public getAllNotes() {
     const requestBody = {
       request: {
-        filter: {
-          userid: this.userId,
-          courseid: this.ids.courseId,
-          contentid: this.ids.courseId
+        filters: {
+          userId: this.userId,
+          courseId: this.ids.courseId,
+          contentId: this.ids.contentId
         },
         sort_by: {
           updatedDate: 'desc'
@@ -149,8 +166,7 @@ export class NoteCardComponent implements OnInit {
       }
     };
 
-    if (requestBody.request.filter.courseid) {
-      if (requestBody.request.filter.contentid) {
+      if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
         this.noteService.search(requestBody).subscribe(
           (apiResponse: ServerResponse) => {
             this.showLoader = false;
@@ -163,7 +179,6 @@ export class NoteCardComponent implements OnInit {
           }
         );
       }
-    }
   }
 
   /**
@@ -174,12 +189,6 @@ export class NoteCardComponent implements OnInit {
   public setSelectedNote(note, a) {
     this.selectedNote = note;
     this.selectedIndex = a;
-  }
-
-  createEventEmitter(data) {
-    this.notesList.unshift(data);
-    this.setSelectedNote(this.notesList[0], 0);
-    this.showCreateEditor = false;
   }
 
   updateEventEmitter(data) {
@@ -195,6 +204,13 @@ export class NoteCardComponent implements OnInit {
    * This method redirects the user to notesList view.
    */
   public viewAllNotes() {
-    this.route.navigate(['viewallnotes']);
+    this.activatedRoute.params.subscribe(params => {
+      this.batchId = params.batchId;
+      if (this.batchId) {
+        this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes']);
+      } else {
+        this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
+      }
+    });
   }
 }

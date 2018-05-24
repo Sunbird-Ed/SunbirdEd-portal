@@ -21,6 +21,10 @@ const testData = mockData.mockRes;
 describe('DraftComponent', () => {
   let component: DraftComponent;
   let fixture: ComponentFixture<DraftComponent>;
+  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -44,7 +48,9 @@ describe('DraftComponent', () => {
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
-        { provide: ResourceService, useValue: resourceBundle }
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
       .compileComponents();
@@ -68,7 +74,8 @@ describe('DraftComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { type: 'delete', content: { identifier: 'do_2124341006465925121871'} };
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+        eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -90,6 +97,49 @@ describe('DraftComponent', () => {
     expect(component.draftList.length).toBeLessThanOrEqual(0);
     expect(component.draftList.length).toEqual(0);
   }));
+
+  it('should call setpage method and set proper page number', inject([Router],
+    (route) => {
+      component.pager = testData.pager;
+      component.pager.totalPages = 8;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+  }));
+
+  it('should call deleteConfirmModal method to delte the content', inject([],
+    () => {
+      component.deleteConfirmModal('do_2124339707713126401772');
+      expect(component.showLoader).toBeTruthy();
+  }));
+
+  it('should call setpage method and set proper page number 1', inject([Router],
+    (route) => {
+      component.pager = testData.pager;
+      component.pager.totalPages = 0;
+      component.navigateToPage(3);
+      fixture.detectChanges();
+      expect(component.pageNumber).toEqual(1);
+  }));
+
+  it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
+    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
+    component.fetchDrafts(9, 1);
+    fixture.detectChanges();
+    expect(component.draftList).toBeDefined();
+    expect(component.draftList.length).toBe(0);
+    expect(component.showLoader).toBeFalsy();
+  }));
+
+  it('should call navigateToContent to open content player when action type is onImage', inject([Router],
+    (route) => {
+      const params = { action:  { class: 'trash large icon', displayType: 'icon',
+        eventName: 'onImage' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      component.contentClick(params);
+      fixture.detectChanges();
+      expect(component.pageNumber).toEqual(1);
+  }));
+
 });
 
 

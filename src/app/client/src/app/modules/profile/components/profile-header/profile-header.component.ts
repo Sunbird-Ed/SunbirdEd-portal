@@ -42,7 +42,7 @@ export class ProfileHeaderComponent implements OnInit {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = this.userService.userProfile;
+          this.userProfile = user.userProfile;
         }
       });
   }

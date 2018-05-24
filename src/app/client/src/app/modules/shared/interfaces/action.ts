@@ -28,9 +28,13 @@ export interface IAction {
      */
 
     left?: {
-        displayType?: string | 'icon' | 'rating'
+        displayType?: string | 'icon' | 'rating '
         classes?: string;
         clickable?: boolean;
-        actionType?: 'share' | string;
+        actionType?: 'share' | 'shareComponent' | string  ;
+        icon?: string;
+        mimeType?: string;
+        identifier?: string;
+        contentType?: string
     };
 }

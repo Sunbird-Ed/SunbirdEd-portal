@@ -1,7 +1,7 @@
 <div class="ui" *ngIf="userProfile">
     <app-profile-header></app-profile-header>
 </div>
-<div class="ui grid">
+<div class="ui stackable grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class="twelve wide column">
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div *ngIf="userProfile">
-            <div class="ui grid">
+            <div class="ui stackable grid">
                 <div class="eight wide column">
                     <app-user-summary></app-user-summary>
                     <app-user-experience-view></app-user-experience-view>
@@ -21,7 +21,7 @@
                     <app-user-additional-info></app-user-additional-info>
                 </div>
                 <div class=" four wide column margin-top-20">
-                    <div class="ui grid ">
+                    <div class="ui stackable grid ">
 
                         <div class="twelve wide column" *ngIf="userProfile.completeness">
                             <div class="ui raised segment">
@@ -50,12 +50,12 @@
                         </div>
 
                         <div class="twelve wide column" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole'>
-                            <a routerLink="/workspace/content">
-                                <div class="workspacebutton workspacecontentProfile ui link card ">
+                            <a (click)="navigateToWorkspace()">
+                                <div class="ui link card width-100">
                                     <div class="content ">
-                                        <div class="WorkSpaceTextContent ">
-                                            <i class='my-icon database icon '></i>
-                                            <span class="my-text ">{{resourceService.frmelmnts.lbl.viewworkspace}}</span>
+                                        <div class="workspace-navigate">
+                                            <i class='database big icon primary-text-color-sunbird'></i>
+                                            <span class="workspace-navigate-heading">{{resourceService.frmelmnts.lbl.viewworkspace}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -64,14 +64,14 @@
 
                         <div class="twelve wide column" *ngIf="contributions && contributions.length > 0">
                             <div class="ui raised segment">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading">{{resourceService.frmelmnts.scttl.contributions}}</span>
-                                    <span class="addeditprofile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
+                                <div class="header">
+                                    <span class="segment-heading">{{resourceService.frmelmnts.scttl.contributions}}</span>
+                                    <span class="add-edit-btn-profile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
                                 </div>
                                 <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                                     <div class="item" *ngFor="let item of contributions">
                                         <!-- implement preview for content on click-->
-                                        <img class="ui avatar image " src="{{item.posterImage || 'assets/common/images/zipFileIcon.png'}}">
+                                        <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png'}}">
                                         <div class="content ">
                                             <a class=" header ">{{item.name}}</a>
                                             <div class="metadata ">
@@ -87,13 +87,13 @@
 
                         <div class="twelve wide column">
                             <div class="ui raised segment blur-content">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading ">Member of</span>
+                                <div class="header">
+                                    <span class="segment-heading">Member of</span>
                                 </div>
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Teachers Association</a>
@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Maharashtra Chemistry Teachers Only</a>
@@ -130,13 +130,13 @@
 
                         <div class="twelve wide column blur-content">
                             <div class="ui raised segment ">
-                                <div class="header announcementCard-header ">
-                                    <span class="header cardsHeading ">Member of</span>
+                                <div class="header">
+                                    <span class="segment-heading">Member of</span>
                                 </div>
                                 <div class="profileitems ui relaxed divided items ">
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img src="assets/common/images/school.png ">
+                                            <img src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>
@@ -160,7 +160,7 @@
                                     </div>
                                     <div class="item ">
                                         <div class="ui avatar image ">
-                                            <img ng-src="assets/common/images/school.png ">
+                                            <img ng-src="assets/images/school.png ">
                                         </div>
                                         <div class="content ">
                                             <a class="header ">Organic Chemistry for Std VII</a>

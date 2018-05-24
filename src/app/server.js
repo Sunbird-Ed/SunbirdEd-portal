@@ -19,6 +19,7 @@ const envHelper = require('./helpers/environmentVariablesHelper.js')
 const publicServicehelper = require('./helpers/publicServiceHelper.js')
 const userHelper = require('./helpers/userHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
+const healthService = require('./helpers/healthCheckService.js')
 const fs = require('fs')
 const port = envHelper.PORTAL_PORT
 const learnerURL = envHelper.LEARNER_URL
@@ -27,7 +28,7 @@ const realm = envHelper.PORTAL_REALM
 const authServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const keycloakResource = envHelper.PORTAL_AUTH_SERVER_CLIENT
 const reqDataLimitOfContentEditor = '50mb'
-const reqDataLimitOfContentUpload = '30mb'
+const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAUULT_TENANT
@@ -35,7 +36,7 @@ const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
-
+const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
 let memoryStore = null
@@ -94,18 +95,12 @@ app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], inde
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
 
-app.all('/logoff', function (req, res) {
+app.all('/logoff', endSession, function (req, res) {
   res.cookie('connect.sid', '', { expires: new Date() })
   res.redirect('/logout')
 })
 
-app.get('/get/envData', keycloak.protect(), function (req, res) {
-  res.status(200)
-  res.send({ appId: appId, ekstep_env: ekstepEnv })
-  res.end()
-})
-// Mobile redirection to app
-require('./helpers/mobileAppHelper.js')(app)
+
 
 function indexPage (req, res) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -117,6 +112,11 @@ function indexPage (req, res) {
   res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
+app.get('/get/envData', keycloak.protect(), function (req, res) {
+  res.status(200)
+  res.send({ appId: appId, ekstep_env: ekstepEnv })
+  res.end()
+})
 
 app.all('/', indexPage)
 app.all('/home', keycloak.protect(), indexPage)
@@ -142,10 +142,15 @@ app.all('/resources/*', keycloak.protect(), indexPage)
 app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
+app.all('/get/dial/:dialCode', indexPage)
+app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
-app.all('/get/*', indexPage)
+app.all('*/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
+
+// Mobile redirection to app
+require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -177,9 +182,9 @@ app.all('/public/service/v1/content/*', proxy(contentURL, {
   }
 }))
 
-// Generating telemetry for proxy  apis
-app.all('/learner/*', telemetryHelper.generateTelemetryForProxy)
-app.all('/content/*', telemetryHelper.generateTelemetryForProxy)
+// Generate telemetry fot proxy service
+app.all('/learner/*', telemetryHelper.generateTelemetryForLearnerService,
+  telemetryHelper.generateTelemetryForProxy)
 
 app.post('/learner/content/v1/media/upload',
   proxyUtils.verifyToken(),
@@ -199,22 +204,63 @@ app.post('/learner/content/v1/media/upload',
     }
   }))
 
-app.all('/learner/*',
+  app.all('/learner/*',
+    proxyUtils.verifyToken(),
+    permissionsHelper.checkPermission(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqPathResolver: function (req) {
+        let urlParam = req.params['0']
+        let query = require('url').parse(req.url).query
+        if (query) {
+          return require('url').parse(learnerURL + urlParam + '?' + query).path
+        } else {
+          return require('url').parse(learnerURL + urlParam).path
+        }
+      }
+    }))
+
+
+app.all('/content/data/v1/telemetry',
+  proxy(envHelper.content_Service_Local_BaseUrl, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
+    }
+}))
+
+// proxy urls
+require('./proxy/contentEditorProxy.js')(app, keycloak)
+
+  // tenant Api's
+  app.get('/v1/tenant/info', tenantHelper.getInfo)
+  app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
+  
+  // proxy urls
+  require('./proxy/contentEditorProxy.js')(app, keycloak)
+  
+
+app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
+  telemetryHelper.generateTelemetryForProxy)
+  
+app.all('/content/*',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
-  proxy(learnerURL, {
+  proxy(contentURL, {
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
       if (query) {
-        return require('url').parse(learnerURL + urlParam + '?' + query).path
+        return require('url').parse(contentURL + urlParam + '?' + query).path
       } else {
-        return require('url').parse(learnerURL + urlParam).path
+        return require('url').parse(contentURL + urlParam).path
       }
-    }
-  }))
+  }
+}))
 
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
@@ -223,47 +269,23 @@ app.all('/v1/user/session/create', function (req, res) {
   trampolineServiceHelper.handleRequest(req, res, keycloak)
 })
 
-app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
-  res.locals.userId = req.kauth.grant.access_token.content.sub
-  res.locals.sessionId = req.sessionID
-  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  res.locals.theme = envHelper.PORTAL_THEME
-  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-  res.render(path.join(__dirname, 'private', 'index.ejs'))
+app.all('/private/*', function (req, res) {
+  res.redirect('/home')
 })
 
-app.all('/migration/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
-  res.locals.userId = req.kauth.grant.access_token.content.sub
-  res.locals.sessionId = req.sessionID
-  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  res.locals.theme = envHelper.PORTAL_THEME
-  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-  res.render(path.join(__dirname, 'migration/dist', 'index.ejs'))
-})
 
-// tenant Api's
-app.get('/v1/tenant/info', tenantHelper.getInfo)
-app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
-
-// proxy urls
-require('./proxy/contentEditorProxy.js')(app, keycloak)
-
-app.all('/content/*',
-proxyUtils.verifyToken(),
-permissionsHelper.checkPermission(),
-proxy(contentURL, {
-  limit: reqDataLimitOfContentUpload,
-  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-  proxyReqPathResolver: function (req) {
-    let urlParam = req.params['0']
-    let query = require('url').parse(req.url).query
-    if (query) {
-      return require('url').parse(contentURL + urlParam + '?' + query).path
-    } else {
-      return require('url').parse(contentURL + urlParam).path
-    }
+app.get('/v1/user/session/start/:deviceId', function (req, res) {
+  if (req.session.logSession === false) {
+    req.session.deviceId = req.params.deviceId
+    telemetryHelper.logSessionStart(req)
+    req.session.logSession = true
   }
-}))
+  res.status(200)
+  res.end()
+})
+
+// healthcheck
+app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
@@ -286,6 +308,8 @@ require('./helpers/shareUrlHelper.js')(app)
 
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
+
+
 // redirect to home if nothing found
 app.all('*', function (req, res) {
   res.redirect('/')
@@ -295,19 +319,17 @@ app.all('*', function (req, res) {
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
  */
 keycloak.authenticated = function (request) {
+  request.session.logSession = false
   async.series({
+    getUserData: function (callback) {
+      permissionsHelper.getCurrentUserRoles(request, callback)
+    },
     getPermissionData: function (callback) {
       permissionsHelper.getPermissions(request)
       callback()
     },
-    getUserData: function (callback) {
-      permissionsHelper.getCurrentUserRoles(request, callback)
-    },
     updateLoginTime: function (callback) {
       userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
     }
   }, function (err, results) {
     if (err) {
@@ -315,21 +337,52 @@ keycloak.authenticated = function (request) {
     }
   })
 }
+function endSession (request, response, next) {
+  delete request.session['roles']
+  delete request.session['rootOrgId']
+  delete request.session['orgs']
+  if (request.session) {
+    if (_.get(request, 'kauth.grant.access_token.content.sub')) { telemetryHelper.logSessionEnd(request) }
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
+      delete request.session.sessionEvents
+      delete request.session['deviceId']
+    })
+  }
+  next()
+}
 
 keycloak.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
   if (request.session) {
-    request.session.sessionEvents = request.session.sessionEvents || []
     telemetryHelper.logSessionEnd(request)
-    delete request.session.sessionEvents
+    telemetry.syncOnExit(function (err, res) { // sync on session end
+      if (err) {
+        console.log('error while syncing', err)
+      }
+      request.session.sessionEvents = request.session.sessionEvents || []
+      delete request.session.sessionEvents
+      delete request.session['deviceId']
+    })
   }
 }
 
-portal.server = app.listen(port, function () {
-  console.log('app running on port ' + port)
-})
+
+  if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
+    console.error('please set environment variable sunbird_environment, ' +
+    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+    process.exit(1)
+  }
+  
+  portal.server = app.listen(port, function () {
+    console.log('app running on port ' + port)
+  })
+  
 
 exports.close = function () {
   portal.server.close()

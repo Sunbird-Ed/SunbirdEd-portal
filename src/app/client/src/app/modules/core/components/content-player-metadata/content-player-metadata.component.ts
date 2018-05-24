@@ -1,3 +1,4 @@
+import { ConceptPickerService } from './../../services';
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { ContentData, ResourceService } from '@sunbird/shared';
@@ -7,22 +8,58 @@ import { ContentData, ResourceService } from '@sunbird/shared';
   templateUrl: './content-player-metadata.component.html',
   styleUrls: ['./content-player-metadata.component.css']
 })
-export class ContentPlayerMetadataComponent {
+export class ContentPlayerMetadataComponent implements OnInit {
+  readMore = false;
+  metadata: any;
+  contentFieldData: any;
+  fieldData = [];
+  conceptNames: any;
+  filteredConcepts: any;
+
   @Input() contentData: ContentData;
-  constructor(public resourceService: ResourceService) { }
-/**
- * Fetches concepts
- * @param {any} concepts
- * @returns {string}
- */
-getConceptsNames(concepts): string {
-    const conceptNames = _.map(concepts, 'name');
-    if (concepts && conceptNames.length < concepts.length) {
-      // const filteredConcepts = _.filter($rootScope.concepts, (p) => {
-      //   return _.includes(concepts, p.identifier);
-      // });
-      // conceptNames = _.map(filteredConcepts, 'name');
-    }
-    return conceptNames.toString();
+  constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
+
+  ngOnInit() {
+    this.metadata = {...this.contentData};
+    this.validateContent();
+    this.getConceptsNames();
+  }
+
+  validateContent() {
+    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords', 'resourceTypes'];
+    _.forEach(this.metadata, (value, key) => {
+      if (_.compact(key) && _.includes(this.fieldData, key)) {
+        if (_.isString(value)) {
+          this.contentFieldData = [value];
+          this.metadata[key] = (_.isArray(this.contentFieldData)) ? (_.compact(this.contentFieldData).join(', ')) : '';
+        } else {
+          this.metadata[key] = (_.isArray(value)) ? (_.compact(value).join(', ')) : '';
+        }
+      }
+    });
+  }
+
+  /**
+   * Fetches concepts
+   * @param {any} concepts
+   * @returns {string}
+   */
+  getConceptsNames() {
+  this.conceptPickerService.conceptData$.subscribe(data => {
+      if ( data  && !data.err ) {
+        const conceptsData = this.conceptPickerService.concepts;
+        this.conceptNames = _.map(this.metadata.concepts, 'name');
+        if (this.conceptNames && this.metadata.concepts && this.conceptNames.length < this.metadata.concepts.length) {
+          this.filteredConcepts = _.filter(conceptsData, (p) => {
+            return _.includes(this.metadata.concepts, p.identifier);
+          });
+          this.conceptNames = _.map(this.filteredConcepts, 'name');
+        }
+        this.metadata.concepts =  this.conceptNames.join(', ');
+      }
+    });
   }
 }
+
+
+

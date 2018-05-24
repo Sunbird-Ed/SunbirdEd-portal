@@ -18,7 +18,7 @@
     <input type="text" [(ngModel)]="updateData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
   </div>
   <div class="editor">
-    <div id="wmd-button-bar custom-btn"></div>
+    <div id="wmd-button-bar"></div>
     <textarea class="wmd-input" [(ngModel)]="updateData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
   </div>
 </div>
@@ -30,6 +30,6 @@
   <button *ngIf="mode === 'create'" class="ui secondary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
     (click)="clearNote()" tabindex="4">CLEAR</button>
 
-  <button *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+  <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
     (click)="updateNote()" tabindex="4">UPDATE</button>
 </div>

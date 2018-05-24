@@ -14,10 +14,10 @@ export const mockUserData = {
             'responseCode': 'OK',
             'result': {
                 'titleName': 'Sunbird',
-                'logo': 'http://localhost:3000/common/images/sunbird_logo.png',
-                'poster': 'http://localhost:3000/common/images/sunbird_logo.png',
-                'favicon': 'http://localhost:3000/common/images/favicon.ico',
-                'appLogo': 'http://localhost:3000/common/images/sunbird_logo.png'
+                'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+                'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+                'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+                'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
             }
         },
     tenantFailure: {
@@ -33,10 +33,10 @@ export const mockUserData = {
     },
     tenantDefault: {
         'titleName': 'Sunbird',
-        'logo': 'http://localhost:3000/common/images/sunbird_logo.png',
-        'poster': 'http://localhost:3000/common/images/sunbird_logo.png',
-        'favicon': 'http://localhost:3000/common/images/favicon.ico',
-        'appLogo': 'http://localhost:3000/common/images/sunbird_logo.png'
+        'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+        'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+        'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+        'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
 
     },
     error: {

@@ -4,6 +4,7 @@ import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -79,6 +80,12 @@ export class ProfilePageComponent implements OnInit {
         (err: ServerResponse) => {
         }
       );
+    }
+  }
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      this.router.navigate([authroles.url]);
     }
   }
 }

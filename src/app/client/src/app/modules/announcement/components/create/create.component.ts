@@ -1,6 +1,6 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -18,7 +18,7 @@ import * as _ from 'lodash';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class CreateComponent implements OnInit {
 
   /**
    * Reference of Geo explorer component
@@ -28,9 +28,9 @@ export class CreateComponent implements OnInit, OnDestroy {
   @ViewChild(GeoExplorerComponent) geoExplorer: GeoExplorerComponent;
 
   /**
-   * Dom element reference to close modal
+   * Dom element reference of create modal
    */
-  @ViewChild('closeAnnouncementModal') closeAnnouncementModal: ElementRef;
+  @ViewChild('createModal') createModal;
 
   /**
    * Announcement creation form name
@@ -100,7 +100,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   public resource: ResourceService;
 
   /**
-   * Contains file uplaod service reference
+   * Contains file upload service reference
    */
   public fileUpload: FileUploadService;
 
@@ -157,14 +157,16 @@ export class CreateComponent implements OnInit, OnDestroy {
   /**
    * Get announcement type by making http call
    *
-   * Announcement type(s) are needed to create new annoucement.
+   * Announcement type(s) are needed to create new announcement.
    * Without type(s) user won't be able to create new announcement
    */
   setAnnouncementTypes(): void {
+    this.showResendLoader = true;
     if (this.createService._announcementTypes) {
       _.each(this.createService._announcementTypes, (key) => {
         this.announcementTypes.push(key.name);
       });
+      this.showResendLoader = false;
     } else {
       this.createService.getAnnouncementTypes().subscribe(
         (data: ServerResponse) => {
@@ -173,11 +175,13 @@ export class CreateComponent implements OnInit, OnDestroy {
               this.announcementTypes.push(key.name);
             });
           }
+          this.showResendLoader = false;
         },
         (err: ServerResponse) => {
           this.toasterService.error(this.resource.messages.emsg.m0005);
-          // Close announcement form and redirect user to outbox page
-          this.closeAnnouncementModal.nativeElement.click();
+          this.showResendLoader = false;
+          this.createModal.deny();
+          this.redirectToOutbox();
         }
       );
     }
@@ -251,8 +255,11 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   enableSelectRecipientsBtn(): boolean {
     const data = this.announcementForm ? this.announcementForm.value : '';
-    if (this.announcementForm.status === 'VALID' && (data.links.length || data.description
-      || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
+    const emptyLinkArray = _.filter(data.links, (links) => {
+      return links.url === '';
+    });
+    if (data.title.length && data.from.length && data.type.length && ((data.links.length && emptyLinkArray.length === 0)
+      || data.description.length || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
@@ -290,7 +297,15 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges.subscribe(val => {
+    this.announcementForm.valueChanges
+    .map((value) => {
+        value.title = value.title.trim();
+        value.from = value.from.trim();
+        value.description = value.description.trim();
+        return value;
+    })
+    .filter((value) => this.announcementForm.valid)
+    .subscribe((value) => {
       this.enableSelectRecipientsBtn();
     });
   }
@@ -369,8 +384,8 @@ export class CreateComponent implements OnInit, OnDestroy {
       },
       (error: ServerResponse) => {
         this.toasterService.error(this.resource.messages.emsg.m0005);
-        // Close announcement form and redirect user to outbox page
-        this.closeAnnouncementModal.nativeElement.click();
+        this.createModal.deny();
+        this.redirectToOutbox();
       }
     );
   }
@@ -386,22 +401,22 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.initializeFormFields();
         const routeParam = this.activatedRoute.snapshot.params;
         this.stepNumber = routeParam.stepNumber ? +routeParam.stepNumber : 1;
+        this.setAnnouncementTypes();
         if (routeParam.identifier) {
           this.identifier = routeParam.identifier;
           this.getAnnouncementDetails();
         } else {
           this.onFormValueChanges();
         }
-        this.setAnnouncementTypes();
         this.navigateToWizardNumber(1);
       } else if (user && user.err) {
         this.showAnnouncementForm = false;
         this.toasterService.error(this.resource.messages.emsg.m0005);
       }
     });
-  }
 
-  ngOnDestroy() {
-    this.closeAnnouncementModal.nativeElement.click();
+    this.fileUpload.uploadEvent.subscribe(uploadData => {
+      this.enableSelectRecipientsBtn();
+    });
   }
 }

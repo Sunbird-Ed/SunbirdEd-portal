@@ -1,12 +1,13 @@
-import { Injectable, Input } from '@angular/core';
+import {Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ICard, IUserData } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash';
 @Injectable()
 export class WorkSpaceService {
   /**
@@ -17,7 +18,6 @@ export class WorkSpaceService {
    * Reference of content service.
   */
   public content: ContentService;
-
   /**
     * To navigate to other pages
   */
@@ -28,10 +28,12 @@ export class WorkSpaceService {
     * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
     * @param {ConfigService} config ConfigService reference
+    * @param {UserService} userService userService reference
     * @param {HttpClient} http HttpClient reference
   */
   constructor(config: ConfigService, content: ContentService,
@@ -109,12 +111,44 @@ export class WorkSpaceService {
    * @param {string}  state - Present state
   */
   openGenericEditor(content, state) {
-    if (this.config.appConfig.WORKSPACE.states.includes(state)) {
+   if (this.config.appConfig.WORKSPACE.states.includes(state)) {
       this.route.navigate(['/workspace/content/edit/generic/', content.identifier, state, content.framework]);
     } else {
       if (state === 'review') {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'upForReview') {
+        this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
+      } else if (state === 'flagged') {
+        this.route.navigate(['workspace/content/flag/content', content.identifier]);
       }
     }
+  }
+
+  getDataForCard(data, staticData, dynamicFields, metaData) {
+    const list: Array<ICard> = [];
+    _.forEach(data, (item, key) => {
+      const card = {
+        name: item.name,
+        image: item.appIcon,
+        description: item.description
+      };
+      _.forIn(staticData, (value, key1) => {
+        card[key1] = value;
+      });
+      _.forIn(metaData, (value, key1) => {
+        card[key1] = _.pick(item, value);
+      });
+        _.forIn(dynamicFields, (fieldData, fieldName) => {
+          const value = _.pick(item, fieldData);
+          _.forIn(value, (val1, key1) => {
+            const name = _.zipObjectDeep([fieldName], [val1]);
+            _.forIn(name, (values, index) => {
+              card[index] =  _.merge(name[index], card[index]);
+            });
+          });
+        });
+      list.push(card);
+    });
+    return <ICard[]>list;
   }
 }

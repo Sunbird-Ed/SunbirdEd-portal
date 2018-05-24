@@ -21,7 +21,7 @@ export class ConceptPickerService {
   /**
    * concepts list
    */
-  concepts = [];
+  private _concepts = [];
   /**
     * Constructor to create injected service(s) object
     * @param {SearchService} searchService Reference of SearchService
@@ -49,7 +49,7 @@ export class ConceptPickerService {
       (apiResponse: ServerResponse) => {
         if (apiResponse.result && _.isArray(apiResponse.result.concepts)) {
           _.forEach(apiResponse.result.concepts, (value) => {
-            this.concepts.push(value);
+            this._concepts.push(value);
           });
           if ((apiResponse.result.count > offset) && apiResponse.result.count > (offset + limit)) {
             offset += limit;
@@ -90,7 +90,7 @@ export class ConceptPickerService {
                 const dimension = {};
                 dimension['id'] = val['id'];
                 dimension['name'] = val['name'];
-                dimension['nodes'] = this.getChild(val.id, this.concepts);
+                dimension['nodes'] = this.getChild(val.id, this._concepts);
                 domainChild.push(dimension);
               });
             domain['nodes'] = domainChild;
@@ -103,6 +103,10 @@ export class ConceptPickerService {
         this.toasterService.error(this.resourceService.messages.fmsg.m0015);
       }
     );
+  }
+
+  get concepts() {
+    return  this._concepts;
   }
   /**
    *  Get child recursively

@@ -1,0 +1,14 @@
+{
+    "id": "org.sunbird.header",
+    "ver": "1.0",    
+    "author": "Manjunath Davanam",    
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+    	"header": [{
+    		"templateURL": "editor/partials/headerTemplate.html",
+    		"controllerURL": "editor/headerApp.js"
+    	}]
+    }
+}

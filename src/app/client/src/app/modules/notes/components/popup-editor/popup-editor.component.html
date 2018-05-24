@@ -29,7 +29,7 @@
     <button *ngIf="mode === 'create'" class="ui secondary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit" (click)="clearNote()"
       tabindex="4">CLEAR</button>
 
-    <button *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+    <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
       (click)="modal.approve('done'); updateNote()" tabindex="4">UPDATE</button>
   </div>
 </sui-modal>
