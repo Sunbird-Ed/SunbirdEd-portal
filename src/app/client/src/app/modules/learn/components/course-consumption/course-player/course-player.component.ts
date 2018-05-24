@@ -107,25 +107,24 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
-        return this.getCourseHierarchy(params.courseId);
-      })
-      .do((response) => {
+        return this.courseConsumptionService.getCourseHierarchy(params.courseId);
+      }).subscribe((response) => {
+        this.courseHierarchy = response;
         if (this.batchId) {
           this.enrolledCourse = true;
-          this.parseChildContent(response.data);
-          this.fetchContentStatus(response.data);
-          this.subscribeToQueryParam(response.data);
+          this.parseChildContent(response);
+          this.fetchContentStatus(response);
+          this.subscribeToQueryParam(response);
         } else if (this.courseStatus === 'Unlisted') {
-          this.parseChildContent(response.data);
-          this.subscribeToQueryParam(response.data);
+          this.parseChildContent(response);
+          this.subscribeToQueryParam(response);
         } else {
-          this.parseChildContent(response.data);
+          this.parseChildContent(response);
         }
-      })
-      .subscribe((data) => {
-        this.collectionTreeNodes = data;
+        this.collectionTreeNodes = { data: response };
         this.loader = false;
       }, (error) => {
+        this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
   }
@@ -236,13 +235,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
     }
   }
-  private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.courseConsumptionService.getCourseHierarchy(collectionId)
-      .map((response) => {
-        this.courseHierarchy = response;
-        return { data: response };
-      });
-  }
+
   closeContentPlayer() {
     if (this.enableContentPlayer === true) {
       const navigationExtras: NavigationExtras = {

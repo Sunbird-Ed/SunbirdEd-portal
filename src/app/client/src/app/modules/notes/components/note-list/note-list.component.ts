@@ -138,6 +138,7 @@ export class NoteListComponent implements OnInit {
     this.modalService = modalService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    // this.route.onSameUrlNavigation = 'reload';
   }
   /**
    * To initialize notesList and showDelete.
@@ -151,6 +152,7 @@ export class NoteListComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.contentId = params.contentId;
       this.courseId = params.courseId;
+      this.batchId = params.batchId;
     });
     this.getAllNotes();
   }
@@ -234,15 +236,13 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.activatedRoute.params.subscribe(params => {
-      this.batchId = params.batchId;
-    });
-    this.activatedRoute.url.subscribe(url => {
-      if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/', this.courseId, this.batchId]);
-      } else {
-        this.route.navigate(['/resources/play/content/', this.contentId]);
-      }
-    });
+    if (this.batchId) {
+      const navigationExtras = {
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    } else {
+      this.route.navigate(['/resources/play/content/', this.contentId]);
+    }
   }
 }
