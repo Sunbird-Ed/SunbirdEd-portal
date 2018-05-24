@@ -1,4 +1,42 @@
 {
+
+"Telemetry": {
+  "Announcement": {
+    "services": {
+      "getInboxdata":{
+        "log": {
+          "edata": {
+            "type": "api_call",
+            "level": "INFO",
+            "message": "api call inbox data successfully",
+            "pageid": "Announcement"
+          }
+        }
+      },
+      "getOutboxData":{
+        "log": {
+          "edata": {
+            "type": "api_call",
+            "level": "INFO",
+            "message": "api call outbox data successfully",
+            "pageid": "Announcement"
+          }
+        }
+      },
+      "deleteAnnouncement":{
+        "log": {
+          "edata": {
+            "type": "api_call",
+            "level": "INFO",
+            "message": "api call delete data successfully",
+            "pageid": "Announcement"
+          }
+        }
+      }
+    }
+  }
+},
+
   "Course": {
     "otherCourse": {
       "constantData": {
