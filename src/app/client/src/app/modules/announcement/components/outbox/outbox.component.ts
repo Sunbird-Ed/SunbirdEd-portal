@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
@@ -111,7 +111,7 @@ export class OutboxComponent implements OnInit {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService, private cdr: ChangeDetectorRef ) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -188,6 +188,7 @@ export class OutboxComponent implements OnInit {
          pageid: pageId
        }
      };
+    this.cdr.detectChanges();
    }
   /**
    * This method calls the populateOutboxData to show outbox list.

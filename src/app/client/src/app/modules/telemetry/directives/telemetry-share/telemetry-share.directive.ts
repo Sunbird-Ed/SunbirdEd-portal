@@ -31,7 +31,6 @@ export class TelemetryShareDirective implements OnInit {
     }
   }
   share() {
-    console.log('call TelemetryShare method ');
     this.telemetryService.share(this.appTelemetryShare);
   }
 }
