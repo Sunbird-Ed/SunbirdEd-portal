@@ -51,6 +51,9 @@
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"
+      ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
       ]
     },
     "module": "es2015",

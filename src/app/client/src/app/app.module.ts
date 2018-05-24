@@ -21,6 +21,7 @@ import { PublicModule } from '@sunbird/public';
 import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
+import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import * as $ from 'jquery';
     PublicModule,
     ProfileModule,
     SearchModule,
-    DiscussionModule
+    DiscussionModule,
+    TelemetryModule
   ],
   providers: [],
   entryComponents: [AppComponent],

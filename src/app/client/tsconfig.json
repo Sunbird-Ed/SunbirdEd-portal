@@ -42,6 +42,9 @@
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"
+      ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
       ]
     },
     "sourceMap": true,
