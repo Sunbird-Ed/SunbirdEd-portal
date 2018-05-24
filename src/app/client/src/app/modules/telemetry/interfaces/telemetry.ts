@@ -46,7 +46,7 @@ export interface IEndEventData {
 export interface ILogEventData {
   'type': string;
   'level': string;
-  'message': string;
+  'message'?: string;
   'pageid'?: string;
   'params'?: Array<{}>;
 }
@@ -113,6 +113,7 @@ export interface IImpressionEventInput {
     'id': string;
     'type': string;
     'ver'?: string;
+    'section'?: string;
     'rollup'?: {};
   };
   'edata': IImpressionEventData;

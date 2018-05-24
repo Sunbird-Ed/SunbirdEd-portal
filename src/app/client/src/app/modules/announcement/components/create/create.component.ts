@@ -1,6 +1,6 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren , ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -9,7 +9,7 @@ import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { IEndEventInput, IStartEventInput, IInteractEventInput } from '@sunbird/telemetry';
+import { IEndEventInput, IStartEventInput, IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * This component helps to create and resend announcement
  */
@@ -78,17 +78,18 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
-   /**
-   * It contains telemetryInteract event data
+  /**
+   * telemetryInteract event data
    */
   telemetryInteract: IInteractEventInput;
-   /**
-   * It contains telemetryStart event data
-   */
-  telemetryStart: IStartEventInput;
   /**
-   * It contains telemetryEnd event data
-   */
+	 * telemetryInteract
+	*/
+  telemetryImpression: IImpressionEventInput;
+
+  // telemetryEnd: any;
+  telemetryStart: IStartEventInput;
+  // public telemetryEnd$: Observable<IEndEventInput>;
   public telemetryEnd: IEndEventInput;
   /**
    * To show / hide modal
@@ -153,7 +154,7 @@ export class CreateComponent implements OnInit {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef) {
+    private elRef: ElementRef, config: ConfigService) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -318,7 +319,7 @@ export class CreateComponent implements OnInit {
     };
     this.telemetryEnd = endEvent;
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
-    this.cdr.detectChanges();
+    console.log(this.telemetryEnd);
     this.route.navigate(['announcement/outbox/1']);
   }
 /**
@@ -476,6 +477,24 @@ export class CreateComponent implements OnInit {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
         mode:  this.activatedRoute.snapshot.data.telemetry.mode
+      }
+    };
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+       object: {
+        id: this.identifier ?  this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.env,
+        section: 'outbox'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.identifier ? this.activatedRoute.snapshot.data.telemetry.uri + this.identifier + '/' + this.stepNumber :
+        this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
     this.fileUpload.uploadEvent.subscribe(uploadData => {
