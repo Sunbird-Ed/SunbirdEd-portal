@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-
+import { IInteractEventInput } from '@sunbird/telemetry';
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -87,8 +87,10 @@ export class OutboxComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-
-  public telemetryIntract: any;
+/**
+ * telemetryInteract event
+ */
+  telemetryInteract: IInteractEventInput;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -117,7 +119,6 @@ export class OutboxComponent implements OnInit {
     this.paginationService = paginationService;
     this.toasterService = toasterService;
     this.config = config;
-    this.telemetryIntract = {};
   }
 
   /**
@@ -168,7 +169,26 @@ export class OutboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
-
+/**
+ * get Interact Data
+ */
+  interactData(id, pageId, type) {
+    this.telemetryInteract = {
+       context: {
+         env: this.activatedRoute.snapshot.data.telemetry.env
+       },
+       object: {
+         id: '',
+         type: this.activatedRoute.snapshot.data.telemetry.object.type,
+         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+       },
+       edata: {
+         type: type,
+         id: id,
+         pageid: pageId
+       }
+     };
+   }
   /**
    * This method calls the populateOutboxData to show outbox list.
    * It also changes the status of a deleted announcement to cancelled.

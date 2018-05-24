@@ -147,7 +147,7 @@
         <div *ngIf="stepNumber === 3" class="ui list ui grid">
           <div class="eight wide column create-ann-form-scroller">
             <div class="ui message padding-10" *ngFor="let item of recipientsList">
-              <i class="close icon" (click)="removeRecipient(item);"></i>
+              <i class="close icon" (click)="removeRecipient(item);interactData('remove-recipent', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract"></i>
               <span class="create-ann-Selected-secepient">{{item.location}}</span>
             </div>
           </div>

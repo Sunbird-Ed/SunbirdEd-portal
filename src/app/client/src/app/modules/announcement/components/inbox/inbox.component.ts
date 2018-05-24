@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
 /**
  * The announcement inbox component displays all
  * the announcement which is received by the logged in user
@@ -84,7 +84,10 @@ export class InboxComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-
+  /**
+ * telemetryInteract event
+ */
+  telemetryInteract: IInteractEventInput;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -195,6 +198,26 @@ export class InboxComponent implements OnInit {
     this.route.navigate(['announcement/inbox', this.pageNumber]);
   }
 
+/**
+ * get Interact Data
+ */
+  interactData(id, pageId, type) {
+    this.telemetryInteract = {
+       context: {
+         env: this.activatedRoute.snapshot.data.telemetry.env
+       },
+       object: {
+         id: '',
+         type: this.activatedRoute.snapshot.data.telemetry.object.type,
+         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+       },
+       edata: {
+         type: type,
+         id: id,
+         pageid: pageId
+       }
+     };
+   }
   /**
    * This method calls the populateInboxData to show inbox list.
 	 */
