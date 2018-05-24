@@ -26,14 +26,9 @@ export class TelemetryEndDirective implements OnInit, OnChanges {
   ngOnChanges() {
     console.log(this.appTelemetryEnd);
     if (this.appTelemetryEnd) {
-       this.telemetryEnd();
+       this.telemetryService.end(this.appTelemetryEnd);
     }
   }
   ngOnInit() {
-    console.log(this.appTelemetryEnd);
-  }
-  telemetryEnd() {
-    console.log('call TelemetryEnd method ', this.appTelemetryEnd);
-    this.telemetryService.end(this.appTelemetryEnd);
   }
 }

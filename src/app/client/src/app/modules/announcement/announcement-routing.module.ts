@@ -10,10 +10,12 @@ const objectType = 'announcement';
 const routes: Routes = [
   {
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
-    data: { telemetry: {
-      env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', object: {  type: objectType, ver: '1.0' }
-    }, roles : 'announcement',
-    breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }] },
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', object: { type: objectType, ver: '1.0' }
+      }, roles: 'announcement',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }]
+    },
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },
       { path: 'view/:announcementId', component: DetailsPopupComponent }
@@ -21,20 +23,35 @@ const routes: Routes = [
   },
   {
     path: 'announcement/inbox/:pageNumber', component: InboxComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Announcements', url: '' }] },
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'announcement-list', subtype: 'Paginate', type: 'list', object: { type: objectType, ver: '1.0' }
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Announcements', url: '' }]
+    },
     children: [
-      { path: 'view/:announcementId', component: DetailsPopupComponent }
+      { path: 'view/:announcementId', component: DetailsPopupComponent, data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'announcement-read',  type: 'view', object: { type: objectType, ver: '1.0' }
+      } } }
     ]
   },
   {
     path: 'announcement/create/:stepNumber', component: CreateComponent,
-    canActivate: [AuthGuard], data: { telemetry: {env: telemetryEnv, pageid: 'announcement-create',
-    type: 'workflow',  mode: 'create', object: {  type: objectType, ver: '1.0' }}, roles : 'announcement'}
+    canActivate: [AuthGuard], data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'announcement-create',
+        type: 'workflow', mode: 'create', object: { type: objectType, ver: '1.0' }
+      }, roles: 'announcement'
+    }
   },
   {
     path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent,
-    canActivate: [AuthGuard], data: { telemetry: {env: telemetryEnv, pageid: 'announcement-resend',
-    type: 'workflow',  mode: 'resend', object: {  type: objectType, ver: '1.0' }}, roles : 'announcement'}
+    canActivate: [AuthGuard], data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'announcement-resend',
+        type: 'workflow', mode: 'resend', object: { type: objectType, ver: '1.0' }
+      }, roles: 'announcement'
+    }
   }
 ];
 
