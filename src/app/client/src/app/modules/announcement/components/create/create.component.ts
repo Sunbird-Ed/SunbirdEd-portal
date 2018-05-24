@@ -78,7 +78,7 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
-  telemetryIntract: IInteractEventInput;
+  telemetryInteract: IInteractEventInput;
   // telemetryEnd: any;
   telemetryStart: IStartEventInput;
   // public telemetryEnd$: Observable<IEndEventInput>;
@@ -156,21 +156,6 @@ export class CreateComponent implements OnInit {
     this.createService = createService;
     this.user = user;
     this.config = config;
-    this.telemetryIntract = {
-      context: {
-        env: 'announcement'
-      },
-      object: {
-        id: '',
-        type: 'announcement',
-        ver: '1.0'
-      },
-      edata: {
-        id: 'create-announcement',
-        type: 'CLICK',
-        pageid: 'announcement-create',
-      }
-    };
   }
 
   /**
@@ -328,6 +313,26 @@ export class CreateComponent implements OnInit {
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
     console.log(this.telemetryEnd);
     this.route.navigate(['announcement/outbox/1']);
+  }
+
+  interactData(id, pageId, type) {
+   this.telemetryInteract = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: type,
+        subtype: '',
+        id: id,
+        pageid: pageId
+      }
+    };
+    console.log('telemetryIntract', this.telemetryIntract);
   }
   /**
    * Function used to detect form input value changes.
