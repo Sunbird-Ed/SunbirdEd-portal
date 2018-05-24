@@ -1,4 +1,3 @@
-import { response } from './../../../profile/components/user-experience/edit-experience/edit-experience.component.spec.data';
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -132,9 +131,9 @@ describe('OrganisationComponent', () => {
     const selectedOrgId = 'do_2124319530479697921602';
     component.datasetType = creationDataset;
     component.identifier = 'do_21243195304796979216021'; // Previously selected org
-    const serResponse = component.onAfterOrgChange(selectedOrgId, 'Org 1');
+    const response = component.onAfterOrgChange(selectedOrgId, 'Org 1');
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.identifier === selectedOrgId).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, 'creation', selectedOrgId, '7d']);
   }));
@@ -145,9 +144,9 @@ describe('OrganisationComponent', () => {
     // Selected org.
     const selectedOrgId = 'do_2124319530479697921602';
     // If both org are same then it should not load data again
-    const serResponse = component.onAfterOrgChange('do_2124319530479697921602', 'Test 1');
+    const response = component.onAfterOrgChange('do_2124319530479697921602', 'Test 1');
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.identifier === selectedOrgId).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
@@ -157,9 +156,9 @@ describe('OrganisationComponent', () => {
     component.identifier = 'do_1234';
     component.timePeriod = '7d'; // Previous timePeriod
     const selectedTimePeriod = '14'; // Selected timePeriod
-    const serResponse = component.onAfterFilterChange(selectedTimePeriod);
+    const response = component.onAfterFilterChange(selectedTimePeriod);
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.timePeriod === selectedTimePeriod).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, selectedTimePeriod]);
   }));
@@ -167,18 +166,18 @@ describe('OrganisationComponent', () => {
   it('should display selected timePeriod data', inject([Router], (router) => {
     component.timePeriod = '7d'; // Previous timePeriod
     const selectedTimePeriod = '7d'; // Selected timePeriod
-    const serResponse = component.onAfterFilterChange(selectedTimePeriod);
+    const response = component.onAfterFilterChange(selectedTimePeriod);
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.timePeriod === selectedTimePeriod).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
 
   it('should not change dataset type', inject([Router], (router) => {
     component.datasetType = consumptionDataset;
-    const serResponse = component.onAfterDatasetChange(consumptionDataset);
+    const response = component.onAfterDatasetChange(consumptionDataset);
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.datasetType === consumptionDataset).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   }));
@@ -186,9 +185,9 @@ describe('OrganisationComponent', () => {
   it('should not change dataset type', inject([Router], (router) => {
     component.datasetType = consumptionDataset;
     component.identifier = 'do_123';
-    const serResponse = component.onAfterDatasetChange(creationDataset);
+    const response = component.onAfterDatasetChange(creationDataset);
     fixture.detectChanges();
-    expect(serResponse).toBeFalsy();
+    expect(response).toBeFalsy();
     expect(component.datasetType === creationDataset).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, creationDataset, component.identifier, '7d']);
   }));
