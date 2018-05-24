@@ -314,7 +314,9 @@ export class CreateComponent implements OnInit {
     console.log(this.telemetryEnd);
     this.route.navigate(['announcement/outbox/1']);
   }
-
+/**
+ * get Interact Data
+ */
   interactData(id, pageId, type) {
    this.telemetryInteract = {
       context: {
@@ -327,12 +329,10 @@ export class CreateComponent implements OnInit {
       },
       edata: {
         type: type,
-        subtype: '',
         id: id,
         pageid: pageId
       }
     };
-    console.log('telemetryIntract', this.telemetryInteract);
   }
   /**
    * Function used to detect form input value changes.
