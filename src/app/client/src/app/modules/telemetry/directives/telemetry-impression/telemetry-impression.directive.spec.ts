@@ -26,3 +26,4 @@ describe('TelemetryImpressionDirective', () => {
     expect(telemetryService.impression).toHaveBeenCalled();
   });
 });
+
