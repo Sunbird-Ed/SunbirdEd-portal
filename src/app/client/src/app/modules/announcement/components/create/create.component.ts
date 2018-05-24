@@ -308,28 +308,26 @@ export class CreateComponent implements OnInit {
    * Function gets executed when user click close icon of announcement form
    */
   redirectToOutbox(): void {
-  this.route.navigate(['announcement/outbox/1']);
-  }
-  telemetryEndTest(): void {
     const endEvent = {
       object: {
-        id: this.identifier,
-        type: 'announcement',
-        ver: '1.0'
+       id: this.identifier ? this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       context: {
-        env: 'announcement'
+        env: this.activatedRoute.snapshot.data.telemetry.env
       },
       edata: {
-        type: 'workflow',
-        mode: 'edit',
-        pageid: 'announcement-outbox',
-        contentId: this.identifier
+       type: this.activatedRoute.snapshot.data.telemetry.type,
+       pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
+       mode: 'create',
+       contentId: this.identifier
       }
     };
     this.telemetryEnd = endEvent;
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
     console.log(this.telemetryEnd);
+    this.route.navigate(['announcement/outbox/1']);
   }
 
   intractData(id, pageId) {
@@ -488,7 +486,6 @@ export class CreateComponent implements OnInit {
         mode:  this.activatedRoute.snapshot.data.telemetry.mode
       }
     };
-    console.log(this.telemetryStart);
     this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });

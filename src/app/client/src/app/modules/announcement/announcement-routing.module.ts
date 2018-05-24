@@ -10,7 +10,9 @@ const objectType = 'announcement';
 const routes: Routes = [
   {
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
-    data: { roles : 'announcement',
+    data: { telemetry: {
+      env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', object: {  type: objectType, ver: '1.0' }
+    }, roles : 'announcement',
     breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }] },
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },

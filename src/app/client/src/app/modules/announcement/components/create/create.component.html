@@ -223,8 +223,8 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div class="ui primary basic button announcement-button btn-width-34"  (click)="cancelModal.deny();redirectToOutbox();">{{resource?.frmelmnts?.btn?.yes}}</div>
-          <div class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create'"  [appTelemetryEnd]= "telemetryEnd">{{resource?.frmelmnts?.btn?.no}}</div>
+          <div class="ui primary basic button announcement-button btn-width-34"  (click)="cancelModal.deny();redirectToOutbox();" [appTelemetryEnd]= "telemetryEnd" >{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create';"  >{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>
     </div>
