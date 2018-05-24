@@ -332,7 +332,7 @@ export class CreateComponent implements OnInit {
         pageid: pageId
       }
     };
-    console.log('telemetryIntract', this.telemetryIntract);
+    console.log('telemetryIntract', this.telemetryInteract);
   }
   /**
    * Function used to detect form input value changes.

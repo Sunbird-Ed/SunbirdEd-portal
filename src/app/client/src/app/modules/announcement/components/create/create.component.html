@@ -162,15 +162,15 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1)); intractData('announcement-back', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryIntract">
+    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1)); interactData('announcement-back', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract">
       <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
-    <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients();intractData('confirm-recipent', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryIntract">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage();intractData('preview-announcement', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryIntract">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
-    <button type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true;intractData('send-announcement', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryIntract"
+    <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients();interactData('confirm-recipent', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract">{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
+    <div class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage();interactData('preview-announcement', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract">{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
+    <button type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true;interactData('send-announcement', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract"
       [disabled]="formErrorFlag">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</button>
     <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber === 1" class="ui primary button"
-      (click)="navigateToWizardNumber(2);intractData('edit-recipent', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryIntract">
+      (click)="navigateToWizardNumber(2);interactData('edit-recipent', 'announcement-create', 'CLICK')" [appTelemetryInteract]="telemetryInteract">
       {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
   </div>
