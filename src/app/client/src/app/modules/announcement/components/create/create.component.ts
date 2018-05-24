@@ -331,6 +331,26 @@ export class CreateComponent implements OnInit {
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
     console.log(this.telemetryEnd);
   }
+
+  intractData(id, pageId) {
+   this.telemetryIntract = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: 'CLICK',
+        subtype: '',
+        id: id,
+        pageid: pageId
+      }
+    };
+    console.log('telemetryIntract', this.telemetryIntract);
+  }
   /**
    * Function used to detect form input value changes.
    * Set meta data modified flag to true when user enter new value
