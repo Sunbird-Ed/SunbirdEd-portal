@@ -75,7 +75,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       queryParams: { 'contentId': this.lastPlayedContentId },
       relativeTo: this.activatedRoute
     };
-    this.router.navigate([], navigationExtras);
+    this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
   }
 
   flagCourse() {
