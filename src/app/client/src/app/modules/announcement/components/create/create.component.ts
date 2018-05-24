@@ -78,7 +78,7 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
-  telemetryIntract: IInteractEventInput;
+  telemetryInteract: IInteractEventInput;
   // telemetryEnd: any;
   telemetryStart: IStartEventInput;
   // public telemetryEnd$: Observable<IEndEventInput>;
@@ -156,21 +156,6 @@ export class CreateComponent implements OnInit {
     this.createService = createService;
     this.user = user;
     this.config = config;
-    this.telemetryIntract = {
-      context: {
-        env: 'announcement'
-      },
-      object: {
-        id: '',
-        type: 'announcement',
-        ver: '1.0'
-      },
-      edata: {
-        id: 'create-announcement',
-        type: 'CLICK',
-        pageid: 'announcement-create',
-      }
-    };
   }
 
   /**
@@ -330,8 +315,8 @@ export class CreateComponent implements OnInit {
     this.route.navigate(['announcement/outbox/1']);
   }
 
-  intractData(id, pageId) {
-   this.telemetryIntract = {
+  interactData(id, pageId, type) {
+   this.telemetryInteract = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
@@ -341,7 +326,7 @@ export class CreateComponent implements OnInit {
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       edata: {
-        type: 'CLICK',
+        type: type,
         subtype: '',
         id: id,
         pageid: pageId
