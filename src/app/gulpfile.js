@@ -78,6 +78,7 @@ gulp.task('prepare:app:dist', () => {
     'themes/**/*',
     'package.json',
     'package-lock.json',
+    'content-plugins/**/*',
     'server.js'], { 'base': '.' })
         .pipe(gulp.dest('./app_dist'))
 })
