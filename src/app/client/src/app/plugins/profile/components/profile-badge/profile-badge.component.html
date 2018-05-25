@@ -1,4 +1,4 @@
-<div class="ui raised segment margin-top-20 margin-bottom-0">
+<div *ngIf="badgeArray && badgeArray.length > 0" class="ui raised segment margin-top-20 margin-bottom-0">
   <!--  ng-if="isprofileinfo" -->
   <div class="header padding-none">
     <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
