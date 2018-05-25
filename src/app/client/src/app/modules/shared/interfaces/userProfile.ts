@@ -7,7 +7,7 @@ export interface IUserProfile {
     missingFields?: Array<string>;
     badgeAssertions?: Array<string>;
     lastName: string;
-    webPages: Array<{type: string, url: string}>;
+    webPages: Array<{ type: string, url: string }>;
     tcStatus: any;
     loginId: string;
     education: Array<IEducation>;
@@ -52,9 +52,10 @@ export interface IUserProfile {
     location: string;
     status: number | string;
     userRoles?: Array<string>;
-    orgRoleMap?: {[key: string]: Array<string>};
-    roleOrgMap?: {[key: string]: string};
+    orgRoleMap?: { [key: string]: Array<string> };
+    roleOrgMap?: { [key: string]: string };
     organisationIds?: Array<string>;
+    organisationNames?: Array<string>;
 }
 export interface IJobProfile {
     jobName: string;
@@ -135,11 +136,25 @@ export interface IEducation {
 export interface ISkill {
     skillName: string;
     addedAt: string;
-    endorsersList: Array<{endorseDate: string, userId: string}>;
+    endorsersList: Array<{ endorseDate: string, userId: string }>;
     addedBy: string;
     endorsementcount: number;
     id: string;
     skillNameToLowercase: string;
     userId: string;
+}
+export interface IBasicInfo {
+    id: string;
+    firstName: string;
+    lastName?: string;
+    phone?: string;
+    email?: string;
+    gender?: string;
+    dob?: string;
+    location?: string;
+    grade?: Array<string>;
+    language: Array<string>;
+    subject?: Array<string>;
+    webPages?: Array<{ type: string, url: string }>;
 }
 

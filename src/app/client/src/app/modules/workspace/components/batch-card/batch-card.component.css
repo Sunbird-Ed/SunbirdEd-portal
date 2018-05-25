@@ -1,0 +1,33 @@
+.ui.cards>.card.workspace-card {
+    width: 240px;
+}
+
+.ui.image {
+    height: 150px;
+    overflow:hidden;
+}
+.batch-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    width: 100%;
+    margin: 0;
+    max-height: 70px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+}
+.batch-content-description {
+    text-transform: capitalize;
+    text-align: left;
+    font-family: 'sunbirdboldfont';
+    font-size: 1.1875em;
+    padding-left: 10px;
+}
+.batch-content-meta {
+    font-family: 'sunbirdregularfont';
+    font-size: 0.875em;
+    color: #7c7b7b;
+}

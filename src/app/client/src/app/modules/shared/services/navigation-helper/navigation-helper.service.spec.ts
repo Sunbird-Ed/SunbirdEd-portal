@@ -11,11 +11,20 @@ class RouterStub {
     {id: 2, url: '/home', urlAfterRedirects: '/home', toString: () =>  'home' }
   ]);
 }
+const fakeActivatedRoute = {
+  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  'root': {
+    children: [{snapshot: {
+      queryParams: {}
+    }}]
+  }
+};
 describe('NavigationHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule],
       providers: [NavigationHelperService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute},
         { provide: Router, useClass: RouterStub }]
     });
   });

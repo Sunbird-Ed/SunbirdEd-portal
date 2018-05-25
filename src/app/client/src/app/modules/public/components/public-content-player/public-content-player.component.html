@@ -1,0 +1,79 @@
+<div id="content-player" class="ui stackable grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div class='margin-top--5 videosegment ui segment'>
+      <div class='content-player-body'>
+        <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
+          <div class="ui grid">
+            <div class="row margin-auto padding-bottom-none">
+              <div class="twelve wide column">
+                <div class="ten wide column" id="player-auto-scroll">
+                  <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
+                    {{contentData.name}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-auto padding-top-none">
+              <div class="twelve wide column"></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
+
+          <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+
+          <div class="twelve wide column contentMetaSection">
+            <div class="ui grid margin-top-10">
+              <div class="row">
+                <div class="three wide column "></div>
+                <div class="six wide column center aligned">
+                  <div class="ui grid">
+                    <div class="row">
+                      <div class="four wide column "></div>
+                      <div class="four wide column ">
+                        <h2 class="ui centered aligned icon tiny header toc-note"></h2>
+                      </div>
+                    </div>
+                    <div class="four wide column"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="three wide column"></div>
+            <div class="twelve wide column">
+              <div class="ui divider"></div>
+            </div>
+            <div class="ui stackable grid">
+              <div class="eight wide column">
+                <div class="row">
+                  <div class="twelve wide column">
+                    <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showError">
+          <div class="ui active dimmer inverted">
+            <div class="content">
+              <div class="center">
+                <h2 class="ui header red">
+                  {{errorMessage}}
+                </h2>
+                <span>
+                  <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
+                </span>
+                <span>
+                  <button class="ui red button" (click)="close()">{{resourceService.frmelmnts.btn.close}}</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>

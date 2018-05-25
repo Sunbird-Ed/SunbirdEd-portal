@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { NotesModule } from '@sunbird/notes';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -24,7 +25,7 @@ import * as $ from 'jquery';
 // portal-extensions
 import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
 import { WebExtensionsConfig } from './framework.config';
-
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   declarations: [
     AppComponent
@@ -42,6 +43,7 @@ import { WebExtensionsConfig } from './framework.config';
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
+    NotesModule,
     ResourceModule,
     LearnModule,
     WorkspaceModule,
@@ -50,8 +52,9 @@ import { WebExtensionsConfig } from './framework.config';
     SearchModule,
     DiscussionModule,
     WebExtensionModule,
+    BadgingModule,
     ...WebExtensionsConfig.plugins.map((data) => data.module)
-    ],
+  ],
   providers: [],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]

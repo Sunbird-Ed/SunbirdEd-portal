@@ -5,9 +5,15 @@ import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LearnPageComponent } from './components';
+import {
+  LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
+  CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
+  UpdateCourseBatchComponent, CarriculumCardComponent } from './components';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
+import { NotesModule } from '@sunbird/notes';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,8 +23,13 @@ import { DiscussionModule } from '@sunbird/discussion';
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    DiscussionModule
+    DiscussionModule,
+    ReactiveFormsModule,
+    NotesModule
   ],
-  declarations: [LearnPageComponent]
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
+  declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
+    CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
+    UpdateCourseBatchComponent, CarriculumCardComponent]
 })
 export class LearnModule { }

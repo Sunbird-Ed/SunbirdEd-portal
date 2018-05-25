@@ -11,16 +11,40 @@ import { ProfileService } from '../../../services';
   styleUrls: ['./edit-user-address.component.css']
 })
 export class EditUserAddressComponent implements OnInit {
+  /**
+  * Reference of Input annotation
+  */
   @Input() address: any;
+  /**
+  * Reference of formgroup
+  */
   addressForm: FormGroup;
+  /**
+  * Reference of output event emitter to communicate between parent component
+  */
   @Output() addressChange = new EventEmitter();
+  /**
+  * Booloean value to enable/disable radio butoon field
+  */
   public isPermanent: boolean;
+  /**
+  * Booloean value to enable/disable radio butoon field
+  */
   public isCurrent: boolean;
+  /**
+  * Booloean value to hide/show div
+  */
   public isEdit = false;
+  /**
+  * Reference of User Profile interface
+  */
   userProfile: IUserProfile;
   constructor(private fb: FormBuilder, public resourceService: ResourceService, public userService: UserService,
     public profileService: ProfileService, public windowScrollService: WindowScrollService) { }
-
+  /**
+  * Invokes user service to fetch user profile data
+  * It also creates instance of FOrmGroup
+  */
   ngOnInit() {
     this.windowScrollService.smoothScroll('address');
     this.userService.userData$.subscribe(
@@ -71,6 +95,9 @@ export class EditUserAddressComponent implements OnInit {
       });
     }
   }
+  /**
+  * This method is used to emit the form data values
+  */
   onAddressChange(type) {
     this.addressChange.emit();
   }

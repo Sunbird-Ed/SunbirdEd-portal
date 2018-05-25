@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
@@ -6,7 +6,7 @@ import {
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { UserService, FrameworkService, FormService } from '@sunbird/core';
+import { UserService, FrameworkService, FormService} from '@sunbird/core';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -16,9 +16,9 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
   templateUrl: './data-driven.component.html',
   styleUrls: ['./data-driven.component.css']
 })
-export class DataDrivenComponent implements OnInit {
+export class DataDrivenComponent implements OnInit, OnDestroy {
   @ViewChild('formData') formData: DefaultTemplateComponent;
-
+  @ViewChild('modal') modal;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -142,7 +142,12 @@ export class DataDrivenComponent implements OnInit {
         }
       });
   }
-  /**
+  ngOnDestroy() {
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
+  }
+/**
 * fetchFrameworkMetaData is gives form config data
 */
   fetchFrameworkMetaData() {
@@ -219,7 +224,7 @@ export class DataDrivenComponent implements OnInit {
       requestData.description = data.description ? data.description : 'Untitled Collection',
       requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName,
       requestData.createdBy = this.userProfile.id,
-      requestData.organisation = [],
+      requestData.organisation = this.userProfile.organisationNames,
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
@@ -229,13 +234,13 @@ export class DataDrivenComponent implements OnInit {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
     }
     if (this.resourceType) {
-      requestData.resourcetype = this.resourceType;
+      requestData.resourceType = this.resourceType;
     }
 
     return requestData;
   }
 
-  createContent() {
+createContent() {
     const state = 'draft';
     const framework = this.framework;
     const requestData = {
@@ -245,7 +250,7 @@ export class DataDrivenComponent implements OnInit {
       this.editorService.create(requestData).subscribe(res => {
         this.router.navigate(['/workspace/content/edit/content/', res.result.content_id, state, framework]);
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0010);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0078);
       });
     } else {
       this.editorService.create(requestData).subscribe(res => {

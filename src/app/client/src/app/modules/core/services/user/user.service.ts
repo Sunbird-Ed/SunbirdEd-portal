@@ -1,5 +1,6 @@
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
+import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UUID } from 'angular2-uuid';
@@ -44,9 +45,9 @@ export class UserService {
    * reference of lerner service.
    */
   public learner: LearnerService;
-    /**
-   * Contains hashTag id
-   */
+  /**
+ * Contains hashTag id
+ */
   private _hashTagId: string;
   /**
  * Reference of appId
@@ -64,20 +65,42 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-   /**
-   * constructor
-   * @param {ConfigService} config ConfigService reference
-   * @param {LearnerService} learner LearnerService reference
+  public _authenticated: boolean;
+  public anonymousSid: string;
+  /**
+   * Reference of content service.
    */
-  constructor(config: ConfigService, learner: LearnerService, private http: HttpClient) {
+  public contentService: ContentService;
+  /**
+   * Reference of orgNames
+   */
+  private orgNames: Array<string> = [];
+  /**
+  * constructor
+  * @param {ConfigService} config ConfigService reference
+  * @param {LearnerService} learner LearnerService reference
+  */
+  constructor(config: ConfigService, learner: LearnerService,
+    private http: HttpClient, contentService: ContentService) {
     this.config = config;
     this.learner = learner;
+    this.contentService = contentService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      this._authenticated = true;
     } catch (error) {
+      this._authenticated = false;
+      this.anonymousSid = UUID.UUID();
     }
   }
+  /**
+   * get method to fetch userid.
+   */
+  get authentication(): boolean {
+    return this._authenticated;
+  }
+
   /**
    * get method to fetch userid.
    */
@@ -107,15 +130,15 @@ export class UserService {
       }
     );
   }
-/**
-    * method to fetch appId and Ekstep_env from server.
-    */
-    public getAppIdEnv(): void {
-      const url = this.config.appConfig.APPID_EKSTEPENV;
-      this.http.get(url).subscribe((res: IAppIdEnv) => {
-        this._appId = res.appId;
-        this._env = res.ekstep_env;
-      },
+  /**
+      * method to fetch appId and Ekstep_env from server.
+      */
+  public getAppIdEnv(): void {
+    const url = this.config.appConfig.APPID_EKSTEPENV;
+    this.http.get(url).subscribe((res: IAppIdEnv) => {
+      this._appId = res.appId;
+      this._env = res.ekstep_env;
+    },
       (error) => {
         console.log(error);
       }
@@ -135,8 +158,10 @@ export class UserService {
     return this._env;
   }
 
-  public initialize() {
-    this.getUserProfile();
+  public initialize(loggedIn) {
+    if (loggedIn === true) {
+      this.getUserProfile();
+    }
     this.getAppIdEnv();
   }
   /**
@@ -162,10 +187,10 @@ export class UserService {
         if (org.organisationId) {
           organisationIds.push(org.organisationId);
         }
-        if (profileData.rootOrgId) {
-          organisationIds.push(profileData.rootOrgId);
-        }
       });
+    }
+    if (profileData.rootOrgId) {
+      organisationIds.push(profileData.rootOrgId);
     }
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._dims = _.concat(organisationIds, this.channel);
@@ -176,10 +201,41 @@ export class UserService {
     this._userProfile.organisationIds = organisationIds;
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
-    this.setRoleOrgMap(profileData);
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this.getOrganisationDetails(organisationIds);
+    this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
+  /**
+* Get organization details.
+*
+* @param {requestParam} requestParam api request data
+*/
+  getOrganisationDetails(organisationIds) {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: {
+            id: organisationIds,
+          }
+        }
+      }
+    };
+    this.contentService.post(option).subscribe
+      ((data: ServerResponse) => {
+        _.forEach(data.result.response.content, (orgData) => {
+          this.orgNames.push(orgData.orgName);
+        });
+        this._userProfile.organisationNames = this.orgNames;
+      },
+      (err: ServerResponse) => {
+        this.orgNames = [];
+        this._userProfile.organisationNames = this.orgNames;
+      }
+      );
+  }
+
   get userProfile() {
     return _.cloneDeep(this._userProfile);
   }
@@ -200,7 +256,7 @@ export class UserService {
     return this._dims;
   }
   private setRoleOrgMap(profile) {
-    let  roles = [];
+    let roles = [];
     const roleOrgMap = {};
     _.forEach(profile.organisations, (org) => {
       roles = roles.concat(org.roles);
@@ -213,9 +269,12 @@ export class UserService {
         roleOrgMap[role].push(org.organisationId);
       });
     });
+    _.forEach(this._userProfile.roles, (value, index) => {
+      roleOrgMap[value] = _.union(roleOrgMap[value], [this.rootOrgId]);
+    });
     this._userProfile.roleOrgMap = roleOrgMap;
   }
-  get RoleOrgMap () {
+  get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);
   }
 }

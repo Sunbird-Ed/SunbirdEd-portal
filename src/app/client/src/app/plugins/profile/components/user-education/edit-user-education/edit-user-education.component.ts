@@ -10,11 +10,22 @@ import * as moment from 'moment';
   styleUrls: ['./edit-user-education.component.css']
 })
 export class EditUserEducationComponent implements OnInit {
+  /**
+   * Reference for Input to get values from parent
+   */
   @Input() education: any;
+  /**
+   * Refernce of Formgroup
+   */
   educationForm: FormGroup;
+  /**
+   * Contains Date object
+   */
   today = new Date();
   constructor(public resourceService: ResourceService, public userService: UserService, public windowScrollService: WindowScrollService) { }
-
+    /**
+   * This method creates an instance of FormGroup
+   */
   ngOnInit() {
     this.windowScrollService.smoothScroll('education');
     if (this.education) {

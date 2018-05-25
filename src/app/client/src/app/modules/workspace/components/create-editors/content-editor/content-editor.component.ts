@@ -131,7 +131,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     /**
     * Launch the generic editor after window load
     */
-    const self = this;
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
       title: '',
@@ -147,8 +146,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       overlayColor: '',
       history: false,
       onClosing: () => {
-        self._zone.run(() => {
-          self.closeModal();
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -176,7 +175,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userProfile.rootOrgId,
@@ -199,7 +199,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
-          ver: '1.2',
+          ver: '1.4',
           type: 'plugin'
         },
         {
@@ -209,6 +209,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         },
         {
           id: 'org.ekstep.metadata',
+          ver: '1.0',
+          type: 'plugin'
+        },
+        {
+          id: 'org.ekstep.questionset',
           ver: '1.0',
           type: 'plugin'
         }
@@ -258,7 +263,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Check the Access and Launch the content Editor
    */
   getContentData() {
-    const state = 'UpForReview';
+    const state = this.state;
     const req = { contentId: this.contentId };
     const qs = { fields: 'createdBy,status,mimeType', mode: 'edit' };
     const validateModal = {
@@ -284,9 +289,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   closeModal() {
     this.showModal = true;
-    setTimeout(() => {
+     setTimeout(() => {
       this.navigateToDraft();
-    }, 1000);
+     }, 1000);
   }
 
   navigateToDraft() {

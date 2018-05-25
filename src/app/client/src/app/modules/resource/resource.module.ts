@@ -8,6 +8,8 @@ import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
+import { NotesModule } from '@sunbird/notes';
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,7 +19,9 @@ import { DiscussionModule } from '@sunbird/discussion';
     SlickModule,
     FormsModule,
     CoreModule,
-    DiscussionModule
+    DiscussionModule,
+    NotesModule,
+    BadgingModule
   ],
   declarations: [ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent]
 })

@@ -27,7 +27,7 @@
       <div class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
         <div class="item userSearchCardHover" *ngFor="let org of searchList">
           <div class="ui tiny image userSearchImage ">
-            <img [src]="org.avatar || './assets/common/images/userOrganization.png'">
+            <img [src]="org.avatar || './assets/images/userOrganization.png'">
           </div>
           <div class="content ">
             <a class="header ">{{org.orgName}}</a>

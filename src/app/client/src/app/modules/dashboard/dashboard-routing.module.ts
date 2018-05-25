@@ -1,14 +1,13 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganisationComponent, CourseConsumptionComponent } from './components/';
-
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent } from './components/';
 
 const routes: Routes = [
   {
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Profile', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
@@ -31,6 +30,12 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
+  },
+  {
+    path: 'dashboard/:courseId', component: CourseProgressComponent,
+    children: [
+      { path: 'dashboard', component: CourseProgressComponent }
+    ]
   }
 ];
 

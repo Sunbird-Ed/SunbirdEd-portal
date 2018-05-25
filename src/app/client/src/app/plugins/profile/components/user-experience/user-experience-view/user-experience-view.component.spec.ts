@@ -51,7 +51,6 @@ describe('UserExperienceViewComponent', () => {
   it('should create', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     parentComp.ngOnInit();
     activatedRoute.params = {
@@ -66,7 +65,6 @@ describe('UserExperienceViewComponent', () => {
   it('should pass activated route', () => {
     const userService = TestBed.get(UserService);
     const activatedRoute = TestBed.get(ActivatedRoute);
-    userService._userProfile = mockRes.data.userProfile;
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     parentComp.allowedAction = [];
     parentComp.ngOnInit();

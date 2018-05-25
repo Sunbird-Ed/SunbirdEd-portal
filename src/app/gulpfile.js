@@ -7,9 +7,9 @@ const gulpSequence = require('gulp-sequence')
 const exec = require('child_process').exec
 
 // To download editors
-const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-3.1.0.zip'
-const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-3.1.0.zip'
-const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/generic-editor-iframe-3.1.0.zip'
+const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-3.3.0.zip'
+const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-3.3.0.zip'
+const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/generic-editor-iframe-3.3.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 gulp.task('clean:editors', () => {
@@ -78,6 +78,7 @@ gulp.task('prepare:app:dist', () => {
     'themes/**/*',
     'package.json',
     'package-lock.json',
+    'content-plugins/**/*',
     'server.js'], { 'base': '.' })
         .pipe(gulp.dest('./app_dist'))
 })

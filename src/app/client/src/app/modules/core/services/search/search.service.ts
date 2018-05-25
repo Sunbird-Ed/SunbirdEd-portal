@@ -5,7 +5,7 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { SearchParam } from '@sunbird/core';
+import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 /**
  * Service to search content

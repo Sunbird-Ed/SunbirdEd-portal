@@ -1,0 +1,59 @@
+<div class="ui link cards margin-right-20 margin-top-15 margin-bottom-0" *ngIf="data">
+  <div class="card margin-top-10" [ngClass]="customClass">
+    <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
+      <sui-progress class="top attached active" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
+    </div>
+    <div class="ui image" (click)="onAction(data,data.action.onImage)">
+      <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>
+      <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
+      <img *ngIf="data.showImage? false : true" src="{{ data.image || '/assets/images/default.png' }}">
+      <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}">
+        <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
+           <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
+        </span>
+      </div>
+    </div>
+    <div class="content">
+      <div class="card-component-description">
+        <div *ngIf="data.description && data.description.length > 0">
+          {{data.description | slice:0:40}}
+          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" suiPopup popupText="{{data.description}}"></i>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="data.action && (data.action.right || data.action.left || data.rating)" class="extra data">
+      <div *ngIf=" data.action.right" class="right floated">
+        <a [ngSwitch]="data.action.right.displayType">
+          <span *ngSwitchCase="'button'">
+            <button class="{{data.action.right.class}}" (click)="onAction(data,data.action.right)">
+              <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
+            </button>
+          </span>
+          <span *ngSwitchCase="'icon'">
+            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right)">
+            </i>
+            <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
+          </span>
+        </a>
+      </div>
+      <div *ngIf=" data.action.left" class="left floated">
+        <a [ngSwitch]="data.action.right.displayType">
+          <span *ngSwitchCase="'button'">
+            <button class="{{data.action.left.class}}" (click)="onAction(data,data.action.left)">
+              <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
+            </button>
+          </span>
+          <span *ngSwitchCase="'icon'">
+            <i class="{{data.action.left.class}}" (click)="onAction(data,data.action.left)">
+            </i>
+            <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
+          </span>
+        </a>
+      </div>
+      <span *ngIf="data.rating">
+          <sui-rating class="courseHeader-rating star left floated" [ngModel]="data.rating | number:0" [maximum]="5" [isReadonly]="true">
+          </sui-rating>
+        </span>
+    </div>
+  </div>
+</div>

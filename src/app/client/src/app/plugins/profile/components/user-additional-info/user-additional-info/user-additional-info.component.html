@@ -1,8 +1,8 @@
 <div id="additionalInfo" *ngIf="userProfile" class="margin-top-20 ui raised segment">
-  <div class="header announcementCard-header ">
-    <span class="header cardsHeading "> {{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
-    <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
-    <a class="addeditprofile cursor-pointer" *ngIf="action !== 'view'" routerLink="/profile">{{resourceService?.frmelmnts?.btn?.close}}</a>
+  <div class="header">
+    <span class="segment-heading "> {{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
+    <a class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
+    <a class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink="/profile">{{resourceService?.frmelmnts?.btn?.close}}</a>
   </div>
   <div class="profileitems profile-des ui relaxed aligned list " *ngIf="action === 'view'">
     <div class="item ">

@@ -7,8 +7,8 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { EditorService } from './../../services';
-import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ResourceService, SharedModule } from '@sunbird/shared';
+import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { mockFrameworkData } from './data-driven.component.spec.data';
@@ -38,9 +38,9 @@ describe('DataDrivenComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
-      providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
+      providers: [FrameworkService, FormService, UserService, ContentService,
         CacheService, EditorService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

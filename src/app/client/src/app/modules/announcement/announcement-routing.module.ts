@@ -9,7 +9,8 @@ import { AuthGuard } from './../core/guard/auth-gard.service';
 const routes: Routes = [
   {
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }] },
+    data: { roles : 'announcement',
+    breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }] },
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },
       { path: 'view/:announcementId', component: DetailsPopupComponent }
@@ -23,10 +24,12 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'announcement/create/:stepNumber', component: CreateComponent
+    path: 'announcement/create/:stepNumber', component: CreateComponent,
+    canActivate: [AuthGuard], data: { roles : 'announcement'}
   },
   {
-    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent
+    path: 'announcement/resend/:identifier/:stepNumber', component: CreateComponent,
+    canActivate: [AuthGuard], data: { roles : 'announcement'}
   }
 ];
 

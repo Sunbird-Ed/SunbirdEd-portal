@@ -33,6 +33,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public contentId: string;
   /**
+   * state of the content
+   */
+  public state: string;
+  /**
+  * framework value of editor
+  */
+  public framework: string;
+  /**
    * user profile details.
    */
   public userProfile: IUserProfile;
@@ -69,6 +77,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params['contentId'];
+      this.state = params['state'];
+      this.framework = params['framework'];
+
     });
   }
 
@@ -83,8 +94,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   openGenericEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
-
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
@@ -99,8 +108,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       history: false,
       closeButton: true,
       onClosing: () => {
-        self._zone.run(() => {
-          self.closeModal();
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -122,11 +131,13 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
-      env: 'genericeditor'
+      env: 'genericeditor',
+      framework: this.framework
     };
 
     /**
@@ -142,7 +153,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
-        ver: '1.2',
+        ver: '1.4',
         type: 'plugin'
       }, {
         id: 'org.ekstep.sunbirdmetadata',
@@ -171,12 +182,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToCreate();
+      this.navigateToUploads();
     }, 1000);
   }
 
-  navigateToCreate() {
-    this.router.navigate(['workspace/content']);
+  navigateToUploads() {
+    if (this.state) {
+      this.router.navigate(['workspace/content/', this.state, '1']);
+    } else {
+      this.router.navigate(['workspace/content/uploaded/1']);
+    }
     this.showModal = false;
   }
 

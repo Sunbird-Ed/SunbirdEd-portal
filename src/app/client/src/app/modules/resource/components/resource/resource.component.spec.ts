@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService, ICaraouselData, IAction } from '@sunbird/shared';
-import { PageApiService, LearnerService } from '@sunbird/core';
+import { PageApiService, LearnerService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -28,15 +28,14 @@ describe('ResourceComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
+  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
       declarations: [ResourceComponent],
-      providers: [ResourceService, PageApiService, ConfigService, LearnerService, ToasterService,
-         Ng2IzitoastService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [{ provide: ResourceService, useValue: resourceBundle },
          { provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -54,6 +53,8 @@ describe('ResourceComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
     component.populatePageData();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();

@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
-import { UserService, LearnerService, AnnouncementService } from '@sunbird/core';
+import { UserService, LearnerService, AnnouncementService, CoreModule } from '@sunbird/core';
 
 import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
 import {
@@ -43,7 +43,7 @@ describe('CreateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule,
-        Ng2IziToastModule],
+        Ng2IziToastModule, CoreModule],
       providers: [ToasterService, ResourceService, CreateService, UserService,
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,
@@ -75,7 +75,7 @@ describe('CreateComponent', () => {
       expect(component.announcementTypes.length).not.toEqual(0);
     }));
 
-    it('should return selected recipients', inject([],
+  it('should return selected recipients', inject([],
     () => {
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       const resourceService = TestBed.get(ResourceService);
@@ -143,6 +143,16 @@ describe('CreateComponent', () => {
       expect(data).toEqual(false);
     }));
 
+  it('should not enable recipients button when empty title is passed', inject([],
+    () => {
+      component.announcementForm = component.sbFormBuilder.group({
+        title: [''], from: ['test user'], type: ['News'], description: ['test']
+      });
+      const data = component.announcementForm.value;
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
+      expect(component.formErrorFlag).toEqual(true);
+    }));
+
   it('should not enable recipients button', inject([Router],
     (route) => {
       spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
@@ -157,7 +167,7 @@ describe('CreateComponent', () => {
       expect(res).toEqual(true);
     }));
 
-  it('should validate form state/data and redirect to step 1', inject([Router],
+  xit('should validate form state/data and redirect to step 1', inject([Router],
     (route) => {
       spyOn(component, 'setResendFormValues').and.callThrough();
       spyOn(component, 'navigateToWizardNumber').and.callThrough();

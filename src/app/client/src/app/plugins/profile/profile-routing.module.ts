@@ -14,10 +14,12 @@ const routes: Routes = [
     children: [
       {
         path: 'bulkUpload/organizationUpload', component: OrganizationUploadComponent,
-        data: { redirectUrl: '/profile' }, canActivate: [AuthGuard]
+        data: { redirectUrl: '/profile', roles : 'bulkUpload' }, canActivate: [AuthGuard]
       },
-      { path: 'bulkUpload/userUpload', component: UserUploadComponent, data: { redirectUrl: '/profile' }, canActivate: [AuthGuard] },
-      { path: 'bulkUpload/checkStatus', component: StatusComponent, data: { redirectUrl: '/profile' }, canActivate: [AuthGuard] }
+      { path: 'bulkUpload/userUpload', component: UserUploadComponent,
+      data: { redirectUrl: '/profile', roles : 'bulkUpload' }, canActivate: [AuthGuard] },
+      { path: 'bulkUpload/checkStatus', component: StatusComponent,
+      data: { redirectUrl: '/profile', roles : 'bulkUpload' }, canActivate: [AuthGuard] }
     ]
   },
   { path: 'profile/:section', component: ProfilePageComponent },

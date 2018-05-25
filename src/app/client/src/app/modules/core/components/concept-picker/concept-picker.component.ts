@@ -19,6 +19,11 @@ export class ConceptPickerComponent implements OnInit {
    */
   @Input() selectedConcepts: any;
   /**
+   * class for concept picker
+   */
+  @Input() conceptPickerClass: string;
+
+  /**
    * message about how many concept are selected
    */
   pickerMessage: string;
@@ -71,6 +76,9 @@ export class ConceptPickerComponent implements OnInit {
         nodeName: 'conceptSelector_treePicker',
         minSearchQueryLength: 1
       });
+      setTimeout(() => {
+         document.getElementById('conceptSelector_treePicker').classList.add (this.conceptPickerClass);
+      }, 500);
     }, 500);
   }
   /**

@@ -12,17 +12,40 @@ import * as moment from 'moment';
   styleUrls: ['./user-skills.component.css']
 })
 export class UserSkillsComponent implements OnInit {
+  /**
+   * Boolean value to toggle viewMore/viewLess
+   */
   viewMore = true;
-  limit = 3; // config
-  defaultLimit = 3;
+  /**
+   * Contains default limit to show awards
+   */
+  defaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  /**
+   * Used to store limit to show/hide awards
+   */
+  limit = this.defaultLimit;
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Boolean value to show/hide visibility
+   */
   privateProfileFields = true;
+  /**
+   * Contains add action
+   */
   action: string;
+  /**
+   * Conatins an array of acitons
+   */
   allowedAction = ['add'];
   constructor(public resourceService: ResourceService,
-    public userService: UserService, public profileService: ProfileService,
+    public userService: UserService, public profileService: ProfileService, public configService: ConfigService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
-
+  /**
+   * This method is used to invoke user service to fetch user profile data
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -43,6 +66,9 @@ export class UserSkillsComponent implements OnInit {
       }
     });
   }
+  /**
+   * This method checks for the limit of skills array and updates the limit accordingly
+   */
   toggle(lim) {
     if (lim === true) {
       this.limit = this.userProfile.skills.length;

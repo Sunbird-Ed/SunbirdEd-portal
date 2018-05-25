@@ -89,7 +89,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     editorService: EditorService,
     activatedRoute: ActivatedRoute,
     route: Router,
-    userService: UserService, public _zone: NgZone,
+    userService: UserService,
+    public _zone: NgZone,
     config: ConfigService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -133,7 +134,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   openCollectionEditor() {
     jQuery.fn.iziModal = iziModal;
-    const self = this;
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
@@ -147,8 +147,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       overlayColor: '',
       history: false,
       onClosing: () => {
-        self._zone.run(() => {
-          self.closeModal();
+        this._zone.run(() => {
+          this.closeModal();
         });
       }
     });
@@ -165,7 +165,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       contentId: this.contentId,
       pdata: {
         id: this.userService.appId,
-        ver: '1.0'
+        ver: '1.0',
+        pid: 'sunbird-portal'
       },
       tags: this.userService.dims,
       channel: this.userService.channel,
@@ -188,12 +189,28 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
 
+
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
         id: 'org.ekstep.suggestcontent',
         ver: '1.0',
         type: 'plugin'
       });
+      window.config.nodeDisplayCriteria = {
+        contentType: ['TextBookUnit']
+      };
+    } else if (this.type.toLowerCase() === 'course') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['CourseUnit']
+      };
+    } else if (this.type.toLowerCase() === 'lessonplan') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['LessonPlanUnit']
+      };
+    } else {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['Collection']
+      };
     }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
@@ -227,7 +244,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
      */
     this.editorService.getById(req, qs).subscribe(response => {
       const rspData = response.result.content;
-      rspData.state = 'CreateCollection';
+      rspData.state = this.state;
       rspData.userId = this.userProfile.userId;
       if (this.validateRequest(rspData, validateModal)) {
         this.updateModeAndStatus(response.result.content.status);

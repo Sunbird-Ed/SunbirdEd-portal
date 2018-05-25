@@ -132,22 +132,9 @@
   color: #7c7b7b;
 }
 /*note card font*/
-.note-card-timeStamp {
+.note-card-time-stamp {
   font-family: 'sunbirdregularfont';
   font-size: 0.625em;
-}
-/* breadcrumb font*/
-.ui.breadcrumb a.breadcrumb-fontColor {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
-}
-.ui.breadcrumb .active.section {
-  color: #007AFF;
-  font-family: 'sunbirdboldfont';
-  font-size: 0.9375em;
-  line-height: 17px;
 }
 .medium-font-text {
   font-size: medium;
@@ -336,6 +323,9 @@
 .margin-right-15 {
   margin-right: 15px !important;
 }
+.margin-left-0 {
+  margin-left: 0 !important;
+}
 .margin-left-10 {
   margin-left: 10px !important;
 }
@@ -376,7 +366,7 @@
   float: right !important;
 }
 .right-float {
-  float: right;
+  float: right !important;
 }
 .width-100 {
   width: 100% !important;
@@ -406,8 +396,8 @@
 .padding-right-50 {
   padding-right: 3rem !important;
 }
-.contentVisibility-hidden {
-  visibility: hidden !important;
+.vertical-align-middle {
+  vertical-align: middle !important;
 }
 .right-floated {
   float: right !important;
@@ -460,13 +450,6 @@
   color: #007AFF !important;
   text-shadow: none !important;
 }
-.disabledButton {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-.overFlowWordRap {
-  overflow-wrap: break-word !important;
-}
 h4.ui.header.sectionHeading {
   font-family: 'sunbirdboldfont';
   font-size: 1.375em;
@@ -475,6 +458,7 @@ a {
   outline: none !important;
 }
 a:active,
+a:focus,
 a:hover {
   outline: none !important;
 }
@@ -533,15 +517,6 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-.breadcrumppadding.ui.breadcrumb,
-.breadcrumppadding.ui.breadcrumb:last-child,
-.breadcrumppadding.ui.breadcrumb:first-child {
-  margin-left: 10px;
-  line-height: 1.5;
-}
-.ui.breadcrumb .divider {
-  color: #007AFF;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -929,7 +904,7 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .slick-prev:before {
   left: -20px;
-  content: url(./assets/common/images/Backword.png) !important;
+  content: url(./assets/images/Backword.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -939,7 +914,7 @@ i.large.icon.limitedPublishingLinkIcon {
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-next:before {
-  content: url(./assets/common/images/Forward.png) !important;
+  content: url(./assets/images/Forward.png) !important;
   font-family: 'slick';
   font-size: 20px;
   line-height: 1;
@@ -987,18 +962,23 @@ i.large.icon.limitedPublishingLinkIcon {
   margin: 1em 0;
 }
 /*semantic ui modal form field changes*/
+
 .ui.form input[type=text],
 .ui.form input[type=text]:focus,
 .ui.form input[type=email],
 .ui.form input[type=number],
 .ui.form input[type=password],
 .ui.form input[type=url],
-.ui.form input:not([type]) {
+.ui.form input:not([type]),
+.ui.form input:not([type]):focus
+ {
   border: 0;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid #333;
   border-radius: 0;
-  padding: 0.8em 0;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
 }
+
 .ui.selection.dropdown {
   border: 0;
   border-bottom: 1px solid #333333;
@@ -1045,31 +1025,28 @@ i.large.icon.limitedPublishingLinkIcon {
   box-shadow: none ;
   border: none;
 }
-.dropDownLockIcon {
-  z-index: 10 ;
-  margin-right: 10px ;
-  font-size: 1.3em ;
-}
+
 .ui.form input:not([type]):focus {
-  border-color: #333333;
+  border-color: #333;
 }
-.centered.grid.noResultContainer {
+.centered.grid.no-result-container {
   margin-top: 12%;
 }
-.noresult.column img {
-  width: 9em;
-  height: 9em;
+.no-result-container .column img {
   display: block;
+  height: 9em;
   margin: auto;
+  width: 9em;
 }
-.noResultText {
+
+.no-result-container .no-result-text {
   text-align: center;
   padding-top: 20px;
   font-size: 18px;
   font-weight: 600;
   color: #7c7b7b;
 }
-.noResultSearchText {
+.no-result-container .no-result-search-text {
   text-align: center;
   padding-top: 5px;
   font-size: 16px;
@@ -1159,7 +1136,7 @@ i.large.icon.limitedPublishingLinkIcon {
   left: 10%;
   position: absolute;
 }
-.header-logoBeforeLogin {
+.header-logo-before-login {
   display: block;
   max-width: 70px;
   max-height: 70px;
@@ -1167,13 +1144,14 @@ i.large.icon.limitedPublishingLinkIcon {
   height: auto;
   left: 10%;
 }
-.announcementBlueText {
+
+.blue-text-color-sunbird {
   color: #007AFF;
 }
-.announcementRedText {
+.red-text-color-sunbird {
   color: #fc002e;
 }
-.ui.segment.announcementCardLeftBorder {
+.ui.segment.ann-segment-left-border {
   border-radius: 10px;
   border-left-color: #007AFF;
   border-left-width: 11px;
@@ -1182,95 +1160,76 @@ i.large.icon.limitedPublishingLinkIcon {
   font-family: 'sunbirdregularfont';
   font-size: 1em;
 }
-.annOrgName {
+.announcement-meta-data {
   font-family: 'sunbirdregularfont';
   font-size: 1em;
   color: #7c7b7b;
 }
-.annCreatedDate {
-  font-family: 'sunbirdregularfont';
-  font-size: 1em;
-  color: #7c7b7b;
-}
-.annUrlLinks {
+.ann-link-or-attachment {
+  color: #007AFF;
+  cursor: pointer;
   font-family: 'sunbirdregularfont';
   font-size: 0.9em;
-  color: #007AFF;
 }
-.annAttachment {
+.announcement-extra-data {
   font-family: 'sunbirdregularfont';
-  font-size: 0.9em;
-  color: #007AFF;
-}
-.annSmallText {
   font-size: 0.8em;
 }
-.announcementHomeCard-header {
-  padding: 0;
-  font-family: 'sunbirdboldfont';
-  font-size: 1.25em;
-  padding-top: 5px;
+.showing-all-sent-ann {
+  color: #333333;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.13em;
+  line-height: 19px;
 }
-.annLinksAttachmentsMore {
+.ann-table-heading {
+  color: #7c7b7b;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.1em;
+  line-height: 19px;
+}
+.table-list-name-ann {
+  color: #333333;
+  font-family: 'sunbirdregularfont';
+  font-size: 1.05em;
+  line-height: 19px;
+}
+.ann-data-text {
+  color: #333333;
   font-family: 'sunbirdregularfont';
   font-size: 1em;
-  color: #7c7b7b;
-}
-.showingAllSentAnn {
-  color: #333333;
-  font-family: 'sunbirdregularfont';
-  font-size: 15px;
   line-height: 19px;
 }
-.announcementTableHeading {
-  color: #7c7b7b;
-  font-family: 'sunbirdregularfont';
-  font-size: 15px;
-  line-height: 19px;
-}
-.tableListNameAnn {
-  color: #333333;
-  font-family: 'sunbirdregularfont';
-  font-size: 14px;
-  line-height: 19px;
-}
-.announcementDataText {
-  color: #333333;
-  font-family: 'sunbirdregularfont';
-  font-size: 15px;
-  line-height: 19px;
-}
-ui.primary.basic.button.announcementButton {
+ui.primary.basic.button.announcement-button {
   border: 1px solid #007AFF;
   border-radius: 4px;
 }
-.announcementButtonText {
+.announcement-button-text {
   color: #007AFF;
   font-family: 'sunbirdboldfont';
   font-size: 1em;
   line-height: 17px;
 }
-.announcementSeeAllBtn {
-  padding: 8px;
-}
-.annMediumText {
+ui.primary.basic.button.ann-upload-attachment {
+  border: 1px solid #007AFF;
+  border-radius: 4px;
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
   font-size: 1em;
-  font-weight: 600;
-  font-family: sunbirdmediumfont;
+  line-height: 17px;
+}
+.ann-upload-attachment-text {
+  color: #007AFF;
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  line-height: 17px; 
 }
 .linkify.icon.opacity04 {
   opacity: 0.4;
 }
-.annSmallText {
-  font-size: 0.8em;
-}
-.ui.segment.annGridPadding {
-  padding: 0.9em;
-}
-.gray-full-width {
+.ann-details-sent-date-bg {
   background-color: #F5F5F5;
   padding: 15px 20px;
-  margin: 10px -20px;
+  margin: 10px -20px -25px -15px;
 }
 .ui.items > .item.box {
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
@@ -1279,33 +1238,24 @@ ui.primary.basic.button.announcementButton {
   border-radius: .28571429rem;
   border: 1px solid rgba(34, 36, 38, 0.15);
 }
-.announcementSentOnDate {
-  margin-bottom: -25px;
-}
 .width-100 {
   width: 100%;
 }
-.modals.dimmer .ui.modal.announcementDetailsModal {
-  margin-top: -260px !important;
-}
-.annDetailsFormScroller {
+.ann-details-form-scroller {
   max-height: 80vh;
   overflow-y: auto;
 }
 .btn-width-26 {
   width: 26%;
 }
-i.file.pdf.announcementAttachmentsIcon {
+i.file.pdf.ann-details-icon {
   width: 44px;
   height: 44px;
   padding-top: 3px;
   padding-left: 4px;
   margin-top: 10px;
 }
-.attachmentPlacementBgr {
-  background-color: rgba(86, 61, 124, 0.1);
-}
-.announcementSeeAllLink {
+.announcement-list-see-all {
   font-family: 'sunbirdboldfont';
   font-size: 1.2em ;
   padding-top: 15px ;
@@ -1316,14 +1266,14 @@ i.file.pdf.announcementAttachmentsIcon {
   background-color: #9a9a9a !important;
   border-color: #9a9a9a !important;
 }
-.ui.items > .item > .content p.annAttaFilesize {
+.ui.items > .item > .content p.ann-attachment-detail-meta {
   margin-left: 10px;
   margin-top: -5px;
   font-family: 'sunbirdregularfont';
   font-size: 1em ;
   color: #7c7b7b;
 }
-.ui.items > .item > .content p.annAttaFilename {
+.ui.items > .item > .content p.ann-attachment-detail-heading {
   font-family: 'sunbirdregularfont';
   font-size: 1.2em ;
   margin-bottom: 0px;
@@ -1389,31 +1339,23 @@ h5.ui.header {
   border-left: none;
   border-bottom: 1px solid rgba(51, 51, 51, 0.33);
 }
-.anncmnt-fileupload-list {
+.ann-fileupload-list {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.anncmnt-drop-file-info {
+.ann-fileupload-meta-data {
+  text-align: center;
+  color: #7c7b7b;
+  font-size: 0.9em;
   padding-top: 50px;
 }
-.anncmnt-drop-file-info-size {
+.ann-fileupload-meta-data>.description{
   font-size: 1.2em;
 }
-.anncmnt-drop-file-info-style {
+.ann-fileupload-extra {
   font-style: italic;
 }
-.anncmnt-fileupload-or-text {
-  margin-top: -3.5em;
-}
-.anncmnt-fileupload-negative-margin {
-  margin-bottom: -3em;
-}
-.anncmnt-upload-file-btn {
-  position: relative;
-  overflow: hidden;
-  direction: ltr;
-}
-.anncmnt-fileupload-input-field {
+.ann-fileupload-input-field {
   position: absolute;
   right: 0px;
   top: 0px;
@@ -1435,10 +1377,6 @@ h5.ui.header {
   background-color: #ffffff;
   padding: 15px;
 }
-.anncmnt-upload-file-are {
-  margin-top: -2.5em;
-  padding-bottom: 75px;
-}
 .qq-uploader {
   border: 2px dashed #cccccc;
   max-height: 330px;
@@ -1455,10 +1393,7 @@ body ::-webkit-scrollbar {
 .qq-upload-list {
   overflow-y: hidden;
 }
-.down-arrow-accordion {
-  float: right !important;
-  font-size: large !important;
-}
+
 ul {
   list-style: none;
 }
@@ -1588,14 +1523,11 @@ span.fancytree-title {
   padding-top: 0;
   margin-bottom: 1em;
 }
-.accordian-left-bottomMargin {
-  margin-bottom: 16px !important;
-}
 .accordian-left-text {
-  padding: 2% !important;
-  font-size: 16px !important;
-  color: black !important;
-  font-family: 'sunbirdregularfont' !important;
+  padding: 8px;
+  font-size: 1.2em;
+  color: #333;
+  font-family: 'sunbirdregularfont';
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -1674,52 +1606,33 @@ span.fancytree-node {
 ul.fancytree-container li {
   padding-bottom: 0.8em;
 }
-.rightSideSectionCards .content .header a {
-  color: #007AFF !important;
-  font-size: 0.9em !important;
-}
-.tocNavigationRow {
-  top: -25px;
-}
-.takenoteicon {
-  font-size: 2em !important;
-  margin: 0 auto 0.8rem !important;
-}
 .curriculum-content {
   font-size: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.contentdetail {
+.content-detail {
   color: #7c7b7b;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
 }
-.contentMetaDetail {
-  color: #7c7b7b;
-  font-size: 13px;
-  width: 50%;
-}
-.cardtakenote {
+.take-note-card {
   color: #007AFF;
   vertical-align: top;
   display: inline-block;
   text-align: center;
   width: 120px;
-  font-family: 'sunbirdregularfont' !important;
+  font-family: 'sunbirdregularfont';
   font-size: 1em;
   text-decoration: underline;
 }
-.cardtakenote img {
+.take-note-card img {
   width: 40px;
   height: 50px;
 }
-.cardtakenote span {
+.take-note-card span {
   display: block;
   padding-top: 8px;
-}
-.tocCourseStructureImg {
-  padding-right: 10px;
-  margin-bottom: -4px;
 }
 .homeCard.ui.card {
   max-width: 100%;
@@ -1741,24 +1654,14 @@ ul.fancytree-container li {
   transition: box-shadow 0.1s ease, -webkit-transform 0.1s ease;
   transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
-.homeHeaderPadding {
-  padding: 14px 16px 16px 16px;
-}
+
 .ui.styled.accordion .removeline.title {
   margin: 0;
-  padding: 0px 0px 0px 0px !important;
+  padding: 0;
   color: rgba(0, 0, 0, 0.4);
   font-weight: 700;
-  border-top: none !important;
+  border-top: none;
   transition: background .1s ease,color .1s ease;
-}
-.accordian-HomeLeft-text {
-  font-size: 14px !important;
-  color: black !important;
-  padding-left: 77% !important;
-}
-.accordian-homeIcon {
-  color: black !important;
 }
 .ui.styled.accordion .active.title .angle.down.icon {
   background: 0 0;
@@ -1766,24 +1669,11 @@ ul.fancytree-container li {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-.homePage .slick-slider {
-  margin-bottom: 0px !important;
+.main-home-comp .slick-slider {
+  margin-bottom: 0;
 }
 .todolabel.ui.label {
   margin-left: 0.5em;
-}
-.homefeedcard.ui.segment {
-  padding: 16px 16px 16px 16px;
-}
-.homefeeddescription p {
-  opacity: 0.67;
-  color: #333333;
-}
-.connanswer {
-  color: #fdfdfd;
-  font-family: "Open Sans";
-  font-size: 10px;
-  line-height: 14px;
 }
 .sunblogin {
   color: #333333;
@@ -2043,16 +1933,6 @@ ul.fancytree-container li {
   padding-top: 10px;
   padding-left: 20px;
 }
-.dashboardBadgeText,
-.dashboardBadgeText span {
-  text-align: center !important;
-  margin-top: 20px;
-  font-size: 64px;
-  margin-bottom: 15px;
-  font-family: 'Frutiger Neue W01 UltLt';
-  display: block;
-  width: 100%;
-}
 .dynamic-section-card .slider .card {
   position: relative !important;
   background-color: transparent!important;
@@ -2133,9 +2013,6 @@ ul.fancytree-container li {
   visibility: visible !important;
   opacity: 1 !important;
 }
-.breadCrumbsBackground {
-  background-color: #ffffff;
-}
 /*profile image header css*/
 .header-image-profile {
   height: 100px !important;
@@ -2183,9 +2060,10 @@ ul.fancytree-container li {
   font-size: 0.89em!important;
   line-height: 14px!important;
 }
-.addeditprofile {
+.add-edit-btn-profile {
   float: right;
   margin: 0 0 0 1em;
+  cursor: pointer;
 }
 .profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:last-child) {
   padding: 12px 0 12px 0;
@@ -2256,7 +2134,7 @@ ul.fancytree-container li {
 .ui.basic.label:hover {
   border-color: #007AFF !important;
 }
-.ui.bottom.attached.tabular.menu.userSkillMore {
+.ui.bottom.attached.tabular.menu.expand-or-minimize-btn {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -2264,24 +2142,17 @@ ul.fancytree-container li {
   min-height: 1.28571429em;
   margin-top: -0.1em;
 }
-.userSkillMoreIcon {
-  margin-right: -0.4em !important;
+
+.ui.bottom.attached.tabular.menu .item.expand-or-minimize-btn-pad {
+  padding: 10px 10px 14px 15px;
 }
-.ProfilePagePermissionBtn {
-  border-radius: 3px !important;
-  font-size: 1.1em !important;
-  height: 1.5em !important;
-  padding: 3px !important;
-  margin-left: 10px !important;
-}
-.ProfilePermissionBtnTop {
-  top: 17px !important;
-}
-.ui.addSkillsMarginCursor.multiple.dropdown > .label {
-  margin: 1.1285714rem .28571429rem .14285714rem 0 !important;
-}
-.addSkillMoreBtn {
-  padding: 10px 10px 14px 15px !important;
+
+.ui.icon.button.profile-page-permission-btn {
+  border-radius: 3px ;
+  font-size: 1.1em;
+  height: 1.5em;
+  padding: 3px;
+  margin-left: 10px;
 }
 .workspaceicon.ui.header > .icon {
   padding-top: 0;
@@ -2328,11 +2199,6 @@ ul.fancytree-container li {
   color: #7c7b7b;
   font-size: 12px;
 }
-.dropfile {
-  text-align: center;
-  color: #7c7b7b;
-  font-size: 12px;
-}
 .workspacedownload.ui.segment {
   box-sizing: border-box;
   border: 2px solid #fdfdfd;
@@ -2340,15 +2206,7 @@ ul.fancytree-container li {
   border-style: dashed;
   text-align: center;
 }
-.uploadicon i.icon {
-  font-size: 3em;
-  color: #fdfdfd;
-}
-.uploadicon p {
-  color: #7c7b7b;
-  font-family: "Open Sans";
-  font-size: 13px;
-}
+
 .uploador p {
   color: #7c7b7b;
   font-family: "Open Sans";
@@ -2385,37 +2243,23 @@ ul.fancytree-container li {
 .my-icon {
   vertical-align: middle;
 }
-.backtoprofile {
-  float: right;
-  font-size: 1.1em;
-}
-.workspacecontentProfile {
-  line-height: 22px;
-}
-.workspacecontentProfile.ui.card {
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-}
-.WorkSpaceTextContent {
+.workspace-navigate {
   display: inline-block;
   margin: 16px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {
-  .WorkSpaceTextContent {
+  .workspace-navigate  {
     white-space: pre-line;
   }
 }
-.WorkSpaceTextContent i.icon {
-  font-size: 2em;
-  padding-right: 10px;
-}
-.WorkSpaceTextContent .my-text {
+.workspace-navigate-heading {
   font-size: 1.3em;
   font-family: 'sunbirdboldfont';
+  color: #333333;
+  vertical-align: middle;
 }
-.selectuploadfile .ui.button {
-  margin: 32px 0 0 0;
-}
+
 /*trashIcon in address css*/
 i.trash.outline.icon.trashIcon-fontSize {
   font-size: 1.5em !important;
@@ -2428,11 +2272,11 @@ i.trash.outline.icon.trashIcon-fontSize {
   white-space: nowrap;
   font-family: "Open Sans";
 }
-.orinstuction {
+.ann-fileupload-or-text {
   text-align: center;
   color: #7c7b7b;
-  font-size: 12px;
-  padding-top: 40px;
+  font-size: 1em;
+  padding-top: 20px;
 }
 /*draft content pagination positioning */
 .paginationAlignment {
@@ -2627,7 +2471,7 @@ i.edit.icon.editIcon-fontSize {
   position: absolute !important;
 }
 .batch-des label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2640,7 +2484,7 @@ i.edit.icon.editIcon-fontSize {
   padding-top: 12px;
 }
 .batch-date label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2676,7 +2520,7 @@ i.edit.icon.editIcon-fontSize {
   height: 4em;
 }
 .member label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2750,94 +2594,34 @@ span.dashBoardMenuItem.active {
 ol.ui.list ol li:before {
   margin-left: -2.5em !important;
 }
-@media only screen and (max-width: 1290px) and (min-width: 992px) {
-  .modals.dimmer .ui.tree-picker.scrolling.modal {
-    top: -580px !important;
-    position: relative !important;
-    margin: 0 0 0 -350px !important;
-  }
-}
-@media only screen and (min-width: 1300px) {
-  .modals.dimmer .ui.tree-picker.scrolling.modal {
-    top: 60px !important;
-    position: relative !important;
-    margin: 0 0 0 -373px !important;
-  }
-}
-.createAnnHeaderDesc {
-  font-size: small;
+.create-ann-header-desc {
+  font-size: 0.9em;
   color: #7c7b7b;
 }
-.createAnnStepsIndicator {
-  margin-left: 75px;
-  background-color: #F5F5F5;
-  margin-bottom: auto;
-  padding: 10px 20px;
+.ui.label.ann-step-notifier{
+  border-radius: 0;
+  padding: 14px;
 }
-.createAnnFormScroller {
+.create-ann-form-scroller {
   max-height: 400px;
   overflow-y: auto;
   height: 327px;
 }
-.createAnnAttchementHolder {
-  overflow-x: hidden;
-  max-height: 330px;
-  overflow-y: auto;
-}
-.createAnnErrorMsg {
-  border-color: red;
-  color: red;
-  margin-top: 5px;
-}
-.createAnnErrorDiv {
-  border-color: red ;
-  color: red;
-}
-.announcementHeadingSection {
-  font-family: 'sunbirdboldfont';
-  font-size: smaller;
+.announcement-heading-section {
+  font-size: 1.5em;
 }
 /* .ui.modal .announcementForm input.ng-dirty.ng-invalid {
   border-color: red !important;
 } */
-.ui.modal .dropdown-margin-left .ui.dropdown > .text {
-  margin-left: -1em !important;
-}
-.dropdown-margin-left {
-  margin-left: 1px !important;
-}
-.createAnnSelectedRecepient {
-  font-size: small;
-}
-.createAnnBackBtnWidth {
-  width: 15%;
-}
-.createAnnBlueClass {
-  color: #007AFF;
-}
-.createAnnMargin5 {
-  margin: 5px;
-}
-.createAnnMargin4 {
-  margin: 4px;
-}
-.createAnnGrayShade {
-  color: #7c7b7b;
+
+.create-ann-Selected-secepient {
+  font-size: 1em;
 }
 .line-height-20 {
   line-height: 20px;
 }
-.annRecipientsSearchIcon {
-  margin-left: -10px !important;
-}
 .btn-width-34 {
   width: 34%;
-}
-.announcementSteps {
-  margin-left: -5px;
-}
-.margin-left-17 {
-  margin-left: 17px;
 }
 body {
   position: relative;
@@ -2864,4 +2648,71 @@ iframe.iziModal-iframe {
   bottom: 0;
 } 
 
+.overflow-word-wrap {
+  overflow-wrap: break-word !important;
+}
 
+/* font used for view all and read more*/
+.expand-or-minimize {
+  font-family: 'sunbirdboldfont';
+  font-size: 1em;
+  color: #007AFF;
+  cursor: pointer;
+}
+.ui.fluid.search.dropdown .menu > .item > img {
+  width: 2.1666em;
+  vertical-align: middle;
+  height: 2.1666em;
+}
+.ui.label > img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
+.primary-text-color-sunbird {
+  color: #333 !important;
+}
+.secondary-text-color-sunbird {
+  color: #7c7b7b !important;
+}
+.ui.card .card-desc-fixed-height {
+  color: #7c7b7b;
+  font-family: 'sunbirdregularfont';
+  font-size: 1em;
+  height: 2.8em;
+  max-height: 2.8em;
+  overflow-wrap: break-word;
+}
+.ui.segment .segment-heading {
+  font-family: 'sunbirdboldfont';
+  font-weight: 700;
+  font-size: 1.25em;
+}
+.ui.styled.accordion.align-content {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding:16px;
+  width: 100%;
+}
+.ui.styled.accordion>.header.accordian-heading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.375em;
+}
+.ann-section-heading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.4em;
+}
+.fancy-tree-grey {
+  color:#929292;
+}
+.fancy-tree-blue {
+  color:#55b2f7;
+}
+.fancy-tree-green {
+  color:#54d40f;
+}
+
+/*adding outline none because router link of angular is adding extra outline, */
+.remove-outline {
+  outline: none !important;
+}

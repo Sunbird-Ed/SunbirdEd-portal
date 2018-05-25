@@ -3,7 +3,7 @@
     "userReadParam": {
       "fields": "completeness,missingFields,lastLoginTime"
     },
-    "contentGet": "creator,body,editorState,templateId,languageCode,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,createdOn,lastUpdatedOn,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher"
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework"
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
@@ -47,7 +47,8 @@
       "REJECT": "content/v1/reject",
       "FLAG": "content/v1/flag",
       "ACCEPT_FLAG": "content/v1/flag/accept",
-      "DISCARD_FLAG": "content/v1/flag/reject"
+      "DISCARD_FLAG": "content/v1/flag/reject",
+      "COPY": "content/v1/copy"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",
@@ -86,6 +87,7 @@
     "BADGE": {
       "GET": "org/v1/badges/list",
       "ASSIGN": "user/v1/badges/add",
+      "CREATE": "badging/v1/issuer/badge/assertion/create",
       "BADGE_CLASS_SEARCH": "badging/v1/issuer/badge/search"
     },
     "ORG_TYPE": {

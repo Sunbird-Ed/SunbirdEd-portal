@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 
-describe('BatchFilterComponent', () => {
+describe('UpforReviewFilterComponent', () => {
   let component: UpforReviewFilterComponent;
   let fixture: ComponentFixture<UpforReviewFilterComponent>;
   class RouterStub {

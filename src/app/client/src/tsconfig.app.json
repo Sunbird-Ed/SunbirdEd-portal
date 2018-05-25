@@ -25,6 +25,9 @@
       "@sunbird/announcement": [
         "app/modules/announcement"
       ],
+      "@sunbird/notes": [
+        "app/modules/notes"
+      ],
       "@sunbird/admin": [
         "app/modules/admin"
       ],
@@ -36,7 +39,7 @@
       ],
       "@sunbird/workspace": [
         "app/modules/workspace"
-      ], 
+      ],
       "@sunbird/org-management": [
         "app/modules/org-management"
       ],
@@ -44,13 +47,16 @@
         "app/modules/public"
       ],
       "@sunbird/profile": [
-        "app/modules/profile"
+        "app/plugins/profile"
       ],
       "@sunbird/search": [
         "app/modules/search"
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"
+      ],
+      "@sunbird/badge": [
+        "app/modules/badging"
       ]
     },
     "module": "es2015",

@@ -1,0 +1,35 @@
+<div class="content" *ngIf="mode === 'create'">
+  <div class="ui fluid icon input">
+    <input type="text" [(ngModel)]="noteData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
+  </div>
+  <div class="editor">
+    <div id="wmd-button-bar"></div>
+    <textarea class="wmd-input" [(ngModel)]="noteData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
+  </div>
+</div>
+
+<div class="content" *ngIf="mode === 'update'">
+  <div class=" margin-bottom-15">
+    <span class="ui right floated basic icon circular button " (click) = "exitUpdateEditor.emit(false)">
+      <i class="ui remove icon"></i>
+    </span>
+  </div>
+  <div class="ui fluid icon input">
+    <input type="text" [(ngModel)]="updateData.title" placeholder={{resourceService?.frmelmnts?.lbl?.title}} name="title">
+  </div>
+  <div class="editor">
+    <div id="wmd-button-bar"></div>
+    <textarea class="wmd-input" [(ngModel)]="updateData.note" id="wmd-input" placeholder={{resourceService?.frmelmnts?.lbl?.description}}></textarea>
+  </div>
+</div>
+
+
+<div class="actions">
+  <button *ngIf="mode === 'create'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+    (click)="createNote();" [disabled]="!noteData.title || !noteData.note" tabindex="3">SAVE</button>
+  <button *ngIf="mode === 'create'" class="ui secondary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+    (click)="clearNote()" tabindex="4">CLEAR</button>
+
+  <button [disabled]="!updateData.title || !updateData.note" *ngIf="mode === 'update'" class="ui primary right floated button margin-bottom-15 margin-top-10 ng-binding" type="submit"
+    (click)="updateNote()" tabindex="4">UPDATE</button>
+</div>

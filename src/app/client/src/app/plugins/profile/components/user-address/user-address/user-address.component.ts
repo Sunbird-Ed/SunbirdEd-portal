@@ -14,23 +14,58 @@ import { EditUserAddressComponent } from '../edit-user-address/edit-user-address
   styleUrls: ['./user-address.component.css']
 })
 export class UserAddressComponent implements OnInit {
+  /**
+  * Reference of ViewChildren
+  */
   @ViewChildren('edit') editChild: QueryList<EditUserAddressComponent>;
+  /**
+  * Reference of ViewChild to get data of child component
+  */
   @ViewChild('add') addChild: EditUserAddressComponent;
+  /**
+  * Reference of Resource service
+  */
   resourceService: ResourceService;
+  /**
+  * Reference of User Profile interface
+  */
   userProfile: IUserProfile;
+  /**
+  * Reference for profile visibility
+  */
   privateProfileFields = true;
+  /**
+  * Contains edit/add action
+  */
   action: string;
+  /**
+  * Contains an array of actions
+  */
   allowedAction = ['edit', 'add'];
+  /**
+  * Boolean value to enable/disable radio button
+  */
   isCurrent: boolean;
+  /**
+  * Boolean value to enable/disable radio button
+  */
   isPermanent: boolean;
+  /**
+  * Boolean value to show/hide error message
+  */
   showError: boolean;
+  /**
+  * Boolean value to show/hide error message
+  */
   showAddressError: boolean;
   constructor(resourceService: ResourceService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router, public toasterService: ToasterService) {
     this.resourceService = resourceService;
   }
-
+  /**
+  * invokes user service to fetch user profile data
+  */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -51,6 +86,9 @@ export class UserAddressComponent implements OnInit {
       }
     });
   }
+  /**
+  * This method invokes profile service to edit existing user address
+  */
   editAddress() {
     const editedAddress = [];
     let formStatus = true;
@@ -79,13 +117,15 @@ export class UserAddressComponent implements OnInit {
         this.toasterService.success(this.resourceService.messages.smsg.m0023);
       },
         err => {
-          // toaster err
           this.toasterService.error(err.error.params.errmsg);
         });
     } else {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
+  /**
+  * This method invokes profile service to add new user address
+  */
   addAddress() {
     const addAddress: any = {};
     if (this.addChild.addressForm.touched === true && this.addChild.addressForm.valid === true) {
@@ -110,19 +150,24 @@ export class UserAddressComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
+  /**
+  * This method invokes profile service to delete user address
+  */
   deleteAddress(deletedAddress) {
     const request = {
       address: [deletedAddress]
     };
     this.profileService.updateProfile(request).subscribe(res => {
-      // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0016);
     },
       err => {
-        // toaster err
         this.toasterService.error(this.resourceService.messages.fmsg.m0043);
       });
   }
+  /**
+  * This method watches for the change triggered in child and updates the showError
+  * variable accordingly
+  */
   onAddressChange(event) {
     let curAddressId = 0;
     setTimeout(() => {

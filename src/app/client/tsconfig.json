@@ -22,6 +22,9 @@
       "@sunbird/announcement": [
         "app/modules/announcement"
       ],
+      "@sunbird/notes": [
+        "app/modules/notes"
+      ],
       "@sunbird/resource": [
         "app/modules/resource"
       ],
@@ -35,7 +38,7 @@
         "app/modules/search"
       ],
       "@sunbird/profile": [
-        "app/modules/profile"
+        "app/plugins/profile"
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"

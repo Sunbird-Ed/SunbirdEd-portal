@@ -147,4 +147,12 @@ export class PermissionService {
   get allRoles(): Array<RolesAndPermissions> {
     return this.mainRoles;
   }
+  getWorkspaceAuthRoles() {
+    const authroles = _.find(this.config.rolesConfig.WORKSPACEAUTHGARDROLES, (role, key) => {
+      if (this.checkRolesPermissions(role.roles)) {
+        return role;
+      }
+    });
+    return authroles;
+  }
 }

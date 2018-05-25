@@ -108,19 +108,17 @@ export const mockProfileVisibilityData = {
         'params': {
             'resmsgid': null,
             'msgid': 'd39d3ed1-e63c-9bff-59f0-5ed15118ac2d',
-            'err': null,
-            'status': 'success',
+            'err': '',
+            'status': '',
             'errmsg': null
         },
-        'responseCode': 'OK',
-        'result': {
-            'response': 'SUCCESS'
-        }
+        'responseCode': 'SERVER_ERROR',
+        'result': {}
     },
     resourceBundle: {
         'messages': {
             'fmsg': {
-                'm0076': 'Please enter mandatory fields'
+                'm0048': 'Updating user profile failed,please try again later...'
             },
             'smsg': {
                 'm0040': 'Profile field visibility updated successfully'

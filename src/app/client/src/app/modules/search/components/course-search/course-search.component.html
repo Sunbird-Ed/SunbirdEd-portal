@@ -13,21 +13,20 @@
 
         <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
             <div class="ui left floated header margin-auto ">
-                <p class="serch-allresult">Showing results for
-                    <span class="lower-case">
-                        {{this.queryParams.key}} in "all"
-                    </span>
-                </p>
+                    <p class="serch-allresult">Showing results
+                            <span class="lower-case" *ngIf="this.queryParams.key">
+                                for {{this.queryParams.key}}
+                            </span>
+                            in "courses"
+                        </p>
             </div>
-            <h5 class="ui right floated basic icon circular button ">
-                <a [routerLink]="['/learn']">
-                    <i class="ui remove icon "></i>
-                </a>
+            <h5 class="ui right floated basic icon circular button " [routerLink]="['/learn']">
+                <i class="ui remove icon "></i>
             </h5>
         </div>
         <div *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
             <div class="column" *ngFor="let content of searchList">
-                <app-content-card [content]="content"></app-content-card>
+                <app-card [data]="content" (clickEvent)="playContent($event)" ></app-card>
             </div>
         </div>
         <div *ngIf="noResult && !showLoader">

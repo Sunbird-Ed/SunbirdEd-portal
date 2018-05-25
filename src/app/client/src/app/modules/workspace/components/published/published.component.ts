@@ -180,18 +180,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
           this.publishedContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-          _.forEach(this.publishedContent, (item, key) => {
-            const action = {
-              right: {
-                displayType: 'icon',
-                classes: 'trash large icon',
-                actionType: 'delete',
-                clickable: true
-              }
-            };
-            this.publishedContent[key].action = action;
-
-          });
+          const constantData = this.config.appConfig.WORKSPACE.Published.constantData;
+        const metaData = this.config.appConfig.WORKSPACE.Published.metaData;
+        const dynamicFields = this.config.appConfig.WORKSPACE.Published.dynamicFields;
+        this.publishedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
@@ -214,10 +206,10 @@ export class PublishedComponent extends WorkSpace implements OnInit {
     * This method launch the content editior
   */
   contentClick(param) {
-    if (param.type === 'delete') {
-      this.deleteConfirmModal(param.content.identifier);
+    if (param.action.eventName === 'delete') {
+      this.deleteConfirmModal(param.data.metaData.identifier);
     } else {
-      this.workSpaceService.navigateToContent(param.content, this.state);
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 

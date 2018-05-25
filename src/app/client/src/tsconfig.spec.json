@@ -4,6 +4,9 @@
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
     "paths": {
+      "sunbird-web-extension": [
+        "libs/sunbird-web-extension/esm5"
+      ],
       "@sunbird/core": [
           "app/modules/core"
       ],
@@ -22,6 +25,9 @@
       "@sunbird/announcement": [
         "app/modules/announcement"
       ],
+      "@sunbird/notes": [
+        "app/modules/notes"
+      ],
       "@sunbird/resource": [
         "app/modules/resource"
       ],
@@ -35,13 +41,16 @@
         "app/modules/org-management"
       ],
       "@sunbird/profile": [
-        "app/modules/profile"
+        "app/plugins/profile"
       ],
       "@sunbird/search": [
         "app/modules/search"
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"
+      ],
+      "@sunbird/badge": [
+        "app/modules/badging"
       ]
     },
     "module": "commonjs",

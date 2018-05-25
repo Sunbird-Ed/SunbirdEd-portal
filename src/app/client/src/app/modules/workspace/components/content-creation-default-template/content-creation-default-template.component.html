@@ -36,7 +36,7 @@
     <div *ngIf="field.code==='concept'" class="field" [ngClass]="{ 'disabled':!field.editable}">
         <form class="conceptSelector ui form">
             <label>{{field.name}}</label>
-          <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
+          <app-concept-picker [selectedConcepts]="formInputData[field.code]" [conceptPickerClass]="'content-creation-concept-picker'" (Concepts)="concepts($event)"></app-concept-picker>
         </form>
       </div>
   </div>

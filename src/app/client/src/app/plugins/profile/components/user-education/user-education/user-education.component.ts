@@ -14,16 +14,37 @@ import { EditUserEducationComponent } from '../../user-education/edit-user-educa
   styleUrls: ['./user-education.component.css']
 })
 export class UserEducationComponent implements OnInit {
+  /**
+   * Reference of view children
+   */
   @ViewChildren('edit') editChild: QueryList<EditUserEducationComponent>;
+  /**
+   * Reference of view child
+   */
   @ViewChild('add') addChild: EditUserEducationComponent;
+  /**
+   * Reference of User Profile interface
+   */
   userProfile: IUserProfile;
+  /**
+   * Reference for profile visibility
+   */
   privateProfileFields = true;
+  /**
+   * Contains add/edit action
+   */
   action: string;
+  /**
+   * Is an array that stores action
+   */
   allowedAction = ['edit', 'add'];
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
-
+    /**
+   * This method is used to fetch user profile details
+   * and to assign specified actions
+   */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -44,6 +65,9 @@ export class UserEducationComponent implements OnInit {
       }
     });
   }
+  /**
+   * This method is used to edit education details
+   */
   editEducation() {
     const editedEdu = [];
     let formStatus = true;
@@ -82,6 +106,9 @@ export class UserEducationComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
+  /**
+   * This method is used to add new education
+   */
   addEducation() {
     const addEdu: any = {};
     if (this.addChild.educationForm.touched === true && this.addChild.educationForm.valid === true) {
@@ -112,6 +139,9 @@ export class UserEducationComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
+  /**
+   * This method is used to delete existing education
+   */
   deleteEducation(deletedEdu) {
     const request = {
       education: [deletedEdu]

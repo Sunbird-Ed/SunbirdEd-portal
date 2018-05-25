@@ -1,11 +1,11 @@
 <div id="skills" class="twelve wide column padding-bottom-none">
     <div class="ui raised segment margin-top-20 margin-bottom-0">
-        <div class="header announcementCard-header ">
-            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}} </span>
-            <a class="addeditprofile">
+        <div class="header padding-none">
+            <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.skillTags}} </span>
+            <a class="add-edit-btn-profile">
                 <app-profile-visibility field="skills"></app-profile-visibility>
             </a>
-            <a class="addeditprofile cursor-pointer" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
+            <a class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
         </div>
         <div class="profileitems profile-des ui relaxed aligned list">
             <div class="item " *ngFor="let skill of userProfile.skills | slice:0:limit">
@@ -20,8 +20,8 @@
             </div>
         </div>
     </div>
-    <div class="ui bottom attached tabular menu userSkillMore ng-scope " *ngIf="userProfile.skills.length > defaultLimit">
-        <div class="active item addSkillMoreBtn">
+    <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userProfile.skills.length > defaultLimit">
+        <div class="active item expand-or-minimize-btn-pad">
             <a (click)="toggle(true)" *ngIf="viewMore">
                 <span class="cursor-pointer">
                     {{resourceService?.frmelmnts?.btn?.viewmore}}

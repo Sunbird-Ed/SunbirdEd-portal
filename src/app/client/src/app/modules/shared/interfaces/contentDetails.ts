@@ -14,4 +14,28 @@ export interface ContentData {
     name: string;
     me_averageRating: string | number;
     description: string;
+    appIcon?: string;
+    artifactUrl?: string;
+    audience?: any;
+    code: string;
+    collections?: any;
+    concepts?: any;
+    createdBy?: string;
+    createdOn?: string;
+    creator?: string;
+    framework: string;
+    gradeLevel?: Array<string>;
+    language?: Array<string>;
+    languageCode?: string;
+    lastUpdatedOn?: string;
+    mediaType?: string;
+    medium?: string;
+    organisationIds?: Array<string>;
+    osId?: string;
+    publisher?: string;
+    status: string;
+    usedByContent?: any;
+    userId: string;
+    userName: string;
+    visibility?: string;
 }

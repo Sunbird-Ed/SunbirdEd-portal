@@ -44,6 +44,11 @@ export interface IContents {
     */
     contentType?: string;
     /**
+    * Content mimeType
+    */
+    mimeType?: string;
+
+    /**
     * Content identifier
     */
     identifier?: string;
@@ -59,6 +64,11 @@ export interface IContents {
     * Content action
     */
     action?: IAction;
+
+    /**
+    * Content action
+    */
+    contnetShare?: any;
 }
 
 export interface IbadgeAssertions {

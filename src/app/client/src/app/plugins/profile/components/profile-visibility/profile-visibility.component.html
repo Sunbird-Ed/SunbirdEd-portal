@@ -1,5 +1,4 @@
-<div *ngIf="!loader === true" suiDropdown [(isOpen)]="isOpen" class="ui top left pointing dropdown icon button profile-privacy-drpdwn ProfilePagePermissionBtn">
-    <!-- ng-class="{'ProfilePermissionBtnTop':(top=='true')}"  -->
+<div *ngIf="!loader === true" suiDropdown class="ui top left pointing dropdown icon button profile-page-permission-btn">
         <i  *ngIf="visibility === 'public'" class="unlock alternate icon"></i>
         <i  *ngIf="visibility === 'private'" class="lock icon"></i>
         <div class="menu" suiDropdownMenu>

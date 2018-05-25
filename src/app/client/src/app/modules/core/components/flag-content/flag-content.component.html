@@ -1,0 +1,52 @@
+<sui-modal [isClosable]="true" (dismissed)="redirect()" #modal>
+    <div class="header" *ngIf="!showLoader">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <span class="ui header">{{resourceService?.frmelmnts?.lbl?.whatwentwrong}}</span>
+            </div>
+            <div class="one wide column actions" (click)="redirect(); modal.deny()">
+                <h5 class="ui basic icon circular button deny">
+                    <i class="ui remove icon"></i>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="content" *ngIf="!showLoader">
+        <div class="row">
+            <span class="ui tiny header flag-description">{{resourceService?.frmelmnts?.lbl?.whatwentwrongdesc}}</span>
+        </div>
+        <form class="ui form">
+            <div class="field">
+                <label class="flag-form">{{resourceService?.frmelmnts?.lbl?.contentname}}</label>
+                <div class="eight wide field" *ngIf="contentData">
+                    <input type="text" name="title" readonly value="{{contentData.name}}">
+                </div>
+            </div>
+            <div class="grouped fields">
+                <label class="flag-form">{{resourceService?.frmelmnts?.lbl?.selectreason}}</label>
+                <div *ngFor="let reason of flagReasons">
+                    <div class="field radiomargin">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="radio" [(ngModel)]="flagData.flagReasons" value="{{reason.value}}">
+                            <label>{{reason.name}}</label>
+                        </div>
+                        <i *ngIf="reason.description" suiPopup popupText="{{reason.description}}" [popupPlacement]="'right top'" class="help circle icon link helpPopup"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="eight wide field">
+                        <input name="addYourComment" placeholder="{{resourceService?.frmelmnts?.intxt?.t0002}}" [(ngModel)]="flagData.comment" required="">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions" *ngIf="!showLoader">
+        <button class="ui primary button " (click)="saveMetaData(modal)" [disabled]="!flagData.flagReasons">
+            {{resourceService?.frmelmnts?.btn?.submit}}
+        </button>
+    </div>
+    <div class=" ui segment margin-top-10 " *ngIf="showLoader">
+        <app-loader [data]="loaderMessage"></app-loader>
+    </div>
+</sui-modal>

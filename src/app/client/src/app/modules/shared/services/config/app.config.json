@@ -1,17 +1,128 @@
 {
+  "Course": {
+    "otherCourse": {
+      "constantData": {
+        "action": {
+            "onImage": { "eventName": "onImage" }
+        }
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+    },
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        }
+      },
+      "metaData": ["batchId", "courseId"],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
+    }
+  },
+  "Library": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType"}
+  },
+  "GetPage":{
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui blue left ribbon label"} }
+       },
+     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+  },
+  "HomeSearch": {
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        }
+       },
+       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+  },
+  "CourseSearch": {
+    "otherCourses":{
+      "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        }
+       }
+    },"enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {
+            "eventName": "onImage"
+          }
+        }
+      }
+    },
+   "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]}
+  },
+  "LibrarySearch":{
+    "constantData":{
+      "action": {
+          "onImage": {"eventName": "onImage" }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"},
+        "left": {"class":  "ui blue left ribbon label"} }
+       },
+     "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+  },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10
   },
-  "PLAYER_CONFIG":{
+  "FLAGREASONS": [
+    {
+      "name": "Inappropriate content",
+      "value": "Inappropriate Content",
+      "description": "Hateful, harmful or explicit lesson that is inappropriate for young learners"
+    },
+    {
+      "name": "Copyright violation",
+      "value": "Copyright Violation",
+      "description": "Uses copyrighted work without permission"
+    },
+    {
+      "name": "Privacy violation",
+      "value": "Privacy Violation",
+      "description": "Collects sensitive data or personal information about users, such as name \\n address, photo or other personally identifiable information"
+    },
+    {
+      "name": "Other",
+      "value": "Other"
+    }
+  ],
+  "PLAYER_CONFIG": {
     "playerConfig": {
       "context": {
-          "mode": "play",
-          "partner": [],
-          "pdata" : {
-            "id": "sunbird.portal",
-            "ver": "1.0",
-            "pid": "sunbird-portal"
-          }
+        "mode": "play",
+        "partner": [],
+        "pdata": {
+          "id": "sunbird.portal",
+          "ver": "1.7",
+          "pid": "sunbird-portal"
+        }
       },
       "config": {
         "showEndPage": false,
@@ -21,20 +132,47 @@
           "showUser": false
         },
         "apislug": "/action",
-        "repos": ["/content-plugins/renderer"],
-        "plugins": [{ "id": "org.sunbird.iframeEvent", "ver": 1.0, "type": "plugin" }, { "id": "org.sunbird.player.endpage", "ver": 1.0, "type": "plugin" }]
+        "repos": [
+          "/content-plugins/renderer"
+        ],
+        "plugins": [
+          {
+            "id": "org.sunbird.iframeEvent",
+            "ver": 1.0,
+            "type": "plugin"
+          },
+          {
+            "id": "org.sunbird.player.endpage",
+            "ver": 1.0,
+            "type": "plugin"
+          }
+        ]
       }
     },
+    "contentType": {
+      "Course": "Course"
+    },
     "MIME_TYPE": {
-        "pdf": "application/pdf",
-        "mp4": "video/mp4",
-        "youtube": "video/x-youtube",
-        "pYoutube": "video/youtube",
-        "html": "application/vnd.ekstep.html-archive",
-        "ecml": "application/vnd.ekstep.ecml-archive",
-        "ePub": "application/epub",
-        "h5p": "application/vnd.ekstep.h5p-archive",
-        "webm": "video/webm"
+      "collection": "application/vnd.ekstep.content-collection",
+      "ecmlContent": "application/vnd.ekstep.ecml-archive",
+      "genericMimeType": [
+        "application/pdf",
+        "video/mp4",
+        "video/x-youtube",
+        "video/youtube",
+        "application/vnd.ekstep.html-archive",
+        "application/epub",
+        "application/vnd.ekstep.h5p-archive",
+        "video/webm"
+      ],
+      "pdf": "application/pdf",
+      "mp4": "video/mp4",
+      "youtube": "video/x-youtube",
+      "pYoutube": "video/youtube",
+      "html": "application/vnd.ekstep.html-archive",
+      "ePub": "application/epub",
+      "h5p": "application/vnd.ekstep.h5p-archive",
+      "webm": "video/webm"
     },
     "baseURL": "/content/preview/preview.html?webview=true"
   },
@@ -70,9 +208,102 @@
       "draft",
       "uploaded",
       "published",
-      "limited-publish",
-      "flagged"
-    ]
+      "limited/publish"
+    ],
+    "Draft": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Published": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Uploaded": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "Flagged": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "ReviewSubmission": {
+      "constantData": {
+        "action": {
+          "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    },
+    "LimitedPublishing": {
+      "constantData": {
+        "action": {
+          "right": {
+        "class": "trash large icon",
+       "eventName": "delete",
+       "displayType": "icon"},
+       "left": {
+      "class": "linkify large icon float-ContentLeft limitedPublishingLinkIcon",
+       "eventName": "share",
+       "displayType": "icon"
+    },
+       "onImage": {
+            "eventName": "onImage"
+          }
+        },
+        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+      },
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "dynamicFields": {"ribbon.right.name": "contentType"}
+    }
+
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -232,6 +463,114 @@
       "email": "profile/additionalInfo/edit",
       "phone": "profile/additionalInfo/edit",
       "language": "profile/additionalInfo/edit"
+    },
+    "defaultViewMoreLimit": 3,
+    "options": [
+      {
+        "text": "Hide this from everyone",
+        "value": "private"
+      },
+      {
+        "text": "Show this to all",
+        "value": "public"
+      }
+    ]
+  },
+  "CHECK_LIST_CONFIG": {
+    "reject": {
+      "title": "Request Changes",
+      "subtitle": "Please tick the reasons for requesting changes and provide detailed comments:",
+      "otherReason": "Other Issue(s) (if there are any other issues, tick this and provide details in the comments box)",
+      "contents": [
+        {
+          "name": "Appropriateness",
+          "index": 1,
+          "checkList": [
+            "Has Hate speech, Abuse, Violence, Profanity",
+            "Has Sexual content, Nudity or Vulgarity",
+            "Has Discriminatory or Defamatory content",
+            "Is not suitable for children"
+          ]
+        },
+        {
+          "name": "Content details",
+          "index": 2,
+          "checkList": [
+            "Inappropriate Title or Description",
+            "Incorrect Board, Grade, Subject or Medium",
+            "Inappropriate tags such as Resource Type or Concepts",
+            "Irrelevant Keywords"
+          ]
+        },
+        {
+          "name": "Usability",
+          "index": 3,
+          "checkList": [
+            "Content is NOT playing correctly",
+            "CANNOT see the content clearly on Desktop and App",
+            "Audio is NOT clear or NOT easy to understand",
+            "Spelling mistakes found in text used",
+            "Language is NOT simple to understand"
+          ]
+        }
+      ],
+      "comments": {
+        "required": true,
+        "label": "Comments"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "proceed": "Request changes"
+      }
+    },
+    "publish": {
+      "title": "Publish",
+      "subtitle": "Please confirm that ALL the following items are verified (by ticking the check-boxes) before you can publish:",
+      "contents": [
+        {
+          "name": "Appropriateness",
+          "index": 1,
+          "checkList": [
+            "No Hate speech, Abuse, Violence, Profanity",
+            "No Sexual content, Nudity or Vulgarity",
+            "No Discrimination or Defamation",
+            "Is suitable for children"
+          ]
+        },
+        {
+          "name": "Content details",
+          "index": 2,
+          "checkList": [
+            "Appropriate Title, Description",
+            "Correct Board, Grade, Subject, Medium",
+            "Appropriate tags such as Resource Type, Concepts",
+            "Relevant Keywords"
+          ]
+        },
+        {
+          "name": "Usability",
+          "index": 3,
+          "checkList": [
+            "Content plays correctly",
+            "Can see the content clearly on Desktop and App",
+            "Audio (if any) is clear and easy to understand",
+            "No Spelling mistakes in the text",
+            "Language is simple to understand"
+          ]
+        }
+      ],
+      "comments": {
+        "required": false,
+        "label": "Comments"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "proceed": "Publish"
+      }
+    },
+    "read": {
+      "title": "Review Comments",
+      "subtitle": ""
     }
   }
 }

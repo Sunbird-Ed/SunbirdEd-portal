@@ -35,6 +35,11 @@ export class GeoExplorerComponent implements OnInit {
   keyName = 'geo';
 
   /**
+   * Search text for geo location list
+   */
+  searchText: string;
+
+  /**
    * Logged user root org id
    */
   rootOrgId: string;

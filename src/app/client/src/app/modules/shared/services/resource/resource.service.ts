@@ -1,4 +1,4 @@
-import { HttpOptions, RequestParam, ServerResponse} from './../../interfaces';
+import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService } from './../config/config.service';
 import { Injectable } from '@angular/core';
@@ -10,13 +10,13 @@ import * as moment from 'moment';
  */
 @Injectable()
 export class ResourceService {
- /**
- * messages bundle
- */
+  /**
+  * messages bundle
+  */
   messages: any = {};
-   /**
-   * frmelmnts bundle
-   */
+  /**
+  * frmelmnts bundle
+  */
   frmelmnts: any = {};
   /**
    * reference of config service.
@@ -24,6 +24,12 @@ export class ResourceService {
   public config: ConfigService;
   public baseUrl: string;
   public http: HttpClient;
+
+  /**
+   * Contains instance name
+   */
+  private _instance: string;
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -36,38 +42,42 @@ export class ResourceService {
     this.http = http;
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
-   }
+    try {
+      this._instance = (<HTMLInputElement>document.getElementById('instance')).value;
+    } catch (error) {
+    }
+  }
   public initialize() {
     this.getResource();
   }
   /**
    * method to fetch resource bundle
   */
-   public getResource(): void {
+  public getResource(): void {
     const option = {
       url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG
     };
     this.get(option).subscribe(
       (data: ServerResponse) => {
-          this.messages = data.result.messages;
-          this.frmelmnts = data.result.frmelmnts;
+        this.messages = data.result.messages;
+        this.frmelmnts = data.result.frmelmnts;
       },
       (err: ServerResponse) => {
       }
     );
-   }
-   get(requestParam: RequestParam): Observable<any> {
+  }
+  get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-    .flatMap((data: ServerResponse) => {
-      if (data.responseCode !== 'OK') {
-        return Observable.throw(data);
-      }
-      return Observable.of(data);
-    });
+      .flatMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return Observable.throw(data);
+        }
+        return Observable.of(data);
+      });
   }
   private getHeader(): HttpOptions['headers'] {
     return {
@@ -80,5 +90,11 @@ export class ResourceService {
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
+  }
+  /**
+ * get method to fetch instance.
+ */
+  get instance(): string {
+    return this._instance;
   }
 }

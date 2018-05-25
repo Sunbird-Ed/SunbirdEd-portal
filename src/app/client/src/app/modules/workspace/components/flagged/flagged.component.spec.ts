@@ -129,7 +129,7 @@ describe('FlaggedComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    const content = {'content': {'mimeType': 'application/vnd.ekstep.ecml-archive', 'identifier': 'do_112485749070602240134' }};
+    const content = {data: { metaData: {'mimeType': 'application/vnd.ekstep.ecml-archive', 'identifier': 'do_112485749070602240134'} } };
     component.contentClick(content);
   }));
 });

@@ -26,8 +26,16 @@ export const mockRes = {
       }]
     }
   },
-    pager: {
-        'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
-        'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
+  pager: {
+    'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
+    'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
+  },
+  searchSuccessWithCountZero: {
+    'id': 'api.v1.search',
+    'responseCode': 'OK',
+    'result': {
+      'count': 0,
+      'content': []
     }
+  }
 };

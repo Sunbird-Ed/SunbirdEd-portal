@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot, NavigationEnd } from '@
 import { Observable } from 'rxjs/Observable';
 import { Type } from '@angular/core';
 import 'rxjs/add/operator/filter';
-import { IBreadcrumb } from './interfaces';
+import { IBreadcrumb } from '../../interfaces';
 
 const data = { data: {breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }]} };
 const mockData: IBreadcrumb[] = [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }];

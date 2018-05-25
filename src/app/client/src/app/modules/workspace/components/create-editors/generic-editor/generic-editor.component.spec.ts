@@ -55,12 +55,12 @@ describe('GenericEditorComponent', () => {
    it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();
     setTimeout(() => {
-      component.navigateToCreate();
+      component.navigateToUploads();
     }, 1000);
 
-    expect(component.navigateToCreate).not.toHaveBeenCalled();
+    expect(component.navigateToUploads).not.toHaveBeenCalled();
     jasmine.clock().tick(1001);
-    expect(component.navigateToCreate).toHaveBeenCalled();
+    expect(component.navigateToUploads).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
   }));
 });

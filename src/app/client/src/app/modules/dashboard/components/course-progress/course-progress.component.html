@@ -1,0 +1,189 @@
+<br>
+<br>
+<div class=" ui grid">
+  <div class="one wide column"></div>
+  <div class="ten wide column">
+    <div>
+      <span id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
+        <div class="ui grid">
+          <div class="five wide column float-ContentLeft" *ngIf="batchlist.length === 1">
+            <span class="dashBoardSectionHeading">
+              <i class="large bar chart icon"></i>
+            </span>
+            <span class="dashBoardSectionHeading">{{batchlist[0].name}}</span>
+          </div>
+          <div class="one wide column" *ngIf="batchlist.length > 1">
+            <span class="dashBoardSectionHeading">
+              <i class="large bar chart icon padding-top-5"></i>
+            </span>
+          </div>
+          <div class="four wide column float-ContentLeft" *ngIf="batchlist.length > 1">
+            <sui-select class="selection fluid" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption" [options]="batchlist"
+              labelField="name" valueField="id" [isSearchable]="true" #select>
+              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <!-- Blank six wide column-->
+          <div class="six wide column padding-top-20 ng-scope"></div>
+          <div class="one wide column padding-top-20 padding-right-5">
+            <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
+              <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
+            </a>
+          </div>
+        </div>
+        <div class="ui grid centered margin-top-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showWarningDiv">
+          <div class="six wide column">
+            <div class="ui text menu float-ContentLeft padding-top-10">
+              <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:queryParams.timePeriod === '7d'}" (click)="setTimePeriod('7d')">{{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '14d'}" (click)="setTimePeriod('14d')">{{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '5w'}" (click)="setTimePeriod('5w')">{{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">{{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+          </div>
+          <div class="two wide column"></div>
+          <!-- Course admin filter-->
+          <div class="four wide column">
+            <div class="ui category search float-ContentRight">
+              <div class="ui icon input">
+                <input class="search-course-data" type="text" title="Search" class="" [(ngModel)]="searchText" placeholder="Search" autocomplete="off"
+                />
+                <i class="search icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+
+      <div class="table-data-holder" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
+        <div class="ui raised segment">
+          <div class="eight wide column right floated dashBoardCardText">
+            <h3>{{filterText}} </h3>
+          </div>
+          <table class="ui very basic courseDashBoardTable table">
+            <thead>
+              <tr>
+                <th class="table-headerDashboard">
+                  <a href="Javascript:void(0);" [class.active]="order==='progress'" (click)="setOrder('progress')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
+                    <span [hidden]="reverse">
+                      <i class="angle down icon" *ngIf="order === 'progress'"></i>
+                    </span>
+                    <span [hidden]="!reverse">
+                      <i class="angle up icon" *ngIf="order === 'progress'"></i>
+                    </span>
+                  </a>
+                </th>
+                <th>
+                  <a href="Javascript:void(0);" [class.active]="order === 'userName'" (click)="setOrder('userName')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
+                    <span [hidden]="reverse">
+                      <i class="angle down icon" *ngIf="order === 'userName'"></i>
+                    </span>
+                    <span [hidden]="!reverse">
+                      <i class="angle up icon" *ngIf="order === 'userName'"></i>
+                    </span>
+                  </a>
+                </th>
+                <th>
+                  <a href="Javascript:void(0);" [class.active]="order === 'batchEndsOn'" (click)="setOrder('batchEndsOn')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbybatchend}}
+                    <span [hidden]="reverse">
+                      <i class="angle down icon" *ngIf="order === 'batchEndsOn'"></i>
+                    </span>
+                    <span [hidden]="!reverse">
+                      <i class="angle up icon" *ngIf="order === 'batchEndsOn'"></i>
+                    </span>
+                  </a>
+                </th>
+                <th>
+                  <a href="Javascript:void(0);" [class.active]="order === 'org'" (click)="setOrder('org')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyorg}}
+                    <span [hidden]="reverse">
+                      <i class="angle down icon" *ngIf="order === 'org'"></i>
+                    </span>
+                    <span [hidden]="!reverse">
+                      <i class="angle up icon" *ngIf="order === 'org'"></i>
+                    </span>
+                  </a>
+                </th>
+                <th>
+                  <a href="Javascript:void(0);" [class.active]="order === 'enrolledOn'" (click)="setOrder('enrolledOn')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
+                    <span [hidden]="reverse">
+                      <i class="angle down icon" *ngIf="order === 'enrolledOn'"></i>
+                    </span>
+                    <span [hidden]="!reverse">
+                      <i class="angle up icon" *ngIf="order === 'enrolledOn'"></i>
+                    </span>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of dashboarData | orderBy: order:reverse:'case-insensitive' | filter: searchText : ['userName', 'org']">
+                <td *ngIf="student.progress === 100">Done</td>
+                <td class="ui green header text-font" *ngIf="(student.progress !== 100 && student.progress > 90)">{{student.progress}}%</td>
+                <td class="ui orange header text-font" *ngIf="(student.progress !== 100 && student.progress > 30)">{{student.progress}}%</td>
+                <td class="ui red header text-font" *ngIf="(student.progress !== 100 && student.progress < 30)">{{student.progress}}%</td>
+                <td>{{student.userName}}
+                  <br>
+                  <span *ngIf="student.lastAccessTime">Last login: {{student.lastAccessTime | dateFormat}}</span>
+                </td>
+                <td>{{student.batchEndsOn | dateFormat}}</td>
+                <td>{{student.org}}</td>
+                <td>{{student.enrolledOn | dateFormat}}</td>
+              </tr>
+              <tr *ngIf="dashboarData && dashboarData.length === 0">
+                <td id="noRecordsFound">No data found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="twelve wide column margin-top-20" *ngIf="dashboarData && dashboarData.length > 0">
+          <p class="text-align-right dashBoardCardText">{{resourceService?.frmelmnts?.instn?.t0058}}
+            <a href="javascript:void(0);" class="item text-decoration-underline padding-left-10" (click)="downloadReport();">{{resourceService?.frmelmnts?.instn?.t0059}}</a>
+          </p>
+        </div>
+      </div>
+      <!-- Show loader-->
+      <div class="tweleve wide column" *ngIf="showLoader">
+        <app-loader></app-loader>
+      </div>
+      <!-- Show warning message if no batch selected-->
+      <div class="ui warning message tweleve wide column" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
+        <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
+        {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
+      </div>
+      <!-- Show message if no batch is created-->
+      <div class="ui grid" *ngIf="showNoBatch">
+        <div class="twelve wide column">
+          <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
+            <i class="ui remove icon CloseButtonFont"></i>
+          </a>
+        </div>
+        <div class="twelve wide column">
+          <div class="ui info message">
+            <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
+            <ul class="list">
+              <li>{{resourceService?.frmelmnts?.instn?.t0062}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
+
+<sui-modal [isClosable]="true" (dismissed)="modal.deny(); showDownloadModal = false;" #modal *ngIf="showDownloadModal">
+  <!-- Download report popup-->
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <p class="meta">{{resourceService?.messages?.stmsg?.m0095}}</p>
+  </div>
+  <div class="actions margin-top-20 ">
+    <div></div>
+  </div>
+</sui-modal>

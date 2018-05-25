@@ -20,13 +20,13 @@
                     in "library"
                 </p>
             </div>
-            <h5 class="ui right floated basic icon circular button " [routerLink]="['/learn']">
+            <h5 class="ui right floated basic icon circular button " [routerLink]="['/resources']">
                 <i class="ui remove icon "></i>
             </h5>
         </div>
         <div *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
             <div class="column" *ngFor="let content of searchList">
-                <app-content-card [content]="content"></app-content-card>
+                <app-card (clickEvent)="playContent($event)" [data]="content"></app-card>
             </div>
         </div>
         <div *ngIf="noResult && !showLoader">

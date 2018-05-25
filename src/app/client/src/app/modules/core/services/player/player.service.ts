@@ -1,9 +1,11 @@
+import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails , PlayerConfig, ContentData
+  ContentDetails , PlayerConfig, ContentData, NavigationHelperService
  } from '@sunbird/shared';
+import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -16,8 +18,12 @@ export class PlayerService {
    * stores content details
    */
   contentData: ContentData;
+  /**
+   * stores collection/course details
+   */
+  collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService ) {
+    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService ) {
   }
 
   /**
@@ -26,8 +32,8 @@ export class PlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string): Observable<PlayerConfig> {
-    return this.getContent(id)
+  getConfigByContent(id: string, option: any = {params: {}}): Observable<PlayerConfig> {
+    return this.getContent(id, option)
       .flatMap((contentDetails) => {
         return Observable.of(this.getConfig({
           contentId: contentDetails.result.content.identifier,
@@ -41,10 +47,12 @@ export class PlayerService {
    * @param {string} contentId
    * @returns {Observable<ServerResponse>}
    */
-  getContent(contentId: string): Observable<ServerResponse> {
+  getContent(contentId: string, option: any = {params: {}}): Observable<ServerResponse> {
+    let param = {fields: this.configService.urlConFig.params.contentGet};
+    param = { ...param, ...option.params };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
-      param: { fields: this.configService.urlConFig.params.contentGet }
+      param:  { ...param, ...option.params }
     };
     return this.contentService.get(req).map((response: ServerResponse) => {
       this.contentData = response.result.content;
@@ -82,8 +90,40 @@ export class PlayerService {
     }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
-    configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecml ?
+    configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
     {} : contentDetails.contentData.body;
     return configuration;
+  }
+
+  public getCollectionHierarchy(identifier: string, option: any = {params: {}}): Observable<CollectionHierarchyAPI.Get> {
+    const req = {
+      url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      param: option.params
+    };
+    return this.contentService.get(req).map((response: ServerResponse) => {
+      this.collectionData = response.result.content;
+      return response;
+    });
+  }
+
+  playContent(content) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
+        this.router.navigate(['/resources/play/collection', content.identifier]);
+      } else if (content.batchId) {
+        this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
+      } else {
+        this.router.navigate(['/learn/course', content.identifier]);
+      }
+    } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
+
+      this.router.navigate(['/resources/play/content', content.identifier]);
+
+    } else {
+
+      this.router.navigate(['/resources/play/content', content.identifier]);
+
+    }
   }
 }

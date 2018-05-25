@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 // SB scomponent(s) and service(s)
 import { GeoExplorerComponent } from './geo-explorer.component';
-import { LearnerService, UserService } from '@sunbird/core';
+import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { GeoExplorerService } from './../../services/geo-explorer/geo-explorer.service';
 // Rxjs
 import { Observable } from 'rxjs/Observable';
@@ -27,7 +27,7 @@ describe('GeoExplorerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GeoExplorerComponent ],
       providers: [ToasterService , GeoExplorerService, LearnerService, UserService],
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, Ng2IziToastModule]
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, Ng2IziToastModule, CoreModule]
     })
     .compileComponents();
   }));

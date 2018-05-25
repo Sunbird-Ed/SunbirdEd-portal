@@ -3,6 +3,7 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, ContentService, PlayerService, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const serverRes = {
   id : 'api.content.read',
@@ -22,7 +23,7 @@ const serverRes = {
 describe('PlayerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule],
       providers: []
     });
   });
