@@ -34,11 +34,20 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.getCourseHierarchy(params.courseId);
       });
 
-      this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
+    this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
         if (this.courseHierarchy) {
-          this.breadcrumbsService.setBreadcrumbs([{label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId
-          }]);
+          if (this.batchId) {
+            this.breadcrumbsService.setBreadcrumbs([{
+              label: this.courseHierarchy.name,
+              url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
+            }]);
+          } else {
+            this.breadcrumbsService.setBreadcrumbs([{
+              label: this.courseHierarchy.name,
+              url: '/learn/course/' + this.courseId
+            }]);
+          }
         }
       });
   }

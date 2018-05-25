@@ -52,4 +52,12 @@ describe('ContentBadgeComponent', () => {
     component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0044);
   });
+  it('should contain badgeClassName in response', () => {
+    component.data = mockResponse.badgeData;
+    expect(component.data[0]['badgeClassName']).toBeDefined();
+  });
+  it('should not contain badgeClassName in response', () => {
+    component.data = undefined;
+    expect(component.data).not.toBeDefined();
+  });
 });

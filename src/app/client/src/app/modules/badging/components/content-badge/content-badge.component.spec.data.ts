@@ -134,5 +134,16 @@ export const mockResponse = {
             'recipientEmail': 'support - dev@open-sunbird.org',
             'badgeIdUrl': 'https://dev.open-sunbird.org/badging/public/badges/official'
         }
-    }
+    },
+    badgeData: [
+        {
+            'assertionId': 'd56e6d23-70cb-49dc-9c04-0050ae9067da',
+            'badgeClassImage': 'https://sunbirddev.blob.core.windows.net/badgr/uploads/badges/b0fcde73f1fd81491235e3cfddd15b1c.png',
+            'badgeClassName': 'Official Textbook - MH',
+            'badgeId': 'badgeslug-2',
+            'createdTS': '1526552568280',
+            'issuerId': 'issuerslug-2',
+            'status': 'active'
+        }
+    ]
 };
