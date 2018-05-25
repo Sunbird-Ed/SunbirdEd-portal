@@ -133,7 +133,6 @@ export class UserProfileComponent implements OnInit {
     this.toasterService = toasterService;
     this.routerNavigationService = routerNavigationService;
     this.breadcrumbsService = breadcrumbsService;
-    // this.router.onSameUrlNavigation = 'reload';
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
