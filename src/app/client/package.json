@@ -1,6 +1,6 @@
 {
   "name": "src",
-  "version": "0.0.0",
+  "version": "1.7.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -48,7 +48,7 @@
     "ng2-cache-service": "^1.1.1",
     "ng2-charts": "^1.6.0",
     "ng2-device-detector": "^1.0.1",
-    "ng2-izitoast": "^1.0.1",
+    "ng2-izitoast": "2.0.0",
     "ng2-semantic-ui": "project-sunbird/ng2-semantic-ui",
     "ngx-md": "^3.1.1",
     "ngx-order-pipe": "^2.0.1",
