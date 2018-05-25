@@ -134,7 +134,7 @@ export class CreateComponent implements OnInit {
    */
   public config: ConfigService;
   /**
-   * Default method of classs CreateComponent
+   * Default method of class CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
