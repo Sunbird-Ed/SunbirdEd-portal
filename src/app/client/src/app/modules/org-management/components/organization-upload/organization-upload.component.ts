@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
@@ -14,8 +14,9 @@ import { Angular2Csv } from 'angular2-csv/Angular2-csv';
   templateUrl: './organization-upload.component.html',
   styleUrls: ['./organization-upload.component.css']
 })
-export class OrganizationUploadComponent implements OnInit {
+export class OrganizationUploadComponent implements OnInit, OnDestroy {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */
@@ -150,5 +151,8 @@ export class OrganizationUploadComponent implements OnInit {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }
