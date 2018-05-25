@@ -37,7 +37,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
         if (this.courseHierarchy) {
-          this.breadcrumbsService.setBreadcrumbs([{label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId
+          this.breadcrumbsService.setBreadcrumbs([{label: this.courseHierarchy.name,
+             url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
           }]);
         }
       });
