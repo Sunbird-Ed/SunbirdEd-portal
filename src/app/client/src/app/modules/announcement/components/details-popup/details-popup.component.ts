@@ -4,7 +4,7 @@ import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
-
+import { IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The details popup component checks for the announcement details object
  * present in announcement service. If object is undefined it calls API with
@@ -16,6 +16,10 @@ import { IAnnouncementDetails } from '@sunbird/announcement';
   styleUrls: ['./details-popup.component.css']
 })
 export class DetailsPopupComponent implements OnInit {
+   /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 	 * Contains unique announcement id
 	 */
@@ -124,6 +128,21 @@ export class DetailsPopupComponent implements OnInit {
       this.announcementId = params.announcementId;
     });
     this.getDetails(this.announcementId);
+      this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.announcementId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/announcement/outbox/',
+      }
+    };
   }
 }
 

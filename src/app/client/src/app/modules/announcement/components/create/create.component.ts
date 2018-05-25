@@ -1,6 +1,6 @@
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, ChangeDetectorRef } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -154,7 +154,7 @@ export class CreateComponent implements OnInit {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService) {
+    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -320,6 +320,7 @@ export class CreateComponent implements OnInit {
     this.telemetryEnd = endEvent;
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
     console.log(this.telemetryEnd);
+    this.cdr.detectChanges();
     this.route.navigate(['announcement/outbox/1']);
   }
 /**

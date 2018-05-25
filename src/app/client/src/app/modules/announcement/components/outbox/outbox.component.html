@@ -1,5 +1,5 @@
 
-  <div class="ui stackable grid" [appTelemetryImpression]="telemetryImpression">
+  <div class="ui stackable grid" >
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui stackable grid margin-top-10">
@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="margin-top-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
-    <div class="resource-padding ui grid">
+    <div class="resource-padding ui grid" [appTelemetryImpression]="telemetryImpression">
       <div class="one wide column"></div>
       <div class="ten wide column">
         <div class="ui tweleve wide column">

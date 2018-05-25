@@ -10,9 +10,8 @@
         <div *ngIf="showLoader">
           <app-loader></app-loader>
         </div>
-        <div in-view-container (inview)="inview($event)" [throttle]="[2000]"
-          *ngIf="inboxData && inboxData.announcements.length > 0 && !showLoader">
-          <div in-view-item  *ngFor="let inboxData of inboxData.announcements; let i = index;"  [id]="index" [data]="inboxData" >
+        <div *ngIf="inboxData && inboxData.announcements.length > 0 && !showLoader">
+          <div in-view-container (inview)="inview($event)" [throttle]="[2000]"  in-view-item  *ngFor="let inboxData of inboxData.announcements; let i = index;"  [id]="index" [data]="inboxData" >
             <div (click)="readAnnouncement(inboxData.id, inboxData.read); announcementService.announcementDetailsObject = inboxData; inboxData.read=true;
             interactData('inbox-modal', 'annoncement-read', 'CLICK')" [appTelemetryInteract]="telemetryInteract"
               [routerLink]="['view/' + inboxData.id]">
