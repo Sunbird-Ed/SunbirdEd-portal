@@ -21,6 +21,7 @@ import { PublicModule } from '@sunbird/public';
 import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
+import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 import { BadgingModule } from '@sunbird/badge';
 @NgModule({
@@ -49,6 +50,7 @@ import { BadgingModule } from '@sunbird/badge';
     ProfileModule,
     SearchModule,
     DiscussionModule,
+    TelemetryModule,
     BadgingModule
   ],
   providers: [],
