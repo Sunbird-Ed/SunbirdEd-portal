@@ -20,7 +20,7 @@ describe('TelemetryShareDirective', () => {
     const directive = new TelemetryShareDirective(telemetryService);
     spyOn(telemetryService, 'share').and.callFake(() => Observable.of(eventData.inputData));
     directive.appTelemetryShare = eventData.inputData;
-    directive.share();
+    directive.ngOnInit();
     expect(directive.appTelemetryShare).toBeDefined();
     expect(directive.appTelemetryShare).toBe(eventData.inputData);
     expect(telemetryService.share).toHaveBeenCalled();

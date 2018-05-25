@@ -14,11 +14,4 @@ describe('TelemetryErrorDirective', () => {
     const directive = new TelemetryErrorDirective(telemetryService);
     expect(directive).toBeTruthy();
   });
-  // it('should take input', () => {
-  //   const telemetryService = TestBed.get(TelemetryService);
-  //   const directive = new TelemetryStartDirective(telemetryService);
-  //   directive.appTelemetryStart = eventData.inputData;
-  //   expect(directive.appTelemetryStart).toBeDefined();
-  //   expect(directive.appTelemetryStart).toBe(eventData.inputData);
-  // });
 });

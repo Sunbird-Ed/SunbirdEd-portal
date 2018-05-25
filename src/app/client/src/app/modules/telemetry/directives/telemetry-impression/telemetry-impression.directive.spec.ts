@@ -15,7 +15,7 @@ describe('TelemetryImpressionDirective', () => {
     const directive = new TelemetryImpressionDirective(telemetryService);
     expect(directive).toBeTruthy();
   });
-  xit('should take input', () => {
+  it('should take input', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryImpressionDirective(telemetryService);
     spyOn(telemetryService, 'impression').and.callFake(() => Observable.of(eventData.inputData));

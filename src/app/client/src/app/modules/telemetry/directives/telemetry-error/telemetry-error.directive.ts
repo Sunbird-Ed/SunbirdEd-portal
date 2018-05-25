@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryError]'
 })
-export class TelemetryErrorDirective implements OnInit {
+export class TelemetryErrorDirective implements OnInit , OnChanges {
   /**
    * Interact event input
   */
@@ -22,19 +22,20 @@ export class TelemetryErrorDirective implements OnInit {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor( telemetryService: TelemetryService) {
+  constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
     if (this.appTelemetryError) {
-      this.error();
+       this.telemetryService.error(this.appTelemetryError);
     }
   }
-  error() {
-    console.log('call TelemetryError method ');
-    this.telemetryService.error(this.appTelemetryError);
+  ngOnChanges() {
+    if (this.appTelemetryError) {
+       this.telemetryService.error(this.appTelemetryError);
+    }
   }
-  }
+}
 
 
 

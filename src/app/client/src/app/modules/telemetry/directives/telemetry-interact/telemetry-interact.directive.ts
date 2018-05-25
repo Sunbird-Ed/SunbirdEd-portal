@@ -27,7 +27,6 @@ export class TelemetryInteractDirective implements OnChanges {
   }
   ngOnChanges() {
     if (this.appTelemetryInteract) {
-    console.log('call TelemetryInteract method ');
     this.telemetryService.interact(this.appTelemetryInteract);
     }
   }
