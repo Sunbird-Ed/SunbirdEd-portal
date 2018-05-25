@@ -198,32 +198,20 @@ export class OutboxComponent implements OnInit {
     this.cdr.detectChanges();
   }
   inview(event) {
-    console.log('inview data', event);
     _.forEach(event.inview, (inview, key) => {
-      this.inviewLogs.push({
-        objid: inview.data.id,
-        objtype: 'announcement',
-        index: inview.id
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
       });
-    });
-    console.log(this.inviewLogs);
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.activatedRoute.snapshot.params.announcementId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/' + this.pageNumber,
-        visits: this.inviewLogs
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'announcement',
+          index: inview.id
+        });
       }
-    };
-    console.log(this.telemetryImpression );
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   /**
    * This method calls the populateOutboxData to show outbox list.
@@ -243,6 +231,21 @@ export class OutboxComponent implements OnInit {
         }
       });
     });
-    console.log(this.telemetryImpression );
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.announcementId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/announcement/outbox/' + this.pageNumber,
+        visits: this.inviewLogs
+      }
+    };
   }
 }

@@ -29,10 +29,13 @@ const routes: Routes = [
       }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Announcements', url: '' }]
     },
     children: [
-      { path: 'view/:announcementId', component: DetailsPopupComponent, data: {
-      telemetry: {
-        env: telemetryEnv, pageid: 'announcement-read',  type: 'view', object: { type: objectType, ver: '1.0' }
-      } } }
+      {
+        path: 'view/:announcementId', component: DetailsPopupComponent, data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'announcement-read', type: 'view', object: { type: objectType, ver: '1.0' }
+          }
+        }
+      }
     ]
   },
   {

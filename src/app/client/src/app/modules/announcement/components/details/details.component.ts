@@ -49,21 +49,21 @@ export class DetailsComponent {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: this.activatedRoute.snapshot.params.announcementId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/',
-      }
-    };
+    // this.telemetryImpression = {
+    //   context: {
+    //     env: this.activatedRoute.snapshot.data.telemetry.env
+    //   },
+    //   object: {
+    //     id: this.activatedRoute.snapshot.params.announcementId,
+    //     type: this.activatedRoute.snapshot.data.telemetry.object.type,
+    //     ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    //   },
+    //   edata: {
+    //     type: this.activatedRoute.snapshot.data.telemetry.type,
+    //     pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+    //     uri: '/announcement/outbox/',
+    //   }
+    // };
   }
 }
 
