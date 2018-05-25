@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, PermissionService, SearchService } from '@sunbird/core';
+import { UserService, PermissionService, SearchService, PlayerService } from '@sunbird/core';
 import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
@@ -33,7 +33,7 @@ export class ProfilePageComponent implements OnInit {
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
-    public searchService: SearchService) { }
+    public searchService: SearchService, private playerService: PlayerService) { }
   /**
    * This method is used to fetch user profile details
    */
@@ -87,5 +87,8 @@ export class ProfilePageComponent implements OnInit {
     if (authroles) {
       this.router.navigate([authroles.url]);
     }
+  }
+  onClcikContributions(content) {
+    this.playerService.playContent(content);
   }
 }

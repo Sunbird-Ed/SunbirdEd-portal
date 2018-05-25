@@ -71,15 +71,17 @@
                                 <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
                                     <div class="item" *ngFor="let item of contributions">
                                         <!-- implement preview for content on click-->
-                                        <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png'}}">
-                                        <div class="content ">
-                                            <a class=" header ">{{item.name}}</a>
-                                            <div class="metadata ">
-                                                <sui-rating *ngIf="item.me_averageRating" class="courseHeader-rating ui star rating" [isReadonly]="true" [ngModel]="item.me_averageRating"
-                                                    [maximum]="5"></sui-rating>
-                                                <span *ngIf="!item.me_averageRating" class="date">{{item.createdOn | dateFormat}}</span>
+                                        <!-- <div> -->
+                                            <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png'}}">
+                                            <div class="content" (click)="onClcikContributions(item)">
+                                                <a class=" header ">{{item.name}}</a>
+                                                <div class="metadata ">
+                                                    <sui-rating *ngIf="item.me_averageRating" class="courseHeader-rating ui star rating" [isReadonly]="true" [ngModel]="item.me_averageRating"
+                                                        [maximum]="5"></sui-rating>
+                                                    <span *ngIf="!item.me_averageRating" class="date">{{item.createdOn | dateFormat}}</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
