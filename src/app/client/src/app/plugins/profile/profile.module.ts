@@ -13,7 +13,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrgManagementModule } from '@sunbird/org-management';
-import { WebFrameworkModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from 'sunbird-web-extension';
 import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 // import { SocialMediaLinksComponent } from './components/social-media-links/social-media-links.component';
@@ -27,7 +27,7 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
     FormsModule,
     ReactiveFormsModule,
     OrgManagementModule,
-    WebFrameworkModule
+    WebExtensionModule
   ],
   declarations: [ProfilePageComponent, ProfileHeaderComponent, UserSummaryComponent, ProfileVisibilityComponent,
     UserExperienceViewComponent, EditExperienceComponent, UserAddressComponent, UserEducationComponent, UserSkillsComponent,

@@ -25,16 +25,9 @@ BootstrapFramework.decorators = [
 ];
 /** @nocollapse */
 BootstrapFramework.ctorParameters = () => [
-    { type: PluginService, },
+    { type: PluginService }
 ];
 function BootstrapFramework_tsickle_Closure_declarations() {
-    /** @type {!Array<{type: !Function, args: (undefined|!Array<?>)}>} */
-    BootstrapFramework.decorators;
-    /**
-     * @nocollapse
-     * @type {function(): !Array<(null|{type: ?, decorators: (undefined|!Array<{type: !Function, args: (undefined|!Array<?>)}>)})>}
-     */
-    BootstrapFramework.ctorParameters;
     /** @type {?} */
     BootstrapFramework.prototype.config;
     /** @type {?} */

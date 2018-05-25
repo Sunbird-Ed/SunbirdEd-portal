@@ -4,11 +4,10 @@ import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.
 
 @PluginConfig({
   name: 'profile plugin',
-  description: 'some description',
+  description: 'Shows user profile data of sunbird portal user',
   placements: [
-    new PluginPlacement({ name: 'profile-badge', priority: 5, component: ProfileBadgeComponent }),
-    new PluginPlacement({ name: 'profile-badge', priority: 90, component: ProfileBadgeComponent }),
-    new PluginPlacement({ name: 'main-menu-item', priority: 1, component: MenuItemComponent })
+    new PluginPlacement({ name: 'profile-widget', priority: 1, component: ProfileBadgeComponent }),
+    new PluginPlacement({ name: 'header-menu-item', priority: 1, component: MenuItemComponent })
   ]
 })
 export class ProfilePlugin {

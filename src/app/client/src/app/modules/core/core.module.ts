@@ -15,7 +15,7 @@ import { MainHeaderComponent, MainMenuComponent, SearchComponent,  ConceptPicker
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { BreadcrumbsComponent, BreadcrumbsService } from './components';
-import { WebFrameworkModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from 'sunbird-web-extension';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +24,7 @@ import { WebFrameworkModule } from 'sunbird-web-extension';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    WebFrameworkModule
+    WebExtensionModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
      DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent],

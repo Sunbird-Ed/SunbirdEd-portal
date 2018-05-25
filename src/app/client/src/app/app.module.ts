@@ -22,7 +22,7 @@ import { DiscussionModule } from '@sunbird/discussion';
 import * as $ from 'jquery';
 
 // portal-extensions
-import { BootstrapFramework, WebFrameworkModule } from 'sunbird-web-extension';
+import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
 import { WebExtensionsConfig } from './framework.config';
 
 @NgModule({
@@ -49,7 +49,7 @@ import { WebExtensionsConfig } from './framework.config';
     PublicModule,
     SearchModule,
     DiscussionModule,
-    WebFrameworkModule,
+    WebExtensionModule,
     ...WebExtensionsConfig.plugins.map((data) => data.module)
     ],
   providers: [],
