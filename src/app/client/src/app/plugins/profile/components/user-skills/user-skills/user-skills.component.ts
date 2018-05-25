@@ -1,4 +1,4 @@
-import { ISkill } from './../../../../shared/interfaces/userProfile';
+import { ISkill } from '../../../../../modules/shared/interfaces/userProfile';
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';

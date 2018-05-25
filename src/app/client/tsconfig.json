@@ -38,7 +38,7 @@
         "app/modules/search"
       ],
       "@sunbird/profile": [
-        "app/modules/profile"
+        "app/plugins/profile"
       ],
       "@sunbird/discussion": [
         "app/modules/discussion"

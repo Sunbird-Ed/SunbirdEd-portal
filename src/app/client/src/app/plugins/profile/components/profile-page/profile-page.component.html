@@ -17,7 +17,8 @@
                     <app-user-address></app-user-address>
                     <app-user-education></app-user-education>
                     <app-user-skills></app-user-skills>
-                    <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
+                    <!-- <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge> -->
+                    <extension-point [name]="'profile-widget'"></extension-point>
                     <app-user-additional-info></app-user-additional-info>
                 </div>
                 <div class=" four wide column margin-top-20">
