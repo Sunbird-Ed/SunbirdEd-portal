@@ -218,6 +218,7 @@ export class InboxComponent implements OnInit {
        }
      };
    }
+
   /**
    * This method calls the populateInboxData to show inbox list.
 	 */

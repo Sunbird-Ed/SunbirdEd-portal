@@ -14,7 +14,7 @@ export interface IImpressionEventData {
   'subtype'?: string;
   'pageid': string;
   'uri': string;
-  'visits'?: {};
+  'visits'?: Array<{}>;
 }
 export interface IInteractEventData {
   'id': string;

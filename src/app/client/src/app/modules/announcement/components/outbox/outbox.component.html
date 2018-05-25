@@ -1,5 +1,5 @@
 
-  <div class="ui stackable grid">
+  <div class="ui stackable grid" [appTelemetryImpression]="telemetryImpression">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui stackable grid margin-top-10">
@@ -77,8 +77,8 @@
                 <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblactions}}</th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let item of outboxData.announcements" class="table-list-name-ann">
+            <tbody in-view-container (inview)="inview($event)" [throttle]="[2000]">
+              <tr in-view-item *ngFor="let item of outboxData.announcements;let i = index;" [id]="i" [data]="item"  class="table-list-name-ann">
                 <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item;interactData('outbox-modal', 'annoncement-read', 'CLICK')" [appTelemetryInteract]="telemetryInteract"
                  class="cursor-pointer">{{item.title | slice:0:50}}
                   <span *ngIf="item.title.length > 50">...</span>

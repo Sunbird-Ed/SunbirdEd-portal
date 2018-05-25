@@ -15,7 +15,7 @@ import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbir
 })
 export class DetailsComponent {
   /**
-	 * telemetryInteract
+	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
   /**

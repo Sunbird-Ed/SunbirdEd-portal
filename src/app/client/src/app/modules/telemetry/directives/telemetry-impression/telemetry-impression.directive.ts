@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
 import { IImpressionEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryImpression]'
 })
-export class TelemetryImpressionDirective implements OnInit {
+export class TelemetryImpressionDirective implements OnInit, OnChanges {
   /**
    * Interact event input
   */
@@ -26,6 +26,13 @@ export class TelemetryImpressionDirective implements OnInit {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
+    if (this.appTelemetryImpression) {
+    console.log('call TelemetryImpression method ', this.appTelemetryImpression);
+    this.telemetryService.impression(this.appTelemetryImpression);
+    }
+  }
+
+  ngOnChanges() {
     if (this.appTelemetryImpression) {
     console.log('call TelemetryImpression method ', this.appTelemetryImpression);
     this.telemetryService.impression(this.appTelemetryImpression);

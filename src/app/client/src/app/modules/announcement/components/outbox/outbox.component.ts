@@ -1,10 +1,10 @@
-import { Component, OnInit , ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IInteractEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -16,7 +16,14 @@ import { IInteractEventInput } from '@sunbird/telemetry';
   styleUrls: ['./outbox.component.css']
 })
 export class OutboxComponent implements OnInit {
-
+  /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 	 * Contains result object returned from get outbox API
 	 */
@@ -87,9 +94,9 @@ export class OutboxComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-/**
- * telemetryInteract event
- */
+  /**
+   * telemetryInteract event
+   */
   telemetryInteract: IInteractEventInput;
 
   /**
@@ -111,7 +118,7 @@ export class OutboxComponent implements OnInit {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService, private cdr: ChangeDetectorRef ) {
+    config: ConfigService, private cdr: ChangeDetectorRef) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -169,27 +176,55 @@ export class OutboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
-/**
- * get Interact Data
- */
+  /**
+   * get Interact Data
+   */
   interactData(id, pageId, type) {
     this.telemetryInteract = {
-       context: {
-         env: this.activatedRoute.snapshot.data.telemetry.env
-       },
-       object: {
-         id: '',
-         type: this.activatedRoute.snapshot.data.telemetry.object.type,
-         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-       },
-       edata: {
-         type: type,
-         id: id,
-         pageid: pageId
-       }
-     };
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: type,
+        id: id,
+        pageid: pageId
+      }
+    };
     this.cdr.detectChanges();
-   }
+  }
+  inview(event) {
+    console.log('inview data', event);
+    _.forEach(event.inview, (inview, key) => {
+      this.inviewLogs.push({
+        objid: inview.data.id,
+        objtype: 'announcement',
+        index: inview.id
+      });
+    });
+    console.log(this.inviewLogs);
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.announcementId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/announcement/outbox/' + this.pageNumber,
+        visits: this.inviewLogs
+      }
+    };
+    console.log(this.telemetryImpression );
+  }
   /**
    * This method calls the populateOutboxData to show outbox list.
    * It also changes the status of a deleted announcement to cancelled.
@@ -208,5 +243,6 @@ export class OutboxComponent implements OnInit {
         }
       });
     });
+    console.log(this.telemetryImpression );
   }
 }
