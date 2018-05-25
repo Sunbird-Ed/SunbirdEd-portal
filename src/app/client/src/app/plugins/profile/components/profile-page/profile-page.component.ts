@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService, SearchService } from '@sunbird/core';
-import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
+import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService } from '../../../../modules/shared';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';

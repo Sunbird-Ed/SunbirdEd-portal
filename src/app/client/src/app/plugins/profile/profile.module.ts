@@ -7,12 +7,15 @@ import {
   ProfilePageComponent, ProfileHeaderComponent, EditExperienceComponent, UserAddressComponent,
   UserSummaryComponent, ProfileVisibilityComponent, UserAdditionalInfoComponent, UserExperienceViewComponent,
   UserSkillsComponent, EditUserAddressComponent, UserEducationComponent, EditUserEducationComponent, EditUserSkillsComponent,
-  EditUserAdditionalInfoComponent, ProfileBadgeComponent
+  EditUserAdditionalInfoComponent
 } from './components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrgManagementModule } from '@sunbird/org-management';
+import { WebExtensionModule } from 'sunbird-web-extension';
+import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
+import { MenuItemComponent } from './components/menu-item/menu-item.component';
 // import { SocialMediaLinksComponent } from './components/social-media-links/social-media-links.component';
 @NgModule({
   imports: [
@@ -23,7 +26,8 @@ import { OrgManagementModule } from '@sunbird/org-management';
     CoreModule,
     FormsModule,
     ReactiveFormsModule,
-    OrgManagementModule
+    OrgManagementModule,
+    WebExtensionModule
   ],
   declarations: [ProfilePageComponent, ProfileHeaderComponent, UserSummaryComponent, ProfileVisibilityComponent,
     UserExperienceViewComponent, EditExperienceComponent, UserAddressComponent, UserEducationComponent, UserSkillsComponent,
@@ -32,7 +36,9 @@ import { OrgManagementModule } from '@sunbird/org-management';
     EditUserEducationComponent,
     EditUserSkillsComponent,
     EditUserAdditionalInfoComponent,
-    ProfileBadgeComponent],
-  providers: [ProfileService]
+    ProfileBadgeComponent,
+    MenuItemComponent],
+  providers: [ProfileService],
+  entryComponents: [ProfileBadgeComponent, MenuItemComponent]
 })
 export class ProfileModule { }
