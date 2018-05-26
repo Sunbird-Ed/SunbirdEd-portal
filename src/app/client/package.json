@@ -14,7 +14,7 @@
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s"
   },
   "nodemonConfig": {
-    "ext": "ts,html,json"
+    "ext": "ts,html,json,css"
   },
   "engines": {
     "node": ">=8.9"

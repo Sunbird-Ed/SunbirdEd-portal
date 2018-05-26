@@ -111,6 +111,7 @@ function indexPage (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.instance = process.env.sunbird_instance
+  res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
 app.get('/get/envData', keycloak.protect(), function (req, res) {
@@ -145,7 +146,10 @@ app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
-app.all('*/get', function (req, res) {res.redirect('/get')})
+app.all('/:slug/explore/*', indexPage)
+app.all('/explore', indexPage)
+app.all('/explore/*', indexPage)
+app.all('/:slug/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 

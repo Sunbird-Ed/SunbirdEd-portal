@@ -16,6 +16,7 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
+  @Input() hashTagId = '';
   /**
  * To get url, app configs
  */
@@ -92,10 +93,11 @@ export class DataDrivenFilterComponent implements OnInit {
     this.toasterService = toasterService;
     this.permissionService = permissionService;
     this.formInputData = {};
+    this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
-    this.frameworkService.initialize();
+    this.frameworkService.initialize(this.hashTagId);
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -126,7 +128,7 @@ export class DataDrivenFilterComponent implements OnInit {
 * fetchFilterMetaData is gives form config data
 */
   fetchFilterMetaData() {
-    this.isCachedDataExists = this._cacheService.exists(this.filterEnv + this.formAction);
+    this.isCachedDataExists = false;
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
@@ -141,7 +143,7 @@ export class DataDrivenFilterComponent implements OnInit {
             contentType: this.filterEnv,
             framework: frameworkData.framework
           };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
+          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
               _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -179,11 +181,11 @@ export class DataDrivenFilterComponent implements OnInit {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
-      {
-        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-      });
+    // this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
+    //   {
+    //     maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+    //       this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+    //   });
   }
 
   resetFilters() {

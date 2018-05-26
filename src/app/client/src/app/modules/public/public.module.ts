@@ -13,6 +13,7 @@ import { PublicFooterComponent } from './components/public-footer/public-footer.
 import { SignupService, PublicPlayerService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
+import { ExploreContentComponent } from './components/explore-content/explore-content.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,9 @@ const routes: Routes = [
   { path: 'get', component: GetComponent },
   { path: 'get/dial/:dialCode', component: DialCodeComponent },
   { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
-  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent }
+  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
+  { path: 'explore/:pageNumber', component: ExploreContentComponent },
+  { path: ':slug/explore/:pageNumber', component: ExploreContentComponent }
 ];
 
 @NgModule({
@@ -38,7 +41,7 @@ const routes: Routes = [
     DiscussionModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
   providers: [SignupService, PublicPlayerService]
 })
 export class PublicModule { }

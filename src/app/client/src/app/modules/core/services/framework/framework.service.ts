@@ -72,10 +72,8 @@ export class FrameworkService {
     this.configService = configService;
   }
 
-  public initialize() {
-    /**
-    * Call User service to get user data
-    */
+  public initialize(hashTagId?: string) {
+    if (hashTagId === '') {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -85,6 +83,10 @@ export class FrameworkService {
           }
         }
       });
+    } else {
+      this.hashTagId = hashTagId;
+      this.getFramework();
+    }
   }
   /**
 * getdefaultFramework   .

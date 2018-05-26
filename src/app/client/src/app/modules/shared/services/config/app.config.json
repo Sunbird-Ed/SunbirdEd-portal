@@ -420,7 +420,7 @@
   "library": {
     "filterType": "library",
     "inPageredirectUrl": "/resources",
-    "searchPageredirectUrl": "/search/Library/1"
+    "searchPageredirectUrl": "/explore/1"
   },
   "upForReview": {
     "filterType": "library",
