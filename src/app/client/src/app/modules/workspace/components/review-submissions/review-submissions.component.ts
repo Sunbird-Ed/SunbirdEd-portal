@@ -139,6 +139,9 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.state = 'review';
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0018,
+    };
   }
 
   ngOnInit() {
@@ -156,7 +159,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
     this.pageLimit = limit;
     const searchParams = {
       filters: {
-        status: ['Review'],
+        status: ['Review', 'FlagReview'],
         createdBy: this.userService.userid,
         contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
@@ -164,9 +167,6 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
       sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
-    };
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0018,
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {

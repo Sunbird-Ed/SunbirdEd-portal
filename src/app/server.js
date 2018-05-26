@@ -11,6 +11,7 @@ const async = require('async')
 const helmet = require('helmet')
 const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
+const compression = require('compression')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
 const permissionsHelper = require('./helpers/permissionsHelper.js')
@@ -38,6 +39,7 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
+const oneDayMS = 86400000;
 
 let memoryStore = null
 
@@ -90,7 +92,27 @@ if (defaultTenant) {
   app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
 }
 
+app.get('/assets/images/*', function (req, res, next) {
+  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS);
+  res.setHeader("Expires", new Date(Date.now() + oneDayMS).toUTCString());
+  next();
+});
+
+
+app.get('/*.js', compression(), function (req, res, next) {
+  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+  res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+  next();
+});
+
+app.get('/*.css', compression(), function (req, res, next) {
+  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+  res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
+
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
@@ -100,8 +122,7 @@ app.all('/logoff', endSession, function (req, res) {
   res.redirect('/logout')
 })
 
-// Mobile redirection to app
-require('./helpers/mobileAppHelper.js')(app)
+
 
 function indexPage (req, res) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -144,6 +165,8 @@ app.all('/resources/*', keycloak.protect(), indexPage)
 app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
+app.all('/get/dial/:dialCode', indexPage)
+app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
 app.all('/get/*', indexPage)
 app.all('/:slug/explore/*', indexPage)
@@ -152,6 +175,9 @@ app.all('/explore/*', indexPage)
 app.all('/:slug/get', function (req, res) {res.redirect('/get')})
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
+
+// Mobile redirection to app
+require('./helpers/mobileAppHelper.js')(app)
 
 app.all('/content-editor/telemetry', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
@@ -232,6 +258,8 @@ app.all('/content/data/v1/telemetry',
     }
 }))
 
+// proxy urls
+require('./proxy/contentEditorProxy.js')(app, keycloak)
 
   // tenant Api's
   app.get('/v1/tenant/info', tenantHelper.getInfo)
@@ -282,7 +310,6 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
   res.status(200)
   res.end()
 })
-
 
 // healthcheck
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)

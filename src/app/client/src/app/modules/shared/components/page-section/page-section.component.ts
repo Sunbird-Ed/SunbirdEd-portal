@@ -20,7 +20,7 @@ export class PageSectionComponent  {
   /**
   * This is slider setting
   */
-  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
+  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 , infinite: false };
 
   playContent(event) {
     this.playEvent.emit(event);

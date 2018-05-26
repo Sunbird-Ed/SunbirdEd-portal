@@ -396,8 +396,8 @@
 .padding-right-50 {
   padding-right: 3rem !important;
 }
-.contentVisibility-hidden {
-  visibility: hidden !important;
+.vertical-align-middle {
+  vertical-align: middle !important;
 }
 .right-floated {
   float: right !important;
@@ -1393,10 +1393,7 @@ body ::-webkit-scrollbar {
 .qq-upload-list {
   overflow-y: hidden;
 }
-.down-arrow-accordion {
-  float: right !important;
-  font-size: large !important;
-}
+
 ul {
   list-style: none;
 }
@@ -1527,10 +1524,10 @@ span.fancytree-title {
   margin-bottom: 1em;
 }
 .accordian-left-text {
-  padding: 2% !important;
-  font-size: 16px !important;
-  color: black !important;
-  font-family: 'sunbirdregularfont' !important;
+  padding: 8px;
+  font-size: 1.2em;
+  color: #333;
+  font-family: 'sunbirdregularfont';
 }
 .toc-left-nav-btn-content {
   text-align: left;
@@ -2246,30 +2243,21 @@ ul.fancytree-container li {
 .my-icon {
   vertical-align: middle;
 }
-.workspacecontentProfile {
-  line-height: 22px;
-}
-.workspacecontentProfile.ui.card {
-  box-shadow: 0 1px 0px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-}
-.WorkSpaceTextContent {
+.workspace-navigate {
   display: inline-block;
   margin: 16px;
   white-space: nowrap;
 }
 @media only screen and (max-width: 1200px) {
-  .WorkSpaceTextContent {
+  .workspace-navigate  {
     white-space: pre-line;
   }
 }
-
-.WorkSpaceTextContent i.icon {
-  font-size: 2em;
-  padding-right: 10px;
-}
-.WorkSpaceTextContent .my-text {
+.workspace-navigate-heading {
   font-size: 1.3em;
   font-family: 'sunbirdboldfont';
+  color: #333333;
+  vertical-align: middle;
 }
 
 /*trashIcon in address css*/
@@ -2483,7 +2471,7 @@ i.edit.icon.editIcon-fontSize {
   position: absolute !important;
 }
 .batch-des label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2496,7 +2484,7 @@ i.edit.icon.editIcon-fontSize {
   padding-top: 12px;
 }
 .batch-date label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2532,7 +2520,7 @@ i.edit.icon.editIcon-fontSize {
   height: 4em;
 }
 .member label {
-  color: #fdfdfd;
+  color: #333333;
   font-size: 13px;
   font-weight: bold;
   line-height: 14px;
@@ -2710,8 +2698,21 @@ iframe.iziModal-iframe {
   font-family: 'sunbirdboldfont';
   font-size: 1.375em;
 }
-
 .ann-section-heading {
   font-family: 'sunbirdboldfont';
   font-size: 1.4em;
+}
+.fancy-tree-grey {
+  color:#929292;
+}
+.fancy-tree-blue {
+  color:#55b2f7;
+}
+.fancy-tree-green {
+  color:#54d40f;
+}
+
+/*adding outline none because router link of angular is adding extra outline, */
+.remove-outline {
+  outline: none !important;
 }

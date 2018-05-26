@@ -28,6 +28,7 @@ export class CourseProgressComponent implements OnInit {
 	 * This variable sets the course id
 	 */
   courseId: string;
+  batchId: string;
   /**
 	 * This variable sets the user id
 	 */
@@ -201,7 +202,9 @@ export class CourseProgressComponent implements OnInit {
   navigate(): void {
     this.route.navigate([], { queryParams: this.queryParams });
   }
-
+  redirect() {
+    this.route.navigate(['/learn/course', this.courseId]);
+  }
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
@@ -272,6 +275,7 @@ export class CourseProgressComponent implements OnInit {
           })
           .subscribe(bothParams => {
             this.courseId = bothParams.params.courseId;
+            this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
             this.queryParams.timePeriod = this.queryParams.timePeriod || '7d';
             this.populateBatchData();

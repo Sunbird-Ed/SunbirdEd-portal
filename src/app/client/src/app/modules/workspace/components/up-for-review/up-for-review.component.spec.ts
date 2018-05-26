@@ -48,6 +48,9 @@ describe('UpForReviewComponent', () => {
     'ANNOUNCEMENT_SENDER': ['01232002070124134414'],
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
+  const mockUserRoles = {
+  userRoles: ['PUBLIC']
+};
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent],
@@ -73,6 +76,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -84,6 +88,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
     fixture.detectChanges();
     component.fecthUpForReviewContent(9, 1, bothParams);
@@ -96,6 +101,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountZero));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();

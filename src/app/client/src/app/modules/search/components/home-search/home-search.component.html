@@ -17,7 +17,7 @@
     </div>
     <div *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
       <div class="column" *ngFor="let content of searchList">
-        <app-card [data]="content"></app-card>
+        <app-card [data]="content" (clickEvent)="playContent($event)" ></app-card>
       </div>
     </div>
     <div *ngIf="noResult && !showLoader">

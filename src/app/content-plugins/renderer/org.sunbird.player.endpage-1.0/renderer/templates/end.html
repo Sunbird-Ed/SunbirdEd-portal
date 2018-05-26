@@ -1,0 +1,117 @@
+<style>
+.sunbird-content-holder {
+  position: absolute;
+  top: 28%;
+  margin: 5% 9%;
+  left: 26%;
+  width: 40%;
+  height: 26%
+}
+
+.sunbird-content {
+  width: 100%;
+  left: 0%;
+  top: 6%;
+  position: absolute;
+}
+
+.sunbird-ep-home {
+  position: absolute;
+  width: 22%;
+  left: 57%;
+  top: 3%;
+}
+
+.sunbird-ep-opactiy {
+
+  opacity: 0.5
+}
+
+.sunbird-footer {
+  top: 70%;
+  position: relative;
+  font-size: 22px;
+  padding: 1%;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  margin: auto
+}
+
+.sunbid-content-title { 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical; 
+  width: 100%; 
+  text-transform: uppercase;
+  padding: 0.2em 0em 0em; 
+  font-size: 1.8em; 
+  text-align: center;
+   line-height: 1.3em; 
+   color: black; 
+ }
+
+.sunbird-message{
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 0 5%;
+    color: #494949;
+}
+
+.gc-ep-cont-background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.gc-content-owner {
+    font-size: 1em;
+    width: 100%;
+    text-align: center;
+    color: #494949;
+    padding: 0.05em 0em 0.5em;
+}
+
+.gc-text-elipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.font-lato {
+    font-family: lato-medium;
+}
+
+</style>
+<div class="font-lato gc-ep-cont" ng-app="sunbird-endpage" ng-controller="endPageController" id='endpage' ng-show="showEndPage">
+  <image class="gc-ep-cont-background" ng-src="{{endpageBackground}}" />
+  <div class="sunbird-content">
+    <p class="sunbird-message" style="font-size: 2em;
+    padding: 2%;">Congratulations! You just completed</p>
+    <p class="sunbid-content-title" ng-if="playerMetadata .name">{{playerMetadata .name}}</p>
+    <p class="gc-content-owner gc-text-elipsis" ng-if="playerMetadata.owner">Author: {{playerMetadata.owner}}</p>
+  </div>
+  <div class="sunbird-content-holder">
+    <div class="sunbird-content-replay" ng-click="replayContent()">
+      <img class="replay" ng-src="{{replayIcon}}" style="width: 22%;">
+    </div>
+    <div class="sunbird-content-home">
+      <img class="sunbird-ep-home" ng-class="isCordova ? 'sunbird-ep-home' : ' sunbird-ep-opactiy' " ng-src="{{genieIcon}}" ng-click="openGenie()"></img>
+    </div>
+  </div>
+  <div class="sunbird-footer" style="width: 11em;
+    text-align: center;">
+    <p style="display: inline-block;
+    text-decoration: underline;">Total Time Spent</p>
+    <p style="padding: 4%">{{totalTimeSpent}}</p>
+  </div>
+  <div class="end-license">
+    <b>{{licenseAttribute}}</b>
+  </div>
+</div>

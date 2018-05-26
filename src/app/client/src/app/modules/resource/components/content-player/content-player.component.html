@@ -21,11 +21,14 @@
                             </div>
                         </div>
 
-                        <div class="row margin-auto padding-top-none">
+                        <div *ngIf="contentStatus !== 'Unlisted'" class="row margin-auto padding-top-none">
                             <div class="twelve wide column">
                                 <sui-rating class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
                                     [maximum]="5"></sui-rating>&nbsp;&nbsp;
-                                <a [routerLink]="['flag-content']">
+                                <a (click)="onShareLink();sharelinkModal=true;">
+                                    <i class="cursor-pointer large blue share alternate icon"></i>
+                                </a>
+                                <a routerLink="flag">
                                     <i class="ui large blue flag outline icon"></i>
                                 </a>
                                 <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
@@ -54,7 +57,8 @@
                                             <div class="four wide column ">
                                                 <h2 class="ui centered aligned icon tiny header toc-note">
                                                     <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
-                                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false" (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
+                                                            (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                                         <img src="assets/images/takenote.png">
                                                         <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
                                                     </a>
@@ -79,7 +83,7 @@
                                     <app-discussions></app-discussions>
                                 </div>
                             </div>
-                            <div class="four wide column">
+                            <div *ngIf="contentStatus !== 'Unlisted'" class="four wide column">
                                 <app-note-card [ids]="{contentId:contentId}" [createNoteData]="createNoteData"></app-note-card>
                             </div>
                         </div>
@@ -107,4 +111,6 @@
     </div>
     <div class="one wide column"></div>
 </div>
+<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>
 <router-outlet></router-outlet>

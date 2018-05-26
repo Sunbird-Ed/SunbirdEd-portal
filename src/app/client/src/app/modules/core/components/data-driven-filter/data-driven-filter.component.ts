@@ -157,11 +157,11 @@ export class DataDrivenFilterComponent implements OnInit {
               this.getFormConfig();
             },
             (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
+              // this.toasterService.error(this.resourceService.messages.emsg.m0005);
             }
           );
         } else if (frameworkData && frameworkData.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
     }

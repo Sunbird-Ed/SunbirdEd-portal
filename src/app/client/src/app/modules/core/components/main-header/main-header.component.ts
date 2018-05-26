@@ -1,7 +1,8 @@
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import * as _ from 'lodash';
 /**
  * Main header component
  */
@@ -99,5 +100,11 @@ export class MainHeaderComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
+  }
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      this.router.navigate([authroles.url]);
+    }
   }
 }

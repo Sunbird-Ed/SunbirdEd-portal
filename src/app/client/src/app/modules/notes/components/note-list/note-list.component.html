@@ -20,7 +20,7 @@
                 </h5>
               </div>
               <div *ngIf="showCreateEditor === true" class="padding-top-20">
-                <app-inline-editor [ids]="{contentId:contentId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
+                <app-inline-editor [ids]="{contentId:contentId, courseId:courseId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
 
             </div>
@@ -94,3 +94,4 @@
   </div>
   <div class="one wide column"></div>
 </div>
+<router-outlet></router-outlet>

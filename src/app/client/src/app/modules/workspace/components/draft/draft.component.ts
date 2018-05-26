@@ -146,6 +146,9 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.resourceService = resourceService;
         this.config = config;
         this.state = 'draft';
+        this.loaderMessage = {
+            'loaderMessage': this.resourceService.messages.stmsg.m0011,
+        };
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
@@ -162,7 +165,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
         this.pageLimit = limit;
         const searchParams = {
             filters: {
-                status: ['Draft'],
+                status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
                 contentType: this.config.appConfig.WORKSPACE.contentType,
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
@@ -170,9 +173,6 @@ export class DraftComponent extends WorkSpace implements OnInit {
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),
             sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
-        };
-        this.loaderMessage = {
-            'loaderMessage': this.resourceService.messages.stmsg.m0011,
         };
         this.search(searchParams).subscribe(
             (data: ServerResponse) => {

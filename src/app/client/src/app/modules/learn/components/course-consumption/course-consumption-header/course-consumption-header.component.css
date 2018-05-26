@@ -1,0 +1,6 @@
+::ng-deep .ui.tiny.progress .bar{
+    min-width: 0
+}
+.ui.grid.progress-bar-margin {
+    margin-top: 13px;
+} 

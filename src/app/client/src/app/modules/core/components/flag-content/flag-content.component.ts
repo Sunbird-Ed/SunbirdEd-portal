@@ -1,8 +1,8 @@
 import { ContentService, PlayerService, UserService } from './../../services';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import {
-  ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService, ContentData,
+  ResourceService, ToasterService, ServerResponse, ConfigService, ContentData,
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
@@ -20,7 +20,7 @@ import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './
    }
  `],
 })
-export class FlagContentComponent implements OnInit {
+export class FlagContentComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   /**
    * It is type of IFlagReason containing name, value and description
@@ -38,10 +38,6 @@ export class FlagContentComponent implements OnInit {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
-  /**
-   * To navigate back to parent component
-   */
-  public routerNavigationService: RouterNavigationService;
   /**
    * reference of contentService.
    */
@@ -93,9 +89,9 @@ export class FlagContentComponent implements OnInit {
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
 	 */
   constructor(activatedRoute: ActivatedRoute,
+    private router: Router,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService,
     contentService: ContentService,
     config: ConfigService,
     playerService: PlayerService,
@@ -103,7 +99,6 @@ export class FlagContentComponent implements OnInit {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
-    this.routerNavigationService = routerNavigationService;
     this.contentService = contentService;
     this.config = config;
     this.playerService = playerService;
@@ -164,8 +159,11 @@ export class FlagContentComponent implements OnInit {
    * page, i.e, outbox listing page with proper page number
 	 *
 	 */
-  redirect(): void {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+  redirect() {
+    const navigationExtras: NavigationExtras = {
+      relativeTo: this.activatedRoute.parent
+    };
+    this.router.navigate(['./'], navigationExtras);
   }
   getCollectionHierarchy() {
     if (this.playerService.collectionData && this.playerService.collectionData.identifier === this.identifier) {
@@ -190,6 +188,11 @@ export class FlagContentComponent implements OnInit {
         this.getCollectionHierarchy();
       }
     });
+  }
+  ngOnDestroy() {
+    if (this.modal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }
 

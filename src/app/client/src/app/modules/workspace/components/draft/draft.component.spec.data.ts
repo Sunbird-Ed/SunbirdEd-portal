@@ -31,5 +31,16 @@ export const mockRes = {
     },
     'responseCode': 'OK',
     'result': []
-  }
+  },
+  pager: {
+    'totalItems': 72, 'currentPage': 3, 'pageSize': 9, 'totalPages': 8,
+    'startPage': 1, 'endPage': 8, 'startIndex': 1, 'endIndex': 72, 'pages': [1, 2, 3, 4, 5]
+  }, searchSuccessWithCountZero: {
+    'id': 'api.v1.search',
+    'responseCode': 'OK',
+    'result': {
+      'count': 0,
+      'content': []
+    }
+  },
 };

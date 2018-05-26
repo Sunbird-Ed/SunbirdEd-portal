@@ -1,0 +1,59 @@
+<div *ngIf='userProfile' class="ui grid padding-topBottom-10 courseStructureHeader">
+    <div class="one wide column"></div>
+    <div class=" ten wide column">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="profileheader ui link items">
+                    <div class="ui grid">
+                        <div class="two wide column padding-top-none">
+                            <div class="userAvtarWrap field link ui small circular image header-image-profile">
+                                <img class="ui small circular image header-image-profile" src="{{userProfile.avatar || '/assets/images/user_logo.png'}}"
+                                    >
+                                <div class="img-description-layer ui small circular image header-image-profile">
+                                    <label>
+                                        <a id="file" class="cursor-pointer" (click)="imageInput.click()">
+                                            <i class="edit icon" for="iconImageInput"></i>
+                                        </a>
+                                    </label>
+                                </div>
+                                <input #imageInput type="file" style='display: none' accept="image/x-png,image/gif,image/jpeg,image/jpg" class="content-input ui small circular image header-image-profile"
+                                    id="iconImageInput" (change)="updateAvatar($event.target.files)" required="" />
+                            </div>
+                        </div>
+                        <div class="ten wide column profile-header-text padding-top-none">
+                            <div class="content">
+                                <div class="sectionHeading header">{{userProfile.firstName}} &nbsp;{{userProfile.lastName}}</div>
+                                <div class="meta profileViewSubHeader padding-bottom-10">
+                                    <span *ngIf="userProfile.currentJobLocation">{{userProfile.currentJobLocation?.orgName}}</span>
+                                    <span *ngIf="userProfile.location && userProfile.location.length && userProfile.currentJobLocation">,</span>
+                                    <span *ngIf="userProfile.location">{{userProfile.location}}</span>
+                                </div>
+                                <div class="meta">
+                                    <div class="ui label" *ngIf="userProfile.userName">Username: {{userProfile.userName}}
+                                    </div>
+                                    <a class="ui link label" *ngIf="userProfile.rootOrg && userProfile.rootOrg.orgName && userProfile.rootOrg.contactDetail && userProfile.rootOrg.contactDetail.length > 0" href="mailto:{{userProfile.rootOrg.contactDetail[0].email}}"
+                                        title="Contact Admin">{{userProfile.rootOrg.orgName}}
+                                        <i class="mail outline icon"></i>
+                                        <!-- && user.rootOrg.contactDetail[0].email -->
+                                    </a>
+                                    <br>
+                                    <div class="ui label profile-headerLabelCard" *ngIf="userProfile.lastLoginTime"> Last login time: {{userProfile.lastLoginTime | date:'medium'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf='permissionService.permissionAvailable' appPermission [permission]='admin' class="profilesettings four wide column">
+                <app-bulk-upload></app-bulk-upload>
+            </div>
+        </div>
+        <div class="ui grid">
+            <div class="two wide column padding-top-none">
+                <div class="profileImageSizeText">Max upload size 4MB</div>
+            </div>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+</div>
+<!-- <router-outlet></router-outlet> -->

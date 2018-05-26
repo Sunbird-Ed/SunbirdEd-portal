@@ -159,6 +159,9 @@ export class ResourceComponent implements OnInit {
           }
         });
         this.caraouselData = [];
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+               this.queryParams.sortType = this.queryParams.sortType.toString();
+              }
         this.populatePageData();
       });
   }

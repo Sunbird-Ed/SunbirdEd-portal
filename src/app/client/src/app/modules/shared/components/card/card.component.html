@@ -1,4 +1,4 @@
-<div class="ui link cards margin-right-20 margin-top-15" *ngIf="data">
+<div class="ui link cards margin-right-20 margin-top-15 margin-bottom-0" *ngIf="data">
   <div class="card margin-top-10" [ngClass]="customClass">
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
       <sui-progress class="top attached active" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
@@ -8,7 +8,7 @@
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || '/assets/images/default.png' }}">
       <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}">
-        <span class="sliderCardHeading text-cencapitalize"  >{{data.name}}
+        <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
            <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
         </span>
       </div>

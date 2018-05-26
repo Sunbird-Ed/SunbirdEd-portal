@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { CoursesService, UserService} from '@sunbird/core';
+import { CoursesService, UserService, PlayerService} from '@sunbird/core';
 import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
 /**
  * This component contains 3 sub components
@@ -47,7 +47,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   /**
   * Slider setting to display number of cards on the slider.
   */
-  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4 };
+  slideConfig = { 'slidesToShow': 4, 'slidesToScroll': 4, infinite: false };
   /**
    * The "constructor"
    *
@@ -56,7 +56,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {CoursesService} courseService  Reference of courseService.
    * @param {ToasterService} iziToast Reference of toasterService.
    */
-  constructor(resourceService: ResourceService,
+  constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService) {
     this.userService = userService;
     this.courseService = courseService;
@@ -111,6 +111,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   trackByFn(index, item) {
     return index;
   }
+
+  playContent(event) {
+    if (event.data.batchId) {
+       event.data.mimeType = 'application/vnd.ekstep.content-collection';
+       event.data.contentType = 'Course';
+     }
+     this.playerService.playContent(event.data);
+   }
   /**
   *This method calls the populateUserProfile and populateCourse to show
   * user details and enrolled courses.

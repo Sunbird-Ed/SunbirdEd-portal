@@ -33,7 +33,7 @@ describe('LibrarySearchComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ }])
+    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}])
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +58,8 @@ describe('LibrarySearchComponent', () => {
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
     fixture.detectChanges();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeFalsy();
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,8 +12,8 @@ import * as _ from 'lodash';
   templateUrl: './update-batch.component.html',
   styleUrls: ['./update-batch.component.css']
 })
-export class UpdateBatchComponent extends WorkSpace implements OnInit {
-
+export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy {
+  @ViewChild('updatemodal') updatemodal;
   /**
   * batchId
   */
@@ -126,6 +126,11 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
     this.getBatchDetails();
     this.getUserList();
   }
+  ngOnDestroy() {
+    if (this.updatemodal && this.updatemodal.deny) {
+      this.updatemodal.deny();
+    }
+  }
   /**
   * Used to redirect user to batchlist   page.
   *
@@ -139,12 +144,13 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit {
   * It helps to initialize form fields and apply field level validation
   */
   initializeFormFields(): void {
+    const endDate = this.batchData.endDate ? new Date(this.batchData.endDate) : null;
     this.batchAddUserForm = new FormGroup({
       name: new FormControl(this.batchData.name, [Validators.required]),
       description: new FormControl(this.batchData.description),
       enrollmentType: new FormControl(this.batchData.enrollmentType, [Validators.required]),
       startDate: new FormControl(new Date(this.batchData.startDate), [Validators.required]),
-      endDate: new FormControl(new Date(this.batchData.endDate), [Validators.required]),
+      endDate: new FormControl(endDate),
       mentors: new FormControl(''),
       users: new FormControl(''),
     });

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
+import { ConfigService } from './../config/config.service';
 
 @Injectable()
 export class ContentUtilsServiceService {
@@ -11,8 +12,8 @@ export class ContentUtilsServiceService {
   *input for Sharelink;
   */
   contentShare: ISharelink;
-  constructor() {
-     this.baseUrl = document.location.origin + '/';
+  constructor(public configService: ConfigService) {
+    this.baseUrl = document.location.origin + '/';
   }
   /**
    * getBase64Url
@@ -30,12 +31,14 @@ export class ContentUtilsServiceService {
   * returns {string} url to share.
   */
   getUnlistedShareUrl(contentShare) {
-    if (contentShare.contentType === 'Course') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('course', contentShare.identifier);
-    } else if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('collection', contentShare.identifier);
+    if (contentShare.mimeType === 'application/vnd.ekstep.content-collection') {
+      if (contentShare.contentType === 'Course') {
+        return `${this.baseUrl}learn/course/${contentShare.identifier}/Unlisted`;
+      } else {
+        return `${this.baseUrl}resources/play/collection/${contentShare.identifier}/Unlisted`;
+      }
     } else {
-      return this.baseUrl + 'unlisted' + '/' + this.getBase64Url('content', contentShare.identifier);
+      return `${this.baseUrl}resources/play/content/${contentShare.identifier}/Unlisted`;
     }
   }
   /**
@@ -45,6 +48,12 @@ export class ContentUtilsServiceService {
   * returns {string} url to share
   */
   getPublicShareUrl(identifier, type) {
-    return this.baseUrl + '/play' +  type + '/' + identifier;
+    let playertype: string;
+    if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      playertype = 'collection';
+    } else {
+      playertype = 'content';
+    }
+    return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
   }
 }

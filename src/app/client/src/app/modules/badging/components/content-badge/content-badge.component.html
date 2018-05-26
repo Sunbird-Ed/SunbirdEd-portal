@@ -1,7 +1,10 @@
 <div class="ui grid">
   <div class="six wide column">
     <div class="ui blue labels" *ngIf="data && data.length > 0">
-      <div class="ui label margin-right-10" *ngFor="let selectedbadge of data">{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}</div>
+      <div class="ui label margin-right-10" *ngFor="let selectedbadge of data">
+        <div *ngIf="selectedbadge.badgeClassName">{{selectedbadge.badgeClassName | uppercase}}
+        </div>
+      </div>
     </div>
   </div>
   <div class="six wide column margin-top-0 text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
@@ -10,26 +13,26 @@
   </div>
 </div>
 
-<sui-modal [isClosable]="true" [size]="'small'" *ngIf="showBadgeAssingModel" #modal>
-    <div class="header">
-      <div class="ui grid">
-        <div class="eleven wide column">
-          <h4>{{resourceService.frmelmnts.lbl.markas}} '{{badge.name | uppercase}}'</h4>
+<sui-modal [isClosable]="true" [size]="'small'" (dismissed)="showBadgeAssingModel=false" *ngIf="showBadgeAssingModel" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <h4>{{resourceService.frmelmnts.lbl.markas}} '{{badge.name | uppercase}}'</h4>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="description">
+      <h1 class="ui header">
+        <div class="sub header primary-text-color-sunbird">
+          {{resourceService.frmelmnts.lbl.badgeassignconfirmation}}
         </div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="description">
-        <h1 class="ui header">
-          <div class="sub header primary-text-color-sunbird">
-            {{resourceService.frmelmnts.lbl.badgeassignconfirmation}}
-          </div>
-        </h1>
+      </h1>
 
-      </div>
     </div>
-    <div class="actions">
-      <div class="ui basic blue small compact button left floated" (click)="modal.deny();showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
-      <div class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
-    </div>
+  </div>
+  <div class="actions">
+    <div class="ui basic blue small compact button left floated" (click)="showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
+    <div class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
+  </div>
 </sui-modal>

@@ -61,17 +61,22 @@ export class CoursesService {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid
     };
-    this.learnerService.get(option).subscribe(
+    return this.learnerService.get(option).map(
       (apiResponse: ServerResponse) => {
         this._enrolledCourseData$.next({ err: null, enrolledCourses: apiResponse.result.courses });
-      },
-      err => {
+        return apiResponse;
+      }).catch((err) => {
         this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
+        return err;
       }
     );
   }
+  /**
+   *  call enroll course api and subscribe. Behavior subject will emit enrolled course data
+  */
   public initialize() {
-    this.getEnrolledCourses();
+    this.getEnrolledCourses().subscribe((date) => {
+    });
   }
 }
 

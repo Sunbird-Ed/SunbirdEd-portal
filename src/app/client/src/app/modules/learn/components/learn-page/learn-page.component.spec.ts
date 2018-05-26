@@ -22,7 +22,7 @@ describe('LearnPageComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
+  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
   };
 
   beforeEach(async(() => {
@@ -47,7 +47,6 @@ describe('LearnPageComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     component.filters = { board: ['NCERT'], subject: [] };
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
-    component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     component.caraouselData = Response.successData.result.response.sections;
     component.populatePageData();
     fixture.detectChanges();
@@ -62,6 +61,8 @@ describe('LearnPageComponent', () => {
     fixture.detectChanges();
     component.populateEnrolledCourse();
     fixture.detectChanges();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeTruthy();
   });
   it('should take else path when enrolledCourses length is 0 ', () => {
@@ -72,6 +73,8 @@ describe('LearnPageComponent', () => {
     fixture.detectChanges();
     component.populateEnrolledCourse();
     fixture.detectChanges();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeTruthy();
   });
   it('should throw error when courseService api is not called ', () => {

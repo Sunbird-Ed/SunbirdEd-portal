@@ -102,4 +102,9 @@ describe('OrganizationUploadComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     component.uploadOrg(mockRes.errorfile);
   });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
+  });
 });

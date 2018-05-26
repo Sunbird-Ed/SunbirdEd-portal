@@ -2,7 +2,7 @@ import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam , ISort} from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam , ISort, PlayerService} from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -121,7 +121,7 @@ export class CourseSearchComponent implements OnInit {
      * @param {ResourceService} resourceService Reference of ResourceService
      * @param {ToasterService} toasterService Reference of ToasterService
    */
-  constructor(searchService: SearchService, route: Router,
+  constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
@@ -168,7 +168,7 @@ export class CourseSearchComponent implements OnInit {
 
     this.searchService.courseSearch(requestParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result.count && apiResponse.result.course.length > 0) {
+        if (apiResponse.result.count && apiResponse.result.course) {
           this.showLoader = false;
           this.noResult = false;
           this.totalCount = apiResponse.result.count;
@@ -203,11 +203,12 @@ export class CourseSearchComponent implements OnInit {
     });
     _.forEach(course, (value, index) => {
          if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-          if (_.indexOf(enrolledCoursesId, course[index].identifier) === 0 ) {
+          if (_.indexOf(enrolledCoursesId, course[index].identifier) !== -1 ) {
             const constantData = this.config.appConfig.CourseSearch.enrolledCourses.constantData;
-              const metaData = this.config.appConfig.CourseSearch.metaData;
+              const metaData = { metaData: this.config.appConfig.Course.enrolledCourses.metaData };
                      const dynamicFields = {};
-                     course[index] = this.utilService.processContent(course[index],
+                     const enrolledCourses = _.find(this.enrolledCourses, ['courseId', course[index].identifier]);
+                     course[index] = this.utilService.processContent( enrolledCourses,
                       constantData, dynamicFields, metaData);
           } else {
             const constantData = this.config.appConfig.CourseSearch.otherCourses.constantData;
@@ -275,7 +276,17 @@ export class CourseSearchComponent implements OnInit {
             this.filters[queryParam] = queryValue;
           }
         });
+        if (this.queryParams.sort_by && this.queryParams.sortType) {
+                  this.queryParams.sortType = this.queryParams.sortType.toString();
+               }
         this.populateEnrolledCourse();
       });
   }
+  playContent(event) {
+    if (event.data.metaData.batchId) {
+      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+      event.data.metaData.contentType = 'Course';
+    }
+     this.playerService.playContent(event.data.metaData);
+   }
 }

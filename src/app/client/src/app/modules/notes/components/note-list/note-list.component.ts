@@ -72,6 +72,7 @@ export class NoteListComponent implements OnInit {
    * content id details
    */
   contentId: string;
+  batchId: string;
   /**
    * To display toast message(if any) after each API call.
    */
@@ -137,6 +138,7 @@ export class NoteListComponent implements OnInit {
     this.modalService = modalService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    // this.route.onSameUrlNavigation = 'reload';
   }
   /**
    * To initialize notesList and showDelete.
@@ -150,6 +152,7 @@ export class NoteListComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.contentId = params.contentId;
       this.courseId = params.courseId;
+      this.batchId = params.batchId;
     });
     this.getAllNotes();
   }
@@ -160,10 +163,10 @@ export class NoteListComponent implements OnInit {
   public getAllNotes() {
     const requestBody = {
       request: {
-        filter: {
-          userid: this.userId,
-          courseid: this.courseId,
-          contentid: this.contentId
+        filters: {
+          userId: this.userId,
+          courseId: this.courseId,
+          contentId: this.contentId
         },
         sort_by: {
           updatedDate: 'desc'
@@ -171,7 +174,7 @@ export class NoteListComponent implements OnInit {
       }
     };
 
-    if (requestBody.request.filter.contentid || requestBody.request.filter.courseid) {
+    if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
       this.noteService.search(requestBody).subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -233,6 +236,13 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.route.navigate(['/resources/play/content/', this.contentId]);
+    if (this.batchId) {
+      const navigationExtras = {
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    } else {
+      this.route.navigate(['/resources/play/content/', this.contentId]);
+    }
   }
 }
