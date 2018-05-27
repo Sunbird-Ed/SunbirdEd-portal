@@ -59,7 +59,8 @@
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
-    "deploy": "gulp deploy"
+    "deploy": "gulp deploy",
+    "test-with-coverage":"cd client && npm run test-coverage && && cat ./coverage/lcov.info | codacy-coverage"
   },
   "dependencies": {
     "async": "^2.5.0",
