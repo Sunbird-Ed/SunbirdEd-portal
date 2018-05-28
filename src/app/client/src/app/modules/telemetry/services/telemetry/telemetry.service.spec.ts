@@ -9,6 +9,11 @@ describe('TelemetryService', () => {
             providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
         });
     });
+
+    it('should be created', inject([TelemetryService], (service: TelemetryService) => {
+        expect(service).toBeTruthy();
+    }));
+
     it('should initialize the service', inject([TelemetryService], (service: TelemetryService) => {
         spyOn(EkTelemetry, 'initialize');
         service.initialize(mockData.telemetry);

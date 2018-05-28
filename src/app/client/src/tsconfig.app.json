@@ -55,6 +55,9 @@
       "@sunbird/discussion": [
         "app/modules/discussion"
       ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
+      ],  
       "@sunbird/badge": [
         "app/modules/badging"
       ]

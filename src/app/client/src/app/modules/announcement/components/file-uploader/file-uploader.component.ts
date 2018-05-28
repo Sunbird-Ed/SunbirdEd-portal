@@ -22,7 +22,7 @@ export class FileUploaderComponent implements OnInit {
   public resourceService: ResourceService;
 
   /**
-   * Default method of classs FileUploaderComponent
+   * Default method of class FileUploaderComponent
    *
    * @param {FileUploadService} fileUpload To upload file
    * @param {ResourceService} resource To get language constant

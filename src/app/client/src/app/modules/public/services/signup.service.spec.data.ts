@@ -25,7 +25,8 @@ export const mockSignupApiResponse = {
             'lastName': 'm',
             'phone': '7899918811',
             'email': 'vaish@gmail.com',
-            'language': ['English']
+            'language': ['English'],
+            'phoneVerified': true
         }
     }
 };

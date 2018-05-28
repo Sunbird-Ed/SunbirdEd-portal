@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { UserService } from '@sunbird/core';
@@ -15,7 +16,7 @@ import { ICourseProgressData, IBatchListData } from './../../interfaces';
   templateUrl: './course-progress.component.html',
   styleUrls: ['./course-progress.component.css']
 })
-export class CourseProgressComponent implements OnInit {
+export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
 	 * This variable helps to show and hide page loader.
 	 */
@@ -28,6 +29,7 @@ export class CourseProgressComponent implements OnInit {
 	 * This variable sets the course id
 	 */
   courseId: string;
+  userDataSubscription: Subscription;
   batchId: string;
   /**
 	 * This variable sets the user id
@@ -263,7 +265,7 @@ export class CourseProgressComponent implements OnInit {
   * course id and timeperiod
   */
   ngOnInit() {
-    this.user.userData$.subscribe(userdata => {
+    this.userDataSubscription = this.user.userData$.first().subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.paramSubcription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
@@ -282,5 +284,10 @@ export class CourseProgressComponent implements OnInit {
           });
       }
     });
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 }

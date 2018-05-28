@@ -108,7 +108,7 @@ export class CourseProgressService {
     });
     const progress = ((this.courseProgress[courseId_batchId].completedCount /
       this.courseProgress[courseId_batchId].totalCount) * 100);
-    this.courseProgress[courseId_batchId].progress = progress;
+    this.courseProgress[courseId_batchId].progress = progress > 100 ? 100 : progress;
     _.forEach(res, (e) => {
       this.lastAccessTimeOfContentId.push(e.lastAccessTime);
     });
