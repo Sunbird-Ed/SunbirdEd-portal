@@ -1,4 +1,4 @@
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse} from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
@@ -187,7 +187,11 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   resetFilters() {
-    this.formInputData = {};
+    if (this.formInputData['key']) {
+      this.formInputData = _.pick(this.formInputData, 'key');
+    } else {
+      this.formInputData = {};
+    }
     this.applyFilters();
     this.refresh = false;
     this.cdr.detectChanges();
