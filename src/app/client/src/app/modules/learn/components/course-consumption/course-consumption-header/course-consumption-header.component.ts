@@ -15,6 +15,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   /**
    * contains link that can be shared
    */
+  flaggedCourse = false;
   shareLink: string;
   /**
    * to show loader while copying content
@@ -43,6 +44,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       this.batchId = param.batchId;
       this.courseStatus = param.courseStatus;
       this.progress = this.courseHierarchy.progress;
+      if (this.courseHierarchy.status === 'Flagged') {
+        this.flaggedCourse = true;
+      }
       if (this.batchId) {
         this.enrolledCourse = true;
       }
@@ -58,9 +62,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
         this.progress;
       // this.changeDetectorRef.detectChanges();
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-      this.showResumeCourse = false;
-      if (this.onPageLoadResume) {
+      if (this.onPageLoadResume && !this.flaggedCourse) {
         this.onPageLoadResume = false;
+        this.showResumeCourse = false;
         this.resumeCourse();
       }
     });

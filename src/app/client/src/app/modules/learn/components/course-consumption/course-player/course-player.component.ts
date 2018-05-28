@@ -28,7 +28,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public contentId: string;
   public courseStatus: string;
   private contentService: ContentService;
-
+  public flaggedCourse = false;
   public collectionTreeNodes: any;
 
   public collectionTitle: string;
@@ -110,6 +110,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
       }).subscribe((response) => {
         this.courseHierarchy = response;
+        if (this.courseHierarchy.status === 'Flagged') {
+          this.flaggedCourse = true;
+        }
         if (this.batchId) {
           this.enrolledCourse = true;
           this.parseChildContent(response);
@@ -130,7 +133,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public playContent(data: any): void {
+    this.enableContentPlayer = false;
+    this.loader = true;
     this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+      this.loader = false;
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
@@ -139,6 +145,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
     }, (err) => {
+      this.loader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
   }
@@ -148,7 +155,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    if (this.batchId || this.courseStatus === 'Unlisted') {
+    if ((this.batchId && !this.flaggedCourse) || this.courseStatus === 'Unlisted') {
       this.router.navigate([], navigationExtras);
     }
   }
@@ -160,7 +167,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id && (this.enrolledCourse || this.courseStatus === 'Unlisted')) {
+    if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse ) || this.courseStatus === 'Unlisted')) {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
