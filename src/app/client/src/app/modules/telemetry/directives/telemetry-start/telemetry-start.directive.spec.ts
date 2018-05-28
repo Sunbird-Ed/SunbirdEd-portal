@@ -11,11 +11,6 @@ describe('TelemetryStartDirective', () => {
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
     });
   });
-  it('should create an instance', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const directive = new TelemetryStartDirective(telemetryService);
-    expect(directive).toBeTruthy();
-  });
   it('should take input and  generate the telemetry start event', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryStartDirective(telemetryService);

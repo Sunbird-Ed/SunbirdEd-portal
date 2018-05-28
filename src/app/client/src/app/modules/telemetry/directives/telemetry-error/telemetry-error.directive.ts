@@ -25,11 +25,6 @@ export class TelemetryErrorDirective implements OnInit , OnChanges {
   constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
-  ngOnInit() {
-    if (this.appTelemetryError) {
-       this.telemetryService.error(this.appTelemetryError);
-    }
-  }
   ngOnChanges() {
     if (this.appTelemetryError) {
        this.telemetryService.error(this.appTelemetryError);
