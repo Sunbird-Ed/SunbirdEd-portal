@@ -5,6 +5,7 @@ import {
   UserService, LearnerService, CoursesService, PermissionService, TenantService,
   TelemetryService, TELEMETRY_PROVIDER, ConceptPickerService, SearchService, ContentService
 } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +19,8 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule,
+      RouterTestingModule, TelemetryModule],
       declarations: [
         AppComponent
       ],
