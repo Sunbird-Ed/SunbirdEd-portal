@@ -16,7 +16,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-
+import { WebExtensionModule } from 'sunbird-web-extension';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +24,8 @@ import { CacheService } from 'ng2-cache-service';
     SharedModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    WebExtensionModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,

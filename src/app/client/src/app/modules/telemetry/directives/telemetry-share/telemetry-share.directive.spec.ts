@@ -10,17 +10,12 @@ describe('TelemetryShareDirective', () => {
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
     });
   });
-  it('should create an instance', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const directive = new TelemetryShareDirective(telemetryService);
-    expect(directive).toBeTruthy();
-  });
-  it('should take input', () => {
+  it('should take input and  generate the telemetry  share  event', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryShareDirective(telemetryService);
     spyOn(telemetryService, 'share').and.callFake(() => Observable.of(eventData.inputData));
     directive.appTelemetryShare = eventData.inputData;
-    directive.share();
+    directive.ngOnInit();
     expect(directive.appTelemetryShare).toBeDefined();
     expect(directive.appTelemetryShare).toBe(eventData.inputData);
     expect(telemetryService.share).toHaveBeenCalled();

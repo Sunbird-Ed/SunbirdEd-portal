@@ -20,7 +20,10 @@ export class InboxComponent implements OnInit {
 	 * Contains result object returned from get inbox API
 	 */
   inboxData: IAnnouncementListData;
-
+  /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
   /**
 	 * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -218,6 +221,25 @@ export class InboxComponent implements OnInit {
        }
      };
    }
+   /**
+ * get Inview  Data
+ */
+   inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'announcement',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
 
   /**
    * This method calls the populateInboxData to show inbox list.

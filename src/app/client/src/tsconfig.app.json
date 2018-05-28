@@ -4,6 +4,9 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "paths": {
+      "sunbird-web-extension": [
+        "libs/sunbird-web-extension/esm5"
+      ],
       "@sunbird/core": [
         "app/modules/core"
       ],
@@ -44,7 +47,7 @@
         "app/modules/public"
       ],
       "@sunbird/profile": [
-        "app/modules/profile"
+        "app/plugins/profile"
       ],
       "@sunbird/search": [
         "app/modules/search"
@@ -52,6 +55,9 @@
       "@sunbird/discussion": [
         "app/modules/discussion"
       ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
+      ],  
       "@sunbird/badge": [
         "app/modules/badging"
       ],

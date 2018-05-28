@@ -1,17 +1,18 @@
 {
   "name": "src",
-  "version": "0.0.0",
+  "version": "1.7.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng build && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
-    "build": "ng build",
+    "build": "ng build --prod --aot=false",
     "test": "ng test --tags $tags",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "ng lint",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s"
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
+    "test-coverage": "ng test --code-coverage=true --watch=false"
   },
   "nodemonConfig": {
     "ext": "ts,html,json"
@@ -49,7 +50,7 @@
     "ng2-cache-service": "^1.1.1",
     "ng2-charts": "^1.6.0",
     "ng2-device-detector": "^1.0.1",
-    "ng2-izitoast": "^1.0.1",
+    "ng2-izitoast": "2.0.0",
     "ng2-semantic-ui": "project-sunbird/ng2-semantic-ui",
     "ngx-md": "^3.1.1",
     "ngx-order-pipe": "^2.0.1",

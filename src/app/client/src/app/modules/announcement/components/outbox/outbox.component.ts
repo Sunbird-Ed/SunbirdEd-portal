@@ -197,6 +197,9 @@ export class OutboxComponent implements OnInit {
     };
     this.cdr.detectChanges();
   }
+   /**
+   * get inview  Data
+   */
   inview(event) {
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {

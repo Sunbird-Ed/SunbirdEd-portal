@@ -21,7 +21,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   userSearchTime: any;
   batchId: string;
   showCreateModal = false;
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   courseId: string;
   orgIds: Array<string>;
   /**
@@ -159,7 +159,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService.getUserList(requestBody).subscribe((res) => {
       const list = this.formatUserList(res);
       if (type) {
-        console.log(this[type]);
         if (type === 'userList') {
           this.userList = list.userList;
         } else {
@@ -167,7 +166,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this[type] = list[type];
       } else {
-        console.log('in else');
         this.userList = list.userList;
         this.mentorList = list.mentorList;
       }

@@ -27,10 +27,7 @@ export class TelemetryShareDirective implements OnInit {
   }
   ngOnInit() {
     if (this.appTelemetryShare) {
-      this.share();
+      this.telemetryService.share(this.appTelemetryShare);
     }
-  }
-  share() {
-    this.telemetryService.share(this.appTelemetryShare);
   }
 }
