@@ -99,13 +99,7 @@ app.get('/assets/images/*', function (req, res, next) {
 });
 
 
-app.get('/*.js', compression(), function (req, res, next) {
-  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
-  res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
-  next();
-});
-
-app.get('/*.css', compression(), function (req, res, next) {
+app.get(['/*.js', '/*.css', '/*.ttf', '/*.woff2'], compression(), function (req, res, next) {
   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
   next();
