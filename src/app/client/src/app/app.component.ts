@@ -117,10 +117,10 @@ export class AppComponent implements OnInit {
           userOrgDetails: userOrg,
           config: {
             // TODO: get pdata from document object
-            pdata: { 
-              id: (<HTMLInputElement>document.getElementById('appId')).value, 
-              ver: this.config.appConfig.TELEMETRY.VERSION, 
-              pid: this.config.appConfig.TELEMETRY.PID 
+            pdata: {
+              id: (<HTMLInputElement>document.getElementById('appId')).value,
+              ver: this.config.appConfig.TELEMETRY.VERSION,
+              pid: this.config.appConfig.TELEMETRY.PID
             },
             endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
             apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
