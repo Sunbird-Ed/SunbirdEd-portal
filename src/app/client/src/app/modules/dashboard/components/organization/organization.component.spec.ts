@@ -232,4 +232,9 @@ describe('OrganisationComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, '7d']);
     expect(component.showLoader).toBe(false);
   }));
+  it('should unsubscribe to userData observable', () => {
+    spyOn(component.userDataSubscription, 'unsubscribe').and.callThrough();
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

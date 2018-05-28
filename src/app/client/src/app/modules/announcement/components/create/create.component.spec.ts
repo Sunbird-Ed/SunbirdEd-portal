@@ -181,4 +181,11 @@ describe('CreateComponent', () => {
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
+
+  it('should unsubscribe to userData observable', () => {
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    component.ngOnInit();
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });
