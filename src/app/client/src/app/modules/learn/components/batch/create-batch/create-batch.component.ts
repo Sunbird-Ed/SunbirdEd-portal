@@ -141,6 +141,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
   getUserListWithQuery(query, type) {
+    this.disableSubmitBtn = false;
     if (this.userSearchTime) {
       clearTimeout(this.userSearchTime);
     }
