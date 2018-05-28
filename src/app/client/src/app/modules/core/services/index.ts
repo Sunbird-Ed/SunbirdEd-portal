@@ -9,7 +9,6 @@ export * from './search/search.service';
 export * from './announcement/announcement.service';
 export * from './page-api/page-api.service';
 export * from './user/user.mock.spec.data';
-export * from './telemetry/telemetry.service';
 export * from './concept-picker/concept-picker.service';
 export * from './tenant/tenant.service';
 export * from './framework/framework.service';

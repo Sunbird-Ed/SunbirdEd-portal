@@ -126,6 +126,7 @@ function indexPage (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.instance = process.env.sunbird_instance
+  res.locals.appId = envHelper.APPID
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
 app.get('/get/envData', keycloak.protect(), function (req, res) {
