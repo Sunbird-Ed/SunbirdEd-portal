@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 import { IErrorEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryError]'
 })
-export class TelemetryErrorDirective implements OnInit , OnChanges {
+export class TelemetryErrorDirective implements  OnChanges {
   /**
    * Interact event input
   */
