@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "ng lint",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s"
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
+    "test-coverage": "ng test --code-coverage=true --watch=false"
   },
   "nodemonConfig": {
     "ext": "ts,html,json"
