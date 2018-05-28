@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
-
-
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -25,7 +25,22 @@ import {
 describe('OutboxComponent', () => {
     let component: OutboxComponent;
     let fixture: ComponentFixture<OutboxComponent>;
-    const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+    const fakeActivatedRoute = {
+        'params': Observable.from([{ 'pageNumber': 1 }]),
+        snapshot: {
+            params: [
+                {
+                    announcementId: '123456',
+                }
+            ],
+            data: {
+                telemetry: {
+                    env: 'announcement', pageid: 'announcement-outbox', type: 'workflow',
+                    object: { type: 'announcement', ver: '1.0' }
+                }
+            }
+        }
+    };
     class RouterStub {
         navigate = jasmine.createSpy('navigate');
     }
@@ -35,7 +50,7 @@ describe('OutboxComponent', () => {
             declarations: [OutboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 SuiModule, RouterTestingModule,
-                SharedModule],
+                SharedModule, TelemetryModule, NgInviewModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },

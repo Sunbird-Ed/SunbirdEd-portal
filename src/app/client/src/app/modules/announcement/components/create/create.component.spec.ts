@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { UserService, LearnerService, AnnouncementService, CoreModule } from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
 import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
@@ -33,6 +33,12 @@ describe('CreateComponent', () => {
           identifier: 'bar',
         },
       ],
+      data: {
+        telemetry: {
+          env: 'announcement', pageid: 'announcement-create', uri: '/announcement/create/',
+          type: 'workflow', mode: 'create', object: { type: 'announcement', ver: '1.0' }
+        }
+      }
     },
   };
   class RouterStub {
@@ -43,7 +49,7 @@ describe('CreateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule,
-        Ng2IziToastModule, CoreModule],
+        Ng2IziToastModule, CoreModule, TelemetryModule],
       providers: [ToasterService, ResourceService, CreateService, UserService,
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,
