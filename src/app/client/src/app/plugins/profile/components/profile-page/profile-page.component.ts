@@ -88,7 +88,7 @@ export class ProfilePageComponent implements OnInit {
       this.router.navigate([authroles.url]);
     }
   }
-  onClcikContributions(content) {
+  onClickOfMyContributions(content) {
     this.playerService.playContent(content);
   }
 }
