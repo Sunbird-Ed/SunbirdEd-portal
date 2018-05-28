@@ -183,8 +183,8 @@ describe('CreateComponent', () => {
     }));
 
   it('should unsubscribe to userData observable', () => {
-    spyOn(component.userDataSubscription, 'unsubscribe');
     component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
   });
