@@ -157,4 +157,11 @@ describe('CourseProgressComponent', () => {
       component.downloadReport();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
     }));
+
+  it('should unsubscribe to userData observable', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalledTimes(1);
+  });
 });
