@@ -20,6 +20,7 @@ import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
+import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
 // portal-extensions
@@ -53,7 +54,8 @@ import { BadgingModule } from '@sunbird/badge';
     DiscussionModule,
     WebExtensionModule,
     BadgingModule,
-    ...WebExtensionsConfig.plugins.map((data) => data.module)
+    ...WebExtensionsConfig.plugins.map((data) => data.module),
+    TelemetryModule
   ],
   providers: [],
   entryComponents: [AppComponent],
