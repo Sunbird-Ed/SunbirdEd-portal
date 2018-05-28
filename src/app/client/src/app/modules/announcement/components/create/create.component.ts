@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -18,7 +19,7 @@ import * as _ from 'lodash';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -36,7 +37,7 @@ export class CreateComponent implements OnInit {
    * Announcement creation form name
    */
   announcementForm: FormGroup;
-
+  userDataSubscription: Subscription;
   /**
    * Contains reference of FormBuilder
    */
@@ -134,7 +135,7 @@ export class CreateComponent implements OnInit {
    */
   public config: ConfigService;
   /**
-   * Default method of classs CreateComponent
+   * Default method of class CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
@@ -395,7 +396,7 @@ export class CreateComponent implements OnInit {
    */
   ngOnInit(): void {
     // Initialize form fields
-    this.user.userData$.subscribe(user => {
+    this.userDataSubscription = this.user.userData$.first().subscribe(user => {
       if (user && user.userProfile) {
         this.showAnnouncementForm = false;
         this.initializeFormFields();
@@ -418,5 +419,10 @@ export class CreateComponent implements OnInit {
     this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 }

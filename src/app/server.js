@@ -128,7 +128,7 @@ function indexPage (req, res) {
   res.locals.instance = process.env.sunbird_instance
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
-app.get('/get/envData', keycloak.protect(), function (req, res) {
+app.get('/get/envData', function (req, res) {
   res.status(200)
   res.send({ appId: appId, ekstep_env: ekstepEnv })
   res.end()
