@@ -8,9 +8,9 @@ import { TelemetryInteractDirective,  TelemetryStartDirective, TelemetryEndDirec
     CommonModule
   ],
   declarations: [TelemetryInteractDirective, TelemetryStartDirective, TelemetryEndDirective,
-     TelemetryImpressionDirective, TelemetryShareDirective,TelemetryErrorDirective],
+     TelemetryImpressionDirective, TelemetryShareDirective, TelemetryErrorDirective],
   providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }],
   exports: [TelemetryInteractDirective, TelemetryStartDirective, TelemetryEndDirective,
-    TelemetryImpressionDirective, TelemetryShareDirective,TelemetryErrorDirective]
+    TelemetryImpressionDirective, TelemetryShareDirective, TelemetryErrorDirective]
 })
 export class TelemetryModule { }
