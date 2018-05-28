@@ -109,7 +109,7 @@ describe('ProfilePageComponent', () => {
     const playerService = TestBed.get(PlayerService);
     const response = mockProfilePageData.success.result.content;
     spyOn(playerService, 'playContent').and.callThrough();
-    component.onClcikContributions(response);
+    component.onClickOfMyContributions(response);
     expect(playerService.playContent).toHaveBeenCalled();
   });
 });
