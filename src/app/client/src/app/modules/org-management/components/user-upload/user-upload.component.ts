@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
@@ -15,8 +15,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './user-upload.component.html',
   styleUrls: ['./user-upload.component.css']
 })
-export class UserUploadComponent implements OnInit {
+export class UserUploadComponent implements OnInit, OnDestroy {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */
@@ -204,5 +205,8 @@ export class UserUploadComponent implements OnInit {
   closeBulkUploadError() {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }
