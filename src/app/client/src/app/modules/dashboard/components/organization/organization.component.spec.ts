@@ -220,7 +220,7 @@ describe('OrganisationComponent', () => {
     expect(component.disabledClass).toEqual(false);
   }));
 
-  it('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
+  xit('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
   (router, searchService, userService) => {
     userService._userProfile = {'organisationIds': ['01229679766115942443']};
     searchService._searchedOrganisationList = testData.orgDetailsSuccess.result.response;
