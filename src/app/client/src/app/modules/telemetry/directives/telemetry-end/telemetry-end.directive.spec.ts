@@ -12,12 +12,7 @@ describe('TelemetryStartDirective', () => {
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
     });
   });
-  it('should create an instance', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const directive = new TelemetryEndDirective(telemetryService);
-    expect(directive).toBeTruthy();
-  });
-  it('should take input', () => {
+  it('should take input and generate the telemetry end event ', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryEndDirective( telemetryService);
     spyOn(telemetryService, 'end').and.callFake(() => Observable.of(eventData.inputData));
