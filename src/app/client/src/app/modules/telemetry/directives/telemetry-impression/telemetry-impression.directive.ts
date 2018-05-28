@@ -27,7 +27,7 @@ export class TelemetryImpressionDirective implements OnInit {
   }
   ngOnInit() {
     if (this.appTelemetryImpression) {
-    this.telemetryService.impression(this.appTelemetryImpression);
+      this.telemetryService.impression(this.appTelemetryImpression);
     }
   }
 }
