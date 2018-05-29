@@ -24,6 +24,12 @@
                         "type": "plugin"
                     }
                 ],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
                 "showEndPage": false
             }
         },
@@ -55,6 +61,12 @@
                         "type": "plugin"
                     }
                 ],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
                 "showEndPage": false
             }
         },
@@ -107,6 +119,12 @@
                         "type": "plugin"
                     }
                 ],
+                "splash": {
+                    "text": "",
+                    "icon": "",
+                    "bgImage": "assets/icons/splacebackground_1.png",
+                    "webLink": ""
+                },
                 "showEndPage": false
             },
             "editorType": "Collection"
