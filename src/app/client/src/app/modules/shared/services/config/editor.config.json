@@ -11,7 +11,7 @@
             "plugins": [
                 {
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": 1.1,
+                    "ver": 1.4,
                     "type": "plugin"
                 }
             ],
@@ -37,7 +37,7 @@
             "plugins": [
                 {
                     "id": "org.ekstep.sunbirdcommonheader",
-                    "ver": 1.1,
+                    "ver": 1.4,
                     "type": "plugin"
                 }
             ],
@@ -74,12 +74,12 @@
                 },
                 {
                     "id": "org.ekstep.sunbirdmetadata",
-                    "ver": "1.0",
+                    "ver": "1.1",
                     "type": "plugin"
                 },
                 {
                     "id": "org.ekstep.metadata",
-                    "ver": "1.0",
+                    "ver": "1.1",
                     "type": "plugin"
                 },
                 {
@@ -114,17 +114,17 @@
         "COLLECTION_PLUGINS": [
             {
                 "id": "org.ekstep.sunbirdcommonheader",
-                "ver": "1.2",
+                "ver": "1.4",
                 "type": "plugin"
             },
             {
                 "id": "org.ekstep.sunbirdmetadata",
-                "ver": "1.0",
+                "ver": "1.1",
                 "type": "plugin"
             },
             {
                 "id": "org.ekstep.metadata",
-                "ver": "1.0",
+                "ver": "1.1",
                 "type": "plugin"
             },
             {
@@ -400,7 +400,9 @@
             "Draft",
             "Live",
             "Flagged",
-            "Unlisted"
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
         ],
         "mimeCollection": "application/vnd.ekstep.content-collection",
         "editorQS": "createdBy,status,mimeType",
@@ -415,7 +417,9 @@
             "Review",
             "Draft",
             "Live",
-            "Unlisted"
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
         ],
         "DRAFT": "draft",
         "READ": "Read",
