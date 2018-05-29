@@ -117,7 +117,6 @@ export class AppComponent implements OnInit {
         const config: ITelemetryContext = {
           userOrgDetails: userOrg,
           config: {
-            // TODO: get pdata from document object
             pdata: {
               id: this.userService.appId,
               ver: this.config.appConfig.TELEMETRY.VERSION,
@@ -128,8 +127,8 @@ export class AppComponent implements OnInit {
             host: '',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
-            env: 'home' // default value
+            channel: _.get(userOrg, 'rootOrg.hashTagId') ,
+            env: 'home'
            }
         };
         resolve(config);

@@ -83,6 +83,7 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public impression(impressionEventInput: IImpressionEventInput) {
+    console.log(impressionEventInput);
     if (this.isInitialized) {
       const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
       this.telemetryProvider.impression(eventData.edata, eventData.options);
