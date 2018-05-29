@@ -446,7 +446,7 @@
     "textbook": "Book",
     "course": "Course",
     "lessonplan": "Lesson Plan",
-    "studymaterial": "Learn",
+    "studymaterial": "Learn"
   },
   "timeOutConfig": {
     "setTime": 1500
