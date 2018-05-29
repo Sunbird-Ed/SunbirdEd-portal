@@ -34,6 +34,9 @@ export class ExploreContentComponent implements OnInit {
      * To get enrolled courses details.
      */
     coursesService: CoursesService;
+    /**
+     * Contains channel id
+     */
     hashTagId: string;
     /**
      * Contains list of published course(s) of logged-in user
@@ -56,6 +59,9 @@ export class ExploreContentComponent implements OnInit {
       * To show / hide no result message when no result found
      */
     noResult = false;
+    /**
+     * Contains slug which comes from the url
+     */
     slug = '';
     /**
      * no result  message
@@ -204,6 +210,8 @@ export class ExploreContentComponent implements OnInit {
                     this.setFilters();
                 } else {
                     this.setFilters();
+                    this.toasterService.error('Please provide a valid slug');
+                    this.route.navigate(['']);
                 }
             },
             err => {
@@ -220,14 +228,14 @@ export class ExploreContentComponent implements OnInit {
         };
         Observable
             .combineLatest(
-                this.activatedRoute.params,
-                this.activatedRoute.queryParams,
-                (params: any, queryParams: any) => {
-                    return {
-                        params: params,
-                        queryParams: queryParams
-                    };
-                })
+            this.activatedRoute.params,
+            this.activatedRoute.queryParams,
+            (params: any, queryParams: any) => {
+                return {
+                    params: params,
+                    queryParams: queryParams
+                };
+            })
             .subscribe(bothParams => {
                 if (bothParams.params.pageNumber) {
                     this.pageNumber = Number(bothParams.params.pageNumber);
@@ -244,6 +252,9 @@ export class ExploreContentComponent implements OnInit {
                         }
                     });
                 }
+                if (this.queryParams.sort_by && this.queryParams.sortType) {
+                    this.queryParams.sortType = this.queryParams.sortType.toString();
+                }
                 this.populateContentSearch();
             });
     }
@@ -252,7 +263,7 @@ export class ExploreContentComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
             this.slug = params.slug;
             if (this.slug === undefined) {
-                this.slug = 'tn';
+                this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
                 this.getHashTagId();
             } else {
                 this.getHashTagId();
@@ -260,7 +271,11 @@ export class ExploreContentComponent implements OnInit {
         });
     }
 
-    playContent(event) {
-        this.playerService.playContent(event.data.metaData);
+    public playContent(event) {
+        if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+            this.route.navigate(['play/collection', event.data.metaData.identifier]);
+        } else {
+            this.route.navigate(['play/content', event.data.metaData.identifier]);
+        }
     }
 }

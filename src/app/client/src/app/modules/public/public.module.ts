@@ -25,7 +25,10 @@ const routes: Routes = [
   { path: 'get/dial/:dialCode', component: DialCodeComponent },
   { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
   { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
-  { path: 'explore/:pageNumber', component: ExploreContentComponent },
+  {
+    path: 'explore/:pageNumber', component: ExploreContentComponent,
+    data: { breadcrumbs: [{ label: 'Home', url: '' }, { label: 'Search', url: '' }] }
+  },
   { path: ':slug/explore/:pageNumber', component: ExploreContentComponent }
 ];
 

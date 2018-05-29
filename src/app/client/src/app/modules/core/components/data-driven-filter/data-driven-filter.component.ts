@@ -181,11 +181,11 @@ export class DataDrivenFilterComponent implements OnInit {
       });
     });
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
-    // this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
-    //   {
-    //     maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-    //       this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-    //   });
+    this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
+      {
+        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+      });
   }
 
   resetFilters() {
