@@ -445,7 +445,8 @@
     "collection": "Collection",
     "textbook": "Book",
     "course": "Course",
-    "lessonplan": "Lesson Plan"
+    "lessonplan": "Lesson Plan",
+    "studymaterial": "Learn",
   },
   "timeOutConfig": {
     "setTime": 1500
