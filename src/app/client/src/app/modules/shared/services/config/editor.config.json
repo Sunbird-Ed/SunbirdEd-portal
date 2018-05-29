@@ -400,7 +400,9 @@
             "Draft",
             "Live",
             "Flagged",
-            "Unlisted"
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
         ],
         "mimeCollection": "application/vnd.ekstep.content-collection",
         "editorQS": "createdBy,status,mimeType",
@@ -415,7 +417,9 @@
             "Review",
             "Draft",
             "Live",
-            "Unlisted"
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
         ],
         "DRAFT": "draft",
         "READ": "Read",
