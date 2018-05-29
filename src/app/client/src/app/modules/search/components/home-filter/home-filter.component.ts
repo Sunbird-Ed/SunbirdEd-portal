@@ -97,7 +97,6 @@ export class HomeFilterComponent implements OnInit {
    * reset selected values.
    */
   resetFilters() {
-    console.log('this.queryParams',this.queryParams)
     if (this.queryParams['key']) {
       this.queryParams = _.pick(this.queryParams, 'key');
     } else {

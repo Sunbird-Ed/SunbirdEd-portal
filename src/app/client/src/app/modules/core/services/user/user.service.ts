@@ -135,7 +135,6 @@ export class UserService {
   /**
   * method to fetch appId and Ekstep_env from server.
   */
-  
   // public getAppIdEnv(): void {
   //   const url = this.config.appConfig.APPID_EKSTEPENV;
   //   this.http.get(url).subscribe((res: IAppIdEnv) => {

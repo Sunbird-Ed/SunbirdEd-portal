@@ -176,7 +176,6 @@ export class OutboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
-  
   /**
    * get inview  Data
   */
