@@ -3,7 +3,7 @@
   <div class="ui grid">
     <div class="twelve wide column">
       <sui-accordion [closeOthers]="false">
-        <sui-accordion-panel>
+        <sui-accordion-panel [isOpen]="isAccordianOpen">
           <div title>
             <i alt="Filter" class="icon filter"></i>
             {{resourceService.frmelmnts?.lbl?.filters}}
@@ -33,24 +33,24 @@
               </div>
               <div class="two wide column ">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Curriculum" [options]="options" [hasLabels]=false
-               placeholder="Curriculum"  #multiSelect>
+                  placeholder="Curriculum" #multiSelect>
                   <sui-select-option *ngFor="let board of searchBoards" [value]="board"> </sui-select-option>
                 </sui-multi-select>
               </div>
               <div class="two wide column">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Medium" [options]="options" [hasLabels]=false
-                placeholder="Medium" #multiSelect>
+                  placeholder="Medium" #multiSelect>
                   <sui-select-option *ngFor="let language of searchLanguages" [value]="language"> </sui-select-option>
                   <i class="dropdown icon"></i>
                 </sui-multi-select>
               </div>
               <div class="two wide column">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Subjects" [options]="options" [hasLabels]=false
-                placeholder="Subjects"  #multiSelect>
+                  placeholder="Subjects" #multiSelect>
                   <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
                 </sui-multi-select>
               </div>
-              <div class="two wide column" *ngIf='queryParams != undefined'> 
+              <div class="two wide column" *ngIf='queryParams != undefined'>
                 <div class="field">
                   <form class="conceptSelector ui form">
                     <app-concept-picker [selectedConcepts]="queryParams.Concepts" (Concepts)="concepts($event)"></app-concept-picker>

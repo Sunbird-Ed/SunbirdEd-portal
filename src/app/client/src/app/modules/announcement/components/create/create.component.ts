@@ -320,29 +320,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     };
     this.telemetryEnd = endEvent;
     this.telemetryEnd = Object.assign({}, this.telemetryEnd);
-    console.log(this.telemetryEnd);
     this.cdr.detectChanges();
     this.route.navigate(['announcement/outbox/1']);
-  }
-/**
- * get Interact Data
- */
-  interactData(id, pageId, type) {
-   this.telemetryInteract = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: type,
-        id: id,
-        pageid: pageId
-      }
-    };
   }
   /**
    * Function used to detect form input value changes.

@@ -157,11 +157,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         type: 'plugin'
       }, {
         id: 'org.ekstep.sunbirdmetadata',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       }, {
         id: 'org.ekstep.metadata',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       }],
       previewConfig: {

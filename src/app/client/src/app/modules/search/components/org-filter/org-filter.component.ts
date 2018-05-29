@@ -22,6 +22,7 @@ export class OrgFilterComponent implements OnInit {
   searchOrgType: Array<string>;
   label: Array<string>;
   refresh = true;
+  isAccordianOpen = false;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -87,6 +88,11 @@ export class OrgFilterComponent implements OnInit {
             });
           });
           this.queryParams.OrgType = OrgType;
+        }
+        const queryParamData = { ... this.queryParams };
+        delete queryParamData['key'];
+        if (!_.isEmpty(queryParamData)) {
+          this.isAccordianOpen = true;
         }
         this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Organisations.DROPDOWN, ...this.queryParams };
       }

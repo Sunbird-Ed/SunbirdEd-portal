@@ -16,7 +16,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
-  styleUrls: ['./note-list.component.css']
+  styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
 export class NoteListComponent implements OnInit {
   /**
