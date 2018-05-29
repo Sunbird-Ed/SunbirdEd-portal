@@ -126,10 +126,12 @@ function indexPage (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.instance = process.env.sunbird_instance
+  res.locals.appId = envHelper.APPID
+  res.locals.ekstepEnv = envHelper.EKSTEP_ENV
   res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
-app.get('/get/envData', keycloak.protect(), function (req, res) {
+app.get('/get/envData', function (req, res) {
   res.status(200)
   res.send({ appId: appId, ekstep_env: ekstepEnv })
   res.end()

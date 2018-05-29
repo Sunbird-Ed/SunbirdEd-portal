@@ -14,10 +14,16 @@
   <% if (sessionId) { %>
     <input type="hidden" id="sessionId" value="<%=sessionId%>" />
   <% } %>
+  <% if (appId) { %>
+  <input type="hidden" id="appId" value="<%=appId%>" />
+  <% } %>
+  <% if (ekstepEnv) { %>
+  <input type="hidden" id="ekstepEnv" value="<%=ekstepEnv%>" />
+  <% } %>
   <% if (defaultTenant) { %>
     <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
   <% } %>
-        <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+  <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <input type="hidden" id="theme" value="<%=theme%>" />
   <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
   <input type="hidden" id="instance" value="<%=instance%>" />

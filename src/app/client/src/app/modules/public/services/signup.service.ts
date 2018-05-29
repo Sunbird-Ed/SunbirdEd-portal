@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
+import * as  _ from 'lodash';
 
 @Injectable()
 export class SignupService {
@@ -10,6 +11,9 @@ export class SignupService {
    * This method is used to format the request
    */
   private formatRequest(request) {
+    if (_.get(request, 'phone')) {
+      request.phoneVerified = true;
+    }
     return {
       params: {},
       request: request

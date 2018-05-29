@@ -5,6 +5,7 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { mockSignupApiResponse } from './signup.service.spec.data';
+import * as _ from 'lodash';
 
 describe('SignupService', () => {
   beforeEach(() => {
@@ -22,10 +23,12 @@ describe('SignupService', () => {
     expect(apiResponse.responseCode).toBe('OK');
     });
   });
-  it('should call formatRequest method', () => {
+  fit('should call formatRequest method', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'formatRequest').and.returnValue(mockSignupApiResponse.returnValue);
-    signupService.formatRequest(mockSignupApiResponse.returnValue.request);
+    const returnValue = signupService.formatRequest(mockSignupApiResponse.returnValue.request);
     expect(signupService.formatRequest).toHaveBeenCalled();
+    console.log(returnValue.request);
+    expect(returnValue.request.phoneVerified).toBe(true);
   });
 });

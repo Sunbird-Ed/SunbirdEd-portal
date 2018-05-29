@@ -4,7 +4,7 @@ import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext
-} from '../../interfaces/telemetry';
+} from './../../interfaces/telemetry';
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
@@ -59,7 +59,7 @@ export class TelemetryService {
     this.context = _.cloneDeep(context);
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
-    console.log('Telemetry Service is Initialized!');
+    console.log('Telemetry Service is Initialized!', this.context);
   }
 
   /**
