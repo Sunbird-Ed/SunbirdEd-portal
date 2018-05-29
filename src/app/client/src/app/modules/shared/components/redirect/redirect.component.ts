@@ -8,13 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RedirectComponent implements OnInit {
 
   ngOnInit() {
-     setTimeout(() => {
+    setTimeout(() => {
       window.open(window.redirectUrl, '_self');
     }, 500);
 
   }
 
-  goBack () {
+  goBack() {
     window.close();
   }
 
