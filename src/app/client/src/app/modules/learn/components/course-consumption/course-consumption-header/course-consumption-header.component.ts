@@ -25,7 +25,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
   batchId: any;
-  permission = ['COURSE_MENTOR'];
+  dashboardPermission = ['COURSE_MENTOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
@@ -51,9 +51,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
         this.enrolledCourse = true;
       }
     });
-  }
-  ngOnchanges() {
-
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {

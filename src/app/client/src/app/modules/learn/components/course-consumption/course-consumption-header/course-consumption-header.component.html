@@ -37,7 +37,7 @@
                             <i class="caret right icon"></i>
                         </button>
                     </div>
-                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="permission">
+                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
                         <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
                     </div>
                 </div>

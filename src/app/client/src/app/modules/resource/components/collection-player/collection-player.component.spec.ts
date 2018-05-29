@@ -69,8 +69,10 @@ describe('CollectionPlayerComponent', () => {
     });
   });
 
-  xit('should get content based on route/query params', () => {
+  it('should get content based on route/query params', () => {
     const playerService: PlayerService = TestBed.get(PlayerService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     spyOn(playerService, 'getCollectionHierarchy').and
       .returnValue(Observable.of(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
