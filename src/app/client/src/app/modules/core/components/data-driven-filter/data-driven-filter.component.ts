@@ -128,7 +128,7 @@ export class DataDrivenFilterComponent implements OnInit {
 * fetchFilterMetaData is gives form config data
 */
   fetchFilterMetaData() {
-    this.isCachedDataExists = false;
+    this.isCachedDataExists = this._cacheService.exists(this.filterEnv + this.formAction);
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
