@@ -179,8 +179,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       this.showLoader = true;
       const formData = new FormData();
       formData.append('user', file[0]);
-      formData.append('provider', data.provider);
-      formData.append('externalId', data.externalId);
+      formData.append('orgProvider', data.provider);
+      formData.append('orgExternalId', data.externalId);
       formData.append('organisationId', data.organisationId);
       const fd = formData;
       this.fileName = file[0].name;
