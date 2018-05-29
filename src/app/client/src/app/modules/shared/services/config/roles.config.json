@@ -1,6 +1,6 @@
 {
     "headerDropdownRoles":{
-        "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER"],
+        "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER", "BOOK_CREATOR"],
         "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
         "announcementRole" : ["ANNOUNCEMENT_SENDER"],
         "myActivityRole" : ["CONTENT_CREATOR"],
