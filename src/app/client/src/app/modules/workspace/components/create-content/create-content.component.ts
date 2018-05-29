@@ -1,9 +1,10 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService , ConfigService} from '@sunbird/shared';
+import { ResourceService, ConfigService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { FrameworkService, PermissionService } from '@sunbird/core';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html',
@@ -11,9 +12,9 @@ import { FrameworkService, PermissionService } from '@sunbird/core';
 })
 export class CreateContentComponent implements OnInit {
 
-   /*
-  roles allowed to create textBookRole
-  */
+  /*
+ roles allowed to create textBookRole
+ */
   textBookRole: Array<string>;
   /**
    * courseRole  access roles
@@ -48,10 +49,18 @@ export class CreateContentComponent implements OnInit {
    * reference of permissionService service.
   */
   public permissionService: PermissionService;
-   /**
-   * reference of config service.
-  */
+  /**
+  * reference of config service.
+ */
   public configService: ConfigService;
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
   /**
   * Constructor to create injected service(s) object
   *
@@ -60,7 +69,7 @@ export class CreateContentComponent implements OnInit {
   * @param {ResourceService} resourceService Reference of ResourceService
  */
   constructor(configService: ConfigService, resourceService: ResourceService,
-   frameworkService: FrameworkService , permissionService: PermissionService) {
+    frameworkService: FrameworkService, permissionService: PermissionService, private activatedRoute: ActivatedRoute,) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -75,5 +84,21 @@ export class CreateContentComponent implements OnInit {
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
     this.lessonplanRole = this.configService.rolesConfig.workSpaceRole.lessonplanRole;
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri,
+        visits: this.inviewLogs
+      }
+    };
   }
 }
