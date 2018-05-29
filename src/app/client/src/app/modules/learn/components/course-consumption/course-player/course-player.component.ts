@@ -3,10 +3,13 @@ import { PlayerService, CollectionHierarchyAPI, ContentService, UserService } fr
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
+import {
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
-import {CourseConsumptionService } from './../../../services';
+import { CourseConsumptionService } from './../../../services';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -50,14 +53,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   readMore = false;
 
-  contentIds  = [];
+  contentIds = [];
   contentStatus: any;
   contentDetails = [];
 
   treeModel: any;
   nextPlaylistItem: any;
   prevPlaylistItem: any;
-  noContentToPlay =  'No content to play';
+  noContentToPlay = 'No content to play';
+
+
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -113,14 +119,29 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
       }, (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-    });
+      });
+
   }
+
+
 
   public playContent(data: any): void {
     this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
+      if (this.playerConfig.metadata.mimeType === 'text/x-url') {
+       const extUrlContent = '#&courseId=' + this.courseId + '#&batchId=' + this.batchId  + '#&contentId='
+       + this.contentId + '#&uid=' + this.userService.userid;
+
+        this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+        setTimeout(() => {
+          const newWindow = window.open('/learn/redirect', '_blank');
+          newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
+          + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
+          this.windowScrollService.smoothScroll('app-player-collection-renderer');
+        }, 3000);
+      }
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
@@ -183,12 +204,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         } else {
           mimeTypeCount[node.model.mimeType] = 1;
         }
-        this.contentDetails.push({id: node.model.identifier, title: node.model.name});
+        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
         this.contentIds.push(node.model.identifier);
       }
     });
     _.forEach(mimeTypeCount, (value, key) => {
-      this.curriculum.push({mimeType: key, count: value});
+      this.curriculum.push({ mimeType: key, count: value });
     });
   }
   fetchContentStatus(data) {
@@ -199,11 +220,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
-    (res) => {
-      this.contentStatus = res.content;
-      this.resumeContent(res);
-    }, (err) => {
-    });
+      (res) => {
+        this.contentStatus = res.content;
+        this.resumeContent(res);
+      }, (err) => {
+      });
   }
   resumeContent(res) {
     const navigationExtras: NavigationExtras = {
@@ -219,17 +240,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentId: this.contentId,
       courseId: this.courseId,
       batchId: this.batchId,
-      status : eid === 'END' ? 2 : 1
+      status: eid === 'END' ? 2 : 1
     };
     this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
       this.contentStatus = updatedRes.content;
     });
   }
-  private getCourseHierarchy(collectionId: string): Observable<{data: CollectionHierarchyAPI.Content }> {
+  private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     return this.courseConsumptionService.getCourseHierarchy(collectionId)
       .map((response) => {
         this.courseHierarchy = response;
-        return { data: response};
+        return { data: response };
       });
   }
   closeContentPlayer() {

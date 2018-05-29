@@ -86,4 +86,8 @@ module.exports = function (app) {
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
+
+  app.use('/url/v1/fetchmeta', proxy(contentProxyUrl, {
+    proxyReqPathResolver: proxyReqPathResolverMethod
+  }))
 }
