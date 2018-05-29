@@ -90,7 +90,9 @@
      "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
   },
   "TELEMETRY": {
-    "MAX_BATCH_SIZE": 10
+    "MAX_BATCH_SIZE": 10,
+    "VERSION":1.7,
+    "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
     {

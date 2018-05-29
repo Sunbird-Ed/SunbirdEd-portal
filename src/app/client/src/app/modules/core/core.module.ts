@@ -7,8 +7,8 @@ import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
+  BadgesService, ContentService, CoursesService, PageApiService,
+  TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
@@ -35,8 +35,8 @@ import { WebExtensionModule } from 'sunbird-web-extension';
   providers: [
     LearnerService, UserService, TenantService, SearchService, CopyContentService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
-    { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, BreadcrumbsService, PlayerService]
+    AuthGuard, FrameworkService, FormService, CacheService,
+    ConceptPickerService, BreadcrumbsService, PlayerService]
 })
 export class CoreModule {
 }
