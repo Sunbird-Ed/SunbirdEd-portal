@@ -133,6 +133,12 @@
         "overlay": {
           "showUser": false
         },
+        "splash": {
+          "text": "",
+          "icon": "",
+          "bgImage": "assets/icons/splacebackground_1.png",
+          "webLink": ""
+        },
         "apislug": "/action",
         "repos": [
           "/content-plugins/renderer"
