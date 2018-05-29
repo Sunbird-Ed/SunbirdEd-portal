@@ -19,9 +19,9 @@ export class HomeFilterComponent implements OnInit {
   * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
-   /**
-  * To call searchService which helps to use list of courses
-  */
+  /**
+ * To call searchService which helps to use list of courses
+ */
   private searchService: SearchService;
   /**
    * To navigate to other pages
@@ -35,6 +35,7 @@ export class HomeFilterComponent implements OnInit {
   refresh = true;
   queryParams: IHomeQueryParams;
   showFilter = false;
+  isAccordianOpen = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -77,7 +78,7 @@ export class HomeFilterComponent implements OnInit {
    * apply selected values.
    */
   applyFilters() {
-   const queryParams = {};
+    const queryParams = {};
     _.forIn(this.queryParams, (value, key) => {
       if (value.length > 0) {
         if (key === 'Concepts') {
@@ -96,15 +97,19 @@ export class HomeFilterComponent implements OnInit {
    * reset selected values.
    */
   resetFilters() {
-    this.queryParams = {};
-    this.router.navigate(['/search/All', 1]);
+    if (this.queryParams['key']) {
+      this.queryParams = _.pick(this.queryParams, 'key');
+    } else {
+      this.queryParams = {};
+    }
+    this.router.navigate(['/search/All', 1], { queryParams: this.queryParams });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
   }
-   /**
-   * seting initial filter values.
-   */
+  /**
+  * seting initial filter values.
+  */
   setFilters() {
     this.searchBoards = this.config.dropDownConfig.FILTER.RESOURCES.boards;
     this.searchLanguages = this.config.dropDownConfig.FILTER.RESOURCES.languages;
@@ -113,22 +118,27 @@ export class HomeFilterComponent implements OnInit {
       this.queryParams.Concepts = this.conceptPickerService.processConcepts(this.queryParams.Concepts, this.selectedConcepts);
     }
     this.showFilter = true;
+    const queryParamData = { ... this.queryParams };
+    delete queryParamData['key'];
+    if (!_.isEmpty(queryParamData)) {
+      this.isAccordianOpen = true;
+    }
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.All.DROPDOWN, ...this.queryParams };
   }
   ngOnInit() {
-      this.conceptPickerService.conceptData$.subscribe(conceptData => {
-        if (conceptData && !conceptData.err) {
-          this.selectedConcepts = conceptData.data;
-          this.activatedRoute.queryParams.subscribe((params) => {
-            this.queryParams = { ...params };
-            _.forIn(params, (value, key) => {
-              if (typeof value === 'string') {
-                this.queryParams[key] = [value];
-              }
-            });
+    this.conceptPickerService.conceptData$.subscribe(conceptData => {
+      if (conceptData && !conceptData.err) {
+        this.selectedConcepts = conceptData.data;
+        this.activatedRoute.queryParams.subscribe((params) => {
+          this.queryParams = { ...params };
+          _.forIn(params, (value, key) => {
+            if (typeof value === 'string' && key !== 'key') {
+              this.queryParams[key] = [value];
+            }
+          });
           this.setFilters();
         });
-        }
+      }
     });
   }
 }
