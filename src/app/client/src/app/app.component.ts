@@ -118,7 +118,7 @@ export class AppComponent implements OnInit {
           config: {
             // TODO: get pdata from document object
             pdata: {
-              id: (<HTMLInputElement>document.getElementById('appId')).value,
+              id: this.userService.appId,
               ver: this.config.appConfig.TELEMETRY.VERSION,
               pid: this.config.appConfig.TELEMETRY.PID
             },
