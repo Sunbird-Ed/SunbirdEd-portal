@@ -132,8 +132,12 @@ export class UserUploadComponent implements OnInit, OnDestroy {
           { instructions: this.resourceService.frmelmnts.instn.t0045 },
           { instructions: this.resourceService.frmelmnts.instn.t0046 },
           { instructions: this.resourceService.frmelmnts.instn.t0047 },
-          { instructions: this.resourceService.frmelmnts.instn.t0048 }]
-      }];
+          { instructions: this.resourceService.frmelmnts.instn.t0048 },
+          { instructions: this.resourceService.frmelmnts.instn.t0066 },
+          { instructions: this.resourceService.frmelmnts.instn.t0067 }
+        ]
+      },
+      { instructions: this.resourceService.frmelmnts.instn.t0065 }];
     this.showLoader = false;
   }
   /**
