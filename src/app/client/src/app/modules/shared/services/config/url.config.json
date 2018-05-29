@@ -124,7 +124,7 @@
     "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
     "LOCATION_READ": "org/v1/location/read",
     "TELEMETRY": {
-      "APISLUG": "service/v1/content/",
+       "APISLUG": "service/v1/content/",
       "SYNC": "data/v1/telemetry"
     }
   }

@@ -208,7 +208,6 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
-        this.filters = {};
         if (_.isEmpty(this.queryParams)) {
           this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']

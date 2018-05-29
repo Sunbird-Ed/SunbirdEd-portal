@@ -128,7 +128,7 @@ export class DetailsPopupComponent implements OnInit {
       this.announcementId = params.announcementId;
     });
     this.getDetails(this.announcementId);
-      this.telemetryImpression = {
+    this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
@@ -140,7 +140,7 @@ export class DetailsPopupComponent implements OnInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/announcement/outbox/',
+        uri: '/announcement/outbox/' + this.announcementId,
       }
     };
   }

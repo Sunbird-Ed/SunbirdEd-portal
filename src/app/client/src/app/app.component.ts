@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
   public telemetryService: TelemetryService;
   /**
     * To get url, app configs
-   */
+  */
   public config: ConfigService;
   /**
    * constructor
@@ -118,7 +118,11 @@ export class AppComponent implements OnInit {
           userOrgDetails: userOrg,
           config: {
             // TODO: get pdata from document object
-            pdata: { id: '', ver: '', pid: '' },
+            pdata: {
+              id: this.userService.appId,
+              ver: this.config.appConfig.TELEMETRY.VERSION,
+              pid: this.config.appConfig.TELEMETRY.PID
+            },
             endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
             apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
             host: '',
