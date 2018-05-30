@@ -13,7 +13,7 @@ export class BrowserCompatibilityComponent implements OnInit {
   deviceInfo: any;
   hideFooter = true;
 
-  constructor(private _deviceService: DeviceDetectorService) { }
+  constructor(private _deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
     this.showCompatibilityModal();
@@ -29,7 +29,7 @@ export class BrowserCompatibilityComponent implements OnInit {
   }
 
   showCompatibilityModal() {
-    this.deviceInfo = this._deviceService.getDeviceInfo();
+    this.deviceInfo = this._deviceDetectorService.getDeviceInfo();
     if ( this.deviceInfo.browser !== 'chrome') {
       this.showBrowserMsg = true;
       if ((localStorage.getItem('BrowserIncompatibleModel') !== 'shown')) {
