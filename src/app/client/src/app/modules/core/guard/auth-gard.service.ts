@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { PermissionService } from './../services';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 /**
  * Service for Route Guards to restrict the access of route
- * based on roles and permission of logedin user.
+ * based on roles and permission of logged in user.
 */
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
@@ -24,12 +24,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
     /**
     * constructor
-    * @param {permissionService} permissionService Refrence of permission service to check permission
-    * @param {resourceService} resourceService Refrence of resourceService service
+    * @param {permissionService} permissionService Reference of permission service to check permission
+    * @param {resourceService} resourceService Reference of resourceService service
     * @param {Router} route  Reference of Router
     */
     constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, private toasterService: ToasterService) {
         this.permissionService = permissionService;
         this.resourceService = resourceService;
         this.config = config;
@@ -53,15 +53,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                             if (this.permissionService.checkRolesPermissions(this.config.rolesConfig.ROLES[roles])) {
                                 observer.next(true);
                             } else {
+                                this.toasterService.warning(this.resourceService.messages.imsg.m0035);
                                 this.router.navigate(['home']);
                                 observer.next(false);
                             }
                         } else {
+                            this.toasterService.warning(this.resourceService.messages.imsg.m0035);
                             this.router.navigate(['home']);
                             observer.next(false);
                         }
                         observer.complete();
                     } else if (permissionAvailable && permissionAvailable === 'error') {
+                        this.toasterService.warning(this.resourceService.messages.imsg.m0035);
                         this.router.navigate(['home']);
                         observer.next(false);
                         observer.complete();

@@ -108,7 +108,7 @@ export class CourseProgressService {
     });
     const progress = ((this.courseProgress[courseId_batchId].completedCount /
       this.courseProgress[courseId_batchId].totalCount) * 100);
-    this.courseProgress[courseId_batchId].progress = progress;
+    this.courseProgress[courseId_batchId].progress = progress > 100 ? 100 : progress;
     _.forEach(res, (e) => {
       this.lastAccessTimeOfContentId.push(e.lastAccessTime);
     });
@@ -184,16 +184,17 @@ export class CourseProgressService {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
     if (courseProgress !== undefined && req.contentId !== undefined && req.status !== undefined) {
-      const i = _.findIndex(courseProgress.content, { contentId: req.contentId, courseId: req.courseId });
-      if (req.status >= courseProgress.content[i].status && courseProgress.content[i].status !== 2) {
-        courseProgress.content[i].status = req.status;
+      const index = _.findIndex(courseProgress.content, { contentId: req.contentId, courseId: req.courseId });
+      if ( index !== -1 && req.status >= courseProgress.content[index].status && courseProgress.content[index].status !== 2) {
+        courseProgress.content[index].status = req.status;
         this.prepareContentObject(courseProgress.content, courseId_batchId);
-        return this.updateContentStateInServer(courseProgress.content[i]).map(
+        return this.updateContentStateInServer(courseProgress.content[index]).map(
           (res: ServerResponse) => {
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             return this.courseProgress[courseId_batchId];
           });
       } else {
+        console.log('contentId/courseId not matched', req, this.courseProgress[courseId_batchId]);
         return Observable.of(this.courseProgress[courseId_batchId]);
       }
     } else {

@@ -28,6 +28,7 @@ export class UserFilterComponent implements OnInit {
   searchRoles: Array<string>;
   label: any;
   refresh = true;
+  isAccordianOpen = false;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -74,10 +75,18 @@ export class UserFilterComponent implements OnInit {
 
   setFilters() {
     _.forIn(this.queryParams, (value, key) => {
-      if (typeof value === 'string') {
+      if (typeof value === 'string' && key !== 'Location' && key !== 'key') {
         this.queryParams[key] = [value];
       }
     });
+
+    // To keep filter accordian open
+    const queryParamData = { ... this.queryParams };
+    delete queryParamData['key'];
+    if (!_.isEmpty(queryParamData)) {
+      this.isAccordianOpen = true;
+    }
+
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Users.DROPDOWN, ...this.queryParams };
     this.searchGrades = this.config.dropDownConfig.COMMON.grades;
     this.searchMediums = this.config.dropDownConfig.COMMON.medium;
@@ -87,14 +96,8 @@ export class UserFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setFilters();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
-      _.forIn(this.queryParams, (value, key) => {
-        if (typeof value === 'string') {
-          this.queryParams[key] = [value];
-        }
-      });
       this.setFilters();
     });
   }

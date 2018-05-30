@@ -47,7 +47,11 @@ describe('UserUploadComponent', () => {
         Kannada, Malayalam, Oriya, Punjabi, Tamil, Telugu, Biology, Chemistry, Physics,
          Mathematics, Environmental Studies, Geography, History, Political Science, Economics, Sanskrit, Gujarati, Marathi, Nepali`,
         't0048': `Columns titled emailVerified, phoneVerified and provider are conditionally mandatory.
-        Value for emailVerified and phoneVerified should be True, if details are provided for provider`
+        Value for emailVerified and phoneVerified should be True, if details are provided for provider`,
+        't0065': 'If user is not passing organisationId but passing OrgProvider, then user should pass OrgExternalId',
+        't0066': 'ExternalId: Identity of user in an external system. If user is passing externalId then they have to pass Provider.',
+        't0067': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
+        If user is passing ExternalId then they have to pass Provider.`
       }
     }
   };
@@ -122,5 +126,10 @@ describe('UserUploadComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(mockRes.errorResponse));
     component.uploadUsersCSV(mockRes.errorfile);
+  });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
   });
 });

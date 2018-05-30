@@ -20,7 +20,7 @@
                 </h5>
               </div>
               <div *ngIf="showCreateEditor === true" class="padding-top-20">
-                <app-inline-editor [ids]="{contentId:contentId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
+                <app-inline-editor [ids]="{contentId:contentId, courseId:courseId}" [mode]="'create'" (updateEventEmitter)="updateEventEmitter($event)" (createEventEmitter)="createEventEmitter($event)"></app-inline-editor>
               </div>
 
             </div>
@@ -38,10 +38,8 @@
                     <div class="content padding-all-10 contentnotelist" [ngClass]="{'notelistborder': i === selectedIndex}" (click)="selectedIndex = i; setSelectedNote(note,i)">
                       <a class="header">{{ note.title | slice:0:15}}</a>
                       <i *ngIf="note.title.length > 15" class="ellipsis horizontal icon popup-button"></i>
-                      <div class="description margin-top-0">
-
-                        <span Markdown content="noteData">{{ note.note | slice:0:15 }}</span>
-                        <i *ngIf="note.note.length > 15" class="ellipsis horizontal icon popup-button"></i>
+                      <div class="description margin-top-0 notedec">
+                        <span Markdown content="noteData">{{ note.note | slice:0:30 }}</span>
                       </div>
                       <div class="meta ">
                         <span class="note-card-time-stamp">{{ note.updatedDate | timeAgo }}</span>
@@ -94,3 +92,4 @@
   </div>
   <div class="one wide column"></div>
 </div>
+<router-outlet></router-outlet>

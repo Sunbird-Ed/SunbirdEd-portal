@@ -3,8 +3,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, CoursesService, PermissionService, TenantService,
-  TelemetryService, TELEMETRY_PROVIDER, ConceptPickerService, SearchService, ContentService
+  ConceptPickerService, SearchService, ContentService
 } from '@sunbird/core';
+import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +19,8 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule,
+      RouterTestingModule],
       declarations: [
         AppComponent
       ],

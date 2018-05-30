@@ -1,9 +1,11 @@
-import { ResourceService, IUserData, IUserProfile, NavigationHelperService } from '@sunbird/shared';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TelemetryService, IUserOrgDetails,
+  UserService, PermissionService, CoursesService, IUserOrgDetails,
   ITelemetryContext, TenantService, ConceptPickerService
 } from '@sunbird/core';
+
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -49,12 +51,17 @@ export class AppComponent implements OnInit {
    */
   public telemetryService: TelemetryService;
   /**
+    * To get url, app configs
+  */
+  public config: ConfigService;
+  /**
    * constructor
    */
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService) {
+    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService,
+    config: ConfigService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -62,6 +69,7 @@ export class AppComponent implements OnInit {
     this.conceptPickerService = conceptPickerService;
     this.tenantService = tenantService;
     this.telemetryService = telemetryService;
+    this.config = config;
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -109,15 +117,19 @@ export class AppComponent implements OnInit {
         const config: ITelemetryContext = {
           userOrgDetails: userOrg,
           config: {
-            // TODO: get pdata from document object
-            pdata: { id: '', ver: '', pid: '' },
-            endpoint: window.location.origin,
-            apislug: '/data/v1/telemetry',
+            pdata: {
+              id: this.userService.appId,
+              ver: this.config.appConfig.TELEMETRY.VERSION,
+              pid: this.config.appConfig.TELEMETRY.PID
+            },
+            endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+            apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+            host: '',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId'),
-            env: 'home' // default value
-          }
+            channel: _.get(userOrg, 'rootOrg.hashTagId') ,
+            env: 'home'
+           }
         };
         resolve(config);
       }).catch((error) => {

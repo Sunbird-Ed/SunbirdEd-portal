@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -7,21 +7,21 @@ import { UserService } from '@sunbird/core';
 import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import * as _ from 'lodash';
-
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
   styleUrls: ['./create-batch.component.css']
 })
-export class CreateBatchComponent implements OnInit, OnDestroy {
+export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('createBatchModel') createBatchModel;
   /**
   * batchId
   */
+  userSearchTime: any;
   batchId: string;
   showCreateModal = false;
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   courseId: string;
   orgIds: Array<string>;
   /**
@@ -109,14 +109,102 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.orgIds = userdata.userProfile.organisationIds;
+        this.getUserList();
         this.initializeFormFields();
       }
     });
-    this.getUserList();
     this.activatedRoute.parent.params.subscribe(params => {
       this.courseId = params.courseId;
       this.getCourseData();
     });
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      $('#users').dropdown({
+        forceSelection: false,
+        fullTextSearch: true,
+        onAdd: () =>  {
+        }
+      });
+      $('#mentors').dropdown({
+        fullTextSearch: true,
+        forceSelection: false,
+        onAdd: () =>  {
+        }
+      });
+      $('#users input.search').on('keyup', (e) =>  {
+        this.getUserListWithQuery($('#users input.search').val(), 'userList');
+      });
+      $('#mentors input.search').on('keyup', (e) => {
+        this.getUserListWithQuery($('#mentors input.search').val(), 'mentorList');
+      });
+    }, 1000);
+  }
+  getUserListWithQuery(query, type) {
+    this.disableSubmitBtn = false;
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
+  }
+  /**
+  *  api call to get user list
+  */
+  getUserList(query: string = '', type?) {
+    const requestBody = {
+      filters: {},
+      query: query
+    };
+    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
+      const list = this.formatUserList(res);
+      if (type) {
+        if (type === 'userList') {
+          this.userList = list.userList;
+        } else {
+          this.mentorList = list.mentorList;
+        }
+        this[type] = list[type];
+      } else {
+        this.userList = list.userList;
+        this.mentorList = list.mentorList;
+      }
+
+    },
+    (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
+    });
+  }
+  formatUserList(res) {
+    const userList = [];
+    const mentorList = [];
+    if (res.result.response.content && res.result.response.content.length > 0) {
+      _.forEach(res.result.response.content, (userData) => {
+        if (userData.identifier !== this.userService.userid) {
+          const user = {
+            id: userData.identifier,
+            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+            avatar: userData.avatar,
+            otherDetail: this.getUserOtherDetail(userData)
+          };
+          _.forEach(userData.organisations, (userOrgData) => {
+            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+              mentorList.push(user);
+            }
+          });
+          userList.push(user);
+        }
+      });
+    }
+    return {
+      userList: _.uniqBy(userList, 'id'),
+      mentorList: _.uniqBy(mentorList, 'id')
+    };
   }
   ngOnDestroy() {
     if (this.createBatchModel && this.createBatchModel.deny) {
@@ -138,6 +226,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
 
   createBatch() {
     this.disableSubmitBtn = false;
+    const users = $('#users').dropdown('get value').split(',');
+    const mentors = $('#mentors').dropdown('get value').split(',');
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchUserForm.value.name,
@@ -147,11 +237,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       'endDate': this.createBatchUserForm.value.endDate,
       'createdBy': this.userId,
       'createdFor': this.orgIds,
-      'mentors': this.createBatchUserForm.value.mentors
+      'mentors': _.compact(mentors)
     };
     this.courseBatchService.createBatch(requestBody).subscribe((response) => {
-      if (this.createBatchUserForm.value.users && this.createBatchUserForm.value.users.length > 0) {
-        this.addUserToBatch(response.result.batchId);
+      if (users && users.length > 0) {
+        this.addUserToBatch(response.result.batchId, users);
       } else {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
@@ -166,9 +256,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       }
     });
   }
-  addUserToBatch(batchId) {
+  addUserToBatch(batchId, users) {
     const userRequest = {
-      userIds: this.createBatchUserForm.value.users
+      userIds: _.compact(users)
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
@@ -204,8 +294,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       enrollmentType: new FormControl('invite-only', [Validators.required]),
       startDate: new FormControl(new Date(), [Validators.required]),
       endDate: new FormControl(new Date()),
-      mentors: new FormControl(''),
-      users: new FormControl(''),
+      mentors: new FormControl(),
+      users: new FormControl(),
     });
     this.showCreateModal = true;
     this.createBatchUserForm.valueChanges.subscribe(val => {
@@ -219,46 +309,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       this.disableSubmitBtn = false;
     } else {
       this.disableSubmitBtn = true;
-    }
-  }
-  /**
-  *  api call to get user list
-  */
-  getUserList() {
-    const requestBody = {
-      filters: {}
-    };
-    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
-      this.formatUserList(res);
-    },
-    (err) => {
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      }
-    });
-  }
-  formatUserList(res) {
-    if (res.result.response.content && res.result.response.content.length > 0) {
-      _.forEach(res.result.response.content, (userData) => {
-        if (userData.identifier !== this.userService.userid) {
-          const user = {
-            id: userData.identifier,
-            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
-            avatar: userData.avatar,
-            otherDetail: this.getUserOtherDetail(userData)
-          };
-          _.forEach(userData.organisations, (userOrgData) => {
-            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-              this.mentorList.push(user);
-            }
-          });
-          this.userList.push(user);
-        }
-      });
-      this.userList = _.uniqBy(this.userList, 'id');
-      this.mentorList = _.uniqBy(this.mentorList, 'id');
     }
   }
   getUserOtherDetail(userData) {

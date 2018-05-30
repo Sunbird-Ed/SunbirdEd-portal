@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -16,7 +16,14 @@ import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
   styleUrls: ['./outbox.component.css']
 })
 export class OutboxComponent implements OnInit {
-
+  /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 	 * Contains result object returned from get outbox API
 	 */
@@ -87,6 +94,10 @@ export class OutboxComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
+  /**
+   * telemetryInteract event
+   */
+  telemetryInteract: IInteractEventInput;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -107,7 +118,7 @@ export class OutboxComponent implements OnInit {
     resourceService: ResourceService,
     paginationService: PaginationService,
     toasterService: ToasterService,
-    config: ConfigService) {
+    config: ConfigService, private cdr: ChangeDetectorRef) {
     this.announcementService = announcementService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -165,7 +176,26 @@ export class OutboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
-
+  /**
+   * get inview  Data
+  */
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'announcement',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
   /**
    * This method calls the populateOutboxData to show outbox list.
    * It also changes the status of a deleted announcement to cancelled.
@@ -184,5 +214,21 @@ export class OutboxComponent implements OnInit {
         }
       });
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.announcementId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/announcement/outbox/' + this.pageNumber,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
 }

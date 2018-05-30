@@ -1,0 +1,13 @@
+<div *ngIf="!loader === true" suiDropdown class="ui top left pointing dropdown icon button profile-page-permission-btn">
+        <i  *ngIf="visibility === 'public'" class="unlock alternate icon"></i>
+        <i  *ngIf="visibility === 'private'" class="lock icon"></i>
+        <div class="menu" suiDropdownMenu>
+            <div [ngClass]="{'active selected':(visibility == option.value)}" 
+            *ngFor="let option of options" class="item" 
+            (click)="setProfileFieldLabel(option.value)">
+                {{option.text}}
+            </div>
+        </div>
+</div>
+<div *ngIf="loader === true" class="ui active inline tiny loader"></div>
+    

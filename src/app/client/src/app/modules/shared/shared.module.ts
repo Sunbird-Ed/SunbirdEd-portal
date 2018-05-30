@@ -5,7 +5,7 @@ import {
   ContentCardComponent, AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
-  RedirectComponent
+  RedirectComponent, BrowserCompatibilityComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
@@ -16,6 +16,8 @@ import { NgModule } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @NgModule({
   imports: [
@@ -27,11 +29,13 @@ import { CacheService } from 'ng2-cache-service';
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
-    ShareLinkComponent, CollectionPlayerMetadataComponent, RedirectComponent],
+    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, RedirectComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
-    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, RedirectComponent],
+    PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent,
+     BrowserCompatibilityComponent, RedirectComponent ],
   providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-    RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService]
+    RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
+     DeviceDetectorModule, DeviceDetectorService]
 })
 export class SharedModule { }

@@ -15,12 +15,11 @@
                             </span>
                             <span class="note-card-time-stamp right floated">{{note.updatedDate | timeAgo}}</span>
                         </span>
-                        <div class="description margin-top-0">
+                        <div class="description margin-top-0 notedec">
                             <span Markdown content="noteData">{{ note.note | slice:0:15 }}</span>
-                            <i *ngIf="note.note.length > 15" class="ellipsis horizontal icon popup-button"></i>
                         </div>
                     </div>
-                    <div *ngIf="i === 0" class="ui clearing divider"></div>
+                    <div *ngIf="notesList.length>1 && i===0" class="ui clearing divider"></div>
                 </div>
             </div>
         </div>

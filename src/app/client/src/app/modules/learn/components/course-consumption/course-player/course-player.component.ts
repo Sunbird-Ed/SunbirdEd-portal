@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
@@ -8,8 +8,8 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
-import { CourseConsumptionService } from './../../../services';
-
+import {CourseConsumptionService } from './../../../services';
+import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -21,12 +21,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private courseId: string;
 
-  private batchId: string;
+  public batchId: string;
 
-  private enrolledCourse = false;
+  public enrolledCourse = false;
 
-  private contentId: string;
-
+  public contentId: string;
+  public courseStatus: string;
   private contentService: ContentService;
 
   public collectionTreeNodes: any;
@@ -53,7 +53,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   readMore = false;
 
-  contentIds = [];
+  createNoteData: INoteData;
+
+  /**
+   * To show/hide the note popup editor
+   */
+  showNoteEditor = false;
+
+  contentIds  = [];
   contentStatus: any;
   contentDetails = [];
 
@@ -61,9 +68,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   nextPlaylistItem: any;
   prevPlaylistItem: any;
   noContentToPlay = 'No content to play';
-
-
-
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -90,7 +94,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
-    private toasterService: ToasterService, private resourceService: ResourceService) {
+    private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -102,25 +106,27 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .flatMap((params) => {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
-        return this.getCourseHierarchy(params.courseId);
-      })
-      .do((response) => {
+        this.courseStatus = params.courseStatus;
+        return this.courseConsumptionService.getCourseHierarchy(params.courseId);
+      }).subscribe((response) => {
+        this.courseHierarchy = response;
         if (this.batchId) {
           this.enrolledCourse = true;
-          this.parseChildContent(response.data);
-          this.fetchContentStatus(response.data);
-          this.subscribeToQueryParam(response.data);
+          this.parseChildContent(response);
+          this.fetchContentStatus(response);
+          this.subscribeToQueryParam(response);
+        } else if (this.courseStatus === 'Unlisted') {
+          this.parseChildContent(response);
+          this.subscribeToQueryParam(response);
         } else {
-          this.parseChildContent(response.data);
+          this.parseChildContent(response);
         }
-      })
-      .subscribe((data) => {
-        this.collectionTreeNodes = data;
+        this.collectionTreeNodes = { data: response };
         this.loader = false;
       }, (error) => {
+        this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-
   }
 
 
@@ -142,6 +148,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.windowScrollService.smoothScroll('app-player-collection-renderer');
         }, 3000);
       }
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
       setTimeout(() => {
         this.windowScrollService.smoothScroll('app-player-collection-renderer');
       }, 10);
@@ -155,7 +162,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    this.router.navigate([], navigationExtras);
+    if (this.batchId || this.courseStatus === 'Unlisted') {
+      this.router.navigate([], navigationExtras);
+    }
   }
 
   private findContentById(id: string) {
@@ -165,7 +174,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id && this.enrolledCourse) {
+    if (content && content.id && (this.enrolledCourse || this.courseStatus === 'Unlisted')) {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
@@ -220,39 +229,27 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentStatus(req).subscribe(
-      (res) => {
-        this.contentStatus = res.content;
-        this.resumeContent(res);
-      }, (err) => {
-      });
-  }
-  resumeContent(res) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': res.lastPlayedContentId },
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate([], navigationExtras);
-  }
-  public contentProgressEventnew(event) {
-    const eid = event.detail.telemetryData.eid;
-    const request: any = {
-      userId: this.userService.userid,
-      contentId: this.contentId,
-      courseId: this.courseId,
-      batchId: this.batchId,
-      status: eid === 'END' ? 2 : 1
-    };
-    this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
-      this.contentStatus = updatedRes.content;
+    (res) => {
+      this.contentStatus = res.content;
+    }, (err) => {
     });
   }
-  private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.courseConsumptionService.getCourseHierarchy(collectionId)
-      .map((response) => {
-        this.courseHierarchy = response;
-        return { data: response };
+  public contentProgressEventnew(event) {
+    if (this.batchId) {
+      const eid = event.detail.telemetryData.eid;
+      const request: any = {
+        userId: this.userService.userid,
+        contentId: this.contentId,
+        courseId: this.courseId,
+        batchId: this.batchId,
+        status : eid === 'END' ? 2 : 1
+      };
+      this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+        this.contentStatus = updatedRes.content;
       });
+    }
   }
+
   closeContentPlayer() {
     if (this.enableContentPlayer === true) {
       const navigationExtras: NavigationExtras = {
@@ -261,6 +258,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.enableContentPlayer = false;
       this.router.navigate([], navigationExtras);
     }
+  }
+
+  createEventEmitter(data) {
+    this.createNoteData = data;
   }
 
   ngOnDestroy() {

@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgForm, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GeoExplorerComponent } from './../geo-explorer/geo-explorer.component';
 import { FileUploaderComponent } from './../file-uploader/file-uploader.component';
@@ -9,7 +10,7 @@ import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-
+import { IEndEventInput, IStartEventInput, IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * This component helps to create and resend announcement
  */
@@ -18,7 +19,7 @@ import * as _ from 'lodash';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
 
   /**
    * Reference of Geo explorer component
@@ -36,7 +37,7 @@ export class CreateComponent implements OnInit {
    * Announcement creation form name
    */
   announcementForm: FormGroup;
-
+  userDataSubscription: Subscription;
   /**
    * Contains reference of FormBuilder
    */
@@ -78,7 +79,19 @@ export class CreateComponent implements OnInit {
    * It contains uploaded file(s) details
    */
   attachments: Array<IAttachementType> = [];
+  /**
+   * telemetryInteract event data
+   */
+  telemetryInteract: IInteractEventInput;
+  /**
+	 * telemetryInteract
+	*/
+  telemetryImpression: IImpressionEventInput;
 
+  // telemetryEnd: any;
+  telemetryStart: IStartEventInput;
+  // public telemetryEnd$: Observable<IEndEventInput>;
+  public telemetryEnd: IEndEventInput;
   /**
    * To show / hide modal
    */
@@ -134,7 +147,7 @@ export class CreateComponent implements OnInit {
    */
   public config: ConfigService;
   /**
-   * Default method of classs CreateComponent
+   * Default method of class CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
@@ -142,7 +155,7 @@ export class CreateComponent implements OnInit {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService) {
+    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -258,8 +271,8 @@ export class CreateComponent implements OnInit {
     const emptyLinkArray = _.filter(data.links, (links) => {
       return links.url === '';
     });
-    if (this.announcementForm.status === 'VALID' && ((data.links.length && emptyLinkArray.length === 0)
-      || data.description || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
+    if (data.title.length && data.from.length && data.type.length && ((data.links.length && emptyLinkArray.length === 0)
+      || data.description.length || this.fileUpload.attachedFiles && this.fileUpload.attachedFiles.length > 0)) {
       return this.formErrorFlag = false;
     } else {
       return this.formErrorFlag = true;
@@ -273,13 +286,13 @@ export class CreateComponent implements OnInit {
     this.announcementDetails.target = this.recipientsList;
     this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
-        (res: ServerResponse) => {
-          this.modalName = 'success';
-        },
-        (err: ServerResponse) => {
-          this.toasterService.error(this.resource.messages.emsg.m0005);
-          this.formErrorFlag = false;
-        }
+      (res: ServerResponse) => {
+        this.modalName = 'success';
+      },
+      (err: ServerResponse) => {
+        this.toasterService.error(this.resource.messages.emsg.m0005);
+        this.formErrorFlag = false;
+      }
       );
   }
 
@@ -289,15 +302,41 @@ export class CreateComponent implements OnInit {
    * Function gets executed when user click close icon of announcement form
    */
   redirectToOutbox(): void {
+    const endEvent = {
+      object: {
+       id: this.identifier ? this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+       type: this.activatedRoute.snapshot.data.telemetry.type,
+       pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
+       mode: 'create',
+       contentId: this.identifier
+      }
+    };
+    this.telemetryEnd = endEvent;
+    this.telemetryEnd = Object.assign({}, this.telemetryEnd);
+    this.cdr.detectChanges();
     this.route.navigate(['announcement/outbox/1']);
   }
-
   /**
    * Function used to detect form input value changes.
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges.subscribe(val => {
+    this.announcementForm.valueChanges
+    .map((value) => {
+        value.title = value.title.trim();
+        value.from = value.from.trim();
+        value.description = value.description.trim();
+        return value;
+    })
+    .filter((value) => this.announcementForm.valid)
+    .subscribe((value) => {
       this.enableSelectRecipientsBtn();
     });
   }
@@ -387,7 +426,7 @@ export class CreateComponent implements OnInit {
    */
   ngOnInit(): void {
     // Initialize form fields
-    this.user.userData$.subscribe(user => {
+    this.userDataSubscription = this.user.userData$.first().subscribe(user => {
       if (user && user.userProfile) {
         this.showAnnouncementForm = false;
         this.initializeFormFields();
@@ -406,9 +445,46 @@ export class CreateComponent implements OnInit {
         this.toasterService.error(this.resource.messages.emsg.m0005);
       }
     });
+    this.telemetryStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+     object: {
+        id: this.identifier ? this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode:  this.activatedRoute.snapshot.data.telemetry.mode
+      }
+    };
 
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+       object: {
+        id: this.identifier ?  this.identifier : '',
+        type: this.activatedRoute.snapshot.data.telemetry.env,
+        section: 'outbox'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.identifier ? this.activatedRoute.snapshot.data.telemetry.uri + this.identifier + '/' + this.stepNumber :
+        this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
+      }
+    };
     this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
@@ -27,12 +27,16 @@ export class UserProfileComponent implements OnInit {
 	 * Contains page number of outbox list
 	 */
   pageNumber = 1;
-  descriptionReadMore = false;
+  descriptionReadMore = true;
   skillViewMore = true;
   skillLimit = 4;
+  defaultLimit = 4;
   loggedInUserId: string;
   disableEndorsementButton = false;
-
+  /**
+   * Booloean value to hide/show awards
+   */
+  badgeViewMore = true;
   /**
 	 * Contains announcement details returned from API or object called from
    * announcement service
@@ -74,6 +78,8 @@ export class UserProfileComponent implements OnInit {
    * To pass dynamic breadcrumb data.
    */
   public breadcrumbsService: BreadcrumbsService;
+  router: Router;
+
   /**
    * To call API
    */
@@ -86,6 +92,14 @@ export class UserProfileComponent implements OnInit {
   * To get user profile of logged-in user
   */
   public userService: UserService;
+  /**
+   * Contains default limit to show awards
+   */
+  badgeDefaultLimit: number;
+  /**
+   * Used to store limit to show/hide awards
+   */
+  badgeLimit: number;
   /**
   * Constructor to create injected service(s) object
   *
@@ -110,7 +124,8 @@ export class UserProfileComponent implements OnInit {
     breadcrumbsService: BreadcrumbsService,
     learnerService: LearnerService,
     configService: ConfigService,
-    userService: UserService) {
+    userService: UserService,
+    router: Router) {
     this.userSearchService = userSearchService;
     this.badgesService = badgesService;
     this.activatedRoute = activatedRoute;
@@ -121,6 +136,8 @@ export class UserProfileComponent implements OnInit {
     this.learnerService = learnerService;
     this.configService = configService;
     this.userService = userService;
+    this.badgeDefaultLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+    this.badgeLimit = this.badgeDefaultLimit;
   }
 
   /**
@@ -128,28 +145,20 @@ export class UserProfileComponent implements OnInit {
 	 */
   populateUserProfile() {
     this.showLoader = true;
-    if (this.userSearchService.userDetailsObject === undefined) {
-      const option = { userId: this.userId };
-      this.userSearchService.getUserById(option).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.userDetails = apiResponse.result.response;
-          this.formatEndorsementList();
-          this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-          this.populateBadgeDescription();
-          this.showLoader = false;
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.showLoader = false;
-        }
-      );
-    } else {
-      this.userDetails = this.userSearchService.userDetailsObject;
-      this.formatEndorsementList();
-      this.breadcrumbsService.setBreadcrumbs({ label: this.userDetails.firstName, url: '' });
-      this.populateBadgeDescription();
-      this.showLoader = false;
-    }
+    const option = { userId: this.userId };
+    this.userSearchService.getUserById(option).subscribe(
+      (apiResponse: ServerResponse) => {
+        this.userDetails = apiResponse.result.response;
+        this.formatEndorsementList();
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.userDetails.firstName, url: '' }]);
+        this.populateBadgeDescription();
+        this.showLoader = false;
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.showLoader = false;
+      }
+    );
   }
 
   /**
@@ -231,8 +240,8 @@ export class UserProfileComponent implements OnInit {
     if (lim === true) {
       this.skillViewMore = false;
     } else {
-      this.skillViewMore = true;
       this.skillLimit = 4;
+      this.skillViewMore = true;
     }
   }
 
@@ -247,5 +256,17 @@ export class UserProfileComponent implements OnInit {
         this.queryParams = this.activatedRoute.snapshot.queryParams;
       }
     });
+  }
+  /**
+   * This method is used to show/hide ViewMore based on the limit
+   */
+  badgeToggle(viewMore) {
+    if (viewMore === true) {
+      this.badgeLimit = this.userDetails.badgeArray.length;
+      this.badgeViewMore = false;
+    } else {
+      this.badgeViewMore = true;
+      this.badgeLimit = this.defaultLimit;
+    }
   }
 }

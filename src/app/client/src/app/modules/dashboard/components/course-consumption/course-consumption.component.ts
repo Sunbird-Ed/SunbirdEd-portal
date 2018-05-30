@@ -209,6 +209,12 @@ export class CourseConsumptionComponent {
     const response = this.searchService.searchedContentList;
     if (response && response.count) {
       this.myCoursesList = response.content;
+      if (this.myCoursesList.length === 1) {
+        this.identifier = this.myCoursesList[0].identifier;
+        this.courseName = this.myCoursesList[0].name;
+        this.route.navigate(['dashboard/course/consumption', this.identifier, this.timePeriod]);
+      }
+      this.showLoader = false;
     } else {
       // Make search api call
       const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };

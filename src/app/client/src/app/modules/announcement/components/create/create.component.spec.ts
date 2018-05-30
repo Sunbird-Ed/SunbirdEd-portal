@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
 import { UserService, LearnerService, AnnouncementService, CoreModule } from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService, FileUploadService, ConfigService } from '@sunbird/shared';
 import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
@@ -33,6 +33,12 @@ describe('CreateComponent', () => {
           identifier: 'bar',
         },
       ],
+      data: {
+        telemetry: {
+          env: 'announcement', pageid: 'announcement-create', uri: '/announcement/create/',
+          type: 'workflow', mode: 'create', object: { type: 'announcement', ver: '1.0' }
+        }
+      }
     },
   };
   class RouterStub {
@@ -43,7 +49,7 @@ describe('CreateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule,
-        Ng2IziToastModule, CoreModule],
+        Ng2IziToastModule, CoreModule, TelemetryModule],
       providers: [ToasterService, ResourceService, CreateService, UserService,
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,
@@ -75,7 +81,7 @@ describe('CreateComponent', () => {
       expect(component.announcementTypes.length).not.toEqual(0);
     }));
 
-    it('should return selected recipients', inject([],
+  it('should return selected recipients', inject([],
     () => {
       spyOn(component, 'navigateToWizardNumber').and.callThrough();
       const resourceService = TestBed.get(ResourceService);
@@ -143,6 +149,16 @@ describe('CreateComponent', () => {
       expect(data).toEqual(false);
     }));
 
+  it('should not enable recipients button when empty title is passed', inject([],
+    () => {
+      component.announcementForm = component.sbFormBuilder.group({
+        title: [''], from: ['test user'], type: ['News'], description: ['test']
+      });
+      const data = component.announcementForm.value;
+      spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
+      expect(component.formErrorFlag).toEqual(true);
+    }));
+
   it('should not enable recipients button', inject([Router],
     (route) => {
       spyOn(component, 'enableSelectRecipientsBtn').and.callThrough();
@@ -171,4 +187,11 @@ describe('CreateComponent', () => {
       expect(component.navigateToWizardNumber).toHaveBeenCalledWith(1);
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
+
+  it('should unsubscribe to userData observable', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

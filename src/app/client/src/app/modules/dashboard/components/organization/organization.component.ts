@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// SB service(S)
+import { Subscription } from 'rxjs/Subscription';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
@@ -21,7 +21,7 @@ import * as _ from 'lodash';
 /**
  * @class OrganisationComponent
  */
-export class OrganisationComponent {
+export class OrganisationComponent implements OnDestroy {
 
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -39,7 +39,7 @@ export class OrganisationComponent {
    * Dataset type
    */
   datasetType = 'creation';
-
+  userDataSubscription: Subscription;
   /**
    * Contains course consumption line chart data
    */
@@ -310,10 +310,14 @@ export class OrganisationComponent {
     const data = this.searchService.searchedOrganisationList;
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
+      // if (this.myOrganizations.length === 1) {
+      //   this.identifier = this.myOrganizations[0].identifier;
+      //   this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+      // }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
     } else {
-      this.userService.userData$.subscribe(
+      this.userDataSubscription = this.userService.userData$.first().subscribe(
         user => {
           if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
             this.getOrgDetails(user.userProfile.organisationIds);
@@ -379,6 +383,11 @@ export class OrganisationComponent {
           this.setError(true);
         }
       );
+    }
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
     }
   }
 }

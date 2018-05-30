@@ -22,6 +22,7 @@ export class OrgFilterComponent implements OnInit {
   searchOrgType: Array<string>;
   label: Array<string>;
   refresh = true;
+  isAccordianOpen = false;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -53,7 +54,9 @@ export class OrgFilterComponent implements OnInit {
     const queryParams = {};
     _.forIn(this.queryParams, (value, key) => {
       queryParams[key] = [];
-      if (value.length > 0) {
+      if (value.length > 0 && key === 'key') {
+        queryParams[key] = value;
+      } else if (value.length > 0) {
         value.forEach((orgDetails) => {
           queryParams[key].push(orgDetails.id);
         });
@@ -68,7 +71,7 @@ export class OrgFilterComponent implements OnInit {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
-    }
+  }
 
   setFilters() {
     this.label = this.config.dropDownConfig.FILTER.SEARCH.Organisations.label;
@@ -86,6 +89,11 @@ export class OrgFilterComponent implements OnInit {
           });
           this.queryParams.OrgType = OrgType;
         }
+        const queryParamData = { ... this.queryParams };
+        delete queryParamData['key'];
+        if (!_.isEmpty(queryParamData)) {
+          this.isAccordianOpen = true;
+        }
         this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.Organisations.DROPDOWN, ...this.queryParams };
       }
     });
@@ -96,7 +104,7 @@ export class OrgFilterComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
       _.forIn(this.queryParams, (value, key) => {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' && key !== 'key') {
           this.queryParams[key] = [value];
         }
       });

@@ -88,6 +88,8 @@ export class UserService {
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
@@ -131,19 +133,19 @@ export class UserService {
     );
   }
   /**
-      * method to fetch appId and Ekstep_env from server.
-      */
-  public getAppIdEnv(): void {
-    const url = this.config.appConfig.APPID_EKSTEPENV;
-    this.http.get(url).subscribe((res: IAppIdEnv) => {
-      this._appId = res.appId;
-      this._env = res.ekstep_env;
-    },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  * method to fetch appId and Ekstep_env from server.
+  */
+  // public getAppIdEnv(): void {
+  //   const url = this.config.appConfig.APPID_EKSTEPENV;
+  //   this.http.get(url).subscribe((res: IAppIdEnv) => {
+  //     this._appId = res.appId;
+  //     this._env = res.ekstep_env;
+  //   },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
   /**
    * get method to fetch appId.
@@ -162,7 +164,7 @@ export class UserService {
     if (loggedIn === true) {
       this.getUserProfile();
     }
-    this.getAppIdEnv();
+    // this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
@@ -268,6 +270,9 @@ export class UserService {
         if (_.indexOf(org.roles, role) > -1) { }
         roleOrgMap[role].push(org.organisationId);
       });
+    });
+    _.forEach(this._userProfile.roles, (value, index) => {
+      roleOrgMap[value] = _.union(roleOrgMap[value], [this.rootOrgId]);
     });
     this._userProfile.roleOrgMap = roleOrgMap;
   }

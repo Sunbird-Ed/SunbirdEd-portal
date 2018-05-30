@@ -4,9 +4,7 @@
   <meta charset="utf-8">
   <title>Sunbird</title>
   <base href="/">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/assets/styles/semantic.min.css">
   <link rel="icon" type="image/x-icon" href="assets/sunbird_logo.png">
 </head>
 <body>
@@ -15,6 +13,12 @@
   <% } %>
   <% if (sessionId) { %>
   <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+  <% } %>
+  <% if (appId) { %>
+  <input type="hidden" id="appId" value="<%=appId%>" />
+  <% } %>
+  <% if (ekstepEnv) { %>
+  <input type="hidden" id="ekstepEnv" value="<%=ekstepEnv%>" />
   <% } %>
   <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <input type="hidden" id="theme" value="<%=theme%>" />

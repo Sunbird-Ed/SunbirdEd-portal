@@ -23,6 +23,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   private collectionId: string;
 
+  public collectionStatus: string;
+
   private contentId: string;
 
   private contentService: ContentService;
@@ -57,6 +59,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
+  public collectionData: object;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
     fileIcon: 'fa fa-file-o fa-lg',
@@ -91,7 +94,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
-    this.closeUrl = this.navigationHelperService.getPreviousUrl();
     this.getContent();
   }
 
@@ -150,6 +152,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       .first()
       .flatMap((params) => {
         this.collectionId = params.collectionId;
+        this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
@@ -174,8 +177,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId)
+    const option: any = {};
+    if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
+      option.params = { mode: 'edit' };
+    }
+    return this.playerService.getCollectionHierarchy(collectionId, option)
       .map((response) => {
+        this.collectionData = response.result.content;
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
@@ -184,7 +192,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.router.navigate(['/resources']);
+    this.navigationHelperService.navigateToResource();
   }
   closeContentPlayer() {
     this.showPlayer = false;
@@ -207,7 +215,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
   }
   onShareLink() {

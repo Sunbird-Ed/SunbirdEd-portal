@@ -36,10 +36,17 @@ export class CourseBatchService {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
       data: {
         request: {
-          filters: requestParam.filters
+          filters: requestParam.filters,
+          query: requestParam.query || ''
         }
       }
     };
+    const mentorOrg = this.user.userProfile.roleOrgMap['COURSE_MENTOR'];
+    if (mentorOrg && mentorOrg.includes(this.user.rootOrgId)) {
+      option.data.request.filters['rootOrgId'] = this.user.rootOrgId;
+    } else if (mentorOrg) {
+      option.data.request.filters['organisations.organisationId'] = mentorOrg;
+    }
     return this.learnerService.post(option);
   }
   getBatchDetails(bathId) {
