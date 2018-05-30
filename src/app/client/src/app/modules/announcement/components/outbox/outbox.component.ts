@@ -218,11 +218,6 @@ export class OutboxComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-      object: {
-        id: this.activatedRoute.snapshot.params.announcementId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
