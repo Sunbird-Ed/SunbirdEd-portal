@@ -5,8 +5,8 @@ import {
   ReviewSubmissionsComponent, PublishedComponent, CollectionEditorComponent, ContentEditorComponent,
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
    BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
-   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent
-} from './components';
+   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
+   AllContentComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const routes: Routes = [
   {
@@ -104,6 +104,10 @@ const routes: Routes = [
        breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
       },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
+       { path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
+      data: { roles : 'draftRole',
+       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+      },
       // { path: '**', redirectTo: 'create' }
     ]
   },

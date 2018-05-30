@@ -305,7 +305,6 @@
       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
-
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"

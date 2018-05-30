@@ -1,0 +1,12 @@
+<p>
+  all-content works!
+</p>
+<div class="ui grid" >
+  <div class="four wide column padding-top-30">
+    <sui-select  (selectedOptionChange)= "fetchContenList()" class="inline" 
+    [(ngModel)]="status" [options]="statusOptions" valueField ="value" labelField="name" #statusselect>
+      <sui-select-option *ngFor="let option of statusselect.filteredOptions" [value]="option">
+      </sui-select-option>
+    </sui-select>
+  </div>
+</div>
