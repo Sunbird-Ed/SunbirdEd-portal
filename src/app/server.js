@@ -83,7 +83,6 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.set('view engine', 'ejs')
 
-app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
@@ -99,11 +98,11 @@ app.get('/assets/images/*', function (req, res, next) {
 });
 
 
-app.get(['/*.js', '/*.css', '/*.ttf', '/*.woff2'], compression(), function (req, res, next) {
-  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
-  res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
-  next();
-});
+// app.get(['/*.js', '/*.css', '/*.ttf', '/*.woff2'], compression(), function (req, res, next) {
+//   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+//   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+//   next();
+// });
 
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
 

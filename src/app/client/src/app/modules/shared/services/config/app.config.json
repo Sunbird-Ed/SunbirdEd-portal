@@ -133,6 +133,12 @@
         "overlay": {
           "showUser": false
         },
+        "splash": {
+          "text": "",
+          "icon": "",
+          "bgImage": "assets/icons/splacebackground_1.png",
+          "webLink": ""
+        },
         "apislug": "/action",
         "repos": [
           "/content-plugins/renderer"
@@ -364,8 +370,8 @@
         "userName": "userName",
         "password": "password",
         "provider": "provider",
+        "externalId": "externalId",
         "phoneVerified": "phoneVerified",
-        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",
