@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
-
+import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The details component takes input of the announcement details
  * object and renders it with the data
@@ -13,7 +13,10 @@ import { IAnnouncementDetails } from '@sunbird/announcement';
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent {
-
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * To call resource service which helps to use language constant
    */

@@ -60,6 +60,9 @@
       ],  
       "@sunbird/badge": [
         "app/modules/badging"
+      ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
       ]
     },
     "module": "es2015",

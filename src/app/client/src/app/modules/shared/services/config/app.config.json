@@ -125,7 +125,7 @@
         "partner": [],
         "pdata": {
           "id": "sunbird.portal",
-          "ver": "1.7",
+          "ver": "1.7.0",
           "pid": "sunbird-portal"
         }
       },
@@ -135,6 +135,12 @@
         "host": "",
         "overlay": {
           "showUser": false
+        },
+        "splash": {
+          "text": "",
+          "icon": "",
+          "bgImage": "assets/icons/splacebackground_1.png",
+          "webLink": ""
         },
         "apislug": "/action",
         "repos": [
@@ -367,8 +373,8 @@
         "userName": "userName",
         "password": "password",
         "provider": "provider",
+        "externalId": "externalId",
         "phoneVerified": "phoneVerified",
-        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",
@@ -454,7 +460,8 @@
     "collection": "Collection",
     "textbook": "Book",
     "course": "Course",
-    "lessonplan": "Lesson Plan"
+    "lessonplan": "Lesson Plan",
+    "studymaterial": "Learn"
   },
   "timeOutConfig": {
     "setTime": 1500

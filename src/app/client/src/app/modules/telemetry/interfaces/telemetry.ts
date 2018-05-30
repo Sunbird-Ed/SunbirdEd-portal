@@ -113,6 +113,7 @@ export interface IImpressionEventInput {
     'id': string;
     'type': string;
     'ver'?: string;
+    'section'?: string;
     'rollup'?: {};
   };
   'edata': IImpressionEventData;

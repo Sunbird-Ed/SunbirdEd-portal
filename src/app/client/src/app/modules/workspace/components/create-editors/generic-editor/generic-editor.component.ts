@@ -157,11 +157,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         type: 'plugin'
       }, {
         id: 'org.ekstep.sunbirdmetadata',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       }, {
         id: 'org.ekstep.metadata',
-        ver: '1.0',
+        ver: '1.1',
         type: 'plugin'
       }],
       previewConfig: {
@@ -171,6 +171,12 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           ver: 1.0,
           type: 'plugin'
         }],
+        splash: {
+          text: '',
+          icon: '',
+          bgImage: 'assets/icons/splacebackground_1.png',
+          webLink: ''
+        },
         showEndPage: false
       }
 
