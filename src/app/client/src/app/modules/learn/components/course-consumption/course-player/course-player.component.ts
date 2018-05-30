@@ -26,8 +26,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public enrolledCourse = false;
 
   public contentId: string;
+
   public courseStatus: string;
+
   private contentService: ContentService;
+
+  public flaggedCourse = false;
 
   public collectionTreeNodes: any;
 
@@ -45,7 +49,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   showError = false;
 
-  private subscription: Subscription;
+  private activatedRouteSubscription: Subscription;
 
   enableContentPlayer = false;
 
@@ -55,6 +59,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   createNoteData: INoteData;
 
+  curriculum = [];
+
+  getConfigByContentSubscription: Subscription;
+
+  queryParamSubscription: Subscription;
+
+  updateContentsStateSubscription: Subscription;
   /**
    * To show/hide the note popup editor
    */
@@ -89,8 +100,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   };
 
-  curriculum = [];
-
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -102,7 +111,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
-    this.subscription = this.activatedRoute.params.first()
+    this.activatedRouteSubscription = this.activatedRoute.params.first()
       .flatMap((params) => {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
@@ -110,6 +119,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
       }).subscribe((response) => {
         this.courseHierarchy = response;
+        if (this.courseHierarchy.status === 'Flagged') {
+          this.flaggedCourse = true;
+        }
         if (this.batchId) {
           this.enrolledCourse = true;
           this.parseChildContent(response);
@@ -130,15 +142,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public playContent(data: any): void {
-    this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+    this.enableContentPlayer = false;
+    this.loader = true;
+    this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+      this.loader = false;
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
       this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     }, (err) => {
+      this.loader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
   }
@@ -148,7 +162,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    if (this.batchId || this.courseStatus === 'Unlisted') {
+    if ((this.batchId && !this.flaggedCourse) || this.courseStatus === 'Unlisted') {
       this.router.navigate([], navigationExtras);
     }
   }
@@ -160,7 +174,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id && (this.enrolledCourse || this.courseStatus === 'Unlisted')) {
+    if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse ) || this.courseStatus === 'Unlisted')) {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
@@ -174,10 +188,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   subscribeToQueryParam(data) {
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.contentId = queryParams.contentId;
-      if (this.contentId) {
-        const content = this.findContentById(this.contentId);
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams.contentId) {
+        const content = this.findContentById(queryParams.contentId);
         if (content) {
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
         } else {
@@ -214,8 +227,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req).subscribe(
-    (res) => {
+    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
     });
@@ -230,7 +242,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         batchId: this.batchId,
         status : eid === 'END' ? 2 : 1
       };
-      this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
         this.contentStatus = updatedRes.content;
       });
     }
@@ -251,8 +263,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.activatedRouteSubscription) {
+      this.activatedRouteSubscription.unsubscribe();
+    }
+    if (this.getConfigByContentSubscription) {
+      this.getConfigByContentSubscription.unsubscribe();
+    }
+    if (this.queryParamSubscription) {
+      this.queryParamSubscription.unsubscribe();
+    }
+    if (this.updateContentsStateSubscription) {
+      this.updateContentsStateSubscription.unsubscribe();
     }
   }
 
