@@ -79,8 +79,11 @@ export class ExploreContentComponent implements OnInit {
       * Contains page limit of outbox list
       */
     pageLimit: number;
+    isSearchable = false;
+    tempPageNumber: number;
+    language = 'en';
     /**
-     * This variable hepls to show and hide page loader.
+     * This variable helps to show and hide page loader.
      * It is kept true by default as at first when we comes
      * to a page the loader should be displayed before showing
      * any data
@@ -210,7 +213,7 @@ export class ExploreContentComponent implements OnInit {
                     this.setFilters();
                 } else {
                     this.setFilters();
-                    this.toasterService.error('Please provide a valid slug');
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0081);
                     this.route.navigate(['']);
                 }
             },
@@ -221,8 +224,8 @@ export class ExploreContentComponent implements OnInit {
 
     setFilters() {
         this.filters = {};
-        this.filterType = this.config.appConfig.library.filterType;
-        this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
+        this.filterType = this.config.appConfig.explore.filterType;
+        this.redirectUrl = this.config.appConfig.explore.searchPageredirectUrl;
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
@@ -247,7 +250,8 @@ export class ExploreContentComponent implements OnInit {
                     };
                 } else {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
-                        if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
+                        if (queryParam !== 'key' && queryParam !== 'sort_by'
+                            && queryParam !== 'sortType' && queryParam !== 'language') {
                             this.filters[queryParam] = queryValue;
                         }
                     });

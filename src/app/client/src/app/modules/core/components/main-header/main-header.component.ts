@@ -22,6 +22,8 @@ export class MainHeaderComponent implements OnInit {
   logo: string;
   key: string;
   queryParam: any = {};
+  selectedLanguage: string;
+  languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
   /**
    * tenant name
    */
@@ -87,6 +89,8 @@ export class MainHeaderComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
+      this.selectedLanguage = this.queryParam['language'] || 'en';
+      this.resourceService.getResource(this.selectedLanguage);
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -113,6 +117,13 @@ export class MainHeaderComponent implements OnInit {
     if (authroles) {
       this.router.navigate([authroles.url]);
     }
+  }
+
+  onLanguageChange(event) {
+    this.queryParam['language'] = event;
+    this.router.navigate(['explore', 1], {
+      queryParams: this.queryParam
+    });
   }
 
   onEnter(key) {

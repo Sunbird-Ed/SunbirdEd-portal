@@ -10,7 +10,7 @@
 
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult && this.queryParams.key">
           <div class="ui left floated header margin-auto ">
-              <p class="serch-allresult">Showing results for "{{this.queryParams.key}}"
+              <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor}} "{{this.queryParams.key}}"
               </p>
           </div>
           

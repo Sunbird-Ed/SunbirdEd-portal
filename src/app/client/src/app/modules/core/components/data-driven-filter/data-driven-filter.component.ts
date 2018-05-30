@@ -111,7 +111,7 @@ export class DataDrivenFilterComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe((params) => {
           this.queryParams = { ...params };
           _.forIn(params, (value, key) => {
-            if (typeof value === 'string' && key !== 'key') {
+            if (typeof value === 'string' && key !== 'key' && key !== 'language') {
               this.queryParams[key] = [value];
             }
           });
@@ -189,8 +189,8 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   resetFilters() {
-    if (this.formInputData['key']) {
-      this.formInputData = _.pick(this.formInputData, 'key');
+    if (this.formInputData['key'] || this.formInputData['language']) {
+      this.formInputData = _.pick(this.formInputData, ['key', 'language']);
     } else {
       this.formInputData = {};
     }
