@@ -91,7 +91,7 @@
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
-    "VERSION":1.7,
+    "VERSION":"1.7.0",
     "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
