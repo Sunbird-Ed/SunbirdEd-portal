@@ -228,6 +228,12 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           ver: 1.0,
           type: 'plugin'
         }],
+        splash: {
+          text: '',
+          icon: '',
+          bgImage: 'assets/icons/splacebackground_1.png',
+          webLink: ''
+        },
         showEndPage: false
       }
     };
