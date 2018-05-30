@@ -1,4 +1,4 @@
-<div class="ui grid">
+<div class="ui grid"   [appTelemetryImpression]="telemetryImpression">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class="ui grid">
@@ -11,11 +11,13 @@
           <app-loader></app-loader>
         </div>
         <div *ngIf="inboxData && inboxData.announcements.length > 0 && !showLoader">
-          <div *ngFor="let inboxData of inboxData.announcements">
-            <div (click)="readAnnouncement(inboxData.id, inboxData.read); announcementService.announcementDetailsObject = inboxData; inboxData.read=true;"
+          <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="inboxData.announcements">
+          <div in-view-item  *ngFor="let inboxData of inboxData.announcements; let i = index;"  [id]="i" [data]="inboxData" >
+            <div (click)="readAnnouncement(inboxData.id, inboxData.read); announcementService.announcementDetailsObject = inboxData; inboxData.read=true" 
               [routerLink]="['view/' + inboxData.id]">
               <app-announcement-inbox-card [announcement]="inboxData"></app-announcement-inbox-card>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -27,11 +29,11 @@
   <div class="nine wide column padding-top-none">
     <div class="padding-bottom-10" *ngIf="inboxData && inboxData.announcements.length > 0 && !showLoader">
       <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item "  >First</a>
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)" >Previous</a>
         <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"  class="item">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)"  class="item ">Last</a>
       </div>
     </div>
   </div>

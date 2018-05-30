@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-
+import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
 /**
  * The announcement inbox component displays all
  * the announcement which is received by the logged in user
@@ -20,7 +20,10 @@ export class InboxComponent implements OnInit {
 	 * Contains result object returned from get inbox API
 	 */
   inboxData: IAnnouncementListData;
-
+  /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
   /**
 	 * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -38,6 +41,10 @@ export class InboxComponent implements OnInit {
 	 * Current page number of inbox list
 	 */
   pageNumber = 1;
+  /**
+	 * telemetryInteract
+	*/
+  telemetryImpression: IImpressionEventInput;
 
   /**
 	 * Contains returned object of the pagination service
@@ -80,7 +87,10 @@ export class InboxComponent implements OnInit {
    * To get url, app configs
    */
   public config: ConfigService;
-
+  /**
+ * telemetryInteract event
+ */
+  telemetryInteract: IInteractEventInput;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -190,6 +200,26 @@ export class InboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/inbox', this.pageNumber]);
   }
+/**
+ * get Inview  Data
+ */
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'announcement',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
 
   /**
    * This method calls the populateInboxData to show inbox list.
@@ -199,6 +229,17 @@ export class InboxComponent implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: '/announcement/inbox/' + this.pageNumber
+      }
+    };
   }
 }
 

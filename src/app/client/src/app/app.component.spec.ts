@@ -19,7 +19,8 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule,
+      RouterTestingModule],
       declarations: [
         AppComponent
       ],

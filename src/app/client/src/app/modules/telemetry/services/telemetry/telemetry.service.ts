@@ -181,13 +181,15 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   private getEventObject(eventInput: any) {
-    const eventObjectData: TelemetryObject = {
+    if (eventInput.object) {
+      const eventObjectData: TelemetryObject = {
       id: eventInput.object.id || '',
       type: eventInput.object.type || '',
       ver: eventInput.object.ver || '',
       rollup: eventInput.object.rollup || {}
     };
     return eventObjectData;
+    }
   }
 
   /**
@@ -202,7 +204,7 @@ export class TelemetryService {
     const eventContextData: ITelemetryContextData = {
       channel: eventInput.edata.channel || this.context.config.channel,
       pdata: eventInput.edata.pdata || this.context.config.pdata,
-      env: eventInput.env || this.context.config.env,
+      env: eventInput.context.env || this.context.config.env,
       sid: eventInput.sid || this.context.config.sid,
       uid: this.context.config.uid,
       cdata: eventInput.cdata || [],
@@ -220,7 +222,7 @@ export class TelemetryService {
    */
   private getRollUpData(data: Array<string> = []) {
     const rollUp = {};
-    data.forEach((element, index) => rollUp['l' + index] = element);
+    data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
     return rollUp;
   }
   /**
