@@ -67,6 +67,7 @@ export class UserService {
   private _env: string;
   public _authenticated: boolean;
   public anonymousSid: string;
+  private _contentChannelFilter: string;
   /**
    * Reference of content service.
    */
@@ -88,13 +89,13 @@ export class UserService {
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
-      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
       this.anonymousSid = UUID.UUID();
     }
+    this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
+    this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
   }
   /**
    * get method to fetch userid.
@@ -204,9 +205,19 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  setContentChannelFilter() {
+    const contentChannelFilter =  (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
+    if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
+      this._contentChannelFilter = this.channel;
+    }
+  }
+  get contentChannelFilter() {
+    return this._contentChannelFilter;
   }
   /**
 * Get organization details.

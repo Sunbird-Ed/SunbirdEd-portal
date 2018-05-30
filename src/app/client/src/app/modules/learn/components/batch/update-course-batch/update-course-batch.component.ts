@@ -297,8 +297,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   updateBatch() {
-    const users = $('#users').dropdown('get value').split(',');
-    const mentors = $('#mentors').dropdown('get value').split(',');
+    let users = [];
+    let mentors = [];
+    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
+      users = $('#users').dropdown('get value').split(',');
+      mentors = $('#mentors').dropdown('get value').split(',');
+    }
     const requestBody = {
       'id': this.batchId,
       'name': this.batchUpdateForm.value.name,
