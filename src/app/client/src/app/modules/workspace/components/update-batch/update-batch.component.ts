@@ -139,7 +139,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
       object: {
-        id: '',
+        id: this.activatedRoute.snapshot.params.batchId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
@@ -147,7 +147,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: 'pageinit',
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.batchId,
         visits: this.inviewLogs
       }
     };

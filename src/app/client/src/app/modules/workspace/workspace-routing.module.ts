@@ -38,7 +38,7 @@ const routes: Routes = [
             path: 'uploadcontent', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'workspace-content-create', uri: '/workspace/content/create',
+                env: telemetryEnv, pageid: 'workspace-content-create', subtype: 'paginate', uri: '/workspace/content/create',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -48,7 +48,7 @@ const routes: Routes = [
             path: 'course', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'worksapce-create-course', uri: '/workspace/content/create/course',
+                env: telemetryEnv, pageid: 'worksapce-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -58,7 +58,7 @@ const routes: Routes = [
             path: 'studymaterial', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'workspace-create-lesson', uri: '/workspace/content/create/studymaterial',
+                env: telemetryEnv, pageid: 'workspace-create-lesson', subtype: 'paginate', uri: '/workspace/content/create/studymaterial',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -68,7 +68,7 @@ const routes: Routes = [
             path: 'collection', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'workspace-create-collection', uri: '/workspace/content/create/collection',
+                env: telemetryEnv, pageid: 'workspace-create-collection', subtype: 'paginate', uri: '/workspace/content/create/collection',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -78,7 +78,7 @@ const routes: Routes = [
             path: 'lessonplan', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'workspase-create-lessonplan', uri: '/workspace/content/create/lessonplan',
+                env: telemetryEnv, pageid: 'workspase-create-lessonplan', subtype: 'paginate', uri: '/workspace/content/create/lessonplan',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
