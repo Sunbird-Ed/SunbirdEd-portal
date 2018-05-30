@@ -1,4 +1,4 @@
-<div class=" ui grid">
+<div class="ui grid" [appTelemetryImpression]="telemetryImpression">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class=" ui grid">
@@ -10,8 +10,10 @@
         <app-sort-by [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
       </div>
     </div>
-    <div *ngFor="let section of caraouselData">
+    <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="caraouselData">
+    <div in-view-item *ngFor="let section of caraouselData; let i = index" [id]="i" [data]="section" >
       <app-page-section (playEvent)="playContent($event)" [section]="section"></app-page-section>
+    </div>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
 import { IImpressionEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryImpression]'
 })
-export class TelemetryImpressionDirective implements OnInit, OnChanges {
+export class TelemetryImpressionDirective implements OnInit, OnDestroy {
   /**
    * Interact event input
   */
@@ -29,9 +29,11 @@ export class TelemetryImpressionDirective implements OnInit, OnChanges {
     if (this.appTelemetryImpression) {
       this.telemetryService.impression(this.appTelemetryImpression);
     }
+    // console.log(this.appTelemetryImpression);
   }
-  ngOnChanges() {
-    if (this.appTelemetryImpression) {
+  ngOnDestroy() {
+    if (this.appTelemetryImpression &&  
+    this.appTelemetryImpression.edata.subtype === 'pageexit') {
       this.telemetryService.impression(this.appTelemetryImpression);
     }
   }

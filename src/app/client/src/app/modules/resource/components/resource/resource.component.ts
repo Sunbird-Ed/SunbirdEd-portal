@@ -5,6 +5,7 @@ import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -43,6 +44,9 @@ export class ResourceComponent implements OnInit {
    * no result  message
   */
   noResultMessage: INoResultMessage;
+  inviewLogs = [];
+
+  telemetryImpression: IImpressionEventInput;
   /**
   * Contains result object returned from getPageData API.
   */
@@ -134,6 +138,41 @@ export class ResourceComponent implements OnInit {
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
     this.getQueryParams();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+       object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri
+      }
+    };
+  }
+
+  inview(event) {
+    // console.log(event);
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: inview.data.sectionDataType,
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    // console.log(this.telemetryImpression);
   }
 
   /**

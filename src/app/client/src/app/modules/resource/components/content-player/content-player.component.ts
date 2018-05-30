@@ -8,6 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService
 } from '@sunbird/shared';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -57,6 +58,9 @@ export class ContentPlayerComponent implements OnInit {
    * To show/hide the note popup editor
    */
   showNoteEditor = false;
+
+  telemetryImpression: IImpressionEventInput;
+  inviewLogs = [];
   /**
    * This variable holds the details of the note created
    */
@@ -83,7 +87,23 @@ export class ContentPlayerComponent implements OnInit {
           }
         });
     });
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+       object: {
+        id: '',
+        type: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.contentId
+      }
+    };
   }
+
   /**
    * used to fetch content details and player config. On success launches player.
    */

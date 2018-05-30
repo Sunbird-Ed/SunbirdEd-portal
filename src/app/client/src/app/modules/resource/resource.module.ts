@@ -10,6 +10,8 @@ import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 import { NotesModule } from '@sunbird/notes';
 import { BadgingModule } from '@sunbird/badge';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,9 @@ import { BadgingModule } from '@sunbird/badge';
     CoreModule,
     DiscussionModule,
     NotesModule,
-    BadgingModule
+    BadgingModule,
+    TelemetryModule,
+    NgInviewModule
   ],
   declarations: [ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent]
 })

@@ -4,11 +4,18 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
+const telemetryEnv = 'library';
+const objectType = 'library';
 
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'library-read', subtype: 'scroll', type: 'list', uri: '/resources', object: { type: objectType, ver: '1.0' }
+      },
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }]
+    }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     children: [
@@ -18,7 +25,12 @@ const routes: Routes = [
     path: 'resources/play/collection/:collectionId/:collectionStatus', component: CollectionPlayerComponent,
   }, {
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }] },
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'library-read', type: 'list', uri: '/resources/play/content/', object: { type: objectType, ver: '1.0' }
+      },
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
