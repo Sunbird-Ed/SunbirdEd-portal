@@ -94,8 +94,12 @@ export class UserService {
       this._authenticated = false;
       this.anonymousSid = UUID.UUID();
     }
-    this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-    this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+    try {
+      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+    } catch (error) {
+    }
+
   }
   /**
    * get method to fetch userid.
@@ -211,9 +215,13 @@ export class UserService {
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   setContentChannelFilter() {
-    const contentChannelFilter =  (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
-    if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
-      this._contentChannelFilter = this.channel;
+    try {
+      const contentChannelFilter =  (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
+      if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
+        this._contentChannelFilter = this.channel;
+      }
+    } catch {
+
     }
   }
   get contentChannelFilter() {
