@@ -1,5 +1,5 @@
 
-  <div class="ui stackable grid">
+  <div class="ui stackable grid" >
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui stackable grid margin-top-10">
@@ -11,7 +11,7 @@
         </div>
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
           <div class="ui right-float">
-            <button class="ui primary basic button announcement-button" [routerLink]="['../../create/1']">
+            <button class="ui primary basic button announcement-button"  [routerLink]="['../../create/1']">
               <span class="announcement-button-text">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
             </button>
           </div>
@@ -36,7 +36,7 @@
                 <button class="ui button" [ngClass]="{'disabled' : pager.startIndex === 0}" (click)="navigateToPage(pager.currentPage - 1)">
                   <i class="left chevron icon"></i>
                 </button>
-                <button class="ui button" [ngClass]="{'disabled' : pager.currentPage === pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)">
+                <button class="ui button" [ngClass]="{'disabled' : pager.currentPage === pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" >
                   <i class="right chevron icon"></i>
                 </button>
               </div>
@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="margin-top-10" *ngIf="outboxData && outboxData.announcements.length > 0 && !showLoader">
-    <div class="resource-padding ui grid">
+    <div class="resource-padding ui grid" [appTelemetryImpression]="telemetryImpression">
       <div class="one wide column"></div>
       <div class="ten wide column">
         <div class="ui tweleve wide column">
@@ -77,9 +77,10 @@
                 <th>{{resourceService?.frmelmnts?.lbl?.anncmnttblactions}}</th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let item of outboxData.announcements" class="table-list-name-ann">
-                <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item" class="cursor-pointer">{{item.title | slice:0:50}}
+            <tbody in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="outboxData.announcements">
+              <tr in-view-item *ngFor="let item of outboxData.announcements;let i = index;" [id]="i" [data]="item"  class="table-list-name-ann">
+                <td [routerLink]="['view/' + item.id]" (click)="announcementService.announcementDetailsObject = item;"
+                 class="cursor-pointer">{{item.title | slice:0:50}}
                   <span *ngIf="item.title.length > 50">...</span>
                 </td>
                 <td>{{item.createdDate | dateFormat}}</td>

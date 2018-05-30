@@ -122,7 +122,7 @@
         "partner": [],
         "pdata": {
           "id": "sunbird.portal",
-          "ver": "1.7",
+          "ver": "1.7.0",
           "pid": "sunbird-portal"
         }
       },

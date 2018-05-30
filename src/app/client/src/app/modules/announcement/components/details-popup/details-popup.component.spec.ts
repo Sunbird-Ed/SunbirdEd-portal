@@ -4,7 +4,7 @@ import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -20,17 +20,23 @@ describe('DetailsPopupComponent', () => {
   let component: DetailsPopupComponent;
   let fixture: ComponentFixture<DetailsPopupComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' }])
+    'params': Observable.from([{ 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' }]),
+    snapshot: {
+      data: {
+          telemetry: {
+            env: 'announcement', pageid: 'announcement-read', type: 'view', object: { type: 'announcement', ver: '1.0' }
+          }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DetailsPopupComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-        SuiModule, SharedModule],
+        SuiModule, SharedModule, TelemetryModule],
       providers: [HttpClientModule, AnnouncementService, RouterNavigationService,
         ResourceService, ToasterService, ConfigService, HttpClient,
         { provide: Router, useClass: RouterStub },
