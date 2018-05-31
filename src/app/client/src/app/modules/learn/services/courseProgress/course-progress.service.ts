@@ -187,6 +187,7 @@ export class CourseProgressService {
       const index = _.findIndex(courseProgress.content, { contentId: req.contentId, courseId: req.courseId });
       if ( index !== -1 && req.status >= courseProgress.content[index].status && courseProgress.content[index].status !== 2) {
         courseProgress.content[index].status = req.status;
+        courseProgress.content[index].batchId = req.batchId;
         this.prepareContentObject(courseProgress.content, courseId_batchId);
         return this.updateContentStateInServer(courseProgress.content[index]).map(
           (res: ServerResponse) => {

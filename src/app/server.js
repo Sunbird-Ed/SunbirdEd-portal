@@ -128,6 +128,7 @@ function indexPage (req, res) {
   res.locals.appId = envHelper.APPID
   res.locals.ekstepEnv = envHelper.EKSTEP_ENV
   res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  res.locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
 app.get('/get/envData', function (req, res) {

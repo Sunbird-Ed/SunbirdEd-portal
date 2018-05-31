@@ -196,7 +196,7 @@ export class DataDrivenFilterComponent implements OnInit {
     } else {
       this.formInputData = {};
     }
-    this.applyFilters();
+    this.router.navigate([this.redirectUrl], { queryParams: this.formInputData });
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
