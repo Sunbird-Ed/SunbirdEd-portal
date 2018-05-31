@@ -428,13 +428,19 @@
     "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
+  "allmycontent": {
+    "filterType": "allmycontent",
+    "inPageredirectUrl": "workspace/content/allcontent/1",
+    "searchPageredirectUrl": "workspace/content/allcontent/1"
+  },
   "formApiTypes": {
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
-    "library": "library"
+    "library": "library",
+    "allmycontent":"allmycontent"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

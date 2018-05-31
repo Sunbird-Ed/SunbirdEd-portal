@@ -4,13 +4,13 @@
     </span>
 </h4>
 <div class="publicmenusection ui secondary vertical menu">
-  <a *ngIf='permissionService.permissionAvailable' appPermission [permission]='' class="item" [routerLink]="['create']" routerLinkActive="active">
+  <a *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['create']" routerLinkActive="active">
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
-   <a *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " appPermission
-    [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]">
+  <a *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
+  appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]">
        {{resourceService?.frmelmnts?.snav?.allcontent}}
-    </a>
+  </a>
   <a *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft') " appPermission
     [permission]='draftRole' class="item" [routerLink]="['draft',1]">
        {{resourceService?.frmelmnts?.snav?.draft}}

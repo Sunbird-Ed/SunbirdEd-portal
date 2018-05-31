@@ -1,21 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, ISort } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, ILoaderMessage, INoResultMessage, ICard
+  ResourceService, ILoaderMessage, INoResultMessage, IContents
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-all-content',
   templateUrl: './all-content.component.html',
   styleUrls: ['./all-content.component.css']
 })
-export class AllContentComponent  extends WorkSpace implements OnInit {
+export class AllContentComponent extends WorkSpace implements OnInit {
   /**
      * state for content editior
     */
@@ -39,7 +40,7 @@ export class AllContentComponent  extends WorkSpace implements OnInit {
   /**
    * Contains list of published course(s) of logged-in user
   */
-  allContnent: Array<ICard> = [];
+  allContent: Array<IContents> = [];
 
   /**
    * To show / hide loader
@@ -84,12 +85,6 @@ export class AllContentComponent  extends WorkSpace implements OnInit {
   * Contains page limit of inbox list
   */
   pageLimit: number;
-
-
-  /**
-   * Status option
-  */
-  statusOptions = [];
   /**
   * Current page number of inbox list
   */
@@ -103,6 +98,30 @@ export class AllContentComponent  extends WorkSpace implements OnInit {
     status for preselection;
   */
   status: string;
+  /**
+  route query param;
+  */
+  queryParams: any;
+  /**
+  redirectUrl;
+  */
+  public redirectUrl: string;
+  /**
+  filterType;
+  */
+  public filterType: string;
+  /**
+  sortingOptions ;
+  */
+  public sortingOptions: Array<ISort>;
+  /**
+  sortingOptions ;
+  */
+  sortByOption: string;
+  /**
+  sort for filter;
+  */
+  sort: object;
   /**
   * Contains returned object of the pagination service
   * which is needed to show the pagination on inbox view
@@ -145,20 +164,112 @@ export class AllContentComponent  extends WorkSpace implements OnInit {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
     this.config = config;
-    this.state = 'draft';
+    this.state = 'allcontent';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0011,
+      'loaderMessage': this.resourceService.messages.stmsg.m0110,
     };
-    this.statusOptions = this.config.dropDownConfig.STATUS;
-    console.log(this.statusOptions);
+    this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
 
   ngOnInit() {
+    this.filterType = this.config.appConfig.allmycontent.filterType;
+    this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
+    Observable.combineLatest(
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams,
+      (params: any, queryParams: any) => {
+        return {
+          params: params,
+          queryParams: queryParams
+        };
+      })
+      .subscribe(bothParams => {
+        if (bothParams.params.pageNumber) {
+          this.pageNumber = Number(bothParams.params.pageNumber);
+        }
+        this.queryParams = bothParams.queryParams;
+        this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+      });
   }
-  fetchContenList() {
-     console.log(this.statusOptions);
+  /**
+  * This method sets the make an api call to get all UpForReviewContent with page No and offset
+  */
+  fecthAllContent(limit: number, pageNumber: number, bothParams) {
+    this.showLoader = true;
+    if (bothParams.queryParams.sort_by) {
+      const sort_by = bothParams.queryParams.sort_by;
+      const sortType = bothParams.queryParams.sortType;
+      this.sort = {
+        [sort_by]: sortType
+      };
+    } else {
+      this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
+    }
+    const preStatus = ['Draft', 'FlagDraft'];
+    const searchParams = {
+      filters: {
+        status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
+        createdBy: this.userService.userid,
+        contentType: this.config.appConfig.WORKSPACE.contentType,
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+        board: bothParams.queryParams.board,
+        subject: bothParams.queryParams.subject,
+        medium: bothParams.queryParams.medium,
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        Content: bothParams.queryParams.Content
+      },
+      limit: limit,
+      offset: (pageNumber - 1) * (limit),
+      query: bothParams.queryParams.query,
+      sort_by: this.sort
+    };
+    this.search(searchParams).subscribe(
+      (data: ServerResponse) => {
+        if (data.result.count && data.result.content.length > 0) {
+          this.allContent = data.result.content;
+          this.totalCount = data.result.count;
+          this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
+          this.showLoader = false;
+          this.noResult = false;
+        } else {
+          this.showError = false;
+          this.noResult = true;
+          this.showLoader = false;
+          this.noResultMessage = {
+            'messageText': this.resourceService.messages.stmsg.m0111
+          };
+        }
+      },
+      (err: ServerResponse) => {
+        this.showLoader = false;
+        this.noResult = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0081);
+      }
+    );
+  }
+  /**
+   * This method helps to navigate to different pages.
+   * If page number is less than 1 or page number is greater than total number
+   * of pages is less which is not possible, then it returns.
+	 *
+	 * @param {number} page Variable to know which page has been clicked
+	 *
+	 * @example navigateToPage(1)
+	 */
+  navigateToPage(page: number): undefined | void {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
+    this.pageNumber = page;
+    this.route.navigate(['workspace/content/allcontent', this.pageNumber], { queryParams: this.queryParams });
+  }
+  contentClick(content) {
+    this.workSpaceService.navigateToContent(content, this.state);
   }
 }
+
+
 
 
 

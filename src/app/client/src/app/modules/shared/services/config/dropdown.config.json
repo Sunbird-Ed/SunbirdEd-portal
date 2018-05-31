@@ -366,6 +366,5 @@
             "name": "Previous Batches",
             "value": 2
         }
-    ],
-    "STATUS": ["Draft","FlagDraft","Review","FlagReview","Flagged","Live","Unlisted","Flagged"]
+    ]
 }
