@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 })
 export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;
-  
   constructor(public router: Router) { }
 
   ngOnInit() {
