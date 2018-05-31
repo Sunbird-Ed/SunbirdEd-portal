@@ -10,6 +10,8 @@ import { UserService, LearnerService, CoursesService, PermissionService } from '
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './flagged.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 describe('FlaggedComponent', () => {
   let component: FlaggedComponent;
@@ -35,7 +37,20 @@ describe('FlaggedComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'] }])
+    'queryParams': Observable.from([{ subject: ['english'] }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-flagged', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
 
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
@@ -50,7 +65,8 @@ describe('FlaggedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlaggedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule,
+        NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -129,7 +145,14 @@ describe('FlaggedComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    const content = {data: { metaData: {'mimeType': 'application/vnd.ekstep.ecml-archive', 'identifier': 'do_112485749070602240134'} } };
+    const content = { data: { metaData: { 'mimeType': 'application/vnd.ekstep.ecml-archive', 'identifier': 'do_112485749070602240134' } } };
     component.contentClick(content);
   }));
+  it('should call inview method for visits data', () => {
+    component.telemetryImpression = Response.telemetryData;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });

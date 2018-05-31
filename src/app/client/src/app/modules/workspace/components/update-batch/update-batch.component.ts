@@ -92,10 +92,6 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
 	* telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  /**
-	* inviewLogs
-	*/
-  inviewLogs = [];
 
   /**
 	 * Constructor to create injected service(s) object
@@ -147,8 +143,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: 'pageinit',
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.batchId,
-        visits: this.inviewLogs
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.batchId
       }
     };
   }

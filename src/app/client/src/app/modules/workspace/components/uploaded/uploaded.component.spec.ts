@@ -16,10 +16,28 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
 import * as mockData from './uploaded.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 const testData = mockData.mockRes;
 describe('UploadedComponent', () => {
   let component: UploadedComponent;
   let fixture: ComponentFixture<UploadedComponent>;
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 1 }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
+  };
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -43,6 +61,7 @@ describe('UploadedComponent', () => {
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }
       ]
     })
@@ -67,8 +86,12 @@ describe('UploadedComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { action:  { class: 'trash large icon', displayType: 'icon',
-      eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      const params = {
+        action: {
+          class: 'trash large icon', displayType: 'icon',
+          eventName: 'delete'
+        }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
+      };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -90,6 +113,12 @@ describe('UploadedComponent', () => {
     expect(component.uploaded.length).toBeLessThanOrEqual(0);
     expect(component.uploaded.length).toEqual(0);
   }));
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(testData.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });
 
 

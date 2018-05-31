@@ -246,7 +246,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit {
   inview(event) {
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
-        return o.objid === inview.data.id;
+        return o.objid === inview.data.metaData.identifier;
       });
       if (obj === undefined) {
         this.inviewLogs.push({

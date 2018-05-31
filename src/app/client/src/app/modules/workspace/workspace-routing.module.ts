@@ -123,14 +123,20 @@ const routes: Routes = [
       {
         path: 'uploaded/:pageNumber', component: UploadedComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'alluploadsRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-uploaded', subtype: 'scroll', uri: '/workspace/content/uploaded',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'alluploadsRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
       {
         path: 'flagged/:pageNumber', component: FlaggedComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'flaggedRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-flagged', subtype: 'scroll', uri: 'workspace/content/flagged',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'flaggedRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },

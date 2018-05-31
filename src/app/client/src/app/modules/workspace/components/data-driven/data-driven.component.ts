@@ -101,10 +101,6 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 	* telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  /**
-  * inviewLogs
-  */
-  inviewLogs = [];
 
 
   constructor(
@@ -157,8 +153,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        visits: this.inviewLogs
+        uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
     };
   }
