@@ -34,7 +34,7 @@ describe('QrCodeModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should call onSubmit method and naviagte to search results page', inject([Router],
+  it('should call onSubmit method and naviagte to search results page', inject([Router],
     (route) => {
         const dialcode = '51u4e';
         component.onSubmit(dialcode);
