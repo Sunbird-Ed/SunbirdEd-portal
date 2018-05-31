@@ -129,7 +129,7 @@ const fakeActivatedRoute = {
     spyOn(component, 'applyFilters').and.returnValue(null);
     component.resetFilters();
     fixture.detectChanges();
-    expect(component.applyFilters).toHaveBeenCalled();
+    expect(component.router.navigate).toHaveBeenCalled();
   });
   it('should initalize in page search incase of inpage filter is enabled', () => {
     component.filterType = 'course';

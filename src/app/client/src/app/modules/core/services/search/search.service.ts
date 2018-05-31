@@ -220,7 +220,6 @@ export class SearchService {
       }
     };
     if (this.user.contentChannelFilter) {
-      console.log('content search adding chanel filter', this.user.contentChannelFilter);
       option.data.request.filters.channel = this.user.contentChannelFilter;
     }
     if (!option.data.request.filters.contentType) {

@@ -37,7 +37,7 @@ describe('FrameworkService', () => {
       expect(service._frameworkData).toBe(mockFrameworkData.frameworkSuccess.result.framework.categories);
     });
   });
-  
+
   it('should emit error on getFramework api failure', () => {
     const service = TestBed.get(FrameworkService);
     const contentService = TestBed.get(ContentService);
