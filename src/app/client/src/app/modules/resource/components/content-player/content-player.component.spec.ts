@@ -45,8 +45,7 @@ const resourceServiceMockData = {
 };
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
-  events = Observable.from([{id: 1, url: '/resources', urlAfterRedirects:  '/resources'},
-  {id: 1, url: '/home', urlAfterRedirects:  '/home'}]);
+
 }
 const fakeActivatedRoute = {
   'params': Observable.from([{ contentId: 'd0_33567325' }])
@@ -71,7 +70,7 @@ describe('ContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should config content player if content status is "Live"', () => {
+  it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -80,10 +79,10 @@ describe('ContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
     userService._userData$.next({ err: null, userProfile: mockUserData });
-    fixture.detectChanges();
+    component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
   });
-  xit('should config player if content status is "Unlisted"', () => {
+  it('should config player if content status is "Unlisted"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -92,10 +91,10 @@ describe('ContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
     userService._userData$.next({ err: null, userProfile: mockUserData });
-    fixture.detectChanges();
+    component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
   });
-  xit('should not config player if content status is not "Live" or "Unlisted"', () => {
+  it('should not config player if content status is not "Live" or "Unlisted"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -113,7 +112,7 @@ describe('ContentPlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
     expect(component.toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0027);
   });
-  xit('should throw error if content api throws error', () => {
+  it('should throw error if content api throws error', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);

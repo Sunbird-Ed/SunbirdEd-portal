@@ -392,7 +392,7 @@ export const mockRes = {
                         'homeUrl': null,
                         'isDefault': null,
                         'contactDetail':
-                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                            '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                         'createdDate': null,
                         'createdBy': null,
                         'parentOrgId': null,
@@ -497,7 +497,7 @@ export const mockRes = {
                     'profileSummary': 'asdd',
                     'tcUpdatedDate': null,
                     'avatar':
-                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                        'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                     'userName': 'ntptest102',
                     'rootOrgId': 'ORG_001',
                     'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -935,7 +935,7 @@ export const mockRes = {
                         'homeUrl': null,
                         'isDefault': null,
                         'contactDetail':
-                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                            '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                         'createdDate': null,
                         'createdBy': null,
                         'parentOrgId': null,
@@ -1040,7 +1040,7 @@ export const mockRes = {
                     'profileSummary': 'asdd',
                     'tcUpdatedDate': null,
                     'avatar':
-                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                        'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                     'userName': 'ntptest102',
                     'rootOrgId': 'ORG_001',
                     'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -1210,6 +1210,81 @@ export const mockRes = {
                     }
                 ]
             }
+        }
+    },
+    event: {
+        'inview': [
+            {
+                'id': 0,
+                'data': {
+                    'name': 'Aman15thMay Book',
+                    'image': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125041330714050561226
+                    /artifact/4272f16cf3fd329b18dd116315601ad0_1476257845556.thumb.jpeg`,
+                    'description': `Untitled Collection sadasd asd asd as`,
+                    'action': {
+                        'right': {
+                            'class': 'trash large icon',
+                            'eventName': 'delete',
+                            'displayType': 'icon'
+                        },
+                        'onImage': {
+                            'eventName': 'onImage'
+                        }
+                    },
+                    'ribbon': {
+                        'right': {
+                            'name': 'TextBook',
+                            'class': 'ui black right ribbon label'
+                        }
+                    },
+                    'metaData': {
+                        'identifier': 'do_1125041330714050561226',
+                        'mimeType': 'application / vnd.ekstep.content - collection',
+                        'framework': 'NCF',
+                        'contentType': 'TextBook'
+                    }
+                }
+            },
+            {
+                'id': 1,
+                'data': {
+                    'name': 'Untitled Collection',
+                    'description': 'Untitled Collection',
+                    'action': {
+                        'right': {
+                            'class': 'trash large icon',
+                            'eventName': 'delete',
+                            'displayType': 'icon'
+                        },
+                        'onImage': {
+                            'eventName': 'onImage'
+                        }
+                    },
+                    'ribbon': {
+                        'right': {
+                            'name': 'Resource',
+                            'class': 'ui black right ribbon label'
+                        }
+                    },
+                    'metaData': {
+                        'identifier': 'do_112514006444826624126',
+                        'mimeType': 'application / vnd.ekstep.ecml - archive',
+                        'framework': 'NCF',
+                        'contentType': 'Resource'
+                    }
+                }
+            }]
+    },
+    telemetryData: {
+        context: {
+            env: 'workspace'
+        },
+        edata: {
+            type: 'list',
+            pageid: '',
+            subtype: 'scroll',
+            uri: '',
+            visits: []
         }
     }
 };

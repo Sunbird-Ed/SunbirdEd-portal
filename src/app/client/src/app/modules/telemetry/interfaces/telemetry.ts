@@ -41,7 +41,6 @@ export interface IEndEventData {
   'type': string;
   'mode'?: string;
   'summary'?: Array<{}>;
-  'contentId': string;
 }
 export interface ILogEventData {
   'type': string;

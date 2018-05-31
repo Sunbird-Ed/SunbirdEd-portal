@@ -314,8 +314,7 @@ export class CreateComponent implements OnInit, OnDestroy {
       edata: {
        type: this.activatedRoute.snapshot.data.telemetry.type,
        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
-       mode: 'create',
-       contentId: this.identifier
+       mode: 'create'
       }
     };
     this.telemetryEnd = endEvent;

@@ -18,7 +18,24 @@ import * as mockData from './review-submissions.component.spec.data';
 const testData = mockData.mockRes;
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
+const fakeActivatedRoute = {
+  'params': Observable.from([{ 'pageNumber': 1 }]),
+  snapshot: {
+    params: [
+      {
+        pageNumber: '1',
+      }
+    ],
+    data: {
+      telemetry: {
+        env: 'workspace', pageid: 'workspace-content-unlisted', subtype: 'scroll', type: 'list',
+        object: { type: '', ver: '1.0' }
+      }
+    }
+  }
+};
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
@@ -41,7 +58,8 @@ describe('ReviewSubmissionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+        TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ToasterService,
@@ -94,7 +112,7 @@ describe('ReviewSubmissionsComponent', () => {
       component.navigateToPage(1);
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/review', component.pageNumber]);
-  }));
+    }));
   it('should call setpage method and set proper page number 1', inject([Router],
     (route) => {
       component.pager = testData.pager;
@@ -102,14 +120,25 @@ describe('ReviewSubmissionsComponent', () => {
       component.navigateToPage(3);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
-  }));
+    }));
 
   it('should call contentClick to open content player ', inject([Router],
     (route) => {
-      const params = { action:  { class: 'trash large icon', displayType: 'icon',
-        eventName: 'onImage' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      const params = {
+        action: {
+          class: 'trash large icon', displayType: 'icon',
+          eventName: 'onImage'
+        }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
+      };
       component.contentClick(params);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
-  }));
+    }));
+  it('should call inview method for visits data', () => {
+    component.telemetryImpression = testData.telemetryData;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(testData.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });

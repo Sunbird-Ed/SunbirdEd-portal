@@ -21,11 +21,11 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   enrolledCourse: boolean;
   eventSubscription: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    private coursesService: CoursesService, private toasterService: ToasterService,
-    private resourceService: ResourceService, private router: Router, public breadcrumbsService: BreadcrumbsService) { }
+    private coursesService: CoursesService, public toasterService: ToasterService,
+    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) { }
 
   ngOnInit() {
-    this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.children[0].params,
+    this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.firstChild.params,
       (params, firstChildParams) => {
         return { ...params, ...firstChildParams };
       }).subscribe((params) => {
@@ -34,22 +34,21 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.getCourseHierarchy(params.courseId);
       });
 
-    this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-        if (this.courseHierarchy) {
-          if (this.batchId) {
-            this.breadcrumbsService.setBreadcrumbs([{
-              label: this.courseHierarchy.name,
-              url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
-            }]);
-          } else {
-            this.breadcrumbsService.setBreadcrumbs([{
-              label: this.courseHierarchy.name,
-              url: '/learn/course/' + this.courseId
-            }]);
-          }
+    this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+      if (this.courseHierarchy) {
+        if (this.batchId) {
+          this.breadcrumbsService.setBreadcrumbs([{
+            label: this.courseHierarchy.name,
+            url: '/learn/course/' + this.courseId + '/batch/' + this.batchId
+          }]);
+        } else {
+          this.breadcrumbsService.setBreadcrumbs([{
+            label: this.courseHierarchy.name,
+            url: '/learn/course/' + this.courseId
+          }]);
         }
-      });
+      }
+    });
   }
   private getCourseHierarchy(courseId: string) {
     this.courseConsumptionService.getCourseHierarchy(courseId).subscribe((response) => {
@@ -100,6 +99,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.eventSubscription.unsubscribe();
+    if (this.eventSubscription) {
+      this.eventSubscription.unsubscribe();
+    }
   }
 }
