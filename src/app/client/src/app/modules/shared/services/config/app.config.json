@@ -91,7 +91,7 @@
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
-    "VERSION":1.7,
+    "VERSION":"1.7.0",
     "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
@@ -132,6 +132,12 @@
         "host": "",
         "overlay": {
           "showUser": false
+        },
+        "splash": {
+          "text": "",
+          "icon": "",
+          "bgImage": "assets/icons/splacebackground_1.png",
+          "webLink": ""
         },
         "apislug": "/action",
         "repos": [
@@ -363,8 +369,8 @@
         "userName": "userName",
         "password": "password",
         "provider": "provider",
+        "externalId": "externalId",
         "phoneVerified": "phoneVerified",
-        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",

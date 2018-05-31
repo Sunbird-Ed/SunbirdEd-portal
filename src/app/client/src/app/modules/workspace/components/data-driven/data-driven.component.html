@@ -1,5 +1,5 @@
 <sui-modal [isClosable]="true" (dismissed)="goToCreate(); " [mustScroll]="true" #modal>
-    <div class=" ui segment margin-top-10">
+    <div class=" ui segment margin-top-10" [appTelemetryImpression]="telemetryImpression">
         <div class=" margin-bottom-15">
             <div class="ui grid">
                 <div class="eleven wide column">

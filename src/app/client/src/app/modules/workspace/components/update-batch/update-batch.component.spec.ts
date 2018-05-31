@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './update-batch.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('UpdateBatchComponent', () => {
   let component: UpdateBatchComponent;
   let fixture: ComponentFixture<UpdateBatchComponent>;
@@ -46,14 +47,30 @@ describe('UpdateBatchComponent', () => {
     'ANNOUNCEMENT_SENDER': ['01232002070124134414'],
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 1 }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'batch-edit', type: 'detail',
+          object: { type: 'batch', ver: '1.0' }
+        }
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateBatchComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+        TelemetryModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -80,7 +97,7 @@ describe('UpdateBatchComponent', () => {
     component.getBatchDetails();
     expect(component.batchData).toBeDefined();
   }));
-  it('should throw error', inject([BatchService, ToasterService, ResourceService], (batchService , toasterService , resourceService) => {
+  it('should throw error', inject([BatchService, ToasterService, ResourceService], (batchService, toasterService, resourceService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
@@ -140,7 +157,7 @@ describe('UpdateBatchComponent', () => {
       'mentors': [
         '8454cb21-3ce9-4e30-85b5-fade097880d8'
       ]
-  };
+    };
     component.updateBatchDetails(requestParam, component.batchAddUserForm);
   }));
 });

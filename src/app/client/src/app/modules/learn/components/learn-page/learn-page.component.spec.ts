@@ -13,7 +13,14 @@ import {Response} from './learn-page.component.spec.data';
 import { LearnPageComponent } from './learn-page.component';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
+const resourceServiceMockData = {
+  messages : {
+    stmsg : { m0007: 'error',  m0006: 'error'},
+    emsg: { m0005: 'error'}
+  },
+  frmelmnts: {
+  }
+};
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
@@ -45,6 +52,9 @@ describe('LearnPageComponent', () => {
     const courseService = TestBed.get(CoursesService);
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.filters = { board: ['NCERT'], subject: [] };
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
     component.caraouselData = Response.successData.result.response.sections;

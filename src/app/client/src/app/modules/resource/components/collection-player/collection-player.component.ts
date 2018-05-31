@@ -139,9 +139,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }

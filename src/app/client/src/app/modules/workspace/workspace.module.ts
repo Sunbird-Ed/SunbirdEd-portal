@@ -17,6 +17,9 @@ import {
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent
 } from './components';
+import { NgInviewModule } from 'angular-inport';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -25,7 +28,9 @@ import {
     SuiModule,
     FormsModule,
     CoreModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgInviewModule,
+    TelemetryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

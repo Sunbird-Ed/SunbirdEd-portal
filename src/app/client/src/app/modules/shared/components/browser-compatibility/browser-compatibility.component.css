@@ -1,0 +1,11 @@
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 989898;
+}
+
+.font-weight-700 {
+    font-weight: 700;
+}

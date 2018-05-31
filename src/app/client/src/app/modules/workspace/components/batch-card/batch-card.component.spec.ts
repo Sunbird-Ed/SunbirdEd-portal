@@ -16,11 +16,10 @@ import { WorkSpaceService, BatchService} from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from './batch-card.component.spec.data';
-
 // import batch card comoponet
-
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
 // Test data
 describe('BatchCardComponent', () => {
   let component: BatchCardComponent;
@@ -49,7 +48,7 @@ describe('BatchCardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BatchCardComponent, UpdateBatchComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+        HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

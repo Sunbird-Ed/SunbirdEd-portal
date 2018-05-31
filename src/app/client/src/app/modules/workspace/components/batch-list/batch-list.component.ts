@@ -11,6 +11,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The batch list component
 */
@@ -116,6 +117,14 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   * To call resource service which helps to use language constant
  */
   public resourceService: ResourceService;
+  /**
+	* telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
+	* inviewLogs
+	*/
+  inviewLogs = [];
 
   /**
     * Constructor to create injected service(s) object
@@ -157,6 +166,18 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       this.pageNumber = Number(params.pageNumber);
       this.fetchBatchList();
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+        visits: this.inviewLogs
+      }
+    };
   }
 
   /**
@@ -252,6 +273,26 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       }
     );
     this.showLoader = false;
+  }
+  /**
+  * get inview  Data
+  */
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.identifier,
+          objtype: 'batch',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }
 
