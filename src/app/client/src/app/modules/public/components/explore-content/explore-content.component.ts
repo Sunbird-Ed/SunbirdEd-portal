@@ -266,11 +266,15 @@ export class ExploreContentComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
             this.slug = params.slug;
-            if (this.slug === undefined) {
-                this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
+            if (this.slug) {
                 this.getHashTagId();
             } else {
-                this.getHashTagId();
+                try {
+                    this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
+                    this.getHashTagId();
+                } catch (error) {
+                    this.route.navigate(['']);
+                }
             }
         });
     }

@@ -138,4 +138,13 @@ export class MainHeaderComponent implements OnInit {
       queryParams: this.queryParam
     });
   }
+
+  getUrl() {
+    const urlSegment = this.router.url.split('/');
+    if (_.includes(urlSegment, 'explore')) {
+      return this.router.url;
+    } else {
+      return 'notexplore';
+    }
+  }
 }

@@ -17,6 +17,8 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
+  @Input() ignoreQuery = [];
+
   /**
  * To get url, app configs
  */
@@ -189,8 +191,8 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   resetFilters() {
-    if (this.formInputData['key'] || this.formInputData['language']) {
-      this.formInputData = _.pick(this.formInputData, ['key', 'language']);
+    if (!_.isEmpty(this.ignoreQuery)) {
+      this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     } else {
       this.formInputData = {};
     }

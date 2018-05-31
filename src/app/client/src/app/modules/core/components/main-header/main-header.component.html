@@ -1,4 +1,4 @@
-<div class="ui grid" *ngIf="!router.isActive('/explore', false)">
+<div class="ui grid" *ngIf="!router.isActive(getUrl(), false)">
     <div class="center aligned twelve column row">
         <div class="one wide column"></div>
         <div class="two wide column">
@@ -64,7 +64,7 @@
 </div>
 <app-main-menu></app-main-menu>
 
-<div *ngIf="router.isActive('/explore', false)">
+<div *ngIf="router.isActive(getUrl(), false)">
     <div class="ui grid margin-top-0">
         <div class="center aligned twelve column row padding-top-2rem headerBackground">
             <div class="one wide column"></div>
