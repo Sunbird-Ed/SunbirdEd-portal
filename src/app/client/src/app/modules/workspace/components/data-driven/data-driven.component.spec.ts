@@ -12,6 +12,7 @@ import { FrameworkService, FormService, ContentService, UserService, CoreModule 
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { mockFrameworkData } from './data-driven.component.spec.data';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 describe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;
@@ -34,7 +35,20 @@ describe('DataDrivenComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'url': Observable.of([{ 'path': 'textbook' }])
+    'url': Observable.of([{ 'path': 'textbook' }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -162,13 +176,13 @@ describe('DataDrivenComponent', () => {
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
-   });
-   it('should call getFormConfig api', () => {
+  });
+  it('should call getFormConfig api', () => {
     const formService = TestBed.get(FormService);
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockFrameworkData.formSuccess));
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
-   });
+  });
 });

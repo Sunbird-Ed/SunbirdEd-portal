@@ -7,6 +7,7 @@ import { SearchService, UserService } from '@sunbird/core';
 import { IMenter, Ibatch } from './../../interfaces';
 import { WorkSpace } from '../../classes/workspace';
 import * as _ from 'lodash';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -87,6 +88,10 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
+  /**
+	* telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -125,6 +130,22 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
     });
     this.getBatchDetails();
     this.getUserList();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.batchId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: 'pageinit',
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.batchId
+      }
+    };
   }
   ngOnDestroy() {
     if (this.updatemodal && this.updatemodal.deny) {

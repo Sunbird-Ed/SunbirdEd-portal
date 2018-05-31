@@ -6,10 +6,11 @@ import {
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { UserService, FrameworkService, FormService} from '@sunbird/core';
+import { UserService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-data-driven',
@@ -96,7 +97,10 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   public isCachedDataExists: boolean;
 
   public framework: string;
-
+  /**
+	* telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
 
 
   constructor(
@@ -122,7 +126,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     this.activatedRoute.url.subscribe(url => {
       this.contentType = url[0].path;
     });
-    this.resourceType =  this.configService.appConfig.resourceType[this.contentType];
+    this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
 
@@ -141,15 +145,26 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
           this.userProfile = user.userProfile;
         }
       });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri
+      }
+    };
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
     }
   }
-/**
-* fetchFrameworkMetaData is gives form config data
-*/
+  /**
+  * fetchFrameworkMetaData is gives form config data
+  */
   fetchFrameworkMetaData() {
 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
@@ -240,7 +255,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     return requestData;
   }
 
-createContent() {
+  createContent() {
     const state = 'draft';
     const framework = this.framework;
     const requestData = {
