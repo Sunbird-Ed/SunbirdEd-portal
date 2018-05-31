@@ -9,8 +9,7 @@ import * as _ from 'lodash';
 })
 export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;
-
-  qrData = true;
+  
   constructor(public router: Router) { }
 
   ngOnInit() {
@@ -24,3 +23,4 @@ export class QrCodeModalComponent implements OnInit {
     }
   }
 }
+
