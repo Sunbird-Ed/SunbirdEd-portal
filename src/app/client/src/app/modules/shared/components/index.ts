@@ -10,3 +10,4 @@ export * from './share-link/share-link.component';
 export * from './player/player.component';
 export * from './card/card.component';
 export * from './collection-player-metadata/collection-player-metadata.component';
+export * from './browser-compatibility/browser-compatibility.component';

@@ -82,7 +82,7 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 // app.use(staticGzip(/(invalid)/));
 
 app.set('view engine', 'ejs')
-
+app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
