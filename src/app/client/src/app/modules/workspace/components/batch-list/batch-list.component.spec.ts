@@ -22,6 +22,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import * as mockData from './batch-list.component.spec.data';
 const testData = mockData.mockRes;
 import * as _ from 'lodash';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 describe('BatchListComponent', () => {
   let component: BatchListComponent;
   let fixture: ComponentFixture<BatchListComponent>;
@@ -53,14 +55,30 @@ describe('BatchListComponent', () => {
     'ANNOUNCEMENT_SENDER': ['01232002070124134414'],
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 1 }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-course-batch', subtype: 'scroll', type: 'list',
+          object: { type: 'batch', ver: '1.0' }
+        }
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent, BatchCardComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+        TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService, BatchService,
@@ -146,21 +164,34 @@ describe('BatchListComponent', () => {
     spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(testData.userlist));
     const req = {
       'filters': {
-          'identifier': [
-            '6d4da241-a31b-4041-bbdb-dd3a898b3f8'
-          ]
-        }
+        'identifier': [
+          '6d4da241-a31b-4041-bbdb-dd3a898b3f8'
+        ]
+      }
     };
     component.UserList(req).subscribe(
-        apiResponse => {
-          console.log(apiResponse.result.response.count);
-          expect(apiResponse.responseCode).toBe('OK');
-          expect( apiResponse.result.response.content.length).toEqual(1);
-          expect( apiResponse.result.response.count).toEqual(1);
-        }
-      );
-   expect(component.showLoader).toBeFalsy();
+      apiResponse => {
+        console.log(apiResponse.result.response.count);
+        expect(apiResponse.responseCode).toBe('OK');
+        expect(apiResponse.result.response.content.length).toEqual(1);
+        expect(apiResponse.result.response.count).toEqual(1);
+      }
+    );
+    expect(component.showLoader).toBeFalsy();
   }));
+  it('should call inview method for visits data', () => {
+    const userService = TestBed.get(UserService);
+    component.telemetryImpression = testData.telemetryData;
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userlist));
+    userService._userProfile = testData.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(testData.event.inview);
+    fixture.detectChanges();
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });
 
 

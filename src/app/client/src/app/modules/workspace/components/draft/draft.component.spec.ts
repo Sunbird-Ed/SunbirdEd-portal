@@ -17,11 +17,28 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
 import * as mockData from './draft.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 const testData = mockData.mockRes;
 describe('DraftComponent', () => {
   let component: DraftComponent;
   let fixture: ComponentFixture<DraftComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 1 }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -44,7 +61,8 @@ describe('DraftComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+        TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -74,8 +92,12 @@ describe('DraftComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { action:  { class: 'trash large icon', displayType: 'icon',
-        eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      const params = {
+        action: {
+          class: 'trash large icon', displayType: 'icon',
+          eventName: 'delete'
+        }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
+      };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -105,13 +127,13 @@ describe('DraftComponent', () => {
       component.navigateToPage(1);
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
-  }));
+    }));
 
   it('should call deleteConfirmModal method to delte the content', inject([],
     () => {
       component.deleteConfirmModal('do_2124339707713126401772');
       expect(component.showLoader).toBeTruthy();
-  }));
+    }));
 
   it('should call setpage method and set proper page number 1', inject([Router],
     (route) => {
@@ -120,7 +142,7 @@ describe('DraftComponent', () => {
       component.navigateToPage(3);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
-  }));
+    }));
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
@@ -133,13 +155,22 @@ describe('DraftComponent', () => {
 
   it('should call navigateToContent to open content player when action type is onImage', inject([Router],
     (route) => {
-      const params = { action:  { class: 'trash large icon', displayType: 'icon',
-        eventName: 'onImage' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      const params = {
+        action: {
+          class: 'trash large icon', displayType: 'icon',
+          eventName: 'onImage'
+        }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
+      };
       component.contentClick(params);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
-  }));
-
+    }));
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(testData.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });
 
 

@@ -10,7 +10,8 @@ import { UserService, LearnerService, CoursesService, PermissionService } from '
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import {Response} from './up-for-review.component.spec.data';
+import { Response } from './up-for-review.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('UpForReviewComponent', () => {
   let component: UpForReviewComponent;
@@ -36,7 +37,20 @@ describe('UpForReviewComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'] }])
+    'queryParams': Observable.from([{ subject: ['english'] }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-upforreview', type: 'list',
+          object: { type: 'Course', ver: '1.0' }
+        }
+      }
+    }
   };
 
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
@@ -49,12 +63,12 @@ describe('UpForReviewComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const mockUserRoles = {
-  userRoles: ['PUBLIC']
-};
+    userRoles: ['PUBLIC']
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -107,6 +121,13 @@ describe('UpForReviewComponent', () => {
     fixture.detectChanges();
     expect(component.upForReviewContentData).toBeDefined();
   }));
+  it('should call inview method for visits data', () => {
+    component.telemetryImpression = Response.telemetryData;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });
 
 
