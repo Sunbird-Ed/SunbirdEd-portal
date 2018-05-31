@@ -4,6 +4,7 @@ const decompress = require('gulp-decompress')
 const rename = require('gulp-rename')
 const clean = require('gulp-clean')
 const gulpSequence = require('gulp-sequence')
+const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 
 // To download editors
@@ -34,7 +35,14 @@ gulp.task('download:generic:editor', () => {
   .pipe(gulp.dest(editorsDestPath + 'generic-editor'))
 })
 
-gulp.task('download:editors', gulpSequence('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor']))
+
+gulp.task('gzip:editors', () => {
+  return gulp.src(['./client/src/thirdparty/editors/**/*.js', './client/src/thirdparty/editors/**/*.css'])
+  .pipe(gzip())
+  .pipe(gulp.dest('./client/src/thirdparty/editors'))
+})
+
+gulp.task('download:editors', gulpSequence('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor'], 'gzip:editors'))
 
 gulp.task('clean:client:install', (done) => {
   return gulp.src('./client/node_modules', {read: false})
@@ -57,6 +65,12 @@ gulp.task('client:dist', (cb) => {
     console.log(stderr)
     cb(err)
   })
+})
+
+gulp.task('client:gzip', () => {
+  return gulp.src(['./dist/*.js', './dist/*.css'])
+  .pipe(gzip())
+  .pipe(gulp.dest('./dist'))
 })
 
 gulp.task('update:index:file', () => {
@@ -88,15 +102,26 @@ gulp.task('clean:app:dist', () => {
         .pipe(clean())
 })
 
+gulp.task('build-resource-bundles', (cb) => {
+  exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
+    console.log(stdout)
+    console.log(stderr)
+    cb(err)
+  })
+})
+
 gulp.task('deploy',
   gulpSequence('clean:app:dist',
     'clean:editors',
     ['download:content:editor',
       'download:collection:editor',
       'download:generic:editor'],
+    'gzip:editors',
+    'build-resource-bundles',
     'clean:client:install',
     'client:install',
     'client:dist',
+    'client:gzip',
     'update:index:file',
     'clean:index:file',
     'prepare:app:dist')
