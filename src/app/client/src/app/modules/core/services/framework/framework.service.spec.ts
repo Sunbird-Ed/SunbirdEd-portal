@@ -37,16 +37,7 @@ describe('FrameworkService', () => {
       expect(service._frameworkData).toBe(mockFrameworkData.frameworkSuccess.result.framework.categories);
     });
   });
-
-  it('should not call framework api', () => {
-    const service = TestBed.get(FrameworkService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(service, 'getFramework');
-    service.isApiCall = false;
-    service.initialize();
-    expect(service.getFramework).not.toHaveBeenCalled();
-  });
-
+  
   it('should emit error on getFramework api failure', () => {
     const service = TestBed.get(FrameworkService);
     const contentService = TestBed.get(ContentService);
