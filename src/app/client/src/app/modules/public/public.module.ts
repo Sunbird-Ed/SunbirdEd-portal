@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GetComponent } from './components/get/get.component';
 import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
-import { SignupService, PublicPlayerService } from './services';
+import { SignupService, PublicPlayerService, OrgManagementService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
 
@@ -39,6 +39,6 @@ const routes: Routes = [
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
-  providers: [SignupService, PublicPlayerService]
+  providers: [SignupService, PublicPlayerService, OrgManagementService]
 })
 export class PublicModule { }
