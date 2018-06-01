@@ -14,7 +14,8 @@ import {
   FlaggedComponent, UpForReviewComponent, UpforReviewFilterComponent,
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
-  PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent
+  PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
+  AllContentComponent
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -41,7 +42,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ReviewsubmissionsContentplayerComponent,
     PublishedPopupComponent,
     RequestChangesPopupComponent,
-    LimitedPublishedComponent
+    LimitedPublishedComponent,
+    AllContentComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })
