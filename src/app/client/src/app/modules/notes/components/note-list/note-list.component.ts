@@ -111,9 +111,6 @@ export class NoteListComponent implements OnInit {
    * Reference of Router Navigation Service
    */
   routerNavigationService: RouterNavigationService;
-
-  telemetryImpression: IImpressionEventInput;
-  inviewLogs = [];
   /**
   * inviewLogs
   */

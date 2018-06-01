@@ -116,10 +116,6 @@ describe('NoteListComponent', () => {
     expect(component.selectedNote).toBe(component.notesList[0]);
     expect(component.showUpdateEditor).toBeFalsy();
   });
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/angular-migration
   it('should call inview method for visits data', () => {
     component.telemetryImpression = response.telemetryData;
     spyOn(component, 'inview').and.callThrough();
@@ -127,8 +123,4 @@ describe('NoteListComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/angular-migration
 });
