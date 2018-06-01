@@ -35,7 +35,7 @@ const routes: Routes = [
           {
             path: 'update/batch/:batchId', component: UpdateCourseBatchComponent,
             data: {
-              telemetry: { env: telemetryEnv, pageid: 'batch-update', type: 'view', object: { ver: '1.0', type: 'batch' } }
+              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } }
             }
           },
           {
