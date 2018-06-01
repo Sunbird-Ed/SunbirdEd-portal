@@ -28,9 +28,12 @@ const routes: Routes = [
   { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
   {
     path: 'explore/:pageNumber', component: ExploreContentComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '' }, { label: 'Search', url: '' }] }
+    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
   },
-  { path: ':slug/explore/:pageNumber', component: ExploreContentComponent }
+  {
+    path: ':slug/explore/:pageNumber', component: ExploreContentComponent,
+    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
+  }
 ];
 
 @NgModule({
