@@ -45,7 +45,8 @@ const routes: Routes = [
         ]
       },
       {
-        path: ':courseId/dashboard', component: CourseProgressComponent
+        path: ':courseId/dashboard', component: CourseProgressComponent,
+        data: { telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } } }
       },
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,

@@ -30,12 +30,6 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
-  },
-  {
-    path: 'dashboard/:courseId', component: CourseProgressComponent,
-    children: [
-      { path: 'dashboard', component: CourseProgressComponent }
-    ]
   }
 ];
 
