@@ -284,7 +284,9 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.route.navigate(['workspace/content/allcontent', this.pageNumber], { queryParams: this.queryParams });
   }
   contentClick(content) {
-    this.workSpaceService.navigateToContent(content, this.state);
+    if (content.status.toLowerCase() !== 'processing') {
+      this.workSpaceService.navigateToContent(content, this.state);
+    }
   }
 
   inview(event) {
