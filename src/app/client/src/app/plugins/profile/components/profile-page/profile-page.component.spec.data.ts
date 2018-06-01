@@ -186,5 +186,121 @@ export const mockProfilePageData = {
                 },
             ]
         }
+    },
+    event: {
+        'inview': [
+            {
+                'id': 0,
+                'data': {
+                    'previewUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com
+                    /assets/do_1125083916608880641165/codpaste-teachingpack.pdf`,
+                    'subject': 'English',
+                    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+                    'downloadUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files
+                    /do_1125083916608880641165/pdf-testing_1527765788034_do_1125083916608880641165_2.0.ecar`,
+                    'language': [
+                        'English'
+                    ],
+                    'mimeType': 'application/pdf',
+                    'variants': {
+                        'spine': {
+                            'ecarUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/
+                            do_1125083916608880641165/pdf-testing_1527765790300_do_1125083916608880641165_2.0_spine.ecar`,
+                            'size': 7187
+                        }
+                    },
+                    'objectType': 'Content',
+                    'gradeLevel': [
+                        'KG'
+                    ],
+                    'appIcon': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/
+                    do_1124784977749278721133/artifact/emi_calculater_blue_1523254123025.png`,
+                    'appId': 'dev.sunbird.portal',
+                    'artifactUrl': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/
+                    assets/do_1125083916608880641165/codpaste-teachingpack.pdf`,
+                    'contentEncoding': 'identity',
+                    'contentType': 'Resource',
+                    'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+                    'identifier': 'do_1125083916608880641165',
+                    'audience': [
+                        'Learner'
+                    ],
+                    'publishChecklist': [
+                        'No Hate speech, Abuse, Violence, Profanity',
+                        'No Sexual content, Nudity or Vulgarity',
+                        'No Discrimination or Defamation',
+                        'Relevant Keywords',
+                        'Is suitable for children',
+                        'Appropriate tags such as Resource Type, Concepts',
+                        'Correct Board, Grade, Subject, Medium',
+                        'Appropriate Title, Description',
+                        'Content plays correctly',
+                        'Can see the content clearly on Desktop and App',
+                        'Audio (if any) is clear and easy to understand',
+                        'No Spelling mistakes in the text',
+                        'Language is simple to understand'
+                    ],
+                    'visibility': 'Default',
+                    'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
+                    'mediaType': 'content',
+                    'osId': 'org.ekstep.quiz.app',
+                    'graph_id': 'domain',
+                    'nodeType': 'DATA_NODE',
+                    'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
+                    'pragma': [
+                        'external'
+                    ],
+                    'prevState': 'Live',
+                    'concepts': [
+                        'do_112300246933831680110'
+                    ],
+                    'size': 23049385,
+                    'lastPublishedOn': '2018-05-31T11:23:08.034+0000',
+                    'name': 'PDf testing',
+                    'status': 'Live',
+                    'code': 'a1bd4930-3513-497d-b715-d27d35361358',
+                    'description': 'sds',
+                    'medium': 'Hindi',
+                    'idealScreenSize': 'normal',
+                    'createdOn': '2018-05-21T11:47:58.916+0000',
+                    'contentDisposition': 'inline',
+                    'lastUpdatedOn': '2018-05-31T11:23:07.416+0000',
+                    'SYS_INTERNAL_LAST_UPDATED_ON': '2018-05-31T11:23:10.469+0000',
+                    'creator': 'Sunil Pandith',
+                    'createdFor': [
+                        '0123673542904299520',
+                        '0123673689120112640',
+                        'ORG_001'
+                    ],
+                    'os': [
+                        'All'
+                    ],
+                    'pkgVersion': 2,
+                    'versionKey': '1527765787416',
+                    'idealScreenDensity': 'hdpi',
+                    'framework': 'NCF',
+                    's3Key': 'ecar_files/do_1125083916608880641165/pdf-testing_1527765788034_do_1125083916608880641165_2.0.ecar',
+                    'lastSubmittedOn': '2018-05-21T12:06:53.195+0000',
+                    'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+                    'compatibilityLevel': 4,
+                    'board': 'NCERT',
+                    'resourceType': 'Learn',
+                    'node_id': 29506
+                }
+            }
+        ],
+        'direction': 'up'
+    },
+    telemetryData: {
+        context: {
+            env: 'workspace'
+        },
+        edata: {
+            type: 'list',
+            pageid: '',
+            subtype: 'scroll',
+            uri: '',
+            visits: []
+        }
     }
 };
