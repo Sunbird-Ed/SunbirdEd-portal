@@ -51,7 +51,7 @@ describe('HomeAnnouncementComponent', () => {
       fixture.detectChanges();
       expect(component.showLoader).toBe(false);
     }));
-   it('should throw error', inject([AnnouncementService],
+   it('should emit the event', inject([AnnouncementService],
     (announcementService: AnnouncementService) => {
       spyOn(component.inviewEvent, 'emit');
       component.inview(testData.inviewData);
