@@ -3,6 +3,7 @@ import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared'
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 @Component({
@@ -17,12 +18,34 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   showEnrollDetails = false;
   readMore = false;
   disableSubmitBtn = false;
+  /**
+	 * telemetryImpression object for update batch page
+	*/
+  telemetryImpression: IImpressionEventInput;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService) { }
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.batchId = params.batchId;
+
+      // Create the telemetry impression event for enroll batch page
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/enroll/batch/' + this.batchId
+        },
+        object: {
+          id: this.batchId,
+          type: this.activatedRoute.snapshot.data.telemetry.object.type,
+          ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+          }
+      };
+
       this.courseBatchService.getEnrollBatchDetails(this.batchId).subscribe((data) => {
         this.batchDetails = data;
         this.fetchParticipantsDetails();

@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div class="scrolling content">
+  <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
     <form [formGroup]="createBatchUserForm" class="ui form batchAddUserForm">
       <div class="one field" [ngClass]="createBatchUserForm.controls['name'].invalid && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">

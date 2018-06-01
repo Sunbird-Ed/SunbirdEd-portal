@@ -20,5 +20,5 @@ To get started with the Sunbird portal, please try out our cloud-based demo site
 You can also install the Sunbird portal locally on your laptop, please follow the [installation instructions](http://www.sunbird.org/developer-docs/installation/)
 
 ## Reporting Issues
-We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues or  you find.
+We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
 
