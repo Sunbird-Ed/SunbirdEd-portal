@@ -394,6 +394,7 @@ keycloak.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
+  req.session.logSession = true
   if (request.session) {
     telemetryHelper.logSessionEnd(request)
     telemetry.syncOnExit(function (err, res) { // sync on session end
