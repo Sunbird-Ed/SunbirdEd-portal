@@ -170,7 +170,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/learn'); // give url in angular 1
+    this.navigationHelperService.navigateToPreviousUrl('/explore/1');
   }
   closeContentPlayer() {
     this.showPlayer = false;

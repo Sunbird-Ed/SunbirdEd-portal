@@ -1,7 +1,7 @@
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 /**
  * Main header component
@@ -87,9 +87,7 @@ export class MainHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.subscribe (event => {
-      this.getUrl();
-    });
+    this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
@@ -144,9 +142,13 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
-    const urlSegment = window.location.href.split('/');
-    if (_.includes(urlSegment, 'explore')) {
-     this.showExploreHeader = true;
-    }
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+      const urlSegment = urlAfterRedirects.url.split('/');
+      if (_.includes(urlSegment, 'explore')) {
+        this.showExploreHeader = true;
+      } else {
+        this.showExploreHeader = false;
+      }
+    });
   }
 }

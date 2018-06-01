@@ -41,7 +41,9 @@ export class PublicContentPlayerComponent implements OnInit {
   contentData: ContentData;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
-    public windowScrollService: WindowScrollService, public playerService: PublicPlayerService) {
+    public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
+    public navigationHelperService: NavigationHelperService
+    ) {
   }
   /**
    *
@@ -80,5 +82,12 @@ export class PublicContentPlayerComponent implements OnInit {
   tryAgain() {
     this.showError = false;
     this.getContent();
+  }
+  /**
+   * closes conent player and revert to previous url
+   * @memberof ContentPlayerComponent
+   */
+  close() {
+    this.navigationHelperService.navigateToResource('/explore/1');
   }
 }

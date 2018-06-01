@@ -21,7 +21,7 @@
     </div>
   </div>
   <div *ngIf="loader" class="row">
-    <div class="eight wide centered column">
+    <div class="ten wide centered column">
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
   </div>
@@ -29,6 +29,9 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
+      <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
+        <i class="ui remove icon"></i>
+      </h5>
     </div>
     <div class="one wide column"></div>
     <div class="one wide column"></div>
