@@ -36,7 +36,20 @@ describe('AllContentComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english', 'odia'] }])
+    'queryParams': Observable.from([{ subject: ['english', 'odia'] }]),
+     snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-allcontent', type: 'list',
+          object: { type: 'workspace', ver: '1.0' }
+        }
+      }
+    }
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
   beforeEach(async(() => {

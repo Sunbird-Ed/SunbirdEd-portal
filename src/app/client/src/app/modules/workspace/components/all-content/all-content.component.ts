@@ -11,6 +11,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-all-content',
   templateUrl: './all-content.component.html',
@@ -123,8 +124,12 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   */
   sort: object;
   /**
+	 * inviewLogs
+	*/
+  inviewLogs = [];
+  /**
   * Contains returned object of the pagination service
-  * which is needed to show the pagination on inbox view
+  * which is needed to show the pagination on all content view
   */
   pager: IPagination;
 
@@ -132,11 +137,13 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
-
-
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
   * To call resource service which helps to use language constant
- */
+  */
   public resourceService: ResourceService;
 
   /**
@@ -190,6 +197,18 @@ export class AllContentComponent extends WorkSpace implements OnInit {
         this.queryParams = bothParams.queryParams;
         this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+        visits: this.inviewLogs
+      }
+    };
   }
   /**
   * This method sets the make an api call to get all UpForReviewContent with page No and offset
@@ -266,6 +285,24 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   }
   contentClick(content) {
     this.workSpaceService.navigateToContent(content, this.state);
+  }
+
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.identifier,
+          objtype: inview.data.contentType,
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }
 

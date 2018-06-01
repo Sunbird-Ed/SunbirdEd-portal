@@ -180,9 +180,15 @@ const routes: Routes = [
         }
       },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
-      { path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
-      data: { roles : 'allContentRole',
-       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]}
+      {
+        path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-allcontent', subtype: 'scroll', uri: 'workspace/content/allcontent',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'allContentRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
       },
       // { path: '**', redirectTo: 'create' }
     ]
