@@ -23,7 +23,7 @@ describe('StatusComponent', () => {
     snapshot: {
       data: {
         telemetry: {
-          env: 'profile', pageid: 'profile-bulkUpload-checkStatus', subtype: 'paginate', type: 'view',
+          env: 'profile', pageid: 'profile-bulk-upload-check-status', subtype: 'paginate', type: 'view',
           object: { type: '', ver: '1.0' }
         }
       }

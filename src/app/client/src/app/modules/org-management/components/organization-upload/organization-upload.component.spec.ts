@@ -24,7 +24,7 @@ describe('OrganizationUploadComponent', () => {
     snapshot: {
       data: {
         telemetry: {
-          env: 'profile', pageid: 'profile-bulkUpload-organizationUpload', subtype: 'paginate', type: 'view',
+          env: 'profile', pageid: 'profile-bulk-upload-organization-pload', subtype: 'paginate', type: 'view',
           object: { type: '', ver: '1.0' }
         }
       }

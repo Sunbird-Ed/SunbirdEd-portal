@@ -24,7 +24,7 @@ describe('UserUploadComponent', () => {
     snapshot: {
       data: {
         telemetry: {
-          env: 'profile', pageid: 'profile-bulkUpload-userUpload', subtype: 'paginate', type: 'view',
+          env: 'profile', pageid: 'profile-bulk-upload-user-upload', subtype: 'paginate', type: 'view',
           object: { type: '', ver: '1.0' }
         }
       }
