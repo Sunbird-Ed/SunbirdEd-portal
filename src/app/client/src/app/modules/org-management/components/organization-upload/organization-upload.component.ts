@@ -110,7 +110,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulkUpload-organizationUpload',
+        pageid: 'profile-bulk-upload-organization-upload',
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.router.url
       }

@@ -150,7 +150,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulkUpload-userUpload',
+        pageid: 'profile-bulk-upload-user-upload',
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.router.url
       }

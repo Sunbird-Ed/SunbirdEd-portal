@@ -96,7 +96,7 @@ export class StatusComponent implements OnInit, OnDestroy {
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: 'profile-bulkUpload-checkStatus',
+        pageid: 'profile-bulk-upload-check-status',
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.router.url
       }
