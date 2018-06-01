@@ -37,7 +37,7 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
-      }
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }]
     }
   },
   {
@@ -45,7 +45,7 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
-      }
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }]
     }
   }
 ];
