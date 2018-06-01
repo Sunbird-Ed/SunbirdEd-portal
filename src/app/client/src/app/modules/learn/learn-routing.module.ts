@@ -10,7 +10,8 @@ import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 
-
+const telemetryEnv = 'course';
+const objectType = 'course';
 const routes: Routes = [
   {
     path: 'learn', component: LearnPageComponent,
@@ -37,7 +38,11 @@ const routes: Routes = [
       },
       {
         path: ':courseId/batch/:batchId/notes', component: NoteListComponent,
-        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
+          }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+        },
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
       {
