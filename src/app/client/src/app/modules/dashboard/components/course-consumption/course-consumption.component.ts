@@ -300,8 +300,10 @@ export class CourseConsumptionComponent {
     step === 'next' ? this.showGraph++ : this.showGraph--;
   }
 
+  /**
+   * Function to initialise the telemetry impression event for course consumption dashboard page
+   */
   initTelemetryImpressionEvent() {
-    // Create the telemetry impression event for course consumption dashboard page
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
