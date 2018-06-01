@@ -114,6 +114,7 @@ export interface IErrorEventInput {
 export interface IImpressionEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;
