@@ -37,18 +37,18 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create the app', async(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
+  it('should create the app', () => {
+    // fixture = TestBed.createComponent(AppComponent);
+   // component = fixture.componentInstance;
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
+  });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockData.success));
-    userService.initialize(true);
+    // userService.initialize(true);
     const tenantService = TestBed.get(TenantService);
     spyOn(tenantService, 'get').and.returnValue(Observable.of(mockData.tenantSuccess));
     spyOn(document, 'querySelector').and.returnValue({
