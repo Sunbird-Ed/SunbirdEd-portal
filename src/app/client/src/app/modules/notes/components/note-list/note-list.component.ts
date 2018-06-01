@@ -164,10 +164,6 @@ export class NoteListComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.env
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
@@ -177,7 +173,6 @@ export class NoteListComponent implements OnInit {
   }
 
   inview(event) {
-    console.log(event);
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         return o.objid === inview.data.id;
