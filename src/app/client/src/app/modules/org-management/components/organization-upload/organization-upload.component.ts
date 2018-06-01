@@ -3,6 +3,7 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService } from '
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component helps to upload bulk organizations data (csv file)
@@ -57,6 +58,10 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
     config: ConfigService, resourceService: ResourceService, private router: Router) {
     this.activatedRoute = activatedRoute;
@@ -99,6 +104,17 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         ]
       }
     ];
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulkUpload-organizationUpload',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
   }
   /**
  * This method helps to redirect to the parent component

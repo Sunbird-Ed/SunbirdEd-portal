@@ -4,6 +4,7 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService } from '
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -75,6 +76,10 @@ export class UserUploadComponent implements OnInit, OnDestroy {
 */
   redirectUrl: string;
   /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
 * Constructor to create injected service(s) object
 *
 * Default method of DetailsComponent class
@@ -139,6 +144,18 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       },
       { instructions: this.resourceService.frmelmnts.instn.t0065 }];
     this.showLoader = false;
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulkUpload-userUpload',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
+    console.log('tele', this.telemetryImpression);
   }
   /**
  * This method helps to redirect to the parent component

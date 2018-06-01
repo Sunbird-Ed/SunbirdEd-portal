@@ -19,7 +19,15 @@ describe('StatusComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile-bulkUpload-checkStatus', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
