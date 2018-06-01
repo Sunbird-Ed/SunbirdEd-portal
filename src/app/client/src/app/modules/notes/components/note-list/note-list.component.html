@@ -34,18 +34,16 @@
           <div class="ui grid">
             <div class="four wide column padding-topBottomNone">
               <div class="notelistscroll">
-                <div class="profileitems ui relaxed divided items ">
-                  <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="notesList">
-                    <div in-view-item class="item padding-topBottomNone notelistfocus"  [id]="i" [data]="note" *ngFor="let note of notesList | orderBy:'updatedDate':true | filter : searchData : ['note', 'title']; let i = index">
-                      <div class="content padding-all-10 contentnotelist" [ngClass]="{'notelistborder': i === selectedIndex}" (click)="selectedIndex = i; setSelectedNote(note,i)">
-                        <a class="header">{{ note.title | slice:0:15}}</a>
-                        <i *ngIf="note.title.length > 15" class="ellipsis horizontal icon popup-button"></i>
-                        <div class="description margin-top-0 notedec">
-                          <span Markdown content="noteData">{{ note.note | slice:0:30 }}</span>
-                        </div>
-                        <div class="meta ">
-                          <span class="note-card-time-stamp">{{ note.updatedDate | timeAgo }}</span>
-                        </div>
+                <div class="profileitems ui relaxed divided items" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="notesList">
+                  <div in-view-item class="item padding-topBottomNone notelistfocus"  [id]="i" [data]="note" *ngFor="let note of notesList | orderBy:'updatedDate':true | filter : searchData : ['note', 'title']; let i = index">
+                    <div class="content padding-all-10 contentnotelist" [ngClass]="{'notelistborder': i === selectedIndex}" (click)="selectedIndex = i; setSelectedNote(note,i)">
+                      <a class="header">{{ note.title | slice:0:15}}</a>
+                      <i *ngIf="note.title.length > 15" class="ellipsis horizontal icon popup-button"></i>
+                      <div class="description margin-top-0 notedec">
+                        <span Markdown content="noteData">{{ note.note | slice:0:30 }}</span>
+                      </div>
+                      <div class="meta ">
+                        <span class="note-card-time-stamp">{{ note.updatedDate | timeAgo }}</span>
                       </div>
                       <div class="ui clearing divider"></div>
                     </div>

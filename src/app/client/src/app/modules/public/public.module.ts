@@ -13,6 +13,7 @@ import { PublicFooterComponent } from './components/public-footer/public-footer.
 import { SignupService, PublicPlayerService, OrgManagementService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
+import { ExploreContentComponent } from './components/explore-content/explore-content.component';
 import { QrCodeModalComponent } from './components/qr-code-modal/qr-code-modal.component';
 
 const routes: Routes = [
@@ -24,7 +25,15 @@ const routes: Routes = [
   { path: 'get', component: GetComponent },
   { path: 'get/dial/:dialCode', component: DialCodeComponent },
   { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
-  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent }
+  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
+  {
+    path: 'explore/:pageNumber', component: ExploreContentComponent,
+    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
+  },
+  {
+    path: ':slug/explore/:pageNumber', component: ExploreContentComponent,
+    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
+  }
 ];
 
 @NgModule({
@@ -39,7 +48,8 @@ const routes: Routes = [
     DiscussionModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, QrCodeModalComponent],
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent,
+    QrCodeModalComponent, ExploreContentComponent],
   providers: [SignupService, PublicPlayerService, OrgManagementService]
 })
 export class PublicModule { }

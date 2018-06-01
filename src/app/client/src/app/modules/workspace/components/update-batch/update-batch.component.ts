@@ -142,8 +142,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: 'pageinit',
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.batchId
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.batchId
       }
     };
   }

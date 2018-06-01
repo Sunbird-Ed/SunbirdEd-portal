@@ -261,10 +261,15 @@ export const response = {
       }
     }
   },
-
   telemetryData: {
     context: {
-      env: 'library'
+      env: 'library',
+      cdata: [
+        {
+          id: '',
+          type: 'course'
+        }
+      ]
     },
     edata: {
       type: 'list',
@@ -277,17 +282,16 @@ export const response = {
 
   event: {
     inview: [{
-      contentId : 'do_112199017052798976119',
-      createdBy : '1b5da18c-376a-4de6-b3e4-3dc1a644f762',
-      createdDate : '2018-05-31 10:32:03:384+0000',
-      id : '01251543405613056018',
-      identifier : '01251543405613056018',
-      note : 'test',
-      title : 'test',
-      updatedBy : '1b5da18c-376a-4de6-b3e4-3dc1a644f762',
-      updatedDate : '2018-05-31 10:32:03:384+0000',
-      userId : '1b5da18c-376a-4de6-b3e4-3dc1a644f762'
+      contentId: 'do_112199017052798976119',
+      createdBy: '1b5da18c-376a-4de6-b3e4-3dc1a644f762',
+      createdDate: '2018-05-31 10:32:03:384+0000',
+      id: '01251543405613056018',
+      identifier: '01251543405613056018',
+      note: 'test',
+      title: 'test',
+      updatedBy: '1b5da18c-376a-4de6-b3e4-3dc1a644f762',
+      updatedDate: '2018-05-31 10:32:03:384+0000',
+      userId: '1b5da18c-376a-4de6-b3e4-3dc1a644f762'
     }]
   }
-
 };

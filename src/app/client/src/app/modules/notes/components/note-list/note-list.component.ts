@@ -7,8 +7,8 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
-import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * This component contains 2 sub components
  * 1)Inline editor: Provides an editor to create and update notes.
@@ -115,6 +115,14 @@ export class NoteListComponent implements OnInit {
   telemetryImpression: IImpressionEventInput;
   inviewLogs = [];
   /**
+  * inviewLogs
+  */
+  inviewLogs = [];
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
+  /**
    * The constructor - Constructor for Note List Component.
    *
    * @param {ToasterService} toasterService Reference of ToasterService.
@@ -188,24 +196,6 @@ export class NoteListComponent implements OnInit {
         uri: this.route.url
       }
     };
-  }
-
-  inview(event) {
-    _.forEach(event.inview, (inview, key) => {
-      const obj = _.find(this.inviewLogs, (o) => {
-        return o.objid === inview.data.id;
-      });
-      if (obj === undefined) {
-        this.inviewLogs.push({
-          objid: inview.data.id,
-          objtype: 'note',
-          index: inview.id
-        });
-      }
-    });
-    this.telemetryImpression.edata.visits = this.inviewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
   /**
@@ -295,5 +285,22 @@ export class NoteListComponent implements OnInit {
     } else {
       this.route.navigate(['/resources/play/content/', this.contentId]);
     }
+  }
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'note',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }

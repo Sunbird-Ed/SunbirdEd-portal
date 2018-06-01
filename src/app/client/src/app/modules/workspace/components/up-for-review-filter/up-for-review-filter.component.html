@@ -43,7 +43,7 @@
 
 <ng-template let-popup #popupTemplate>
   <div class="popup-content">
-      <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
+      <app-data-driven-filter [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
       [accordionDefaultOpen]=true [isShowFilterLabel]=false></app-data-driven-filter>
     </div>
 </ng-template>

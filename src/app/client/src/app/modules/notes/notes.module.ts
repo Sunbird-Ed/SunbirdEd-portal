@@ -22,9 +22,9 @@ import { NgInviewModule } from 'angular-inport';
     OrderModule,
     BrowserModule,
     SharedModule,
+    MarkdownModule.forRoot(),
     TelemetryModule,
-    NgInviewModule,
-    MarkdownModule.forRoot()
+    NgInviewModule
   ],
   declarations: [TimeAgoPipe, NoteListComponent, InlineEditorComponent,
     NoteCardComponent, PopupEditorComponent, DeleteNoteComponent],
