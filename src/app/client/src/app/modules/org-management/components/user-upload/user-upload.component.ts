@@ -155,7 +155,6 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         uri: this.router.url
       }
     };
-    console.log('tele', this.telemetryImpression);
   }
   /**
  * This method helps to redirect to the parent component
