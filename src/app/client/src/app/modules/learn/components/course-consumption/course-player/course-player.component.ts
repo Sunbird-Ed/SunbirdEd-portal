@@ -10,6 +10,7 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import {CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -71,6 +72,26 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
    */
   showNoteEditor = false;
 
+  /**
+	 * telemetryImpression object for course TOC page
+	*/
+  telemetryCourseImpression: IImpressionEventInput;
+
+  /**
+	 * telemetryImpression object for content played from within a course
+	*/
+  telemetryContentImpression: IImpressionEventInput;
+
+  /**
+	 * telemetry object version
+	*/
+  telemetryObjectVer = '1.0';
+
+  /**
+	 * common telemetry data for this component
+  */
+  telemetryData = {env: 'course', pageid: 'course-read', type: 'view'};
+
   contentIds  = [];
   contentStatus: any;
   contentDetails = [];
@@ -116,6 +137,24 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
+
+        // Create the telemetry impression event for course toc page
+        this.telemetryCourseImpression = {
+          context: {
+            env: this.telemetryData.env
+          },
+          edata: {
+            type: this.telemetryData.type,
+            pageid: this.telemetryData.pageid,
+            uri: '/learn/course/' + this.courseId
+          },
+          object: {
+            id: this.courseId,
+            type: 'course',
+            ver: this.telemetryObjectVer
+          }
+        };
+
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
       }).subscribe((response) => {
         this.courseHierarchy = response;
@@ -123,11 +162,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.flaggedCourse = true;
         }
         if (this.batchId) {
+          this.telemetryCourseImpression.edata.uri = '/learn/course/' + this.courseId + '/batch/' + this.batchId;
           this.enrolledCourse = true;
           this.parseChildContent(response);
           this.fetchContentStatus(response);
           this.subscribeToQueryParam(response);
         } else if (this.courseStatus === 'Unlisted') {
+          this.telemetryCourseImpression.edata.uri = '/learn/course/' + this.courseId + '/unlisted';
           this.parseChildContent(response);
           this.subscribeToQueryParam(response);
         } else {
@@ -139,8 +180,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-  }
 
+  }
   public playContent(data: any): void {
     this.enableContentPlayer = false;
     this.loader = true;
@@ -192,6 +233,27 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
         if (content) {
+
+          // Create the telemetry impression event for content player page
+          this.telemetryContentImpression = {
+            context: {
+              env: this.telemetryData.env
+            },
+            edata: {
+              type: this.telemetryData.type,
+              pageid: this.telemetryData.pageid,
+              uri: '/learn/course/' + this.courseId + '/batch/' + this.batchId + '?contentId=' + queryParams.contentId
+            },
+            object: {
+              id: queryParams.contentId,
+              type: 'content',
+              ver: this.telemetryObjectVer,
+              rollup: {
+                l1: this.courseId,
+                l2: queryParams.contentId
+              }
+            }
+          };
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message

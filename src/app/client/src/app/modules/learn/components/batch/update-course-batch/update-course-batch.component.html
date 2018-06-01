@@ -12,7 +12,7 @@
       </div>
     </div>
   
-    <div class="scrolling content">
+    <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
       <form [formGroup]="batchUpdateForm" class="ui form batchUpdateForm">
         <div class="one field" [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
           <div class="required field">
