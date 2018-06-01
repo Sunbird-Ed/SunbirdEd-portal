@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import { SearchService, SearchParam, ContentService } from '@sunbird/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class OrgManagementService {
 
-  constructor( public configService: ConfigService, public searchService: SearchService,
-  public contentService: ContentService) {
+  constructor(public configService: ConfigService, public searchService: SearchService,
+    public contentService: ContentService, public router: Router, public toasterService: ToasterService,
+    public resourceService: ResourceService) {
   }
 
   getChannel(slug?: string): Observable<ServerResponse> {
@@ -28,7 +30,12 @@ export class OrgManagementService {
           option.data.request.filters.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
           return this.contentService.post(option)
             .map((responseData: ServerResponse) => {
-              return responseData.result.response.content[0].hashTagId;
+              try {
+                return responseData.result.response.content[0].hashTagId;
+              } catch (error) {
+                this.toasterService.error(this.resourceService.messages.emsg.m0005);
+                this.router.navigate(['']);
+              }
             });
         }
       });
