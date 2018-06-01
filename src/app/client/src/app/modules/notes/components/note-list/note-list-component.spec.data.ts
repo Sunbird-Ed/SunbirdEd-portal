@@ -263,7 +263,13 @@ export const response = {
   },
   telemetryData: {
     context: {
-      env: 'library'
+      env: 'library',
+      cdata: [
+        {
+          id: '',
+          type: 'course'
+        }
+      ]
     },
     edata: {
       type: 'list',

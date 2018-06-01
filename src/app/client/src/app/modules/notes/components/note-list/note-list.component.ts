@@ -165,13 +165,27 @@ export class NoteListComponent implements OnInit {
       this.batchId = params.batchId;
     });
     this.getAllNotes();
+    let cdataId = '';
+    let cdataType = '';
+    if (this.activatedRoute.snapshot.params.courseId) {
+      cdataId = this.activatedRoute.snapshot.params.courseId;
+      cdataType = 'course';
+    } else if (this.activatedRoute.snapshot.params.contentId) {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'content';
+    } else {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'collection';
+    }
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [
+          {
+            id: cdataId,
+            type: cdataType
+          }
+        ]
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -270,7 +284,6 @@ export class NoteListComponent implements OnInit {
     }
   }
   inview(event) {
-    console.log(event);
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         return o.objid === inview.data.id;
