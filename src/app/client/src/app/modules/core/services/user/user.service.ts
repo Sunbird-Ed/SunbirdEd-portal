@@ -96,7 +96,7 @@ export class UserService {
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+      this._env = (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
     } catch (error) {
     }
 
@@ -216,7 +216,7 @@ export class UserService {
   }
   setContentChannelFilter() {
     try {
-      const contentChannelFilter =  (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
+      const contentChannelFilter = (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
       if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
         this._contentChannelFilter = this.channel;
       }
@@ -298,4 +298,16 @@ export class UserService {
   get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);
   }
+
+  /**
+   * method to log session start
+   */
+  public startSession(): void {
+    const fingerPrint2 = new Fingerprint2();
+    fingerPrint2.get((result, components) => {
+      const url = `/v1/user/session/start/${result}`;
+      this.http.get(url).subscribe();
+    });
+  }
 }
+

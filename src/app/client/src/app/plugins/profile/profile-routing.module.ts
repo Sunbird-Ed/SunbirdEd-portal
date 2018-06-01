@@ -20,15 +20,33 @@ const routes: Routes = [
     children: [
       {
         path: 'bulkUpload/organizationUpload', component: OrganizationUploadComponent,
-        data: { redirectUrl: '/profile', roles: 'bulkUpload' }, canActivate: [AuthGuard]
+        data: {
+          redirectUrl: '/profile', roles: 'bulkUpload',
+          telemetry: {
+            env: telemetryEnv, type: 'view', mode: 'create',
+            subtype: 'paginate', object: { type: objectType, ver: '1.0' }
+          }
+        }, canActivate: [AuthGuard]
       },
       {
         path: 'bulkUpload/userUpload', component: UserUploadComponent,
-        data: { redirectUrl: '/profile', roles: 'bulkUpload' }, canActivate: [AuthGuard]
+        data: {
+          redirectUrl: '/profile', roles: 'bulkUpload',
+          telemetry: {
+            env: telemetryEnv, type: 'view', mode: 'create',
+            subtype: 'paginate', object: { type: objectType, ver: '1.0' }
+          }
+        }, canActivate: [AuthGuard]
       },
       {
         path: 'bulkUpload/checkStatus', component: StatusComponent,
-        data: { redirectUrl: '/profile', roles: 'bulkUpload' }, canActivate: [AuthGuard]
+        data: {
+          redirectUrl: '/profile', roles: 'bulkUpload',
+          telemetry: {
+            env: telemetryEnv, type: 'view', mode: 'create',
+            subtype: 'paginate', object: { type: objectType, ver: '1.0' }
+          }
+        }, canActivate: [AuthGuard]
       }
     ]
   },
@@ -37,7 +55,7 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
-      }
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }]
     }
   },
   {
@@ -45,7 +63,7 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
-      }
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }]
     }
   }
 ];
