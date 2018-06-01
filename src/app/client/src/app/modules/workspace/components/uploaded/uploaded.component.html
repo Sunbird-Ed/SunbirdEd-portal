@@ -1,15 +1,15 @@
 <!-- Loader -->
 <div class="twelve wide column margin-top-20" *ngIf="showLoader">
-  <app-loader [data] = "loaderMessage" ></app-loader>
+  <app-loader [data]="loaderMessage"></app-loader>
 </div>
 <div class="ui grid" *ngIf="!showLoader">
-  <div class="twelve wide column">
-    <div class="ui three stackable cards">
-      <div *ngFor="let content of uploaded">
+  <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui three stackable cards" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="uploaded">
+      <div in-view-item *ngFor="let content of uploaded;let i = index;" [id]="i" [data]="content">
         <app-card [data]="content" (clickEvent)="contentClick($event)" [customClass]="'card workspace-card'"></app-card>
       </div>
     </div>
-   <div *ngIf="noResult">
+    <div *ngIf="noResult">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>

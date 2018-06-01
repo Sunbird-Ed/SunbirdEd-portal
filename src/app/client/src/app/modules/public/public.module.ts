@@ -14,6 +14,7 @@ import { SignupService, PublicPlayerService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
 import { ExploreContentComponent } from './components/explore-content/explore-content.component';
+import { QrCodeModalComponent } from './components/qr-code-modal/qr-code-modal.component';
 
 const routes: Routes = [
   {
@@ -44,7 +45,8 @@ const routes: Routes = [
     DiscussionModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent,
+    QrCodeModalComponent, ExploreContentComponent],
   providers: [SignupService, PublicPlayerService]
 })
 export class PublicModule { }

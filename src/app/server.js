@@ -82,6 +82,23 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 // app.use(staticGzip(/(invalid)/));
 
 app.set('view engine', 'ejs')
+
+app.get(['/dist/*.js', '/dist/*.css',
+ '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff',
+ '/dist/*.eot',
+ '/dist/*.svg'
+],
+ compression(), function (req, res, next) {
+  console.log(req.originalUrl)
+   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+   next();
+ });
+
+ app.all(['/server.js', '/helpers/*.js' ,'/helpers/**/*.js'], function(req, res){
+  res.sendStatus(404);
+ })
+
 app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
@@ -98,11 +115,7 @@ app.get('/assets/images/*', function (req, res, next) {
 });
 
 
-// app.get(['/*.js', '/*.css', '/*.ttf', '/*.woff2'], compression(), function (req, res, next) {
-//   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
-//   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
-//   next();
-// });
+
 
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
 
