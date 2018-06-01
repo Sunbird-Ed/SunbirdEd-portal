@@ -6,13 +6,15 @@ const routes: Routes = [
   {
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
+      telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view'},
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
-    path: 'dashboard/course/consumption/:id/:timePeriod', component: CourseConsumptionComponent,
+    path: 'activity/course/consumption/:id/:timePeriod', component: CourseConsumptionComponent,
     data: {
+      telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view'},
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
