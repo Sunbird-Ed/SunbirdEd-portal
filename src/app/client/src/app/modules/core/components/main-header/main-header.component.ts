@@ -23,6 +23,7 @@ export class MainHeaderComponent implements OnInit {
   key: string;
   queryParam: any = {};
   selectedLanguage: string;
+  showExploreHeader = false;
   languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
   /**
    * tenant name
@@ -86,6 +87,9 @@ export class MainHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.router.events.subscribe (event => {
+      this.getUrl();
+    });
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
@@ -140,11 +144,9 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
-    const urlSegment = this.router.url.split('/');
+    const urlSegment = window.location.href.split('/');
     if (_.includes(urlSegment, 'explore')) {
-      return this.router.url;
-    } else {
-      return 'notexplore';
+     this.showExploreHeader = true;
     }
   }
 }

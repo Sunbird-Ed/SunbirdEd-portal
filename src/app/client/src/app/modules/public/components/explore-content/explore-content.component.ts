@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { OrgManagementService } from './../../services';
+
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
@@ -37,7 +39,7 @@ export class ExploreContentComponent implements OnInit {
     /**
      * Contains channel id
      */
-    hashTagId: string;
+    hashTagId: any;
     /**
      * Contains list of published course(s) of logged-in user
      */
@@ -63,6 +65,7 @@ export class ExploreContentComponent implements OnInit {
      * Contains slug which comes from the url
      */
     slug = '';
+    selectedLanguage: string;
     /**
      * no result  message
     */
@@ -124,7 +127,7 @@ export class ExploreContentComponent implements OnInit {
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
-        config: ConfigService, public utilService: UtilService) {
+        config: ConfigService, public utilService: UtilService, public orgManagementService: OrgManagementService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -198,26 +201,14 @@ export class ExploreContentComponent implements OnInit {
         });
     }
 
-    getHashTagId() {
-        const searchParams = {
-            filters: {
-                slug: this.slug
-            },
-            limit: 10,
-            pageNumber: 1
-        };
-        this.searchService.orgSearch(searchParams).subscribe(
-            (apiResponse: ServerResponse) => {
-                if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
-                    this.hashTagId = apiResponse.result.response.content[0].hashTagId;
-                    this.setFilters();
-                } else {
-                    this.setFilters();
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0081);
-                    this.route.navigate(['']);
-                }
+    getChannelId() {
+        this.orgManagementService.getChannel(this.slug).subscribe(
+            (apiResponse) => {
+                this.hashTagId = apiResponse;
+                this.setFilters();
             },
             err => {
+                this.route.navigate(['']);
             }
         );
     }
@@ -244,6 +235,11 @@ export class ExploreContentComponent implements OnInit {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
+                if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
+                    this.selectedLanguage = this.queryParams['language'];
+                    this.resourceService.getResource(this.selectedLanguage);
+                }
+
                 if (_.isEmpty(this.queryParams)) {
                     this.filters = {
                         contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
@@ -266,16 +262,7 @@ export class ExploreContentComponent implements OnInit {
     ngOnInit() {
         this.activatedRoute.params.subscribe(params => {
             this.slug = params.slug;
-            if (this.slug) {
-                this.getHashTagId();
-            } else {
-                try {
-                    this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-                    this.getHashTagId();
-                } catch (error) {
-                    this.route.navigate(['']);
-                }
-            }
+            this.getChannelId();
         });
     }
 
