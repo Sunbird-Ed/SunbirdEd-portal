@@ -22,19 +22,40 @@ const routes: Routes = [
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,
-        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
-        children: [{ path: 'flag', component: FlagContentComponent },
-        { path: 'enroll/batch/:batchId', component: EnrollBatchComponent },
-        { path: 'update/batch/:batchId', component: UpdateCourseBatchComponent },
-        { path: 'create/batch', component: CreateBatchComponent }]
+        data: {
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+        },
+        children: [
+          { path: 'flag', component: FlagContentComponent },
+          {
+            path: 'enroll/batch/:batchId', component: EnrollBatchComponent,
+            data: {
+              telemetry: { env: telemetryEnv, pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
+            }
+          },
+          {
+            path: 'update/batch/:batchId', component: UpdateCourseBatchComponent,
+            data: {
+              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } }
+            }
+          },
+          {
+            path: 'create/batch', component: CreateBatchComponent,
+            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } }
+          }
+        ]
       },
       {
         path: ':courseId/dashboard', component: CourseProgressComponent
       },
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
-        data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }] },
-        children: [{ path: 'flag', component: FlagContentComponent }]
+        data: {
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+        },
+        children: [
+          { path: 'flag', component: FlagContentComponent }
+        ]
       },
       {
         path: ':courseId/batch/:batchId/notes', component: NoteListComponent,
@@ -46,7 +67,7 @@ const routes: Routes = [
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
       {
-        path: ':courseId/:courseStatus', component: CoursePlayerComponent,
+        path: ':courseId/:courseStatus', component: CoursePlayerComponent
       }
     ]
   }
