@@ -13,13 +13,26 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as mockData from './main-home-component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { NgInviewModule } from 'angular-inport';
 const testData = mockData.mockRes;
 describe('MainHomeComponent', () => {
   let component: MainHomeComponent;
   let fixture: ComponentFixture<MainHomeComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'home', pageid: 'home', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    };
   }
   const resourceBundle = {
     'messages': {
@@ -31,7 +44,8 @@ describe('MainHomeComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule,
+       Ng2IziToastModule, NgInviewModule],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,
@@ -87,4 +101,5 @@ describe('MainHomeComponent', () => {
    // fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
+
 });
