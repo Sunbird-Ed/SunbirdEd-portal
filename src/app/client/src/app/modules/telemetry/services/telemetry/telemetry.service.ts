@@ -181,13 +181,15 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   private getEventObject(eventInput: any) {
-    const eventObjectData: TelemetryObject = {
+    if (eventInput.object) {
+      const eventObjectData: TelemetryObject = {
       id: eventInput.object.id || '',
       type: eventInput.object.type || '',
       ver: eventInput.object.ver || '',
       rollup: eventInput.object.rollup || {}
     };
     return eventObjectData;
+    }
   }
 
   /**
@@ -205,7 +207,7 @@ export class TelemetryService {
       env: eventInput.context.env || this.context.config.env,
       sid: eventInput.sid || this.context.config.sid,
       uid: this.context.config.uid,
-      cdata: eventInput.cdata || [],
+      cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
     return eventContextData;

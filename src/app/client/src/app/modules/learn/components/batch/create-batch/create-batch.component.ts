@@ -226,8 +226,12 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   createBatch() {
     this.disableSubmitBtn = false;
-    const users = $('#users').dropdown('get value').split(',');
-    const mentors = $('#mentors').dropdown('get value').split(',');
+    let users = [];
+    let mentors = [];
+    if ( this.createBatchUserForm.value.enrollmentType !== 'open') {
+      users = $('#users').dropdown('get value').split(',');
+      mentors = $('#mentors').dropdown('get value').split(',');
+    }
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchUserForm.value.name,
@@ -292,8 +296,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
       enrollmentType: new FormControl('invite-only', [Validators.required]),
-      startDate: new FormControl(new Date(), [Validators.required]),
-      endDate: new FormControl(new Date()),
+      startDate: new FormControl(null, [Validators.required]),
+      endDate: new FormControl(),
       mentors: new FormControl(),
       users: new FormControl(),
     });

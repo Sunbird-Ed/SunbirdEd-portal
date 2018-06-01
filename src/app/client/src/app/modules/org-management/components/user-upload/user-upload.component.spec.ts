@@ -20,7 +20,15 @@ describe('UserUploadComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile-bulk-upload-user-upload', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
   const ResourceData = {
     'frmelmnts': {
@@ -47,7 +55,11 @@ describe('UserUploadComponent', () => {
         Kannada, Malayalam, Oriya, Punjabi, Tamil, Telugu, Biology, Chemistry, Physics,
          Mathematics, Environmental Studies, Geography, History, Political Science, Economics, Sanskrit, Gujarati, Marathi, Nepali`,
         't0048': `Columns titled emailVerified, phoneVerified and provider are conditionally mandatory.
-        Value for emailVerified and phoneVerified should be True, if details are provided for provider`
+        Value for emailVerified and phoneVerified should be True, if details are provided for provider`,
+        't0065': 'If user is not passing organisationId but passing OrgProvider, then user should pass OrgExternalId',
+        't0066': 'ExternalId: Identity of user in an external system. If user is passing externalId then they have to pass Provider.',
+        't0067': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
+        If user is passing ExternalId then they have to pass Provider.`
       }
     }
   };

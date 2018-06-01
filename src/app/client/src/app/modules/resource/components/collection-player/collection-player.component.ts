@@ -101,11 +101,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       context: {
         env: this.route.snapshot.data.telemetry.env
       },
-      object: {
-        id: '',
-        type: this.route.snapshot.data.telemetry.env,
-        ver: this.route.snapshot.data.telemetry.object.ver
-      },
       edata: {
         type: this.route.snapshot.data.telemetry.type,
         pageid: this.route.snapshot.data.telemetry.pageid,
@@ -157,9 +152,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }

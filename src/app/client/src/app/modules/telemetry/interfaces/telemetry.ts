@@ -41,7 +41,6 @@ export interface IEndEventData {
   'type': string;
   'mode'?: string;
   'summary'?: Array<{}>;
-  'contentId': string;
 }
 export interface ILogEventData {
   'type': string;
@@ -108,6 +107,7 @@ export interface IErrorEventInput {
 export interface IImpressionEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;

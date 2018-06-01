@@ -160,14 +160,32 @@ export class NoteListComponent implements OnInit {
       this.batchId = params.batchId;
     });
     this.getAllNotes();
+    let cdataId = '';
+    let cdataType = '';
+    if (this.activatedRoute.snapshot.params.courseId) {
+      cdataId = this.activatedRoute.snapshot.params.courseId;
+      cdataType = 'course';
+    } else if (this.activatedRoute.snapshot.params.contentId) {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'content';
+    } else {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'collection';
+    }
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [
+          {
+            id: cdataId,
+            type: cdataType
+          }
+        ]
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.contentId + '/note'
+        uri: this.route.url
       }
     };
   }

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService , ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
@@ -7,17 +7,35 @@ import { CreateContentComponent } from './create-content.component';
 import { CacheService } from 'ng2-cache-service';
 import * as mockData from './create-content.component.spec.data';
 const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 describe('CreateContentComponent', () => {
   let component: CreateContentComponent;
   let fixture: ComponentFixture<CreateContentComponent>;
+  const fakeActivatedRoute = {
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SharedModule, HttpClientTestingModule, CoreModule ],
-      declarations: [ CreateContentComponent ],
-      providers: [ResourceService, CacheService, ConfigService]
+      imports: [RouterTestingModule, SharedModule, HttpClientTestingModule, CoreModule, TelemetryModule],
+      declarations: [CreateContentComponent],
+      providers: [ResourceService, CacheService, ConfigService,
+       {provide: ActivatedRoute, useValue: fakeActivatedRoute}]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

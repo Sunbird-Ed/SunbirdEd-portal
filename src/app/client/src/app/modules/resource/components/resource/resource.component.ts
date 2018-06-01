@@ -81,6 +81,7 @@ export class ResourceComponent implements OnInit {
   */
   populatePageData() {
     this.showLoader = true;
+    this.noResult = false;
     const option = {
       source: 'web',
       name: 'Resource',

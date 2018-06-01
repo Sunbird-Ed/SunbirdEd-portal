@@ -10,6 +10,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The draft component search for all the drafts
@@ -119,7 +120,14 @@ export class DraftComponent extends WorkSpace implements OnInit {
     * To call resource service which helps to use language constant
    */
     public resourceService: ResourceService;
-
+    /**
+	 * inviewLogs
+	*/
+    inviewLogs = [];
+    /**
+	 * telemetryImpression
+	*/
+    telemetryImpression: IImpressionEventInput;
     /**
       * Constructor to create injected service(s) object
       Default method of Draft Component class
@@ -155,6 +163,17 @@ export class DraftComponent extends WorkSpace implements OnInit {
             this.pageNumber = Number(params.pageNumber);
             this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
         });
+        this.telemetryImpression = {
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+                visits: this.inviewLogs
+            }
+        };
     }
     /**
      * This method sets the make an api call to get all drafts with page No and offset
@@ -179,7 +198,7 @@ export class DraftComponent extends WorkSpace implements OnInit {
                 if (data.result.count && data.result.content.length > 0) {
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
-                    const constantData =  this.config.appConfig.WORKSPACE.Draft.constantData;
+                    const constantData = this.config.appConfig.WORKSPACE.Draft.constantData;
                     const metaData = this.config.appConfig.WORKSPACE.Draft.metaData;
                     const dynamicFields = this.config.appConfig.WORKSPACE.Draft.dynamicFields;
                     this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
@@ -254,5 +273,25 @@ export class DraftComponent extends WorkSpace implements OnInit {
         }
         this.pageNumber = page;
         this.route.navigate(['workspace/content/draft', this.pageNumber]);
+    }
+    /**
+    * get inview  Data
+    */
+    inview(event) {
+        _.forEach(event.inview, (inview, key) => {
+            const obj = _.find(this.inviewLogs, (o) => {
+                return o.objid === inview.data.metaData.identifier;
+            });
+            if (obj === undefined) {
+                this.inviewLogs.push({
+                    objid: inview.data.metaData.identifier,
+                    objtype: inview.data.metaData.contentType,
+                    index: inview.id
+                });
+            }
+        });
+        this.telemetryImpression.edata.visits = this.inviewLogs;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 }
