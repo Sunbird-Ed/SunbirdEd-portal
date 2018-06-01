@@ -13,6 +13,7 @@ import { PublicFooterComponent } from './components/public-footer/public-footer.
 import { SignupService, PublicPlayerService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
+import { QrCodeModalComponent } from './components/qr-code-modal/qr-code-modal.component';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
     DiscussionModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, QrCodeModalComponent],
   providers: [SignupService, PublicPlayerService]
 })
 export class PublicModule { }
