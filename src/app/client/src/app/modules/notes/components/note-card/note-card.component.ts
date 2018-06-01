@@ -15,7 +15,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-note-card',
   templateUrl: './note-card.component.html',
-  styleUrls: ['./note-card.component.css']
+  styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
 export class NoteCardComponent implements OnInit, OnChanges {
   /**

@@ -60,7 +60,6 @@ export class ContentPlayerComponent implements OnInit {
   showNoteEditor = false;
 
   telemetryImpression: IImpressionEventInput;
-  inviewLogs = [];
   /**
    * This variable holds the details of the note created
    */
@@ -92,14 +91,15 @@ export class ContentPlayerComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
+      object: {
         id: '',
         type: this.activatedRoute.snapshot.data.telemetry.env
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.contentId
+        uri: this.contentStatus ? this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.contentId + '/'
+          + this.contentStatus : this.activatedRoute.snapshot.data.telemetry.uri + this.activatedRoute.snapshot.params.contentId
       }
     };
   }
@@ -110,7 +110,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {

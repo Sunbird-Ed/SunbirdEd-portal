@@ -10,10 +10,8 @@
         <app-sort-by [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
       </div>
     </div>
-    <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="caraouselData">
-    <div in-view-item *ngFor="let section of caraouselData; let i = index" [id]="i" [data]="section" >
-      <app-page-section (playEvent)="playContent($event)" [section]="section"></app-page-section>
-    </div>
+    <div *ngFor="let section of caraouselData;">
+      <app-page-section (playEvent)="playContent($event)" (telemetryData)="telemetryData($event)" [section]="section"></app-page-section>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>

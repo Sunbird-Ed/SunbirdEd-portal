@@ -15,13 +15,15 @@ import { NgModule } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
+import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     SlickModule,
-    FormsModule
+    FormsModule,
+    NgInviewModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,

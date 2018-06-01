@@ -200,31 +200,10 @@ export class InboxComponent implements OnInit {
     this.pageNumber = page;
     this.route.navigate(['announcement/inbox', this.pageNumber]);
   }
-
 /**
- * get Interact Data
- */
-  interactData(id, pageId, type) {
-    this.telemetryInteract = {
-       context: {
-         env: this.activatedRoute.snapshot.data.telemetry.env
-       },
-       object: {
-         id: '',
-         type: this.activatedRoute.snapshot.data.telemetry.object.type,
-         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-       },
-       edata: {
-         type: type,
-         id: id,
-         pageid: pageId
-       }
-     };
-   }
-   /**
  * get Inview  Data
  */
-   inview(event) {
+  inview(event) {
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
         return o.objid === inview.data.id;
@@ -238,6 +217,7 @@ export class InboxComponent implements OnInit {
       }
     });
     this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
@@ -253,16 +233,11 @@ export class InboxComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: '/announcement/inbox' + this.pageNumber
+        uri: '/announcement/inbox/' + this.pageNumber
       }
     };
   }

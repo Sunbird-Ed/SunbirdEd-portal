@@ -41,5 +41,29 @@ export const Response = {
                 'm0053': 'Fetching details cannot complete'
             }
         }
-     }
+     },
+
+     telemetryImpressionData: {
+            context: {
+              env: 'library'
+            },
+            edata: {
+              type: 'list',
+              pageid: '',
+              subtype: 'scroll',
+              uri: '',
+              visits: []
+          }
+     },
+
+     event: {
+        inview: [{
+            data: {
+                metaData: {
+                    contentType: 'Story',
+                    identifier: 'do_20072218'
+                }
+            }
+        }]
+      }
 };

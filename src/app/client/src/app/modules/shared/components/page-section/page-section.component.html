@@ -3,10 +3,14 @@
         <span class="ui red circular inline label">{{section.contents.length}}</span>
     </h4>
     <div>
-        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-            <div ngxSlickItem *ngFor="let content of section.contents" class="slide">    
-                <app-card (clickEvent)="playContent($event)"[data]="content"></app-card>
+        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="inviewChange(section.contents,$event)">
+            <div in-view-container [trigger]="section.contents" [throttle]="[1000]" (inview)="inview($event)">
+                <div in-view-item
+                 ngxSlickItem *ngFor="let content of section.contents; let i = index" class="slide" [id]="i" [data]="content">
+                    <app-card (clickEvent)="playContent($event)" [data]="content"></app-card>
+                </div>
             </div>
         </ngx-slick>
     </div>
+
 </div>

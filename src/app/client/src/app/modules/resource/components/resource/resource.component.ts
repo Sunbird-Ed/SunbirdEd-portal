@@ -30,7 +30,7 @@ export class ResourceComponent implements OnInit {
   */
   private pageSectionService: PageApiService;
   /**
-   * This variable hepls to show and hide page loader.
+   * This variable helps to show and hide page loader.
    * It is kept true by default as at first when we comes
    * to a page the loader should be displayed before showing
    * any data
@@ -144,7 +144,8 @@ export class ResourceComponent implements OnInit {
       },
        object: {
         id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.env
+        type: this.activatedRoute.snapshot.data.telemetry.env,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -153,26 +154,6 @@ export class ResourceComponent implements OnInit {
         uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
     };
-  }
-
-  inview(event) {
-    // console.log(event);
-    _.forEach(event.inview, (inview, key) => {
-      const obj = _.find(this.inviewLogs, (o) => {
-        return o.objid === inview.data.id;
-      });
-      if (obj === undefined) {
-        this.inviewLogs.push({
-          objid: inview.data.id,
-          objtype: inview.data.sectionDataType,
-          index: inview.id
-        });
-      }
-    });
-    this.telemetryImpression.edata.visits = this.inviewLogs;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
-    // console.log(this.telemetryImpression);
   }
 
   /**
@@ -206,5 +187,27 @@ export class ResourceComponent implements OnInit {
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);
+  }
+
+  telemetryData(event) {
+    _.forEach(event.inview, (inview, key) => {
+        const obj = _.find(this.inviewLogs, (o) => {
+          if (inview.data) {
+            return o.objid === inview.data.metaData.identifier;
+          } else {
+            return o.objid === inview.metaData.identifier;
+          }
+        });
+        if (obj === undefined) {
+          this.inviewLogs.push({
+            objid: inview.data ? inview.data.metaData.identifier : inview.metaData.identifier,
+            objtype: inview.data ? inview.data.metaData.contentType : inview.metaData.contentType,
+            index: key
+          });
+        }
+      });
+      this.telemetryImpression.edata.visits = this.inviewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }

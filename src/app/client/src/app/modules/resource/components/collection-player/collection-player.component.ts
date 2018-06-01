@@ -9,6 +9,7 @@ import {
   ContentUtilsServiceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-collection-player',
@@ -80,6 +81,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    * contains link that can be shared
    */
   shareLink: string;
+  telemetryImpression: IImpressionEventInput;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -95,6 +97,22 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getContent();
+    this.telemetryImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      object: {
+        id: '',
+        type: this.route.snapshot.data.telemetry.env,
+        ver: this.route.snapshot.data.telemetry.object.ver
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        uri: this.collectionStatus ? this.route.snapshot.data.telemetry.uri + this.route.snapshot.params.collectionId + '/' +
+          this.route.snapshot.params.collectionStatus : this.route.snapshot.data.telemetry.uri + this.route.snapshot.params.collectionId
+      }
+    };
   }
 
   ngOnDestroy() {

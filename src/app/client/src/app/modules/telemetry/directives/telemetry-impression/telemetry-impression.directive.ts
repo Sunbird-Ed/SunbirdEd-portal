@@ -29,11 +29,9 @@ export class TelemetryImpressionDirective implements OnInit, OnDestroy {
     if (this.appTelemetryImpression) {
       this.telemetryService.impression(this.appTelemetryImpression);
     }
-    // console.log(this.appTelemetryImpression);
   }
   ngOnDestroy() {
-    if (this.appTelemetryImpression &&  
-    this.appTelemetryImpression.edata.subtype === 'pageexit') {
+    if (this.appTelemetryImpression && this.appTelemetryImpression.edata.subtype === 'pageexit') {
       this.telemetryService.impression(this.appTelemetryImpression);
     }
   }

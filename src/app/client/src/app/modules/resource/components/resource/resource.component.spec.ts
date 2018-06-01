@@ -8,7 +8,7 @@ import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceComponent } from './resource.component';
-import {Response} from './resource.component.spec.data';
+import { Response } from './resource.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -28,7 +28,15 @@ describe('ResourceComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
+    'queryParams': Observable.from([{ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'library', pageid: 'library-read', type: 'list',
+          object: { type: 'library', ver: '1.0' }
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
@@ -36,8 +44,8 @@ describe('ResourceComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
-         { provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -58,5 +66,13 @@ describe('ResourceComponent', () => {
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
+  });
+
+  it('should call telemetryData method for visits data', () => {
+    component.telemetryImpression = Response.telemetryImpressionData;
+    spyOn(component, 'telemetryData').and.callThrough();
+    component.telemetryData(Response.event.inview);
+    expect(component.telemetryData).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
   });
 });

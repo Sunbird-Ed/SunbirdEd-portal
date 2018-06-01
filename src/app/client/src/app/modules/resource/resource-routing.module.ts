@@ -18,6 +18,11 @@ const routes: Routes = [
     }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate', type: 'view', uri: '/resources/play/collection/', object: { type: objectType, ver: '1.0' }
+      }
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
@@ -27,7 +32,7 @@ const routes: Routes = [
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'library-read', type: 'list', uri: '/resources/play/content/', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate', type: 'view', uri: '/resources/play/content/', object: { type: objectType, ver: '1.0' }
       },
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
     },
@@ -35,9 +40,14 @@ const routes: Routes = [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
-    path: 'resources/play/content/:contentId/note', component: NoteListComponent
+    path: 'resources/play/content/:contentId/note', component: NoteListComponent,
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
+      }
+    }
   }, {
-    path: 'resources/play/content/:contentId/:contentStatus', component: ContentPlayerComponent,
+    path: 'resources/play/content/:contentId/:contentStatus', component: ContentPlayerComponent
   }
 ];
 

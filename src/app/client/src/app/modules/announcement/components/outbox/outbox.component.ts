@@ -177,29 +177,8 @@ export class OutboxComponent implements OnInit {
     this.route.navigate(['announcement/outbox', this.pageNumber]);
   }
   /**
-   * get Interact Data
-   */
-  interactData(id, pageId, type) {
-    this.telemetryInteract = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
-      edata: {
-        type: type,
-        id: id,
-        pageid: pageId
-      }
-    };
-    this.cdr.detectChanges();
-  }
-   /**
    * get inview  Data
-   */
+  */
   inview(event) {
     _.forEach(event.inview, (inview, key) => {
       const obj = _.find(this.inviewLogs, (o) => {
@@ -214,6 +193,7 @@ export class OutboxComponent implements OnInit {
       }
     });
     this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   /**
@@ -247,7 +227,7 @@ export class OutboxComponent implements OnInit {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: '/announcement/outbox/' + this.pageNumber,
-        visits: this.inviewLogs
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
     };
   }
