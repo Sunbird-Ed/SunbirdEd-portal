@@ -84,6 +84,7 @@ export class AppComponent implements OnInit {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
+      this.userService.startSession();
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
