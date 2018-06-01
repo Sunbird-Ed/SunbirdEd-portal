@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
-    path: 'resources/play/content/:contentId/notes', component: NoteListComponent
+    path: 'resources/play/content/:contentId/note', component: NoteListComponent
   }, {
     path: 'resources/play/content/:contentId/:contentStatus', component: ContentPlayerComponent,
   }
