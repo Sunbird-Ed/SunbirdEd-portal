@@ -15,7 +15,7 @@
     "test-coverage": "ng test --code-coverage=true --watch=false"
   },
   "nodemonConfig": {
-    "ext": "ts,html,json"
+    "ext": "ts,html,json,css"
   },
   "engines": {
     "node": ">=8.9"

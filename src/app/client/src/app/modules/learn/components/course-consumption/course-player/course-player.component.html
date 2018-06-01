@@ -2,7 +2,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
             <div *ngIf="!enableContentPlayer && !loader">
-                <div class="content">
+                <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
                     <div class="ui stackable grid">
                         <div class="row">
                             <div class='nine wide column'>
@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                     <div class="ui grid">
-                                        <div class="twelve wide column">
+                                        <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
                                             <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
                                         </div>
                                     </div>

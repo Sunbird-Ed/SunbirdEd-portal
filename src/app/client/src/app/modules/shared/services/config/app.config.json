@@ -1,4 +1,7 @@
 {
+  "landingPage": {
+    "showExploreButton": true
+  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -435,10 +438,15 @@
     "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
-  "allmycontent": {
+   "allmycontent": {
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
+   }, 
+  "explore": {
+    "filterType": "explore",
+    "inPageredirectUrl": "/explore",
+    "searchPageredirectUrl": "/explore/1"
   },
   "formApiTypes": {
     "textbook": "textbook",
@@ -447,7 +455,8 @@
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
     "library": "library",
-    "allmycontent":"allmycontent"
+    "allmycontent":"allmycontent",
+    "explore": "explore"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
