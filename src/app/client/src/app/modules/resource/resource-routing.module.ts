@@ -12,7 +12,8 @@ const routes: Routes = [
     path: 'resources', component: ResourceComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'library-read', subtype: 'scroll', type: 'list', uri: '/resources', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv, pageid: 'library-read', subtype: 'scroll',
+         type: 'list', uri: '/resources', object: { type: objectType, ver: '1.0' }
       },
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }]
     }
@@ -20,7 +21,8 @@ const routes: Routes = [
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate', type: 'view', uri: '/resources/play/collection/', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate',
+         type: 'view', uri: '/resources/play/collection/', object: { type: objectType, ver: '1.0' }
       }
     },
     children: [
@@ -32,7 +34,8 @@ const routes: Routes = [
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate', type: 'view', uri: '/resources/play/content/', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate',
+         type: 'view', uri: '/resources/play/content/', object: { type: objectType, ver: '1.0' }
       },
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
     },
