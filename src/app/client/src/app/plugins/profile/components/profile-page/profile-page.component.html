@@ -23,7 +23,6 @@
                 </div>
                 <div class=" four wide column margin-top-20">
                     <div class="ui stackable grid ">
-
                         <div class="twelve wide column" *ngIf="userProfile.completeness">
                             <div class="ui raised segment">
                                 <div class="profileitems profile-des ui relaxed aligned list">
@@ -64,13 +63,13 @@
                         </div>
 
                         <div class="twelve wide column" *ngIf="contributions && contributions.length > 0">
-                            <div class="ui raised segment">
+                            <div class="ui raised segment" [appTelemetryImpression]="telemetryImpression">
                                 <div class="header">
                                     <span class="segment-heading">{{resourceService.frmelmnts.scttl.contributions}}</span>
                                     <span class="add-edit-btn-profile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
                                 </div>
-                                <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll">
-                                    <div class="item" *ngFor="let item of contributions">
+                                <div class="profileitems contributionsListScroll ui relaxed divided items padding-right-20" id="custom-scroll" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="contributions">
+                                    <div in-view-item class="item" *ngFor="let item of contributions;let i = index;" [id]="i" [data]="item">
                                         <!-- implement preview for content on click-->
                                         <img class="ui avatar image " src="{{item.posterImage || 'assets/images/zipFileIcon.png'}}">
                                         <div class="content" (click)="onClickOfMyContributions(item)">

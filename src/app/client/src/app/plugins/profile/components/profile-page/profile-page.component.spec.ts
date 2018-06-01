@@ -8,6 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule } from '@sunbird/shared';
 import { mockProfilePageData } from './profile-page.component.spec.data';
 import { Observable } from 'rxjs/Observable';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
+
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
@@ -22,11 +25,28 @@ describe('ProfilePageComponent', () => {
           queryParams: {}
         }
       }]
+    },
+    snapshot: {
+      params: [
+        {
+          section: 'education',
+        },
+        {
+          action: 'add'
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile-read', type: 'view',
+          object: { type: 'Resource', ver: '1.0' }
+        }
+      }
     }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule,
+      TelemetryModule, NgInviewModule],
       declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
@@ -111,5 +131,12 @@ describe('ProfilePageComponent', () => {
     spyOn(playerService, 'playContent').and.callThrough();
     component.onClickOfMyContributions(response);
     expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should call inview method for visits data', () => {
+    component.telemetryImpression = mockProfilePageData.telemetryData;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(mockProfilePageData.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
   });
 });

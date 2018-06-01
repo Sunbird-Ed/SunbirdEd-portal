@@ -16,7 +16,8 @@ import { OrgManagementModule } from '@sunbird/org-management';
 import { WebExtensionModule } from 'sunbird-web-extension';
 import { ProfileBadgeComponent } from './components/profile-badge/profile-badge.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
-// import { SocialMediaLinksComponent } from './components/social-media-links/social-media-links.component';
+import { NgInviewModule } from 'angular-inport';
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +28,9 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
     FormsModule,
     ReactiveFormsModule,
     OrgManagementModule,
-    WebExtensionModule
+    WebExtensionModule,
+    NgInviewModule,
+    TelemetryModule
   ],
   declarations: [ProfilePageComponent, ProfileHeaderComponent, UserSummaryComponent, ProfileVisibilityComponent,
     UserExperienceViewComponent, EditExperienceComponent, UserAddressComponent, UserEducationComponent, UserSkillsComponent,
