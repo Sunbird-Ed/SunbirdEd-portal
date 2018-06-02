@@ -27,12 +27,10 @@ const routes: Routes = [
   { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
   { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
   {
-    path: 'explore/:pageNumber', component: ExploreContentComponent,
-    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
+    path: 'explore/:pageNumber', component: ExploreContentComponent
   },
   {
-    path: ':slug/explore/:pageNumber', component: ExploreContentComponent,
-    children: [{ path: 'qrcode', component: QrCodeModalComponent }]
+    path: ':slug/explore/:pageNumber', component: ExploreContentComponent
   }
 ];
 
@@ -47,9 +45,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     DiscussionModule
   ],
-  declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent,
-    QrCodeModalComponent, ExploreContentComponent],
+  declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent, QrCodeModalComponent,
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
   providers: [SignupService, PublicPlayerService, OrgManagementService]
 })
 export class PublicModule { }
