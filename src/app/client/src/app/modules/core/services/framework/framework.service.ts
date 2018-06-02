@@ -74,18 +74,20 @@ export class FrameworkService {
 
   public initialize(hashTagId?: string) {
     if (hashTagId === '') {
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.hashTagId = this.userService.hashTagId;
-          if (this.isApiCall === true) {
-            this.getFramework();
+      this.userService.userData$.subscribe(
+        (user: IUserData) => {
+          if (user && !user.err) {
+            this.hashTagId = this.userService.hashTagId;
+            if (this.isApiCall === true) {
+              this.getFramework();
+            }
           }
-        }
-      });
+        });
     } else {
       this.hashTagId = hashTagId;
-      this.getFramework();
+      if (this.isApiCall === true) {
+        this.getFramework();
+      }
     }
   }
   /**
