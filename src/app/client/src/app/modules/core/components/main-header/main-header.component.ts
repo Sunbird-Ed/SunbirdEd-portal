@@ -24,6 +24,7 @@ export class MainHeaderComponent implements OnInit {
   queryParam: any = {};
   selectedLanguage: string;
   showExploreHeader = false;
+  showQrmodal = false;
   languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
   /**
    * tenant name
@@ -150,5 +151,9 @@ export class MainHeaderComponent implements OnInit {
         this.showExploreHeader = false;
       }
     });
+  }
+
+  closeQrModalEvent(event) {
+    this.showQrmodal = false;
   }
 }
