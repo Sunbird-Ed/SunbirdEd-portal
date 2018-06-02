@@ -18,7 +18,7 @@
                                 <div in-view-item  ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index"
                                     class="slide" [id]="i" [data]="item">
                                     <div *ngIf="item.type === 'profile'">
-                                        <a routerLink="/profile">
+                                        <a routerLink="/profile"  appTelemetryInteract  [telemetryInteractEdata]="profileUpdateIntractEdata" [telemetryInteractObject]="telemetryInteractObject" >
                                             <app-profile-card [profile]="item"></app-profile-card>
                                         </a>
                                     </div>
