@@ -7,6 +7,7 @@ import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared
 import { CourseProgressService } from './../../services';
 import { Observable } from 'rxjs/Observable';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component shows the course progress dashboard
@@ -101,6 +102,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   * To get user profile of logged-in user
   */
   public courseProgressService: CourseProgressService;
+  /**
+	 * telemetryImpression object for course progress page
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -219,6 +224,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       batchIdentifier: this.queryParams.batchIdentifier,
       timePeriod: this.queryParams.timePeriod
     };
+    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
+      + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
@@ -280,6 +287,23 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
             this.queryParams.timePeriod = this.queryParams.timePeriod || '7d';
+
+            // Create the telemetry impression event for course stats page
+            this.telemetryImpression = {
+              context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+              },
+              edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: '/learn/course/' + this.courseId + '/dashboard'
+              },
+              object: {
+                id: this.courseId,
+                type: this.activatedRoute.snapshot.data.telemetry.object.type,
+                ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+              }
+            };
             this.populateBatchData();
           });
       }
