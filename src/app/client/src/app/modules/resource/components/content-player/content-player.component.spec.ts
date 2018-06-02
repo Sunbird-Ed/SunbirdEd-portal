@@ -48,7 +48,16 @@ class RouterStub {
 
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }])
+  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'library', pageid: 'library-read', type: 'view',
+        object: { type: 'library', ver: '1.0' }
+      }
+    },
+    params: {contentId: 'd0_33567325'}
+  }
 };
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
