@@ -68,6 +68,11 @@ export class WorkspacesidebarComponent implements OnInit {
   */
   startRole: Array<string>;
 
+  /**
+  * allContentRole  access roles
+  */
+  allContentRole: Array<string>;
+
    /**
    * reference of Router.
    */
@@ -99,6 +104,7 @@ export class WorkspacesidebarComponent implements OnInit {
     this.flaggedRole = this.config.rolesConfig.workSpaceRole.flaggedRole;
     this.limitedPublishingRole = this.config.rolesConfig.workSpaceRole.limitedPublishingRole;
     this.startRole = this.config.rolesConfig.workSpaceRole.startRole;
+    this.allContentRole = this.config.rolesConfig.workSpaceRole.allContentRole;
   }
 
 }
