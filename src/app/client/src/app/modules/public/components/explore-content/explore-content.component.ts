@@ -1,6 +1,6 @@
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ILoaderMessage, UtilService, ICard
+    ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
@@ -127,7 +127,8 @@ export class ExploreContentComponent implements OnInit {
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
-        config: ConfigService, public utilService: UtilService, public orgManagementService: OrgManagementService) {
+        config: ConfigService, public utilService: UtilService, public orgManagementService: OrgManagementService,
+        public navigationHelperService: NavigationHelperService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -267,10 +268,15 @@ export class ExploreContentComponent implements OnInit {
     }
 
     public playContent(event) {
+        this.navigationHelperService.storeResourceCloseUrl();
         if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-            this.route.navigate(['play/collection', event.data.metaData.identifier]);
+            this.route.navigate(['play/collection', event.data.metaData.identifier], {
+                queryParams: _.pick(this.queryParams, ['language'])
+            });
         } else {
-            this.route.navigate(['play/content', event.data.metaData.identifier]);
+            this.route.navigate(['play/content', event.data.metaData.identifier], {
+                queryParams: _.pick(this.queryParams, ['language'])
+            });
         }
     }
 }
