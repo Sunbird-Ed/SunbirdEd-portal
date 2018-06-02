@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CoursesService, UserService, LearnerService } from '@sunbird/core';
+import { CoursesService, UserService, LearnerService, ContentService } from '@sunbird/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ActionCard } from './../../interfaces/index';
 import * as mockData from './action-card.component.spec.data';
@@ -18,7 +18,7 @@ describe('ActionCardComponent', () => {
         TestBed.configureTestingModule({
             imports: [ HttpClientTestingModule, SuiModule, CommonModule],
             declarations: [ActionCardComponent],
-            providers: [ResourceService, CoursesService, UserService, LearnerService, ConfigService],
+            providers: [ResourceService, CoursesService, ContentService, UserService, LearnerService, ConfigService],
             schemas: [NO_ERRORS_SCHEMA]
         })
             .compileComponents();

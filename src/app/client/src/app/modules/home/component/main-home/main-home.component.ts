@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 /**
  * This component contains 3 sub components
@@ -26,6 +26,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  /**
+	 * profileUpdateIntractEdata
+	*/
+  profileUpdateIntractEdata: IInteractEventEdata;
+  /**
+	 * telemetryInteractObject
+	*/
+  telemetryInteractObject: IInteractEventObject;
   courseSubscription: ISubscription;
   userSubscription: ISubscription;
   /**
@@ -126,6 +134,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       },
     );
+    this.setInteractEventData();
   }
   /**
    * Used to dispaly profile as a first element.
@@ -236,4 +245,16 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       this.telemetryImpression.edata.subtype = 'pageexit';
     }
   }
+   setInteractEventData() {
+    this.profileUpdateIntractEdata = {
+       id: 'home',
+       type: 'click',
+       pageid: 'home'
+    };
+    this.telemetryInteractObject =  {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
+   }
 }
