@@ -1,4 +1,4 @@
-<div *ngIf="showLoader">
+<div [appTelemetryImpression]="telemetryImpression" *ngIf="showLoader">
   <div class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
@@ -8,7 +8,7 @@
   </div>
 </div>
 <!-- header -->
-<div class="ui grid padding-topBottom-10 courseStructureHeader" *ngIf="!showLoader">
+<div class="ui grid padding-topBottom-10 courseStructureHeader" *ngIf="!showLoader && !showError">
   <div class="one wide column"></div>
   <div class=" ten wide column">
     <div class="ui grid">
@@ -42,7 +42,7 @@
 </div>
 
 <!-- description of profile -->
-<div class="ui grid" *ngIf="!showLoader">
+<div class="ui grid" *ngIf="!showLoader && !showError">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class="ui grid">

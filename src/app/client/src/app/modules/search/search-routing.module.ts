@@ -23,7 +23,10 @@ const routes: Routes = [
   },
   {
     path: 'search/Users/:pageNumber', component: UserSearchComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }] },
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
+    telemetry: {
+      env: 'profile', pageid: 'user-search', type: 'view', subtype: 'paginate'
+    } },
     children: [
       { path: 'edit/:userId', component: UserEditComponent },
       { path: 'delete/:userId', component: UserDeleteComponent }
@@ -31,11 +34,17 @@ const routes: Routes = [
   },
   {
     path: 'search/Users/:pageNumber/view/:userId', component: UserProfileComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }] }
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }],
+    telemetry: {
+      env: 'profile', pageid: 'user-detail', type: 'view', subtype: 'paginate'
+    } }
   },
   {
     path: 'search/Organisations/:pageNumber', component: OrgSearchComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }] }
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
+    telemetry: {
+      env: 'profile', pageid: 'organization-search', type: 'view', subtype: 'paginate'
+    } }
   },
 
 ];

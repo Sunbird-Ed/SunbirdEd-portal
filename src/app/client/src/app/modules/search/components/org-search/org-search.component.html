@@ -1,4 +1,4 @@
-<div class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
@@ -24,8 +24,8 @@
         </div>
       </div>
 
-      <div class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
-        <div class="item userSearchCardHover" *ngFor="let org of searchList">
+      <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
+        <div in-view-item [id]="i" [data]="org" class="item userSearchCardHover" *ngFor="let org of searchList;let i = index;">
           <div class="ui tiny image userSearchImage ">
             <img [src]="org.avatar || './assets/images/userOrganization.png'">
           </div>

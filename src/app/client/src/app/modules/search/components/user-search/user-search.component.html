@@ -1,4 +1,4 @@
-<div class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
@@ -24,8 +24,8 @@
       </div>
 
       <div>
-        <div *ngIf="!showLoader && !noResult">
-          <div class="ui segment" *ngFor="let user of searchList">
+        <div *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList">
+          <div in-view-item [id]="i" [data]="user" class="ui segment" *ngFor="let user of searchList;let i = index;">
             <div class="ui items">
               <div class="item">
                 <div class="ui tiny image userSearchImage">
