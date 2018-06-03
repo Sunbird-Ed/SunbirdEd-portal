@@ -35,6 +35,8 @@ describe('OrgSearchComponent', () => {
     }
   };
   const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }]),
     snapshot: {
       data: {
         telemetry: {
