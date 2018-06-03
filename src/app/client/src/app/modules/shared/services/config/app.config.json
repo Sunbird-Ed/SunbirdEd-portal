@@ -1,4 +1,7 @@
 {
+  "landingPage": {
+    "showExploreButton": true
+  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -216,7 +219,8 @@
       "draft",
       "uploaded",
       "published",
-      "limited/publish"
+      "limited/publish",
+      "allcontent"
     ],
     "Draft": {
       "constantData": {
@@ -311,7 +315,6 @@
       "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
-
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -435,13 +438,25 @@
     "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
+   "allmycontent": {
+    "filterType": "allmycontent",
+    "inPageredirectUrl": "workspace/content/allcontent/1",
+    "searchPageredirectUrl": "workspace/content/allcontent/1"
+   }, 
+  "explore": {
+    "filterType": "explore",
+    "inPageredirectUrl": "/explore",
+    "searchPageredirectUrl": "/explore/1"
+  },
   "formApiTypes": {
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
-    "library": "library"
+    "library": "library",
+    "allmycontent":"allmycontent",
+    "explore": "explore"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

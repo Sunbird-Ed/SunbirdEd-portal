@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" (dismissed)="alert($event)" [isInverted]="true" #modal>
+<sui-modal [isClosable]="false" (dismissed)="modal.deny(); closeModal();" [isInverted]="true" #modal>
 <div class="content qr-code-modal-content">
   <div class="twelve wide column ">
     <div class="ui grid">

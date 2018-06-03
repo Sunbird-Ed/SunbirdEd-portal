@@ -34,7 +34,7 @@ export class FormService {
     * @param {formAction} content form action type
     * @param {selectedContent} content selected content type
     */
-  getFormConfig(formInputParams): Observable<ServerResponse> {
+  getFormConfig(formInputParams, hashTagId?: string): Observable<ServerResponse> {
     const channelOptions = {
       url: this.configService.urlConFig.URLS.dataDrivenForms.READ,
       data: {
@@ -42,7 +42,7 @@ export class FormService {
           type: formInputParams.formType,
           action: formInputParams.formAction,
           subType: this.configService.appConfig.formApiTypes[formInputParams.contentType],
-          rootOrgId: this.userService.hashTagId,
+          rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId,
           framework: formInputParams.framework
         }
       }

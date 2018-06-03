@@ -1,4 +1,4 @@
-<div class="ui grid">
+<div class="ui grid" *ngIf="!showExploreHeader">
     <div class="center aligned twelve column row">
         <div class="one wide column"></div>
         <div class="two wide column">
@@ -33,7 +33,16 @@
             </div>
         </div>
         <ng-template #showLoginBtn>
-            <div class="right floated one wide column tablet computer only">
+            <div class="right floated two wide column tablet computer only">
+                <div class="beforelogin ui secondary pointing menu padding-top-1rem">
+                    <button *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" class="ui item text-upper-case" routerLink="/explore/1">Explore {{resourceService.instance}}</button>
+                    <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <a href="/home" class="sunblogin">
+                        <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
+                    </a>
+                </div>
+            </div>
+            <div class="right floated four wide column mobile only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                     <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a href="/home" class="sunblogin">
@@ -54,3 +63,58 @@
     </div>
 </div>
 <app-main-menu></app-main-menu>
+
+<div *ngIf="showExploreHeader">
+    <div class="ui grid margin-top-0">
+        <div class="center aligned twelve column row padding-top-2rem headerBackground">
+            <div class="one wide column"></div>
+            <div class="two wide column">
+                <a routerLink="home">
+                    <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                    alt={{tenantName}} src="{{logo}} ">
+                </a>
+            </div>
+            <div class="two wide column"></div>
+            <div class="five wide column padding-top-10">
+                <div class="searchfilterinput ui search">
+                    <div class="searchicon ui icon input ">
+                        <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                            class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                        <i class="circular search link icon" (click)="onEnter(key)"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="one wide column">
+                <div class="right floated two wide column tablet computer only">
+                    <div class="beforelogin ui secondary pointing menu padding-top-10 right-float">
+                        <a href="/home" class="sunblogin">
+                        <button class="ui item padding-right-none">{{resourceService.frmelmnts?.btn?.login}}</button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+    <div class="ui grid margin-top-10">
+        <div class="center aligned twelve column row anon-consumption-sec-menu padding-top-none">
+            <div class="one wide column"></div>
+            <div class="two wide column">
+                <button class="ui basic button left-float" (click)="showQrmodal = true;">
+                    <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
+                </button>
+            </div>
+            <div class="six wide column"></div>
+            <div class="two wide column">
+                <div class="ui dropdown anon-consumption-drpdwn right-float padding-top-10">
+                    <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection profile-dropdown-gender-lock" labelField="name" valueField="id">
+                        <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option>
+                    </sui-select>
+                </div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showQrmodal"><app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal></div>

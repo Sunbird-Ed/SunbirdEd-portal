@@ -11,17 +11,19 @@
                         <i [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}" class="add large angle down icon padding-top-5 right-float"
                             (click)="collapse = !collapse"></i>
                     </span>
-                    <div class="ui active homePage" [suiCollapse]="collapse">
+                    <div class="ui active homePage" [suiCollapse]="collapse" [appTelemetryImpression]="telemetryImpression">
                         <div class="regular slider padding-top-10">
-                            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-                                <div ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn" class="slide">
+                            <ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="toDoList" class="carousel" 
+                            #slickModal="slick-modal" [config]="slideConfig" (afterChange)="inviewChange(toDoList,$event)">
+                                <div in-view-item  ngxSlickItem *ngFor="let item of toDoList; trackBy: trackByFn;let i = index"
+                                    class="slide" [id]="i" [data]="item">
                                     <div *ngIf="item.type === 'profile'">
-                                        <a routerLink="/profile">
+                                        <a routerLink="/profile"  appTelemetryInteract  [telemetryInteractEdata]="profileUpdateIntractEdata" [telemetryInteractObject]="telemetryInteractObject" >
                                             <app-profile-card [profile]="item"></app-profile-card>
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
-                                            <app-action-card [enrolledCourses]="item"  (clickEvent)="playContent($event)"></app-action-card>
+                                        <app-action-card [enrolledCourses]="item" (clickEvent)="playContent($event)"></app-action-card>
                                     </div>
                                 </div>
                             </ngx-slick>
@@ -38,7 +40,7 @@
             <div class="row">
                 <div class="eight wide column">
                     <div>
-                        <app-home-announcement></app-home-announcement>
+                        <app-home-announcement (inviewEvent)="anouncementInview($event)"></app-home-announcement>
                     </div>
                     <div>
                         <app-home-feed-card></app-home-feed-card>

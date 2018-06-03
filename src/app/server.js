@@ -140,6 +140,7 @@ function indexPage (req, res) {
   res.locals.instance = process.env.sunbird_instance
   res.locals.appId = envHelper.APPID
   res.locals.ekstepEnv = envHelper.EKSTEP_ENV
+  res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
   res.locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
@@ -177,6 +178,9 @@ app.all('/get/dial/:dialCode', indexPage)
 app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
 app.all('*/get', function (req, res) {res.redirect('/get')})
+app.all('/:slug/explore/*', indexPage)
+app.all('/explore', indexPage)
+app.all('/explore/*', indexPage)
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 

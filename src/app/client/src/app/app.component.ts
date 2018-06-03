@@ -83,12 +83,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
+    this.conceptPickerService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
       this.userService.startSession();
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.conceptPickerService.initialize();
       this.initTelemetryService();
       this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err) {

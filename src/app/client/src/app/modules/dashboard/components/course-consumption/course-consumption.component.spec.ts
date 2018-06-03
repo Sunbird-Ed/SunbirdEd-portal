@@ -14,13 +14,27 @@ import { CourseConsumptionComponent } from './course-consumption.component';
 import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 // Test data
 import * as mockData from './course-consumption.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 const testData = mockData.mockRes;
 
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;
   let fixture: ComponentFixture<CourseConsumptionComponent>;
   let router: Router;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]) };
+
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'course', pageid: 'course-creator-dashboard', type: 'view',
+          object: { type: 'course', ver: '1.0' }
+        }
+      }
+    }
+  };
+
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -28,7 +42,7 @@ describe('CourseConsumptionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule, TelemetryModule],
       providers: [CourseConsumptionService,
         RendererService,
         LearnerService,
@@ -96,7 +110,7 @@ describe('CourseConsumptionComponent', () => {
       expect(component.blockData.length).toBeGreaterThan(1);
       expect(component.graphData.length).toBeGreaterThanOrEqual(1);
       expect(component.showLoader).toEqual(false);
-  }));
+    }));
 
   it('should call dashboard api and return error', inject([CourseConsumptionService], (courseConsumptionService) => {
     spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => Observable.throw({}));
@@ -113,7 +127,7 @@ describe('CourseConsumptionComponent', () => {
     const response = component.onAfterCourseChange(courseDetails);
     fixture.detectChanges();
     expect(component.isMultipleCourses).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['dashboard/course/consumption', courseDetails.identifier, '7d']);
+    expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', courseDetails.identifier, '7d']);
   }));
 
   it('should call onAfterFilterChange function - but should not change time period', inject([Router], (route) => {
@@ -132,7 +146,7 @@ describe('CourseConsumptionComponent', () => {
     const response = component.onAfterFilterChange('14d');
     fixture.detectChanges();
     expect(response).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['dashboard/course/consumption', component.identifier, '14d']);
+    expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '14d']);
   }));
 
   it('should call onAfterCourseChange function - but should not load graph', inject([Router], (route) => {
@@ -168,11 +182,11 @@ describe('CourseConsumptionComponent', () => {
   });
 
   it('should call getMyContent when content length is 1', inject([SearchService, Router],
-  (searchService, route) => {
-    searchService._searchedContentList = testData.searchSuccess.result;
-    component.myCoursesList = testData.searchSuccess.result.content;
-    component.getMyContent();
-    expect(route.navigate).toHaveBeenCalledWith(['dashboard/course/consumption', component.identifier, '7d']);
-    expect(component.showLoader).toEqual(false);
-  }));
+    (searchService, route) => {
+      searchService._searchedContentList = testData.searchSuccess.result;
+      component.myCoursesList = testData.searchSuccess.result.content;
+      component.getMyContent();
+      expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
+      expect(component.showLoader).toEqual(false);
+    }));
 });

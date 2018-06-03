@@ -7,6 +7,7 @@ import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 /**
@@ -121,6 +122,11 @@ export class CourseConsumptionComponent {
   resourceService: ResourceService;
 
   /**
+	 * telemetryImpression object for course consumption dashboard page
+	*/
+  telemetryImpression: IImpressionEventInput;
+
+  /**
    * Default method of CourseConsumptionComponent class
    *
    * @param {Router} route Url navigation
@@ -138,9 +144,20 @@ export class CourseConsumptionComponent {
     this.rendererService = rendererService;
     this.resourceService = resourceService;
     this.route = route;
+    // init the default impression event
+    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
       this.getMyContent();
       if (params.id && params.timePeriod) {
+
+        // update the impression event after a course is selected
+        this.telemetryImpression.edata.uri = '/activity/course/consumption/' + params.id + '/' + params.timePeriod;
+        this.telemetryImpression.object = {
+          id: params.id,
+          type: 'course',
+          ver: '1.0'
+        };
+
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);
@@ -212,7 +229,7 @@ export class CourseConsumptionComponent {
       if (this.myCoursesList.length === 1) {
         this.identifier = this.myCoursesList[0].identifier;
         this.courseName = this.myCoursesList[0].name;
-        this.route.navigate(['dashboard/course/consumption', this.identifier, this.timePeriod]);
+        this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
       }
       this.showLoader = false;
     } else {
@@ -225,7 +242,7 @@ export class CourseConsumptionComponent {
             if (data.result.content.length === 1) {
               this.identifier = data.result.content[0].identifier;
               this.courseName = data.result.content[0].name;
-              this.route.navigate(['dashboard/course/consumption', this.identifier, this.timePeriod]);
+              this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
             } else {
               this.isMultipleCourses = true;
             }
@@ -254,7 +271,7 @@ export class CourseConsumptionComponent {
       return false;
     }
 
-    this.route.navigate(['dashboard/course/consumption', course.identifier, this.timePeriod]);
+    this.route.navigate(['activity/course/consumption', course.identifier, this.timePeriod]);
   }
 
   /**
@@ -271,7 +288,7 @@ export class CourseConsumptionComponent {
       return false;
     }
 
-    this.route.navigate(['dashboard/course/consumption', this.identifier, timePeriod]);
+    this.route.navigate(['activity/course/consumption', this.identifier, timePeriod]);
   }
 
   /**
@@ -281,5 +298,21 @@ export class CourseConsumptionComponent {
    */
   graphNavigation(step: string) {
     step === 'next' ? this.showGraph++ : this.showGraph--;
+  }
+
+  /**
+   * Function to initialise the telemetry impression event for course consumption dashboard page
+   */
+  initTelemetryImpressionEvent() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/myActivity'
+      }
+    };
   }
 }
