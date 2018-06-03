@@ -15,11 +15,16 @@ import { UserService, SearchService, ContentService, LearnerService } from '@sun
 // Test data
 import * as mockData from './organization.component.spec.data';
 const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('OrganisationComponent', () => {
   let component: OrganisationComponent;
   let fixture: ComponentFixture<OrganisationComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]) };
+  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]), snapshot: {
+    data: {
+      telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' }
+    }
+  } };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -30,7 +35,7 @@ describe('OrganisationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule, TelemetryModule],
       providers: [LearnerService,
         LineChartService,
         OrganisationService,

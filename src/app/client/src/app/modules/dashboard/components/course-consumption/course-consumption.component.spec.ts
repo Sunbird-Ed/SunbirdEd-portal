@@ -15,12 +15,20 @@ import { UserService, SearchService, ContentService, LearnerService } from '@sun
 // Test data
 import * as mockData from './course-consumption.component.spec.data';
 const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;
   let fixture: ComponentFixture<CourseConsumptionComponent>;
   let router: Router;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]) };
+  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]), snapshot: {
+    data: {
+      telemetry: {
+        env: 'test', pageid: 'view', type: 'view',
+        object: { type: 'dashboard', ver: '1.0' }
+      }
+    }
+  } };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -28,7 +36,7 @@ describe('CourseConsumptionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule, TelemetryModule],
       providers: [CourseConsumptionService,
         RendererService,
         LearnerService,
@@ -43,7 +51,7 @@ describe('CourseConsumptionComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -51,10 +59,6 @@ describe('CourseConsumptionComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.get(Router);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should call search api and returns result count 1', inject([SearchService], (searchService) => {
