@@ -6,6 +6,7 @@ import { IPagination } from '@sunbird/announcement';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-org-search',
@@ -88,6 +89,11 @@ export class OrgSearchComponent implements OnInit {
    *url value
    */
   queryParams: any;
+  inviewLogs: any = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * Constructor to create injected service(s) object
    * Default method of Draft Component class
@@ -213,5 +219,33 @@ export class OrgSearchComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.route.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+  }
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.identifier,
+          objtype: 'organization',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }

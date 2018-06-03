@@ -8,12 +8,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-library-search',
   templateUrl: './library-search.component.html',
   styleUrls: ['./library-search.component.css']
 })
 export class LibrarySearchComponent implements OnInit {
+  inviewLogs: any = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -219,8 +226,36 @@ export class LibrarySearchComponent implements OnInit {
         }
         this.populateContentSearch();
       });
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.route.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+        }
+      };
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);
+  }
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.metaData.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.metaData.identifier,
+          objtype: inview.data.metaData.contentType || 'content',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }
