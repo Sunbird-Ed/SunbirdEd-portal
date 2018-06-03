@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -41,9 +41,6 @@ export class ProfilePageComponent implements OnInit {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
-  missingFieldsInteractEdata: IInteractEventEdata;
-  workspaceInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
@@ -78,7 +75,6 @@ export class ProfilePageComponent implements OnInit {
         visits: this.inviewLogs
       }
     };
-    this.setInteractEventData();
   }
   /**
    * This method is used to update user actions
@@ -90,7 +86,6 @@ export class ProfilePageComponent implements OnInit {
       const actions = this.configService.appConfig.PROFILE.profileField;
       this.router.navigate([actions[field]]);
     }
-    // this.setInteractEventData(field);
   }
   /**
    * This method is used to get user content
@@ -145,50 +140,5 @@ export class ProfilePageComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
-  }
-  setInteractEventData() {
-    // let interactId = '';
-    // if (field === 'profileSummary') {
-    //   interactId = 'profile-update-summary';
-    // } else if (field === 'jobProfile') {
-    //   interactId = 'add-experience';
-    // } else if (field === 'address') {
-    //   interactId = 'profile-address';
-    // } else if (field === 'education') {
-    //   interactId = 'profile-education';
-    // } else if (field === 'location') {
-    //   interactId = 'add-location';
-    // } else if (field === 'dob') {
-    //   interactId = 'add-dob';
-    // } else if (field === 'subject') {
-    //   interactId = 'add-subject';
-    // } else if (field === 'grade') {
-    //   interactId = 'add-grade';
-    // } else if (field === 'gender') {
-    //   interactId = 'add-gender';
-    // } else if (field === 'language') {
-    //   interactId = 'add-language';
-    // } else if (field === 'lastName') {
-    //   interactId = 'add-lastName';
-    // } else if (field === 'email') {
-    //   interactId = 'add-email';
-    // } else if (field === 'phone') {
-    //   interactId = 'add-phone';
-    // }
-    this.missingFieldsInteractEdata = {
-      id: 'interactId',
-      type: 'click',
-      pageid: 'profile-read'
-    };
-    this.workspaceInteractEdata = {
-      id: 'profile-workspace',
-      type: 'click',
-      pageid: 'profile-read'
-    };
-    this.telemetryInteractObject = {
-      id: this.userService.userid,
-      type: 'user',
-      ver: '1.0'
-    };
   }
 }
