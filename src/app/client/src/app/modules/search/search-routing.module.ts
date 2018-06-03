@@ -45,7 +45,13 @@ const routes: Routes = [
       }
     },
     children: [
-      { path: 'edit/:userId', component: UserEditComponent },
+      {
+        path: 'edit/:userId', component: UserEditComponent, data: {
+          telemetry: {
+            env: 'profile', pageid: 'user-edit', type: 'edit', subtype: 'paginate'
+          }
+        }
+      },
       { path: 'delete/:userId', component: UserDeleteComponent }
     ]
   },

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-user-search',
@@ -21,6 +21,11 @@ export class UserSearchComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  userViewIntractEdata: IInteractEventEdata;
+  userDeleteIntractEdata: IInteractEventEdata;
+  userEditIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
   /**
    * To get url, app configs
    */
@@ -287,6 +292,7 @@ export class UserSearchComponent implements OnInit {
           });
       }
     });
+    this.setInteractEventData();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -306,6 +312,33 @@ export class UserSearchComponent implements OnInit {
         }
       });
     });
+  }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'user-search-close',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userViewIntractEdata = {
+      id: 'user-profile-view',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userEditIntractEdata = {
+      id: 'user-profile-edit',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userDeleteIntractEdata = {
+      id: 'user-profile-delete',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'user-search'
+    };
   }
   inview(event) {
     _.forEach(event.inview, (inview, key) => {

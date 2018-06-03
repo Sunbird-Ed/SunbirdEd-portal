@@ -6,7 +6,7 @@ import { IPagination } from '@sunbird/announcement';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-org-search',
@@ -90,6 +90,9 @@ export class OrgSearchComponent implements OnInit {
    */
   queryParams: any;
   inviewLogs: any = [];
+  closeIntractEdata: IInteractEventEdata;
+  orgDownLoadIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
   /**
 	 * telemetryImpression
 	*/
@@ -219,6 +222,7 @@ export class OrgSearchComponent implements OnInit {
 
   ngOnInit() {
     this.getQueryParams();
+    this.setInteractEventData();
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -229,6 +233,23 @@ export class OrgSearchComponent implements OnInit {
         uri: this.route.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+  }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'search-close',
+      type: 'click',
+      pageid: 'organization-search'
+    };
+    this.orgDownLoadIntractEdata = {
+      id: 'organization-download',
+      type: 'click',
+      pageid: 'organization-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'organization-search'
     };
   }
   inview(event) {

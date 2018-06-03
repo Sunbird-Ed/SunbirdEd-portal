@@ -7,7 +7,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { IHomeQueryParams } from './../../interfaces';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-home-search',
@@ -20,6 +20,9 @@ export class HomeSearchComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  cardIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
   /**
   * To call searchService which helps to use list of courses
   */
@@ -200,6 +203,7 @@ export class HomeSearchComponent implements OnInit {
         this.queryParams = { ...bothParams.queryParams };
         this.populateCompositeSearch();
       });
+      this.setInteractEventData();
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env
@@ -211,6 +215,23 @@ export class HomeSearchComponent implements OnInit {
           subtype: this.activatedRoute.snapshot.data.telemetry.subtype
         }
       };
+  }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'search-close',
+      type: 'click',
+      pageid: 'home-search'
+    };
+    this.cardIntractEdata = {
+      id: 'content-card',
+      type: 'click',
+      pageid: 'home-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'home-search'
+    };
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);

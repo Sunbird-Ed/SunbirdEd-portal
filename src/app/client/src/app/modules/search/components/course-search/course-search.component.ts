@@ -3,12 +3,12 @@ import {
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ICourses, SearchParam , ISort, PlayerService} from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-course-search',
@@ -21,6 +21,10 @@ export class CourseSearchComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  cardIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -129,7 +133,7 @@ export class CourseSearchComponent implements OnInit {
    */
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
-    resourceService: ResourceService, toasterService: ToasterService,
+    resourceService: ResourceService, toasterService: ToasterService, private changeDetectorRef: ChangeDetectorRef,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
     this.route = route;
@@ -286,6 +290,7 @@ export class CourseSearchComponent implements OnInit {
                }
         this.populateEnrolledCourse();
       });
+      this.setInteractEventData();
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env
@@ -298,12 +303,35 @@ export class CourseSearchComponent implements OnInit {
         }
       };
   }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'search-close',
+      type: 'click',
+      pageid: 'course-search'
+    };
+    this.cardIntractEdata = {
+      id: 'course-card',
+      type: 'click',
+      pageid: 'course-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'course-search'
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'course-search'
+    };
+  }
   playContent(event) {
     if (event.data.metaData.batchId) {
       event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
       event.data.metaData.contentType = 'Course';
     }
-     this.playerService.playContent(event.data.metaData);
+    this.changeDetectorRef.detectChanges();
+    this.playerService.playContent(event.data.metaData);
    }
    inview(event) {
     _.forEach(event.inview, (inview, key) => {

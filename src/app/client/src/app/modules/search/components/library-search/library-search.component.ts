@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-library-search',
@@ -21,6 +21,10 @@ export class LibrarySearchComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  cardIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -226,6 +230,7 @@ export class LibrarySearchComponent implements OnInit {
         }
         this.populateContentSearch();
       });
+      this.setInteractEventData();
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env
@@ -237,6 +242,28 @@ export class LibrarySearchComponent implements OnInit {
           subtype: this.activatedRoute.snapshot.data.telemetry.subtype
         }
       };
+  }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'search-close',
+      type: 'click',
+      pageid: 'library-search'
+    };
+    this.cardIntractEdata = {
+      id: 'content-card',
+      type: 'click',
+      pageid: 'library-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'library-search'
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'library-search'
+    };
   }
   playContent(event) {
     this.playerService.playContent(event.data.metaData);
