@@ -4,7 +4,8 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService } from '
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { UserService } from '@sunbird/core';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -79,6 +80,9 @@ export class UserUploadComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  userUploadInteractEdata: IInteractEventEdata;
+  downloadCSVInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   /**
 * Constructor to create injected service(s) object
 *
@@ -88,7 +92,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
 */
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService, activatedRoute: ActivatedRoute) {
+    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -155,6 +159,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
         uri: this.router.url
       }
     };
+    this.setInteractEventData();
   }
   /**
  * This method helps to redirect to the parent component
@@ -228,5 +233,22 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+  }
+  setInteractEventData() {
+    this.userUploadInteractEdata = {
+      id: 'upload-user',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.downloadCSVInteractEdata = {
+      id: 'download-sample-user-csv',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

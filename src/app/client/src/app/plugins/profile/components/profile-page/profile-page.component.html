@@ -40,7 +40,7 @@
                                     </div>
                                     <div class="item" *ngFor="let field of userProfile.missingFields | slice:0:3;">
                                         <div class="iniformationcontent content">
-                                            <a (click)="updateAction(field)">
+                                            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="missingFieldsInteractEdata" (click)="updateAction(field)">
                                                 <h5 class="ui blue header profileUpdateAddDetails">+ Add {{resourceService.frmelmnts.lbl[field] || field}}</h5>
                                             </a>
                                         </div>
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="twelve wide column" *ngIf='permissionService.permissionAvailable' appPermission [permission]='workSpaceRole'>
-                            <a (click)="navigateToWorkspace()">
+                            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="workspaceInteractEdata" (click)="navigateToWorkspace()">
                                 <div class="ui link card width-100">
                                     <div class="content ">
                                         <div class="workspace-navigate">
