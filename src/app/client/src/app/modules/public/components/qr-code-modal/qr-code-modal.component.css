@@ -1,0 +1,32 @@
+
+.qr-code-modal-content .qr-code-modal-header {
+    color: #007aff;
+    font-size: 1.2em;
+    text-align: left;
+}
+.qr-code-modal-content .qr-code-modal-sub-header {
+    color: #333;
+    font-size: 0.8em;
+    text-align: start;
+}
+.qr-code-modal-content .qr-code-modal-meta {
+    color: #333;
+    font-size: 0.9em;
+    padding-top: 10px;
+    text-align: center;
+}
+.qr-code-modal-content .qr-code-modal-btn {
+    float: right;
+    margin-top: 20px;
+    width: 25%;
+}
+
+@media only screen and (max-width:767px) {
+    .qr-code-modal-content .qr-code-modal-btn {
+        width: 32%;
+    } 
+}
+
+.qr-code-modal-content .text-container {
+    margin-top: 5.5em;
+}

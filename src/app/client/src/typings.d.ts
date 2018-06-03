@@ -16,6 +16,7 @@ declare module '*.json' {
 }
 declare const Markdown;
 declare const EkTelemetry: any;
+declare const Fingerprint2: any;
 
 interface JQuery {
   treePicker(options?: any);

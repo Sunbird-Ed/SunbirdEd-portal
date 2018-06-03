@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
     * To get url, app configs
   */
   public config: ConfigService;
+  public initApp = false;
   /**
    * constructor
    */
@@ -82,22 +83,25 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
+    this.conceptPickerService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
+      this.userService.startSession();
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.conceptPickerService.initialize();
       this.initTelemetryService();
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
+      this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err) {
+            this.initApp = true;
             const slug = _.get(user, 'userProfile.rootOrg.slug');
             this.initTenantService(slug);
-          } else {
+          } else if ( user && user.err) {
+            this.initApp = true;
             this.initTenantService();
           }
-        });
+      });
     } else {
+      this.initApp = true;
       this.initTenantService();
       this.userService.initialize(false);
     }

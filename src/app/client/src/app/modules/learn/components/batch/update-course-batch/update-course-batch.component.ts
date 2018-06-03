@@ -5,6 +5,7 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 @Component({
@@ -77,6 +78,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
+  /**
+	 * telemetryImpression object for update batch page
+	*/
+  telemetryImpression: IImpressionEventInput;
 
   public courseConsumptionService: CourseConsumptionService;
   /**
@@ -118,6 +123,28 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }).subscribe((params) => {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
+
+        // Create the telemetry impression event for update batch page
+        this.telemetryImpression = {
+          context: {
+            env: this.activatedRoute.snapshot.data.telemetry.env
+          },
+          edata: {
+            type: this.activatedRoute.snapshot.data.telemetry.type,
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+            uri: '/update/batch/' + this.batchId
+          },
+          object: {
+            id: this.batchId,
+            type: this.activatedRoute.snapshot.data.telemetry.object.type,
+            ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+            rollup: {
+              l1: this.courseId,
+              l2: this.batchId
+            }
+          }
+        };
+
         this.getCourseData();
         this.getBatchDetails();
     });
@@ -297,8 +324,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   updateBatch() {
-    const users = $('#users').dropdown('get value').split(',');
-    const mentors = $('#mentors').dropdown('get value').split(',');
+    let users = [];
+    let mentors = [];
+    if (this.batchUpdateForm.value.enrollmentType !== 'open') {
+      users = $('#users').dropdown('get value').split(',');
+      mentors = $('#mentors').dropdown('get value').split(',');
+    }
     const requestBody = {
       'id': this.batchId,
       'name': this.batchUpdateForm.value.name,

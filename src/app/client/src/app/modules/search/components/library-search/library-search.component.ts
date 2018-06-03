@@ -190,9 +190,6 @@ export class LibrarySearchComponent implements OnInit {
     this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    this.filters = {
-      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-    };
     Observable
       .combineLatest(
       this.activatedRoute.params,
@@ -209,9 +206,7 @@ export class LibrarySearchComponent implements OnInit {
         }
         this.queryParams = { ...bothParams.queryParams };
         if (_.isEmpty(this.queryParams)) {
-          this.filters = {
-            contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-          };
+          this.filters = {};
         } else {
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
             if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
@@ -220,8 +215,8 @@ export class LibrarySearchComponent implements OnInit {
           });
         }
         if (this.queryParams.sort_by && this.queryParams.sortType) {
-                  this.queryParams.sortType = this.queryParams.sortType.toString();
-                }
+          this.queryParams.sortType = this.queryParams.sortType.toString();
+        }
         this.populateContentSearch();
       });
   }

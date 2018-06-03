@@ -29,12 +29,12 @@
         </div>
       </div>
       <div class="noteListSegment ui secondary segment" *ngIf="notesList.length > 0">
-        <div class="twelve wide column">
+        <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
           <div class="ui grid">
             <div class="four wide column padding-topBottomNone">
               <div class="notelistscroll">
-                <div class="profileitems ui relaxed divided items ">
-                  <div class="item padding-topBottomNone notelistfocus" *ngFor="let note of notesList | orderBy:'updatedDate':true | filter : searchData : ['note', 'title']; let i = index">
+                <div class="profileitems ui relaxed divided items" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="notesList">
+                  <div in-view-item class="item padding-topBottomNone notelistfocus"  [id]="i" [data]="note" *ngFor="let note of notesList | orderBy:'updatedDate':true | filter : searchData : ['note', 'title']; let i = index">
                     <div class="content padding-all-10 contentnotelist" [ngClass]="{'notelistborder': i === selectedIndex}" (click)="selectedIndex = i; setSelectedNote(note,i)">
                       <a class="header">{{ note.title | slice:0:15}}</a>
                       <i *ngIf="note.title.length > 15" class="ellipsis horizontal icon popup-button"></i>

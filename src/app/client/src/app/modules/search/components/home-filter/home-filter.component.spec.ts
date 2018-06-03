@@ -44,13 +44,14 @@ describe('HomeFilterComponent', () => {
   });
 
   it('should call resetFilters method ', inject([ConfigService, Router],
-   (configService, route) => {
-     component.queryParams = {key: 'text'};
-     const queryParams = {key: 'text'};
-     component.resetFilters();
-     expect(route.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams: queryParams});
-     fixture.detectChanges();
+    (configService, route) => {
+      component.queryParams = {key: 'text'};
+      const queryParams = {key: 'text'};
+      component.resetFilters();
+      expect(route.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams: queryParams});
+      fixture.detectChanges();
   }));
+
   it('should call applyFilters method ', inject([ConfigService, Router],
     (configService, route) => {
       const queryParams = {};

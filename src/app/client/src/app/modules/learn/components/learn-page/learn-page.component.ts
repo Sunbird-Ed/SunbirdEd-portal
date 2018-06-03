@@ -122,6 +122,7 @@ export class LearnPageComponent implements OnInit {
    * This method calls the page prefix API.
    */
   populatePageData() {
+    this.noResult = false;
     const option = {
       source: 'web',
       name: 'Course',
@@ -130,10 +131,26 @@ export class LearnPageComponent implements OnInit {
     };
     this.pageSectionService.getPageData(option).subscribe(
       (apiResponse: ServerResponse) => {
+        this.noResultMessage = {
+          'message': this.resourceService.messages.stmsg.m0007,
+          'messageText': this.resourceService.messages.stmsg.m0006
+        };
+        let noResultCounter = 0;
         if (apiResponse && apiResponse.result.response.sections.length > 0) {
           this.showLoader = false;
          const sections = this.processActionObject(apiResponse.result.response.sections);
          this.caraouselData = this.caraouselData.concat(sections);
+         if (this.caraouselData.length > 0) {
+            _.forIn(this.caraouselData, (value, key) => {
+              if (this.caraouselData[key].contents === null || this.caraouselData[key].contents === undefined
+                || (this.caraouselData[key].name &&  this.caraouselData[key].name === 'My Courses')) {
+                noResultCounter++;
+              }
+            });
+          }
+          if (noResultCounter === this.caraouselData.length) {
+            this.noResult = true;
+          }
         } else {
           this.noResult = true;
           this.showLoader = false;

@@ -12,6 +12,8 @@ import { response } from './note-list-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteListComponent } from './note-list.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 describe('NoteListComponent', () => {
   let component: NoteListComponent;
@@ -20,26 +22,35 @@ describe('NoteListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params' : Observable.from([{courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'}])
+    'params': Observable.from([{ courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'library', pageid: 'content-note-read', type: 'list',
+          object: { type: 'library', ver: '1.0' }
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, OrderModule, SharedModule, CoreModule ],
-      declarations: [ NoteListComponent, TimeAgoPipe ],
-      providers: [ NotesService,
-         { provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+      imports: [HttpClientTestingModule, OrderModule, SharedModule, CoreModule,
+        TelemetryModule, NgInviewModule],
+      declarations: [NoteListComponent, TimeAgoPipe],
+      providers: [NotesService,
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents()
-    .then(() => {
-      fixture = TestBed.createComponent(NoteListComponent);
-      component = fixture.componentInstance;
-      const idInfo: IdDetails = { courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'};
-      component.ids = idInfo;
-    });
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(NoteListComponent);
+        component = fixture.componentInstance;
+        const idInfo: IdDetails = { courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160' };
+        component.ids = idInfo;
+      });
   }));
 
 
@@ -105,5 +116,11 @@ describe('NoteListComponent', () => {
     expect(component.selectedNote).toBe(component.notesList[0]);
     expect(component.showUpdateEditor).toBeFalsy();
   });
-
+  it('should call inview method for visits data', () => {
+    component.telemetryImpression = response.telemetryData;
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(response.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });

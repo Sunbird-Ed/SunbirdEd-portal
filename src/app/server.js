@@ -83,6 +83,23 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.set('view engine', 'ejs')
 
+app.get(['/dist/*.js', '/dist/*.css',
+ '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff',
+ '/dist/*.eot',
+ '/dist/*.svg'
+],
+ compression(), function (req, res, next) {
+  console.log(req.originalUrl)
+   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+   next();
+ });
+
+ app.all(['/server.js', '/helpers/*.js' ,'/helpers/**/*.js'], function(req, res){
+  res.sendStatus(404);
+ })
+
+app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
@@ -98,11 +115,7 @@ app.get('/assets/images/*', function (req, res, next) {
 });
 
 
-// app.get(['/*.js', '/*.css', '/*.ttf', '/*.woff2'], compression(), function (req, res, next) {
-//   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
-//   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
-//   next();
-// });
+
 
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
 
@@ -128,6 +141,8 @@ function indexPage (req, res) {
   res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
   res.locals.appId = envHelper.APPID
   res.locals.ekstepEnv = envHelper.EKSTEP_ENV
+  res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  res.locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
 app.get('/get/envData', function (req, res) {
@@ -164,6 +179,9 @@ app.all('/get/dial/:dialCode', indexPage)
 app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
 app.all('*/get', function (req, res) {res.redirect('/get')})
+app.all('/:slug/explore/*', indexPage)
+app.all('/explore', indexPage)
+app.all('/explore/*', indexPage)
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 
@@ -377,6 +395,7 @@ keycloak.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
+  req.session.logSession = true
   if (request.session) {
     telemetryHelper.logSessionEnd(request)
     telemetry.syncOnExit(function (err, res) { // sync on session end

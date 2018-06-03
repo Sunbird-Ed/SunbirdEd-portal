@@ -28,7 +28,7 @@ export class ProfileBadgeComponent implements OnInit {
   /**
    * Contains array of badges
    */
-  badgeArray: any;
+  badgeArray: any = [];
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public configService: ConfigService) { }
   /**
@@ -43,7 +43,7 @@ export class ProfileBadgeComponent implements OnInit {
   getBadgeData() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
-        if (user && !user.err) {
+        if (user && !user.err && user.userProfile.badgeAssertions) {
           this.userProfile = user.userProfile;
           const badgeList = [];
           _.each(this.userProfile.badgeAssertions, (badge) => {

@@ -28,7 +28,6 @@ describe('SignupService', () => {
     spyOn(signupService, 'formatRequest').and.returnValue(mockSignupApiResponse.returnValue);
     const returnValue = signupService.formatRequest(mockSignupApiResponse.returnValue.request);
     expect(signupService.formatRequest).toHaveBeenCalled();
-    console.log(returnValue.request);
     expect(returnValue.request.phoneVerified).toBe(true);
   });
 });
