@@ -163,10 +163,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         id: 'org.ekstep.metadata',
         ver: '1.1',
         type: 'plugin'
-      }, {
-        id: 'org.ekstep.uploadcontent',
-        ver: '1.1',
-        type: 'plugin'
       }],
       previewConfig: {
         'repos': ['/content-plugins/renderer'],

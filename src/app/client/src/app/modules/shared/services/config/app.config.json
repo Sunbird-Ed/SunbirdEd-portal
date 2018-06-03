@@ -185,7 +185,7 @@
       "h5p": "application/vnd.ekstep.h5p-archive",
       "webm": "video/webm"
     },
-    "baseURL": "/content-plugins/preview/preview.html?webview=true" 
+    "baseURL": "/content/preview/preview.html?webview=true" 
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
