@@ -8,26 +8,33 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
 // SB components and service
 import { DashboardUtilsService, LineChartService, CourseConsumptionService, RendererService } from './../../services';
 import { CourseConsumptionComponent } from './course-consumption.component';
 import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 // Test data
 import * as mockData from './course-consumption.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 const testData = mockData.mockRes;
 
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;
   let fixture: ComponentFixture<CourseConsumptionComponent>;
   let router: Router;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
-  snapshot: {
-    data: {
-      telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' }
+
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'course', pageid: 'course-creator-dashboard', type: 'view',
+          object: { type: 'course', ver: '1.0' }
+        }
+      }
     }
-  }
- };
+  };
+
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -103,7 +110,7 @@ describe('CourseConsumptionComponent', () => {
       expect(component.blockData.length).toBeGreaterThan(1);
       expect(component.graphData.length).toBeGreaterThanOrEqual(1);
       expect(component.showLoader).toEqual(false);
-  }));
+    }));
 
   it('should call dashboard api and return error', inject([CourseConsumptionService], (courseConsumptionService) => {
     spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => Observable.throw({}));
@@ -175,11 +182,11 @@ describe('CourseConsumptionComponent', () => {
   });
 
   it('should call getMyContent when content length is 1', inject([SearchService, Router],
-  (searchService, route) => {
-    searchService._searchedContentList = testData.searchSuccess.result;
-    component.myCoursesList = testData.searchSuccess.result.content;
-    component.getMyContent();
-    expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
-    expect(component.showLoader).toEqual(false);
-  }));
+    (searchService, route) => {
+      searchService._searchedContentList = testData.searchSuccess.result;
+      component.myCoursesList = testData.searchSuccess.result.content;
+      component.getMyContent();
+      expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
+      expect(component.showLoader).toEqual(false);
+    }));
 });

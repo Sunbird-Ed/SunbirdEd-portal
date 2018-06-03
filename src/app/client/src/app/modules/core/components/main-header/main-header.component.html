@@ -100,7 +100,7 @@
         <div class="center aligned twelve column row anon-consumption-sec-menu padding-top-none">
             <div class="one wide column"></div>
             <div class="two wide column">
-                <button class="ui basic button left-float">
+                <button class="ui basic button left-float" (click)="showQrmodal = true;">
                     <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
                 </button>
             </div>
@@ -116,3 +116,5 @@
         </div>
     </div>
 </div>
+
+<div *ngIf="showQrmodal"><app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal></div>
