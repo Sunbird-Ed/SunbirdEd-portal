@@ -2,7 +2,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-
+import { SharedModule } from '@sunbird/shared';
 
 import { QrCodeModalComponent } from './qr-code-modal.component';
 
@@ -18,7 +18,7 @@ describe('QrCodeModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ QrCodeModalComponent ],
-      imports: [SuiModule, RouterTestingModule],
+      imports: [SuiModule, RouterTestingModule, SharedModule],
       providers: [{ provide: Router, useClass: RouterStub }]
     })
     .compileComponents();

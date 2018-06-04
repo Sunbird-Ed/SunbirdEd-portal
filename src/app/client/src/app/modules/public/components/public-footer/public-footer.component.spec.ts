@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from '@sunbird/shared';
 
 import { PublicFooterComponent } from './public-footer.component';
 
@@ -8,7 +9,8 @@ describe('PublicFooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublicFooterComponent ]
+      declarations: [ PublicFooterComponent ],
+      imports: [SharedModule]
     })
     .compileComponents();
   }));

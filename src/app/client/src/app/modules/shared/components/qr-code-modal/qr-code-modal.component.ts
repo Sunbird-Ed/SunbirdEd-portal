@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { ResourceService } from '../../services';
 import * as _ from 'lodash';
 
 @Component({
@@ -10,7 +11,7 @@ import * as _ from 'lodash';
 export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;
   @Output() closeQrModal = new EventEmitter<any>();
-  constructor(public router: Router) { }
+  constructor(public router: Router, public resourceService: ResourceService) { }
 
   ngOnInit() {
   }
