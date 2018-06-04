@@ -1,8 +1,8 @@
-<div class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
-      <app-org-filter></app-org-filter>
+      <app-org-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></app-org-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
         <div class="ui left floated header margin-auto ">
           <p class="serch-allresult">Showing results
@@ -12,20 +12,20 @@
              in "organisations"
           </p>
         </div>
-        <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+        <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
           <i class="ui remove icon "></i>
         </h5>
 
       </div>
 
       <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.ORGANISATION.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
-        <div class="ui right floated primary button" (click)="downloadOrganisation();">
+        <div class="ui right floated primary button" appTelemetryInteract [telemetryInteractEdata]="orgDownLoadIntractEdata" (click)="downloadOrganisation();">
           {{resourceService.frmelmnts?.btn?.download}}
         </div>
       </div>
 
-      <div class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
-        <div class="item userSearchCardHover" *ngFor="let org of searchList">
+      <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
+        <div in-view-item [id]="i" [data]="org" class="item userSearchCardHover" *ngFor="let org of searchList;let i = index;">
           <div class="ui tiny image userSearchImage ">
             <img [src]="org.avatar || './assets/images/userOrganization.png'">
           </div>

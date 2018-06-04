@@ -19,14 +19,15 @@ import { CacheService } from 'ng2-cache-service';
 import { NgInviewModule } from 'angular-inport';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     SlickModule,
     FormsModule,
-    NgInviewModule
+    NgInviewModule,
+    TelemetryModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,

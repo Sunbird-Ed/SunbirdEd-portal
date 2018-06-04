@@ -120,7 +120,7 @@
   <div class="actions">
     <div class="ui grid">
       <div *ngIf="!processId" class="twelve wide column">
-        <button [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="checkStatusInteractEdata" [disabled]="!statusForm.value.processId"  class="ui primary left floated button"
           (click)="getBulkUploadStatus(statusForm.value)">
           {{resourceService?.frmelmnts?.btn?.chksts}}</button>
       </div>

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-user-search',
@@ -16,6 +17,15 @@ import { UserSearchService } from './../../services';
 export class UserSearchComponent implements OnInit {
   private searchService: SearchService;
   private resourceService: ResourceService;
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  userViewIntractEdata: IInteractEventEdata;
+  userDeleteIntractEdata: IInteractEventEdata;
+  userEditIntractEdata: IInteractEventEdata;
+  filterIntractEdata: IInteractEventEdata;
   /**
    * To get url, app configs
    */
@@ -90,6 +100,7 @@ export class UserSearchComponent implements OnInit {
 
   rootOrgId: string;
   userProfile: any;
+  inviewLogs: any = [];
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -281,6 +292,18 @@ export class UserSearchComponent implements OnInit {
           });
       }
     });
+    this.setInteractEventData();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.route.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
 
     this.userSearchService.userDeleteEvent.subscribe(data => {
       _.each(this.searchList, (key, index) => {
@@ -289,5 +312,49 @@ export class UserSearchComponent implements OnInit {
         }
       });
     });
+  }
+  setInteractEventData() {
+    this.closeIntractEdata = {
+      id: 'user-search-close',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userViewIntractEdata = {
+      id: 'user-profile-view',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userEditIntractEdata = {
+      id: 'user-profile-edit',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.userDeleteIntractEdata = {
+      id: 'user-profile-delete',
+      type: 'click',
+      pageid: 'user-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'user-search'
+    };
+  }
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.identifier,
+          objtype: 'user',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }

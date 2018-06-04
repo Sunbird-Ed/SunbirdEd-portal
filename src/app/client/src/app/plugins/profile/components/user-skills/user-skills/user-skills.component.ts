@@ -6,6 +6,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData } from '@sunbird/shared';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-skills',
   templateUrl: './user-skills.component.html',
@@ -40,6 +41,11 @@ export class UserSkillsComponent implements OnInit {
    * Conatins an array of acitons
    */
   allowedAction = ['add'];
+  addSkillsInteractEdata: IInteractEventEdata;
+  viewMoreSkillsInteractEdata: IInteractEventEdata;
+  viewLessSkillsInteractEdata: IInteractEventEdata;
+  lockSkillsInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService,
     public userService: UserService, public profileService: ProfileService, public configService: ConfigService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
@@ -65,6 +71,7 @@ export class UserSkillsComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
    * This method checks for the limit of skills array and updates the limit accordingly
@@ -77,5 +84,32 @@ export class UserSkillsComponent implements OnInit {
       this.viewMore = true;
       this.limit = 3;
     }
+  }
+  setInteractEventData() {
+    this.addSkillsInteractEdata = {
+      id: 'profile-add-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.viewMoreSkillsInteractEdata = {
+      id: 'profile-view-more-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.viewLessSkillsInteractEdata = {
+      id: 'profile-view-less-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.lockSkillsInteractEdata = {
+      id: 'lock-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

@@ -3,15 +3,14 @@
         <div class="header">
             <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.education}} </span>
             <a class="add-edit-btn-profile" *ngIf='privateProfileFields'>
-                <app-profile-visibility field="education"></app-profile-visibility>
+                <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="lockEducationInteractEdata" field="education"></app-profile-visibility>
             </a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.education.length > 0" routerLink='/profile/education/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/education/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEducationInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.education.length > 0" routerLink='/profile/education/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addEducationInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/education/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeEducationInteractEdata" class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
         </div>
         <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let education of userProfile.education">
-
                 <img class="ui avatar image" src="assets/images/businessman.png">
                 <div class="content">
                     <a class=" header">{{education?.degree}}</a>
@@ -23,15 +22,13 @@
                         <span *ngIf="education.yearOfPassing "> {{education?.yearOfPassing}}</span>
                         <span *ngIf="education.percentage && education.yearOfPassing">, </span>
                         <span *ngIf="education.percentage">{{education?.percentage}}</span>
-
                     </div>
                 </div>
                 <div class="right-floated ">
                     <div class="metadata">
-                        <a (click)="education.isDeleted=true;deleteEducation(education)">
+                        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteEducationInteractEdata" (click)="education.isDeleted=true;deleteEducation(education)">
                             <i class="trash outline icon trashIcon-fontSize"></i>
                         </a>
-                        <!-- <span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span> -->
                     </div>
                 </div>
             </div>
@@ -42,13 +39,13 @@
                 <div class="ui" *ngFor="let education of userProfile.education">
                     <app-edit-user-education #edit [education]='education'></app-edit-user-education>
                 </div>
-                <button *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="editEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveEditEducationInteractEdata" *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="editEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
             </div>
             <div class="add-education-form" *ngIf="action === 'add'">
                 <div class="ui">
                     <app-edit-user-education #add></app-edit-user-education>
                 </div>
-                <button *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="addEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveAddEducationInteractEdata" *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}" (click)="addEducation()">{{resourceService?.frmelmnts?.btn?.save}} </button>
             </div>
         </div>
     </div>
