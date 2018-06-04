@@ -1,9 +1,8 @@
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService,  IUserOrgDetails, ITelemetryContext } from '@sunbird/telemetry';
 import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, IUserOrgDetails,
-  ITelemetryContext, TenantService, ConceptPickerService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService
 } from '@sunbird/core';
 
 import { Ng2IziToastModule } from 'ng2-izitoast';
