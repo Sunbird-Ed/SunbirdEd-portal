@@ -139,9 +139,8 @@ export class InboxComponent implements OnInit {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    const env = this.activatedRoute.snapshot.data.telemetry.env;
 
-    this.announcementService.getInboxData(option, env).subscribe(
+    this.announcementService.getInboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.inboxData = apiResponse.result;
         this.showLoader = false;
@@ -172,9 +171,8 @@ export class InboxComponent implements OnInit {
 	 * @param {boolean} read Read status of the clicked announcement id
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
-    const env = this.activatedRoute.snapshot.data.telemetry.env;
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId }, env).subscribe(
+      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
         (response: ServerResponse) => {
           _.each(this.inboxData.announcements, (key, index) => {
             if (announcementId === key.id) {
@@ -244,4 +242,3 @@ export class InboxComponent implements OnInit {
     };
   }
 }
-
