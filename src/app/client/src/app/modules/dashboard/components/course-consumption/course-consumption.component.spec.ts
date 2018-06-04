@@ -17,7 +17,6 @@ import * as mockData from './course-consumption.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 
 const testData = mockData.mockRes;
-
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;
   let fixture: ComponentFixture<CourseConsumptionComponent>;
@@ -57,7 +56,7 @@ describe('CourseConsumptionComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,10 +64,6 @@ describe('CourseConsumptionComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.get(Router);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should call search api and returns result count 1', inject([SearchService], (searchService) => {

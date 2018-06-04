@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -41,6 +41,9 @@ export class ProfilePageComponent implements OnInit {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
+  workspaceInteractEdata: IInteractEventEdata;
+  myContributionsInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
@@ -67,13 +70,20 @@ export class ProfilePageComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
+      object: {
+        id: this.userService.userid,
+        type: 'user',
+        ver: '1.0'
+      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: pageId,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.router.url,
         visits: this.inviewLogs
       }
     };
+    this.setInteractEventData();
   }
   /**
    * This method is used to update user actions
@@ -139,5 +149,22 @@ export class ProfilePageComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  setInteractEventData() {
+    this.workspaceInteractEdata = {
+      id: 'profile-workspace-view',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.myContributionsInteractEdata = {
+      id: 'profile-my-contributions-view',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

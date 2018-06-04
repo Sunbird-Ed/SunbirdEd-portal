@@ -36,6 +36,13 @@ describe('UserEditComponent', () => {
     }
   };
   const fakeActivatedRoute = {
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    },
     'url': Observable.of([{ 'path': 'search/Users/1' }]),
     'params': Observable.from([{ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' }])
   };
@@ -56,6 +63,11 @@ describe('UserEditComponent', () => {
               }),
             },
             snapshot: {
+              data: {
+                telemetry: {
+                  env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
+                }
+              },
               parent: {
                 url: [
                   {
@@ -68,7 +80,7 @@ describe('UserEditComponent', () => {
                     path: '1',
                   },
                 ],
-              }
+              },
             },
           }
         }],

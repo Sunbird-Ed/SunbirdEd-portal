@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 import * as _ from 'lodash';
 import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The delete component deletes the announcement
@@ -55,7 +56,13 @@ export class UserEditComponent implements OnInit {
    */
   private toasterService: ToasterService;
   private permissionService: PermissionService;
-
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  organizationIntractEdata: IInteractEventEdata;
+  roleIntractEdata: IInteractEventEdata;
+  updateIntractEdata: IInteractEventEdata;
   /**
    * To navigate back to parent component
    */
@@ -74,7 +81,7 @@ export class UserEditComponent implements OnInit {
 	 */
   constructor(userSearchService: UserSearchService, searchService: SearchService,
     activatedRoute: ActivatedRoute, permissionService: PermissionService,
-    resourceService: ResourceService,
+    resourceService: ResourceService, public route: Router,
     toasterService: ToasterService,
     routerNavigationService: RouterNavigationService) {
     this.userSearchService = userSearchService;
@@ -192,9 +199,9 @@ export class UserEditComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params.userId;
+      this.settelemetryData();
     });
     this.populateUserDetails();
-
     this.permissionService.permissionAvailable$.subscribe(params => {
       if (params === 'success') {
         this.allRoles = this.permissionService.allRoles;
@@ -203,6 +210,39 @@ export class UserEditComponent implements OnInit {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });
     });
+  }
+  settelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.userId,
+        type: 'user',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.route.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.organizationIntractEdata = {
+      id: 'organization-dropdown',
+      type: 'click',
+      pageid: 'user-edit'
+    };
+    this.roleIntractEdata = {
+      id: 'role-checkbox',
+      type: 'click',
+      pageid: 'user-edit'
+    };
+    this.updateIntractEdata = {
+      id: 'user-update',
+      type: 'click',
+      pageid: 'user-edit'
+    };
   }
 }
 
