@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
 const telemetryEnv = 'library';
+
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
