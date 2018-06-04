@@ -5,7 +5,8 @@
 	<a class="item"  [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"  routerLink="/learn" >
 	    {{resourceService?.frmelmnts?.tab?.courses}}
 	    </a>
-	<a class="item"   [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"  routerLink="/resources" >
+	<a class="item"   [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"  routerLink="/resources"
+	appTelemetryInteract  [telemetryInteractEdata]="resourcesInteractEdata" [telemetryInteractObject]="resourcesInteractObject">
 		{{resourceService?.frmelmnts?.tab?.resources}}
 	    </a>
 	<!-- <a class="item" [class.active]="router.isActive('/groups')"  routerLink="/groups" >

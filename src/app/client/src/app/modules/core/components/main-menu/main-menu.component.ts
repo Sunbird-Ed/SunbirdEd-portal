@@ -1,7 +1,8 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import {Router, ActivatedRoute} from '@angular/router';
+import {  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * Main menu component
@@ -11,7 +12,7 @@ import {Router, ActivatedRoute} from '@angular/router';
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.css']
 })
-export class MainMenuComponent {
+export class MainMenuComponent implements OnInit {
   /**
    * reference of resourceService service.
    */
@@ -24,6 +25,8 @@ export class MainMenuComponent {
    * reference of Router.
    */
   private router: Router;
+  resourcesInteractEdata: IInteractEventEdata;
+  resourcesInteractObject: IInteractEventObject;
   /*
   * constructor
   */
@@ -31,6 +34,20 @@ export class MainMenuComponent {
     this.resourceService = resourceService;
     this.userService = userService;
     this.router = router;
+  }
+
+  ngOnInit() {
+    this.resourcesInteractEdata = {
+      id: 'library',
+       type: 'click',
+       pageid: 'library'
+
+    };
+    this.resourcesInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 
 }

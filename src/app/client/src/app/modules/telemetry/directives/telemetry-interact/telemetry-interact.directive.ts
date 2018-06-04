@@ -25,7 +25,7 @@ export class TelemetryInteractDirective {
     if (this.telemetryInteractObject && this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
         context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
+          env: this.activatedRoute.snapshot.root.firstChild.data.telemetry.env || this.activatedRoute.snapshot.data.telemetry.env
         },
         object: this.telemetryInteractObject,
         edata: this.telemetryInteractEdata
