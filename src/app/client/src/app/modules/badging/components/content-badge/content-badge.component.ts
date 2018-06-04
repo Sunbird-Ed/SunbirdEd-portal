@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
-import { UserService, BadgesService, IInteractEventData } from '@sunbird/core';
+import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
@@ -25,9 +25,9 @@ export class ContentBadgeComponent implements OnInit {
   private userRoles: Array<string> = [];
   public badge: object;
   public allBadgeList: any;
-  public badgeInteractEdata: IInteractEventData;
-  public cancelBadgeInteractEdata: IInteractEventData;
-  public assignBadgeInteractEdata: IInteractEventData;
+  public badgeInteractEdata: IInteractEventEdata;
+  public cancelBadgeInteractEdata: IInteractEventEdata;
+  public assignBadgeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public toasterService: ToasterService,
