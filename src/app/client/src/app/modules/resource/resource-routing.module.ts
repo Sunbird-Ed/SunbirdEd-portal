@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
 const telemetryEnv = 'library';
-const objectType = 'library';
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
@@ -14,8 +13,7 @@ const routes: Routes = [
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate',
-        type: 'view', uri: '/resources/play/collection/', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv
       }
     },
     children: [
