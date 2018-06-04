@@ -3,7 +3,6 @@ import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { UserService } from '@sunbird/core';
 /**
  * The details component takes input of the announcement details
  * object and renders it with the data
@@ -36,7 +35,7 @@ export class DetailsComponent implements OnInit {
 	 *
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
 	 */
-  constructor(resourceService: ResourceService, private userService: UserService) {
+  constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;
   }
   ngOnInit() {
