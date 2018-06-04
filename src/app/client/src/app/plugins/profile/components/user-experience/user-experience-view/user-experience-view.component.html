@@ -2,13 +2,13 @@
     <div class="margin-top-20 ui raised segment">
         <div class="header">
             <span class="segment-heading"> {{resourceService?.frmelmnts?.lbl?.experience}} </span>
-            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility field="jobProfile"></app-profile-visibility></a>
+            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="lockExperienceInteractEdata" field="jobProfile"></app-profile-visibility></a>
 
-            <a class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.jobProfile.length > 0"
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editExperienceInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.jobProfile.length > 0"
             routerLink= '/profile/experience/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view'" 
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addExperienceInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" 
             routerLink= '/profile/experience/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action !== 'view'" 
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeExperienceInteractEdata" class="add-edit-btn-profile" *ngIf="action !== 'view'" 
             routerLink= '/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
         </div>
         <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items ">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="right-floated ">
                     <div class="metadata ">
-                        <a (click)="experience.isDeleted=true;deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteExperienceInteractEdata" (click)="experience.isDeleted=true;deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <i class="close icon "></i>
                     <p>You already have a current job, please change that to not a current job</p>
                 </div>
-                <button [disabled]="isCurrentJobExist" *ngIf="action === 'edit'" [ngClass]="{'disabled' : disableSave}"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveEditExperienceInteractEdata" [disabled]="isCurrentJobExist" *ngIf="action === 'edit'" [ngClass]="{'disabled' : disableSave}"
                  class="ui primary button margin-top-15 " (click)="editExperience()">
                  {{resourceService?.frmelmnts?.btn?.save}}</button>
             </div>
@@ -68,7 +68,7 @@
                         <i class="close icon "></i>
                         <p>You already have a current job, please change that to not a current job</p>
                 </div>
-                <button [disabled]="isCurrentJobExist" *ngIf="action === 'add'" [ngClass]="{'disabled' : disableSave}"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addEditExperienceInteractEdata" [disabled]="isCurrentJobExist" *ngIf="action === 'add'" [ngClass]="{'disabled' : disableSave}"
                 class="ui primary button margin-top-15 " (click)="addExperience()">
                 {{resourceService?.frmelmnts?.btn?.save}}</button>
             </div>

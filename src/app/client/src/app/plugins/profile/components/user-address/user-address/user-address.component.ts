@@ -8,6 +8,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EditUserAddressComponent } from '../edit-user-address/edit-user-address.component';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-address',
   templateUrl: './user-address.component.html',
@@ -58,6 +59,14 @@ export class UserAddressComponent implements OnInit {
   * Boolean value to show/hide error message
   */
   showAddressError: boolean;
+  editAddressInteractEdata: IInteractEventEdata;
+  addAddressInteractEdata: IInteractEventEdata;
+  deleteAddressInteractEdata: IInteractEventEdata;
+  closeAddressInteractEdata: IInteractEventEdata;
+  saveEditAddressInteractEdata: IInteractEventEdata;
+  saveAddAddressInteractEdata: IInteractEventEdata;
+  lockAddressInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(resourceService: ResourceService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router, public toasterService: ToasterService) {
@@ -85,6 +94,7 @@ export class UserAddressComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
   * This method invokes profile service to edit existing user address
@@ -195,5 +205,47 @@ export class UserAddressComponent implements OnInit {
         this.showAddressError = false;
       }
     }, 0);
+  }
+  setInteractEventData() {
+    this.editAddressInteractEdata = {
+      id: 'profile-update-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.addAddressInteractEdata = {
+      id: 'profile-add-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.deleteAddressInteractEdata = {
+      id: 'profile-delete-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.closeAddressInteractEdata = {
+      id: 'profile-close-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveEditAddressInteractEdata = {
+      id: 'profile-save-edit-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveAddAddressInteractEdata = {
+      id: 'profile-save-add-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.lockAddressInteractEdata = {
+      id: 'lock-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

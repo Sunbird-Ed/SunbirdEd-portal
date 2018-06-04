@@ -2,7 +2,7 @@
     <div class="margin-top-20 ui raised segment">
         <div class="header">
             <span class="segment-heading"> {{resourceService.frmelmnts.lbl.summary}} </span>
-            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility appTelemetryInteract [telemetryInteractObject]="{id:userService.userid,type:'user',ver:'1.0'}" [telemetryInteractEdata]="{id:'profile-close-edit-summary',type:'click',pageid:'profile-read'}"  field="profileSummary"></app-profile-visibility></a>
+            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility appTelemetryInteract [telemetryInteractObject]="{id:userService.userid,type:'user',ver:'1.0'}" [telemetryInteractEdata]="{id:'lock-summary',type:'click',pageid:'profile-read'}"  field="profileSummary"></app-profile-visibility></a>
             <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editSummuryIntractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" 
             routerLink= '/profile/summary/edit'>{{resourceService.frmelmnts.btn.edit}}</a>
             <a class="add-edit-btn-profile" *ngIf="action === 'edit'" 
