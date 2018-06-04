@@ -5,7 +5,7 @@ import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProfileService } from '../../../services';
 import * as _ from 'lodash';
-// import * as $ from 'jquery';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 declare var jQuery: any;
 @Component({
   selector: 'app-edit-user-skills',
@@ -25,7 +25,9 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
    * Contains skills data of the user
    */
   profileData: any;
-
+  cancelAddSKillsInteractEdata: IInteractEventEdata;
+  finishAddSkillsInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public userService: UserService, public resourceService: ResourceService, public router: Router,
     public profileService: ProfileService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, private elementRef: ElementRef) { }
@@ -41,6 +43,7 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
       }
     });
     this.userProfile = this.userService.userProfile;
+    this.setInteractEventData();
   }
   ngAfterViewInit() {
     jQuery(this.elementRef.nativeElement).find('sui-multi-select').dropdown({ allowTab: false });
@@ -70,5 +73,22 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
    */
   redirect() {
     this.router.navigate(['/profile']);
+  }
+  setInteractEventData() {
+    this.cancelAddSKillsInteractEdata = {
+      id: 'profile-add-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.finishAddSkillsInteractEdata = {
+      id: 'profile-save-skills',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

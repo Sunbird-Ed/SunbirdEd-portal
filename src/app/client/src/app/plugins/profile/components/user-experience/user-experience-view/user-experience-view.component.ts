@@ -9,6 +9,7 @@ import {
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-experience-view',
   templateUrl: './user-experience-view.component.html',
@@ -43,6 +44,14 @@ export class UserExperienceViewComponent implements OnInit {
    * Contains array of actions
    */
   allowedAction = ['edit', 'add'];
+  editExperienceInteractEdata: IInteractEventEdata;
+  addExperienceInteractEdata: IInteractEventEdata;
+  deleteExperienceInteractEdata: IInteractEventEdata;
+  closeExperienceInteractEdata: IInteractEventEdata;
+  saveEditExperienceInteractEdata: IInteractEventEdata;
+  saveAddExperienceInteractEdata: IInteractEventEdata;
+  lockExperienceInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
@@ -66,6 +75,7 @@ export class UserExperienceViewComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
    * This method is used to delete existing user experience
@@ -192,5 +202,47 @@ export class UserExperienceViewComponent implements OnInit {
         this.isCurrentJobExist = false;
       }
     }, 0);
+  }
+  setInteractEventData() {
+    this.editExperienceInteractEdata = {
+      id: 'profile-update-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.addExperienceInteractEdata = {
+      id: 'profile-add-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.deleteExperienceInteractEdata = {
+      id: 'profile-delete-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.closeExperienceInteractEdata = {
+      id: 'profile-close-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveEditExperienceInteractEdata = {
+      id: 'profile-save-edit-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveAddExperienceInteractEdata = {
+      id: 'profile-save-add-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.lockExperienceInteractEdata = {
+      id: 'lock-experience',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

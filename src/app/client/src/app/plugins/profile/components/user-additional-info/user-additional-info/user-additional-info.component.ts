@@ -6,7 +6,7 @@ import { EditUserAdditionalInfoComponent } from '../../user-additional-info/edit
 import { ProfileService } from './../../../services';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 /**
 * Displays basic information of the user
 */
@@ -33,7 +33,10 @@ export class UserAdditionalInfoComponent implements OnInit {
    * Stores actions that are allowed
    */
   allowedAction = ['edit'];
-
+  editAdditionalInfoInteractEdata: IInteractEventEdata;
+  saveEditAdditionalInfoInteractEdata: IInteractEventEdata;
+  closeAdditionalInfoInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     public router: Router, public userService: UserService, public profileService: ProfileService,
     public toasterService: ToasterService) { }
@@ -63,6 +66,7 @@ export class UserAdditionalInfoComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
   * Invokes profile service to edit additional information of the user
@@ -120,5 +124,27 @@ export class UserAdditionalInfoComponent implements OnInit {
     } else {
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
+  }
+  setInteractEventData() {
+    this.editAdditionalInfoInteractEdata = {
+      id: 'profile-edit-additional-info',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.closeAdditionalInfoInteractEdata = {
+      id: 'profile-close-additional-info',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveEditAdditionalInfoInteractEdata = {
+      id: 'profile-save-edit-additional-info',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }
