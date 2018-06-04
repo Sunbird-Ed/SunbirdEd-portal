@@ -16,6 +16,7 @@ import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
 import { PublicRoutingModule } from './public-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ReactiveFormsModule,
     DiscussionModule,
     PublicRoutingModule,
-    TelemetryModule
+    TelemetryModule,
+    NgInviewModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],

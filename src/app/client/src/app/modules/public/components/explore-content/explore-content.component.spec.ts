@@ -34,7 +34,14 @@ describe('ExploreContentComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}])
+    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

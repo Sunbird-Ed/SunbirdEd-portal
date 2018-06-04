@@ -104,10 +104,19 @@ export class AppComponent implements OnInit {
         }
       });
     } else {
-      this.initApp = true;
-      this.initTelemetryService();
-      this.initTenantService();
-      this.userService.initialize(false);
+      this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
+        this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
+          .first().subscribe((data) => {
+            this.orgDetails = data;
+            this.initTelemetryService();
+            this.initTenantService();
+            this.userService.initialize(false);
+            this.initApp = true;
+          }, (err) => {
+            this.initApp = true;
+            console.log('unable to get organization details');
+          });
+      });
     }
   }
 
@@ -117,16 +126,8 @@ export class AppComponent implements OnInit {
       config = this.getLoggedInUserConfig();
       this.telemetryService.initialize(config);
     } else {
-      this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
-        this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
-          .first().subscribe((data) => {
-            this.orgDetails = data;
-            config = this.getAnonymousUserConfig();
-            this.telemetryService.initialize(config);
-          }, (err) => {
-            console.log('unable to get organization details');
-          });
-      });
+      config = this.getAnonymousUserConfig();
+      this.telemetryService.initialize(config);
     }
   }
 

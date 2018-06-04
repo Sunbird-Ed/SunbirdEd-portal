@@ -37,7 +37,7 @@
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                     <button *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" class="ui item text-upper-case" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a href="/home" class="sunblogin">
+                    <a (click)="navigateToHome()" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                 </div>
@@ -45,7 +45,7 @@
             <div class="right floated four wide column mobile only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                     <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a href="/home" class="sunblogin">
+                    <a (click)="navigateToHome()" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                 </div>
@@ -53,7 +53,7 @@
             <div class="right floated four wide column mobile only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                     <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a href="/home" class="sunblogin">
+                    <a (click)="navigateToHome()" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                 </div>
@@ -69,7 +69,7 @@
         <div class="center aligned twelve column row padding-top-2rem headerBackground">
             <div class="one wide column"></div>
             <div class="two wide column">
-                <a routerLink="home">
+                <a (click)="navigateToHome()">
                     <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}} ">
                 </a>
@@ -87,7 +87,7 @@
             <div class="one wide column">
                 <div class="right floated two wide column tablet computer only">
                     <div class="beforelogin ui secondary pointing menu padding-top-10 right-float">
-                        <a href="/home" class="sunblogin">
+                        <a (click)="navigateToHome()" class="sunblogin">
                         <button class="ui item padding-right-none">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                     </div>

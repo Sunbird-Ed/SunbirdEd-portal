@@ -20,12 +20,48 @@ const routes: Routes = [
       }
     }
   },
-  { path: 'get', component: GetComponent },
-  { path: 'get/dial/:dialCode', component: DialCodeComponent },
-  { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
-  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
-  { path: 'explore/:pageNumber', component: ExploreContentComponent },
-  { path: ':slug/explore/:pageNumber', component: ExploreContentComponent }
+  {
+    path: 'get', component: GetComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'get', type: 'view', subtype: 'paginate'
+      }
+    }
+  },
+  {
+    path: 'get/dial/:dialCode', component: DialCodeComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'get-dial', type: 'view', subtype: 'paginate'
+      }
+    }
+  },
+  {
+    path: 'play/content/:contentId', component: PublicContentPlayerComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'play-content', type: 'view', subtype: 'paginate'
+      }
+    }
+  },
+  {
+    path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
+      }
+    }
+  },
+  {
+    path: 'explore/:pageNumber', component: ExploreContentComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
+      }
+    }
+  },
+  {
+    path: ':slug/explore/:pageNumber', component: ExploreContentComponent, data: {
+      telemetry: {
+        env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
+      }
+    }
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
