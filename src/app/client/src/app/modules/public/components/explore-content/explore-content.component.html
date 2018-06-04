@@ -4,7 +4,7 @@
       <div class=" ui grid">
           <div class="ten wide column" *ngIf="hashTagId">
               <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
           </div>
       </div>
 
