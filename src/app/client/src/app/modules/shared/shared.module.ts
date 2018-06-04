@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +25,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
     CommonModule,
     SuiModule,
     SlickModule,
-    FormsModule
+    FormsModule,
+    TelemetryModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,

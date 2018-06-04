@@ -312,7 +312,7 @@
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"}}
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType", "pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
   },

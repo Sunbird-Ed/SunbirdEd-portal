@@ -19,6 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'learn/course', component: CourseConsumptionPageComponent,
+     data: {  telemetry: { env: telemetryEnv }},
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,
