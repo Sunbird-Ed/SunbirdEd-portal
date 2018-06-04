@@ -89,7 +89,7 @@ export class UserSkillsComponent implements OnInit {
     this.addSkillsInteractEdata = {
       id: 'profile-add-skills',
       type: 'click',
-      pageid: this.router.url
+      pageid: 'profile-read'
     };
     this.viewMoreSkillsInteractEdata = {
       id: 'profile-view-more-skills',

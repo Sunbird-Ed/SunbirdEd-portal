@@ -78,12 +78,12 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
     this.cancelAddSKillsInteractEdata = {
       id: 'profile-add-skills',
       type: 'click',
-      pageid: this.router.url
+      pageid: 'profile-read'
     };
     this.finishAddSkillsInteractEdata = {
-      id: 'profile-view-more-skills',
+      id: 'profile-save-skills',
       type: 'click',
-      pageid: this.router.url
+      pageid: 'profile-read'
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
