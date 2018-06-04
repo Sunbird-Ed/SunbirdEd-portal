@@ -4,13 +4,20 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
-
+const telemetryEnv = 'library';
+const objectType = 'library';
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'library-read', subtype: 'paginate',
+        type: 'view', uri: '/resources/play/collection/', object: { type: objectType, ver: '1.0' }
+      }
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]

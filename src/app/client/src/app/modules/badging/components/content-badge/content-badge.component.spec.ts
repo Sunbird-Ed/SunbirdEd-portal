@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { mockResponse } from './content-badge.component.spec.data';
 import { ContentBadgeService } from './../../services';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('ContentBadgeComponent', () => {
   let component: ContentBadgeComponent;
@@ -18,7 +19,7 @@ describe('ContentBadgeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentBadgeComponent],
-      imports: [SuiModule, CoreModule, SharedModule, HttpClientTestingModule],
+      imports: [SuiModule, CoreModule, SharedModule, HttpClientTestingModule, TelemetryModule],
       providers: [ContentBadgeService, ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })
       .compileComponents();

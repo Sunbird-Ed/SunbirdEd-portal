@@ -2,14 +2,14 @@
   <div class="six wide column">
     <div class="ui blue labels" *ngIf="data && data.length > 0">
       <div class="ui label margin-right-10" *ngFor="let selectedbadge of data">
-        <div *ngIf="selectedbadge.badgeClassName">{{selectedbadge.badgeClassName | uppercase}}
+        <div *ngIf="selectedbadge.badgeClassName || selectedbadge.name">{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}
         </div>
       </div>
     </div>
   </div>
   <div class="six wide column margin-top-0 text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
     <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
-    <button class="ui small basic primary compact button margin-left-10" *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="badgeInteractEdata" class="ui small basic primary compact button margin-left-10" *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
   </div>
 </div>
 
@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class="actions">
-    <div class="ui basic blue small compact button left floated" (click)="showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
-    <div class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
+    <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelBadgeInteractEdata" class="ui basic blue small compact button left floated" (click)="showBadgeAssingModel=false;">{{resourceService.frmelmnts.btn.cancel}}</div>
+    <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="assignBadgeInteractEdata" class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService.frmelmnts.btn.yesiamsure}}</div>
   </div>
 </sui-modal>
