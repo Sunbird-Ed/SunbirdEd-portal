@@ -36,7 +36,7 @@ describe('SignupComponent', () => {
       imports: [FormsModule, ReactiveFormsModule, SuiModule, SharedModule, CoreModule, HttpClientTestingModule, TelemetryModule],
       providers: [FormBuilder, ResourceService, SignupService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: fakeActivatedRoute }],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
