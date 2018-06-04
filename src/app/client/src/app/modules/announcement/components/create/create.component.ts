@@ -10,7 +10,10 @@ import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { IEndEventInput, IStartEventInput, IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import {
+  IEndEventInput, IStartEventInput, IInteractEventInput,
+  IImpressionEventInput, IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 /**
  * This component helps to create and resend announcement
  */
@@ -146,6 +149,16 @@ export class CreateComponent implements OnInit, OnDestroy {
    * To get url, app configs
    */
   public config: ConfigService;
+  public confirmAnnouncementInteractEdata: IInteractEventEdata;
+  public previewInteractEdata: IInteractEventEdata;
+  public sendAnnouncementInteractEdata: IInteractEventEdata;
+  public selectInteractEdata: IInteractEventEdata;
+  public announcementSentInteractEdata: IInteractEventEdata;
+  public stopCreatingYesInteractEdata: IInteractEventEdata;
+  public stopCreatingNoInteractEdata: IInteractEventEdata;
+  public backBtnInteractEdata: IInteractEventEdata;
+  public removeRecipientInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   /**
    * Default method of class CreateComponent
    *
@@ -155,7 +168,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
     toasterService: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
-    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef) {
+    private elRef: ElementRef, config: ConfigService, private cdr: ChangeDetectorRef, private userService: UserService) {
     this.resource = resource;
     this.fileUpload = fileUpload;
     this.route = route;
@@ -286,13 +299,13 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.announcementDetails.target = this.recipientsList;
     this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
-      (res: ServerResponse) => {
-        this.modalName = 'success';
-      },
-      (err: ServerResponse) => {
-        this.toasterService.error(this.resource.messages.emsg.m0005);
-        this.formErrorFlag = false;
-      }
+        (res: ServerResponse) => {
+          this.modalName = 'success';
+        },
+        (err: ServerResponse) => {
+          this.toasterService.error(this.resource.messages.emsg.m0005);
+          this.formErrorFlag = false;
+        }
       );
   }
 
@@ -304,7 +317,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   redirectToOutbox(): void {
     const endEvent = {
       object: {
-       id: this.identifier ? this.identifier : '',
+        id: this.identifier ? this.identifier : '',
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
@@ -312,9 +325,9 @@ export class CreateComponent implements OnInit, OnDestroy {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
       edata: {
-       type: this.activatedRoute.snapshot.data.telemetry.type,
-       pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
-       mode: 'create'
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'create'
       }
     };
     this.telemetryEnd = endEvent;
@@ -328,16 +341,16 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges
-    .map((value) => {
+      .map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
         value.description = value.description.trim();
         return value;
-    })
-    .filter((value) => this.announcementForm.valid)
-    .subscribe((value) => {
-      this.enableSelectRecipientsBtn();
-    });
+      })
+      .filter((value) => this.announcementForm.valid)
+      .subscribe((value) => {
+        this.enableSelectRecipientsBtn();
+      });
   }
 
   /**
@@ -448,15 +461,15 @@ export class CreateComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-     object: {
+      object: {
         id: this.identifier ? this.identifier : '',
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode:  this.activatedRoute.snapshot.data.telemetry.mode
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: this.activatedRoute.snapshot.data.telemetry.mode
       }
     };
 
@@ -464,8 +477,8 @@ export class CreateComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
-        id: this.identifier ?  this.identifier : '',
+      object: {
+        id: this.identifier ? this.identifier : '',
         type: this.activatedRoute.snapshot.data.telemetry.env,
         section: 'outbox'
       },
@@ -474,16 +487,69 @@ export class CreateComponent implements OnInit, OnDestroy {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.identifier ? this.activatedRoute.snapshot.data.telemetry.uri + this.identifier + '/' + this.stepNumber :
-        this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
+          this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
     this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
+    this.setInteractEventData();
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+  }
+  setInteractEventData() {
+    this.confirmAnnouncementInteractEdata = {
+      id: 'confirm-recipient',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.previewInteractEdata = {
+      id: 'preview-announcement',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.sendAnnouncementInteractEdata = {
+      id: 'send-announcement',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.selectInteractEdata = {
+      id: 'edit-recipient',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.announcementSentInteractEdata = {
+      id: 'announcement-sent',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.stopCreatingYesInteractEdata = {
+      id: 'cancel-announcement-yes',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.stopCreatingNoInteractEdata = {
+      id: 'cancel-announcement-no',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.backBtnInteractEdata = {
+      id: 'announcement-back',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.removeRecipientInteractEdata = {
+      id: 'remove-recipient',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'announcement',
+      ver: '1.0'
+    };
   }
 }

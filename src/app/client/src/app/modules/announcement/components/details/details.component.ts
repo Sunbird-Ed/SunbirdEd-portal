@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
-import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService } from '@sunbird/core';
 /**
  * The details component takes input of the announcement details
  * object and renders it with the data
@@ -12,7 +13,7 @@ import { IEndEventInput, IStartEventInput, IImpressionEventInput } from '@sunbir
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent {
+export class DetailsComponent implements OnInit {
   /**
 	 * telemetryImpression
 	*/
@@ -25,6 +26,8 @@ export class DetailsComponent {
    * announcementDetails is used to render the Announcement values in the view
    */
   @Input() announcementDetails: IAnnouncementDetails;
+  public viewAnnouncementInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -33,8 +36,23 @@ export class DetailsComponent {
 	 *
    * @param {ResourceService} resourceService To call resource service which helps to use language constant
 	 */
-  constructor(resourceService: ResourceService) {
+  constructor(resourceService: ResourceService, private userService: UserService) {
     this.resourceService = resourceService;
+  }
+  ngOnInit() {
+    this.setInteractEventData();
+  }
+  setInteractEventData() {
+    this.viewAnnouncementInteractEdata = {
+      id: 'attachment',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'announcement',
+      ver: '1.0'
+    };
   }
 }
 
