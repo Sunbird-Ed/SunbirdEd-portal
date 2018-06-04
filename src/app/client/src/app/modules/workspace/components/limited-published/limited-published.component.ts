@@ -319,11 +319,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
-      type: 'published course',
-      ver: param.pkgVersion ? param.pkgVersion : 1,
-      params: [
-        {id: param.identifier}
-      ]
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion : 1
     }];
   }
 }
