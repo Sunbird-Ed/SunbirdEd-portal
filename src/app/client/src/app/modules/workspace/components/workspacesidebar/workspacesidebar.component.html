@@ -9,7 +9,7 @@
     </a>
   <a *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
   appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]">
-       {{resourceService?.frmelmnts?.snav?.allcontent}}
+       {{resourceService?.frmelmnts?.snav?.allmycontents}}
   </a>
   <a *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft') " appPermission
     [permission]='draftRole' class="item" [routerLink]="['draft',1]">
