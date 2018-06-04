@@ -12,9 +12,7 @@ const routes: Routes = [
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
-      telemetry: {
-        env: telemetryEnv
-      }
+      telemetry: { env: telemetryEnv }
     },
     children: [
       { path: 'flag', component: FlagContentComponent }
