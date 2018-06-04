@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -88,7 +89,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
    */
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'course' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.copyContentService.copyContent(contentData, logEvent).subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;

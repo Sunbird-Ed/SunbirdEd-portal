@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import * as testData from './copy-content.service.spec.data';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -24,7 +25,11 @@ describe('CopyContentService', () => {
       const userService = TestBed.get(UserService);
       userService._userProfile = testData.mockRes.userData;
       spyOn(contentService, 'post').and.callFake(() => Observable.of(testData.mockRes.successResponse));
-      service.copyContent(testData.mockRes.contentData).subscribe(
+      const logEvent: ILogEventInput = {
+        context: { env: 'search' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      service.copyContent(testData.mockRes.contentData, logEvent).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
         }

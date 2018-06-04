@@ -9,6 +9,7 @@ import {
   ContentUtilsServiceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-collection-player',
@@ -206,7 +207,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    */
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'course' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.copyContentService.copyContent(contentData, logEvent).subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;

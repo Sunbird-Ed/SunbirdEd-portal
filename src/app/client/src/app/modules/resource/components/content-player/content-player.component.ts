@@ -8,6 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService
 } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -137,7 +138,11 @@ export class ContentPlayerComponent implements OnInit {
    */
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'course' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.copyContentService.copyContent(contentData, logEvent).subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;

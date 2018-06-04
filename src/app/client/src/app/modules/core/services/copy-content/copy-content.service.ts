@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * Service to copy content
@@ -52,13 +53,13 @@ export class CopyContentService {
    * This method calls the copy API and call the redirecttoeditor method after success
    * @param {contentData} ContentData Content data which will be copied
    */
-  copyContent(contentData: ContentData) {
+  copyContent(contentData: ContentData, logEvent: ILogEventInput) {
     const param = this.formatData(contentData);
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
       data: param
     };
-    return this.contentService.post(option).map((response: ServerResponse) => {
+    return this.contentService.post(option, logEvent).map((response: ServerResponse) => {
       _.forEach(response.result.node_id, (value) => {
         this.redirectToEditor(contentData, value);
       });

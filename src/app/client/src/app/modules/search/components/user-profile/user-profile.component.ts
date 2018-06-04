@@ -5,6 +5,7 @@ import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * The delete component deletes the announcement
@@ -232,8 +233,12 @@ export class UserProfileComponent implements OnInit {
           }
         }
       };
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
       this.userDetails.badgeArray = [];
-      this.badgesService.getDetailedBadgeAssertions(req, this.userDetails.badgeAssertions).subscribe((detailedAssertion) => {
+      this.badgesService.getDetailedBadgeAssertions(req, this.userDetails.badgeAssertions, logEvent).subscribe((detailedAssertion) => {
         if (detailedAssertion) {
           this.userDetails.badgeArray.push(detailedAssertion);
         }

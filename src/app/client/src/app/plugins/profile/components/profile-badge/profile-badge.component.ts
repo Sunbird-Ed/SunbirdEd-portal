@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData } from '../../../../modules/shared';
 import { UserService, BadgesService } from '../../../../modules/core/services';
 import * as _ from 'lodash';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-profile-badge',
@@ -58,8 +59,12 @@ export class ProfileBadgeComponent implements OnInit {
               }
             }
           };
+          const logEvent: ILogEventInput = {
+            context: { env: 'profile' },
+            edata: { type: 'api_call', level: 'INFO', message: '' }
+          };
           this.badgeArray = [];
-          this.badgeService.getDetailedBadgeAssertions(req, this.userProfile.badgeAssertions).subscribe((detailedAssertion) => {
+          this.badgeService.getDetailedBadgeAssertions(req, this.userProfile.badgeAssertions, logEvent).subscribe((detailedAssertion) => {
             if (detailedAssertion) {
               this.badgeArray.push(detailedAssertion);
             }

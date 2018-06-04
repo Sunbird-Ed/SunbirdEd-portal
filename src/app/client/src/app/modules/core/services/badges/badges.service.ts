@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ILogEventInput } from '@sunbird/telemetry';
 /**
  * Service to fetch badges
  */
@@ -45,21 +46,21 @@ export class BadgesService {
   /**
    * method to fetch badges from server.
   */
-  public getAllBadgeList(req) {
+  public getAllBadgeList(req, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.BADGE.BADGE_CLASS_SEARCH,
       data: req
     };
-    return this.learner.post(option);
+    return this.learner.post(option, logEvent);
   }
 
-  public getDetailedBadgeAssertions(req, assertions) {
+  public getDetailedBadgeAssertions(req, assertions, logEvent: ILogEventInput) {
     return Observable.create(observer => {
       const option = {
         url: this.config.urlConFig.URLS.BADGE.BADGE_CLASS_SEARCH,
         data: req
       };
-      this.learner.post(option).subscribe((badgeSearchResponse) => {
+      this.learner.post(option, logEvent).subscribe((badgeSearchResponse) => {
         if (badgeSearchResponse) {
           const detailedAssertions: any[] = assertions;
           for (const detailedAssertion of detailedAssertions) {

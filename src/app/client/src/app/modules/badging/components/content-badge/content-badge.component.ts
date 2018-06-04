@@ -4,6 +4,7 @@ import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-content-badge',
@@ -54,7 +55,11 @@ export class ContentBadgeComponent implements OnInit {
         }
       }
     };
-    this.badgeService.getAllBadgeList(req).subscribe((response) => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'resource' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.badgeService.getAllBadgeList(req, logEvent).subscribe((response) => {
         this.allBadgeList = _.differenceBy(response.result.badges, this.data, 'badgeId');
     }, (err) => {
       if (err && err.error && err.error.params) {
