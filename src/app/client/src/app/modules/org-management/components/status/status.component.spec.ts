@@ -19,7 +19,15 @@ describe('StatusComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile-bulk-upload-check-status', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
@@ -83,5 +91,10 @@ describe('StatusComponent', () => {
   it('should call getStatusResult to get the status result', () => {
     component.getStatusResult('success');
     fixture.detectChanges();
+  });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
   });
 });

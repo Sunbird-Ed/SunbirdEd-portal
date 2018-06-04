@@ -1,5 +1,5 @@
 <sui-modal *ngIf='showEnrollDetails && batchDetails' (dismissed)="redirect()" [isClosable]="true" #enrollBatch>
-    <div class="header">
+    <div class="header" [appTelemetryImpression]="telemetryImpression">
         <div class="ui grid">
             <div class="eleven wide column">
                 <span class="ui header">{{batchDetails.name}}</span>

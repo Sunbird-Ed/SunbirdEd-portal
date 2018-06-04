@@ -5,7 +5,7 @@
   <div class="ten wide column">
     <div>
       <span id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
-        <div class="ui grid">
+        <div class="ui grid" [appTelemetryImpression]="telemetryImpression">
           <div class="five wide column float-ContentLeft" *ngIf="batchlist.length === 1">
             <span class="dashBoardSectionHeading">
               <i class="large bar chart icon"></i>
@@ -56,7 +56,7 @@
       </span>
 
       <div class="table-data-holder" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
-        <div class="ui raised segment">
+        <div class="ui raised segment" [appTelemetryImpression]="telemetryImpression">
           <div class="eight wide column right floated dashBoardCardText">
             <h3>{{filterText}} </h3>
           </div>
@@ -152,7 +152,7 @@
       </div>
       <!-- Show message if no batch is created-->
       <div class="ui grid" *ngIf="showNoBatch">
-        <div class="twelve wide column">
+        <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
           <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
             <i class="ui remove icon CloseButtonFont"></i>
           </a>

@@ -7,8 +7,8 @@ import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
-  BadgesService, ContentService, CoursesService, PageApiService, TelemetryService,
-  TELEMETRY_PROVIDER, TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
+  BadgesService, ContentService, CoursesService, PageApiService,
+  TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
@@ -16,7 +16,7 @@ import {
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
-
+import { WebExtensionModule } from 'sunbird-web-extension';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +24,8 @@ import { CacheService } from 'ng2-cache-service';
     SharedModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    WebExtensionModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
@@ -34,8 +35,8 @@ import { CacheService } from 'ng2-cache-service';
   providers: [
     LearnerService, UserService, TenantService, SearchService, CopyContentService,
     PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, TelemetryService, FrameworkService, FormService, CacheService,
-    { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, BreadcrumbsService, PlayerService]
+    AuthGuard, FrameworkService, FormService, CacheService,
+    ConceptPickerService, BreadcrumbsService, PlayerService]
 })
 export class CoreModule {
 }

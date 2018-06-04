@@ -18,12 +18,15 @@ import { LearnModule } from '@sunbird/learn';
 import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
-import { ProfileModule } from '@sunbird/profile';
 import { SearchModule } from '@sunbird/search';
 import { DiscussionModule } from '@sunbird/discussion';
-import * as $ from 'jquery';
-import { BadgingModule } from '@sunbird/badge';
 import {TelemetryModule} from '@sunbird/telemetry';
+import * as $ from 'jquery';
+
+// portal-extensions
+import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
+import { WebExtensionsConfig } from './framework.config';
+import { BadgingModule } from '@sunbird/badge';
 @NgModule({
   declarations: [
     AppComponent
@@ -47,10 +50,11 @@ import {TelemetryModule} from '@sunbird/telemetry';
     WorkspaceModule,
     OrgManagementModule,
     PublicModule,
-    ProfileModule,
     SearchModule,
     DiscussionModule,
+    WebExtensionModule,
     BadgingModule,
+    ...WebExtensionsConfig.plugins.map((data) => data.module),
     TelemetryModule
   ],
   providers: [],
@@ -58,6 +62,7 @@ import {TelemetryModule} from '@sunbird/telemetry';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
+  constructor(bootstrapFramework: BootstrapFramework) {
+    bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }

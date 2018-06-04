@@ -10,12 +10,7 @@ describe('TelemetryImpressionDirective', () => {
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]
     });
   });
-  it('should create an instance', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const directive = new TelemetryImpressionDirective(telemetryService);
-    expect(directive).toBeTruthy();
-  });
-  it('should take input', () => {
+  it('should take input and generate the telemetry impression event', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryImpressionDirective(telemetryService);
     spyOn(telemetryService, 'impression').and.callFake(() => Observable.of(eventData.inputData));

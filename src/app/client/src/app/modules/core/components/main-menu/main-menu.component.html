@@ -8,10 +8,8 @@
 	<a class="item"   [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"  routerLink="/resources" >
 		{{resourceService?.frmelmnts?.tab?.resources}}
 	    </a>
-	<a class="item" [class.active]="router.isActive('/groups')"  routerLink="/groups" >
+	<!-- <a class="item" [class.active]="router.isActive('/groups')"  routerLink="/groups" >
 		{{resourceService?.frmelmnts?.tab?.community}}
-	    </a>
-	<a class="item" [class.active]="router.isActive('/search/Organisations') || router.isActive('/profile') || router.isActive('/search/Users')"  routerLink="/profile" >
-		{{resourceService?.frmelmnts?.tab?.profile}}
-		</a>
+	    </a> -->
+	<extension-point name="header-menu-item"></extension-point>
 </div>

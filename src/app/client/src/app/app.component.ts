@@ -52,8 +52,9 @@ export class AppComponent implements OnInit {
   public telemetryService: TelemetryService;
   /**
     * To get url, app configs
-   */
+  */
   public config: ConfigService;
+  public initApp = false;
   /**
    * constructor
    */
@@ -82,22 +83,25 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
+    this.conceptPickerService.initialize();
     if (this.userService.userid && this.userService.sessionId) {
+      this.userService.startSession();
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.conceptPickerService.initialize();
       this.initTelemetryService();
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
+      this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err) {
+            this.initApp = true;
             const slug = _.get(user, 'userProfile.rootOrg.slug');
             this.initTenantService(slug);
-          } else {
+          } else if ( user && user.err) {
+            this.initApp = true;
             this.initTenantService();
           }
-        });
+      });
     } else {
+      this.initApp = true;
       this.initTenantService();
       this.userService.initialize(false);
     }
@@ -117,15 +121,18 @@ export class AppComponent implements OnInit {
         const config: ITelemetryContext = {
           userOrgDetails: userOrg,
           config: {
-            // TODO: get pdata from document object
-            pdata: { id: '', ver: '', pid: '' },
+            pdata: {
+              id: this.userService.appId,
+              ver: this.config.appConfig.TELEMETRY.VERSION,
+              pid: this.config.appConfig.TELEMETRY.PID
+            },
             endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
             apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
             host: '',
             uid: userOrg.userId,
             sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId') ? userOrg.rootOrg.hashTagId : 'sunbird',
-            env: 'home' // default value
+            channel: _.get(userOrg, 'rootOrg.hashTagId') ,
+            env: 'home'
            }
         };
         resolve(config);

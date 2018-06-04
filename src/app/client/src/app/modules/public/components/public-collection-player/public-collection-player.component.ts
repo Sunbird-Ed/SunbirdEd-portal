@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
@@ -16,6 +16,8 @@ import * as _ from 'lodash';
   styleUrls: ['./public-collection-player.component.css']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
+  selectedLanguage: string;
+  queryParams: any;
   public collectionData: object;
 
   private route: ActivatedRoute;
@@ -72,7 +74,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   };
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
-    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService) {
+    windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
+    public resourceService: ResourceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -82,6 +85,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getContent();
+    this.route.queryParams.subscribe((queryParams) => {
+      if (this.route.queryParams['language'] && this.route.queryParams['language'] !== this.selectedLanguage) {
+        this.selectedLanguage = this.queryParams['language'];
+        this.resourceService.getResource(this.selectedLanguage);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -170,7 +179,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/learn'); // give url in angular 1
+    this.navigationHelperService.navigateToPreviousUrl('/explore/1');
   }
   closeContentPlayer() {
     this.showPlayer = false;

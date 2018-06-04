@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , EventEmitter, Output} from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
@@ -14,6 +14,10 @@ import { IAnnouncementListData } from '@sunbird/announcement';
   styleUrls: ['./home-announcement.component.css']
 })
 export class HomeAnnouncementComponent implements OnInit {
+  @Output('inviewEvent')
+  inviewEvent = new EventEmitter<any>();
+
+
   /**
    * To call resource service which helps to use language constant.
    */
@@ -115,5 +119,9 @@ export class HomeAnnouncementComponent implements OnInit {
 	 */
   ngOnInit() {
     this.populateHomeInboxData(this.config.appConfig.ANNOUNCEMENT.HOME.PAGE_LIMIT, this.pageNumber);
+  }
+
+  public inview(event) {
+    this.inviewEvent.emit(event);
   }
 }

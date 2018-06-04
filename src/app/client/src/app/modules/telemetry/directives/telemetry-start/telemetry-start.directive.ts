@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit , OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 import { IStartEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
@@ -8,7 +8,7 @@ import { TelemetryService } from '../../services';
 @Directive({
   selector: '[appTelemetryStart]'
 })
-export class TelemetryStartDirective implements OnInit, OnChanges {
+export class TelemetryStartDirective implements OnChanges {
   /**
    * Interact event input
   */
@@ -25,16 +25,10 @@ export class TelemetryStartDirective implements OnInit, OnChanges {
   constructor( telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
-  ngOnInit() {
-  }
   ngOnChanges() {
    if (this.appTelemetryStart) {
-      this.start();
+      this.telemetryService.start(this.appTelemetryStart);
     }
-  }
-  start() {
-    console.log('call Telemetrystart method ', this.appTelemetryStart);
-    this.telemetryService.start(this.appTelemetryStart);
   }
 }
 

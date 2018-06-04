@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
@@ -40,14 +41,24 @@ describe('CourseProgressComponent', () => {
       }
     }
   };
+
   const fakeActivatedRoute = {
     'params': Observable.from([{ contentId: 'do_112470675618004992181' }]),
-    'queryParams': Observable.from([{ batchIdentifier: '0124963192947507200' , timePeriod: '7d'}])
+    'queryParams': Observable.from([{ batchIdentifier: '0124963192947507200', timePeriod: '7d' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'course', pageid: 'course-stats', type: 'view',
+          object: { type: 'course', ver: '1.0' }
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule, CoreModule, DashboardModule],
+      imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule, OrderModule,
+        CoreModule, DashboardModule, TelemetryModule],
       declarations: [],
       providers: [CourseProgressService,
         { provide: Router, useClass: RouterStub },
@@ -157,4 +168,11 @@ describe('CourseProgressComponent', () => {
       component.downloadReport();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
     }));
+
+  it('should unsubscribe to userData observable', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalledTimes(1);
+  });
 });

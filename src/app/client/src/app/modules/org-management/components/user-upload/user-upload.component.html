@@ -1,5 +1,5 @@
 <sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect()" #modal>
-  <div class="header">
+  <div class="header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0016}}</span>
@@ -15,13 +15,13 @@
         <div class="six wide column">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.provider}}</label>
-            <input formControlName="provider" type="text" placeholder="Provider" autofocus>
+            <input formControlName="provider" type="text" placeholder="OrgProvider" autofocus>
           </div>
         </div>
         <div class="six wide column">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.extlid}}</label>
-            <input formControlName="externalId" type="text" placeholder="External Id">
+            <input formControlName="externalId" type="text" placeholder="OrgExternalId">
           </div>
         </div>
       </div>

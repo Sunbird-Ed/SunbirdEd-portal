@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService
+  ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -46,6 +46,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public loader: Boolean = true;
 
   public showCopyLoader: Boolean = false;
+  /**
+	 * telemetryShareData
+	*/
+  telemetryShareData: Array<ITelemetryShare>;
 
   private subscription: Subscription;
 
@@ -139,9 +143,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }
@@ -220,5 +222,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
+    this.setTelemetryShareData(this.collectionData);
+  }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: 'published course',
+      ver: param.pkgVersion ? param.pkgVersion : 1,
+      params: [
+        {id: param.identifier}
+      ]
+    }];
   }
 }

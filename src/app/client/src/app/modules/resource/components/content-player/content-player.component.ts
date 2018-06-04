@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 
 /**
@@ -49,6 +49,10 @@ export class ContentPlayerComponent implements OnInit {
    * contain contentData
    */
   contentData: ContentData;
+  /**
+	 * telemetryShareData
+	*/
+  telemetryShareData: Array<ITelemetryShare>;
   /**
    * to show loader while copying content
    */
@@ -102,6 +106,7 @@ export class ContentPlayerComponent implements OnInit {
 
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          console.log(this.contentData);
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
@@ -152,5 +157,16 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
+     this.setTelemetryShareData(this.contentData);
+  }
+    setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: 'published course',
+      ver: param.pkgVersion ? param.pkgVersion : 1,
+      params: [
+        {id: param.identifier}
+      ]
+    }];
   }
 }

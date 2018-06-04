@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-// SB service(S)
+import { Subscription } from 'rxjs/Subscription';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 /**
@@ -21,7 +22,7 @@ import * as _ from 'lodash';
 /**
  * @class OrganisationComponent
  */
-export class OrganisationComponent {
+export class OrganisationComponent implements OnDestroy {
 
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -39,7 +40,7 @@ export class OrganisationComponent {
    * Dataset type
    */
   datasetType = 'creation';
-
+  userDataSubscription: Subscription;
   /**
    * Contains course consumption line chart data
    */
@@ -143,6 +144,11 @@ export class OrganisationComponent {
   userService: UserService;
 
   /**
+	 * telemetryImpression object for org admin dashboard page
+	*/
+  telemetryImpression: IImpressionEventInput;
+
+  /**
    * Default method of OrganisationService class
    *
    * @param {DownloadService} downloadService To make download report api call
@@ -165,14 +171,39 @@ export class OrganisationComponent {
     this.orgService = orgService;
     this.userService = userService;
     this.route = route;
+    this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
       this.getMyOrganisations();
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
+        // update the impression event after an org is selected
+        this.telemetryImpression.edata.uri = '/orgDashboard/organization/' + params.datasetType
+          + '/' + params.id + '/' + params.timePeriod;
+        this.telemetryImpression.object = {
+          id: params.id,
+          type: 'org',
+          ver: '1.0'
+        };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
+  }
+
+  /**
+   * Function to initialise the telemetry impression event for org admin dashboard page
+   */
+  initTelemetryImpressionEvent() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/orgDashboard'
+      }
+    };
   }
 
   /**
@@ -247,7 +278,7 @@ export class OrganisationComponent {
       return false;
     }
 
-    this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, timePeriod]);
+    this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, timePeriod]);
   }
 
   /**
@@ -262,7 +293,7 @@ export class OrganisationComponent {
       return false;
     }
     this.showGraph = datasetType === 'creation' ? 1 : 0;
-    this.route.navigate(['dashboard/organization', datasetType, this.identifier, this.timePeriod]);
+    this.route.navigate(['orgDashboard/organization', datasetType, this.identifier, this.timePeriod]);
   }
 
   /**
@@ -289,7 +320,7 @@ export class OrganisationComponent {
       return false;
     }
 
-    this.route.navigate(['dashboard/organization', this.datasetType, identifier, this.timePeriod]);
+    this.route.navigate(['orgDashboard/organization', this.datasetType, identifier, this.timePeriod]);
   }
 
   /**
@@ -310,10 +341,14 @@ export class OrganisationComponent {
     const data = this.searchService.searchedOrganisationList;
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
+      // if (this.myOrganizations.length === 1) {
+      //   this.identifier = this.myOrganizations[0].identifier;
+      //   this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+      // }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
     } else {
-      this.userService.userData$.subscribe(
+      this.userDataSubscription = this.userService.userData$.first().subscribe(
         user => {
           if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
             this.getOrgDetails(user.userProfile.organisationIds);
@@ -365,7 +400,7 @@ export class OrganisationComponent {
             this.isMultipleOrgs = orgIds.length > 1 ? true : false;
             if (this.myOrganizations.length === 1) {
               this.identifier = this.myOrganizations[0].identifier;
-              this.route.navigate(['dashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+              this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
             }
           }
 
@@ -379,6 +414,11 @@ export class OrganisationComponent {
           this.setError(true);
         }
       );
+    }
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
     }
   }
 }

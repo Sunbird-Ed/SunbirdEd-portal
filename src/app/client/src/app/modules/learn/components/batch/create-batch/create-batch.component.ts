@@ -6,6 +6,7 @@ import { WorkSpaceService } from './../../../../workspace/services';
 import { UserService } from '@sunbird/core';
 import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-create-batch',
@@ -21,7 +22,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   userSearchTime: any;
   batchId: string;
   showCreateModal = false;
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   courseId: string;
   orgIds: Array<string>;
   /**
@@ -76,6 +77,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   */
   private toasterService: ToasterService;
 
+  /**
+	 * telemetryImpression object for create batch page
+	*/
+  telemetryImpression: IImpressionEventInput;
+
   public courseConsumptionService: CourseConsumptionService;
   pickerMinDate = new Date();
   /**
@@ -115,6 +121,19 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.activatedRoute.parent.params.subscribe(params => {
       this.courseId = params.courseId;
+
+      // Create the telemetry impression event for create batch page
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/create/batch'
+        }
+      };
+
       this.getCourseData();
     });
   }
@@ -141,6 +160,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
   getUserListWithQuery(query, type) {
+    this.disableSubmitBtn = false;
     if (this.userSearchTime) {
       clearTimeout(this.userSearchTime);
     }
@@ -159,7 +179,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService.getUserList(requestBody).subscribe((res) => {
       const list = this.formatUserList(res);
       if (type) {
-        console.log(this[type]);
         if (type === 'userList') {
           this.userList = list.userList;
         } else {
@@ -167,7 +186,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this[type] = list[type];
       } else {
-        console.log('in else');
         this.userList = list.userList;
         this.mentorList = list.mentorList;
       }
@@ -227,8 +245,12 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   createBatch() {
     this.disableSubmitBtn = false;
-    const users = $('#users').dropdown('get value').split(',');
-    const mentors = $('#mentors').dropdown('get value').split(',');
+    let users = [];
+    let mentors = [];
+    if ( this.createBatchUserForm.value.enrollmentType !== 'open') {
+      users = $('#users').dropdown('get value').split(',');
+      mentors = $('#mentors').dropdown('get value').split(',');
+    }
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchUserForm.value.name,
@@ -293,8 +315,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
       enrollmentType: new FormControl('invite-only', [Validators.required]),
-      startDate: new FormControl(new Date(), [Validators.required]),
-      endDate: new FormControl(new Date()),
+      startDate: new FormControl(null, [Validators.required]),
+      endDate: new FormControl(),
       mentors: new FormControl(),
       users: new FormControl(),
     });

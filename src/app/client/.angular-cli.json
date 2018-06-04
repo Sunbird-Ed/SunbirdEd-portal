@@ -20,6 +20,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "./assets/styles/semantic.min.css",
         "styles.css",
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/izitoast/dist/css/iziToast.min.css",

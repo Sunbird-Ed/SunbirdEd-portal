@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component helps to display the success/failure response given by the api based on the process id entered
@@ -14,7 +15,8 @@ import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../inter
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })
-export class StatusComponent implements OnInit {
+export class StatusComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */
@@ -56,6 +58,10 @@ export class StatusComponent implements OnInit {
 */
   redirectUrl: string;
   /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
 * Constructor to create injected service(s) object
 *
 * Default method of DetailsComponent class
@@ -84,6 +90,17 @@ export class StatusComponent implements OnInit {
     this.statusForm = this.sbFormBuilder.group({
       processId: ['', null]
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulk-upload-check-status',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
   }
   /**
  * This method helps to redirect to the parent component
@@ -115,5 +132,8 @@ export class StatusComponent implements OnInit {
  */
   getStatusResult(status) {
     return status;
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }

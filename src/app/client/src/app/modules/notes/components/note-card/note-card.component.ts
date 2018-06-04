@@ -15,7 +15,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-note-card',
   templateUrl: './note-card.component.html',
-  styleUrls: ['./note-card.component.css']
+  styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
 export class NoteCardComponent implements OnInit, OnChanges {
   /**
@@ -206,10 +206,8 @@ export class NoteCardComponent implements OnInit, OnChanges {
   public viewAllNotes() {
     this.activatedRoute.params.subscribe(params => {
       this.batchId = params.batchId;
-    });
-    this.activatedRoute.parent.url.subscribe(url => {
-      if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/note/', this.ids.courseId, this.batchId]);
+      if (this.batchId) {
+        this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes']);
       } else {
         this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
       }

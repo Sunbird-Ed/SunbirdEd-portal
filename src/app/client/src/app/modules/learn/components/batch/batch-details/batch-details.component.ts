@@ -27,7 +27,7 @@ export class BatchDetailsComponent implements OnInit {
     { name: 'Upcoming', value: 0 }
   ];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-  public userService: UserService, public batchService: CourseBatchService, public toasterService: ToasterService,
+  public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
   public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
@@ -43,7 +43,7 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       this.getAllBatchDetails();
     }
-    this.batchService.updateEvent.subscribe((data) => {
+    this.courseBatchService.updateEvent.subscribe((data) => {
       this.getAllBatchDetails();
     });
   }
@@ -64,7 +64,7 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       searchParams.filters.enrollmentType = 'open';
     }
-    this.batchService.getAllBatchDetails(searchParams).subscribe((data: ServerResponse) => {
+    this.courseBatchService.getAllBatchDetails(searchParams).subscribe((data: ServerResponse) => {
       if (data.result.response.content && data.result.response.content.length > 0) {
         this.batchList = data.result.response.content;
         this.fetchUserDetails();
@@ -78,9 +78,17 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   getEnrolledCourseBatchDetails() {
-    this.batchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
+    this.courseBatchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data.result.response;
-      this.enrolledBatchInfo.participant = this.enrolledBatchInfo.participant ? this.enrolledBatchInfo.participant : [];
+      if (this.enrolledBatchInfo.participant) {
+        const participant = [];
+        _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+          participant.push(key);
+        });
+        this.enrolledBatchInfo.participant = participant;
+      } else {
+        this.enrolledBatchInfo.participant = [];
+      }
     }, () => {
       // handle error
     });
@@ -95,7 +103,7 @@ export class BatchDetailsComponent implements OnInit {
         identifier: this.userList
       }
     };
-    this.batchService.getUserDetails(request).subscribe((res) => {
+    this.courseBatchService.getUserDetails(request).subscribe((res) => {
       _.forEach(res.result.response.content, (user) =>  {
         this.userNames[user.identifier] = user;
       });
@@ -105,14 +113,14 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   batchUpdate(batch) {
-    this.batchService.setUpdateBatchDetails(batch);
+    this.courseBatchService.setUpdateBatchDetails(batch);
     this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
   }
   createBatch() {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
-    this.batchService.setEnrollBatchDetails(batch);
+    this.courseBatchService.setEnrollBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
   }
 }

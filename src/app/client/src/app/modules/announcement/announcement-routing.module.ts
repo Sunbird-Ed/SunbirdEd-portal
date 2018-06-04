@@ -12,13 +12,19 @@ const routes: Routes = [
     path: 'announcement/outbox/:pageNumber', component: OutboxComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', object: { type: objectType, ver: '1.0' }
+        env: telemetryEnv, pageid: 'announcement-outbox', type: 'workflow', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
       }, roles: 'announcement',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }]
     },
     children: [
       { path: 'delete/:announcementId', component: DeleteComponent },
-      { path: 'view/:announcementId', component: DetailsPopupComponent }
+      {
+        path: 'view/:announcementId', component: DetailsPopupComponent, data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'announcement-read', type: 'view', object: { type: objectType, ver: '1.0' }
+          }
+        }
+      }
     ]
   },
   {
@@ -29,10 +35,13 @@ const routes: Routes = [
       }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Announcements', url: '' }]
     },
     children: [
-      { path: 'view/:announcementId', component: DetailsPopupComponent, data: {
-      telemetry: {
-        env: telemetryEnv, pageid: 'announcement-read',  type: 'view', object: { type: objectType, ver: '1.0' }
-      } } }
+      {
+        path: 'view/:announcementId', component: DetailsPopupComponent, data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'announcement-read', type: 'view', object: { type: objectType, ver: '1.0' }
+          }
+        }
+      }
     ]
   },
   {
@@ -40,7 +49,7 @@ const routes: Routes = [
     canActivate: [AuthGuard], data: {
       telemetry: {
         env: telemetryEnv, pageid: 'announcement-create', uri: '/announcement/create/',
-        type: 'workflow', mode: 'create', object: { type: objectType, ver: '1.0' }
+        type: 'workflow', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
       }, roles: 'announcement'
     }
   },

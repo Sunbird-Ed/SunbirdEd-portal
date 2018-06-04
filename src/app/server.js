@@ -11,6 +11,7 @@ const async = require('async')
 const helmet = require('helmet')
 const CassandraStore = require('cassandra-session-store')
 const _ = require('lodash')
+const compression = require('compression')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
 const permissionsHelper = require('./helpers/permissionsHelper.js')
@@ -38,6 +39,7 @@ const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
+const oneDayMS = 86400000;
 
 let memoryStore = null
 
@@ -81,6 +83,22 @@ app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.set('view engine', 'ejs')
 
+app.get(['/dist/*.js', '/dist/*.css',
+ '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff',
+ '/dist/*.eot',
+ '/dist/*.svg'
+],
+ compression(), function (req, res, next) {
+  console.log(req.originalUrl)
+   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
+   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
+   next();
+ });
+
+ app.all(['/server.js', '/helpers/*.js' ,'/helpers/**/*.js'], function(req, res){
+  res.sendStatus(404);
+ })
+
 app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 // this line should be above middleware please don't change
@@ -90,7 +108,17 @@ if (defaultTenant) {
   app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
 }
 
+app.get('/assets/images/*', function (req, res, next) {
+  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS);
+  res.setHeader("Expires", new Date(Date.now() + oneDayMS).toUTCString());
+  next();
+});
+
+
+
+
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
+
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
@@ -110,9 +138,13 @@ function indexPage (req, res) {
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.locals.instance = process.env.sunbird_instance
+  res.locals.appId = envHelper.APPID
+  res.locals.ekstepEnv = envHelper.EKSTEP_ENV
+  res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  res.locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   res.render(path.join(__dirname, 'dist', 'index.ejs'))
 }
-app.get('/get/envData', keycloak.protect(), function (req, res) {
+app.get('/get/envData', function (req, res) {
   res.status(200)
   res.send({ appId: appId, ekstep_env: ekstepEnv })
   res.end()
@@ -146,6 +178,9 @@ app.all('/get/dial/:dialCode', indexPage)
 app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
 app.all('/get', indexPage)
 app.all('*/get', function (req, res) {res.redirect('/get')})
+app.all('/:slug/explore/*', indexPage)
+app.all('/explore', indexPage)
+app.all('/explore/*', indexPage)
 app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 
@@ -359,6 +394,7 @@ keycloak.deauthenticated = function (request) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
+  req.session.logSession = true
   if (request.session) {
     telemetryHelper.logSessionEnd(request)
     telemetry.syncOnExit(function (err, res) { // sync on session end

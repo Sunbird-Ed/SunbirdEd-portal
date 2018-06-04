@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
@@ -22,7 +23,7 @@ export class PageApiService {
   * @param {LearnerService} learnerService Reference of LearnerService.
   * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService, learnerService: LearnerService) {
+  constructor(config: ConfigService, learnerService: LearnerService, public userService: UserService) {
     this.config = config;
     this.learnerService = learnerService;
   }
@@ -30,17 +31,20 @@ export class PageApiService {
    *  api call for get page data.
    */
   getPageData(requestParam: IPageSection) {
-    const option = {
+    const option: any = {
       url: this.config.urlConFig.URLS.PAGE_PREFIX,
       data: {
-        'request': {
-          'source': requestParam.source,
-          'name': requestParam.name,
-          'filters': requestParam.filters,
-          'sort_by': requestParam.sort_by,
+        request: {
+          source: requestParam.source,
+          name: requestParam.name,
+          filters: requestParam.filters,
+          sort_by: requestParam.sort_by,
         }
       }
     };
+    if (this.userService.contentChannelFilter) {
+      option.data.request.filters.channel = this.userService.contentChannelFilter;
+    }
     return this.learnerService.post(option);
   }
 }

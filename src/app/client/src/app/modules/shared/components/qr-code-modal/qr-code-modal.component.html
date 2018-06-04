@@ -1,0 +1,33 @@
+<sui-modal [isClosable]="false" (dismissed)="modal.deny(); closeModal();" [isInverted]="true" #modal>
+<div class="content qr-code-modal-content">
+  <div class="twelve wide column ">
+    <div class="ui grid">
+      <div class="twelve wide column"><i class="close large icon right-float" (click)="modal.deny();"></i></div>
+    </div>
+    <div class="ui container stackable two column grid">
+      <div class="column center aligned text-container">
+        <h1 class="qr-code-modal-header padding-top-10"> Explore Content on Diksha
+          <div class="qr-code-modal-sub-header padding-top-10">
+            Start exploring content by Enter DIAL code
+          </div>
+        </h1>
+        <div class="ui fluid icon input dial-section-input margin-top-30">
+          <input name="search" #dialCodeVal placeholder="Enter DIAL code here" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
+          <i class="search icon"></i>
+        </div>
+        <div class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">Submit</div>
+      </div>
+      <div class="column right floated right aligned">
+        <div class="ui basic segment">
+          <div class="ui large image">
+            <img src="/assets/images/Dialcode.png">
+          </div>
+          <div class="qr-code-modal-meta">
+            <p>DIAL Code is the 6 digit alphanumeric code found under a QR code in your text book</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</sui-modal>

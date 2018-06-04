@@ -14,9 +14,16 @@ export interface IImpressionEventData {
   'subtype'?: string;
   'pageid': string;
   'uri': string;
-  'visits'?: {};
+  'visits'?: Array<IImpressionEventVisits>;
 }
-export interface IInteractEventData {
+export interface IImpressionEventVisits {
+    objid: string;
+    objtype: string;
+    objver?: string;
+    section?: string;
+    index: string | number;
+}
+export interface IInteractEventEdata {
   'id': string;
   'type': string;
   'subtype'?: string;
@@ -41,7 +48,6 @@ export interface IEndEventData {
   'type': string;
   'mode'?: string;
   'summary'?: Array<{}>;
-  'contentId': string;
 }
 export interface ILogEventData {
   'type': string;
@@ -72,7 +78,7 @@ export interface TelemetryEventOptions {
   'tags'?: Array<string>;
 }
 export interface ITelemetryEvent {
-  'edata': IStartEventData | IImpressionEventData | IInteractEventData | IShareEventData
+  'edata': IStartEventData | IImpressionEventData | IInteractEventEdata | IShareEventData
   | IErrorEventData | IEndEventData | ILogEventData;
   'contentId'?: string;
   'contentVer'?: string;
@@ -108,6 +114,7 @@ export interface IErrorEventInput {
 export interface IImpressionEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;
@@ -118,20 +125,19 @@ export interface IImpressionEventInput {
   };
   'edata': IImpressionEventData;
 }
-
 export interface IInteractEventInput {
   'context': {
     'env': string;
   };
-  'object'?: {
-    'id': string;
-    'type': string;
-    'ver'?: string;
-    'rollup'?: {};
-  };
-  'edata': IInteractEventData;
+  'object'?: IInteractEventObject;
+  'edata': IInteractEventEdata;
 }
-
+export interface IInteractEventObject {
+  'id': string;
+  'type': string;
+  'ver'?: string;
+  'rollup'?: {};
+}
 export interface ILogEventInput {
   'context': {
     'env': string;

@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails, InboxComponent } from '@sunbird/announcement';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
+import { NgInviewModule } from 'angular-inport';
 import { AnnouncementService } from '@sunbird/core';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
@@ -24,7 +24,16 @@ import {
 describe('InboxComponent', () => {
     let component: InboxComponent;
     let fixture: ComponentFixture<InboxComponent>;
-    const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+    const fakeActivatedRoute = {
+        'params': Observable.from([{ 'pageNumber': 1 }]),
+        snapshot: {
+            data: {
+                telemetry: {
+                    env: 'announcement', pageid: 'announcement-list', type: 'view', object: { type: 'announcement', ver: '1.0' }
+                }
+            }
+        }
+    };
     class RouterStub {
         navigate = jasmine.createSpy('navigate');
     }
@@ -33,8 +42,8 @@ describe('InboxComponent', () => {
         TestBed.configureTestingModule({
             declarations: [InboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
-                SuiModule, RouterTestingModule,
-                SharedModule],
+                SuiModule, RouterTestingModule, NgInviewModule,
+                SharedModule, TelemetryModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },

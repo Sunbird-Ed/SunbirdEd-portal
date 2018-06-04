@@ -37,7 +37,7 @@
                             <i class="caret right icon"></i>
                         </button>
                     </div>
-                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="permission">
+                    <div *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission [permission]="dashboardPermission">
                         <button class="blue right floated ui button courseHeaderButton margin-top-10" (click)="showDashboard()">{{resourceService?.frmelmnts?.btn?.viewcoursestats}}</button>
                     </div>
                 </div>
@@ -51,5 +51,5 @@
         <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
     </div>
 </div>
-<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

@@ -67,6 +67,7 @@ export class UserService {
   private _env: string;
   public _authenticated: boolean;
   public anonymousSid: string;
+  private _contentChannelFilter: string;
   /**
    * Reference of content service.
    */
@@ -93,6 +94,12 @@ export class UserService {
       this._authenticated = false;
       this.anonymousSid = UUID.UUID();
     }
+    try {
+      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this._env = (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+    } catch (error) {
+    }
+
   }
   /**
    * get method to fetch userid.
@@ -131,19 +138,19 @@ export class UserService {
     );
   }
   /**
-      * method to fetch appId and Ekstep_env from server.
-      */
-  public getAppIdEnv(): void {
-    const url = this.config.appConfig.APPID_EKSTEPENV;
-    this.http.get(url).subscribe((res: IAppIdEnv) => {
-      this._appId = res.appId;
-      this._env = res.ekstep_env;
-    },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  * method to fetch appId and Ekstep_env from server.
+  */
+  // public getAppIdEnv(): void {
+  //   const url = this.config.appConfig.APPID_EKSTEPENV;
+  //   this.http.get(url).subscribe((res: IAppIdEnv) => {
+  //     this._appId = res.appId;
+  //     this._env = res.ekstep_env;
+  //   },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
   /**
    * get method to fetch appId.
@@ -162,7 +169,7 @@ export class UserService {
     if (loggedIn === true) {
       this.getUserProfile();
     }
-    this.getAppIdEnv();
+    // this.getAppIdEnv();
   }
   /**
    * method to set user profile to behavior subject.
@@ -202,9 +209,23 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  setContentChannelFilter() {
+    try {
+      const contentChannelFilter = (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
+      if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
+        this._contentChannelFilter = this.channel;
+      }
+    } catch {
+
+    }
+  }
+  get contentChannelFilter() {
+    return this._contentChannelFilter;
   }
   /**
 * Get organization details.
@@ -277,4 +298,16 @@ export class UserService {
   get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);
   }
+
+  /**
+   * method to log session start
+   */
+  public startSession(): void {
+    const fingerPrint2 = new Fingerprint2();
+    fingerPrint2.get((result, components) => {
+      const url = `/v1/user/session/start/${result}`;
+      this.http.get(url).subscribe();
+    });
+  }
 }
+

@@ -1,0 +1,39 @@
+<div *ngIf="badgeArray && badgeArray.length > 0" class="ui raised segment margin-top-20 margin-bottom-0">
+  <!--  ng-if="isprofileinfo" -->
+  <div class="header padding-none">
+    <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
+  </div>
+  <div *ngIf="badgeArray && badgeArray.length" class="ui items margin-top-10">
+    <div class="item" *ngFor="let badge of badgeArray | slice:0:limit">
+      <!--  | orderBy: 'createdTS' || 'createdDate' -->
+      <img class="ui avatar image" src="{{badge.image || badge.badgeClassImage}}">
+      <div class="middle aligned content padding-left-10">
+        <div class="ui huge sub header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
+        <div class="description">
+          <div class="secondary-text-color-sunbird">{{badge.description | slice:0:70}}
+            <!--  | limitTo : 70 -->
+            <i *ngIf="badge.description && badge.description.length > 70" class="ellipsis horizontal icon" title="{{badge.description}}">
+            </i>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="badge.createdTS || badge.createdTs" class="meta">{{badge.createdTS || badge.createdTs | dateFormat: 'MMM YYYY'}}</div>
+    </div>
+  </div>
+</div>
+<div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="badgeArray.length > defaultLimit">
+    <div class="active item expand-or-minimize-btn-pad">
+      <a (click)="toggle(true)" *ngIf="viewMore">
+        <span class="cursor-pointer">
+          {{resourceService?.frmelmnts?.btn?.viewmore}}
+          <i class="chevron down icon"></i>
+        </span>
+      </a>
+      <a (click)="toggle(false)" *ngIf="!viewMore">
+        <span class="cursor-pointer">
+          {{resourceService?.frmelmnts?.btn?.viewless}}
+          <i class="chevron up icon"></i>
+        </span>
+      </a>
+    </div>
+  </div>

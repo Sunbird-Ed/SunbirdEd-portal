@@ -20,7 +20,15 @@ describe('OrganizationUploadComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }])
+    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'profile-bulk-upload-organization-pload', subtype: 'paginate', type: 'view',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
   };
   const ResourceData = {
     'frmelmnts': {
@@ -101,5 +109,10 @@ describe('OrganizationUploadComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
     component.uploadOrg(mockRes.errorfile);
+  });
+  it('should recognize viewchild', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnDestroy();
+    expect(component.modal).toBeDefined();
   });
 });

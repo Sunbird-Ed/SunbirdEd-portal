@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -15,8 +16,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './user-upload.component.html',
   styleUrls: ['./user-upload.component.css']
 })
-export class UserUploadComponent implements OnInit {
+export class UserUploadComponent implements OnInit, OnDestroy {
   @ViewChild('inputbtn') inputbtn: ElementRef;
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */
@@ -73,6 +75,10 @@ export class UserUploadComponent implements OnInit {
 * Contains redirect url
 */
   redirectUrl: string;
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 * Constructor to create injected service(s) object
 *
@@ -131,9 +137,24 @@ export class UserUploadComponent implements OnInit {
           { instructions: this.resourceService.frmelmnts.instn.t0045 },
           { instructions: this.resourceService.frmelmnts.instn.t0046 },
           { instructions: this.resourceService.frmelmnts.instn.t0047 },
-          { instructions: this.resourceService.frmelmnts.instn.t0048 }]
-      }];
+          { instructions: this.resourceService.frmelmnts.instn.t0048 },
+          { instructions: this.resourceService.frmelmnts.instn.t0066 },
+          { instructions: this.resourceService.frmelmnts.instn.t0067 }
+        ]
+      },
+      { instructions: this.resourceService.frmelmnts.instn.t0065 }];
     this.showLoader = false;
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulk-upload-user-upload',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
   }
   /**
  * This method helps to redirect to the parent component
@@ -178,8 +199,8 @@ export class UserUploadComponent implements OnInit {
       this.showLoader = true;
       const formData = new FormData();
       formData.append('user', file[0]);
-      formData.append('provider', data.provider);
-      formData.append('externalId', data.externalId);
+      formData.append('orgProvider', data.provider);
+      formData.append('orgExternalId', data.externalId);
       formData.append('organisationId', data.organisationId);
       const fd = formData;
       this.fileName = file[0].name;
@@ -204,5 +225,8 @@ export class UserUploadComponent implements OnInit {
   closeBulkUploadError() {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }

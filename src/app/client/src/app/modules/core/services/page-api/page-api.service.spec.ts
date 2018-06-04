@@ -1,14 +1,14 @@
-import { LearnerService, IPageSection  } from '@sunbird/core';
+import { LearnerService, IPageSection, CoreModule } from '@sunbird/core';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PageApiService } from './page-api.service';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService } from '@sunbird/shared';
 import {testData } from './page-api.service.spec.data';
-describe('PageSectionService', () => {
+describe('PageApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [PageApiService, ConfigService, LearnerService]
     });
   });

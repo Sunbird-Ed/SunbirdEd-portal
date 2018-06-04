@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { UserService } from '@sunbird/core';
@@ -6,6 +7,7 @@ import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared
 import { CourseProgressService } from './../../services';
 import { Observable } from 'rxjs/Observable';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component shows the course progress dashboard
@@ -15,7 +17,7 @@ import { ICourseProgressData, IBatchListData } from './../../interfaces';
   templateUrl: './course-progress.component.html',
   styleUrls: ['./course-progress.component.css']
 })
-export class CourseProgressComponent implements OnInit {
+export class CourseProgressComponent implements OnInit, OnDestroy {
   /**
 	 * This variable helps to show and hide page loader.
 	 */
@@ -28,6 +30,7 @@ export class CourseProgressComponent implements OnInit {
 	 * This variable sets the course id
 	 */
   courseId: string;
+  userDataSubscription: Subscription;
   batchId: string;
   /**
 	 * This variable sets the user id
@@ -99,6 +102,10 @@ export class CourseProgressComponent implements OnInit {
   * To get user profile of logged-in user
   */
   public courseProgressService: CourseProgressService;
+  /**
+	 * telemetryImpression object for course progress page
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -217,6 +224,8 @@ export class CourseProgressComponent implements OnInit {
       batchIdentifier: this.queryParams.batchIdentifier,
       timePeriod: this.queryParams.timePeriod
     };
+    this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
+      + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
     this.courseProgressService.getDashboardData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
@@ -263,7 +272,7 @@ export class CourseProgressComponent implements OnInit {
   * course id and timeperiod
   */
   ngOnInit() {
-    this.user.userData$.subscribe(userdata => {
+    this.userDataSubscription = this.user.userData$.first().subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.paramSubcription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
@@ -278,9 +287,31 @@ export class CourseProgressComponent implements OnInit {
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
             this.queryParams.timePeriod = this.queryParams.timePeriod || '7d';
+
+            // Create the telemetry impression event for course stats page
+            this.telemetryImpression = {
+              context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+              },
+              edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: '/learn/course/' + this.courseId + '/dashboard'
+              },
+              object: {
+                id: this.courseId,
+                type: this.activatedRoute.snapshot.data.telemetry.object.type,
+                ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+              }
+            };
             this.populateBatchData();
           });
       }
     });
+  }
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 }

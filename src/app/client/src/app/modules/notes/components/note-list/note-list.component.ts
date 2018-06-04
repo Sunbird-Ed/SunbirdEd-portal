@@ -7,6 +7,8 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
+import * as _ from 'lodash';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * This component contains 2 sub components
  * 1)Inline editor: Provides an editor to create and update notes.
@@ -16,7 +18,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
 @Component({
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
-  styleUrls: ['./note-list.component.css']
+  styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
 export class NoteListComponent implements OnInit {
   /**
@@ -110,6 +112,14 @@ export class NoteListComponent implements OnInit {
    */
   routerNavigationService: RouterNavigationService;
   /**
+  * inviewLogs
+  */
+  inviewLogs = [];
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
+  /**
    * The constructor - Constructor for Note List Component.
    *
    * @param {ToasterService} toasterService Reference of ToasterService.
@@ -138,6 +148,7 @@ export class NoteListComponent implements OnInit {
     this.modalService = modalService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    // this.route.onSameUrlNavigation = 'reload';
   }
   /**
    * To initialize notesList and showDelete.
@@ -151,8 +162,37 @@ export class NoteListComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.contentId = params.contentId;
       this.courseId = params.courseId;
+      this.batchId = params.batchId;
     });
     this.getAllNotes();
+    let cdataId = '';
+    let cdataType = '';
+    if (this.activatedRoute.snapshot.params.courseId) {
+      cdataId = this.activatedRoute.snapshot.params.courseId;
+      cdataType = 'course';
+    } else if (this.activatedRoute.snapshot.params.contentId) {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'content';
+    } else {
+      cdataId = this.activatedRoute.snapshot.params.contentId;
+      cdataType = 'collection';
+    }
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [
+          {
+            id: cdataId,
+            type: cdataType
+          }
+        ]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.route.url
+      }
+    };
   }
 
   /**
@@ -234,15 +274,30 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    this.activatedRoute.params.subscribe(params => {
-      this.batchId = params.batchId;
-    });
-    this.activatedRoute.url.subscribe(url => {
-      if (url[0].path === 'learn') {
-        this.route.navigate(['/learn/course/', this.courseId, this.batchId]);
-      } else {
-        this.route.navigate(['/resources/play/content/', this.contentId]);
+    if (this.batchId) {
+      const navigationExtras = {
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    } else {
+      this.route.navigate(['/resources/play/content/', this.contentId]);
+    }
+  }
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.id;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.id,
+          objtype: 'note',
+          index: inview.id
+        });
       }
     });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }

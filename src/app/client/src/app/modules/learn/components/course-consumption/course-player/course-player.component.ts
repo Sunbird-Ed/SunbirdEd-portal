@@ -10,6 +10,7 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import {CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
@@ -26,8 +27,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public enrolledCourse = false;
 
   public contentId: string;
+
   public courseStatus: string;
+
   private contentService: ContentService;
+
+  public flaggedCourse = false;
 
   public collectionTreeNodes: any;
 
@@ -45,7 +50,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   showError = false;
 
-  private subscription: Subscription;
+  private activatedRouteSubscription: Subscription;
 
   enableContentPlayer = false;
 
@@ -55,10 +60,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   createNoteData: INoteData;
 
+  curriculum = [];
+
+  getConfigByContentSubscription: Subscription;
+
+  queryParamSubscription: Subscription;
+
+  updateContentsStateSubscription: Subscription;
   /**
    * To show/hide the note popup editor
    */
   showNoteEditor = false;
+
+  /**
+	 * telemetryImpression object for course TOC page
+	*/
+  telemetryCourseImpression: IImpressionEventInput;
+
+  /**
+	 * telemetryImpression object for content played from within a course
+	*/
+  telemetryContentImpression: IImpressionEventInput;
+
+  /**
+	 * telemetry object version
+	*/
+  telemetryObjectVer = '1.0';
+
+  /**
+	 * common telemetry data for this component
+  */
+  telemetryData = {env: 'course', pageid: 'course-read', type: 'view'};
 
   contentIds  = [];
   contentStatus: any;
@@ -89,8 +121,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   };
 
-  curriculum = [];
-
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -102,45 +132,68 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
   }
   ngOnInit() {
-    this.subscription = this.activatedRoute.params.first()
+    this.activatedRouteSubscription = this.activatedRoute.params.first()
       .flatMap((params) => {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
-        return this.getCourseHierarchy(params.courseId);
-      })
-      .do((response) => {
-        if (this.batchId) {
-          this.enrolledCourse = true;
-          this.parseChildContent(response.data);
-          this.fetchContentStatus(response.data);
-          this.subscribeToQueryParam(response.data);
-        } else if (this.courseStatus === 'Unlisted') {
-          this.parseChildContent(response.data);
-          this.subscribeToQueryParam(response.data);
-        } else {
-          this.parseChildContent(response.data);
+
+        // Create the telemetry impression event for course toc page
+        this.telemetryCourseImpression = {
+          context: {
+            env: this.telemetryData.env
+          },
+          edata: {
+            type: this.telemetryData.type,
+            pageid: this.telemetryData.pageid,
+            uri: '/learn/course/' + this.courseId
+          },
+          object: {
+            id: this.courseId,
+            type: 'course',
+            ver: this.telemetryObjectVer
+          }
+        };
+
+        return this.courseConsumptionService.getCourseHierarchy(params.courseId);
+      }).subscribe((response) => {
+        this.courseHierarchy = response;
+        if (this.courseHierarchy.status === 'Flagged') {
+          this.flaggedCourse = true;
         }
-      })
-      .subscribe((data) => {
-        this.collectionTreeNodes = data;
+        if (this.batchId) {
+          this.telemetryCourseImpression.edata.uri = '/learn/course/' + this.courseId + '/batch/' + this.batchId;
+          this.enrolledCourse = true;
+          this.parseChildContent(response);
+          this.fetchContentStatus(response);
+          this.subscribeToQueryParam(response);
+        } else if (this.courseStatus === 'Unlisted') {
+          this.telemetryCourseImpression.edata.uri = '/learn/course/' + this.courseId + '/unlisted';
+          this.parseChildContent(response);
+          this.subscribeToQueryParam(response);
+        } else {
+          this.parseChildContent(response);
+        }
+        this.collectionTreeNodes = { data: response };
         this.loader = false;
       }, (error) => {
+        this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-  }
 
+  }
   public playContent(data: any): void {
-    this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+    this.enableContentPlayer = false;
+    this.loader = true;
+    this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+      this.loader = false;
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
-      this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId },
-       { label: this.contentTitle, url: '' }]);
-      setTimeout(() => {
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 10);
+      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     }, (err) => {
+      this.loader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
   }
@@ -150,7 +203,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    if (this.batchId || this.courseStatus === 'Unlisted') {
+    if ((this.batchId && !this.flaggedCourse) || this.courseStatus === 'Unlisted') {
       this.router.navigate([], navigationExtras);
     }
   }
@@ -162,7 +215,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public OnPlayContent(content: { title: string, id: string }) {
-    if (content && content.id && (this.enrolledCourse || this.courseStatus === 'Unlisted')) {
+    if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse ) || this.courseStatus === 'Unlisted')) {
       this.contentId = content.id;
       this.setContentNavigators();
       this.playContent(content);
@@ -176,11 +229,31 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   subscribeToQueryParam(data) {
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.contentId = queryParams.contentId;
-      if (this.contentId) {
-        const content = this.findContentById(this.contentId);
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams.contentId) {
+        const content = this.findContentById(queryParams.contentId);
         if (content) {
+
+          // Create the telemetry impression event for content player page
+          this.telemetryContentImpression = {
+            context: {
+              env: this.telemetryData.env
+            },
+            edata: {
+              type: this.telemetryData.type,
+              pageid: this.telemetryData.pageid,
+              uri: '/learn/course/' + this.courseId + '/batch/' + this.batchId + '?contentId=' + queryParams.contentId
+            },
+            object: {
+              id: queryParams.contentId,
+              type: 'content',
+              ver: this.telemetryObjectVer,
+              rollup: {
+                l1: this.courseId,
+                l2: queryParams.contentId
+              }
+            }
+          };
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -216,8 +289,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req).subscribe(
-    (res) => {
+    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
     });
@@ -232,18 +304,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         batchId: this.batchId,
         status : eid === 'END' ? 2 : 1
       };
-      this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
         this.contentStatus = updatedRes.content;
       });
     }
   }
-  private getCourseHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.courseConsumptionService.getCourseHierarchy(collectionId)
-      .map((response) => {
-        this.courseHierarchy = response;
-        return { data: response };
-      });
-  }
+
   closeContentPlayer() {
     if (this.enableContentPlayer === true) {
       const navigationExtras: NavigationExtras = {
@@ -259,8 +325,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.activatedRouteSubscription) {
+      this.activatedRouteSubscription.unsubscribe();
+    }
+    if (this.getConfigByContentSubscription) {
+      this.getConfigByContentSubscription.unsubscribe();
+    }
+    if (this.queryParamSubscription) {
+      this.queryParamSubscription.unsubscribe();
+    }
+    if (this.updateContentsStateSubscription) {
+      this.updateContentsStateSubscription.unsubscribe();
     }
   }
 

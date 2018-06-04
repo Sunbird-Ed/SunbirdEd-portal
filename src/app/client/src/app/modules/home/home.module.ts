@@ -13,8 +13,8 @@ import {
   ActionCardComponent, HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
   ProfileCardComponent, HomeAnnouncementComponent, NotificationComponent
 } from './component/index';
-
-
+import { NgInviewModule } from 'angular-inport';
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     SuiModule,
@@ -24,7 +24,9 @@ import {
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    NgInviewModule,
+    TelemetryModule
   ],
   declarations: [
     ProfileCardComponent,

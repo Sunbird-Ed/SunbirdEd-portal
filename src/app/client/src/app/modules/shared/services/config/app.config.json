@@ -1,42 +1,7 @@
 {
-
-"Telemetry": {
-  "Announcement": {
-    "services": {
-      "getInboxdata":{
-        "log": {
-          "edata": {
-            "type": "api_call",
-            "level": "INFO",
-            "message": "api call inbox data successfully",
-            "pageid": "Announcement"
-          }
-        }
-      },
-      "getOutboxData":{
-        "log": {
-          "edata": {
-            "type": "api_call",
-            "level": "INFO",
-            "message": "api call outbox data successfully",
-            "pageid": "Announcement"
-          }
-        }
-      },
-      "deleteAnnouncement":{
-        "log": {
-          "edata": {
-            "type": "api_call",
-            "level": "INFO",
-            "message": "api call delete data successfully",
-            "pageid": "Announcement"
-          }
-        }
-      }
-    }
-  }
-},
-
+  "landingPage": {
+    "showExploreButton": true
+  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -128,7 +93,9 @@
      "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
   },
   "TELEMETRY": {
-    "MAX_BATCH_SIZE": 10
+    "MAX_BATCH_SIZE": 10,
+    "VERSION":"1.7.0",
+    "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
     {
@@ -158,7 +125,7 @@
         "partner": [],
         "pdata": {
           "id": "sunbird.portal",
-          "ver": "1.7",
+          "ver": "1.7.0",
           "pid": "sunbird-portal"
         }
       },
@@ -168,6 +135,12 @@
         "host": "",
         "overlay": {
           "showUser": false
+        },
+        "splash": {
+          "text": "",
+          "icon": "",
+          "bgImage": "assets/icons/splacebackground_1.png",
+          "webLink": ""
         },
         "apislug": "/action",
         "repos": [
@@ -246,7 +219,8 @@
       "draft",
       "uploaded",
       "published",
-      "limited/publish"
+      "limited/publish",
+      "allcontent"
     ],
     "Draft": {
       "constantData": {
@@ -338,10 +312,9 @@
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"}}
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType", "pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
-
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -400,8 +373,8 @@
         "userName": "userName",
         "password": "password",
         "provider": "provider",
+        "externalId": "externalId",
         "phoneVerified": "phoneVerified",
-        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",
@@ -465,13 +438,25 @@
     "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
+   "allmycontent": {
+    "filterType": "allmycontent",
+    "inPageredirectUrl": "workspace/content/allcontent/1",
+    "searchPageredirectUrl": "workspace/content/allcontent/1"
+   }, 
+  "explore": {
+    "filterType": "explore",
+    "inPageredirectUrl": "/explore",
+    "searchPageredirectUrl": "/explore/1"
+  },
   "formApiTypes": {
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
-    "library": "library"
+    "library": "library",
+    "allmycontent":"allmycontent",
+    "explore": "explore"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -481,7 +466,8 @@
     "collection": "Collection",
     "textbook": "Book",
     "course": "Course",
-    "lessonplan": "Lesson Plan"
+    "lessonplan": "Lesson Plan",
+    "studymaterial": "Learn"
   },
   "timeOutConfig": {
     "setTime": 1500

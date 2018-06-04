@@ -20,11 +20,28 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
 import * as mockData from './limited-published.component.spec.data';
 const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 describe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
   let fixture: ComponentFixture<LimitedPublishedComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'pageNumber': 1 }]),
+    snapshot: {
+      params: [
+        {
+          pageNumber: '1',
+        }
+      ],
+      data: {
+        telemetry: {
+          env: 'workspace', pageid: 'workspace-content-unlisted', subtype: 'scroll', type: 'list',
+          object: { type: '', ver: '1.0' }
+        }
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -48,7 +65,8 @@ describe('LimitedPublishedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+        TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -88,8 +106,12 @@ describe('LimitedPublishedComponent', () => {
     (workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { action:  { class: 'trash large icon', displayType: 'icon',
-        eventName: 'delete' }, data: { metaData: { identifier: 'do_2124341006465925121871'} } };
+      const params = {
+        action: {
+          class: 'trash large icon', displayType: 'icon',
+          eventName: 'delete'
+        }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
+      };
       component.contentClick(params);
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
@@ -103,25 +125,33 @@ describe('LimitedPublishedComponent', () => {
       component.deleteConfirmModal('do_2124645735080755201259');
       expect(component.showLoader).toBeTruthy();
       fixture.detectChanges();
-  }));
+    }));
 
   it('should generate sharelink ', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, http) => {
       spyOn(component, 'contentClick').and.callThrough();
-      const params = { action:  { class: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon', displayType: 'icon',
-        eventName: 'share' }, data: { metaData: { identifier: 'do_2124341006465925121871', type: '',
-        mimeType: 'application/vnd.ekstep.content-collection'} } };
+      const params = {
+        action: {
+          class: 'linkify large icon float-ContentLeft limitedPublishingLinkIcon', displayType: 'icon',
+          eventName: 'share'
+        }, data: {
+          metaData: {
+            identifier: 'do_2124341006465925121871', type: '',
+            mimeType: 'application/vnd.ekstep.content-collection'
+          }
+        }
+      };
       component.contentClick(params);
       expect(component.sharelinkModal).toBeTruthy();
       fixture.detectChanges();
-  }));
+    }));
 
   it('should open collection edition on card action  ', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
       spyOn(component, 'contentClick').and.callThrough();
       const params = {
         action: {
-         eventName: 'onImage'
+          eventName: 'onImage'
         }, data: {
           metaData: {
             identifier: 'do_2124341006465925121871',
@@ -132,9 +162,9 @@ describe('LimitedPublishedComponent', () => {
         }
       };
       component.contentClick(params);
-       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-    'do_2124341006465925121871', 'TextBook', 'limited/publish', 'NCF']);
-    fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
+        'do_2124341006465925121871', 'TextBook', 'limited/publish', 'NCF']);
+      fixture.detectChanges();
     }));
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
@@ -161,4 +191,10 @@ describe('LimitedPublishedComponent', () => {
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
     }));
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(testData.event.inview);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
 });

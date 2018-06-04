@@ -4,6 +4,8 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { WebExtensionModule } from 'sunbird-web-extension';
+
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
   let fixture: ComponentFixture<MainMenuComponent>;
@@ -12,7 +14,7 @@ describe('MainMenuComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, WebExtensionModule],
       declarations: [MainMenuComponent],
       providers: [HttpClient, ResourceService, ConfigService, UserService,
         LearnerService, ContentService,
