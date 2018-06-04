@@ -34,6 +34,17 @@ describe('OrgSearchComponent', () => {
       }
     }
   };
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ pageNumber: '1' }]),
+    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'organization-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -43,7 +54,8 @@ describe('OrgSearchComponent', () => {
       declarations: [OrgSearchComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,
-        { provide: ResourceService, useValue: resourceBundle }],
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

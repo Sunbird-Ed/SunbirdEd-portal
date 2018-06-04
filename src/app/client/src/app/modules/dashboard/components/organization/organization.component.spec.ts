@@ -19,7 +19,6 @@ import * as mockData from './organization.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 
 const testData = mockData.mockRes;
-
 describe('OrganisationComponent', () => {
   let component: OrganisationComponent;
   let fixture: ComponentFixture<OrganisationComponent>;

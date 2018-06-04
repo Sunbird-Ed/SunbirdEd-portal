@@ -30,7 +30,14 @@ describe('CourseSearchComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
+    'queryParams': Observable.from([{ subject: ['english'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'course', pageid: 'course-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
