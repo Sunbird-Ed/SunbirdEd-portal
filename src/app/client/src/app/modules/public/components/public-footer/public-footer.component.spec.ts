@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ResourceService, ConfigService  } from '@sunbird/shared';
+import { HttpClientModule } from '@angular/common/http';
 import { PublicFooterComponent } from './public-footer.component';
 
 describe('PublicFooterComponent', () => {
@@ -8,7 +9,9 @@ describe('PublicFooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublicFooterComponent ]
+      declarations: [ PublicFooterComponent ],
+      providers: [ResourceService, ConfigService],
+      imports: [HttpClientModule],
     })
     .compileComponents();
   }));
