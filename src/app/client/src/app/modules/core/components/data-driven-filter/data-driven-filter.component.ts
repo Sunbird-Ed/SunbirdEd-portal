@@ -16,6 +16,9 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
+  @Input() hashTagId = '';
+  @Input() ignoreQuery = [];
+
   /**
  * To get url, app configs
  */
@@ -92,10 +95,11 @@ export class DataDrivenFilterComponent implements OnInit {
     this.toasterService = toasterService;
     this.permissionService = permissionService;
     this.formInputData = {};
+    this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
-    this.frameworkService.initialize();
+    this.frameworkService.initialize(this.hashTagId);
     this.formInputData = {};
     this.getQueryParams();
     this.fetchFilterMetaData();
@@ -109,7 +113,7 @@ export class DataDrivenFilterComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe((params) => {
           this.queryParams = { ...params };
           _.forIn(params, (value, key) => {
-            if (typeof value === 'string' && key !== 'key') {
+            if (typeof value === 'string' && key !== 'key' && key !== 'language') {
               this.queryParams[key] = [value];
             }
           });
@@ -141,7 +145,7 @@ export class DataDrivenFilterComponent implements OnInit {
             contentType: this.filterEnv,
             framework: frameworkData.framework
           };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
+          this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
               _.forEach(this.formFieldProperties, (formFieldCategory) => {
@@ -187,8 +191,8 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   resetFilters() {
-    if (this.formInputData['key']) {
-      this.formInputData = _.pick(this.formInputData, 'key');
+    if (!_.isEmpty(this.ignoreQuery)) {
+      this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     } else {
       this.formInputData = {};
     }

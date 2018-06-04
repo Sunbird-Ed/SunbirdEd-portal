@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { TelemetryModule } from '@sunbird/telemetry';
 // Custome component(s) and services
 import { CourseConsumptionService, DashboardUtilsService, OrganisationService,
   RendererService, LineChartService, DownloadService, CourseProgressService } from './services';
@@ -23,7 +24,8 @@ import { OrderModule } from 'ngx-order-pipe';
     ChartsModule,
     SuiModule,
     SharedModule,
-    OrderModule
+    OrderModule,
+    TelemetryModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
   providers: [

@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { CoursesService, UserService, PlayerService} from '@sunbird/core';
-import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared';
+import { CoursesService, UserService, PlayerService } from '@sunbird/core';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import * as _ from 'lodash';
 /**
  * This component contains 3 sub components
  * 1)ProfileCard: It displays user profile details.
@@ -15,8 +18,34 @@ import { ResourceService, ToasterService , ServerResponse} from '@sunbird/shared
 })
 
 export class MainHomeComponent implements OnInit, OnDestroy {
+  /**
+  * inviewLogs
+ */
+  inviewLogs = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
+	 * profileUpdateIntractEdata
+	*/
+  profileUpdateIntractEdata: IInteractEventEdata;
+  /**
+	 * telemetryInteractObject
+	*/
+  telemetryInteractObject: IInteractEventObject;
   courseSubscription: ISubscription;
   userSubscription: ISubscription;
+  /**
+   * To navigate to other pages
+   */
+  route: Router;
+
+  /**
+   * To send activatedRoute.snapshot to router navigation
+   * service for redirection to parent component
+   */
+  private activatedRoute: ActivatedRoute;
   /**
    * To get user details.
    */
@@ -57,11 +86,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * @param {ToasterService} iziToast Reference of toasterService.
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
-    userService: UserService, courseService: CoursesService, toasterService: ToasterService) {
+    userService: UserService, courseService: CoursesService, toasterService: ToasterService,
+    route: Router, activatedRoute: ActivatedRoute) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
+    this.route = route;
+    this.activatedRoute = activatedRoute;
   }
   /**
    * This method calls the user API.
@@ -92,7 +124,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    */
   public populateEnrolledCourse() {
     this.courseSubscription = this.courseService.enrolledCourseData$.subscribe(
-     data => {
+      data => {
         if (data && !data.err) {
           this.showLoader = false;
           this.toDoList = this.toDoList.concat(data.enrolledCourses);
@@ -102,6 +134,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         }
       },
     );
+    this.setInteractEventData();
   }
   /**
    * Used to dispaly profile as a first element.
@@ -114,11 +147,11 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 
   playContent(event) {
     if (event.data.batchId) {
-       event.data.mimeType = 'application/vnd.ekstep.content-collection';
-       event.data.contentType = 'Course';
-     }
-     this.playerService.playContent(event.data);
-   }
+      event.data.mimeType = 'application/vnd.ekstep.content-collection';
+      event.data.contentType = 'Course';
+    }
+    this.playerService.playContent(event.data);
+  }
   /**
   *This method calls the populateUserProfile and populateCourse to show
   * user details and enrolled courses.
@@ -126,6 +159,17 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.populateUserProfile();
     this.populateEnrolledCourse();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
   /**
    *ngOnDestroy unsubscribe the subscription
@@ -134,5 +178,83 @@ export class MainHomeComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
     this.courseSubscription.unsubscribe();
   }
-}
 
+  /**
+   * get inview  Data
+  */
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        if (inview.data.type !== 'profile') {
+           return o.objid === inview.data.courseId  ;
+        } else {
+           return o.objid === this.userService.userid  ;
+        }
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.courseId || this.userService.userid,
+          objtype: 'home',
+          index: inview.id,
+          section: 'ToDo',
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  /**
+   * get inviewChange
+  */
+  inviewChange(toDoList, event) {
+    const slideData = toDoList.slice(event.currentSlide + 1, event.currentSlide + 5);
+    _.forEach(slideData, (slide, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === slide.courseId;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: slide.courseId,
+          objtype: 'home',
+          index: event.currentSlide + key,
+          section: 'ToDo'
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  public anouncementInview(event) {
+    if (event) {
+      _.forEach(event.inview, (inview, key) => {
+        const obj = _.find(this.inviewLogs, (o) => {
+          return o.objid === inview.data.id;
+        });
+        if (obj === undefined) {
+          this.inviewLogs.push({
+            objid: inview.data.id,
+            objtype: 'announcement',
+            index: inview.id,
+            section: 'ToDo',
+          });
+        }
+      });
+      this.telemetryImpression.edata.visits = this.inviewLogs;
+      this.telemetryImpression.edata.subtype = 'pageexit';
+    }
+  }
+   setInteractEventData() {
+    this.profileUpdateIntractEdata = {
+       id: 'home',
+       type: 'click',
+       pageid: 'home'
+    };
+    this.telemetryInteractObject =  {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
+   }
+}

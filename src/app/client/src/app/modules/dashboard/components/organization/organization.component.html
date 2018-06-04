@@ -42,7 +42,7 @@
     </div>
     <!-- Filters -->
     <div class="ui grid" *ngIf="identifier">
-      <div class="twelve wide column" *ngIf="myOrganizations && myOrganizations.length > 0">
+      <div class="twelve wide column" *ngIf="myOrganizations && myOrganizations.length > 0" [appTelemetryImpression]="telemetryImpression">
         <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">
           {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
         </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -56,7 +56,7 @@
     </div>
     <div *ngIf="myOrganizations && myOrganizations.length > 0">
       <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
-        <div class="header">
+        <div class="header" [appTelemetryImpression]="telemetryImpression">
           {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
         </div>
         {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselecteddesc}}
@@ -66,7 +66,7 @@
       <app-loader></app-loader>
     </div>
     <div *ngIf="showDashboard && myOrganizations && myOrganizations.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
-      <div class="consumption-data-holder margin-top-20">
+      <div class="consumption-data-holder margin-top-20" [appTelemetryImpression]="telemetryImpression">
         <div class="ui grid">
           <div class="four wide column" *ngFor="let block of blockData">
             <div class="ui card adminDashboardCard">

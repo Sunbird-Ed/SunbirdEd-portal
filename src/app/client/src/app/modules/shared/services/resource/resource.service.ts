@@ -53,9 +53,9 @@ export class ResourceService {
   /**
    * method to fetch resource bundle
   */
-  public getResource(): void {
+  public getResource(language = 'en'): void {
     const option = {
-      url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG
+      url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
     };
     this.get(option).subscribe(
       (data: ServerResponse) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 })
 export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;
+  @Output() closeQrModal = new EventEmitter<any>();
   constructor(public router: Router) { }
 
   ngOnInit() {
@@ -20,6 +21,10 @@ export class QrCodeModalComponent implements OnInit {
       this.modal.approve();
       this.router.navigate(['/get/dial/', dialCode]);
     }
+  }
+
+  closeModal() {
+    this.closeQrModal.emit('success');
   }
 }
 

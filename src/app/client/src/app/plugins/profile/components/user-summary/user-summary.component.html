@@ -2,11 +2,11 @@
     <div class="margin-top-20 ui raised segment">
         <div class="header">
             <span class="segment-heading"> {{resourceService.frmelmnts.lbl.summary}} </span>
-            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility field="profileSummary"></app-profile-visibility></a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view'" 
+            <a class="add-edit-btn-profile" *ngIf='privateProfileFields'><app-profile-visibility appTelemetryInteract [telemetryInteractObject]="{id:userService.userid,type:'user',ver:'1.0'}" [telemetryInteractEdata]="{id:'profile-close-edit-summary',type:'click',pageid:'profile-read'}"  field="profileSummary"></app-profile-visibility></a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editSummuryIntractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" 
             routerLink= '/profile/summary/edit'>{{resourceService.frmelmnts.btn.edit}}</a>
             <a class="add-edit-btn-profile" *ngIf="action === 'edit'" 
-            routerLink= '/profile' (click)="action = 'view';editSummury=userProfile.profileSummary">{{resourceService.frmelmnts.btn.close}}</a>
+            routerLink= '/profile' appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editCloseSummuryIntractEdata" (click)="action = 'view';editSummury=userProfile.profileSummary">{{resourceService.frmelmnts.btn.close}}</a>
         </div>
         <div class="description padding-top-10" *ngIf="action === 'view'">
             <div *ngIf="!readMore" >
@@ -24,7 +24,7 @@
                 <textarea [(ngModel)]="editSummury" [ngModelOptions]="{standalone: true}"></textarea>
             </div>
     
-            <button class="ui primary button margin-top-15" *ngIf="action === 'edit'" 
+            <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveSummuryIntractEdata" class="ui primary button margin-top-15" *ngIf="action === 'edit'" 
             (click)="editDetails(editSummury)">{{resourceService.frmelmnts.btn.save}} </button>
         </div>
     </div>
