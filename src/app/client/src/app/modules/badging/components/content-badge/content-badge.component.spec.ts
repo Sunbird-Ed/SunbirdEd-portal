@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentBadgeComponent } from './content-badge.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { UserService, BadgesService, CoreModule } from '@sunbird/core';
@@ -8,11 +8,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { mockResponse } from './content-badge.component.spec.data';
 import { ContentBadgeService } from './../../services';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
 
 describe('ContentBadgeComponent', () => {
   let component: ContentBadgeComponent;
   let fixture: ComponentFixture<ContentBadgeComponent>;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   const fakeActivatedRoute = {
     'params': Observable.from([{ collectionId: 'Test_Textbook2_8907797' }])
   };
@@ -20,7 +23,9 @@ describe('ContentBadgeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ContentBadgeComponent],
       imports: [SuiModule, CoreModule, SharedModule, HttpClientTestingModule, TelemetryModule],
-      providers: [ContentBadgeService, ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+      providers: [ContentBadgeService, ResourceService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();
   }));
