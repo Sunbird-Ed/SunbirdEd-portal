@@ -8,6 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService
 } from '@sunbird/shared';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -62,6 +63,7 @@ export class ContentPlayerComponent implements OnInit {
    */
   createNoteData: INoteData;
   closeUrl: any;
+  takeNoteInteractEdata: IInteractEventEdata;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -83,6 +85,12 @@ export class ContentPlayerComponent implements OnInit {
           }
         });
     });
+
+      this.takeNoteInteractEdata = {
+        id: 'note',
+        type: 'click',
+        pageid: 'content-note-read'
+      };
   }
   /**
    * used to fetch content details and player config. On success launches player.

@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * This component holds the note card widget.
@@ -96,6 +97,8 @@ export class NoteCardComponent implements OnInit, OnChanges {
   modalService: SuiModalService;
   activatedRoute: ActivatedRoute;
   batchId: string;
+  viewAllInteractEdata: IInteractEventEdata;
+  updateNoteInteractEdata: IInteractEventEdata;
 
 
   /**
@@ -138,6 +141,18 @@ export class NoteCardComponent implements OnInit, OnChanges {
      */
     this.userId = this.userService.userid;
     this.getAllNotes();
+
+    this.viewAllInteractEdata = {
+      id: 'allNote',
+      type: 'click',
+      pageid: 'content-note-read'
+    };
+
+    this.updateNoteInteractEdata = {
+      id: 'update-note',
+      type: 'click',
+      pageid: 'content-note-read'
+    };
   }
 
   ngOnChanges() {
