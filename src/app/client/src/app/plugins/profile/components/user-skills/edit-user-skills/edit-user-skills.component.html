@@ -22,10 +22,10 @@
     </form>
   </div>
   <div class="actions margin-top-40">
-    <button class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelAddSKillsInteractEdata" class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
-    <button class="ui approve primary button" (click)="addSkill(skill); modal.deny()">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="finishAddSkillsInteractEdata" class="ui approve primary button" (click)="addSkill(skill); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.finish}}
     </button>
   </div>

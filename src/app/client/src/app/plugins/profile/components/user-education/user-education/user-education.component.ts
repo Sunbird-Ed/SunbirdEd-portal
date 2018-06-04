@@ -8,6 +8,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EditUserEducationComponent } from '../../user-education/edit-user-education/edit-user-education.component';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-education',
   templateUrl: './user-education.component.html',
@@ -38,13 +39,21 @@ export class UserEducationComponent implements OnInit {
    * Is an array that stores action
    */
   allowedAction = ['edit', 'add'];
+  editEducationInteractEdata: IInteractEventEdata;
+  addEducationInteractEdata: IInteractEventEdata;
+  deleteEducationInteractEdata: IInteractEventEdata;
+  saveEditEducationInteractEdata: IInteractEventEdata;
+  saveAddEducationInteractEdata: IInteractEventEdata;
+  closeEducationInteractEdata: IInteractEventEdata;
+  lockEducationInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public profileService: ProfileService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
-    /**
-   * This method is used to fetch user profile details
-   * and to assign specified actions
-   */
+  /**
+ * This method is used to fetch user profile details
+ * and to assign specified actions
+ */
   ngOnInit() {
     this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -64,6 +73,7 @@ export class UserEducationComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
    * This method is used to edit education details
@@ -152,5 +162,47 @@ export class UserEducationComponent implements OnInit {
       err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0041);
       });
+  }
+  setInteractEventData() {
+    this.editEducationInteractEdata = {
+      id: 'profile-update-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.addEducationInteractEdata = {
+      id: 'profile-add-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.deleteEducationInteractEdata = {
+      id: 'profile-delete-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.closeEducationInteractEdata = {
+      id: 'profile-close-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveEditEducationInteractEdata = {
+      id: 'profile-save-edit-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveAddEducationInteractEdata = {
+      id: 'profile-save-add-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.lockEducationInteractEdata = {
+      id: 'lock-education',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

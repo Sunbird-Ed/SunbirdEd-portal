@@ -70,13 +70,13 @@
   <div class="actions">
     <div class="ui grid">
       <div class="four wide column">
-        <button class="ui left floated button" (click)="downloadSampleCSV()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCSVInteractEdata" class="ui left floated button" (click)="downloadSampleCSV()">{{resourceService?.frmelmnts?.btn?.smplcsv}}</button>
       </div>
       <div class="four wide column">
       </div>
       <div class="four wide column">
         <div>
-          <button [disabled]="processId" class="ui primary right floated button" (click)="openImageBrowser(inputbtn)">
+          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId" class="ui primary right floated button" (click)="openImageBrowser(inputbtn)">
             {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
           </button>
         </div>
