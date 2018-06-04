@@ -1,8 +1,8 @@
 <div id="additionalInfo" *ngIf="userProfile" class="margin-top-20 ui raised segment">
   <div class="header">
     <span class="segment-heading "> {{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
-    <a class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
-    <a class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink="/profile">{{resourceService?.frmelmnts?.btn?.close}}</a>
+    <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editAdditionalInfoInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink="/profile/additionalInfo/edit">{{resourceService?.frmelmnts?.btn?.edit}}</a>
+    <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeAdditionalInfoInteractEdata" class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink="/profile">{{resourceService?.frmelmnts?.btn?.close}}</a>
   </div>
   <div class="profileitems profile-des ui relaxed aligned list " *ngIf="action === 'view'">
     <div class="item ">
@@ -105,6 +105,6 @@
     <div class="ui" *ngIf="action === 'edit'">
       <app-edit-user-additional-info #edit [basicInfo]="userProfile"></app-edit-user-additional-info>
     </div>
-    <button *ngIf="action === 'edit'" class="ui primary button margin-top-15" (click)="editBasicInfo()">{{resourceService?.frmelmnts?.btn?.save}} </button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveEditAdditionalInfoInteractEdata" *ngIf="action === 'edit'" class="ui primary button margin-top-15" (click)="editBasicInfo()">{{resourceService?.frmelmnts?.btn?.save}} </button>
   </div>
   </div>
