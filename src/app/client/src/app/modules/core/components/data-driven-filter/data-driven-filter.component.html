@@ -3,13 +3,13 @@
     <div class="twelve wide column">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen">
-          <div *ngIf ="!accordionDefaultOpen" title>
+          <div *ngIf ="isShowFilterLabel" title>
             <i alt="Filter" class="icon filter"></i>
             {{resourceService.frmelmnts?.lbl?.filters}}
             <i class="dropdown icon"></i>
           </div>
           <div content>
-            <div *ngIf="formFieldProperties && formInputData && isShowFilterLabel" class="twelve wide column content margin-bottom-15">
+            <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content margin-bottom-15">
               <span *ngFor="let field of formFieldProperties">
                 <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0 && showFilter'>
                   {{field.name}}:
