@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" (dismissed)="redirect()" [mustScroll]="true" #modal>
+<sui-modal [appTelemetryImpression]="telemetryImpression" [isClosable]="true" (dismissed)="redirect()" [mustScroll]="true" #modal>
     <div class="header">
         <div class="ui grid">
             <div class="eleven wide column">
@@ -13,7 +13,9 @@
     </div>
 
     <div class="scrolling content">
-        <div class="ui selection dropdown margin-left-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
+        <div appTelemetryInteract [telemetryInteractEdata]="organizationIntractEdata" 
+        [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}" 
+        class="ui selection dropdown margin-left-10" suiDropdown *ngIf="userDetails && userDetails.organisations.length > 0">
             <i class="dropdown icon"></i>
             <div>{{selectedOrgName || userDetails.organisations[0].orgName || selectedOrgId}}</div>
 
@@ -26,7 +28,9 @@
 
                 <li class="orgRolesListView" *ngFor="let role of allRoles">
                     <div class="ui checkbox">
-                        <input type="checkbox" value='{{role.role}}' (click)="editRoles(role.role, selectedOrgUserRoles, $event)" [checked]="selectedOrgUserRoles.includes(role.role)"
+                        <input appTelemetryInteract [telemetryInteractEdata]="roleIntractEdata" 
+                        [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
+                        type="checkbox" value='{{role.role}}' (click)="editRoles(role.role, selectedOrgUserRoles, $event)" [checked]="selectedOrgUserRoles.includes(role.role)"
                             [disabled]="selectedOrgUserRoles.includes(role.role)">
                         <label>{{role.roleName || role.role}}</label>
                     </div>
@@ -35,7 +39,9 @@
         </div>
     </div>
     <div class="actions">
-        <button [disabled]="!selectedOrgUserRoles" class="ui primary button" type="submit" (click)="updateRoles(selectedOrgUserRoles); modal.deny();">
+        <button appTelemetryInteract [telemetryInteractEdata]="updateIntractEdata" 
+        [telemetryInteractObject]="{id:userId,type:'user',ver:'1.0'}"
+        [disabled]="!selectedOrgUserRoles" class="ui primary button" type="submit" (click)="updateRoles(selectedOrgUserRoles); modal.deny();">
             {{resourceService.frmelmnts?.btn?.update}}</button>
     </div>
 </sui-modal>
