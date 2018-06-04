@@ -1,9 +1,18 @@
-<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect(); modal.deny()" #modal>
+<sui-modal [isClosable]="false" [size]="'normal'" (dismissed)="redirect();" #modal>
   <div class="header">
     <div class="ui grid">
-      <div class="eleven wide column">
+      <div class="eleven wide tablet computer only column">
         <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
       </div>
+      <div class="one wide tablet computer only column">
+        <i class="close icon" (click)="modal.deny()"></i>
+      </div>
+      <div class="ten wide mobile only column">
+          <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
+        </div>
+        <div class="two wide mobile only column">
+          <i class="close icon" (click)="modal.deny()"></i>
+        </div>
     </div>
   </div>
   <div class="content">
