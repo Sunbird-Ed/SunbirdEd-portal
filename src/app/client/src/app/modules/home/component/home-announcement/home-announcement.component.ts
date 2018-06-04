@@ -71,7 +71,7 @@ export class HomeAnnouncementComponent implements OnInit {
     this.pageLimit = limit;
     const option = { pageNumber: this.pageNumber, limit: this.pageLimit };
     const logEvent: ILogEventInput = {
-      context: { env: 'home-announcement' },
+      context: { env: 'home' },
       edata: { type: 'api_call', level: 'INFO', message: '' }
     };
     this.announcementService.getInboxData(option, logEvent).subscribe(
