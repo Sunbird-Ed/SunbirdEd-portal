@@ -237,7 +237,7 @@
         "telemetryInteractEdata": {"id":"draftContentId","type":"click","pageid":"DraftContent"},
         "telemetryObjectType":"draft"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Published": {
@@ -255,7 +255,7 @@
         "telemetryInteractEdata": {"id":"published","type":"click","pageid":"published"},
         "telemetryObjectType":"published"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Uploaded": {
@@ -273,7 +273,7 @@
         "telemetryInteractEdata": {"id":"uploadedContent","type":"click","pageid":"UploadContent"},
         "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Flagged": {
@@ -287,7 +287,7 @@
         "telemetryInteractEdata": {"id":"flagged","type":"click","pageid":"Flagged"},
         "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "ReviewSubmission": {
@@ -301,7 +301,7 @@
         "telemetryInteractEdata": {"id":"reviewSubmissionId","type":"click","pageid":"ReviewSubmission"},
         "telemetryObjectType":"ReviewSubmission"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "LimitedPublishing": {
@@ -324,7 +324,7 @@
         "telemetryInteractEdata": {"id":"limitedPublish","type":"click","pageid":"LimitedPublish"},
         "telemetryObjectType":"limitedPublish"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
   },
