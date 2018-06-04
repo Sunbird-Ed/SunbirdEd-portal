@@ -1,8 +1,8 @@
-<div class=" ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div>
-      <app-user-filter></app-user-filter>
+      <app-user-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" ></app-user-filter>
       <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
         <div class="ui left floated header margin-auto ">
           <p class="serch-allresult">Showing results
@@ -12,7 +12,7 @@
             in "users"
           </p>
         </div>
-        <h5 class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+        <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
           <i class="ui remove icon "></i>
         </h5>
       </div>
@@ -24,24 +24,29 @@
       </div>
 
       <div>
-        <div *ngIf="!showLoader && !noResult">
-          <div class="ui segment" *ngFor="let user of searchList">
+        <div *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList">
+          <div in-view-item [id]="i" [data]="user" class="ui segment" *ngFor="let user of searchList;let i = index;">
             <div class="ui items">
               <div class="item">
                 <div class="ui tiny image userSearchImage">
                   <img [src]="user.avatar || './assets/images/user_logo.png'">
                 </div>
                 <div class="content ">
-                  <a class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
+                  <a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
+                  [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
+                  class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>
                   <span class="header" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</span>
 
                   <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                     <!-- update user roles -->
-                    <span class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                    <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" 
+                    [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
+                    class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
                       <i class="edit large icon remove-outline"></i>
                     </span>
                     <!-- delete user -->
-                    <span class="remove-outline">
+                    <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" 
+                    [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" class="remove-outline">
                       <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
                     </span>
                   </a>

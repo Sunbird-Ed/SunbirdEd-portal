@@ -189,6 +189,8 @@ export class TelemetryService {
       rollup: eventInput.object.rollup || {}
     };
     return eventObjectData;
+    } else { // telemetry.min.js will take last sent object is not sent.
+      return {};
     }
   }
 

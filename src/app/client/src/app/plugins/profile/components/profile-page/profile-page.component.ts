@@ -67,6 +67,11 @@ export class ProfilePageComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
+      object: {
+        id: this.userService.userid,
+        type: 'user',
+        ver: '1.0'
+      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: pageId,
