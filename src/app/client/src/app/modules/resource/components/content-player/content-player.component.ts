@@ -106,7 +106,6 @@ export class ContentPlayerComponent implements OnInit {
 
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
-          console.log(this.contentData);
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);

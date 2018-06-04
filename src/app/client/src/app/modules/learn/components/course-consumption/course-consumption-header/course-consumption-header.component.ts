@@ -115,6 +115,5 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
         {id: param.identifier}
       ]
     }];
-    console.log(this.telemetryShareData);
   }
 }
