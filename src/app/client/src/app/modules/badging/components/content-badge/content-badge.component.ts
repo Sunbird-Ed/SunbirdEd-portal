@@ -111,7 +111,7 @@ export class ContentBadgeComponent implements OnInit {
       pageid: 'content-badge'
     };
     this.telemetryInteractObject = {
-      id: this.userService.userid,
+      id: '',
       type: 'badge',
       ver: '1.0'
     };
