@@ -9,6 +9,8 @@ import { UserSearchService } from './services';
 import { OrderModule } from 'ngx-order-pipe';
 import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent, HomeFilterComponent,
    OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent, LibrarySearchComponent } from './components';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
@@ -18,7 +20,9 @@ import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDele
     SuiModule,
     FormsModule,
     CoreModule,
-    OrderModule
+    OrderModule,
+    TelemetryModule,
+    NgInviewModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,

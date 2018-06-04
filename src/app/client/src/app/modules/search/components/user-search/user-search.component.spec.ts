@@ -42,7 +42,14 @@ describe('UserSearchComponent', () => {
   };
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }])
+    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -66,9 +73,6 @@ describe('UserSearchComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
   it('should call search api for populateUserSearch', () => {
     const searchService = TestBed.get(SearchService);
     const learnerService = TestBed.get(LearnerService);

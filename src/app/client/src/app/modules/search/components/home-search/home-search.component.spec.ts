@@ -30,7 +30,14 @@ describe('HomeSearchComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'] }])
+    'queryParams': Observable.from([{ subject: ['english'] }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'home', pageid: 'home-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
   };
   const mockQueryParma = {
     'Curriculum': ['CBSE'],
@@ -55,9 +62,7 @@ describe('HomeSearchComponent', () => {
     fixture = TestBed.createComponent(HomeSearchComponent);
     component = fixture.componentInstance;
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+
   it('should call search api', () => {
     const searchService = TestBed.get(SearchService);
     component.queryParams = mockQueryParma;
