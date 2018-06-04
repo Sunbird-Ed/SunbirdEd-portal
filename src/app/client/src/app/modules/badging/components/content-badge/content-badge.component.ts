@@ -112,7 +112,7 @@ export class ContentBadgeComponent implements OnInit {
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'user',
+      type: 'badge',
       ver: '1.0'
     };
   }
