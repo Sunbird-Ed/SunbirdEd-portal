@@ -8,11 +8,12 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, LearnerService,
-   ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
+   ConceptPickerService, SearchService, PermissionService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { expand } from 'rxjs/operators/expand';
 import * as mockData from './data-driven-filter.component.spec.data';
+import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
@@ -39,11 +40,11 @@ const fakeActivatedRoute = {
 };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, TelemetryModule],
       declarations: [ DataDrivenFilterComponent ],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
         CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService,
-        { provide: Router, useClass: RouterStub },
+        { provide: Router, useClass: RouterStub }, TelemetryService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],
         schemas: [NO_ERRORS_SCHEMA]

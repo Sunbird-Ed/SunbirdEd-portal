@@ -10,11 +10,12 @@ import { Observable } from 'rxjs/Observable';
 
 import { AnnouncementService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
+import { ILogEventInput, TelemetryModule } from '@sunbird/telemetry';
 
 describe('AnnouncementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TelemetryModule],
       providers: [HttpClientModule, AnnouncementService, ConfigService]
     });
   });
@@ -26,7 +27,11 @@ describe('AnnouncementService', () => {
   it('should make inbox api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'limit': 10, 'offset': 10 } } };
     spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.inboxSuccess));
-    service.getInboxData(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'home-announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getInboxData(params, logEvent).subscribe(
       apiResponse => {
         expect(apiResponse.responseCode).toBe('OK');
         expect(apiResponse.result.count).toBe(1169);
@@ -37,7 +42,11 @@ describe('AnnouncementService', () => {
   it('should make inbox api call and get error response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'limit': 10, 'offset': 10 } } };
     spyOn(service, 'post').and.callFake(() => Observable.throw(testData.mockRes.inboxError));
-    service.getInboxData(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'home-announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getInboxData(params, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Cannot set property of undefined');

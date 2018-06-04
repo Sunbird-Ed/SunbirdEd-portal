@@ -8,12 +8,13 @@ import { Observable } from 'rxjs/Observable';
 import { TenantService } from './tenant.service';
 import { } from 'jasmine';
 import { UserService } from '../user/user.service';
+import { CoreModule } from '@sunbird/core';
 
 describe('TenantService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [TenantService, UserService, ConfigService,
         LearnerService, ResourceService, ToasterService, Ng2IzitoastService]
     });

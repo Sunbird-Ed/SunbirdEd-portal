@@ -6,7 +6,7 @@ import { SearchService } from './../search/search.service';
 import { UserService } from './../user/user.service';
 import { LearnerService } from './../learner/learner.service';
 import { Observable } from 'rxjs/Observable';
-import { SearchParam } from '@sunbird/core';
+import { SearchParam, CoreModule } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { ConfigService, ResourceService, ToasterService} from '@sunbird/shared';
 import { ConceptPickerService } from './concept-picker.service';
@@ -21,7 +21,7 @@ describe('ConceptPickerService', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule],
       providers: [ConceptPickerService, SearchService, UserService, ConfigService, LearnerService,
         ToasterService, ContentService, { provide: ResourceService, useValue: resourceBundle }]
     });

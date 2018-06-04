@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CollectionHierarchyAPI } from '../../interfaces';
+import { TelemetryService } from '@sunbird/telemetry';
 
 /**
  * Service to provides CRUD methods to make content api request by extending DataService.
@@ -20,16 +21,12 @@ export class ContentService extends DataService {
    */
   public config: ConfigService;
   /**
-   * reference of lerner service.
-   */
-  public http: HttpClient;
-  /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http HttpClient reference
    */
-  constructor(config: ConfigService, http: HttpClient) {
-    super(http);
+  constructor(config: ConfigService, http: HttpClient, telemetryService: TelemetryService) {
+    super(http, telemetryService);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
   }

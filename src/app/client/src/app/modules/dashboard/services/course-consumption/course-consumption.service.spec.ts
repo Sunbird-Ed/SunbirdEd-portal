@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 // Import service(s)
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { CourseConsumptionService } from './course-consumption.service';
@@ -17,7 +17,7 @@ const testData = <any>mockData.mockRes;
 describe('CourseConsumptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [CourseConsumptionService, DashboardUtilsService, LearnerService, ConfigService]
     });
   });

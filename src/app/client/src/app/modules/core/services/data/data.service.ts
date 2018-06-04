@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs/Rx';
+import { TelemetryService, ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * Service to provide base CRUD methods to make api request.
@@ -24,13 +25,21 @@ export class DataService {
   /**
    * angular HttpClient
    */
-  http: HttpClient;
+  private http: HttpClient;
+  /**
+   *
+   *
+   * @type {TelemetryService}
+   * @memberof DataService
+   */
+  private telemetryService: TelemetryService;
   /**
    * Constructor
    * @param {HttpClient} http HttpClient reference
    */
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, telemetryService: TelemetryService) {
     this.http = http;
+    this.telemetryService = telemetryService;
   }
 
   /**
@@ -38,7 +47,7 @@ export class DataService {
    *
    * @param requestParam interface
    */
-  get(requestParam: RequestParam): Observable<ServerResponse> {
+  get(requestParam: RequestParam, telemetry?: ILogEventInput): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
@@ -49,6 +58,15 @@ export class DataService {
           return Observable.throw(data);
         }
         return Observable.of(data);
+      })
+      .do(x => telemetry && this.telemetryService.log(telemetry))
+      .catch((error) => {
+        // tslint:disable-next-line:no-unused-expression
+        telemetry && this.telemetryService.error({
+          ...telemetry,
+          edata: { err: _.get(error, 'params.err') || error.message, errtype: 'PORTAL', stacktrace: error.params || error.message }
+        });
+        return error;
       });
   }
 
@@ -58,7 +76,7 @@ export class DataService {
    * @param {RequestParam} requestParam interface
    *
    */
-  post(requestParam: RequestParam): Observable<ServerResponse> {
+  post(requestParam: RequestParam, telemetry?: ILogEventInput): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
@@ -69,6 +87,15 @@ export class DataService {
           return Observable.throw(data);
         }
         return Observable.of(data);
+      })
+      .do(x => telemetry && this.telemetryService.log(telemetry))
+      .catch((error) => {
+        // tslint:disable-next-line:no-unused-expression
+        telemetry && this.telemetryService.error({
+          ...telemetry,
+          edata: { err: _.get(error, 'params.err') || error.message, errtype: 'PORTAL', stacktrace: error.params || error.message }
+        });
+        return error;
       });
   }
 
@@ -78,7 +105,7 @@ export class DataService {
    * @param {RequestParam} requestParam interface
    *
    */
-  patch(requestParam: RequestParam): Observable<ServerResponse> {
+  patch(requestParam: RequestParam, telemetry?: ILogEventInput): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
@@ -89,6 +116,15 @@ export class DataService {
           return Observable.throw(data);
         }
         return Observable.of(data);
+      })
+      .do(x => telemetry && this.telemetryService.log(telemetry))
+      .catch((error) => {
+        // tslint:disable-next-line:no-unused-expression
+        telemetry && this.telemetryService.error({
+          ...telemetry,
+          edata: { err: _.get(error, 'params.err') || error.message, errtype: 'PORTAL', stacktrace: error.params || error.message }
+        });
+        return error;
       });
   }
 
@@ -96,7 +132,7 @@ export class DataService {
    * for making delete api calls
    * @param {RequestParam} requestParam interface
    */
-  delete(requestParam: RequestParam): Observable<ServerResponse> {
+  delete(requestParam: RequestParam, telemetry?: ILogEventInput): Observable<ServerResponse> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param,
@@ -108,6 +144,15 @@ export class DataService {
           return Observable.throw(data);
         }
         return Observable.of(data);
+      })
+      .do(x => telemetry && this.telemetryService.log(telemetry))
+      .catch((error) => {
+        // tslint:disable-next-line:no-unused-expression
+        telemetry && this.telemetryService.error({
+          ...telemetry,
+          edata: { err: _.get(error, 'params.err') || error.message, errtype: 'PORTAL', stacktrace: error.params || error.message }
+        });
+        return error;
       });
   }
 

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementListData } from '@sunbird/announcement';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * This component displays announcement inbox card on the home page.
@@ -68,11 +69,12 @@ export class HomeAnnouncementComponent implements OnInit {
   public populateHomeInboxData(limit: number, pageNumber: number) {
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
-    const option = {
-      pageNumber: this.pageNumber,
-      limit: this.pageLimit
+    const option = { pageNumber: this.pageNumber, limit: this.pageLimit };
+    const logEvent: ILogEventInput = {
+      context: { env: 'home-announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
     };
-    this.announcementService.getInboxData(option).subscribe(
+    this.announcementService.getInboxData(option, logEvent).subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse && apiResponse.result.count > 0) {

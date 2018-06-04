@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TelemetryService } from '@sunbird/telemetry';
 
 /**
  * This service returns the organization details.
@@ -20,10 +21,6 @@ export class TenantService extends DataService {
    * Read only observable containing tenant data.
    */
   public readonly tenantData$: Observable<ITenantInfo> = this._tenantData$.asObservable();
-  /**
-   * reference of http.
-   */
-  http: HttpClient;
   /**
    * reference of config service.
    */
@@ -42,8 +39,8 @@ export class TenantService extends DataService {
    * @param {HttpClient} http Reference of HttpClient.
    * @param {ConfigService} config Reference of ConfigService.
    */
-  constructor(http: HttpClient, config: ConfigService) {
-    super(http);
+  constructor(http: HttpClient, config: ConfigService, telemetryService: TelemetryService) {
+    super(http, telemetryService);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.TENANT_PREFIX;
   }

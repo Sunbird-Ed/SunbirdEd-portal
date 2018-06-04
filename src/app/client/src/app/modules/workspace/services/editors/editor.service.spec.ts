@@ -6,11 +6,12 @@ import { EditorService } from './editor.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { mockRes } from './editor.service.spec.data';
+import { CoreModule } from '@sunbird/core';
 
 describe('EditorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [EditorService, ConfigService, ContentService]
     });
   });

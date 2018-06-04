@@ -7,6 +7,7 @@ import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 const fakeActivatedRoute = {
   'params': Observable.from([{ contentId: 'd0_33567325' }]),

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
+import { TelemetryService, ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * Service for all announcement API calls
@@ -35,17 +36,13 @@ export class AnnouncementService extends DataService {
    */
   public config: ConfigService;
   /**
-   * reference of lerner service.
-   */
-  public http: HttpClient;
-  /**
    * Constructor - default method of AnnouncementService class
    *
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http HttpClient reference
    */
-  constructor(config: ConfigService, http: HttpClient) {
-    super(http);
+  constructor(config: ConfigService, http: HttpClient, telemetryService: TelemetryService) {
+    super(http, telemetryService);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.ANNOUNCEMENT_PREFIX;
   }
@@ -56,7 +53,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for inbox API call
   */
-  getInboxData(requestParam: IAnnouncementSericeParam) {
+  getInboxData(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.INBOX_LIST,
       data: {
@@ -66,7 +63,7 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.post(option);
+    return this.post(option, logEvent);
   }
 
   /**
@@ -153,7 +150,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for delete API call
   */
- getAnnouncementById(requestParam: IAnnouncementSericeParam) {
+  getAnnouncementById(requestParam: IAnnouncementSericeParam) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.GET_BY_ID + '/' + requestParam.announcementId
     };

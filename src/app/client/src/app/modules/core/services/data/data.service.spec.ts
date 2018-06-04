@@ -1,11 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { DataService } from './data.service';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('DataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, TelemetryModule],
       providers: [DataService, HttpClient]
     });
   });

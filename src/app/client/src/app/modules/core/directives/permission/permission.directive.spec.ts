@@ -4,8 +4,10 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-import { UserService, LearnerService, PermissionService, ContentService } from '@sunbird/core';
+import { UserService, LearnerService, PermissionService, ContentService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+
 @Component({
   template: `<a appPermission id="permission" [permission]= 'adminDashboard'
   href="#">dashboard</a>`
@@ -18,10 +20,10 @@ describe('PermissionDirective', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, Ng2IziToastModule],
+      imports: [HttpClientModule, Ng2IziToastModule, TelemetryModule],
       declarations: [PermissionDirective, TestWrapperComponent],
       providers: [ToasterService, ResourceService, PermissionService, UserService, ContentService,
-        ConfigService, LearnerService, HttpClient]
+        ConfigService, LearnerService, HttpClient, TelemetryService]
     });
   });
   beforeEach(() => {

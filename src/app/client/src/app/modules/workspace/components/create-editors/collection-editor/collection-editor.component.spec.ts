@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -24,7 +24,7 @@ describe('CollectionEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,

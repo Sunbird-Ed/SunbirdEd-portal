@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
+import { ILogEventInput, IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
 /**
  * The announcement inbox component displays all
  * the announcement which is received by the logged in user
@@ -140,7 +140,12 @@ export class InboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getInboxData(option).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement-inbox' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+
+    this.announcementService.getInboxData(option, logEvent).subscribe(
       (apiResponse: ServerResponse) => {
         this.inboxData = apiResponse.result;
         this.showLoader = false;

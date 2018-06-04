@@ -7,11 +7,10 @@ import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
-
 
 
 describe('ContentEditorComponent', () => {
@@ -25,7 +24,7 @@ describe('ContentEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule],
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,

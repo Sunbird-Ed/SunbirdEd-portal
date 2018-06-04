@@ -1,13 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from './learner.service';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LearnerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [LearnerService, ConfigService, HttpClient]
+      imports: [HttpClientTestingModule, TelemetryModule],
+      providers: [LearnerService, ConfigService, TelemetryService]
     });
   });
 

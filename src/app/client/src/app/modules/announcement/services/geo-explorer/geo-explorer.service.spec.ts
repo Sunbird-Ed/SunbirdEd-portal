@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 // SB service(s) and module(s)
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 // import { SharedModule } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
@@ -22,7 +22,7 @@ describe('GeoExplorerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [GeoExplorerService, LearnerService, ConfigService],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, CoreModule]
     });
   });
 

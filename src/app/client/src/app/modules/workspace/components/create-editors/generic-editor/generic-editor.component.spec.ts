@@ -7,7 +7,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -25,8 +25,8 @@ describe('GenericEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenericEditorComponent ],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
+      declarations: [ GenericEditorComponent],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule],
     providers: [
       UserService, LearnerService, ContentService,
       ResourceService, ToasterService, ConfigService,

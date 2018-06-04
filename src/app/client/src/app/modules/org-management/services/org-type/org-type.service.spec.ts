@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrgTypeService } from './org-type.service';
 
 import { Observable } from 'rxjs/Observable';
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { mockRes } from './org-type.service.spec.data';
 
@@ -16,7 +16,7 @@ describe('OrgTypeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [OrgTypeService, LearnerService, ConfigService]
     });
   });

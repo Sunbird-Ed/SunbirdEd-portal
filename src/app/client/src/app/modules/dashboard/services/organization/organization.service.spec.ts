@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 // Services
 import { OrganisationService } from './organization.service';
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 // Test data
@@ -17,7 +17,7 @@ const testData = <any>mockData.mockRes;
 describe('OrganisationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [OrganisationService, LearnerService, DashboardUtilsService, ConfigService]
     });
   });

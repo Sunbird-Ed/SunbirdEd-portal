@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails, InboxComponent } from '@sunbird/announcement';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, ILogEventInput } from '@sunbird/telemetry';
 
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -15,7 +15,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NgInviewModule } from 'angular-inport';
-import { AnnouncementService } from '@sunbird/core';
+import { AnnouncementService, CoreModule } from '@sunbird/core';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
     ConfigService, DateFormatPipe, ServerResponse
@@ -43,7 +43,7 @@ describe('InboxComponent', () => {
             declarations: [InboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 SuiModule, RouterTestingModule, NgInviewModule,
-                SharedModule, TelemetryModule],
+                SharedModule, CoreModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
@@ -70,7 +70,11 @@ describe('InboxComponent', () => {
             Observable.of({ announcementId: '6f6932b0-db3e-11e7-b902-bf7fe7f2023a' }));
         component.populateInboxData(5, 1);
         const params = { pageNumber: 2, limit: 1 };
-        announcementService.getInboxData(params).subscribe(
+        const logEvent: ILogEventInput = {
+            context: { env: 'announcement-inbox' },
+            edata: { type: 'api_call', level: 'INFO', message: '' }
+          };
+        announcementService.getInboxData(params, logEvent).subscribe(
             inboxResponse => {
                 component.inboxData = inboxResponse.result;
                 component.inboxData.count = inboxResponse.result.count;
@@ -100,8 +104,12 @@ describe('InboxComponent', () => {
                     resourceService.messages = data.messages;
                 }
             );
+            const logEvent: ILogEventInput = {
+                context: { env: 'announcement-inbox' },
+                edata: { type: 'api_call', level: 'INFO', message: '' }
+              };
             component.populateInboxData(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, component.pageNumber);
-            announcementService.getInboxData({}).subscribe(
+            announcementService.getInboxData({}, logEvent).subscribe(
                 inboxResponse => { },
                 err => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');

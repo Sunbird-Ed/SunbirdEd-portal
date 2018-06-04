@@ -6,17 +6,19 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CoursesService, UserService, LearnerService, ContentService } from '@sunbird/core';
+import { CoursesService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ActionCard } from './../../interfaces/index';
 import * as mockData from './action-card.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { RouterTestingModule } from '@angular/router/testing';
 const testData = mockData.mockRes;
 describe('ActionCardComponent', () => {
     let component: ActionCardComponent;
     let fixture: ComponentFixture<ActionCardComponent>;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [ HttpClientTestingModule, SuiModule, CommonModule],
+            imports: [ HttpClientTestingModule, SuiModule, CommonModule, TelemetryModule, RouterTestingModule],
             declarations: [ActionCardComponent],
             providers: [ResourceService, CoursesService, ContentService, UserService, LearnerService, ConfigService],
             schemas: [NO_ERRORS_SCHEMA]

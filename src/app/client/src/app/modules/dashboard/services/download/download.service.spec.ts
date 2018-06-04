@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 // SB service(S)
 import { DownloadService } from './download.service';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, CoreModule } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 // Rxjs
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,7 @@ const testData = mockData.mockRes;
 describe('DownloadService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [DownloadService, LearnerService, DashboardUtilsService, ConfigService]
     });
   });

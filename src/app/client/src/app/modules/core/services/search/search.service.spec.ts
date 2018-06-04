@@ -8,12 +8,12 @@ import { TestBed, inject } from '@angular/core/testing';
 import { SearchService } from './search.service';
 import { UserService } from './../user/user.service';
 import { ConfigService } from '@sunbird/shared';
-
+import { CoreModule } from '@sunbird/core';
 
 describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [SearchService, ContentService, UserService, LearnerService, ConfigService]
     });
   });

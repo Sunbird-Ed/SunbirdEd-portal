@@ -2,13 +2,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService } from '@sunbird/shared';
 import { BatchService } from './batch.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserService, LearnerService, ContentService } from '@sunbird/core';
+import { UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from './batch.service.spec.data';
+
 describe('BatchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, CoreModule],
       providers: [BatchService, UserService, ConfigService,
         ContentService, LearnerService]
     });
