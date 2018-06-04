@@ -15,6 +15,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 describe('DeleteComponent', () => {
   let component: DeleteComponent;
@@ -66,8 +67,12 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
+      const logEvent: ILogEventInput = {
+        context: { env: 'announcement' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
       component.deleteAnnouncement();
-      announcementService.deleteAnnouncement(params).subscribe(
+      announcementService.deleteAnnouncement(params, logEvent).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
           expect(apiResponse.result.status).toBe('cancelled');
@@ -92,8 +97,12 @@ describe('DeleteComponent', () => {
           resourceService.messages = data.messages;
         }
       );
+      const logEvent: ILogEventInput = {
+        context: { env: 'announcement' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
       component.deleteAnnouncement();
-      announcementService.deleteAnnouncement(param).subscribe(
+      announcementService.deleteAnnouncement(param, logEvent).subscribe(
         apiResponse => {
         },
         err => {

@@ -154,7 +154,7 @@ export class InboxComponent implements OnInit {
         // Calling received API
         _.each(this.inboxData.announcements, (key) => {
           if (key.received === false) {
-            this.announcementService.receivedAnnouncement({ announcementId: key.id }).subscribe(
+            this.announcementService.receivedAnnouncement({ announcementId: key.id }, logEvent).subscribe(
               (response: ServerResponse) => { }
             );
           }
@@ -176,8 +176,12 @@ export class InboxComponent implements OnInit {
 	 * @param {boolean} read Read status of the clicked announcement id
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+      this.announcementService.readAnnouncement({ announcementId: announcementId }, logEvent).subscribe(
         (response: ServerResponse) => {
           _.each(this.inboxData.announcements, (key, index) => {
             if (announcementId === key.id) {

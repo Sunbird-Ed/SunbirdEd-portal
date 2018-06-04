@@ -59,7 +59,11 @@ describe('AnnouncementService', () => {
   it('should make outbox api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'limit': 25, 'offset': 10 } } };
     spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.outBoxSuccess));
-    service.getOutboxData(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getOutboxData(params, logEvent).subscribe(
       apiResponse => {
         expect(apiResponse.responseCode).toBe('OK');
         expect(apiResponse.result.count).toBe(1000);
@@ -70,8 +74,12 @@ describe('AnnouncementService', () => {
   it('should make outbox api call and get error response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'limit': 25, 'offset': 10 } } };
     spyOn(service, 'post').and.callFake(() => Observable.throw(testData.mockRes.outboxError));
-    service.getOutboxData(params);
-    service.getOutboxData(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getOutboxData(params, logEvent);
+    service.getOutboxData(params, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Cannot set property of undefined');
@@ -84,7 +92,11 @@ describe('AnnouncementService', () => {
   it('should make received api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba', 'channel': 'web' } } };
     spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.receivedSuccess));
-    service.receivedAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.receivedAnnouncement(params, logEvent).subscribe(
       apiResponse => {
         expect(apiResponse.responseCode).toBe('OK');
         // expect(apiResponse.params.status).toBe('successful');
@@ -95,7 +107,11 @@ describe('AnnouncementService', () => {
   it('should make received api call and get error response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba', 'channel': 'web' } } };
     spyOn(service, 'post').and.callFake(() => Observable.throw(testData.mockRes.receivedError));
-    service.receivedAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.receivedAnnouncement(params, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Unauthorized User');
@@ -108,7 +124,11 @@ describe('AnnouncementService', () => {
   it('should make read api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba', 'channel': 'web' } } };
     spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.readSuccess));
-    service.readAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.readAnnouncement(params, logEvent).subscribe(
       apiResponse => {
         expect(apiResponse.responseCode).toBe('OK');
         // expect(apiResponse.params.status).toBe('successful');
@@ -119,7 +139,11 @@ describe('AnnouncementService', () => {
   it('should make read api call and get error response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba', 'channel': 'web' } } };
     spyOn(service, 'post').and.callFake(() => Observable.throw(testData.mockRes.readError));
-    service.readAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.readAnnouncement(params, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Unauthorized User');
@@ -132,7 +156,11 @@ describe('AnnouncementService', () => {
   it('should make delete api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
     spyOn(service, 'delete').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
-    service.deleteAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.deleteAnnouncement(params, logEvent).subscribe(
       (apiResponse: any) => {
         expect(apiResponse.responseCode).toBe('OK');
         // expect(apiResponse.params.status).toBe('successful');
@@ -143,7 +171,11 @@ describe('AnnouncementService', () => {
   it('should make delete api call and get error response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
     spyOn(service, 'delete').and.callFake(() => Observable.throw(testData.mockRes.deleteError));
-    service.deleteAnnouncement(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.deleteAnnouncement(params, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Unauthorized User!22');
@@ -157,7 +189,11 @@ describe('AnnouncementService', () => {
     (service: AnnouncementService) => {
     const params = { data: { 'request': { 'announcementId': '92ca4110-19df-11e8-8773-d9334313c305' } } };
     spyOn(service, 'delete').and.callFake(() => Observable.of(testData.mockRes.getAnnByIdSuccess));
-    service.getAnnouncementById(params).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getAnnouncementById(params, logEvent).subscribe(
       (apiResponse: any) => {
         expect(apiResponse.responseCode).toBe('OK');
         // expect(apiResponse.params.status).toBe('successful');
@@ -169,7 +205,11 @@ describe('AnnouncementService', () => {
   it('should make get announcement by id api call and get error response', inject([AnnouncementService],
     (service: AnnouncementService) => {
     spyOn(service, 'delete').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
-    service.getAnnouncementById({}).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    service.getAnnouncementById({}, logEvent).subscribe(
       apiResponse => { },
       err => {
         expect(err.params.errmsg).toBe('Unauthorized User');

@@ -72,7 +72,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for outbox API call
   */
-  getOutboxData(requestParam: IAnnouncementSericeParam) {
+  getOutboxData(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.OUTBOX_LIST,
       data: {
@@ -82,7 +82,7 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.post(option);
+    return this.post(option, logEvent);
   }
 
   /**
@@ -91,7 +91,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for received API call
   */
-  receivedAnnouncement(requestParam: IAnnouncementSericeParam) {
+  receivedAnnouncement(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.RECEIVED,
       data: {
@@ -101,7 +101,7 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.post(option);
+    return this.post(option, logEvent);
   }
 
   /**
@@ -110,7 +110,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for read API call
   */
-  readAnnouncement(requestParam: IAnnouncementSericeParam) {
+  readAnnouncement(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.READ,
       data: {
@@ -120,7 +120,7 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.post(option);
+    return this.post(option, logEvent);
   }
 
   /**
@@ -129,7 +129,7 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for delete API call
   */
-  deleteAnnouncement(requestParam: IAnnouncementSericeParam) {
+  deleteAnnouncement(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.CANCEL,
       data: {
@@ -138,7 +138,7 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.delete(option).map(data => {
+    return this.delete(option, logEvent).map(data => {
       this.announcementDeleteEvent.emit(requestParam.announcementId);
       return data;
     });
@@ -150,10 +150,10 @@ export class AnnouncementService extends DataService {
   *
   * @param {IAnnouncementSericeParam} requestParam Request object needed for delete API call
   */
-  getAnnouncementById(requestParam: IAnnouncementSericeParam) {
+  getAnnouncementById(requestParam: IAnnouncementSericeParam, logEvent: ILogEventInput) {
     const option = {
       url: this.config.urlConFig.URLS.ANNOUNCEMENT.GET_BY_ID + '/' + requestParam.announcementId
     };
-    return this.get(option);
+    return this.get(option, logEvent);
   }
 }

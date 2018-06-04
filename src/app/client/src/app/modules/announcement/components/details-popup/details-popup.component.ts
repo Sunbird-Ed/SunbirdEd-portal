@@ -4,7 +4,7 @@ import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, ILogEventInput } from '@sunbird/telemetry';
 /**
  * The details popup component checks for the announcement details object
  * present in announcement service. If object is undefined it calls API with
@@ -99,7 +99,11 @@ export class DetailsPopupComponent implements OnInit {
     if (this.announcementService.announcementDetailsObject === undefined ||
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
-      this.announcementService.getAnnouncementById(option).subscribe(
+      const logEvent: ILogEventInput = {
+        context: { env: 'announcement' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.announcementService.getAnnouncementById(option, logEvent).subscribe(
         (apiResponse: ServerResponse) => {
           this.announcementDetails = apiResponse.result;
           if (apiResponse.result.announcement) {

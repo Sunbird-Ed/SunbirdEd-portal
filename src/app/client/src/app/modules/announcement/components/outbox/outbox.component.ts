@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, ILogEventInput } from '@sunbird/telemetry';
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -146,7 +146,12 @@ export class OutboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getOutboxData(option).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+
+    this.announcementService.getOutboxData(option, logEvent).subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
         this.showLoader = false;

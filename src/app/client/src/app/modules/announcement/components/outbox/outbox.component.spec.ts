@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, ILogEventInput } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
@@ -75,7 +75,11 @@ describe('OutboxComponent', () => {
         spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.of(testData.mockRes.outBoxSuccess));
         component.populateOutboxData(5, 1);
         const params = { pageNumber: 2, limit: 1 };
-        announcementService.getOutboxData(params).subscribe(
+        const logEvent: ILogEventInput = {
+            context: { env: 'announcement' },
+            edata: { type: 'api_call', level: 'INFO', message: '' }
+        };
+        announcementService.getOutboxData(params, logEvent).subscribe(
             outboxResponse => {
                 component.outboxData = outboxResponse.result;
                 component.outboxData.count = outboxResponse.result.count;
@@ -102,8 +106,12 @@ describe('OutboxComponent', () => {
                     resourceService.messages = data.messages;
                 }
             );
+            const logEvent: ILogEventInput = {
+                context: { env: 'announcement' },
+                edata: { type: 'api_call', level: 'INFO', message: '' }
+            };
             component.populateOutboxData(configService.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, component.pageNumber);
-            announcementService.getOutboxData({}).subscribe(
+            announcementService.getOutboxData({}, logEvent).subscribe(
                 outboxResponse => { },
                 err => {
                     expect(err.error.params.errmsg).toBe('Cannot set property of undefined');

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 /**
  * The delete component deletes the announcement
@@ -79,7 +80,11 @@ export class DeleteComponent implements OnInit {
 	 */
   deleteAnnouncement(): void {
     const option = { announcementId: this.announcementId };
-    this.announcementService.deleteAnnouncement(option).subscribe(
+    const logEvent: ILogEventInput = {
+      context: { env: 'announcement' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.announcementService.deleteAnnouncement(option, logEvent).subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();

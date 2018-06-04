@@ -4,7 +4,7 @@ import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, ILogEventInput } from '@sunbird/telemetry';
 // Modules
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -70,8 +70,12 @@ describe('DetailsPopupComponent', () => {
           resourceService.messages = data.messages;
         }
       );
+      const logEvent: ILogEventInput = {
+        context: { env: 'announcement' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
       component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
-      announcementService.getAnnouncementById(params).subscribe(
+      announcementService.getAnnouncementById(params, logEvent).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
           expect(apiResponse.params.status).toBe('successful');
@@ -105,8 +109,12 @@ describe('DetailsPopupComponent', () => {
             resourceService.messages = data.messages;
           }
         );
+        const logEvent: ILogEventInput = {
+          context: { env: 'announcement' },
+          edata: { type: 'api_call', level: 'INFO', message: '' }
+        };
         component.getDetails('fa355310-0b09-11e8-93d1-2970a259a0ba');
-        announcementService.getAnnouncementById(param).subscribe(
+        announcementService.getAnnouncementById(param, logEvent).subscribe(
           apiResponse => {
           },
           err => {
