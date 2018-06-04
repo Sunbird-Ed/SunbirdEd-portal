@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FlagContentComponent } from '@sunbird/core';
 import { NoteListComponent } from '@sunbird/notes';
+const telemetryEnv = 'library';
 
 const routes: Routes = [
   {
@@ -11,6 +12,9 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
+    data: {
+      telemetry: { env: telemetryEnv }
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
