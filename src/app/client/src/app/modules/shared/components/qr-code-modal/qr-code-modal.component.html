@@ -6,16 +6,16 @@
     </div>
     <div class="ui container stackable two column grid">
       <div class="column center aligned text-container">
-        <h1 class="qr-code-modal-header padding-top-10"> Explore Content on Diksha
+        <h1 class="qr-code-modal-header padding-top-10"> {{resourceService.frmelmnts?.lbl?.exploreContentOn}} {{resourceService.instance}}
           <div class="qr-code-modal-sub-header padding-top-10">
-            Start exploring content by Enter DIAL code
+            {{resourceService.frmelmnts?.lbl?.startExploringContent}}
           </div>
         </h1>
         <div class="ui fluid icon input dial-section-input margin-top-30">
-          <input name="search" #dialCodeVal placeholder="Enter DIAL code here" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
+          <input name="search" #dialCodeVal placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" title="Search" type="text" ng-reflect-name="search" class="ng-untouched ng-pristine ng-valid">
           <i class="search icon"></i>
         </div>
-        <div class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">Submit</div>
+        <div class="ui primary button qr-code-modal-btn" (click)="onSubmit(dialCodeVal.value)">{{resourceService.frmelmnts?.btn?.submit}}</div>
       </div>
       <div class="column right floated right aligned">
         <div class="ui basic segment">
@@ -23,7 +23,7 @@
             <img src="/assets/images/Dialcode.png">
           </div>
           <div class="qr-code-modal-meta">
-            <p>DIAL Code is the 6 digit alphanumeric code found under a QR code in your text book</p>
+            <p>{{resourceService.frmelmnts?.lbl?.dialCodeDescription}}</p>
           </div>
         </div>
       </div>
