@@ -52,6 +52,7 @@ const routes: Routes = [
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
         data: {
+          telemetry: { env: telemetryEnv, pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [

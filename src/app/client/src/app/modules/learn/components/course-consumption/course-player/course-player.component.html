@@ -1,4 +1,4 @@
-<div class="ui stackable grid margin-top-20">
+<div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]= "telemetryCourseEndEvent">
     <div class="one wide column"></div>
     <div class="ten wide column">
             <div *ngIf="!enableContentPlayer && !loader">
