@@ -1,3 +1,4 @@
+import { OrgManagementService } from '@sunbird/public';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
@@ -24,7 +25,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      providers: [ToasterService, TenantService,
+      providers: [ToasterService, TenantService, OrgManagementService,
         UserService, ConfigService, LearnerService,
         PermissionService, ResourceService, CoursesService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
