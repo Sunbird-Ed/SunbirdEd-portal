@@ -2,7 +2,7 @@
     <div class="center aligned twelve column row">
         <div class="one wide column"></div>
         <div class="two wide column">
-            <a routerLink="home">
+            <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}} ">
             </a>

@@ -65,7 +65,7 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-  public _authenticated: boolean;
+  private _authenticated: boolean;
   public anonymousSid: string;
   private _contentChannelFilter: string;
   /**
@@ -102,9 +102,9 @@ export class UserService {
 
   }
   /**
-   * get method to fetch userid.
+   * returns login status.
    */
-  get authentication(): boolean {
+  get loggedIn(): boolean {
     return this._authenticated;
   }
 
