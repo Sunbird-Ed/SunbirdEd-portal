@@ -50,7 +50,7 @@
                   </div>
                 </div>
                 <div class="three wide column filter-button margin-top-10">
-                  <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
+                  <a class="searchfilterbutton ui blue tiny  button" appTelemetryInteract  [telemetryInteractEdata]="applyFilterInteractEdata" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
                   <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
                 </div>
               </form>

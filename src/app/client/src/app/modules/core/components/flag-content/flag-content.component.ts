@@ -6,6 +6,7 @@ import {
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -77,6 +78,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
   * Contains loader message to display
   */
   loaderMessage: ILoaderMessage;
+  flagInteractEdata: IInteractEventEdata;
   /**
 	 * Consructor to create injected service(s) object
 	 *
@@ -184,10 +186,17 @@ export class FlagContentComponent implements OnInit, OnDestroy {
         this.identifier = params.contentId;
         this.getContentData();
       } else {
-        this.identifier = params.collectionId ?  params.collectionId :  params.courseId;
+        this.identifier = params.collectionId ? params.collectionId : params.courseId;
         this.getCollectionHierarchy();
       }
     });
+    if (this.activatedRoute.parent.snapshot.data.telemetry.env === 'library') {
+      this.flagInteractEdata = {
+        id: 'library-flag-content',
+        type: 'click',
+        pageid: 'library-read'
+      };
+    }
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {

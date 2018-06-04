@@ -40,7 +40,7 @@ export class MainMenuComponent implements OnInit {
     this.resourcesInteractEdata = {
       id: 'library',
        type: 'click',
-       pageid: 'library'
+       pageid: 'library-read'
 
     };
     this.resourcesInteractObject = {

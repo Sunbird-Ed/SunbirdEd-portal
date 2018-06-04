@@ -5,6 +5,7 @@ import { FrameworkService, FormService, ConceptPickerService, PermissionService 
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -67,6 +68,7 @@ export class DataDrivenFilterComponent implements OnInit {
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
+  applyFilterInteractEdata: IInteractEventEdata;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -104,6 +106,13 @@ export class DataDrivenFilterComponent implements OnInit {
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
+    if (this.activatedRoute.snapshot.data.telemetry.env === 'library') {
+      this.applyFilterInteractEdata = {
+        id: 'libraryFilter',
+        type: 'click',
+        pageid: 'library-read'
+      };
+    }
   }
 
   getQueryParams() {
