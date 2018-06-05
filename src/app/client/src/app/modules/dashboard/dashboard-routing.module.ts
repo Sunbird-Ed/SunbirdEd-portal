@@ -6,36 +6,34 @@ const routes: Routes = [
   {
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
+      telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
+      { label: 'Course', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
-    path: 'dashboard/course/consumption/:id/:timePeriod', component: CourseConsumptionComponent,
+    path: 'activity/course/consumption/:id/:timePeriod', component: CourseConsumptionComponent,
     data: {
+      telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Course', url: '/learn' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
     path: 'orgDashboard', component: OrganisationComponent,
     data: {
+      telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Profile', url: '/learn' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
   },
   {
-    path: 'dashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
+    path: 'orgDashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent,
     data: {
+      telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
-  },
-  {
-    path: 'dashboard/:courseId', component: CourseProgressComponent,
-    children: [
-      { path: 'dashboard', component: CourseProgressComponent }
-    ]
   }
 ];
 

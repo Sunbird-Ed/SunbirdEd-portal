@@ -10,7 +10,8 @@ import {
 } from './components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
@@ -20,7 +21,9 @@ import { CoreModule } from '@sunbird/core';
     SuiModule,
     FormsModule,
     ReactiveFormsModule,
-    CoreModule
+    CoreModule,
+    TelemetryModule,
+    NgInviewModule
   ],
   declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
     UserUploadComponent, BulkUploadComponent, StatusComponent],

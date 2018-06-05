@@ -72,19 +72,23 @@ export class FrameworkService {
     this.configService = configService;
   }
 
-  public initialize() {
-    /**
-    * Call User service to get user data
-    */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.hashTagId = this.userService.hashTagId;
-          if (this.isApiCall === true) {
-            this.getFramework();
+  public initialize(hashTagId?: string) {
+    if (hashTagId === '' || hashTagId === undefined) {
+      this.userService.userData$.subscribe(
+        (user: IUserData) => {
+          if (user && !user.err) {
+            this.hashTagId = this.userService.hashTagId;
+            if (this.isApiCall === true) {
+              this.getFramework();
+            }
           }
-        }
-      });
+        });
+    } else {
+      this.hashTagId = hashTagId;
+      if (this.isApiCall === true) {
+        this.getFramework();
+      }
+    }
   }
   /**
 * getdefaultFramework   .

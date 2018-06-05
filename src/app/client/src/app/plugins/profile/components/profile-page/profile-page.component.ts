@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MyContributions } from '../../interfaces';
 import * as _ from 'lodash';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -30,10 +33,21 @@ export class ProfilePageComponent implements OnInit {
    * Contains list of contributions
    */
   contributions: Array<MyContributions>;
+  /**
+  * inviewLogs
+  */
+  inviewLogs = [];
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
+  workspaceInteractEdata: IInteractEventEdata;
+  myContributionsInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService, public toasterService: ToasterService,
     public userService: UserService, public configService: ConfigService, public router: Router,
-    public searchService: SearchService, private playerService: PlayerService) { }
+    public searchService: SearchService, private playerService: PlayerService, private activatedRoute: ActivatedRoute) { }
   /**
    * This method is used to fetch user profile details
    */
@@ -46,6 +60,30 @@ export class ProfilePageComponent implements OnInit {
         }
       });
     this.workSpaceRole = this.configService.rolesConfig.headerDropdownRoles.workSpaceRole;
+    let pageId = '';
+    if (this.activatedRoute.snapshot.params.section && this.activatedRoute.snapshot.params.action) {
+      pageId = `profile-${this.activatedRoute.snapshot.params.section}-${this.activatedRoute.snapshot.params.action}`;
+    } else {
+      pageId = 'profile-read';
+    }
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.userService.userid,
+        type: 'user',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: pageId,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url,
+        visits: this.inviewLogs
+      }
+    };
+    this.setInteractEventData();
   }
   /**
    * This method is used to update user actions
@@ -90,5 +128,43 @@ export class ProfilePageComponent implements OnInit {
   }
   onClickOfMyContributions(content) {
     this.playerService.playContent(content);
+  }
+  /**
+  * get inview  Data
+  */
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.identifier,
+          objtype: inview.data.contentType,
+          section: 'contributions',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  setInteractEventData() {
+    this.workspaceInteractEdata = {
+      id: 'profile-workspace-view',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.myContributionsInteractEdata = {
+      id: 'profile-my-contributions-view',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

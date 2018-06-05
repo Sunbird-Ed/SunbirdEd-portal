@@ -8,29 +8,44 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { SharedModule, ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 // Services
-import { OrganisationService, DashboardUtilsService, RendererService,
-  LineChartService, DownloadService } from './../../services';
+import {
+  OrganisationService, DashboardUtilsService, RendererService,
+  LineChartService, DownloadService
+} from './../../services';
 import { OrganisationComponent } from './organization.component';
 import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
 // Test data
 import * as mockData from './organization.component.spec.data';
-const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
 
+const testData = mockData.mockRes;
 describe('OrganisationComponent', () => {
   let component: OrganisationComponent;
   let fixture: ComponentFixture<OrganisationComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]) };
+
+  const fakeActivatedRoute = {
+    'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'org-admin-dashboard', type: 'view',
+          object: { type: 'profile', ver: '1.0' }
+        }
+      }
+    }
+  };
+
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   const creationDataset = 'creation';
   const consumptionDataset = 'consumption';
-  const dashboardBaseUrl = 'dashboard/organization';
+  const dashboardBaseUrl = 'orgDashboard/organization';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule, TelemetryModule],
       providers: [LearnerService,
         LineChartService,
         OrganisationService,
@@ -221,17 +236,17 @@ describe('OrganisationComponent', () => {
   }));
 
   xit('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
-  (router, searchService, userService) => {
-    userService._userProfile = {'organisationIds': ['01229679766115942443']};
-    searchService._searchedOrganisationList = testData.orgDetailsSuccess.result.response;
-    component.datasetType = creationDataset;
-    component.timePeriod = '7d';
-    component.myOrganizations = testData.orgDetailsSuccess.result.response.content;
-    component.identifier = component.myOrganizations[0];
-    component.getMyOrganisations();
-    expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, '7d']);
-    expect(component.showLoader).toBe(false);
-  }));
+    (router, searchService, userService) => {
+      userService._userProfile = { 'organisationIds': ['01229679766115942443'] };
+      searchService._searchedOrganisationList = testData.orgDetailsSuccess.result.response;
+      component.datasetType = creationDataset;
+      component.timePeriod = '7d';
+      component.myOrganizations = testData.orgDetailsSuccess.result.response.content;
+      component.identifier = component.myOrganizations[0];
+      component.getMyOrganisations();
+      expect(router.navigate).toHaveBeenCalledWith([dashboardBaseUrl, component.datasetType, component.identifier, '7d']);
+      expect(component.showLoader).toBe(false);
+    }));
   it('should unsubscribe to userData observable', () => {
     spyOn(component.userDataSubscription, 'unsubscribe').and.callThrough();
     component.ngOnDestroy();

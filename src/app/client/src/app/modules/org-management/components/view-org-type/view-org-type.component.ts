@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * The component helps to display all the organisation types
@@ -14,6 +15,12 @@ import { OrgTypeService } from './../../services';
   styleUrls: ['./view-org-type.component.css']
 })
 export class ViewOrgTypeComponent implements OnInit {
+  public addOrganizationType: IInteractEventEdata;
+  public updateOrganizationType: IInteractEventEdata;
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -106,6 +113,7 @@ export class ViewOrgTypeComponent implements OnInit {
 	 */
   ngOnInit() {
     this.populateOrgType();
+    this.setInteractEventData();
 
     // Update event
     this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
@@ -115,6 +123,31 @@ export class ViewOrgTypeComponent implements OnInit {
         }
       });
     });
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: 'orgType',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+  }
+
+  setInteractEventData() {
+    this.addOrganizationType = {
+      id: 'add-organization-type',
+      type: 'click',
+      pageid: 'view-organization-type'
+    };
+    this.updateOrganizationType = {
+      id: 'update-organization-type',
+      type: 'click',
+      pageid: 'view-organization-type'
+    };
   }
 }
 

@@ -1,4 +1,7 @@
 {
+  "landingPage": {
+    "showExploreButton": true
+  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -216,7 +219,8 @@
       "draft",
       "uploaded",
       "published",
-      "limited/publish"
+      "limited/publish",
+      "allcontent"
     ],
     "Draft": {
       "constantData": {
@@ -229,9 +233,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"draftContentId","type":"click","pageid":"DraftContent"},
+        "telemetryObjectType":"draft"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Published": {
@@ -245,9 +251,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"published","type":"click","pageid":"published"},
+        "telemetryObjectType":"published"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Uploaded": {
@@ -261,9 +269,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"uploadedContent","type":"click","pageid":"UploadContent"},
+        "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Flagged": {
@@ -273,9 +283,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"flagged","type":"click","pageid":"Flagged"},
+        "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "ReviewSubmission": {
@@ -285,9 +297,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"reviewSubmissionId","type":"click","pageid":"ReviewSubmission"},
+        "telemetryObjectType":"ReviewSubmission"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "LimitedPublishing": {
@@ -306,12 +320,13 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"limitedPublish","type":"click","pageid":"LimitedPublish"},
+        "telemetryObjectType":"limitedPublish"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
-
   },
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
@@ -435,13 +450,25 @@
     "inPageredirectUrl": "/workspace/content/upForReview/1",
     "searchPageredirectUrl": "/search/Library/1"
   },
+   "allmycontent": {
+    "filterType": "allmycontent",
+    "inPageredirectUrl": "workspace/content/allcontent/1",
+    "searchPageredirectUrl": "workspace/content/allcontent/1"
+   }, 
+  "explore": {
+    "filterType": "explore",
+    "inPageredirectUrl": "/explore",
+    "searchPageredirectUrl": "/explore/1"
+  },
   "formApiTypes": {
     "textbook": "textbook",
     "course": "course",
     "collection": "collection",
     "studymaterial": "resource",
     "lessonplan": "lessonplan",
-    "library": "library"
+    "library": "library",
+    "allmycontent":"allmycontent",
+    "explore": "explore"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

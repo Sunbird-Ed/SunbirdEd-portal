@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { UserService } from '@sunbird/core';
 
 /**
  * This component helps to display the success/failure response given by the api based on the process id entered
@@ -57,6 +59,12 @@ export class StatusComponent implements OnInit, OnDestroy {
 */
   redirectUrl: string;
   /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  checkStatusInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  /**
 * Constructor to create injected service(s) object
 *
 * Default method of DetailsComponent class
@@ -64,7 +72,7 @@ export class StatusComponent implements OnInit, OnDestroy {
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
   constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder,
-    toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute) {
+    toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -85,6 +93,18 @@ export class StatusComponent implements OnInit, OnDestroy {
     this.statusForm = this.sbFormBuilder.group({
       processId: ['', null]
     });
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulk-upload-check-status',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
+    this.setInteractEventData();
   }
   /**
  * This method helps to redirect to the parent component
@@ -119,5 +139,17 @@ export class StatusComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+  }
+  setInteractEventData() {
+    this.checkStatusInteractEdata = {
+      id: 'upload-status',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

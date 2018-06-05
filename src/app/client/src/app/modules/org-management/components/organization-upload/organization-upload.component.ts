@@ -3,6 +3,8 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService } from '
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgManagementService } from '../../services';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { UserService } from '@sunbird/core';
 
 /**
  * This component helps to upload bulk organizations data (csv file)
@@ -57,8 +59,15 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
    * To show toaster(error, success etc) after any API calls
    */
   private toasterService: ToasterService;
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  orgUploadInteractEdata: IInteractEventEdata;
+  downloadSampleOrgCSVInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
-    config: ConfigService, resourceService: ResourceService, private router: Router) {
+    config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router) {
     this.activatedRoute = activatedRoute;
     this.orgManagementService = orgManagementService;
     this.resourceService = resourceService;
@@ -99,6 +108,18 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
         ]
       }
     ];
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulk-upload-organization-upload',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
+    this.setInteractEventData();
   }
   /**
  * This method helps to redirect to the parent component
@@ -154,5 +175,22 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+  }
+  setInteractEventData() {
+    this.orgUploadInteractEdata = {
+      id: 'upload-org',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.downloadSampleOrgCSVInteractEdata = {
+      id: 'download-sample-org-csv',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

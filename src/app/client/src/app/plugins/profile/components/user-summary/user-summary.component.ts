@@ -3,7 +3,7 @@ import { ProfileService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
-
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-summary',
   templateUrl: './user-summary.component.html',
@@ -34,6 +34,10 @@ export class UserSummaryComponent implements OnInit {
    * Contains array of actions
    */
   allowedAction = ['edit'];
+  editSummuryIntractEdata: IInteractEventEdata;
+  saveSummuryIntractEdata: IInteractEventEdata;
+  editCloseSummuryIntractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public profileService: ProfileService, public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute, private router: Router) { }
@@ -61,6 +65,7 @@ export class UserSummaryComponent implements OnInit {
         this.action = 'view';
       }
     });
+    this.setInteractEventData();
   }
   /**
    * This method is used to edit user summary details
@@ -79,5 +84,26 @@ export class UserSummaryComponent implements OnInit {
         // toaster err
       });
   }
-
+  setInteractEventData() {
+    this.editSummuryIntractEdata = {
+      id: 'profile-update-summary',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.saveSummuryIntractEdata = {
+      id: 'profile-save-summary',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editCloseSummuryIntractEdata = {
+      id: 'profile-close-edit-summary',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject =  {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
+  }
 }

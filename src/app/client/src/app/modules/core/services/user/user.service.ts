@@ -65,7 +65,7 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-  public _authenticated: boolean;
+  private _authenticated: boolean;
   public anonymousSid: string;
   /**
    * Reference of content service.
@@ -95,15 +95,15 @@ export class UserService {
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._env =  (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
+      this._env = (<HTMLInputElement>document.getElementById('ekstepEnv')).value;
     } catch (error) {
     }
 
   }
   /**
-   * get method to fetch userid.
+   * returns login status.
    */
-  get authentication(): boolean {
+  get loggedIn(): boolean {
     return this._authenticated;
   }
 
@@ -283,4 +283,16 @@ export class UserService {
   get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);
   }
+
+  /**
+   * method to log session start
+   */
+  public startSession(): void {
+    const fingerPrint2 = new Fingerprint2();
+    fingerPrint2.get((result, components) => {
+      const url = `/v1/user/session/start/${result}`;
+      this.http.get(url).subscribe();
+    });
+  }
 }
+

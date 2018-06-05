@@ -3,6 +3,7 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, WindowScrollSe
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ProfileService } from '../../../services';
+import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-edit-user-additional-info',
@@ -50,7 +51,13 @@ export class EditUserAdditionalInfoComponent implements OnInit {
   * Boolean value to disable/enable phone and email input fields
   */
   isEdit: boolean;
-
+  phoneNumberVisibilityInteractEdata: IInteractEventEdata;
+  emailVisibilityInteractEdata: IInteractEventEdata;
+  genderVisibilityInteractEdata: IInteractEventEdata;
+  locationVisibilityInteractEdata: IInteractEventEdata;
+  dobVisibilityInteractEdata: IInteractEventEdata;
+  webPagesVisibilityInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public userService: UserService, public configService: ConfigService,
     public profileService: ProfileService, public windowScrollService: WindowScrollService) {
     this.subjects = this.configService.dropDownConfig.COMMON.subjects;
@@ -93,5 +100,43 @@ export class EditUserAdditionalInfoComponent implements OnInit {
         blog: new FormControl(this.webPages.blog)
       });
     }
+    this.setInteractEventData();
+  }
+  setInteractEventData() {
+    this.phoneNumberVisibilityInteractEdata = {
+      id: 'phn-number-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.emailVisibilityInteractEdata = {
+      id: 'email-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.genderVisibilityInteractEdata = {
+      id: 'gender-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.dobVisibilityInteractEdata = {
+      id: 'birthdate-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.locationVisibilityInteractEdata = {
+      id: 'current-location-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.webPagesVisibilityInteractEdata = {
+      id: 'social-media-link-lock',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    };
   }
 }

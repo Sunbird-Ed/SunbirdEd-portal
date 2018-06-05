@@ -4,6 +4,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { UserSearchService } from './../../services';
 import { BadgesService, BreadcrumbsService, LearnerService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The delete component deletes the announcement
@@ -44,6 +45,7 @@ export class UserProfileComponent implements OnInit {
   userDetails: any;
 
   showLoader = true;
+  showError = false;
 
   /**
    * To make get announcement by id
@@ -101,6 +103,10 @@ export class UserProfileComponent implements OnInit {
    */
   badgeLimit: number;
   /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  /**
   * Constructor to create injected service(s) object
   *
   * Default method of DeleteComponent class
@@ -116,6 +122,7 @@ export class UserProfileComponent implements OnInit {
   * @param {UserService} userService Reference of contentService
   */
   constructor(userSearchService: UserSearchService,
+    public route: Router,
     badgesService: BadgesService,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
@@ -157,6 +164,7 @@ export class UserProfileComponent implements OnInit {
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.showLoader = false;
+        this.showError = true;
       }
     );
   }
@@ -252,6 +260,22 @@ export class UserProfileComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
           this.userId = params.userId;
           this.populateUserProfile();
+          this.telemetryImpression = {
+            context: {
+              env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            object: {
+              id: this.userId,
+              type: 'user',
+              ver: '1.0'
+            },
+            edata: {
+              type: this.activatedRoute.snapshot.data.telemetry.type,
+              pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+              uri: this.route.url,
+              subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+            }
+          };
         });
         this.queryParams = this.activatedRoute.snapshot.queryParams;
       }

@@ -1,4 +1,4 @@
-<div id="content-player" class="ui stackable grid">
+<div [appTelemetryImpression]="telemetryImpression" id="content-player" class="ui stackable grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class='margin-top--5 videosegment ui segment'>
@@ -11,6 +11,11 @@
                   <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
                     {{contentData.name}}
                   </span>
+                </div>
+                <div class="two wide column">
+                    <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+                        <i class="ui remove icon"></i>
+                    </h5>
                 </div>
               </div>
             </div>

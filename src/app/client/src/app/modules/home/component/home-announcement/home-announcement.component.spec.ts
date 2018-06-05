@@ -6,7 +6,9 @@ import { Observable } from 'rxjs/Observable';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { HomeAnnouncementComponent } from './home-announcement.component';
 import { AnnouncementService } from '@sunbird/core';
+import { NgInviewModule } from 'angular-inport';
 import * as mockData from './home-announcement.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
 const testData = mockData.mockRes;
 describe('HomeAnnouncementComponent', () => {
   let component: HomeAnnouncementComponent;
@@ -17,7 +19,8 @@ describe('HomeAnnouncementComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule,
+      NgInviewModule, TelemetryModule],
       declarations: [HomeAnnouncementComponent],
       providers: [ResourceService, AnnouncementService, ConfigService,
         { provide: Router, useClass: RouterStub },
@@ -48,5 +51,12 @@ describe('HomeAnnouncementComponent', () => {
       component.populateHomeInboxData(2, 1);
       fixture.detectChanges();
       expect(component.showLoader).toBe(false);
+    }));
+   it('should emit the event', inject([AnnouncementService],
+    (announcementService: AnnouncementService) => {
+      spyOn(component.inviewEvent, 'emit');
+      component.inview(testData.inviewData);
+      expect(component.inviewEvent.emit).toHaveBeenCalled();
+      expect(component.inviewEvent.emit).toHaveBeenCalledWith(testData.inviewData);
     }));
 });

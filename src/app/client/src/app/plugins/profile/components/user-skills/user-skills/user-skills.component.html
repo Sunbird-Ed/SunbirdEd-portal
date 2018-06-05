@@ -3,9 +3,9 @@
         <div class="header padding-none">
             <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.skillTags}} </span>
             <a class="add-edit-btn-profile">
-                <app-profile-visibility field="skills"></app-profile-visibility>
+                <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="lockSkillsInteractEdata" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addSkillsInteractEdata" field="skills"></app-profile-visibility>
             </a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addSkillsInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view'" routerLink='/profile/skills/add'>{{resourceService.frmelmnts.btn.add}}</a>
         </div>
         <div class="profileitems profile-des ui relaxed aligned list">
             <div class="item " *ngFor="let skill of userProfile.skills | slice:0:limit">
@@ -22,13 +22,13 @@
     </div>
     <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userProfile.skills.length > defaultLimit">
         <div class="active item expand-or-minimize-btn-pad">
-            <a (click)="toggle(true)" *ngIf="viewMore">
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="viewMoreSkillsInteractEdata" (click)="toggle(true)" *ngIf="viewMore">
                 <span class="cursor-pointer">
                     {{resourceService?.frmelmnts?.btn?.viewmore}}
                     <i class="chevron down icon"></i>
                 </span>
             </a>
-            <a (click)="toggle(false)" *ngIf="!viewMore">
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="viewLessSkillsInteractEdata" (click)="toggle(false)" *ngIf="!viewMore">
                 <span class="cursor-pointer">
                     {{resourceService?.frmelmnts?.btn?.viewless}}
                     <i class="chevron up icon"></i>

@@ -1,4 +1,4 @@
-import { PageApiService, CoursesService, ICourses, ISort , PlayerService } from '@sunbird/core';
+import { PageApiService, CoursesService, ICourses, ISort, PlayerService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
@@ -7,6 +7,8 @@ import {
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -18,6 +20,17 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./learn-page.component.css']
 })
 export class LearnPageComponent implements OnInit {
+  /**
+  * inviewLogs
+  */
+  inviewLogs = [];
+  /**
+   * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
+
   /**
    * To show toaster(error, success etc) after any API calls
    */
@@ -100,8 +113,10 @@ export class LearnPageComponent implements OnInit {
             this.enrolledCourses = data.enrolledCourses;
             const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
             const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
-            const dynamicFields = { 'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
-             'progress': this.configService.appConfig.Course.enrolledCourses.progress };
+            const dynamicFields = {
+              'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
+              'progress': this.configService.appConfig.Course.enrolledCourses.progress
+            };
             const courses = this.utilService.getDataForCard(data.enrolledCourses,
               constantData, dynamicFields, metaData);
             this.caraouselData.unshift({
@@ -138,12 +153,12 @@ export class LearnPageComponent implements OnInit {
         let noResultCounter = 0;
         if (apiResponse && apiResponse.result.response.sections.length > 0) {
           this.showLoader = false;
-         const sections = this.processActionObject(apiResponse.result.response.sections);
-         this.caraouselData = this.caraouselData.concat(sections);
-         if (this.caraouselData.length > 0) {
+          const sections = this.processActionObject(apiResponse.result.response.sections);
+          this.caraouselData = this.caraouselData.concat(sections);
+          if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {
               if (this.caraouselData[key].contents === null || this.caraouselData[key].contents === undefined
-                || (this.caraouselData[key].name &&  this.caraouselData[key].name === 'My Courses')) {
+                || (this.caraouselData[key].name && this.caraouselData[key].name === 'My Courses')) {
                 noResultCounter++;
               }
             });
@@ -172,36 +187,36 @@ export class LearnPageComponent implements OnInit {
    * This method process the action object.
    */
   processActionObject(sections) {
-  const enrolledCoursesId = [];
-  _.forEach(this.enrolledCourses, (value, index) => {
-   enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
-  });
-  _.forEach(sections, (value, index) => {
-     _.forEach(sections[index].contents, (value2, index2) => {
-       if (this.enrolledCourses && this.enrolledCourses.length > 0) {
-        if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1 ) {
-          const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
-            const metaData =  { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
-                   const dynamicFields = {};
-                   const enrolledCourses = _.find(this.enrolledCourses, ['courseId', sections[index].contents[index2].identifier]);
-                   sections[index].contents[index2] = this.utilService.processContent(enrolledCourses,
-                    constantData, dynamicFields, metaData);
+    const enrolledCoursesId = [];
+    _.forEach(this.enrolledCourses, (value, index) => {
+      enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
+    });
+    _.forEach(sections, (value, index) => {
+      _.forEach(sections[index].contents, (value2, index2) => {
+        if (this.enrolledCourses && this.enrolledCourses.length > 0) {
+          if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1) {
+            const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+            const dynamicFields = {};
+            const enrolledCourses = _.find(this.enrolledCourses, ['courseId', sections[index].contents[index2].identifier]);
+            sections[index].contents[index2] = this.utilService.processContent(enrolledCourses,
+              constantData, dynamicFields, metaData);
+          } else {
+            const constantData = this.configService.appConfig.Course.otherCourse.constantData;
+            const metaData = this.configService.appConfig.Course.otherCourse.metaData;
+            const dynamicFields = {};
+            sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+              constantData, dynamicFields, metaData);
+          }
         } else {
           const constantData = this.configService.appConfig.Course.otherCourse.constantData;
-            const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-                   const dynamicFields = {};
-                   sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
-                     constantData, dynamicFields, metaData);
-        }
-       } else {
-        const constantData = this.configService.appConfig.Course.otherCourse.constantData;
           const metaData = this.configService.appConfig.Course.otherCourse.metaData;
-                 const dynamicFields = {};
-                 sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
-                   constantData, dynamicFields, metaData);
-      }
-     });
-  });
+          const dynamicFields = {};
+          sections[index].contents[index2] = this.utilService.processContent(sections[index].contents[index2],
+            constantData, dynamicFields, metaData);
+        }
+      });
+    });
     return sections;
   }
   /**
@@ -211,7 +226,50 @@ export class LearnPageComponent implements OnInit {
     this.filterType = this.configService.appConfig.course.filterType;
     this.redirectUrl = this.configService.appConfig.course.inPageredirectUrl;
     this.getQueryParams();
-}
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'course-page'
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'course-page'
+    };
+  }
+  prepareVisits(event) {
+    _.forEach(event, (inview, index) => {
+      if (inview.metaData.courseId) {
+        this.inviewLogs.push({
+          objid: inview.metaData.courseId,
+          objtype: 'course',
+          index: index,
+          section: inview.section,
+        });
+      } else if (inview.metaData.identifier) {
+        this.inviewLogs.push({
+          objid: inview.metaData.identifier,
+          objtype: 'course',
+          index: index,
+          section: inview.section,
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
 
   /**
    *  to get query parameters
@@ -237,16 +295,16 @@ export class LearnPageComponent implements OnInit {
         });
         this.caraouselData = [];
         if (this.queryParams.sort_by && this.queryParams.sortType) {
-                 this.queryParams.sortType = this.queryParams.sortType.toString();
-              }
+          this.queryParams.sortType = this.queryParams.sortType.toString();
+        }
         this.populateEnrolledCourse();
       });
   }
   playContent(event) {
-       if (event.data.metaData.batchId) {
-          event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-          event.data.metaData.contentType = 'Course';
-        }
-        this.playerService.playContent(event.data.metaData);
-      }
+    if (event.data.metaData.batchId) {
+      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+      event.data.metaData.contentType = 'Course';
+    }
+    this.playerService.playContent(event.data.metaData);
+  }
 }

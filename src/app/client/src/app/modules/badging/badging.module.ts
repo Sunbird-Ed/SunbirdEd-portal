@@ -5,11 +5,13 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { ContentBadgeComponent } from './components';
 import { ContentBadgeService } from './services';
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
     imports: [
         CommonModule,
         SuiModule,
-        SharedModule
+        SharedModule,
+        TelemetryModule
     ],
     declarations: [ContentBadgeComponent],
     exports: [ContentBadgeComponent],

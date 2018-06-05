@@ -6,7 +6,7 @@ import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage,
-  ContentUtilsServiceService
+  ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -138,6 +138,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   /**
+	 * telemetryShareData
+	*/
+  telemetryShareData: Array<ITelemetryShare>;
+  /**
 	 * inviewLogs
 	*/
   inviewLogs = [];
@@ -243,6 +247,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       this.deleteConfirmModal(param.data.metaData.identifier);
     } else if (param.action.eventName === 'share') {
       this.shareLink = this.contentUtilsServiceService.getUnlistedShareUrl(param.data.metaData);
+      this.setTelemetryShareData(param.data.metaData);
       this.sharelinkModal = true;
     } else {
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);
@@ -310,5 +315,12 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion : 1
+    }];
   }
 }

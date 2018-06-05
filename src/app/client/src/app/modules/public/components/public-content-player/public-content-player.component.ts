@@ -3,11 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-public-content-player',
@@ -15,6 +17,10 @@ import { PublicPlayerService } from './../../services';
   styleUrls: ['./public-content-player.component.css']
 })
 export class PublicContentPlayerComponent implements OnInit {
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * content id
    */
@@ -38,20 +44,58 @@ export class PublicContentPlayerComponent implements OnInit {
   /**
    * contain contentData
    */
+  selectedLanguage: string;
+  queryParams: any;
   contentData: ContentData;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
-    public windowScrollService: WindowScrollService, public playerService: PublicPlayerService) {
+    public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
+    public navigationHelperService: NavigationHelperService, public router: Router
+  ) {
   }
   /**
    *
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.contentId = params.contentId;
-      this.getContent();
-    });
+    Observable
+      .combineLatest(
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams,
+      (params: any, queryParams: any) => {
+        return {
+          params: params,
+          queryParams: queryParams
+        };
+      })
+      .subscribe(bothParams => {
+        this.contentId = bothParams.params.contentId;
+        this.setTelemetryData();
+        this.getContent();
+        this.queryParams = { ...bothParams.queryParams };
+        if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
+          this.selectedLanguage = this.queryParams['language'];
+          this.resourceService.getResource(this.selectedLanguage);
+        }
+      });
+  }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.contentId,
+        type: 'content',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
   /**
    * used to fetch content details and player config. On success launches player.
@@ -80,5 +124,12 @@ export class PublicContentPlayerComponent implements OnInit {
   tryAgain() {
     this.showError = false;
     this.getContent();
+  }
+  /**
+   * closes conent player and revert to previous url
+   * @memberof ContentPlayerComponent
+   */
+  close() {
+    this.navigationHelperService.navigateToResource('/explore/1');
   }
 }

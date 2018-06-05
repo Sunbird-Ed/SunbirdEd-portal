@@ -85,7 +85,7 @@ export class EditUserAddressComponent implements OnInit {
         addresstype = null;
       }
       this.addressForm = new FormGroup({
-        addType: new FormControl(addresstype),
+        addType: new FormControl(addresstype, [Validators.required]),
         addressLine1: new FormControl(null, [Validators.required]),
         addressLine2: new FormControl(null),
         city: new FormControl(null, [Validators.required]),
