@@ -242,10 +242,6 @@ export class ExploreContentComponent implements OnInit {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
-                if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
-                    this.selectedLanguage = this.queryParams['language'];
-                    this.resourceService.getResource(this.selectedLanguage);
-                }
 
                 if (_.isEmpty(this.queryParams)) {
                     this.filters = {
