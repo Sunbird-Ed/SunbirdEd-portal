@@ -91,14 +91,16 @@ export class AppComponent implements OnInit {
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.userService.userData$.subscribe((user: IUserData) => {
+      const userSub = this.userService.userData$.subscribe((user: IUserData) => {
         if (user && !user.err) {
+          userSub.unsubscribe();
           this.initApp = true;
           this.userProfile = user.userProfile;
           const slug = _.get(user, 'userProfile.rootOrg.slug');
           this.initTelemetryService();
           this.initTenantService(slug);
         } else if (user && user.err) {
+          userSub.unsubscribe();
           this.initApp = true;
           this.initTenantService();
         }
