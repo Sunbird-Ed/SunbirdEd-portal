@@ -17,7 +17,13 @@ const routes: Routes = [
     },
     component: MainHomeComponent,
     children: [
-      { path: 'view/:announcementId', component: DetailsPopupComponent }
+      { path: 'view/:announcementId', component: DetailsPopupComponent,
+       data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'announcement-read', type: 'view', object: { type: objectType, ver: '1.0' }
+          }
+        }
+      }
     ]
   }
 ];

@@ -35,6 +35,11 @@ describe('CoursePlayerComponent', () => {
     }
   };
   class ActivatedRouteStub {
+    snapshot = {
+      data: {
+        telemetry:  { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      }
+    };
     paramsMock = {courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
     queryParamsMock = {contentId: 'do_112270494168555520130'};
     queryParams =  Observable.of(this.queryParamsMock);

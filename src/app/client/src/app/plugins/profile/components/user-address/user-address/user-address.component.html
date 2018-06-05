@@ -3,11 +3,11 @@
         <div class="header">
             <span class="segment-heading">{{resourceService?.frmelmnts?.lbl?.address}} </span>
             <a class="add-edit-btn-profile" *ngIf='privateProfileFields'>
-                <app-profile-visibility field="address"></app-profile-visibility>
+                <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="lockAddressInteractEdata" field="address"></app-profile-visibility>
             </a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.address.length > 0" routerLink='/profile/address/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.address.length <= 1" routerLink='/profile/address/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
-            <a class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editAddressInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.address.length > 0" routerLink='/profile/address/edit'>{{resourceService?.frmelmnts?.btn?.edit}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="addAddressInteractEdata" class="add-edit-btn-profile" *ngIf="action === 'view' && userProfile.address.length <= 1" routerLink='/profile/address/add'>{{resourceService?.frmelmnts?.btn?.add}}</a>
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeAddressInteractEdata" class="add-edit-btn-profile" *ngIf="action !== 'view'" routerLink='/profile'>{{resourceService?.frmelmnts?.btn?.close}}</a>
         </div>
         <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let address of userProfile.address">
@@ -24,7 +24,7 @@
                 </div>
                 <div class="right-floated">
                     <div class="metadata">
-                        <a (click)="address.isDeleted=true;deleteAddress(address)">
+                        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="deleteAddressInteractEdata" (click)="address.isDeleted=true;deleteAddress(address)">
                             <i class="trash outline icon trashIcon-fontSize"></i>
                         </a>
                     </div>
@@ -41,14 +41,14 @@
                     <i class="close icon "></i>
                     <p>{{resourceService?.frmelmnts?.instn?.t0064}}</p>
                 </div>
-                <button [disabled]="showError || showAddressError" *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveEditAddressInteractEdata" [disabled]="showError || showAddressError" *ngIf="action === 'edit'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
                     (click)="editAddress()">{{resourceService?.frmelmnts?.btn?.save}}</button>
             </div>
             <div class="add-address-form" *ngIf="action === 'add'">
                 <div class="ui">
                     <app-edit-user-address #add></app-edit-user-address>
                 </div>
-                <button *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="saveAddAddressInteractEdata" *ngIf="action === 'add'" class="ui primary button margin-top-15" [ngClass]="{ 'disabled' : disableSave}"
                     (click)="addAddress()">{{resourceService?.frmelmnts?.btn?.save}}</button>
             </div>
         </div>

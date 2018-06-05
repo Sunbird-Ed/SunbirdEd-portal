@@ -22,14 +22,14 @@
         <div class="ui input right icon">
           <input [attr.disabled]="isEdit" type="text" name="phone" placeholder="{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}"
             formControlName="phone">
-          <app-profile-visibility field="phone"></app-profile-visibility>
+          <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="phoneNumberVisibilityInteractEdata" field="phone"></app-profile-visibility>
         </div>
       </div>
       <div class=" required  field" ng-class="{'disabled':profileCtrl.user.email.length?true:false }">
         <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
         <div class="ui input right icon">
           <input [attr.disabled]="isEdit" type="email" name="email" formControlName="email">
-          <app-profile-visibility field="email"></app-profile-visibility>
+          <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="emailVisibilityInteractEdata" field="email"></app-profile-visibility>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
           <sui-select name="gender" class="selection profile-dropdown-gender-lock" formControlName="gender">
             <sui-select-option *ngFor="let option of gender" [value]="option">{{resourceService?.frmelmnts?.drpdn?.female}}</sui-select-option>
           </sui-select>
-          <app-profile-visibility field="gender"></app-profile-visibility>
+          <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="genderVisibilityInteractEdata" field="gender"></app-profile-visibility>
         </div>
       </div>
       <div class="field">
@@ -54,7 +54,7 @@
           <i class="calendar icon"></i>
           <input suiDatepicker [pickerMaxDate]="initDate" readonly formControlName="dob" [pickerMode]="'date'">
           <div ng-if="dobVis">
-            <app-profile-visibility field="dob"></app-profile-visibility>
+            <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="dobVisibilityInteractEdata" field="dob"></app-profile-visibility>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
       <label>{{resourceService?.frmelmnts?.lbl?.currentlocation}}</label>
       <div class="ui input right icon">
         <input type="text" name="location" formControlName="location">
-        <app-profile-visibility field="location"></app-profile-visibility>
+        <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="locationVisibilityInteractEdata" field="location"></app-profile-visibility>
       </div>
     </div>
   </div>
@@ -98,7 +98,7 @@
   </div>
   <div class="header announcementCard-header margin-top-30 margin-bottom-10">
     <span class="header cardsHeading margin-left-10">{{resourceService?.frmelmnts?.lbl?.socialmedialinks}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
-    <app-profile-visibility update="'true'" field="webPages"></app-profile-visibility>
+    <app-profile-visibility appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="webPagesVisibilityInteractEdata" update="'true'" field="webPages"></app-profile-visibility>
   </div>
   <div class="two fields">
     <div class=" field">

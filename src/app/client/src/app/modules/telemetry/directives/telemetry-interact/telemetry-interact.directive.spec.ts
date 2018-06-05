@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 const env = 'profile';
 class ActivatedRouteStub {
   snapshot = {
+    root: { firstChild : {data: { telemetry: { env: env} } } },
     data : {
        telemetry: { env: env }
     }

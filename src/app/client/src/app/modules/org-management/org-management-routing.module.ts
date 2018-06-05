@@ -5,14 +5,34 @@ import {
   UserUploadComponent, BulkUploadComponent, StatusComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+const telemetryEnv = 'org-management';
 
 const routes: Routes = [
   {
     path: 'orgType', component: ViewOrgTypeComponent, canActivate: [AuthGuard],
-    data: { roles : 'orgType', breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Organization Type', url: '' }] },
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'view-organization-type', type: 'view', subtype: 'paginate'
+      },
+      roles: 'orgType', breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Organization Type', url: '' }]
+    },
     children: [
-      { path: 'create', component: CreateOrgTypeComponent },
-      { path: 'update/:orgId', component: CreateOrgTypeComponent },
+      {
+        path: 'create', component: CreateOrgTypeComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'create-organization-type', type: 'create', subtype: 'paginate'
+          }
+        }
+      },
+      {
+        path: 'update/:orgId', component: CreateOrgTypeComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'update-organization-type', type: 'update', subtype: 'paginate'
+          }
+        }
+      },
       { path: '**', redirectTo: '' }
     ]
   }
