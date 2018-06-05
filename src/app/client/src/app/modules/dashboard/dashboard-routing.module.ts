@@ -8,7 +8,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
+      { label: 'Course', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Course', url: '/learn' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Profile', url: '/learn' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
   },
   {
