@@ -6,7 +6,7 @@ import { EditUserAdditionalInfoComponent } from '../../user-additional-info/edit
 import { ProfileService } from './../../../services';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, ILogEventInput } from '@sunbird/telemetry';
 /**
 * Displays basic information of the user
 */
@@ -114,7 +114,11 @@ export class UserAdditionalInfoComponent implements OnInit {
       const req = {
         basicInfo: addInfo
       };
-      this.profileService.updateProfile(req.basicInfo).subscribe(res => {
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateProfile(req.basicInfo, logEvent).subscribe(res => {
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0022);
       },

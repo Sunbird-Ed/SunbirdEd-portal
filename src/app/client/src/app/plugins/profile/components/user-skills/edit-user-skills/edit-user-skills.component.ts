@@ -5,7 +5,7 @@ import { UserService } from '@sunbird/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProfileService } from '../../../services';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, ILogEventInput } from '@sunbird/telemetry';
 declare var jQuery: any;
 @Component({
   selector: 'app-edit-user-skills',
@@ -37,7 +37,11 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
    */
   ngOnInit() {
     this.windowScrollService.smoothScroll('skills');
-    this.profileService.getSkills().subscribe((data) => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.profileService.getSkills(logEvent).subscribe((data) => {
       if (data) {
         this.profileData = data.result;
       }
@@ -56,8 +60,12 @@ export class EditUserSkillsComponent implements OnInit, AfterViewInit {
       skillName: addedSkill,
       endorsedUserId: this.userService.userid
     };
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
     if (addedSkill !== undefined) {
-      this.profileService.add(req).subscribe(res => {
+      this.profileService.add(req, logEvent).subscribe(res => {
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0038);
       },

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
 import { ProfileService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-profile-visibility',
   templateUrl: './profile-visibility.component.html',
@@ -54,7 +55,11 @@ export class ProfileVisibilityComponent implements OnInit {
     }
     this.loader = true;
     req[value] = [this.field];
-    this.profileService.updateProfileFieldVisibility(req).subscribe(res => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.profileService.updateProfileFieldVisibility(req, logEvent).subscribe(res => {
       this.loader = false;
       this.visibility = value;
       this.toasterService.success(this.resourceService.messages.smsg.m0040);

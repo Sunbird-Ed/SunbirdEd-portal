@@ -8,7 +8,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EditUserEducationComponent } from '../../user-education/edit-user-education/edit-user-education.component';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-education',
   templateUrl: './user-education.component.html',
@@ -105,7 +105,11 @@ export class UserEducationComponent implements OnInit {
       const req = {
         education: editedEdu
       };
-      this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateProfile(req, logEvent).subscribe((res: ServerResponse) => {
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0020);
       },
@@ -137,7 +141,11 @@ export class UserEducationComponent implements OnInit {
       const req = {
         education: [addEdu]
       };
-      this.profileService.updateProfile(req).subscribe((res: ServerResponse) => {
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateProfile(req, logEvent).subscribe((res: ServerResponse) => {
         this.action = 'view';
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0024);
@@ -156,7 +164,11 @@ export class UserEducationComponent implements OnInit {
     const request = {
       education: [deletedEdu]
     };
-    this.profileService.updateProfile(request).subscribe(res => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.profileService.updateProfile(request, logEvent).subscribe(res => {
       this.toasterService.success(this.resourceService.messages.smsg.m0014);
     },
       err => {

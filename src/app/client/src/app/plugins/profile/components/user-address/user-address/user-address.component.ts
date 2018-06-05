@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EditUserAddressComponent } from '../edit-user-address/edit-user-address.component';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-address',
   templateUrl: './user-address.component.html',
@@ -122,7 +123,11 @@ export class UserAddressComponent implements OnInit {
       const req = {
         address: editedAddress
       };
-      this.profileService.updateProfile(req).subscribe(res => {
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateProfile(req, logEvent).subscribe(res => {
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0023);
       },
@@ -148,7 +153,11 @@ export class UserAddressComponent implements OnInit {
       const req = {
         address: [addAddress]
       };
-      this.profileService.updateProfile(req).subscribe(res => {
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateProfile(req, logEvent).subscribe(res => {
         this.action = 'view';
         this.router.navigate(['/profile']);
         this.toasterService.success(this.resourceService.messages.smsg.m0026);
@@ -167,7 +176,11 @@ export class UserAddressComponent implements OnInit {
     const request = {
       address: [deletedAddress]
     };
-    this.profileService.updateProfile(request).subscribe(res => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.profileService.updateProfile(request, logEvent).subscribe(res => {
       this.toasterService.success(this.resourceService.messages.smsg.m0016);
     },
       err => {

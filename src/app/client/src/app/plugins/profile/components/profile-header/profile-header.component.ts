@@ -2,6 +2,7 @@ import { ProfileService } from './../../services/';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-profile-header',
@@ -54,7 +55,11 @@ export class ProfileHeaderComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', image[0]);
       formData.append('container', 'user/' + this.userService.userid);
-      this.profileService.updateAvatar(formData).subscribe(
+      const logEvent: ILogEventInput = {
+        context: { env: 'profile' },
+        edata: { type: 'api_call', level: 'INFO', message: '' }
+      };
+      this.profileService.updateAvatar(formData, logEvent).subscribe(
         results => {
           this.toasterService.success(this.resourceService.messages.smsg.m0018);
         },

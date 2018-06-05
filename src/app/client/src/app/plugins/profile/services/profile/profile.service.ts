@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserService, PermissionService, LearnerService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
+import { ILogEventInput } from '@sunbird/telemetry';
 @Injectable()
 export class ProfileService {
   constructor(private learnerService: LearnerService,
@@ -8,24 +9,24 @@ export class ProfileService {
   /**
    * This method is used to update profile picture of the user
    */
-  public updateAvatar(file) {
-    return this.uploadMedia(file).flatMap(results => {
+  public updateAvatar(file, logEvent: ILogEventInput) {
+    return this.uploadMedia(file, logEvent).flatMap(results => {
       const req = {
         avatar: results.result.url
       };
-      return this.updateProfile(req);
+      return this.updateProfile(req, logEvent);
     });
   }
   /**
    * This method invokes learner service to update user profile
    */
-  public updateProfile(request) {
+  public updateProfile(request, logEvent: ILogEventInput) {
     const data = this.formatRequest(request);
     const options = {
       url: this.configService.urlConFig.URLS.USER.UPDATE_USER_PROFILE,
       data: data
     };
-    return this.learnerService.patch(options).map(
+    return this.learnerService.patch(options, logEvent).map(
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
@@ -37,23 +38,23 @@ export class ProfileService {
   /**
    * This method is used to update user profile visibility
    */
-  updateProfileFieldVisibility(request) {
+  updateProfileFieldVisibility(request, logEvent: ILogEventInput) {
     const data = this.formatRequest(request);
     const options = {
       url: this.configService.urlConFig.URLS.USER.UPDATE_PROF_VIS_FIELDS,
       data: data
     };
-    return this.learnerService.post(options);
+    return this.learnerService.post(options, logEvent);
   }
   /**
    * This method invokes learner service to upload user profile picture
    */
-  public uploadMedia(file) {
+  public uploadMedia(file, logEvent: ILogEventInput) {
     const options = {
       url: this.configService.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
       data: file,
     };
-    return this.learnerService.post(options);
+    return this.learnerService.post(options, logEvent);
   }
   /**
    * This method is used to format the request
@@ -68,13 +69,13 @@ export class ProfileService {
   /**
    * This method is used to add new skills
    */
-  public add(request) {
+  public add(request, logEvent: ILogEventInput) {
     const data = this.formatRequest(request);
     const options = {
       url: this.configService.urlConFig.URLS.USER.ADD_SKILLS,
       data: data
     };
-    return this.learnerService.post(options).map(
+    return this.learnerService.post(options, logEvent).map(
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
@@ -85,10 +86,10 @@ export class ProfileService {
   /**
    * This method invokes learner service to get user respective skills
    */
-  public getSkills() {
+  public getSkills(logEvent: ILogEventInput) {
     const options = {
       url: this.configService.urlConFig.URLS.USER.SKILLS
     };
-    return this.learnerService.get(options);
+    return this.learnerService.get(options, logEvent);
   }
 }

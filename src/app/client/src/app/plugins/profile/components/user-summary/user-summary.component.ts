@@ -3,7 +3,7 @@ import { ProfileService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-user-summary',
   templateUrl: './user-summary.component.html',
@@ -75,7 +75,11 @@ export class UserSummaryComponent implements OnInit {
     const req = {
       profileSummary: editedSummury
     };
-    this.profileService.updateProfile(req).subscribe(res => {
+    const logEvent: ILogEventInput = {
+      context: { env: 'profile' },
+      edata: { type: 'api_call', level: 'INFO', message: '' }
+    };
+    this.profileService.updateProfile(req, logEvent).subscribe(res => {
       this.router.navigate(['/profile']);
       // toaster suc
       this.toasterService.success(this.resourceService.messages.smsg.m0019);
