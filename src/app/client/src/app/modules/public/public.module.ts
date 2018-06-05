@@ -14,31 +14,22 @@ import { PublicFooterComponent } from './components/public-footer/public-footer.
 import { SignupService, PublicPlayerService, OrgManagementService } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { DiscussionModule } from '@sunbird/discussion';
-
-const routes: Routes = [
-  {
-    path: '', // root path '/' for the app
-    component: LandingPageComponent
-  },
-  { path: 'signup', component: SignupComponent },
-  { path: 'get', component: GetComponent },
-  { path: 'get/dial/:dialCode', component: DialCodeComponent },
-  { path: 'play/content/:contentId', component: PublicContentPlayerComponent },
-  { path: 'play/collection/:collectionId', component: PublicCollectionPlayerComponent },
-  { path: 'explore/:pageNumber', component: ExploreContentComponent },
-  { path: ':slug/explore/:pageNumber', component: ExploreContentComponent }
-];
+import { PublicRoutingModule } from './public-routing.module';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
     CommonModule,
     CoreModule,
     SharedModule,
-    RouterModule.forRoot(routes),
     SuiModule,
     FormsModule,
     ReactiveFormsModule,
-    DiscussionModule
+    DiscussionModule,
+    PublicRoutingModule,
+    TelemetryModule,
+    NgInviewModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
