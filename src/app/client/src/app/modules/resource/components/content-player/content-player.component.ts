@@ -8,6 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -18,6 +19,12 @@ import {
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  objectInteract: IInteractEventObject;
   sharelinkModal: boolean;
   /**
    * contains link that can be shared
@@ -80,6 +87,7 @@ export class ContentPlayerComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.contentStatus = params.contentStatus;
+      this.setTelemetryData();
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {
@@ -87,6 +95,34 @@ export class ContentPlayerComponent implements OnInit {
           }
         });
     });
+  }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.contentId,
+        type: 'content',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.closeIntractEdata = {
+      id: 'content-close',
+      type: 'click',
+      pageid: 'content-player'
+    };
+    this.objectInteract = {
+      id: this.contentId,
+      type: 'content',
+      ver: '1.0'
+    };
   }
   /**
    * used to fetch content details and player config. On success launches player.

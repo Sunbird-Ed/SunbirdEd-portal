@@ -1,5 +1,4 @@
-<br>
-<div class="ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
   <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
     <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
   </div>
@@ -33,7 +32,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
-      <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
+      <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
     </div>

@@ -9,6 +9,7 @@ import {
   ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-collection-player',
@@ -16,7 +17,10 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./collection-player.component.css']
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy {
-
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -50,7 +54,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
-
+  objectInteract: IInteractEventObject;
+  closeIntractEdata: IInteractEventEdata;
   private subscription: Subscription;
 
   private subsrciption: Subscription;
@@ -155,6 +160,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       .flatMap((params) => {
         this.collectionId = params.collectionId;
         this.collectionStatus = params.collectionStatus;
+        this.setTelemetryData();
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
@@ -176,6 +182,34 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       }, (error) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
+  }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.collectionId,
+        type: 'collection',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.route.snapshot.data.telemetry.subtype
+      }
+    };
+    this.closeIntractEdata = {
+      id: 'collection-close',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.objectInteract = {
+      id: this.collectionId,
+      type: 'collection',
+      ver: '1.0'
+    };
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
