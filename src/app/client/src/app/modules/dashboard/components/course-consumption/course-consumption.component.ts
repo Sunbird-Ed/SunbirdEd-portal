@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
@@ -20,7 +20,7 @@ import * as _ from 'lodash';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.css']
 })
-export class CourseConsumptionComponent implements OnInit {
+export class CourseConsumptionComponent {
   timePeriodInteractData: IInteractEventEdata;
   interactObject: any;
   /**
@@ -158,7 +158,7 @@ export class CourseConsumptionComponent implements OnInit {
           type: 'course',
           ver: '1.0'
         };
-
+        this.interactObject = { id: params.id, type: 'course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);
@@ -315,9 +315,5 @@ export class CourseConsumptionComponent implements OnInit {
         uri: '/myActivity'
       }
     };
-  }
-
-  ngOnInit() {
-    this.interactObject = { id: this.identifier, type: 'course', ver: '1.0' };
   }
 }
