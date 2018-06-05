@@ -8,7 +8,8 @@
       <div class="one wide column"></div>
       <div class="ten wide column">
         <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
-        <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
+        <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" 
+        class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
           <i class="ui remove icon"></i>
         </h5>
       </div>
