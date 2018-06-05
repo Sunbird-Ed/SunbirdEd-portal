@@ -299,6 +299,6 @@
   </div>
   <div class="actions">
     <div class="ui secondary button" (click)="clearForm()">Clear</div>
-    <div class="ui primary button" (click)="updateBatchDetails(batchData,updatemodal)">Update</div>
+    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)">Update</div>
   </div>
 </sui-modal>
