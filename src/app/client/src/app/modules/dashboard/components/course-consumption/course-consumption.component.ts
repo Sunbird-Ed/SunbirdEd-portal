@@ -7,7 +7,7 @@ import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 /**
@@ -20,8 +20,9 @@ import * as _ from 'lodash';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.css']
 })
-export class CourseConsumptionComponent {
-
+export class CourseConsumptionComponent implements OnInit {
+  myactivity: IInteractEventEdata;
+  myactivityStats: IInteractEventEdata;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
    */
@@ -190,9 +191,9 @@ export class CourseConsumptionComponent {
         this.graphData = this.rendererService.visualizer(data, this.chartType);
         this.showLoader = false;
       },
-        err => {
-          this.showLoader = false;
-        }
+      err => {
+        this.showLoader = false;
+      }
       );
   }
 
@@ -313,6 +314,23 @@ export class CourseConsumptionComponent {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: '/myActivity'
       }
+    };
+  }
+
+  ngOnInit() {
+    this.setInteractEventData();
+  }
+
+  setInteractEventData() {
+    this.myactivity = {
+      id: 'myActivity',
+      type: 'click',
+      pageid: 'CourseCreatorDashboard'
+    };
+    this.myactivityStats = {
+      id: 'myActivity-course-stats',
+      type: 'click',
+      pageid: 'CourseCreatorDashboard'
     };
   }
 }

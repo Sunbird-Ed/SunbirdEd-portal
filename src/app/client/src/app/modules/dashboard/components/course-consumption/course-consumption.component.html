@@ -20,7 +20,8 @@
         <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="options"
           labelField="name" [placeholder]="'Select Course To See Dashboard'" [optionTemplate]="optionTemplate" [isSearchable]="true"
           #templated>
-          <sui-select-option *ngFor="let course of myCoursesList" [value]="course" [ngClass]="{'active': course.identifier === identifier }">
+          <sui-select-option *ngFor="let course of myCoursesList" [value]="course" [ngClass]="{'active': course.identifier === identifier }"
+          appTelemetryInteract [telemetryInteractObject]="{id:course.identifier,type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivity">
 
           </sui-select-option>
         </sui-select>
@@ -30,13 +31,16 @@
     <div class="ui grid margin-top-10 padding-left-5" *ngIf="showDashboard">
       <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
         <div class="ui text menu float-ContentLeft padding-top-10">
-          <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">
+          <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
+          appTelemetryInteract [telemetryInteractObject]="{id:'7d',type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivity">
             {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }"
+          appTelemetryInteract [telemetryInteractObject]="{id:'14d',type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivity">
             {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }"
+          appTelemetryInteract [telemetryInteractObject]="{id:'5w',type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivity">
             {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
@@ -84,10 +88,12 @@
               </div>
             </div>
             <div class="corse-graph-navigation-btn">
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }"
+              appTelemetryInteract [telemetryInteractObject]="{id:'previous',type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivityStats">
                 <i class="left arrow icon"></i>
               </button>
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
+                appTelemetryInteract [telemetryInteractObject]="{id:'next',type:'course',ver:'1.0'}" [telemetryInteractEdata]="myactivityStats">
                 <i class="right arrow icon"></i>
               </button>
             </div>
