@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * This component helps to display the creation/updation popup.
@@ -18,6 +18,10 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   styleUrls: ['./create-org-type.component.css']
 })
 export class CreateOrgTypeComponent implements OnInit {
+  public addOrganizationType: IInteractEventEdata;
+  public updateOrganizationType: IInteractEventEdata;
+  public cancelModal: IInteractEventEdata;
+  pageId: string;
   /**
   * telemetryImpression
   */
@@ -161,12 +165,14 @@ export class CreateOrgTypeComponent implements OnInit {
                 this.orgName = new FormControl(orgList.name);
               }
               this.pageUri = 'orgType/update/' + this.orgTypeId;
+              this.pageId = 'view-organization-type';
             });
           }
         });
       } else if (url[0].path === 'create') {
         this.createForm = true;
         this.pageUri = 'orgType/create';
+        this.pageId = 'create-organization-type';
       }
     });
 
@@ -180,6 +186,24 @@ export class CreateOrgTypeComponent implements OnInit {
         uri: this.pageUri,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+  }
+
+  setInteractEventData() {
+    this.addOrganizationType = {
+      id: 'add-organization-type',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.updateOrganizationType = {
+      id: 'update-organization-type',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.cancelModal = {
+      id: 'cancel',
+      type: 'click',
+      pageid: this.pageId
     };
   }
 }
