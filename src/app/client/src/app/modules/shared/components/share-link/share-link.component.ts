@@ -8,7 +8,17 @@ import { IPopup } from 'ng2-semantic-ui';
 import { ISharelink, ITelemetryShare } from './../../interfaces';
 @Component({
   selector: 'app-share-link',
-  templateUrl: './share-link.component.html'
+  templateUrl: './share-link.component.html',
+  styles: [`::ng-deep .share-link-popup + sui-popup>.ui.popup {
+    background-color:#007AFF;
+  }
+  ::ng-deep .share-link-popup + sui-popup>.ui.popup .content {
+    color:#fff;
+  }
+  ::ng-deep .share-link-popup + sui-popup>.ui.popup sui-popup-arrow .dynamic.arrow {
+    background-color: #007AFF;
+  }`
+  ]
 })
 export class ShareLinkComponent implements OnInit {
   /**
@@ -35,7 +45,7 @@ export class ShareLinkComponent implements OnInit {
   /**
   *Output for Sharelink;
   */
-   @Output('close')
+  @Output('close')
   close = new EventEmitter<any>();
   /**
   *Element Ref  for copyLinkButton;
@@ -72,13 +82,12 @@ export class ShareLinkComponent implements OnInit {
   popDeny(pop) {
     pop.close();
   }
-
   /**
   * initializeModal
   */
   initializeModal() {
     setTimeout(() => {
-        this.copyLinkButton.nativeElement.click();
+      this.copyLinkButton.nativeElement.click();
     }, 300);
     this.telemetryShare = {
       type: 'Link',
@@ -86,16 +95,15 @@ export class ShareLinkComponent implements OnInit {
       items: this.telemetryShareData
     };
   }
-
   /**
   * copyLink
   * {object}  copyLinkData -element ref
   * {object}  popup -element ref
   */
   public copyLink(popup: IPopup) {
-   popup.open();
-   $('#copyLinkData').select();
-   document.execCommand('copy');
+    popup.open();
+    $('#copyLinkData').select();
+    document.execCommand('copy');
   }
 
   public closeModal(contentShareModal) {
