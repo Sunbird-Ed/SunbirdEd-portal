@@ -121,7 +121,13 @@ export class MainHeaderComponent implements OnInit {
       this.router.navigate([authroles.url]);
     }
   }
-
+  navigateToHome() {
+    if (this.userService.loggedIn) {
+      this.router.navigate(['home']);
+    } else {
+      this.router.navigate(['']);
+    }
+  }
   onLanguageChange(event) {
     this.queryParam['language'] = event;
     this.router.navigate(['explore', 1], {
