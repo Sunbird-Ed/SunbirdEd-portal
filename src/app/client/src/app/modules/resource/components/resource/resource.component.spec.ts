@@ -11,7 +11,8 @@ import { ResourceComponent } from './resource.component';
 import {Response} from './resource.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
@@ -28,12 +29,19 @@ describe('ResourceComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
+  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule, NgInviewModule, TelemetryModule],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
          { provide: Router, useClass: RouterStub },
