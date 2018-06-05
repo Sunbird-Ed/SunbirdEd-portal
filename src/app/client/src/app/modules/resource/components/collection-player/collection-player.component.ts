@@ -57,6 +57,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   objectInteract: IInteractEventObject;
   objectContentInteract: IInteractEventObject;
+  collectionInteractObject: IInteractEventObject;
   closeIntractEdata: IInteractEventEdata;
   closeContentIntractEdata: IInteractEventEdata;
   private subscription: Subscription;
@@ -139,8 +140,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       };
       this.objectContentInteract = {
         id: content.metadata.identifier,
-        type: content.metadata.contentType || content.metadata.resourceType || content,
-        ver: content.metadata.pkgVersion || '1'
+        type: content.metadata.contentType || content.metadata.resourceType || 'content',
+        ver: content.metadata.pkgVersion || '1',
+        rollup: {l1: this.collectionId}
+        // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
       return content;
@@ -236,7 +239,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'collection-player'
     };
-    this.objectInteract = {
+    this.collectionInteractObject = {
       id: this.collectionId,
       type: this.collectionData.contentType,
       ver: this.collectionData.pkgVersion || '1'

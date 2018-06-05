@@ -56,6 +56,7 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = true;
     component.courseId = 'do_1125083286221291521153';
     component.batchId = '01250836468775321655';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getBatchDetails').and.returnValue(Observable.of(enrolledBatch));
     component.ngOnInit();
     expect(component.enrolledBatchInfo).toBeDefined();
@@ -65,6 +66,7 @@ describe('BatchDetailsComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(Observable.of(allBatchDetails));
     spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(userSearch));
     component.ngOnInit();
@@ -87,6 +89,7 @@ describe('BatchDetailsComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -108,6 +111,7 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(Observable.of(allBatchDetails));
     spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(userSearch));
