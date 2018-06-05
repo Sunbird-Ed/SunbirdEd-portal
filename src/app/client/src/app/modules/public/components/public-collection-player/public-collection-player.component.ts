@@ -9,6 +9,7 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-public-collection-player',
@@ -16,6 +17,10 @@ import * as _ from 'lodash';
   styleUrls: ['./public-collection-player.component.css']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   selectedLanguage: string;
   queryParams: any;
   public collectionData: object;
@@ -92,6 +97,24 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       }
     });
   }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.collectionId,
+        type: 'collection',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.type,
+        pageid: this.route.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.route.snapshot.data.telemetry.subtype
+      }
+    };
+  }
 
   ngOnDestroy() {
     if (this.subsrciption) {
@@ -147,6 +170,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       .first()
       .flatMap((params) => {
         this.collectionId = params.collectionId;
+        this.setTelemetryData();
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
