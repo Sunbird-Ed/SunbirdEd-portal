@@ -14,7 +14,14 @@ describe('GetComponent', () => {
   let fixture: ComponentFixture<GetComponent>;
   const fakeActivatedRoute = {
     'params': Observable.from([]),
-    'queryParams': Observable.from([])
+    'queryParams': Observable.from([]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

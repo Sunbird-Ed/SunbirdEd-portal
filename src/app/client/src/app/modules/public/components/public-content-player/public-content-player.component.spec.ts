@@ -14,7 +14,14 @@ class RouterStub {
   events = Observable.from([{ id: 1, url: '/play', urlAfterRedirects: '/play' }]);
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }])
+  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+      }
+    }
+  }
 };
 
 describe('PublicContentPlayerComponent', () => {

@@ -9,6 +9,7 @@ import {
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-public-content-player',
@@ -16,6 +17,10 @@ import { PublicPlayerService } from './../../services';
   styleUrls: ['./public-content-player.component.css']
 })
 export class PublicContentPlayerComponent implements OnInit {
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * content id
    */
@@ -45,7 +50,7 @@ export class PublicContentPlayerComponent implements OnInit {
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService, public router: Router
   ) {
   }
   /**
@@ -65,6 +70,7 @@ export class PublicContentPlayerComponent implements OnInit {
       })
       .subscribe(bothParams => {
         this.contentId = bothParams.params.contentId;
+        this.setTelemetryData();
         this.getContent();
         this.queryParams = { ...bothParams.queryParams };
         if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
@@ -72,6 +78,24 @@ export class PublicContentPlayerComponent implements OnInit {
           this.resourceService.getResource(this.selectedLanguage);
         }
       });
+  }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.contentId,
+        type: 'content',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
   /**
    * used to fetch content details and player config. On success launches player.

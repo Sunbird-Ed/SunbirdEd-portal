@@ -57,6 +57,9 @@
       ],
       "@sunbird/telemetry": [
         "app/modules/telemetry"
+      ],
+      "@sunbird/public": [
+        "app/modules/public"
       ]
     },
     "module": "commonjs",
