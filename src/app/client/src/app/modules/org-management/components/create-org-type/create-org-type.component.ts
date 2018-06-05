@@ -5,6 +5,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * This component helps to display the creation/updation popup.
@@ -17,6 +18,14 @@ import * as _ from 'lodash';
   styleUrls: ['./create-org-type.component.css']
 })
 export class CreateOrgTypeComponent implements OnInit {
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
+  /**
+  * page uri for telemetry
+  */
+  pageUri: string;
 
   /**
 	 * This flag helps to identify whether a form is creation or updation.
@@ -151,13 +160,27 @@ export class CreateOrgTypeComponent implements OnInit {
               if (orgList.id === this.orgTypeId) {
                 this.orgName = new FormControl(orgList.name);
               }
+              this.pageUri = 'orgType/update/' + this.orgTypeId;
             });
           }
         });
       } else if (url[0].path === 'create') {
         this.createForm = true;
+        this.pageUri = 'orgType/create';
       }
     });
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.pageUri,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
 }
 

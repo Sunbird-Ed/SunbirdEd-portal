@@ -51,5 +51,5 @@
         <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
     </div>
 </div>
-<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

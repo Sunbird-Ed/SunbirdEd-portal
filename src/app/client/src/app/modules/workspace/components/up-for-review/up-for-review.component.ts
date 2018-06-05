@@ -23,8 +23,8 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class UpForReviewComponent extends WorkSpace implements OnInit {
   /**
-     * To navigate to other pages
-     */
+  * To navigate to other pages
+  */
   route: Router;
 
   /**

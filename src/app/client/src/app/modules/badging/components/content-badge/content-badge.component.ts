@@ -4,7 +4,7 @@ import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
-import { ILogEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, ILogEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-content-badge',
@@ -25,6 +25,10 @@ export class ContentBadgeComponent implements OnInit {
   private userRoles: Array<string> = [];
   public badge: object;
   public allBadgeList: any;
+  public badgeInteractEdata: IInteractEventEdata;
+  public cancelBadgeInteractEdata: IInteractEventEdata;
+  public assignBadgeInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   constructor(public resourceService: ResourceService, public userService: UserService,
     public badgeService: BadgesService, public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute, public contentBadgeService: ContentBadgeService) { }
@@ -41,6 +45,7 @@ export class ContentBadgeComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.collectionId;
     });
+    this.setInteractEventData();
   }
 
   public getBadgeDetails() {
@@ -92,5 +97,27 @@ export class ContentBadgeComponent implements OnInit {
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0079);
     });
+  }
+  setInteractEventData() {
+    this.badgeInteractEdata = {
+      id: 'add-content-badge',
+      type: 'click',
+      pageid: 'content-badge'
+    };
+    this.cancelBadgeInteractEdata = {
+      id: 'cancel-badge',
+      type: 'click',
+      pageid: 'content-badge'
+    };
+    this.assignBadgeInteractEdata = {
+      id: 'assign-badge',
+      type: 'click',
+      pageid: 'content-badge'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'badge',
+      ver: '1.0'
+    };
   }
 }

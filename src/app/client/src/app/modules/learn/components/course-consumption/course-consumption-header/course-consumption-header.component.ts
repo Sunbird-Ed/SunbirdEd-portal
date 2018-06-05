@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
-import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import { ILogEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-course-consumption-header',
@@ -17,6 +17,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
    * contains link that can be shared
    */
   flaggedCourse = false;
+  /**
+	 * telemetryShareData
+	*/
+  telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   /**
    * to show loader while copying content
@@ -105,5 +109,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.courseId, this.courseHierarchy.mimeType);
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+   setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion : 1
+    }];
   }
 }

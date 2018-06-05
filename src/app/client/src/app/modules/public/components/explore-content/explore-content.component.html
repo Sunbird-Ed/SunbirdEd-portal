@@ -4,7 +4,7 @@
       <div class=" ui grid">
           <div class="ten wide column" *ngIf="hashTagId">
               <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
           </div>
       </div>
 
@@ -28,11 +28,11 @@
           <div class="ten wide column padding-top-none">
               <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
                   <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length">
-                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
+                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
                       <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
+                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
                   </div>
               </div>
           </div>
