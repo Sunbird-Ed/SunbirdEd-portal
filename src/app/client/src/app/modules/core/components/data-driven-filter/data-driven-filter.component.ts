@@ -19,6 +19,7 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
+  @Input() showSearchedParam = true;
 
   /**
  * To get url, app configs

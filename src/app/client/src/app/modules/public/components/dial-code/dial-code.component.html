@@ -20,7 +20,7 @@
   <div *ngIf="!showLoader" class="row dial-code-section-bg">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <div style="font-weight: 650 !important;" class="ui tiny header"> Dial code '{{dialCode}}'
+      <div style="font-weight: 650 !important;" class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
       </div>
     </div>
     <div class="one wide column"></div>
@@ -28,7 +28,7 @@
   <div *ngIf="searchResults.length > 0" class="row">
     <div class="one wide column"></div>
     <div class="ten wide column">
-      <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> Linked contents ({{searchResults.length}})
+      <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
       </div>
 
     </div>

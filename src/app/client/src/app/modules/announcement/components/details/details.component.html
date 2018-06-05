@@ -59,7 +59,7 @@
               </div>
               <div class="middle aligned content padding-left-none">
                 <div class="ui right-float">
-                  <a class="ui primary basic button announcement-button" href="{{attachment.link}}" target="_blank">
+                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="viewAnnouncementInteractEdata" class="ui primary basic button announcement-button" href="{{attachment.link}}" target="_blank">
                     <span class="announcement-button-text">
                       {{resourceService?.frmelmnts?.btn?.anncmntdtlsview}}
                     </span>

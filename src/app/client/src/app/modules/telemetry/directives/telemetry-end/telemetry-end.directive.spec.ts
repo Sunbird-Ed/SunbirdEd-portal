@@ -17,7 +17,7 @@ describe('TelemetryStartDirective', () => {
     const directive = new TelemetryEndDirective( telemetryService);
     spyOn(telemetryService, 'end').and.callFake(() => Observable.of(eventData.inputData));
     directive.appTelemetryEnd = eventData.inputData;
-    directive.ngOnChanges();
+    directive.ngOnDestroy();
     expect(directive.appTelemetryEnd).toBeDefined();
     expect(directive.appTelemetryEnd).toBe(eventData.inputData);
     expect(telemetryService.end).toHaveBeenCalled();
