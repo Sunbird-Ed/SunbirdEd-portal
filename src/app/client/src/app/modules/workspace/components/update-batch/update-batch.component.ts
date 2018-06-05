@@ -357,7 +357,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       this.updatebatchIntractEdata = {
         id: 'update-upcoming-batch',
         type: 'click',
-        pageid: 'CourseBatch'
+        pageid: 'course-batch'
       };
       this.telemetryInteractObject = {
         id: batchData.id,
@@ -368,7 +368,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       this.updatebatchIntractEdata = {
         id: 'update-ongoing-batch',
         type: 'click',
-        pageid: 'CourseBatch'
+        pageid: 'course-batch'
       };
       this.telemetryInteractObject = {
         id: batchData.id,
