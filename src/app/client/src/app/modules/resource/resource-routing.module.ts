@@ -11,7 +11,9 @@ const routes: Routes = [
     data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
-    data: {  telemetry: { env: telemetryEnv}},
+    data: {
+      telemetry: { env: telemetryEnv }
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
