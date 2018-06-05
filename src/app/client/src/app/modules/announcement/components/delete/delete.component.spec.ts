@@ -11,10 +11,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
 import { AnnouncementService } from '@sunbird/core';
 import { SharedModule, ResourceService, ToasterService, ConfigService, RouterNavigationService } from '@sunbird/shared';
 import { DeleteComponent } from './delete.component';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('DeleteComponent', () => {
   let component: DeleteComponent;
@@ -31,7 +31,7 @@ describe('DeleteComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DeleteComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-        SuiModule, SharedModule],
+        SuiModule, SharedModule, TelemetryModule],
       providers: [HttpClientModule, AnnouncementService,
         ResourceService, ToasterService, ConfigService, HttpClient, RouterNavigationService,
         { provide: Router, useClass: RouterStub },
