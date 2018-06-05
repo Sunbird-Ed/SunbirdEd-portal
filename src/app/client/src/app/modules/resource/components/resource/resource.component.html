@@ -3,11 +3,11 @@
   <div class="ten wide column">
     <div class=" ui grid">
       <div class="eleven wide column">
-        <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType"[redirectUrl]="redirectUrl"
+        <app-data-driven-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" *ngIf="filterType" [filterEnv]="filterType"[redirectUrl]="redirectUrl"
        [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
       </div>
       <div class="one wide column">
-        <app-sort-by [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
+        <app-sort-by appTelemetryInteract [telemetryInteractEdata]="sortIntractEdata" [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
       </div>
     </div>
     <div *ngFor="let section of caraouselData">
