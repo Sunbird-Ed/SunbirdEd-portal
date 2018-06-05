@@ -9,7 +9,8 @@ const telemetryEnv = 'library';
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }] }
+    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
+    telemetry: { env: telemetryEnv, pageid: 'resources', type: 'view' } }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {

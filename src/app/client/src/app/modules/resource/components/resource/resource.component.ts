@@ -5,6 +5,8 @@ import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This component contains 2 sub components
  * 1)PageSection: It displays carousal data.
@@ -16,6 +18,14 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./resource.component.css']
 })
 export class ResourceComponent implements OnInit {
+  /**
+  * inviewLogs
+  */
+  inviewLogs = [];
+  /**
+   * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
   /**
  * To show toaster(error, success etc) after any API calls
  */
@@ -135,8 +145,33 @@ export class ResourceComponent implements OnInit {
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.inPageredirectUrl;
     this.getQueryParams();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
-
+  prepareVisits(event) {
+    _.forEach(event, (inview, index) => {
+      if (inview.metaData.identifier) {
+        this.inviewLogs.push({
+          objid: inview.metaData.identifier,
+          objtype: inview.metaData.contentType,
+          index: index,
+          section: inview.section,
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
   /**
    *  to get query parameters
    */
