@@ -7,7 +7,7 @@ import { SearchService, UserService } from '@sunbird/core';
 import { IMenter, Ibatch } from './../../interfaces';
 import { WorkSpace } from '../../classes/workspace';
 import * as _ from 'lodash';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -15,6 +15,14 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy {
   @ViewChild('updatemodal') updatemodal;
+  /**
+  * updatebatchIntractEdata
+  */
+  updatebatchIntractEdata: IInteractEventEdata;
+  /**
+  * telemetryInteractObject
+  */
+  telemetryInteractObject: IInteractEventObject;
   /**
   * batchId
   */
@@ -202,6 +210,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
             const users = _.concat(selectedParticipants, this.batchData.mentors);
             this.getUserList(undefined, users);
             this.initializeFormFields();
+            this.setInteractEventData(this.batchData);
           } else {
             this.toasterService.error(this.resourceService.messages.fmsg.m0054);
           }
@@ -214,6 +223,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       const users = _.concat(selectedParticipants, this.batchData.mentors);
       this.getUserList(undefined, users);
       this.initializeFormFields();
+      this.setInteractEventData(this.batchData);
     }
   }
   /**
@@ -289,7 +299,6 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         createdFor: batchData.createdFor,
         id: batchData.id
       };
-
       if (batchData.enrollmentType !== 'open') {
         const selected = [];
         _.forEach(this.selectedMentors, (value) => {
@@ -339,5 +348,33 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   */
   clearForm() {
     this.batchAddUserForm.reset();
+  }
+ /**
+  *  setInteractEventData
+  */
+  setInteractEventData(batchData) {
+    if ( batchData.status === 0) {
+      this.updatebatchIntractEdata = {
+        id: 'update-upcoming-batch',
+        type: 'click',
+        pageid: 'CourseBatch'
+      };
+      this.telemetryInteractObject = {
+        id: batchData.id,
+        type: 'batch',
+        ver: '1.0'
+      };
+    } else if ( batchData.status === 1 ) {
+      this.updatebatchIntractEdata = {
+        id: 'update-ongoing-batch',
+        type: 'click',
+        pageid: 'CourseBatch'
+      };
+      this.telemetryInteractObject = {
+        id: batchData.id,
+        type: 'batch',
+        ver: '1.0'
+      };
+    }
   }
 }
