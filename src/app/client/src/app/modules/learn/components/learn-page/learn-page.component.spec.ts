@@ -12,7 +12,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './learn-page.component.spec.data';
 import { LearnPageComponent } from './learn-page.component';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
 const resourceServiceMockData = {
   messages : {
     stmsg : { m0007: 'error',  m0006: 'error'},
@@ -30,18 +31,18 @@ describe('LearnPageComponent', () => {
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
   'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
-  snapshot: {
-    data: {
-      telemetry: {
-        env: 'library'
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'course', pageid: 'course', type: 'view', subtype: 'paginate'
+        }
       }
     }
-  }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule, TelemetryModule, NgInviewModule],
       declarations: [ LearnPageComponent ],
       providers: [{ provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

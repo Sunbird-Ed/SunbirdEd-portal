@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="true" [size]="'large'" (dismissed)="redirect(); modal.deny()" #modal>
+<sui-modal [appTelemetryImpression]="telemetryImpression" [isClosable]="true" [size]="'large'" (dismissed)="redirect(); modal.deny()" #modal>
   <div class="header">
     <div class="ui grid">
       <div class="eleven wide column">
