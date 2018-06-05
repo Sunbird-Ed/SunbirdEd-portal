@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" #contentShareModal >
+<sui-modal [isClosable]="false" #contentShareModal class="share-link-popup" >
 
   <div class="header">
     <div class="ui grid">
@@ -14,13 +14,13 @@
   </div>
   <div class="content">
     <p class="meta">{{resourceService?.frmelmnts?.lbl?.sharelink}}</p>
-    <div class="ui action input shareContent width-100" id="buttonPopUp">
+    <div class="ui action input shareContent width-100" id="buttonPopUp" suiPopup [popupPlacement]="position" popupTrigger="manual" popupText="Link copied to clipboard" #popup="suiPopup">
       <input type="text" id="copyLinkData"   name="title" readonly [(ngModel)]="shareLink" />
-      <button   class="ui basic primary button" (click)="copyLink(popup)" #copyLinkButton>
+      <button class="ui basic primary button" (click)="copyLink(popup)"  #copyLinkButton >
         COPY LINK
       </button>
     </div>
-    <div id ="popups" suiPopup [popupPlacement]="position" popupText="Link copied to clipboard" popupTrigger="manual" #popup="suiPopup">
-    </div>
   </div>
+  <div class="actions margin-top-20"><div></div></div>
+  
 </sui-modal>
