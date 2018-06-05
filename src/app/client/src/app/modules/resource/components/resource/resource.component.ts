@@ -53,9 +53,6 @@ export class ResourceComponent implements OnInit {
    * no result  message
   */
   noResultMessage: INoResultMessage;
-  inviewLogs = [];
-
-  telemetryImpression: IImpressionEventInput;
   /**
   * Contains result object returned from getPageData API.
   */
