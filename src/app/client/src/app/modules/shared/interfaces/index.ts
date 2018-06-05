@@ -17,3 +17,4 @@ export * from './collectionTree';
 export * from './fancyTree';
 export * from './card';
 export * from './courseStates';
+export * from './telemetryShare';
