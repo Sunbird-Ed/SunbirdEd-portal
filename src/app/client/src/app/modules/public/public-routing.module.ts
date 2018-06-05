@@ -11,7 +11,12 @@ import {
 const routes: Routes = [
   {
     path: '', // root path '/' for the app
-    component: LandingPageComponent
+    component: LandingPageComponent,
+    data: {
+      telemetry: {
+        env: 'signup', pageid: 'signup', type: 'edit', subtype: 'paginate'
+      }
+    }
   },
   {
     path: 'signup', component: SignupComponent, data: {
