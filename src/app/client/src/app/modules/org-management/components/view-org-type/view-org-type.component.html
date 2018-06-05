@@ -7,13 +7,14 @@
         <div class="ui raised segment" *ngIf="!showLoader">
             <div class="header announcementCard-header">
                 <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.orgtypes}}</span>
-                <a class="addeditprofile cursor-pointer" [routerLink]="['create']">
+                <a class="addeditprofile cursor-pointer" id="addOrgType" [routerLink]="['create']" appTelemetryInteract [telemetryInteractObject]="{id:'addOrgType',type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="addOrganizationType">
                     <i class="big plus icon"></i>
                 </a>
             </div>
             <div class="margin-top-10 ">
                 <span class="padded chip margin-top--5">
-                    <a class="ui label margin-top--5" *ngFor="let orgnisation of orgTypes;">
+                    <a class="ui label margin-top--5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
+                [telemetryInteractObject]="{id:orgnisation.id,type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
                         {{orgnisation.name}}
                         <i class="large write icon  margin-none padding-left-10" [routerLink]="['update/' + orgnisation.id]"></i>
                     </a>

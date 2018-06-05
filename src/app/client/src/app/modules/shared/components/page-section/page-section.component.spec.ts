@@ -7,13 +7,16 @@ import { SlickModule } from 'ngx-slick';
 import { ResourceService, ConfigService  } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './page-section.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
+import { RouterTestingModule } from '@angular/router/testing';
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule, RouterTestingModule],
       declarations: [ PageSectionComponent ],
       providers: [ ResourceService, ConfigService ],
       schemas: [NO_ERRORS_SCHEMA]
