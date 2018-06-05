@@ -20,7 +20,6 @@ import { NgInviewModule } from 'angular-inport';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 
 @NgModule({
   imports: [
@@ -28,13 +27,8 @@ import { NgInviewModule } from 'angular-inport';
     SuiModule,
     SlickModule,
     FormsModule,
-<<<<<<< HEAD
-    NgInviewModule,
-    TelemetryModule
-=======
     TelemetryModule,
     NgInviewModule
->>>>>>> upstream/angular-migration
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
