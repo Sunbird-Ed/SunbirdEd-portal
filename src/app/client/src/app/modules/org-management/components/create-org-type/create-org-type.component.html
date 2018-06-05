@@ -9,13 +9,13 @@
     </div>
     <div class="actions">
         <div *ngIf="createForm" class="ui primary approve button" (click)="modal.deny();addOrgType()"
-        appTelemetryInteract [telemetryInteractObject]="{id:addOrgType,type:'create-org-type',ver:'1.0'}" [telemetryInteractEdata]="addOrganizationType">
+        appTelemetryInteract [telemetryInteractObject]="{id:'addOrgType',type:'create-org-type',ver:'1.0'}" [telemetryInteractEdata]="addOrganizationType">
          {{resourceService?.frmelmnts?.btn?.add}}</div>
         <div *ngIf="!createForm" class="ui primary approve button" (click)="modal.deny();updateOrgType()"
-        appTelemetryInteract [telemetryInteractObject]="{id:updateOrgType,type:'update-org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
+        appTelemetryInteract [telemetryInteractObject]="{id:'updateOrgType',type:'update-org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
          {{resourceService?.frmelmnts?.btn?.update}}</div>
         <div class="ui negative cancel button" (click)="modal.deny()"
-        appTelemetryInteract [telemetryInteractObject]="{id:cancel,type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="cancelModal">
+        appTelemetryInteract [telemetryInteractObject]="{id:'cancel',type:'org-type',ver:'1.0'}" [telemetryInteractEdata]="cancelModal">
         {{resourceService?.frmelmnts?.btn?.cancel}}</div>
     </div>
 </sui-modal>

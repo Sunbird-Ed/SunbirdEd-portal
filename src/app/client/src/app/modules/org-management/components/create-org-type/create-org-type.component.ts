@@ -165,7 +165,7 @@ export class CreateOrgTypeComponent implements OnInit {
                 this.orgName = new FormControl(orgList.name);
               }
               this.pageUri = 'orgType/update/' + this.orgTypeId;
-              this.pageId = 'view-organization-type';
+              this.pageId = 'update-organization-type';
             });
           }
         });
@@ -187,11 +187,12 @@ export class CreateOrgTypeComponent implements OnInit {
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
     };
+    this.setInteractEventData();
   }
 
   setInteractEventData() {
     this.addOrganizationType = {
-      id: 'add-organization-type',
+      id: 'create-organization-type',
       type: 'click',
       pageid: this.pageId
     };
