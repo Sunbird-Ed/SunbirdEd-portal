@@ -143,11 +143,6 @@ export class ResourceComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
-        id: '',
-        type: this.activatedRoute.snapshot.data.telemetry.env,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
