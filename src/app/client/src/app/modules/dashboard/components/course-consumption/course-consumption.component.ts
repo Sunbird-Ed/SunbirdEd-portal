@@ -21,8 +21,8 @@ import * as _ from 'lodash';
   styleUrls: ['./course-consumption.component.css']
 })
 export class CourseConsumptionComponent implements OnInit {
-  myactivity: IInteractEventEdata;
-  myactivityStats: IInteractEventEdata;
+  timePeriodInteractData: IInteractEventEdata;
+  interactObject: any;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
    */
@@ -318,19 +318,6 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setInteractEventData();
-  }
-
-  setInteractEventData() {
-    this.myactivity = {
-      id: 'myActivity',
-      type: 'click',
-      pageid: 'CourseCreatorDashboard'
-    };
-    this.myactivityStats = {
-      id: 'myActivity-course-stats',
-      type: 'click',
-      pageid: 'CourseCreatorDashboard'
-    };
+    this.interactObject = { id: this.identifier, type: 'course', ver: '1.0' };
   }
 }
