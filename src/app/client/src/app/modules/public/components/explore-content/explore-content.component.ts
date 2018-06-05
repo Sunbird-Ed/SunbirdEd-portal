@@ -9,6 +9,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { OrgManagementService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
     selector: 'app-explore-content',
@@ -16,6 +17,11 @@ import { OrgManagementService } from './../../services';
     styleUrls: ['./explore-content.component.css']
 })
 export class ExploreContentComponent implements OnInit {
+    inviewLogs: any = [];
+    /**
+       * telemetryImpression
+      */
+    telemetryImpression: IImpressionEventInput;
     /**
      * To call searchService which helps to use list of courses
      */
@@ -264,8 +270,22 @@ export class ExploreContentComponent implements OnInit {
         this.activatedRoute.params.subscribe(params => {
             this.slug = params.slug;
             this.getChannelId();
+            this.setTelemetryData();
         });
     }
+    setTelemetryData() {
+        this.telemetryImpression = {
+          context: {
+            env: this.activatedRoute.snapshot.data.telemetry.env
+          },
+          edata: {
+            type: this.activatedRoute.snapshot.data.telemetry.type,
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+            uri: this.route.url,
+            subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+          }
+        };
+      }
 
     public playContent(event) {
         this.navigationHelperService.storeResourceCloseUrl();
@@ -279,4 +299,21 @@ export class ExploreContentComponent implements OnInit {
             });
         }
     }
+    inview(event) {
+        _.forEach(event.inview, (inview, key) => {
+          const obj = _.find(this.inviewLogs, (o) => {
+            return o.objid === inview.data.metaData.identifier;
+          });
+          if (obj === undefined) {
+            this.inviewLogs.push({
+              objid: inview.data.metaData.identifier,
+              objtype: inview.data.metaData.contentType || 'content',
+              index: inview.id
+            });
+          }
+        });
+        this.telemetryImpression.edata.visits = this.inviewLogs;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+      }
 }

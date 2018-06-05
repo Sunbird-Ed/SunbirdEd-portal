@@ -15,7 +15,10 @@ const objectType = 'course';
 const routes: Routes = [
   {
     path: 'learn', component: LearnPageComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] }
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
+    }
   },
   {
     path: 'learn/course', component: CourseConsumptionPageComponent,
