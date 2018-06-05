@@ -87,7 +87,6 @@ export class ContentPlayerComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.contentStatus = params.contentStatus;
-      this.setTelemetryData();
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {
@@ -103,8 +102,8 @@ export class ContentPlayerComponent implements OnInit {
       },
       object: {
         id: this.contentId,
-        type: 'content',
-        ver: '1.0'
+        type: this.contentData.contentType,
+        ver: this.contentData.pkgVersion || '1'
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -120,8 +119,8 @@ export class ContentPlayerComponent implements OnInit {
     };
     this.objectInteract = {
       id: this.contentId,
-      type: 'content',
-      ver: '1.0'
+      type: this.contentData.contentType,
+      ver: this.contentData.pkgVersion || '1'
     };
   }
   /**
@@ -139,9 +138,9 @@ export class ContentPlayerComponent implements OnInit {
             contentId: this.contentId,
             contentData: response.result.content
           };
-
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);

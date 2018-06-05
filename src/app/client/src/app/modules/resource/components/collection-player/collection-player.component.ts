@@ -49,7 +49,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private router: Router;
 
   public loader: Boolean = true;
-
+  public triggerContentImpression = false;
   public showCopyLoader: Boolean = false;
   /**
 	 * telemetryShareData
@@ -69,7 +69,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
-  public collectionData: object;
+  public collectionData: any;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
     fileIcon: 'fa fa-file-o fa-lg',
@@ -114,7 +114,25 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
+    this.playerConfig = this.getPlayerConfig(id).map((content) => {
+      this.telemetryContentImpression = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.env,
+          pageid: this.route.snapshot.data.telemetry.env,
+          uri: this.router.url
+        },
+        object: {
+          id: content.metadata.identifier,
+          type: content.metadata.contentType || content.metadata.resourceType || content,
+          ver: content.metadata.pkgVersion || '1',
+        }
+      };
+      this.triggerContentImpression = true;
+      return content;
+    }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
@@ -122,6 +140,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 
   public playContent(data: any): void {
     this.showPlayer = true;
+    this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     this.contentTitle = data.title;
     this.initPlayer(data.id);
   }
@@ -149,9 +168,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     } else {
-      throw new Error(`unbale to play collection content for ${this.collectionId}`);
+      throw new Error(`unable to play collection content for ${this.collectionId}`);
     }
   }
 
@@ -161,28 +179,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       .flatMap((params) => {
         this.collectionId = params.collectionId;
         this.collectionStatus = params.collectionStatus;
-        this.setTelemetryData();
         return this.getCollectionHierarchy(params.collectionId);
       })
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        this.setTelemetryData();
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
-          this.telemetryContentImpression = {
-            context: {
-              env: this.route.snapshot.data.telemetry.env
-            },
-            edata: {
-              type: this.route.snapshot.data.telemetry.env,
-              pageid: this.route.snapshot.data.telemetry.env,
-              uri: this.router.url
-            },
-            object: {
-              id: queryParams.contentId,
-              type: 'content',
-              ver: '1.0',
-            }
-          };
           this.contentId = queryParams.contentId;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
@@ -206,8 +209,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: this.collectionId,
-        type: 'collection',
-        ver: '1.0'
+        type: this.collectionData.contentType,
+        ver: this.collectionData.pkgVersion || '1'
       },
       edata: {
         type: this.route.snapshot.data.telemetry.type,
@@ -223,8 +226,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     };
     this.objectInteract = {
       id: this.collectionId,
-      type: 'collection',
-      ver: '1.0'
+      type: this.collectionData.contentType,
+      ver: this.collectionData.pkgVersion || '1'
     };
   }
 
@@ -248,6 +251,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
   closeContentPlayer() {
     this.showPlayer = false;
+    this.triggerContentImpression = false;
     const navigationExtras: NavigationExtras = {
       relativeTo: this.route
     };
