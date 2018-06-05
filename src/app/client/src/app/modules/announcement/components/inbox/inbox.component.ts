@@ -242,4 +242,3 @@ export class InboxComponent implements OnInit {
     };
   }
 }
-
