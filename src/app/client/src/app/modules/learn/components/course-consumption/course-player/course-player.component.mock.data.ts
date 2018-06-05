@@ -13,6 +13,9 @@ export const CourseHierarchyGetMockResponse = {
   },
   'responseCode': 'OK',
   'result': {
+      'metadata': {
+          'identifier': 'do_1222'
+      },
       'content': {
           'code': 'org.ekstep.textbook.1498025274',
           'notes': '',

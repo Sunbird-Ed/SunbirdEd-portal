@@ -67,7 +67,8 @@
                                     <div class="ui grid" id="app-player-collection-renderer">
                                         <div class="twelve wide column">
                                             <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
-                                            <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
+                                            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
+                                            class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
                                                 <i class="ui remove icon"></i>
                                             </h5>
                                         </div>

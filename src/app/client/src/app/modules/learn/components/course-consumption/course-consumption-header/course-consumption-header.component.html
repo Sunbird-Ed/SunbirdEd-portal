@@ -32,7 +32,10 @@
                         <span>
                             <p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
                         </span>
-                        <button class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
+                        <button appTelemetryInteract 
+                        [telemetryInteractEdata]="resumeIntractEdata" 
+                        [telemetryInteractObject]="courseInteractObject"
+                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
                             {{resourceService?.frmelmnts?.btn?.resumecourse}}
                             <i class="caret right icon"></i>
                         </button>

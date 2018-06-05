@@ -11,13 +11,17 @@ import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import { IInteractEventInput, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
   styleUrls: ['./course-player.component.css']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-
+  public courseInteractObject: IInteractEventObject;
+  public contentInteractObject: IInteractEventObject;
+  closeContentIntractEdata: IInteractEventEdata;
   private activatedRoute: ActivatedRoute;
 
   private courseId: string;
@@ -166,6 +170,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
       }).subscribe((response) => {
         this.courseHierarchy = response;
+        this.courseInteractObject = {
+          id: this.courseHierarchy.identifier,
+          type: 'Course',
+          ver: this.courseHierarchy.pkgVersion || '1'
+        };
         if (this.courseHierarchy.status === 'Flagged') {
           this.flaggedCourse = true;
         }
@@ -196,6 +205,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.enableContentPlayer = false;
     this.loader = true;
     this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id).subscribe((config) => {
+      this.contentInteractObject = {
+        id: config.metadata.identifier,
+        type: config.metadata.contentType || config.metadata.resourceType || 'content',
+        ver: config.metadata.pkgVersion || '1',
+        rollup: {l1: this.courseId}
+        // rollup: this.courseInteractObject
+      };
+      this.closeContentIntractEdata = {
+        id: 'content-close',
+        type: 'click',
+        pageid: 'course-consumption'
+      };
       this.loader = false;
       this.playerConfig = config;
       this.enableContentPlayer = true;
