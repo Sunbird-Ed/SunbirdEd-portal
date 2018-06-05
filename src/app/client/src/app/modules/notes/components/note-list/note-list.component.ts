@@ -169,13 +169,13 @@ export class NoteListComponent implements OnInit {
     let cdataType = '';
     if (this.activatedRoute.snapshot.params.courseId) {
       cdataId = this.activatedRoute.snapshot.params.courseId;
-      cdataType = 'course';
+      cdataType = 'course-type';
     } else if (this.activatedRoute.snapshot.params.contentId) {
       cdataId = this.activatedRoute.snapshot.params.contentId;
-      cdataType = 'content';
+      cdataType = 'content-type';
     } else {
       cdataId = this.activatedRoute.snapshot.params.contentId;
-      cdataType = 'collection';
+      cdataType = 'collection-type';
     }
     this.telemetryImpression = {
       context: {

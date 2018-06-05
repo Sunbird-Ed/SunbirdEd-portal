@@ -206,7 +206,7 @@ export interface ITelemetry {
 export interface IUserOrgDetails {
   'userId': IUserProfile['userId'];
   'rootOrgId': IUserProfile['rootOrgId'];
-  'rootOrg': IUserProfile['rootOrg'];
+  'rootOrg'?: IUserProfile['rootOrg'];
   'organisationIds': IUserProfile['organisationIds'];
 }
 

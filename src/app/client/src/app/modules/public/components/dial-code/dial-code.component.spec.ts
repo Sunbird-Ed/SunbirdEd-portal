@@ -26,7 +26,14 @@ describe('DialCodeComponent', () => {
   };
   const fakeActivatedRoute = {
     'params': Observable.from([{ dialCode: '61U24C' }]),
-    'queryParams': Observable.from([])
+    'queryParams': Observable.from([]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
