@@ -1,6 +1,5 @@
 <sui-modal [isClosable]="false" #contentShareModal >
-
-  <div class="header">
+  <div class="header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
     <div class="ui grid">
       <div class="eleven wide column">
         <span class="ui header">{{resourceService?.frmelmnts?.lbl?.share}}</span>

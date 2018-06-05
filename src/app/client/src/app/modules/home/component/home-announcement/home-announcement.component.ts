@@ -1,9 +1,10 @@
-import { Component, OnInit , EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementListData } from '@sunbird/announcement';
+import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 /**
  * This component displays announcement inbox card on the home page.
@@ -49,6 +50,8 @@ export class HomeAnnouncementComponent implements OnInit {
    * any data
    */
   showLoader = true;
+  seeAllInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   /**
    * Constructor
    * inject service(s)
@@ -119,9 +122,22 @@ export class HomeAnnouncementComponent implements OnInit {
 	 */
   ngOnInit() {
     this.populateHomeInboxData(this.config.appConfig.ANNOUNCEMENT.HOME.PAGE_LIMIT, this.pageNumber);
+    this.setInteractEventData();
   }
 
   public inview(event) {
     this.inviewEvent.emit(event);
+  }
+  setInteractEventData() {
+    this.seeAllInteractEdata = {
+      id: 'all-announcement',
+      type: 'click',
+      pageid: 'announcement-list'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'announcement',
+      ver: '1.0'
+    };
   }
 }

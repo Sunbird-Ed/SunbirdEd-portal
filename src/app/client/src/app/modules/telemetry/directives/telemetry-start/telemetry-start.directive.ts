@@ -17,6 +17,7 @@ export class TelemetryStartDirective implements OnChanges {
    * reference of permissionService service.
   */
   public telemetryService: TelemetryService;
+  public eventTriggered = false;
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -26,7 +27,8 @@ export class TelemetryStartDirective implements OnChanges {
     this.telemetryService = telemetryService;
   }
   ngOnChanges() {
-   if (this.appTelemetryStart) {
+   if (this.appTelemetryStart && !this.eventTriggered) {
+    this.eventTriggered = true;
       this.telemetryService.start(this.appTelemetryStart);
     }
   }

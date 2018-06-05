@@ -106,5 +106,4 @@ export class UserSummaryComponent implements OnInit {
       ver: '1.0'
     };
   }
-
 }

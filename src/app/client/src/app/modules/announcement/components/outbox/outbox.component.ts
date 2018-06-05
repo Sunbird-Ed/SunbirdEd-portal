@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -98,6 +98,12 @@ export class OutboxComponent implements OnInit {
    * telemetryInteract event
    */
   telemetryInteract: IInteractEventInput;
+  resendId;
+  public createAnnouncementInteractEdata: IInteractEventEdata;
+  public deleteAnnouncementInteractEdata: IInteractEventEdata;
+  public resendAnnouncementInteractEdata: IInteractEventEdata;
+  public navigateInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -224,6 +230,34 @@ export class OutboxComponent implements OnInit {
         uri: '/announcement/outbox/' + this.pageNumber,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+    this.setInteractEventData();
+  }
+  setInteractEventData() {
+    this.createAnnouncementInteractEdata = {
+      id: 'create-announcement',
+      type: 'click',
+      pageid: 'announcement-create'
+    };
+    this.deleteAnnouncementInteractEdata = {
+      id: 'delete-announcement',
+      type: 'click',
+      pageid: 'announcement-list'
+    };
+    this.resendAnnouncementInteractEdata = {
+      id: 'resend-announcement',
+      type: 'click',
+      pageid: 'announcement-resend'
+    };
+    this.navigateInteractEdata = {
+      id: 'paginate-outbox',
+      type: 'click',
+      pageid: 'announcement-list'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'announcement',
+      ver: '1.0'
     };
   }
 }
