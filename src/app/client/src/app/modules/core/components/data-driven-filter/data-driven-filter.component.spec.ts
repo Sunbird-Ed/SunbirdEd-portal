@@ -35,7 +35,14 @@ describe('DataDrivenFilterComponent', () => {
 };
 const fakeActivatedRoute = {
   'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
+  'queryParams':  Observable.from([{ subject: ['English'] }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'library'
+      }
+    }
+  }
 };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

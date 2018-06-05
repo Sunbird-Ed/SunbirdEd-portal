@@ -5,6 +5,7 @@ import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WebExtensionModule } from 'sunbird-web-extension';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
@@ -14,7 +15,7 @@ describe('MainMenuComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, WebExtensionModule],
+      imports: [HttpClientModule, WebExtensionModule, TelemetryModule],
       declarations: [MainMenuComponent],
       providers: [HttpClient, ResourceService, ConfigService, UserService,
         LearnerService, ContentService,

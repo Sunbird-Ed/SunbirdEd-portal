@@ -29,7 +29,14 @@ describe('LearnPageComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }])
+  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'library'
+      }
+    }
+  }
   };
 
   beforeEach(async(() => {
