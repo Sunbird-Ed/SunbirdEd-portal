@@ -21,6 +21,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  telemetryContentImpression: IImpressionEventInput;
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -167,6 +168,21 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
+          this.telemetryContentImpression = {
+            context: {
+              env: this.route.snapshot.data.telemetry.env
+            },
+            edata: {
+              type: this.route.snapshot.data.telemetry.env,
+              pageid: this.route.snapshot.data.telemetry.env,
+              uri: this.router.url
+            },
+            object: {
+              id: queryParams.contentId,
+              type: 'content',
+              ver: '1.0',
+            }
+          };
           this.contentId = queryParams.contentId;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
