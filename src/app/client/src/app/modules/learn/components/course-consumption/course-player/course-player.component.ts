@@ -10,8 +10,8 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import { IInteractEventInput, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
+  IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-course-player',
@@ -21,7 +21,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 export class CoursePlayerComponent implements OnInit, OnDestroy {
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
-  closeContentIntractEdata: IInteractEventEdata;
+  public closeContentIntractEdata: IInteractEventEdata;
   private activatedRoute: ActivatedRoute;
 
   private courseId: string;
@@ -166,7 +166,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             ver: this.telemetryObjectVer
           }
         };
-
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
       }).subscribe((response) => {
         this.courseHierarchy = response;
