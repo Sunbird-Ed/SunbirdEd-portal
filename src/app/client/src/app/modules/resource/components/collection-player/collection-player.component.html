@@ -82,6 +82,6 @@
     <div class="one wide column"></div>
   </div>
 </div>
-<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
 <router-outlet></router-outlet>

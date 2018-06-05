@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { OrgTypeService } from './../../services';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The component helps to display all the organisation types
@@ -14,6 +15,10 @@ import { OrgTypeService } from './../../services';
   styleUrls: ['./view-org-type.component.css']
 })
 export class ViewOrgTypeComponent implements OnInit {
+  /**
+  * telemetryImpression
+  */
+  telemetryImpression: IImpressionEventInput;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -115,6 +120,18 @@ export class ViewOrgTypeComponent implements OnInit {
         }
       });
     });
+
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: 'orgType',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
   }
 }
 

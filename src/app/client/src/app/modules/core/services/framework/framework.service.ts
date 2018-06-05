@@ -73,7 +73,7 @@ export class FrameworkService {
   }
 
   public initialize(hashTagId?: string) {
-    if (hashTagId === '') {
+    if (hashTagId === '' || hashTagId === undefined) {
       this.userService.userData$.subscribe(
         (user: IUserData) => {
           if (user && !user.err) {

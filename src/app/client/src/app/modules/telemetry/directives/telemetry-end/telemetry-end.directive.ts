@@ -1,11 +1,11 @@
-import { Directive, ElementRef, Input,  OnChanges, DoCheck  } from '@angular/core';
+import { Directive, ElementRef, Input,  OnDestroy, DoCheck  } from '@angular/core';
 import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 
 @Directive({
   selector: '[appTelemetryEnd]'
 })
-export class TelemetryEndDirective implements  OnChanges {
+export class TelemetryEndDirective implements  OnDestroy {
 
   /**
    * Interact event input
@@ -23,7 +23,7 @@ export class TelemetryEndDirective implements  OnChanges {
   constructor(telemetryService: TelemetryService) {
     this.telemetryService = telemetryService;
   }
-  ngOnChanges() {
+  ngOnDestroy() {
     if (this.appTelemetryEnd) {
        this.telemetryService.end(this.appTelemetryEnd);
     }

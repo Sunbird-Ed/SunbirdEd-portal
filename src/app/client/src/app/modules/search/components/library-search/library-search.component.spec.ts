@@ -33,7 +33,14 @@ describe('LibrarySearchComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}])
+    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'library', pageid: 'library-search', type: 'view', subtype: 'paginate'
+        }
+      }
+    }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
