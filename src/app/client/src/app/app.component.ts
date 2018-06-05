@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
         host: '',
         uid: this.userProfile.userId,
         sid: this.userService.sessionId,
-        channel: _.get(this.userService, 'rootOrg.hashTagId'),
+        channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
         env: 'home'
       }
     };
