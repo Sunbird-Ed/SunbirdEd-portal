@@ -36,7 +36,7 @@ describe('UserProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule, RouterTestingModule, OrderModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule, RouterTestingModule, OrderModule],
       declarations: [ UserProfileComponent ],
       providers: [ ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,

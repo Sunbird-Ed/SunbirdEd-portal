@@ -41,7 +41,8 @@ describe('ResourceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule, NgInviewModule, TelemetryModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule,
+         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
          { provide: Router, useClass: RouterStub },

@@ -8,7 +8,7 @@ describe('PlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
+      imports: [SharedModule.forRoot()],
       declarations: [ ]
     })
     .compileComponents();

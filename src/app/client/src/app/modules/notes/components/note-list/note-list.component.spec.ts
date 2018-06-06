@@ -35,7 +35,7 @@ describe('NoteListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, OrderModule, SharedModule, CoreModule,
+      imports: [HttpClientTestingModule, OrderModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule, NgInviewModule],
       declarations: [NoteListComponent, TimeAgoPipe],
       providers: [NotesService,

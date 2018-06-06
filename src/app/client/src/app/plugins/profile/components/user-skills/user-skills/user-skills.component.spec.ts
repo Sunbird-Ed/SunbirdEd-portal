@@ -24,7 +24,7 @@ describe('UserSkillsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserSkillsComponent, EditUserSkillsComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

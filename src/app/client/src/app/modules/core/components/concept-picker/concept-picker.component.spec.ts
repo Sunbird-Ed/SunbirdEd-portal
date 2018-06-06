@@ -11,7 +11,7 @@ describe('ConceptPickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, FormsModule, HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), FormsModule, HttpClientTestingModule],
       declarations: [ ConceptPickerComponent ],
       providers: [SearchService, ConceptPickerService, UserService, LearnerService, ContentService]
     })

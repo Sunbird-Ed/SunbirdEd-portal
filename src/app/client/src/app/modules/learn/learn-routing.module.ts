@@ -14,14 +14,14 @@ const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
   {
-    path: 'learn', component: LearnPageComponent,
+    path: '', component: LearnPageComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
     }
   },
   {
-    path: 'learn/course', component: CourseConsumptionPageComponent,
+    path: 'course', component: CourseConsumptionPageComponent,
      data: {  telemetry: { env: telemetryEnv }},
     children: [
       {
