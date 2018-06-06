@@ -9,14 +9,29 @@ import {
   ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
-
+import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-collection-player',
   templateUrl: './collection-player.component.html',
   styleUrls: ['./collection-player.component.css']
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy {
-
+  /**
+	 * sharelinkInteractEdata
+	*/
+  sharelinkInteractEdata: IInteractEventEdata;
+  /**
+	 * flageContentIntractEdata
+	*/
+  flageContentIntractEdata: IInteractEventEdata;
+  /**
+	 * copyContentIntractEdata
+	*/
+  copyContentIntractEdata: IInteractEventEdata;
+  /**
+	 * telemetryInteractObject
+	*/
+  telemetryInteractObject: IInteractEventObject;
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -99,6 +114,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getContent();
+    this.setInteractEventData();
   }
 
   ngOnDestroy() {
@@ -231,4 +247,26 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       ver: param.pkgVersion ? param.pkgVersion : 1
     }];
   }
+  setInteractEventData() {
+    this.flageContentIntractEdata = {
+       id: 'flag-collection',
+       type: 'click',
+       pageid: 'collection-player'
+    };
+    this.copyContentIntractEdata = {
+       id: 'copy-content',
+       type: 'click',
+       pageid: 'collection-player'
+    };
+    this.sharelinkInteractEdata = {
+      id: 'share-link',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.telemetryInteractObject =  {
+      id: this.route.snapshot.params.collectionId,
+      type: 'collection',
+      ver: '1.0'
+    };
+   }
 }

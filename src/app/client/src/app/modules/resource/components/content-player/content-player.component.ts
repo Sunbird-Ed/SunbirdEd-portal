@@ -8,7 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
-
+import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  *Component to play content
  */
@@ -18,6 +18,22 @@ import {
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  /**
+	 * sharelinkInteractEdata
+	*/
+  sharelinkInteractEdata: IInteractEventEdata;
+  /**
+	 * flageContentIntractEdata
+	*/
+  flageContentIntractEdata: IInteractEventEdata;
+  /**
+	 * copyContentIntractEdata
+	*/
+  copyContentIntractEdata: IInteractEventEdata;
+  /**
+	 * telemetryInteractObject
+	*/
+  telemetryInteractObject: IInteractEventObject;
   sharelinkModal: boolean;
   /**
    * contains link that can be shared
@@ -87,6 +103,7 @@ export class ContentPlayerComponent implements OnInit {
           }
         });
     });
+    this.setInteractEventData();
   }
   /**
    * used to fetch content details and player config. On success launches player.
@@ -158,11 +175,33 @@ export class ContentPlayerComponent implements OnInit {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
      this.setTelemetryShareData(this.contentData);
   }
-    setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion : 1
     }];
   }
+  setInteractEventData() {
+    this.flageContentIntractEdata = {
+       id: 'flag-content',
+       type: 'click',
+       pageid: 'content-player'
+    };
+    this.copyContentIntractEdata = {
+       id: 'copy-content',
+       type: 'click',
+       pageid: 'content-player'
+    };
+    this.sharelinkInteractEdata = {
+      id: 'share-link',
+      type: 'click',
+      pageid: 'content-player'
+    };
+    this.telemetryInteractObject =  {
+      id: this.activatedRoute.snapshot.params.contentId,
+      type: 'collection',
+      ver: '1.0'
+    };
+   }
 }
