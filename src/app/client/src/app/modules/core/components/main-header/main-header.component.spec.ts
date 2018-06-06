@@ -9,6 +9,7 @@ import { ConfigService, ResourceService, ToasterService, SharedModule } from '@s
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DOCUMENT } from '@angular/common';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -33,6 +34,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should subscribe to user service', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
@@ -42,6 +44,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should subscribe to tenant service and update logo and tenant name', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
     spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
@@ -51,12 +54,14 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should not update logo unless tenant service returns it', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     expect(component.logo).toBeUndefined();
     expect(component.tenantName).toBeUndefined();
   });
 
   it('Should update the logo on initialization', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
     spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
