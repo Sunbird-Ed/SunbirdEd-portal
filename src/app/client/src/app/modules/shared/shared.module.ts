@@ -20,6 +20,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 
 @NgModule({
   imports: [
@@ -33,11 +34,11 @@ import { NgInviewModule } from 'angular-inport';
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
-    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent],
+    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent]
+    QrCodeModalComponent, CdnprefixPipe]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
