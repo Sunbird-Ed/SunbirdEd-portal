@@ -235,7 +235,7 @@ export class ContentPlayerComponent implements OnInit {
     };
     this.telemetryInteractObject =  {
       id: this.activatedRoute.snapshot.params.contentId,
-      type: 'collection',
+      type: 'content',
       ver: '1.0'
     };
    }
