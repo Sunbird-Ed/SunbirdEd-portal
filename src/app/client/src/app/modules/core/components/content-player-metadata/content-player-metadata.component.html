@@ -60,12 +60,22 @@
             </div>
             <div class="item padding-top-10 padding-bottom-5">
                 <div class="ui grid">
-                    <div class="three wide column">
+                    <div class="three wide tablet computer only column">
                         <div class="content content-detail">
                             {{resourceService.frmelmnts.lbl.board}}
                         </div>
                     </div>
-                    <div class="nine wide column">
+                    <div class="nine wide tablet computer only column">
+                        <div class="content" *ngIf="metadata.board">
+                            {{metadata.board}}
+                        </div>
+                    </div>
+                    <div class="six wide mobile only column">
+                        <div class="content content-detail">
+                            {{resourceService.frmelmnts.lbl.board}}
+                        </div>
+                    </div>
+                    <div class="six wide mobile only column">
                         <div class="content" *ngIf="metadata.board">
                             {{metadata.board}}
                         </div>
