@@ -65,7 +65,7 @@ describe('LimitedPublishedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

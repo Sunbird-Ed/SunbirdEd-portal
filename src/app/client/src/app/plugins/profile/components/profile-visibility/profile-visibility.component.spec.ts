@@ -14,7 +14,7 @@ describe('ProfileVisibilityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [ProfileVisibilityComponent],
       providers: [ResourceService, ProfileService, UserService]
     })

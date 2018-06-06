@@ -1,5 +1,9 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "genDir": "aot",
+    "debug": true
+  },
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

@@ -29,7 +29,7 @@ describe('UserFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [ UserFilterComponent ],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,

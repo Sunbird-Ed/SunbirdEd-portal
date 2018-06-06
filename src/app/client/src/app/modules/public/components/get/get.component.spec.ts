@@ -28,7 +28,7 @@ describe('GetComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [ GetComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

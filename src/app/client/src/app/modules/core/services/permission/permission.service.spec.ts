@@ -18,7 +18,7 @@ const mockResource = {
 describe('PermissionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
       providers: [ResourceService, ToasterService, PermissionService, ConfigService, LearnerService, UserService]
     });
   });

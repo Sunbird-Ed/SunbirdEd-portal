@@ -28,6 +28,7 @@ import { OrderModule } from 'ngx-order-pipe';
     TelemetryModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent],
+  exports: [CourseProgressComponent],
   providers: [
     RendererService,
     DashboardUtilsService,

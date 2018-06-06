@@ -55,7 +55,7 @@ describe('AllContentComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AllContentComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

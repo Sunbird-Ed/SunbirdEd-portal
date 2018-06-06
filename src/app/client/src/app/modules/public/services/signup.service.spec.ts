@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 describe('SignupService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [SignupService, LearnerService]
     });
   });
