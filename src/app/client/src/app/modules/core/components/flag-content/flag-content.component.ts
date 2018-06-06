@@ -6,6 +6,7 @@ import {
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -22,6 +23,14 @@ import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './
 })
 export class FlagContentComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
+  /**
+	 * flageContentIntractEdata
+	*/
+  flageContentIntractEdata: IInteractEventEdata;
+  /**
+	 * telemetryInteractObject
+	*/
+  telemetryInteractObject: IInteractEventObject;
   /**
    * It is type of IFlagReason containing name, value and description
    */
@@ -183,9 +192,11 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       if (params.contentId) {
         this.identifier = params.contentId;
         this.getContentData();
+        this.setInteractEventData(params);
       } else {
         this.identifier = params.collectionId ?  params.collectionId :  params.courseId;
         this.getCollectionHierarchy();
+        this.setInteractEventData(params);
       }
     });
   }
@@ -194,5 +205,31 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       this.modal.deny();
     }
   }
+  setInteractEventData(params) {
+    if (params.contentId) {
+      this.flageContentIntractEdata = {
+        id: 'flag-content',
+        type: 'click',
+        pageid: 'content-player'
+      };
+    } else if ( params.collectionId ) {
+      this.flageContentIntractEdata = {
+        id: 'flag-collection',
+        type: 'click',
+        pageid: 'collection-player'
+      };
+    } else {
+      this.flageContentIntractEdata = {
+        id: 'flag-course',
+        type: 'click',
+        pageid: 'course-player'
+      };
+    }
+    this.telemetryInteractObject =  {
+      id: this.identifier,
+      type: 'collection',
+      ver: '1.0'
+    };
+   }
 }
 

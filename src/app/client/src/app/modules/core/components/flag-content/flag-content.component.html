@@ -42,7 +42,8 @@
         </form>
     </div>
     <div class="actions" *ngIf="!showLoader">
-        <button class="ui primary button " (click)="saveMetaData(modal)" [disabled]="!flagData.flagReasons">
+        <button class="ui primary button " appTelemetryInteract  [telemetryInteractEdata]="flageContentIntractEdata" [telemetryInteractObject]="telemetryInteractObject"
+         (click)="saveMetaData(modal)" [disabled]="!flagData.flagReasons">
             {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
     </div>
