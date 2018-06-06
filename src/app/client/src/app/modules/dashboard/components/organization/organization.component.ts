@@ -23,7 +23,7 @@ import * as _ from 'lodash';
  * @class OrganisationComponent
  */
 export class OrganisationComponent implements OnDestroy {
-
+  interactObject: any;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
    */
@@ -185,6 +185,7 @@ export class OrganisationComponent implements OnDestroy {
           type: 'org',
           ver: '1.0'
         };
+        this.interactObject = { id: params.id, type: 'organization', ver: '1.0' };
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
