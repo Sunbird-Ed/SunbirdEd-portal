@@ -1,8 +1,9 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { ICaraouselData } from '../../interfaces/caraouselData';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This display a a section
  */
@@ -11,8 +12,9 @@ import * as _ from 'lodash';
   templateUrl: './page-section.component.html',
   styleUrls: ['./page-section.component.css']
 })
-export class PageSectionComponent {
+export class PageSectionComponent implements OnInit {
   inviewLogs = [];
+  cardIntractEdata: IInteractEventEdata;
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -35,20 +37,15 @@ export class PageSectionComponent {
   }
   playContent(event) {
     this.playEvent.emit(event);
-    this.setTelemetryData(event);
   }
-
-  public setTelemetryData(event) {
-    if (this.activatedRoute.snapshot.data.telemetry.env === 'library') {
-      this.resourcesInteractEdata = {
-        id: event.data.metaData.contentType,
+  ngOnInit() {
+    const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
+    const pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+    if (id && pageid) {
+      this.cardIntractEdata = {
+        id: id + '-card',
         type: 'click',
-        pageid: 'library'
-      };
-      this.telemetryInteractObject = {
-        id: event.data.metaData.identifier,
-        type: 'library',
-        ver: '1.0'
+        pageid: pageid
       };
     }
   }

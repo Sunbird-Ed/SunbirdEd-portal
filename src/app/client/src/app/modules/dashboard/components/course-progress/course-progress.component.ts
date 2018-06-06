@@ -18,6 +18,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   styleUrls: ['./course-progress.component.css']
 })
 export class CourseProgressComponent implements OnInit, OnDestroy {
+  interactObject: any;
   /**
 	 * This variable helps to show and hide page loader.
 	 */
@@ -304,6 +305,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
                 ver: this.activatedRoute.snapshot.data.telemetry.object.ver
               }
             };
+            this.interactObject = { id: this.courseId, type: 'course', ver: '1.0' };
             this.populateBatchData();
           });
       }

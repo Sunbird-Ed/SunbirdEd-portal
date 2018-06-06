@@ -28,6 +28,9 @@ export class LearnPageComponent implements OnInit {
    * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
+
   /**
    * To show toaster(error, success etc) after any API calls
    */
@@ -233,6 +236,16 @@ export class LearnPageComponent implements OnInit {
         uri: this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'course-page'
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'course-page'
     };
   }
   prepareVisits(event) {

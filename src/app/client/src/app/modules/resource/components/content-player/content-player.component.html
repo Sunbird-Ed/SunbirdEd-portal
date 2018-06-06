@@ -1,11 +1,10 @@
-<br>
 <div id="content-player" class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class='margin-top--5 videosegment ui segment'>
             <div class='content-player-body'>
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
-                    <div class="ui grid">
+                    <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
                         <div class="row margin-auto padding-bottom-none">
                             <div class="twelve wide column">
                                 <div class="ten wide column" id="player-auto-scroll">
@@ -14,7 +13,7 @@
                                     </span>
                                 </div>
                                 <div class="two wide column">
-                                    <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
                                         <i class="ui remove icon"></i>
                                     </h5>
                                 </div>
