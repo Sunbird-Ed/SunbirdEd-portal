@@ -23,6 +23,7 @@ export class MainHeaderComponent implements OnInit {
   key: string;
   queryParam: any = {};
   selectedLanguage: string;
+  queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
   languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
@@ -92,8 +93,11 @@ export class MainHeaderComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
+      if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
+        this.queryParamLanguage = this.queryParam['language'];
+        this.resourceService.getResource(this.queryParam['language']);
+      }
       this.selectedLanguage = this.queryParam['language'] || 'en';
-      this.resourceService.getResource(this.selectedLanguage);
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;

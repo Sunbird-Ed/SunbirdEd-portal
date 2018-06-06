@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
-
+import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html',
@@ -15,6 +15,11 @@ export class BatchDetailsComponent implements OnInit {
   @Input() courseId: string;
   @Input() enrolledCourse: boolean;
   @Input() batchId: string;
+  @Input() courseHierarchy: any;
+  public courseInteractObject: IInteractEventObject;
+  public updateBatchIntractEdata: IInteractEventEdata;
+  public createBatchIntractEdata: IInteractEventEdata;
+  public enrollBatchIntractEdata: IInteractEventEdata;
   courseMentor = false;
   batchList = [];
   userList = [];
@@ -33,6 +38,26 @@ export class BatchDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.courseInteractObject = {
+      id: this.courseHierarchy.identifier,
+      type: 'Course',
+      ver: this.courseHierarchy.pkgVersion || '1'
+    };
+    this.updateBatchIntractEdata = {
+      id: 'update-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
+    this.createBatchIntractEdata = {
+      id: 'create-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
+    this.enrollBatchIntractEdata = {
+      id: 'enroll-batch',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {

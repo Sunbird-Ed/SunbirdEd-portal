@@ -48,7 +48,7 @@
                     <button *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" class="ui item text-upper-case"
                         routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a href="/home" class="sunblogin">
+                    <a  href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
                 </div>
@@ -150,15 +150,15 @@
         <div class="center aligned twelve wide mobile only column anon-consumption-sec-menu padding-top-none">
             <div class="ui grid">
                 <div class="twelve wide column">
-                    <button class="ui basic button left-float" (click)="showQrmodal = true;">
+                    <button class="ui basic button qr-code-btn left-float" (click)="showQrmodal = true;">
                         <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
                     </button>
                 </div>
             </div>
             <div class="ui grid">
                 <div class="twelve wide column">
-                    <div class="ui dropdown anon-consumption-drpdwn padding-top-10">
-                        <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection profile-dropdown-gender-lock"
+                    <div class="ui dropdown anon-consumption-drpdwn anon-consum-drpdwn-mobile left-float">
+                        <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection anon-consum-drpdwn-mobile"
                             labelField="name" valueField="id">
                             <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option>
                         </sui-select>

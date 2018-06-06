@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
@@ -7,7 +7,7 @@ import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 
 /**
@@ -21,7 +21,8 @@ import * as _ from 'lodash';
   styleUrls: ['./course-consumption.component.css']
 })
 export class CourseConsumptionComponent {
-
+  timePeriodInteractData: IInteractEventEdata;
+  interactObject: any;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
    */
@@ -157,7 +158,7 @@ export class CourseConsumptionComponent {
           type: 'course',
           ver: '1.0'
         };
-
+        this.interactObject = { id: params.id, type: 'course', ver: '1.0' };
         this.isMultipleCourses = false;
         this.showDashboard = true;
         this.getDashboardData(params.timePeriod, params.id);
@@ -190,9 +191,9 @@ export class CourseConsumptionComponent {
         this.graphData = this.rendererService.visualizer(data, this.chartType);
         this.showLoader = false;
       },
-        err => {
-          this.showLoader = false;
-        }
+      err => {
+        this.showLoader = false;
+      }
       );
   }
 

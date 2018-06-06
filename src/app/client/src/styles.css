@@ -2717,3 +2717,10 @@ iframe.iziModal-iframe {
 .remove-outline {
   outline: none !important;
 }
+
+.capitalize-text {
+  text-transform: capitalize;
+}
+.left-float {
+  float: left !important;
+}

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -26,6 +28,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
    */
   showCopyLoader = false;
   onPageLoadResume = true;
+  courseInteractObject: IInteractEventObject;
+  resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledCourse: boolean;
   batchId: any;
@@ -48,6 +52,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       this.batchId = param.batchId;
       this.courseStatus = param.courseStatus;
       this.progress = this.courseHierarchy.progress;
+      this.resumeIntractEdata = {
+        id: 'course-resume',
+        type: 'click',
+        pageid: 'course-consumption'
+      };
+      this.courseInteractObject = {
+        id: this.courseHierarchy.identifier,
+        type: 'Course',
+        ver: this.courseHierarchy.pkgVersion || '1',
+      };
       if (this.courseHierarchy.status === 'Flagged') {
         this.flaggedCourse = true;
       }
