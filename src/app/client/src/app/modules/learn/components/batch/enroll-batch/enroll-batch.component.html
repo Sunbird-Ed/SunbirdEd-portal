@@ -14,7 +14,7 @@
                         <div class="two wide column ">
                             <div class="ui card float right">
                                 <div class="ui fluid image">
-                                    <img src="{{'assets/images/default.png'}}">
+                                    <img src="{{'assets/images/default.png' | cdnprefixurl}}">
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="ui very relaxed list padding-top-10 batch-list-items">
                                     <div class="item" *ngFor='let user of batchDetails.participantDetails'>
-                                        <img class="ui avatar  image" src="{{user.thumbnail || 'assets/images/user_logo.png'}}">
+                                        <img class="ui avatar  image" src="{{user.thumbnail || 'assets/images/user_logo.png' | cdnprefixurl}}">
                                         <div class="content padding-top-10">
                                             <div class="header">{{user.firstName}} {{user.lastName}}</div>
                                         </div>

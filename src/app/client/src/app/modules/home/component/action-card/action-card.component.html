@@ -7,7 +7,7 @@
             <div class="ui fluid image" (click)="onAction(enrolledCourses)" appTelemetryInteract  [telemetryInteractEdata]="courseIntractEdata" [telemetryInteractObject]="telemetryInteractObject">
                 <a class="ui black right ribbon label">{{resourceService.frmelmnts?.bdge?.course}}</a>
 
-                <img src="{{ enrolledCourses.appIcon || enrolledCourses.courseLogoUrl || '/assets/images/default.png' }}">
+                <img src="{{ enrolledCourses.appIcon || enrolledCourses.courseLogoUrl || 'assets/images/default.png' | cdnprefixurl }}">
             </div>
             <div class="cardImageText center aligned " suiPopup popupText="{{enrolledCourses.courseName}}"> 
                 <span class="sliderCardHeading text-cencapitalize">
