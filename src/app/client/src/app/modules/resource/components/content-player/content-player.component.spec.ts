@@ -2,12 +2,13 @@ import { Observable } from 'rxjs/Observable';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed , inject} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import {ExtUrlContentResponse } from './content-player.component.mock.data';
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -132,4 +133,17 @@ describe('ContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
+  it('should display preview for mimeType x-url', inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
+    (router, toasterService, resourceService, playerservice, windowScrollService) => {
+      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
+      spyOn(toasterService, 'warning').and.callThrough();
+      spyOn(windowScrollService, 'smoothScroll');
+      component.getContent();
+      const windowSpy = spyOn(window, 'open');
+      windowScrollService.smoothScroll('app-player-collection-renderer');
+      window.open('/learn/redirect', '_blank');
+      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
+      expect(windowScrollService.smoothScroll).toHaveBeenCalled();
+      expect(toasterService.warning).toBeDefined();
+    }));
 });

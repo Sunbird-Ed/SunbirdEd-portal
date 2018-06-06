@@ -2,14 +2,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { INoteData } from '@sunbird/notes';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush, inject } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoursePlayerComponent } from './course-player.component';
-import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
 import {} from 'jasmine';
 import { CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
-import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
+import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged,
+   ExtUrlContentResponse } from './course-player.component.mock.data';
 import { Subject } from 'rxjs/Subject';
 
 describe('CoursePlayerComponent', () => {
@@ -82,6 +83,17 @@ describe('CoursePlayerComponent', () => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
   });
+
+  it('should take else path when data is null', inject([Router, CourseConsumptionService, ToasterService,
+    ResourceService, WindowScrollService],
+    (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
+      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
+      spyOn(courseconsumptionservice, 'getConfigByContent').and.callFake(() => Observable.throw({}));
+      spyOn(toasterService, 'error').and.callThrough();
+      component.playContent('do_2123475531394826241107');
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.stmsg.m0009);
+    }));
+
 
   it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -211,4 +223,19 @@ describe('CoursePlayerComponent', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });
+  it('should call playContent function', inject([Router, CourseConsumptionService, ToasterService, ResourceService, WindowScrollService],
+    (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
+      spyOn(courseconsumptionservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
+      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
+      spyOn(toasterService, 'warning').and.callThrough();
+      spyOn(windowScrollService, 'smoothScroll');
+      component.playContent('do_2123475531394826241107');
+      const windowSpy = spyOn(window, 'open');
+      windowScrollService.smoothScroll('app-player-collection-renderer');
+      window.open('/learn/redirect', '_blank');
+      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
+      expect(windowScrollService.smoothScroll).toHaveBeenCalled();
+      expect(toasterService.warning).toBeDefined();
+    }));
+
 });

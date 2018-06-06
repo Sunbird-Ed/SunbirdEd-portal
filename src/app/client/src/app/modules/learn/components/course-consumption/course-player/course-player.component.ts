@@ -220,24 +220,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
-      if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-       const extUrlContent = '#&courseId=' + this.courseId + '#&batchId=' + this.batchId  + '#&contentId='
-       + this.contentId + '#&uid=' + this.userService.userid;
-
-        this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-        setTimeout(() => {
-          const newWindow = window.open('/learn/redirect', '_blank');
-          newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
-          + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
-          this.windowScrollService.smoothScroll('app-player-collection-renderer');
-        }, 3000);
-      }
+      this.checkExtUrl();
       this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
       this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     }, (err) => {
       this.loader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
+  }
+
+  checkExtUrl() {
+  if (this.playerConfig.metadata.mimeType === 'text/x-url') {
+    const extUrlContent = '#&courseId=' + this.courseId + '#&batchId=' + this.batchId  + '#&contentId='
+    + this.contentId + '#&uid=' + this.userService.userid;
+
+     this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+     setTimeout(() => {
+       const newWindow = window.open('/learn/redirect', '_blank');
+       newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
+       + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
+       this.windowScrollService.smoothScroll('app-player-collection-renderer');
+     }, 3000);
+   }
   }
 
   private navigateToContent(content: { title: string, id: string }): void {

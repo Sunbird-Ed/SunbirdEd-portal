@@ -1,17 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed , inject} from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
 import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
-import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
+import {
+  ToasterService, ResourceService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-import { inject } from '@angular/core/src/render3';
-import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
+// import { inject } from '@angular/core/src/render3';
+import { CollectionHierarchyGetMockResponse, ExtUrlContentResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+
+class RouterStub {
+  navigate = jasmine.createSpy('navigate');
+
+}
 
 describe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
@@ -19,6 +25,7 @@ describe('CollectionPlayerComponent', () => {
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
 
+  const playcontentmock = {id: 'do_1125110622654464001294', title: 'A5 ext link'};
   const fakeActivatedRoute = {
     params: Observable.of({ id: collectionId }),
     queryParams: Observable.of({ contentId: contentId }),
@@ -90,4 +97,18 @@ describe('CollectionPlayerComponent', () => {
   xit('should navigate to error page on invalid collection id', () => {});
   xit('should navigate to error page on valid collection id but invalid content id', () => {});
   xit('should show service unavailable message on API server error', () => {});
+
+  it('should display preview for mimeType x-url', inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
+    (router, toasterService, resourceService, playerservice, windowScrollService) => {
+      component.playContent(playcontentmock);
+      spyOn(playerservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
+      spyOn(toasterService, 'warning').and.callThrough();
+      spyOn(windowScrollService, 'smoothScroll');
+      const windowSpy = spyOn(window, 'open');
+      windowScrollService.smoothScroll('app-player-collection-renderer');
+      window.open('/learn/redirect', '_blank');
+      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
+      expect(windowScrollService.smoothScroll).toHaveBeenCalled();
+      expect(toasterService.warning).toBeDefined();
+    }));
 });

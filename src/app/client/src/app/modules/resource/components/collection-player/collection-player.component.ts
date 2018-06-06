@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService, ITelemetryShare
+  ContentUtilsServiceService, ITelemetryShare, IUserData
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -94,7 +94,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    */
   shareLink: string;
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
+  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService, public userService: UserService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
@@ -146,11 +146,25 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
+      this.checkExtUrl(content);
+
       return content;
     }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
+  }
+
+  public checkExtUrl(content) {
+    if (content.metadata.mimeType === 'text/x-url') {
+      const extUrlContent = '#&contentId='  + this.contentId + '#&uid=' + this.userService.userid;
+       this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+       setTimeout(() => {
+         const newWindow = window.open('/learn/redirect', '_blank');
+         newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId  + '#&uid=' + this.userService.userid;
+         this.windowScrollService.smoothScroll('app-player-collection-renderer');
+       }, 3000);
+     }
   }
 
   public playContent(data: any): void {

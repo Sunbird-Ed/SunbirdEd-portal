@@ -129,7 +129,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
@@ -140,6 +140,7 @@ export class ContentPlayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.checkExtUrl();
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
@@ -153,6 +154,19 @@ export class ContentPlayerComponent implements OnInit {
         this.showError = true;
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
       });
+  }
+
+  checkExtUrl() {
+    if (this.playerConfig.metadata.mimeType === 'text/x-url') {
+      const extUrlContent = '#&contentId=' + this.contentId + '#&uid=' + this.userService.userid;
+      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+      setTimeout(() => {
+        const newWindow = window.open('/learn/redirect', '_blank');
+        newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&contentId='
+          + this.contentId + '#&uid=' + this.userService.userid;
+        this.windowScrollService.smoothScroll('app-player-collection-renderer');
+      }, 3000);
+    }
   }
   /**
    * retry launching player with same content details
@@ -191,9 +205,9 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
-     this.setTelemetryShareData(this.contentData);
+    this.setTelemetryShareData(this.contentData);
   }
-    setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
