@@ -8,6 +8,7 @@ import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  *Component to play content
@@ -18,6 +19,12 @@ import {
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
+  closeIntractEdata: IInteractEventEdata;
+  objectInteract: IInteractEventObject;
   sharelinkModal: boolean;
   /**
    * contains link that can be shared
@@ -88,6 +95,34 @@ export class ContentPlayerComponent implements OnInit {
         });
     });
   }
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.contentId,
+        type: this.contentData.contentType,
+        ver: this.contentData.pkgVersion || '1'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.closeIntractEdata = {
+      id: 'content-close',
+      type: 'click',
+      pageid: 'content-player'
+    };
+    this.objectInteract = {
+      id: this.contentId,
+      type: this.contentData.contentType,
+      ver: this.contentData.pkgVersion || '1'
+    };
+  }
   /**
    * used to fetch content details and player config. On success launches player.
    */
@@ -103,9 +138,9 @@ export class ContentPlayerComponent implements OnInit {
             contentId: this.contentId,
             contentData: response.result.content
           };
-
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
