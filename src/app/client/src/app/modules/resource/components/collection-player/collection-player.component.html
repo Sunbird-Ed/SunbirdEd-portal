@@ -46,17 +46,17 @@
     <a (click)="onShareLink();sharelinkModal=true;">
       <i class="cursor-pointer large blue share alternate icon"></i>
     </a>
-    <a routerLink="flag">
+    <a appTelemetryInteract  [telemetryInteractEdata]="flageContentIntractEdata" [telemetryInteractObject]="telemetryInteractObject" routerLink="flag">
       <i class="ui large blue flag outline icon"></i>
     </a>
     <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
       [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
-      title="Copy content">
+      title="Copy content"  appTelemetryInteract  [telemetryInteractEdata]="copyContentIntractEdata" [telemetryInteractObject]="telemetryInteractObject">
       <i class="ui large blue clone outline icon"></i>
     </span>
     <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
       [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
-      title="Copy content">
+      title="Copy content"  appTelemetryInteract  [telemetryInteractEdata]="copyContentIntractEdata" [telemetryInteractObject]="telemetryInteractObject">
       <i class="ui large blue clone outline icon"></i>
     </span>
   </div>
