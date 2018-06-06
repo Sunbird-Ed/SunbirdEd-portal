@@ -8,23 +8,32 @@ const telemetryEnv = 'library';
 const routes: Routes = [
   {
     path: 'resources', component: ResourceComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
-    telemetry: { env: telemetryEnv, pageid: 'resources', type: 'view' } }
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'resources', type: 'view' }
+    }
   }, {
     path: 'resources/play/collection/:collectionId', component: CollectionPlayerComponent,
     data: {
-      telemetry: { env: telemetryEnv }
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'collection-player', type: 'play' }
     },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
     path: 'resources/play/collection/:collectionId/:collectionStatus', component: CollectionPlayerComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'collection-player-unlisted', type: 'play' }
+    }
   }, {
     path: 'resources/play/content/:contentId', component: ContentPlayerComponent,
-    data: {  telemetry: {
-            env: telemetryEnv
-          }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }] },
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'content-player', type: 'play'
+      }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
+    },
     children: [
       { path: 'flag', component: FlagContentComponent }
     ]
@@ -32,6 +41,10 @@ const routes: Routes = [
     path: 'resources/play/content/:contentId/note', component: NoteListComponent
   }, {
     path: 'resources/play/content/:contentId/:contentStatus', component: ContentPlayerComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'content-player-unlisted', type: 'play' }
+    }
   }
 ];
 

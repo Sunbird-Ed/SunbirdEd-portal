@@ -36,6 +36,9 @@ describe('ExploreContentComponent', () => {
     'params': Observable.from([{ pageNumber: '3' }]),
     'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
     snapshot: {
+      params: {
+        slug: 'ap'
+      },
       data: {
         telemetry: {
           env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
@@ -100,4 +103,3 @@ describe('ExploreContentComponent', () => {
     expect(component.showLoader).toBeFalsy();
   });
 });
-

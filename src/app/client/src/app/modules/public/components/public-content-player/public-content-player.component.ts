@@ -58,26 +58,11 @@ export class PublicContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    Observable
-      .combineLatest(
-      this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
-      .subscribe(bothParams => {
-        this.contentId = bothParams.params.contentId;
-        this.setTelemetryData();
-        this.getContent();
-        this.queryParams = { ...bothParams.queryParams };
-        if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
-          this.selectedLanguage = this.queryParams['language'];
-          this.resourceService.getResource(this.selectedLanguage);
-        }
-      });
+    this.activatedRoute.params.subscribe((params) => {
+      this.contentId = params.contentId;
+      this.setTelemetryData();
+      this.getContent();
+    });
   }
   setTelemetryData() {
     this.telemetryImpression = {

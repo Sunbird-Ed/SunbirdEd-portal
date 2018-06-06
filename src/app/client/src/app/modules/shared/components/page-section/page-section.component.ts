@@ -3,6 +3,8 @@ import { Component,  Input, EventEmitter, Output } from '@angular/core';
 import {ICaraouselData} from '../../interfaces/caraouselData';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This display a a section
  */
@@ -13,6 +15,7 @@ import * as _ from 'lodash';
 })
 export class PageSectionComponent implements OnInit {
   inviewLogs = [];
+  cardIntractEdata: IInteractEventEdata;
   /**
   * section is used to render ICaraouselData value on the view
   */
@@ -35,6 +38,15 @@ export class PageSectionComponent implements OnInit {
     this.playEvent.emit(event);
   }
   ngOnInit() {
+    const id = _.get(this.activatedRoute, 'snapshot.data.telemetry.env');
+    const pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+    if (id && pageid) {
+      this.cardIntractEdata = {
+        id: id + '-card',
+        type: 'click',
+        pageid: pageid
+      };
+    }
   }
   /**
    * get inview  Data

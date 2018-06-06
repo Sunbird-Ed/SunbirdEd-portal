@@ -90,12 +90,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getContent();
-    this.route.queryParams.subscribe((queryParams) => {
-      if (this.route.queryParams['language'] && this.route.queryParams['language'] !== this.selectedLanguage) {
-        this.selectedLanguage = this.queryParams['language'];
-        this.resourceService.getResource(this.selectedLanguage);
-      }
-    });
   }
   setTelemetryData() {
     this.telemetryImpression = {
