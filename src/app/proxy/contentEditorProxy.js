@@ -87,7 +87,7 @@ module.exports = function (app) {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/url/v1/fetchmeta', proxy(contentProxyUrl, {
+  app.use('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 }
