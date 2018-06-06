@@ -19,7 +19,17 @@ describe('RedirectComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should call window.open() in same tab', () => {
+    setTimeout(() => {
+      window.open(window.redirectUrl, '_self');
+    }, 500);
     expect(component).toBeTruthy();
+    expect(window.open).toBeDefined();
+  });
+
+  it('test goback function', () => {
+    component.goBack();
+    window.close();
+    expect(component.goBack).toBeDefined();
   });
 });
