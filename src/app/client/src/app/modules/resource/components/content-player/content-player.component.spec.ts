@@ -50,6 +50,7 @@ class RouterStub {
 const fakeActivatedRoute = {
   'params': Observable.from([{ contentId: 'd0_33567325' }]),
   snapshot: {
+    params: Observable.of({ contentId: 'd0_33567325' }),
     data: {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'

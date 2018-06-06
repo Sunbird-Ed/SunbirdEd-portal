@@ -23,6 +23,7 @@ describe('CollectionPlayerComponent', () => {
     params: Observable.of({ id: collectionId }),
     queryParams: Observable.of({ contentId: contentId }),
     snapshot: {
+      params: Observable.of({ id: collectionId }),
       data: {
         telemetry: {
           env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
