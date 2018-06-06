@@ -16,14 +16,17 @@ const objectType = 'course';
 const routes: Routes = [
   {
     path: 'learn', component: LearnPageComponent,
-    data: { breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }] },
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
+    }
   },
   {
     path: 'learn/redirect', component: RedirectComponent
   },
   {
     path: 'learn/course', component: CourseConsumptionPageComponent,
-     data: {  telemetry: { env: telemetryEnv }},
+    data: { telemetry: { env: telemetryEnv } },
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,

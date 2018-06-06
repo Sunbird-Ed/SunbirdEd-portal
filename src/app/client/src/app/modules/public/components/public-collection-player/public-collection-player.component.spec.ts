@@ -12,7 +12,14 @@ describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
   const fakeActivatedRoute = {
-    'queryParams': Observable.from([{ language: ['en'] }])
+    'queryParams': Observable.from([{ language: ['en'] }]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
