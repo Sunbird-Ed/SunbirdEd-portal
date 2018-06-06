@@ -48,7 +48,7 @@ describe('HomeSearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [HomeSearchComponent],
       providers: [ConfigService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },

@@ -27,7 +27,7 @@ describe('EditUserSkillsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditUserSkillsComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [ResourceService, UserService, ProfileService, Ng2IzitoastService, ToasterService,
         WindowScrollService,
         { provide: Router, useClass: RouterStub },

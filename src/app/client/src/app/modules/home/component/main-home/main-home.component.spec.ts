@@ -44,7 +44,7 @@ describe('MainHomeComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule,
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(),
        Ng2IziToastModule, NgInviewModule],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,

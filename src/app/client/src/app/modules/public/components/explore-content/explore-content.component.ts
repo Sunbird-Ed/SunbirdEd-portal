@@ -220,6 +220,16 @@ export class ExploreContentComponent implements OnInit {
         );
     }
 
+    compareObjects(a, b) {
+        if (a !== undefined) {
+            a = _.omit(a, ['language']);
+        }
+        if (b !== undefined) {
+            b = _.omit(b, ['language']);
+        }
+        return _.isEqual(a, b);
+    }
+
     setFilters() {
         this.filters = {};
         this.filterType = this.config.appConfig.explore.filterType;
@@ -238,6 +248,7 @@ export class ExploreContentComponent implements OnInit {
                 };
             })
             .subscribe(bothParams => {
+                this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
@@ -248,40 +259,44 @@ export class ExploreContentComponent implements OnInit {
                         contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
                     };
                 } else {
+                    this.filters = {
+                        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
+                    };
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
-                        if (queryParam !== 'key' && queryParam !== 'sort_by'
-                            && queryParam !== 'sortType' && queryParam !== 'language') {
-                            this.filters[queryParam] = queryValue;
-                        }
+                        this.filters[queryParam] = queryValue;
                     });
+                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType', 'language']);
                 }
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();
                 }
-                this.populateContentSearch();
+                if (this.tempPageNumber !== this.pageNumber || !this.isSearchable) {
+                    this.tempPageNumber = this.pageNumber;
+                    this.populateContentSearch();
+                }
             });
     }
 
     ngOnInit() {
+        this.slug = this.activatedRoute.snapshot.params.slug;
+        this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
-            this.slug = params.slug;
-            this.getChannelId();
             this.setTelemetryData();
         });
     }
     setTelemetryData() {
         this.telemetryImpression = {
-          context: {
-            env: this.activatedRoute.snapshot.data.telemetry.env
-          },
-          edata: {
-            type: this.activatedRoute.snapshot.data.telemetry.type,
-            pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-            uri: this.route.url,
-            subtype: this.activatedRoute.snapshot.data.telemetry.subtype
-          }
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.route.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+            }
         };
-      }
+    }
 
     public playContent(event) {
         this.navigationHelperService.storeResourceCloseUrl();
@@ -297,19 +312,19 @@ export class ExploreContentComponent implements OnInit {
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
-          const obj = _.find(this.inviewLogs, (o) => {
-            return o.objid === inview.data.metaData.identifier;
-          });
-          if (obj === undefined) {
-            this.inviewLogs.push({
-              objid: inview.data.metaData.identifier,
-              objtype: inview.data.metaData.contentType || 'content',
-              index: inview.id
+            const obj = _.find(this.inviewLogs, (o) => {
+                return o.objid === inview.data.metaData.identifier;
             });
-          }
+            if (obj === undefined) {
+                this.inviewLogs.push({
+                    objid: inview.data.metaData.identifier,
+                    objtype: inview.data.metaData.contentType || 'content',
+                    index: inview.id
+                });
+            }
         });
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
-      }
+    }
 }

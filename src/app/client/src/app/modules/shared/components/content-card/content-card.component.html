@@ -8,7 +8,7 @@
         {{content.badgeAssertions[0].badgeClassName}}</a>
       <a class="ui black right ribbon label " *ngIf="content.resourceType != undefined">{{content.resourceType}}</a>
       <a class="ui black right ribbon label " *ngIf="content.contentType != undefined">{{content.contentType }}</a>
-      <img src="{{ content.appIcon || content.courseLogoUrl || '/assets/images/default.png' }}">
+      <img src="{{ content.appIcon || content.courseLogoUrl || 'assets/images/default.png' | cdnprefixurl }}">
       <div class="cardImageText center aligned ">
         <span class="sliderCardHeading text-cencapitalize">{{content.name || content.courseName}}</span>
       </div>

@@ -41,7 +41,7 @@ describe('CourseSearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [CourseSearchComponent],
       providers: [ConfigService, CoursesService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },

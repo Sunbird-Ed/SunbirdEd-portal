@@ -22,7 +22,7 @@ const fakeActivatedRoute = {
 describe('NavigationHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SharedModule],
+      imports: [RouterTestingModule, SharedModule.forRoot()],
       providers: [NavigationHelperService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute},
         { provide: Router, useClass: RouterStub }]

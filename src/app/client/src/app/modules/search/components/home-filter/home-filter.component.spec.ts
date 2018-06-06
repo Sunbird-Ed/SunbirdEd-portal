@@ -26,7 +26,7 @@ describe('HomeFilterComponent', () => {
  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [ HomeFilterComponent ],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,  ConceptPickerService,

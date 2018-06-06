@@ -42,7 +42,8 @@ describe('LearnPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule, CoreModule, TelemetryModule, NgInviewModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule,
+         SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule, NgInviewModule],
       declarations: [ LearnPageComponent ],
       providers: [{ provide: Router, useClass: RouterStub },
          { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

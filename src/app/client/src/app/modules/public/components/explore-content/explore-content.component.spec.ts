@@ -36,6 +36,9 @@ describe('ExploreContentComponent', () => {
     'params': Observable.from([{ pageNumber: '3' }]),
     'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
     snapshot: {
+      params: {
+        slug: 'ap'
+      },
       data: {
         telemetry: {
           env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
@@ -45,7 +48,7 @@ describe('ExploreContentComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [ConfigService, SearchService, LearnerService, OrgManagementService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -100,4 +103,3 @@ describe('ExploreContentComponent', () => {
     expect(component.showLoader).toBeFalsy();
   });
 });
-

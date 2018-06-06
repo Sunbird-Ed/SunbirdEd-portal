@@ -9,3 +9,4 @@ export const WebExtensionsConfig = {
   }]
 };
 
+export const PluginModules = [ ProfileModule ];

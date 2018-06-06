@@ -14,7 +14,7 @@ describe('ProfileHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot()],
       declarations: [ProfileHeaderComponent],
       providers: [ProfileService, UserService, ResourceService],
       schemas: [NO_ERRORS_SCHEMA]
