@@ -20,14 +20,16 @@
           <div class="four wide column float-ContentLeft" *ngIf="batchlist.length > 1">
             <sui-select class="selection fluid" placeholder="Select batch to see dashboard" [(ngModel)]="selectedOption" [options]="batchlist"
               labelField="name" valueField="id" [isSearchable]="true" #select>
-              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);">
+              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course" (click)="setBatchId(course.id);"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:course.id,type:'click',pageid:'course-progress-dashboard'}">
               </sui-select-option>
             </sui-select>
           </div>
           <!-- Blank six wide column-->
           <div class="six wide column padding-top-20 ng-scope"></div>
           <div class="one wide column padding-top-20 padding-right-5">
-            <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
+            <a class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
               <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
             </a>
           </div>
@@ -35,10 +37,18 @@
         <div class="ui grid centered margin-top-10" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showWarningDiv">
           <div class="six wide column">
             <div class="ui text menu float-ContentLeft padding-top-10">
-              <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:queryParams.timePeriod === '7d'}" (click)="setTimePeriod('7d')">{{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '14d'}" (click)="setTimePeriod('14d')">{{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '5w'}" (click)="setTimePeriod('5w')">{{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')">{{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer active" [ngClass]="{active:queryParams.timePeriod === '7d'}" (click)="setTimePeriod('7d')"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-progress-dashboard'}">
+              {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '14d'}" (click)="setTimePeriod('14d')"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'14d',type:'click',pageid:'course-progress-dashboard'}">
+              {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === '5w'}" (click)="setTimePeriod('5w')"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'5w',type:'click',pageid:'course-progress-dashboard'}">
+              {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dashBoardMenuItem cursor-pointer" [ngClass]="{active:queryParams.timePeriod === 'fromBegining'}" (click)="setTimePeriod('fromBegining')"
+              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'fromBegining',type:'click',pageid:'course-progress-dashboard'}">
+              {{resourceService?.frmelmnts?.lbl?.dashboardfrombeginingfilter}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
           </div>
           <div class="two wide column"></div>
@@ -64,7 +74,9 @@
             <thead>
               <tr>
                 <th class="table-headerDashboard">
-                  <a href="Javascript:void(0);" [class.active]="order==='progress'" (click)="setOrder('progress')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
+                  <a href="Javascript:void(0);" [class.active]="order==='progress'" (click)="setOrder('progress')"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByStatus',type:'click',pageid:'course-progress-dashboard'}">
+                  {{resourceService?.frmelmnts?.lbl?.dashboardsortbystatus}}
                     <span [hidden]="reverse">
                       <i class="angle down icon" *ngIf="order === 'progress'"></i>
                     </span>
@@ -74,7 +86,9 @@
                   </a>
                 </th>
                 <th>
-                  <a href="Javascript:void(0);" [class.active]="order === 'userName'" (click)="setOrder('userName')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
+                  <a href="Javascript:void(0);" [class.active]="order === 'userName'" (click)="setOrder('userName')"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByUsername',type:'click',pageid:'course-progress-dashboard'}">
+                  {{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
                     <span [hidden]="reverse">
                       <i class="angle down icon" *ngIf="order === 'userName'"></i>
                     </span>
@@ -84,7 +98,9 @@
                   </a>
                 </th>
                 <th>
-                  <a href="Javascript:void(0);" [class.active]="order === 'batchEndsOn'" (click)="setOrder('batchEndsOn')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbybatchend}}
+                  <a href="Javascript:void(0);" [class.active]="order === 'batchEndsOn'" (click)="setOrder('batchEndsOn')"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByBatchEnd',type:'click',pageid:'course-progress-dashboard'}">
+                  {{resourceService?.frmelmnts?.lbl?.dashboardsortbybatchend}}
                     <span [hidden]="reverse">
                       <i class="angle down icon" *ngIf="order === 'batchEndsOn'"></i>
                     </span>
@@ -94,7 +110,9 @@
                   </a>
                 </th>
                 <th>
-                  <a href="Javascript:void(0);" [class.active]="order === 'org'" (click)="setOrder('org')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyorg}}
+                  <a href="Javascript:void(0);" [class.active]="order === 'org'" (click)="setOrder('org')"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByOrganization',type:'click',pageid:'course-progress-dashboard'}">
+                  {{resourceService?.frmelmnts?.lbl?.dashboardsortbyorg}}
                     <span [hidden]="reverse">
                       <i class="angle down icon" *ngIf="order === 'org'"></i>
                     </span>
@@ -104,7 +122,9 @@
                   </a>
                 </th>
                 <th>
-                  <a href="Javascript:void(0);" [class.active]="order === 'enrolledOn'" (click)="setOrder('enrolledOn')">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
+                  <a href="Javascript:void(0);" [class.active]="order === 'enrolledOn'" (click)="setOrder('enrolledOn')"
+                  appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}">
+                  {{resourceService?.frmelmnts?.lbl?.dashboardsortbyenrolledon}}
                     <span [hidden]="reverse">
                       <i class="angle down icon" *ngIf="order === 'enrolledOn'"></i>
                     </span>
@@ -137,7 +157,9 @@
         </div>
         <div class="twelve wide column margin-top-20" *ngIf="dashboarData && dashboarData.length > 0">
           <p class="text-align-right dashBoardCardText">{{resourceService?.frmelmnts?.instn?.t0058}}
-            <a href="javascript:void(0);" class="item text-decoration-underline padding-left-10" (click)="downloadReport();">{{resourceService?.frmelmnts?.instn?.t0059}}</a>
+            <a href="javascript:void(0);" class="item text-decoration-underline padding-left-10" (click)="downloadReport();"
+            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
+            {{resourceService?.frmelmnts?.instn?.t0059}}</a>
           </p>
         </div>
       </div>
@@ -153,7 +175,8 @@
       <!-- Show message if no batch is created-->
       <div class="ui grid" *ngIf="showNoBatch">
         <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
-          <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard">
+          <a (click)='redirect()' class="ui item basic icon circular float-ContentRight" data-tooltip="Close the dashboard"
+          appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
             <i class="ui remove icon CloseButtonFont"></i>
           </a>
         </div>

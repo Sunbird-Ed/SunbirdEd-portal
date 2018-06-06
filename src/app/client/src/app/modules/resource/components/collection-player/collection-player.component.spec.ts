@@ -21,7 +21,14 @@ describe('CollectionPlayerComponent', () => {
 
   const fakeActivatedRoute = {
     params: Observable.of({ id: collectionId }),
-    queryParams: Observable.of({ contentId: contentId })
+    queryParams: Observable.of({ contentId: contentId }),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
