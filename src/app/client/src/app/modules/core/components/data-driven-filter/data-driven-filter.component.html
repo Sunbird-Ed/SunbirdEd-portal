@@ -42,7 +42,7 @@
                         <sui-select-option *ngFor="let option of contentTypes" [value]="option.value"></sui-select-option>
                       </sui-multi-select>
                     </div> -->
-                    <div *ngIf="field.code==='concept' && showConceptPicker" class="field">
+                    <div *ngIf="field.code==='concept'" class="field">
                       <form class="conceptSelector ui form">
                         <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
                       </form>

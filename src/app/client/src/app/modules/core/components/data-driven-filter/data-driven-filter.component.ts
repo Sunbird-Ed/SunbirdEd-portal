@@ -19,7 +19,6 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
-  @Input() showConceptPicker = true;
 
   /**
  * To get url, app configs
