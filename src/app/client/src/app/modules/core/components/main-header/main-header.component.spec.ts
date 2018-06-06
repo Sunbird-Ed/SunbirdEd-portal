@@ -9,7 +9,6 @@ import { ConfigService, ResourceService, ToasterService, SharedModule } from '@s
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DOCUMENT } from '@angular/common';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
