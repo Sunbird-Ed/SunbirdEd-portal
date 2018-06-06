@@ -5,3 +5,7 @@
     background-color: white;
     z-index: 989898;
 }
+
+.capitalize-text {
+  text-transform: capitalize;
+}

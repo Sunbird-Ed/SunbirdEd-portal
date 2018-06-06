@@ -30,3 +30,7 @@
 .qr-code-modal-content .text-container {
     margin-top: 5.5em;
 }
+
+.capitalize-text {
+  text-transform: capitalize;
+}
