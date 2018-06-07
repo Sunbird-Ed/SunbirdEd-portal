@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed , inject} from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
+import { ContentService, PlayerService, CoreModule, UserService } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
 import {
@@ -16,7 +16,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
-
 }
 
 describe('CollectionPlayerComponent', () => {
