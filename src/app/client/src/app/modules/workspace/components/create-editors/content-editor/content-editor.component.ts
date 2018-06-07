@@ -135,7 +135,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: `${this.resourceService.cdnBaseUrl}thirdparty/editors/content-editor/index.html`,
+      iframeURL: '/thirdparty/editors/content-editor/index.html',
 
       navigateArrows: false,
       fullscreen: true,
