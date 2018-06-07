@@ -274,7 +274,13 @@ export class NoteListComponent implements OnInit {
    * This method helps in redirecting the user to parent url.
    */
   public redirect() {
-    if (this.batchId) {
+    if (this.batchId && this.activatedRoute.snapshot.params.contentId) {
+      const navigationExtras = {
+        queryParams: { 'contentId': this.activatedRoute.snapshot.params.contentId },
+        relativeTo: this.activatedRoute.parent
+      };
+      this.route.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    } else if (this.batchId) {
       const navigationExtras = {
         relativeTo: this.activatedRoute.parent
       };
