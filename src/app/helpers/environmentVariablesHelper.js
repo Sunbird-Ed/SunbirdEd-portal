@@ -4,8 +4,7 @@ const env = process.env
 let envVariables = {
   LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
   CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  // CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
-  CONTENT_PROXY_URL: 'http://localhost:5000',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
   PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
@@ -36,7 +35,7 @@ let envVariables = {
   learner_Service_Local_BaseUrl: env.sunbird_learner_service_local_base_url || 'http://learner-service:9000',
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content_service_content_service:5000',
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
-  SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS: env.sunbird_external_content_whitelisted_domains || 'youtube.com'
+   SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS: env.sunbird_external_content_whitelisted_domains || 'youtube.com'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
