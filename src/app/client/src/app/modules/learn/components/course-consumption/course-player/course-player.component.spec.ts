@@ -84,7 +84,7 @@ describe('CoursePlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should take else path when data is null', inject([Router, CourseConsumptionService, ToasterService,
+  it('should display error if player content data is error', inject([Router, CourseConsumptionService, ToasterService,
     ResourceService, WindowScrollService],
     (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
       resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
@@ -223,7 +223,8 @@ describe('CoursePlayerComponent', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });
-  it('should call playContent function', inject([Router, CourseConsumptionService, ToasterService, ResourceService, WindowScrollService],
+  it('should display preview with warning msg and open link in new tab', inject([Router, CourseConsumptionService,
+     ToasterService, ResourceService, WindowScrollService],
     (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
       spyOn(courseconsumptionservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
       resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
