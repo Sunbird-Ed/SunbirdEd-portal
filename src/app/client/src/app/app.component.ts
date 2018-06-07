@@ -80,7 +80,8 @@ export class AppComponent implements OnInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
+    this.telemetryService.syncEvents();
+    // document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
   }
   ngOnInit() {
     this.resourceService.initialize();

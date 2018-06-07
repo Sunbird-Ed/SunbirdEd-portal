@@ -64,6 +64,17 @@ export class TelemetryService {
 
   /**
    *
+   * Initializes the service
+   * @param {ITelemetryContext} context
+   * @memberof TelemetryService
+   */
+  public syncEvents() {
+    this.telemetryProvider.syncEvents();
+    console.log('Telemetry data is Synced!');
+  }
+
+  /**
+   *
    *
    * @param {IStartEventInput} startEventInput
    * @memberof TelemetryService
