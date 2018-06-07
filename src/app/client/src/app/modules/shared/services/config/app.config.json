@@ -468,7 +468,8 @@
     "lessonplan": "lessonplan",
     "library": "library",
     "allmycontent":"allmycontent",
-    "explore": "explore"
+    "explore": "explore",
+    "resourcebundle": "resourcebundle"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

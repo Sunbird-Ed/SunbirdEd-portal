@@ -96,7 +96,7 @@
             <div class="one wide column"></div>
         </div>
     </div>
-    <div class="ui grid margin-top-10">
+    <div class="ui grid margin-top-20">
         <div class="center aligned twelve column row anon-consumption-sec-menu padding-top-none">
             <div class="one wide column"></div>
             <div class="two wide column">
@@ -105,12 +105,8 @@
                 </button>
             </div>
             <div class="six wide column"></div>
-            <div class="two wide column">
-                <div class="ui dropdown anon-consumption-drpdwn right-float padding-top-10">
-                    <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection profile-dropdown-gender-lock" labelField="name" valueField="id">
-                        <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option>
-                    </sui-select>
-                </div>
+            <div class="two wide right floated right aligned column">
+                <app-language-dropdown [redirectUrl]="'explore/1'"></app-language-dropdown>
             </div>
             <div class="one wide column"></div>
         </div>

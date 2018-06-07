@@ -8,11 +8,13 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService,
-  TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
+  TenantService, FrameworkService, FormService, PlayerService, SearchService,
+  CopyContentService, BreadcrumbsService, OrgDetailsService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent, BreadcrumbsComponent
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent,
+  BreadcrumbsComponent, LanguageDropdownComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
@@ -30,9 +32,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
-    ContentPlayerMetadataComponent],
+    ContentPlayerMetadataComponent, LanguageDropdownComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent, TelemetryModule]
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent,
+    TelemetryModule, LanguageDropdownComponent]
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
@@ -41,7 +44,7 @@ export class CoreModule {
       providers: [LearnerService, UserService, TenantService, SearchService, CopyContentService,
         PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
         AuthGuard, FrameworkService, FormService, CacheService,
-        ConceptPickerService, BreadcrumbsService, PlayerService]
+        ConceptPickerService, BreadcrumbsService, PlayerService, OrgDetailsService]
     };
   }
 }
