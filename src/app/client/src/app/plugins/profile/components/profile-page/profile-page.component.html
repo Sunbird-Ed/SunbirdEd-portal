@@ -1,4 +1,4 @@
-<div class="ui" *ngIf="userProfile">
+<div [appTelemetryImpression]="telemetryImpression" class="ui" *ngIf="userProfile">
     <app-profile-header></app-profile-header>
 </div>
 <div class="ui stackable grid">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="twelve wide column" *ngIf="contributions && contributions.length > 0">
-                            <div class="ui raised segment" [appTelemetryImpression]="telemetryImpression">
+                            <div class="ui raised segment">
                                 <div class="header">
                                     <span class="segment-heading">{{resourceService.frmelmnts.scttl.contributions}}</span>
                                     <span class="add-edit-btn-profile">{{contributions.length}} {{resourceService.frmelmnts.lbl.contents}}</span>
