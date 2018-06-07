@@ -16,7 +16,7 @@ describe('EditUserAddressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditUserAddressComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, CoreModule, SharedModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [UserService, ProfileService, ResourceService, WindowScrollService]
     })
       .compileComponents();

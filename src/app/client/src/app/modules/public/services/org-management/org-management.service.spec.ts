@@ -15,7 +15,7 @@ describe('PublicPlayerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub }]
     });
   });

@@ -16,7 +16,7 @@
             <i class="float-ContentLeft alarm-icon-header alarm icon large alaramIconColor"></i>
             <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
              header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
-                <img src="{{ userProfile?.avatar || '/assets/images/user_logo.png'}}" class="ui circular image logged-in-user" />
+                <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user" />
                 <div class="menu" suiDropdownMenu>
                     <div *ngIf='userProfile' class="item headerDropdownProfile">{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                     <div *ngIf='userProfile' class="ui divider"></div>

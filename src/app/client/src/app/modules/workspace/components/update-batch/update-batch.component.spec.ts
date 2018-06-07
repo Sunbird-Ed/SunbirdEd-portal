@@ -69,7 +69,8 @@ describe('UpdateBatchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateBatchComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule,
+         RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

@@ -67,7 +67,7 @@ describe('UserUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, SharedModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },

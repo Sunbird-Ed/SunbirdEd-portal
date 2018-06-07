@@ -27,7 +27,7 @@
       <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" class="ui divided searchListInfo items" *ngIf="!showLoader && !noResult">
         <div in-view-item [id]="i" [data]="org" class="item userSearchCardHover" *ngFor="let org of searchList;let i = index;">
           <div class="ui tiny image userSearchImage ">
-            <img [src]="org.avatar || './assets/images/userOrganization.png'">
+            <img [src]="org.avatar || 'assets/images/userOrganization.png' | cdnprefixurl">
           </div>
           <div class="content ">
             <a class="header ">{{org.orgName}}</a>

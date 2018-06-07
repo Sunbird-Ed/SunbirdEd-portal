@@ -22,7 +22,7 @@ describe('WorkSpaceService', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpClientModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, HttpClientModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]

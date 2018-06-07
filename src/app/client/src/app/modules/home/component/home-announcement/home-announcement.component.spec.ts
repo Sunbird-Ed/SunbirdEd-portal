@@ -19,7 +19,7 @@ describe('HomeAnnouncementComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule,
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
       NgInviewModule, TelemetryModule],
       declarations: [HomeAnnouncementComponent],
       providers: [ResourceService, AnnouncementService, ConfigService,

@@ -17,7 +17,7 @@
           <div class="ui grid">
             <div class="two wide column padding-top-none">
               <div class="userAvtarWrap field link ui small circular image header-image-profile">
-                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || './assets/images/user_logo.png'">
+                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || 'assets/images/user_logo.png' | cdnprefixurl">
               </div>
             </div>
             <div class="ten wide column profile-header-text padding-top-none">
@@ -71,7 +71,7 @@
           </div>
           <div class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let address of userDetails.address">
-              <img class="ui avatar image" [src]="'./assets/images/location.png'">
+              <img class="ui avatar image" src="{{'assets/images/location.png' | cdnprefixurl}}">
               <div class="content">
                 <p class=" header">{{address.addType}}</p>
                 <div class="description"> {{address.addressLine1}}
@@ -95,7 +95,7 @@
           </div>
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let experience of userDetails.jobProfile">
-              <img class="ui avatar image" [src]="'./assets/images/businessman.png'">
+              <img class="ui avatar image" src="{{'assets/images/businessman.png' | cdnprefixurl}}">
               <div class="content ">
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}
@@ -125,7 +125,7 @@
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let education of userDetails.education">
 
-              <img class="ui avatar image" [src]="'./assets/images/businessman.png'">
+              <img class="ui avatar image" src="{{'assets/images/businessman.png' | cdnprefixurl}}">
               <div class="content">
                 <a class=" header">{{education.degree}}</a>
                 <div class="description"> {{education.yearOfPassing}}

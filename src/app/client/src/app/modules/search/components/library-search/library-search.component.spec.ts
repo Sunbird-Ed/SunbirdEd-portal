@@ -44,7 +44,7 @@ describe('LibrarySearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [LibrarySearchComponent],
       providers: [ConfigService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },

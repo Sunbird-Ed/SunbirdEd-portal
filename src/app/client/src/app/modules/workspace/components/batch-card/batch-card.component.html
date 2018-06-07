@@ -4,7 +4,7 @@
     appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:1.0}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
       <div class="ui fluid image">
           <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
-        <img src="{{'/assets/images/default.png'}}">
+        <img src="{{'assets/images/default.png' | cdnprefixurl}}">
       </div>
       <div class="batch-content" suiPopup popupText="{{batch.name}}">
         <span class="batch-content-description">{{batch.name | slice:0:20}}

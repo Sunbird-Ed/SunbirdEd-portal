@@ -18,8 +18,8 @@ describe('CreateBatchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SharedModule, CoreModule, SuiModule, LearnModule, RouterTestingModule, DashboardModule, HttpClientTestingModule,
-        WorkspaceModule],
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, LearnModule, RouterTestingModule, DashboardModule,
+        HttpClientTestingModule, WorkspaceModule],
     })
     .compileComponents();
   }));

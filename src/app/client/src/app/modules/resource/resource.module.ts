@@ -1,5 +1,5 @@
 import { ResourceRoutingModule } from './resource-routing.module';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
@@ -29,4 +29,5 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [ResourceComponent, CollectionPlayerComponent, ContentPlayerComponent]
 })
-export class ResourceModule { }
+export class ResourceModule {
+  }

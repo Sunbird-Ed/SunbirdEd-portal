@@ -17,7 +17,8 @@ describe('EnrollBatchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SharedModule, CoreModule, SuiModule, LearnModule, RouterTestingModule, DashboardModule, HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, LearnModule, RouterTestingModule,
+        DashboardModule, HttpClientTestingModule],
     })
     .compileComponents();
   }));

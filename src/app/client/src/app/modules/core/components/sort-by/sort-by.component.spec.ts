@@ -19,7 +19,7 @@ describe('SortByComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SortByComponent ],
-      imports: [HttpClientTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [ ResourceService, ConfigService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

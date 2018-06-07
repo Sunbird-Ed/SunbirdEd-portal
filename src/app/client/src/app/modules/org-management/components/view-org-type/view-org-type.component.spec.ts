@@ -39,7 +39,7 @@ describe('ViewOrgTypeComponent', () => {
             declarations: [ViewOrgTypeComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 RouterTestingModule, TelemetryModule,
-                SharedModule],
+                SharedModule.forRoot()],
             providers: [HttpClientModule, OrgTypeService, HttpClient,
                 PaginationService, ToasterService, ResourceService, LearnerService,
                 { provide: Router, useClass: RouterStub },

@@ -32,7 +32,7 @@ describe('EditUserEducationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditUserEducationComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [ResourceService, UserService, ProfileService, WindowScrollService]
     })
       .compileComponents();

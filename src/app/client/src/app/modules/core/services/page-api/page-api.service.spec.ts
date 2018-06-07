@@ -8,7 +8,7 @@ import {testData } from './page-api.service.spec.data';
 describe('PageApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot()],
       providers: [PageApiService, ConfigService, LearnerService]
     });
   });
