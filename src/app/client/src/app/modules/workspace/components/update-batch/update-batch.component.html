@@ -69,7 +69,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
           <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
           <ng-template let-mentor #optionTemplate>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
+            <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
           </ng-template>
           <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
             [options]="menterList" #templated class="selection ">
@@ -83,7 +83,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
           <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{selectmentor.name}}{{selectmentor.otherDetail}}
         </a>
         </div>
@@ -92,7 +92,7 @@
           <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
 
           <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
+            <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
           </ng-template>
           <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
             [options]="userList" #userselect class="selection ">
@@ -105,7 +105,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
           <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{user.name}}{{user.otherDetail}}
         </a>
         </div>
@@ -163,7 +163,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
           <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
           <ng-template let-mentor #optionTemplates>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
+            <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
           </ng-template>
           <sui-multi-select class="selection " [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplates"
             [options]="menterList" #templated>
@@ -175,7 +175,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
           <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{selectmentor.name}}{{selectmentor.otherDetail}}
         </a>
         </div>
@@ -183,7 +183,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
           <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
           <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
+            <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
           </ng-template>
           <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
             [options]="userList" #userselect class="selection ">
@@ -198,7 +198,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
           <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{user.name}}{{user.otherDetail}}
         </a>
         </div>
@@ -257,7 +257,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
           <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
           <ng-template let-mentor #optionTemplate>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
+            <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
           </ng-template>
           <sui-multi-select  [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
             [options]="menterList" #templated class="selection ">
@@ -269,7 +269,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
           <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{selectmentor.name}}{{selectmentor.otherDetail}}
         </a>
         </div>
@@ -277,7 +277,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
           <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
           <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
+            <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
           </ng-template>
           <sui-multi-select formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate" 
           [options]="userList"
@@ -290,7 +290,7 @@
         <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
           <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
           <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
+          <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
           {{user.name}}{{user.otherDetail}}
         </a>
         </div>

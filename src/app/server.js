@@ -40,6 +40,8 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'hel
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 const oneDayMS = 86400000;
+const request = require('request');
+const ejs = require('ejs');
 
 let memoryStore = null
 
@@ -56,7 +58,7 @@ if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
         'prepare': true
       }
     }
-  }, function () {})
+  }, function () { })
 }
 
 let keycloak = new Keycloak({ store: memoryStore }, {
@@ -78,26 +80,23 @@ app.use(session({
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
-/* the below line will be replaced while creating the deployment package. this line must not be deleted */
-// app.use(staticGzip(/(invalid)/));
-
 app.set('view engine', 'ejs')
 
 app.get(['/dist/*.js', '/dist/*.css',
- '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff',
- '/dist/*.eot',
- '/dist/*.svg'
+  '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff',
+  '/dist/*.eot',
+  '/dist/*.svg'
 ],
- compression(), function (req, res, next) {
-  console.log(req.originalUrl)
-   res.setHeader("Cache-Control", "public, max-age="+ oneDayMS*30);
-   res.setHeader("Expires", new Date(Date.now() + oneDayMS*30).toUTCString());
-   next();
- });
+  compression(), function (req, res, next) {
+    console.log(req.originalUrl)
+    res.setHeader("Cache-Control", "public, max-age=" + oneDayMS * 30);
+    res.setHeader("Expires", new Date(Date.now() + oneDayMS * 30).toUTCString());
+    next();
+  });
 
- app.all(['/server.js', '/helpers/*.js' ,'/helpers/**/*.js'], function(req, res){
+app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], function (req, res) {
   res.sendStatus(404);
- })
+})
 
 app.use(express.static(path.join(__dirname, '/')))
 app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
@@ -109,12 +108,10 @@ if (defaultTenant) {
 }
 
 app.get('/assets/images/*', function (req, res, next) {
-  res.setHeader("Cache-Control", "public, max-age="+ oneDayMS);
+  res.setHeader("Cache-Control", "public, max-age=" + oneDayMS);
   res.setHeader("Expires", new Date(Date.now() + oneDayMS).toUTCString());
   next();
 });
-
-
 
 
 app.use(express.static(path.join(__dirname, 'dist'), { extensions: ['ejs'], index: false }))
@@ -128,22 +125,42 @@ app.all('/logoff', endSession, function (req, res) {
   res.redirect('/logout')
 })
 
+function getLocals(req){
+  var locals = {};
+  locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
+  locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
+  locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  locals.theme = envHelper.PORTAL_THEME
+  locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  locals.instance = process.env.sunbird_instance
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
+  locals.appId = envHelper.APPID
+  locals.ekstepEnv = envHelper.EKSTEP_ENV
+  locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
+  return locals;
+}
 
-
-function indexPage (req, res) {
+function indexPage(req, res) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
-  res.locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
-  res.locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
-  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  res.locals.theme = envHelper.PORTAL_THEME
-  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
-  res.locals.instance = process.env.sunbird_instance
-  res.locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
-  res.locals.appId = envHelper.APPID
-  res.locals.ekstepEnv = envHelper.EKSTEP_ENV
-  res.locals.defaultTenant = envHelper.DEFAUULT_TENANT
-  res.locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
-  res.render(path.join(__dirname, 'dist', 'index.ejs'))
+  _.forIn(getLocals(req), function(value, key){
+    res.locals[key] = value
+  })
+  if (envHelper.PORTAL_CDN_URL) {
+    request(envHelper.PORTAL_CDN_URL + 'index.ejs', function (error, response, body) {
+      if (error) {
+        console.log('error loading indx.ejs from CDN', error)
+        res.render(path.join(__dirname, 'dist', 'index.ejs'))
+      } else {
+        res.send(ejs.render(body, getLocals(req)))
+      }
+    });
+  } else {
+    res.render(path.join(__dirname, 'dist', 'index.ejs'))
+  }
+
+ 
+
 }
 app.get('/get/envData', function (req, res) {
   res.status(200)
@@ -176,13 +193,13 @@ app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
 app.all('/get/dial/:dialCode', indexPage)
-app.all('*/get/dial/:dialCode', function (req, res) {res.redirect('/get/dial/:dialCode')})
+app.all('*/get/dial/:dialCode', function (req, res) { res.redirect('/get/dial/:dialCode') })
 app.all('/get', indexPage)
-app.all('*/get', function (req, res) {res.redirect('/get')})
+app.all('*/get', function (req, res) { res.redirect('/get') })
 app.all('/:slug/explore/*', indexPage)
 app.all('/explore', indexPage)
 app.all('/explore/*', indexPage)
-app.all(['/groups', '/groups/*'],keycloak.protect(), indexPage)
+app.all(['/groups', '/groups/*'], keycloak.protect(), indexPage)
 app.all('/play/*', indexPage)
 
 // Mobile redirection to app
@@ -240,22 +257,22 @@ app.post('/learner/content/v1/media/upload',
     }
   }))
 
-  app.all('/learner/*',
-    proxyUtils.verifyToken(),
-    permissionsHelper.checkPermission(),
-    proxy(learnerURL, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-      proxyReqPathResolver: function (req) {
-        let urlParam = req.params['0']
-        let query = require('url').parse(req.url).query
-        if (query) {
-          return require('url').parse(learnerURL + urlParam + '?' + query).path
-        } else {
-          return require('url').parse(learnerURL + urlParam).path
-        }
+app.all('/learner/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
       }
-    }))
+    }
+  }))
 
 
 app.all('/content/data/v1/telemetry',
@@ -265,22 +282,22 @@ app.all('/content/data/v1/telemetry',
     proxyReqPathResolver: function (req) {
       return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
     }
-}))
+  }))
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
 
-  // tenant Api's
-  app.get('/v1/tenant/info', tenantHelper.getInfo)
-  app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
-  
-  // proxy urls
-  require('./proxy/contentEditorProxy.js')(app, keycloak)
-  
+// tenant Api's
+app.get('/v1/tenant/info', tenantHelper.getInfo)
+app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
+
+// proxy urls
+require('./proxy/contentEditorProxy.js')(app, keycloak)
+
 
 app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
   telemetryHelper.generateTelemetryForProxy)
-  
+
 app.all('/content/*',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -295,8 +312,8 @@ app.all('/content/*',
       } else {
         return require('url').parse(contentURL + urlParam).path
       }
-  }
-}))
+    }
+  }))
 
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
@@ -373,7 +390,7 @@ keycloak.authenticated = function (request) {
     }
   })
 }
-function endSession (request, response, next) {
+function endSession(request, response, next) {
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
@@ -410,16 +427,16 @@ keycloak.deauthenticated = function (request) {
 }
 
 
-  if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-    console.error('please set environment variable sunbird_environment, ' +
+if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
+  console.error('please set environment variable sunbird_environment, ' +
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
-    process.exit(1)
-  }
-  
-  portal.server = app.listen(port, function () {
-    console.log('app running on port ' + port)
-  })
-  
+  process.exit(1)
+}
+
+portal.server = app.listen(port, function () {
+  console.log('app running on port ' + port)
+})
+
 
 exports.close = function () {
   portal.server.close()
@@ -427,7 +444,7 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: {id: appId, ver: telemtryEventConfig.pdata.ver},
+  pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
   endpoint: telemtryEventConfig.endpoint,
@@ -438,7 +455,7 @@ const telemetryConfig = {
 telemetry.init(telemetryConfig)
 
 // Handle Telemetry data on server close
-function exitHandler (options, err) {
+function exitHandler(options, err) {
   console.log('Exit', options, err)
   telemetry.syncOnExit(function (err, res) {
     if (err) {

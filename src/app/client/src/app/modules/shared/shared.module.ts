@@ -13,7 +13,7 @@ import {
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService
 } from './services';
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe } from './pipes';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { CacheService } from 'ng2-cache-service';
@@ -21,6 +21,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 
 @NgModule({
   imports: [
@@ -34,13 +35,20 @@ import { NgInviewModule } from 'angular-inport';
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
     DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe,
-    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent],
+    ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
+     RedirectComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent, RedirectComponent ],
-  providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
-    RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-     DeviceDetectorModule, DeviceDetectorService]
+    QrCodeModalComponent, CdnprefixPipe, RedirectComponent]
 })
-export class SharedModule { }
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
+        RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
+        DeviceDetectorModule, DeviceDetectorService]
+    };
+  }
+}

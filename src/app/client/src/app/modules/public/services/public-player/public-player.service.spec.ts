@@ -11,7 +11,7 @@ import { UUID } from 'angular2-uuid';
 describe('PublicPlayerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule],
       providers: [PublicPlayerService]
     });
   });

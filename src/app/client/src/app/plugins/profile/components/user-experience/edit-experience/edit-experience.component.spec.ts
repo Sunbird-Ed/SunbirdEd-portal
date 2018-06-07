@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-import { ResourceService, WindowScrollService } from '@sunbird/shared';
+import { ResourceService, WindowScrollService, SharedModule } from '@sunbird/shared';
 import { EditExperienceComponent } from './edit-experience.component';
 import { response } from './edit-experience.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -16,7 +16,7 @@ describe('EditExperienceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditExperienceComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [UserService, ProfileService, WindowScrollService],
       schemas: [NO_ERRORS_SCHEMA]
     })

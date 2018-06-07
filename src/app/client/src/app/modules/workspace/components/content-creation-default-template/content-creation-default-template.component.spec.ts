@@ -37,7 +37,7 @@ describe('DefaultTemplateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [ DefaultTemplateComponent ],
       providers: [UserService, LearnerService,
         CacheService, EditorService,

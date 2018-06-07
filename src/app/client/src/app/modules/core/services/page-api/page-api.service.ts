@@ -42,9 +42,6 @@ export class PageApiService {
         }
       }
     };
-    if (this.userService.contentChannelFilter) {
-      option.data.request.filters.channel = this.userService.contentChannelFilter;
-    }
     return this.learnerService.post(option);
   }
 }

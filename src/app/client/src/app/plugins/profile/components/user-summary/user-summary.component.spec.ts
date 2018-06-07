@@ -21,8 +21,8 @@ describe('UserSummaryComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, FormsModule,
-        RouterTestingModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), FormsModule,
+        RouterTestingModule, CoreModule.forRoot()],
       declarations: [UserSummaryComponent],
       providers: [ProfileService, ResourceService,
         { provide: Router, useClass: RouterStub },

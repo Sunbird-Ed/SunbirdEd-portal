@@ -8,7 +8,7 @@ import { mockFormData } from './form.mock.spec.data';
   describe('FormService', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, CoreModule, SharedModule],
+        imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
         providers: [FormService, ContentService]
       });
     });

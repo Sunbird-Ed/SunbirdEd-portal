@@ -52,7 +52,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseConsumptionHeaderComponent ],
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]

@@ -15,18 +15,18 @@ const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
   {
-    path: 'learn', component: LearnPageComponent,
+    path: '', component: LearnPageComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
     }
   },
   {
-    path: 'learn/redirect', component: RedirectComponent
+    path: 'redirect', component: RedirectComponent
   },
   {
-    path: 'learn/course', component: CourseConsumptionPageComponent,
-    data: { telemetry: { env: telemetryEnv } },
+    path: 'course', component: CourseConsumptionPageComponent,
+     data: {  telemetry: { env: telemetryEnv }},
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,

@@ -231,9 +231,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   checkExtUrl() {
   if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-    const extUrlContent = '#&courseId=' + this.courseId + '#&batchId=' + this.batchId  + '#&contentId='
-    + this.contentId + '#&uid=' + this.userService.userid;
-
      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
      setTimeout(() => {
        const newWindow = window.open('/learn/redirect', '_blank');

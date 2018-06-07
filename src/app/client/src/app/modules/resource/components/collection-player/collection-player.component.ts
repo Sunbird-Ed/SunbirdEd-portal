@@ -146,25 +146,20 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
-      this.checkExtUrl(content);
+    //       if (content.metadata.mimeType === 'text/x-url') {
+    //    this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+    //    setTimeout(() => {
+    //      const newWindow = window.open('/learn/redirect', '_blank');
+    //      newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId  + '#&uid=' + this.userService.userid;
+    //      this.windowScrollService.smoothScroll('app-player-collection-renderer');
+    //    }, 3000);
+    //  }
 
       return content;
     }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
-  }
-
-  public checkExtUrl(content) {
-    if (content.metadata.mimeType === 'text/x-url') {
-      const extUrlContent = '#&contentId='  + this.contentId + '#&uid=' + this.userService.userid;
-       this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-       setTimeout(() => {
-         const newWindow = window.open('/learn/redirect', '_blank');
-         newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId  + '#&uid=' + this.userService.userid;
-         this.windowScrollService.smoothScroll('app-player-collection-renderer');
-       }, 3000);
-     }
   }
 
   public playContent(data: any): void {

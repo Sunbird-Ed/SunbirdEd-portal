@@ -61,7 +61,7 @@ describe('DraftComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
