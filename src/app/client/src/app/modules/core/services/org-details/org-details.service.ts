@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
-// import { SearchService, SearchParam, ContentService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { SearchService } from './../search/search.service';
 import { ContentService } from './../content/content.service';
 import { SearchParam } from './../../interfaces/search';
 
