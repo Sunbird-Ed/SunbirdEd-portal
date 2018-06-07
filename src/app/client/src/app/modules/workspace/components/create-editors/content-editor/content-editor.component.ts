@@ -237,6 +237,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         showEndPage: false
       }
     };
+    if (this.userService.contentChannelFilter) {
+      window.config.searchCriteria = {
+        filters: {
+          channel: this.userService.contentChannelFilter
+        }
+      };
+    }
   }
 
   /**
