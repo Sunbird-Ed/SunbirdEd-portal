@@ -64,8 +64,7 @@ export class TelemetryService {
 
   /**
    *
-   * Initializes the service
-   * @param {ITelemetryContext} context
+   * Telemetry data sync method
    * @memberof TelemetryService
    */
   public syncEvents() {
