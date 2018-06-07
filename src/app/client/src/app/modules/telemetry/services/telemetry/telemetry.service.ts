@@ -64,6 +64,16 @@ export class TelemetryService {
 
   /**
    *
+   * Telemetry data sync method
+   * @memberof TelemetryService
+   */
+  public syncEvents() {
+    this.telemetryProvider.syncEvents();
+    console.log('Telemetry data is Synced!');
+  }
+
+  /**
+   *
    *
    * @param {IStartEventInput} startEventInput
    * @memberof TelemetryService
