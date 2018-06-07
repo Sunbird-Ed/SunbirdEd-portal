@@ -2,7 +2,7 @@
   <div class="six wide column">
     <div class="ui blue labels" *ngIf="data && data.length > 0">
       <div class="ui label margin-right-10" *ngFor="let selectedbadge of data">
-        <div *ngIf="selectedbadge.badgeClassName">{{selectedbadge.badgeClassName | uppercase}}
+        <div *ngIf="selectedbadge.badgeClassName || selectedbadge.name">{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}
         </div>
       </div>
     </div>
