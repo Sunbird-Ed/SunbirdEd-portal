@@ -219,11 +219,11 @@ export class LibrarySearchComponent implements OnInit {
         if (_.isEmpty(this.queryParams)) {
           this.filters = {};
         } else {
+          this.filters = {};
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
-            if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
               this.filters[queryParam] = queryValue;
-            }
           });
+          this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType']);
         }
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
