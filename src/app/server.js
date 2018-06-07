@@ -148,8 +148,8 @@ function indexPage(req, res) {
   })
   if (envHelper.PORTAL_CDN_URL) {
     request(envHelper.PORTAL_CDN_URL + 'index.ejs', function (error, response, body) {
-      if (error) {
-        console.log('error loading indx.ejs from CDN', error)
+      if (error || response.statusCode !== 200) {
+        console.log('error while fetching index.ejs from CDN', error)
         res.render(path.join(__dirname, 'dist', 'index.ejs'))
       } else {
         res.send(ejs.render(body, getLocals(req)))
