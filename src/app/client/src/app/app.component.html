@@ -1,3 +1,3 @@
 <app-header></app-header>
-<app-breadcrumbs *ngIf="userService.userid !== undefined"></app-breadcrumbs>
+<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>
 <router-outlet *ngIf="initApp"></router-outlet>
