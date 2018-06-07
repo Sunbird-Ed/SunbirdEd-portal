@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
+    this.telemetryService.syncEvents();
   }
   ngOnInit() {
     this.resourceService.initialize();
@@ -91,14 +91,16 @@ export class AppComponent implements OnInit {
       this.userService.initialize(true);
       this.permissionService.initialize();
       this.courseService.initialize();
-      this.userService.userData$.subscribe((user: IUserData) => {
+      const userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
         if (user && !user.err) {
+          userDataUnsubscribe.unsubscribe();
           this.initApp = true;
           this.userProfile = user.userProfile;
           const slug = _.get(user, 'userProfile.rootOrg.slug');
           this.initTelemetryService();
           this.initTenantService(slug);
         } else if (user && user.err) {
+          userDataUnsubscribe.unsubscribe();
           this.initApp = true;
           this.initTenantService();
         }
@@ -150,7 +152,7 @@ export class AppComponent implements OnInit {
         host: '',
         uid: this.userProfile.userId,
         sid: this.userService.sessionId,
-        channel: _.get(this.userService, 'rootOrg.hashTagId'),
+        channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
         env: 'home'
       }
     };
