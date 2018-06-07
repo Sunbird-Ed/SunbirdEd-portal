@@ -131,6 +131,7 @@ export class ContentPlayerComponent implements OnInit {
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
       option.params = { mode: 'edit' };
     }
+    const self = this;
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
@@ -155,11 +156,17 @@ export class ContentPlayerComponent implements OnInit {
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
       });
   }
-
+/**
+ * To check if the mimeType is text/x-url
+ * if mimeType is text/x-url extcontentpreview plugin will be invoked
+ */
   checkExtUrl() {
     if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-      const extUrlContent = '#&contentId=' + this.contentId + '#&uid=' + this.userService.userid;
-      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+      let msg = 'As the content is from an external source, it will be opened in a new tab.';
+      if (this.resourceService.messages && this.resourceService.messages.length > 0) {
+        msg = this.resourceService.messages.imsg.m0034;
+      }
+      this.toasterService.warning(msg);
       setTimeout(() => {
         const newWindow = window.open('/learn/redirect', '_blank');
         newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&contentId='

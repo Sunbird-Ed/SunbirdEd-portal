@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService, ITelemetryShare, IUserData
+  ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -94,7 +94,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    */
   shareLink: string;
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService, public userService: UserService,
+  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
@@ -142,19 +142,23 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion || '1',
-        rollup: {l1: this.collectionId}
+        rollup: { l1: this.collectionId }
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
-    //       if (content.metadata.mimeType === 'text/x-url') {
-    //    this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-    //    setTimeout(() => {
-    //      const newWindow = window.open('/learn/redirect', '_blank');
-    //      newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId  + '#&uid=' + this.userService.userid;
-    //      this.windowScrollService.smoothScroll('app-player-collection-renderer');
-    //    }, 3000);
-    //  }
-
+      // if mimeType is text/x-url extcontentpreview plugin will be invoked
+      if (content.metadata.mimeType === 'text/x-url') {
+        let msg = 'As the content is from an external source, it will be opened in a new tab.';
+        if (this.resourceService.messages && this.resourceService.messages.length > 0) {
+          msg = this.resourceService.messages.imsg.m0034;
+        }
+        this.toasterService.warning(msg);
+        setTimeout(() => {
+          const newWindow = window.open('/learn/redirect', '_blank');
+          newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId + '#&uid=' + this.userService.userid;
+          this.windowScrollService.smoothScroll('app-player-collection-renderer');
+        }, 3000);
+      }
       return content;
     }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
