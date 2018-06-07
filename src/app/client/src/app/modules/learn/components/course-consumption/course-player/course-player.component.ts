@@ -10,8 +10,10 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
-  IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {
+  IInteractEventInput, IImpressionEventInput, IEndEventInput,
+  IStartEventInput, IInteractEventObject, IInteractEventEdata
+} from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-course-player',
@@ -137,7 +139,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-     private  cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -208,7 +210,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         id: config.metadata.identifier,
         type: config.metadata.contentType || config.metadata.resourceType || 'content',
         ver: config.metadata.pkgVersion || '1',
-        rollup: {l1: this.courseId}
+        rollup: { l1: this.courseId }
         // rollup: this.courseInteractObject
       };
       this.closeContentIntractEdata = {
@@ -230,15 +232,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   checkExtUrl() {
-  if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-     this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-     setTimeout(() => {
-       const newWindow = window.open('/learn/redirect', '_blank');
-       newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
-       + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
-       this.windowScrollService.smoothScroll('app-player-collection-renderer');
-     }, 3000);
-   }
+    if (this.playerConfig.metadata.mimeType === 'text/x-url') {
+      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+      setTimeout(() => {
+        const newWindow = window.open('/learn/redirect', '_blank');
+        newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
+          + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
+        this.windowScrollService.smoothScroll('app-player-collection-renderer');
+      }, 3000);
+    }
   }
 
   private navigateToContent(content: { title: string, id: string }): void {
@@ -391,15 +393,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-     object: {
+      object: {
         id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode:  'play'
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play'
       }
     };
     this.telemetryCourseEndEvent = {

@@ -10,7 +10,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-// import { inject } from '@angular/core/src/render3';
 import { CollectionHierarchyGetMockResponse, ExtUrlContentResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
