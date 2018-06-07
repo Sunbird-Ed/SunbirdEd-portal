@@ -220,7 +220,7 @@ export class UserService {
       if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
         this._contentChannelFilter = this.channel;
       }
-    } catch (error){
+    } catch (error) {
       console.log('unable to set content channel filter');
     }
   }
