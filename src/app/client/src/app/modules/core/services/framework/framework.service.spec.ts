@@ -10,7 +10,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('FrameworkService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [FrameworkService, ContentService, UserService, CacheService]
     });
   });

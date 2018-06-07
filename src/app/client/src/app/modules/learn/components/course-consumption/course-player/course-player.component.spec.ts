@@ -72,7 +72,7 @@ describe('CoursePlayerComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
      ],
-      imports: [ SharedModule, CoreModule, HttpClientTestingModule ],
+      imports: [ SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

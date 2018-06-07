@@ -18,7 +18,7 @@ describe('DeleteNoteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, SharedModule, CoreModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, FormsModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [DeleteNoteComponent],
       providers: [NotesService]
     })

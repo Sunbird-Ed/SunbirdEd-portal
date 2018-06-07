@@ -77,7 +77,8 @@ describe('BatchListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent, BatchCardComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule,
+         Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
         TelemetryModule, NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 describe('CourseProgressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [CourseProgressService]
     });
   });

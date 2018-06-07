@@ -6,6 +6,14 @@ const appRoutes: Routes = [
   {
     path: 'error',
     component: ErrorPageComponent
+  },
+  {
+    path: 'learn',
+    loadChildren: 'app/modules/learn/learn.module#LearnModule'
+  },
+  {
+    path: 'resources',
+    loadChildren: 'app/modules/resource/resource.module#ResourceModule'
   }
 ];
 

@@ -26,7 +26,7 @@ describe('UserEducationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserEducationComponent, EditUserEducationComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [ResourceService, UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

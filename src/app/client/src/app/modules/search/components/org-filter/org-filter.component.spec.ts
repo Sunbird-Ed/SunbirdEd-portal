@@ -31,7 +31,7 @@ describe('OrgFilterComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), Ng2IziToastModule],
       declarations: [OrgFilterComponent, OrgSearchComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, OrgTypeService,

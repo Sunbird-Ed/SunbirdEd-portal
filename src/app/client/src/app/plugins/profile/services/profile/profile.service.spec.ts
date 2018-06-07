@@ -6,7 +6,7 @@ import { CoreModule } from '@sunbird/core';
 describe('ProfileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [ProfileService]
     });
   });

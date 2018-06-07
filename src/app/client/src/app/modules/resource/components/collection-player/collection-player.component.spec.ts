@@ -34,7 +34,7 @@ describe('CollectionPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
-      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule],
+      imports: [SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })

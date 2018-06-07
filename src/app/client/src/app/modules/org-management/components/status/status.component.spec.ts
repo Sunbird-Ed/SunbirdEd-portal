@@ -33,7 +33,7 @@ describe('StatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

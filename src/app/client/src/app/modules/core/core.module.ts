@@ -1,6 +1,6 @@
 import { PermissionDirective } from './directives';
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
@@ -33,12 +33,16 @@ import { TelemetryModule } from '@sunbird/telemetry';
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
     ContentPlayerMetadataComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent],
-  providers: [
-    LearnerService, UserService, TenantService, SearchService, CopyContentService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, FrameworkService, FormService, CacheService,
-    ConceptPickerService, BreadcrumbsService, PlayerService]
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent, TelemetryModule]
 })
 export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [LearnerService, UserService, TenantService, SearchService, CopyContentService,
+        PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
+        AuthGuard, FrameworkService, FormService, CacheService,
+        ConceptPickerService, BreadcrumbsService, PlayerService]
+    };
+  }
 }

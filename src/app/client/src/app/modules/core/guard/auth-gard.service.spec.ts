@@ -34,7 +34,7 @@ describe('AuthGardService', () => {
             },
           }
         }],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule]
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()]
     });
   });
   it('be able to hit route when user is logged in', () => {

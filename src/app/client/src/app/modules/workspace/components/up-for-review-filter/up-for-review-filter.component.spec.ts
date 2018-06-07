@@ -23,7 +23,7 @@ describe('UpforReviewFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforReviewFilterComponent ],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

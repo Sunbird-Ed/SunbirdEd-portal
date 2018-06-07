@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     imports: [
         CommonModule,
         SuiModule,
-        SharedModule,
+        SharedModule.forRoot(),
         TelemetryModule
     ],
     declarations: [ContentBadgeComponent],

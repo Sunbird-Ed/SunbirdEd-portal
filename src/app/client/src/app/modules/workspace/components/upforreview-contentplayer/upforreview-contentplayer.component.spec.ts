@@ -32,8 +32,8 @@ describe('UpforreviewContentplayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-      CoreModule,
-      RouterTestingModule, SharedModule],
+      CoreModule.forRoot(),
+      RouterTestingModule, SharedModule.forRoot()],
       providers: [ ResourceService, ToasterService, NavigationHelperService,
       { provide: ResourceService, useValue: resourceBundle }
       ]

@@ -29,7 +29,7 @@
             <div class="ui items">
               <div class="item">
                 <div class="ui tiny image userSearchImage">
-                  <img [src]="user.avatar || './assets/images/user_logo.png'">
+                  <img [src]="user.avatar || 'assets/images/user_logo.png' | cdnprefixurl">
                 </div>
                 <div class="content ">
                   <a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
