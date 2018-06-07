@@ -136,7 +136,10 @@ export class SearchService {
         }
       }
     };
-
+    const objectType = requestParam && requestParam.filters && requestParam.filters.objectType;
+    if ((!objectType || objectType === 'Content' || objectType.includes('Content')) && this.user.contentChannelFilter) {
+      option.data.request.filters.channel = this.user.contentChannelFilter;
+    }
     return this.content.post(option);
   }
   /**
@@ -192,6 +195,9 @@ export class SearchService {
         }
       }
     };
+    if (this.user.contentChannelFilter) {
+      option.data.request.filters.channel = this.user.contentChannelFilter;
+    }
     return this.content.post(option);
   }
   /**
@@ -213,7 +219,9 @@ export class SearchService {
         }
       }
     };
-
+    if (this.user.contentChannelFilter) {
+      option.data.request.filters.channel = this.user.contentChannelFilter;
+    }
     if (!option.data.request.filters.contentType) {
       option.data.request.filters.contentType = [
         'Collection',
