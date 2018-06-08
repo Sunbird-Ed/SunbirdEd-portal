@@ -60,7 +60,7 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
     BadgingModule,
     ...PluginModules,
     // ...WebExtensionsConfig.plugins.map((data) => data.module),
-    TelemetryModule
+    TelemetryModule.forRoot()
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
