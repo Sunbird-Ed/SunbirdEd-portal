@@ -448,9 +448,8 @@
     "searchPageredirectUrl": "/search/Library/1"
   },
   "upForReview": {
-    "filterType": "library",
-    "inPageredirectUrl": "/workspace/content/upForReview/1",
-    "searchPageredirectUrl": "/search/Library/1"
+    "filterType": "upforreview",
+    "inPageredirectUrl": "/workspace/content/upForReview/1"
   },
    "allmycontent": {
     "filterType": "allmycontent",
