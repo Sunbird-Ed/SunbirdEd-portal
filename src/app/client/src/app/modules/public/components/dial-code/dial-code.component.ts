@@ -70,8 +70,6 @@ export class DialCodeComponent implements OnInit {
    * to store search results
    */
   searchResults: Array<any>;
-  cardInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
