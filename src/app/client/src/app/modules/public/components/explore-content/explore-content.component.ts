@@ -160,7 +160,7 @@ export class ExploreContentComponent implements OnInit {
         };
         this.searchService.contentSearch(requestParams).subscribe(
             (apiResponse: ServerResponse) => {
-                if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+                if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                     this.showLoader = false;
                     this.noResult = false;
                     this.searchList = apiResponse.result.content;
@@ -253,15 +253,10 @@ export class ExploreContentComponent implements OnInit {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
-
-                if (_.isEmpty(this.queryParams)) {
-                    this.filters = {
-                        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-                    };
-                } else {
-                    this.filters = {
-                        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-                    };
+                this.filters = {
+                    contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
+                };
+                if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
                     });

@@ -30,10 +30,6 @@ export class ResourceService {
    */
   private _instance: string;
 
-
-  public cdnBaseUrl: string = (<HTMLInputElement>document.getElementById('cdnUrl')) ?
-  (<HTMLInputElement>document.getElementById('cdnUrl')).value : '';
-
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
