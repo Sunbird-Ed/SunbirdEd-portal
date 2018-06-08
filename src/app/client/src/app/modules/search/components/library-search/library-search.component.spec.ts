@@ -59,7 +59,7 @@ describe('LibrarySearchComponent', () => {
     fixture = TestBed.createComponent(LibrarySearchComponent);
     component = fixture.componentInstance;
   });
-  fit('should subscribe to searchService', () => {
+  it('should subscribe to searchService', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
     component.searchList = Response.successData.result.content;
@@ -73,7 +73,7 @@ describe('LibrarySearchComponent', () => {
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
   });
-  fit('should throw error when searchService api throw error ', () => {
+  it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.throw({}));
     component.queryParams = mockQueryParma;
@@ -83,7 +83,7 @@ describe('LibrarySearchComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
   });
-  fit('when count is 0 should show no result found', () => {
+  it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.noResult));
     component.searchList = Response.noResult.result.content;
