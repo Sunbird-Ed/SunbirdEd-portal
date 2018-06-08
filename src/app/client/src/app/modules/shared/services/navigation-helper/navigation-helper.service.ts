@@ -8,6 +8,10 @@ interface UrlHistory {
 }
 @Injectable()
 export class NavigationHelperService {
+  // Workaround for issue https://github.com/angular/angular/issues/12889
+  // Dependency injection creates new instance each time if used in router sub-modules
+  static singletonInstance: NavigationHelperService;
+
   private _resourceCloseUrl: UrlHistory;
   /**
    * Stores routing history
@@ -18,6 +22,10 @@ export class NavigationHelperService {
    */
   private cacheServiceName = 'previousUrl';
   constructor(private router: Router, public activatedRoute: ActivatedRoute, public cacheService: CacheService) {
+    if (!NavigationHelperService.singletonInstance) {
+      NavigationHelperService.singletonInstance = this;
+    }
+    return NavigationHelperService.singletonInstance;
   }
   /**
    * Stores routing history
