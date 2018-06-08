@@ -1,8 +1,8 @@
 <div class="ui center aligned">
-    <p class="segmentCardSubDesc"> As the Content is from an External URL the content will be opened in this Tab </p>
+    <p class="segmentCardSubDesc"> {{resourceService.frmelmnts?.lbl?.redirectMsg}} </p>
 </div>
 <div class="ui center aligned">
-    <p class="segmentCardSubDesc"> If you want to go back please
-        <a (click)="goBack()">click me</a>
+    <p class="segmentCardSubDesc"><span>{{resourceService.frmelmnts?.lbl?.goback}}</span>
+        <a (click)="goBack()">click here</a>
     </p>
 </div>

@@ -1,3 +1,4 @@
+import { ResourceService } from '../../services';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -10,6 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
  * and when the route lean/redict is called this component is invoked
  */
 export class RedirectComponent implements OnInit {
+  constructor(public resourceService: ResourceService) {}
   /**
    * oninit the window opens a new window tab with the redirectUrl values in the url
    */

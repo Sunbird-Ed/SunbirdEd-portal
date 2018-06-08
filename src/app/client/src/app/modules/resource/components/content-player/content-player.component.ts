@@ -162,7 +162,11 @@ export class ContentPlayerComponent implements OnInit {
  */
   checkExtUrl() {
     if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
+      let msg = 'As the content is from an external source, it will be opened in a new tab.';
+      if (this.resourceService.messages && this.resourceService.messages.length > 0) {
+        msg = this.resourceService.messages.imsg.m0034;
+      }
+      this.toasterService.warning(msg);
       setTimeout(() => {
         const newWindow = window.open('/learn/redirect', '_blank');
         newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&contentId='
