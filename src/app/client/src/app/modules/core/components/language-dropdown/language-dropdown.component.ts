@@ -70,10 +70,12 @@ export class LanguageDropdownComponent implements OnInit {
             },
             (err: ServerResponse) => {
               this.languages = [{ 'value': 'en', 'name': 'English' }];
+              this.onLanguageChange('en');
             }
           );
         } else if (frameworkData && frameworkData.err) {
           this.languages = [{ 'value': 'en', 'name': 'English' }];
+          this.onLanguageChange('en');
         }
       });
     }
