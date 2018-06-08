@@ -213,13 +213,12 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
           rolesMap['BOOK_REVIEWER'],
           rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
-        contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
-        Content: bothParams.queryParams.Content
+        contentType: bothParams.queryParams.contentType ? bothParams.queryParams.contentType : this.config.appConfig.WORKSPACE.contentType
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
