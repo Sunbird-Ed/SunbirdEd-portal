@@ -223,7 +223,7 @@ describe('CoursePlayerComponent', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });
-  it('should display preview with warning msg and open link in new tab', inject([Router, CourseConsumptionService,
+  it('should open preview link in newtab for mimeType x-url', inject([Router, CourseConsumptionService,
      ToasterService, ResourceService, WindowScrollService],
     (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
       spyOn(courseconsumptionservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
@@ -234,9 +234,9 @@ describe('CoursePlayerComponent', () => {
       const windowSpy = spyOn(window, 'open');
       windowScrollService.smoothScroll('app-player-collection-renderer');
       window.open('/learn/redirect', '_blank');
+      expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
       expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
       expect(windowScrollService.smoothScroll).toHaveBeenCalled();
-      expect(toasterService.warning).toBeDefined();
     }));
 
 });

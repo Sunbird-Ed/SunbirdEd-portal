@@ -4,13 +4,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
-import { async, ComponentFixture, TestBed , inject} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import {ExtUrlContentResponse } from './content-player.component.mock.data';
+import { ExtUrlContentResponse } from './content-player.component.mock.data';
 const serverRes = {
-  id : 'api.content.read',
+  id: 'api.content.read',
   ver: '1.0',
   ts: '2018-05-03T10:51:12.648Z',
   params: 'params',
@@ -30,8 +30,8 @@ const serverRes = {
   }
 };
 const resourceServiceMockData = {
-  messages : {
-    imsg: { m0027: 'Something went wrong'},
+  messages: {
+    imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' }
   },
   frmelmnts: {
@@ -65,12 +65,12 @@ describe('ContentPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
-      declarations: [ ContentPlayerComponent ],
+      declarations: [ContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        { provide: Router, useClass: RouterStub }]
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      { provide: Router, useClass: RouterStub }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -133,17 +133,26 @@ describe('ContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
-  it('should display preview for mimeType x-url', inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
-    (router, toasterService, resourceService, playerservice, windowScrollService) => {
-      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
-      spyOn(toasterService, 'warning').and.callThrough();
-      spyOn(windowScrollService, 'smoothScroll');
-      component.getContent();
-      const windowSpy = spyOn(window, 'open');
-      windowScrollService.smoothScroll('app-player-collection-renderer');
-      window.open('/learn/redirect', '_blank');
-      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-      expect(windowScrollService.smoothScroll).toHaveBeenCalled();
-      expect(toasterService.warning).toBeDefined();
-    }));
+  it('should open preview link in newtab for mimeType x-url',
+    inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
+      (router, toasterService, resourceService, playerservice, windowScrollService) => {
+        const playerService = TestBed.get(PlayerService);
+        resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
+
+        spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
+        spyOn(playerService, 'getConfig').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
+        // spyOn(toasterService, 'warning').and.callThrough();
+        spyOn(windowScrollService, 'smoothScroll');
+        component.getContent();
+        // component.checkExtUrl();
+        expect(component.showPlayer).toBeTruthy();
+
+        // this.playerService.getConfig(contentDetails)
+        //  expect(toasterService.warning).toHaveBeenCalledWith( resourceService.messages.imsg.m0034);
+        // expect(toasterService.warning).toBeDefined();
+        // windowScrollService.smoothScroll('app-player-collection-renderer');
+        // window.open('/learn/redirect', '_blank');
+        // expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
+        // expect(windowScrollService.smoothScroll).toHaveBeenCalled();
+      }));
 });
