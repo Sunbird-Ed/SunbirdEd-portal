@@ -69,11 +69,11 @@ export class LanguageDropdownComponent implements OnInit {
                 });
             },
             (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
+              this.languages = [{ 'value': 'en', 'name': 'English' }];
             }
           );
         } else if (frameworkData && frameworkData.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.languages = [{ 'value': 'en', 'name': 'English' }];
         }
       });
     }
