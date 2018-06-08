@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 /**
  * Main header component
  */
@@ -73,6 +74,8 @@ export class MainHeaderComponent implements OnInit {
    * reference of permissionService service.
    */
   public permissionService: PermissionService;
+  public signUpInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   /*
   * constructor
   */
@@ -115,6 +118,7 @@ export class MainHeaderComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
+    this.setInteractEventData();
   }
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
@@ -155,5 +159,17 @@ export class MainHeaderComponent implements OnInit {
 
   closeQrModalEvent(event) {
     this.showQrmodal = false;
+  }
+  setInteractEventData() {
+    this.signUpInteractEdata = {
+      id: 'signup',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'signup',
+      ver: '1.0'
+    };
   }
 }
