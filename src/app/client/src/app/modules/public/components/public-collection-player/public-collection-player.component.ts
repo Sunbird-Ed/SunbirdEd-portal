@@ -56,7 +56,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public loader: Boolean = true;
 
   private subsrciption: Subscription;
-
+  public closeCollectionPlayerInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -80,7 +81,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, private activatedRoute: ActivatedRoute) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -90,6 +91,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.getContent();
+    this.setInteractEventData();
   }
   setTelemetryData() {
     this.telemetryImpression = {
@@ -206,5 +208,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     };
     this.router.navigate([], navigationExtras);
   }
-
+  setInteractEventData() {
+    this.closeCollectionPlayerInteractEdata = {
+      id: 'close-collection',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: this.activatedRoute.snapshot.params.collectionId,
+      type: 'collection',
+      ver: '1.0'
+    };
+  }
 }

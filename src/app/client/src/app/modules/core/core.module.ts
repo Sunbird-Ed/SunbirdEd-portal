@@ -26,7 +26,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    WebExtensionModule
+    WebExtensionModule,
+    TelemetryModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,

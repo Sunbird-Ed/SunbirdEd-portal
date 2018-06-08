@@ -36,7 +36,7 @@
             <div class="right floated two wide column tablet computer only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
                     <button *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" class="ui item text-upper-case" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
-                    <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a  href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
@@ -44,7 +44,7 @@
             </div>
             <div class="right floated four wide column mobile only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-                    <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a  href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
@@ -52,7 +52,7 @@
             </div>
             <div class="right floated four wide column mobile only">
                 <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-                    <button *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a  href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
