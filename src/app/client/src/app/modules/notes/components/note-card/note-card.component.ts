@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
+import * as _ from 'lodash';
 
 /**
  * This component holds the note card widget.
@@ -206,8 +207,8 @@ export class NoteCardComponent implements OnInit, OnChanges {
   public viewAllNotes() {
     this.activatedRoute.params.subscribe(params => {
       this.batchId = params.batchId;
-      if (this.batchId && this.activatedRoute.snapshot.queryParams.contentId) {
-          const queryContentId = this.activatedRoute.snapshot.queryParams.contentId;
+      const queryContentId = _.get(this.activatedRoute, 'snapshot.queryParams.contentId');
+      if (this.batchId && queryContentId) {
           this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes', queryContentId]);
         } else if (this.batchId) {
           this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes']);
