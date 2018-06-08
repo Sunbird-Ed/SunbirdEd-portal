@@ -32,7 +32,7 @@ describe('UserExperienceViewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserExperienceViewComponent, EditExperienceComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [UserService, ProfileService, Ng2IzitoastService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

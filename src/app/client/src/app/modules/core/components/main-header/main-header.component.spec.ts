@@ -9,6 +9,7 @@ import { ConfigService, ResourceService, ToasterService, SharedModule } from '@s
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { WebExtensionModule } from 'sunbird-web-extension';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -16,7 +17,8 @@ describe('MainHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        RouterTestingModule, WebExtensionModule.forRoot()],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService,

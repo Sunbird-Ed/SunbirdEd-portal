@@ -25,41 +25,49 @@ import * as $ from 'jquery';
 
 // portal-extensions
 import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
-import { WebExtensionsConfig } from './framework.config';
+import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { BadgingModule } from '@sunbird/badge';
+import { CacheService } from 'ng2-cache-service';
+import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
+import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/memory/cache-memory.service';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    CoreModule,
+    CoreModule.forRoot(),
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     SuiModule,
     CommunityModule,
-    SharedModule,
+    SharedModule.forRoot(),
     HomeModule,
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
     NotesModule,
-    ResourceModule,
-    LearnModule,
+    // ResourceModule, // Lazy load
+    // LearnModule, // Lazy load
     WorkspaceModule,
     OrgManagementModule,
     PublicModule,
     SearchModule,
     DiscussionModule,
-    WebExtensionModule,
+    WebExtensionModule.forRoot(),
     BadgingModule,
-    ...WebExtensionsConfig.plugins.map((data) => data.module),
-    TelemetryModule
+    ...PluginModules,
+    // ...WebExtensionsConfig.plugins.map((data) => data.module),
+    TelemetryModule.forRoot()
   ],
-  providers: [],
   entryComponents: [AppComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    CacheService,
+    {provide: CacheStorageAbstract, useClass: CacheMemoryStorage},
+  ]
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {

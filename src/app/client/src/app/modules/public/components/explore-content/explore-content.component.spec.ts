@@ -48,7 +48,7 @@ describe('ExploreContentComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [ConfigService, SearchService, LearnerService, OrgManagementService,
         { provide: ResourceService, useValue: resourceBundle },

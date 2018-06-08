@@ -5,7 +5,7 @@
   <title>Sunbird</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="assets/sunbird_logo.png">
+  <link rel="icon" type="image/x-icon">
 </head>
 <body>
   <% if (userId) { %>
@@ -30,6 +30,7 @@
   <input type="hidden" id="theme" value="<%=theme%>" />
   <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
   <input type="hidden" id="instance" value="<%=instance%>" />
+  <input type="hidden" id="contentChannelFilter" value="<%=contentChannelFilter%>" /> 
   <app-root></app-root>
 </body>
 </html>

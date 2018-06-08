@@ -41,7 +41,7 @@ describe('CreateOrgTypeComponent', () => {
       declarations: [CreateOrgTypeComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
-        SharedModule, TelemetryModule],
+        SharedModule.forRoot(), TelemetryModule],
       providers: [HttpClientModule, OrgTypeService,
         PaginationService, ToasterService, ResourceService, LearnerService, RouterNavigationService,
         { provide: Router, useClass: RouterStub },

@@ -1,4 +1,4 @@
-export declare const PluginConfig: (config: any) => (type: any) => void;
+export declare function PluginConfig(config: any): (type: any) => void;
 export declare class PluginPlacement {
     name: any;
     priority: any;

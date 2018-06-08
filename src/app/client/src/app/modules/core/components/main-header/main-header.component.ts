@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 /**
  * Main header component
  */
@@ -19,15 +20,13 @@ export class MainHeaderComponent implements OnInit {
   /**
    * organization log
    */
-  exploreButtonVisibility: any;
+  exploreButtonVisibility: string;
   logo: string;
   key: string;
   queryParam: any = {};
-  selectedLanguage: string;
   queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
-  languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
   /**
    * tenant name
    */
@@ -76,6 +75,8 @@ export class MainHeaderComponent implements OnInit {
    * reference of permissionService service.
    */
   public permissionService: PermissionService;
+  public signUpInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   /*
   * constructor
   */
@@ -90,7 +91,11 @@ export class MainHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+    try {
+      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+    } catch (error) {
+      this.exploreButtonVisibility = 'false';
+    }
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
@@ -99,7 +104,6 @@ export class MainHeaderComponent implements OnInit {
         this.queryParamLanguage = this.queryParam['language'];
         this.resourceService.getResource(this.queryParam['language']);
       }
-      this.selectedLanguage = this.queryParam['language'] || 'en';
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -120,6 +124,7 @@ export class MainHeaderComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
+    this.setInteractEventData();
   }
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
@@ -134,13 +139,6 @@ export class MainHeaderComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  onLanguageChange(event) {
-    this.queryParam['language'] = event;
-    this.router.navigate(['explore', 1], {
-      queryParams: this.queryParam
-    });
-  }
-
   onEnter(key) {
     this.key = key;
     this.queryParam['key'] = this.key;
@@ -167,5 +165,17 @@ export class MainHeaderComponent implements OnInit {
 
   closeQrModalEvent(event) {
     this.showQrmodal = false;
+  }
+  setInteractEventData() {
+    this.signUpInteractEdata = {
+      id: 'signup',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.telemetryInteractObject = {
+      id: '',
+      type: 'signup',
+      ver: '1.0'
+    };
   }
 }

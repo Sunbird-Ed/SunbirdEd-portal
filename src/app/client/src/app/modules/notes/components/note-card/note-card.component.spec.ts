@@ -26,7 +26,7 @@ describe('NoteCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
          { provide: Router, useClass: RouterStub },

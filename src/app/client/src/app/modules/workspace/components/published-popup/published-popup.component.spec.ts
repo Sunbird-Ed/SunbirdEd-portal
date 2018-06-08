@@ -58,7 +58,7 @@ describe('RequestChangesPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [PublishedPopupComponent],
       providers: [ToasterService,
         { provide: Router, useClass: RouterStub },

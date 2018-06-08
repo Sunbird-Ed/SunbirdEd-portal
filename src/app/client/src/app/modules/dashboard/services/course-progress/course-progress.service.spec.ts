@@ -9,7 +9,7 @@ import * as testData from './course-progress.service.spec.data';
 describe('CourseProgressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [CourseProgressService]
     });
   });

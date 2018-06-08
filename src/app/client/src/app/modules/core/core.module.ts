@@ -1,6 +1,6 @@
 import { PermissionDirective } from './directives';
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
@@ -8,15 +8,18 @@ import { SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, PermissionService, AnnouncementService, ConceptPickerService,
   BadgesService, ContentService, CoursesService, PageApiService,
-  TenantService, FrameworkService, FormService, PlayerService, SearchService, CopyContentService, BreadcrumbsService
+  TenantService, FrameworkService, FormService, PlayerService, SearchService,
+  CopyContentService, BreadcrumbsService, OrgDetailsService
 } from './services';
 import {
   MainHeaderComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent, DataDrivenFilterComponent,
-  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent, BreadcrumbsComponent
+  ErrorPageComponent, SortByComponent, FlagContentComponent, ContentPlayerMetadataComponent,
+  BreadcrumbsComponent, LanguageDropdownComponent
 } from './components';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { WebExtensionModule } from 'sunbird-web-extension';
+import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,18 +28,24 @@ import { WebExtensionModule } from 'sunbird-web-extension';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    WebExtensionModule
+    WebExtensionModule,
+    TelemetryModule
   ],
   declarations: [MainHeaderComponent, MainMenuComponent, SearchComponent, PermissionDirective, ConceptPickerComponent,
     DataDrivenFilterComponent, BreadcrumbsComponent, SortByComponent, ErrorPageComponent, FlagContentComponent,
-    ContentPlayerMetadataComponent],
+    ContentPlayerMetadataComponent, LanguageDropdownComponent],
   exports: [MainHeaderComponent, PermissionDirective, ConceptPickerComponent, DataDrivenFilterComponent,
-    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent],
-  providers: [
-    LearnerService, UserService, TenantService, SearchService, CopyContentService,
-    PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
-    AuthGuard, FrameworkService, FormService, CacheService,
-    ConceptPickerService, BreadcrumbsService, PlayerService]
+    SortByComponent, BreadcrumbsComponent, FlagContentComponent, ContentPlayerMetadataComponent,
+    TelemetryModule, LanguageDropdownComponent]
 })
 export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [LearnerService, UserService, TenantService, SearchService, CopyContentService,
+        PermissionService, AnnouncementService, BadgesService, ContentService, CoursesService, PageApiService,
+        AuthGuard, FrameworkService, FormService, CacheService,
+        ConceptPickerService, BreadcrumbsService, PlayerService, OrgDetailsService]
+    };
+  }
 }

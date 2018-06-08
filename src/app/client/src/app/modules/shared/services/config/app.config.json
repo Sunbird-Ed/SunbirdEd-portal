@@ -41,7 +41,9 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} }
+        "left": {"class":  "ui blue left ribbon label"} },
+        "telemetryInteractEdata": {"id":"dial-code-view-card","type":"click","pageid":"dial-code"},
+        "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
      "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
@@ -465,7 +467,8 @@
     "lessonplan": "lessonplan",
     "library": "library",
     "allmycontent":"allmycontent",
-    "explore": "explore"
+    "explore": "explore",
+    "resourcebundle": "resourcebundle"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

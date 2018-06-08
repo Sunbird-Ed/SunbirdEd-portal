@@ -11,7 +11,7 @@
         </div>
         <div *ngIf="action === 'view'" class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let address of userProfile.address">
-                <img class="ui avatar image" src="assets/images/location.png">
+                <img class="ui avatar image" src="{{'assets/images/location.png' | cdnprefixurl}}">
                 <div class="content">
                     <p class="header capitalizeTextInfo">{{address.addType}}</p>
                     <div class="description"> {{address.addressLine1}}
