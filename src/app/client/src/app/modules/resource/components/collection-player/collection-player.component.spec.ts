@@ -110,5 +110,6 @@ describe('CollectionPlayerComponent', () => {
         expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
         expect(windowScrollService.smoothScroll).toHaveBeenCalled();
         expect(toasterService.warning).toBeDefined();
+        // expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
       }));
 });

@@ -19,7 +19,8 @@ const serverRes = {
     content: {
       mimeType: 'application/vnd.ekstep.ecml-archive',
       body: 'body',
-      identifier: 'domain_66675',
+      identifier: 'do_1125110622654464001294',
+      language: ['English'],
       versionKey: '1497028761823',
       status: 'Live',
       me_averageRating: '4',
@@ -133,26 +134,24 @@ describe('ContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
+
   it('should open preview link in newtab for mimeType x-url',
     inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
       (router, toasterService, resourceService, playerservice, windowScrollService) => {
         const playerService = TestBed.get(PlayerService);
         resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
-
-        spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
-        spyOn(playerService, 'getConfig').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
-        // spyOn(toasterService, 'warning').and.callThrough();
+        spyOn(playerService, 'getContent').and.returnValue(Observable.of(ExtUrlContentResponse.ServerResponse));
+        spyOn(toasterService, 'warning').and.callThrough();
         spyOn(windowScrollService, 'smoothScroll');
+        const windowSpy = spyOn(window, 'open');
+        fixture.detectChanges();
         component.getContent();
-        // component.checkExtUrl();
         expect(component.showPlayer).toBeTruthy();
-
-        // this.playerService.getConfig(contentDetails)
-        //  expect(toasterService.warning).toHaveBeenCalledWith( resourceService.messages.imsg.m0034);
-        // expect(toasterService.warning).toBeDefined();
-        // windowScrollService.smoothScroll('app-player-collection-renderer');
-        // window.open('/learn/redirect', '_blank');
-        // expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-        // expect(windowScrollService.smoothScroll).toHaveBeenCalled();
+        expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
+        expect(toasterService.warning).toBeDefined();
+        windowScrollService.smoothScroll('app-player-collection-renderer');
+        window.open('/learn/redirect', '_blank');
+        expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
+        expect(windowScrollService.smoothScroll).toHaveBeenCalled();
       }));
 });
