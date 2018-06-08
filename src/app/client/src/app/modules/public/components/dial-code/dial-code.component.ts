@@ -91,7 +91,6 @@ export class DialCodeComponent implements OnInit {
       this.searchDialCode();
       this.setTelemetryData();
     });
-    this.setInteractEventData();
   }
   setTelemetryData() {
     this.telemetryImpression = {
@@ -126,7 +125,6 @@ export class DialCodeComponent implements OnInit {
           const metaData = this.configService.appConfig.GetPage.metaData;
           const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
           this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
-          console.log('here', this.searchResults);
         } else {
           this.toasterService.error(this.resourceService.messages.stmsg.m0006);
         }
@@ -167,17 +165,5 @@ export class DialCodeComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
-  }
-  setInteractEventData() {
-    this.cardInteractEdata = {
-      id: 'dial-code-view-card',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'dial-code',
-      ver: '1.0'
-    };
   }
 }

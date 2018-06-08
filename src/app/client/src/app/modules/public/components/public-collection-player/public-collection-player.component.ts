@@ -212,7 +212,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     this.closeCollectionPlayerInteractEdata = {
       id: 'close-collection',
       type: 'click',
-      pageid: ''
+      pageid: 'public'
     };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,

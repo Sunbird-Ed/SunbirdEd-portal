@@ -14,14 +14,14 @@ const routes: Routes = [
     component: LandingPageComponent,
     data: {
       telemetry: {
-        env: 'signup', pageid: 'signup', type: 'edit', subtype: 'paginate'
+        env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate'
       }
     }
   },
   {
     path: 'signup', component: SignupComponent, data: {
       telemetry: {
-        env: 'signup', pageid: 'signup', type: 'edit', subtype: 'paginate'
+        env: 'public', pageid: 'signup', type: 'edit', subtype: 'paginate'
       }
     }
   },
