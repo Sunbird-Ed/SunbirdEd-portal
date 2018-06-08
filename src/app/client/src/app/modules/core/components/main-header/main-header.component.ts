@@ -23,11 +23,9 @@ export class MainHeaderComponent implements OnInit {
   logo: string;
   key: string;
   queryParam: any = {};
-  selectedLanguage: string;
   queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
-  languages = [{ 'id': 'en', 'name': 'English' }, { 'id': 'ta', 'name': 'Tamil' }, { 'id': 'te', 'name': 'Telugu' }];
   /**
    * tenant name
    */
@@ -100,7 +98,6 @@ export class MainHeaderComponent implements OnInit {
         this.queryParamLanguage = this.queryParam['language'];
         this.resourceService.getResource(this.queryParam['language']);
       }
-      this.selectedLanguage = this.queryParam['language'] || 'en';
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -136,13 +133,6 @@ export class MainHeaderComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  onLanguageChange(event) {
-    this.queryParam['language'] = event;
-    this.router.navigate(['explore', 1], {
-      queryParams: this.queryParam
-    });
-  }
-
   onEnter(key) {
     this.key = key;
     this.queryParam['key'] = this.key;
