@@ -96,20 +96,4 @@ describe('CollectionPlayerComponent', () => {
   xit('should navigate to error page on invalid collection id', () => { });
   xit('should navigate to error page on valid collection id but invalid content id', () => { });
   xit('should show service unavailable message on API server error', () => { });
-
-  it('should open preview link in newtab for mimeType x-url',
-    inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
-      (router, toasterService, resourceService, playerservice, windowScrollService) => {
-        component.playContent(playcontentmock);
-        spyOn(playerservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
-        spyOn(toasterService, 'warning').and.callThrough();
-        spyOn(windowScrollService, 'smoothScroll');
-        const windowSpy = spyOn(window, 'open');
-        windowScrollService.smoothScroll('app-player-collection-renderer');
-        window.open('/learn/redirect', '_blank');
-        expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-        expect(windowScrollService.smoothScroll).toHaveBeenCalled();
-        expect(toasterService.warning).toBeDefined();
-        expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
-      }));
 });

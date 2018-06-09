@@ -146,30 +146,26 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
-      // if mimeType is text/x-url extcontentpreview plugin will be invoked
-      if (content.metadata.mimeType === 'text/x-url') {
-        let msg = 'As the content is from an external source, it will be opened in a new tab.';
-        if (this.resourceService.messages && this.resourceService.messages.length > 0) {
-          msg = this.resourceService.messages.imsg.m0034;
-        }
-        this.toasterService.warning(msg);
-        setTimeout(() => {
-          const newWindow = window.open('/learn/redirect', '_blank');
-          newWindow.redirectUrl = content.metadata.artifactUrl + '#&contentId=' + this.contentId + '#&uid=' + this.userService.userid;
-          this.windowScrollService.smoothScroll('app-player-collection-renderer');
-        }, 3000);
-      }
+      this.checkExtUrl(content);
       return content;
     }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
   }
+  /**
+   * To check if the mimeType is text/x-url
+   * if mimeType is text/x-url extcontentpreview plugin will be invoked
+   */
+  checkExtUrl(content) {
+    this.contentUtilsServiceService.getRedirectUrl(content.metadata, this.userService.userid);
+  }
 
   public playContent(data: any): void {
     this.showPlayer = true;
     this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     this.contentTitle = data.title;
+    console.log('data coll: ', data);
     this.initPlayer(data.id);
   }
 
@@ -275,7 +271,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToResource();
+    this.navigationHelperService.navigateToResource('/resources');
   }
   closeContentPlayer() {
     this.showPlayer = false;

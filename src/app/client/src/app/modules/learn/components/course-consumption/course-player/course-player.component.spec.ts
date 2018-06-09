@@ -225,20 +225,4 @@ describe('CoursePlayerComponent', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });
-  it('should open preview link in newtab for mimeType x-url', inject([Router, CourseConsumptionService,
-    ToasterService, ResourceService, WindowScrollService],
-    (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
-      spyOn(courseconsumptionservice, 'getConfigByContent').and.returnValue(Observable.of(ExtUrlContentResponse.playerConfig));
-      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
-      spyOn(toasterService, 'warning').and.callThrough();
-      spyOn(windowScrollService, 'smoothScroll');
-      component.playContent('do_2123475531394826241107');
-      const windowSpy = spyOn(window, 'open');
-      windowScrollService.smoothScroll('app-player-collection-renderer');
-      window.open('/learn/redirect', '_blank');
-      expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
-      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-      expect(windowScrollService.smoothScroll).toHaveBeenCalled();
-    }));
-
 });

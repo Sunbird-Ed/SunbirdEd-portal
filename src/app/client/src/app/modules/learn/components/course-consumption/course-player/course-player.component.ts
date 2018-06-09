@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions,
+  NavigationHelperService, ToasterService, ResourceService, ContentUtilsServiceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
@@ -139,7 +139,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -231,17 +231,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
   }
 
+
+ /**
+ * To check if the mimeType is text/x-url
+ * if mimeType is text/x-url extcontentpreview plugin will be invoked
+ */
   checkExtUrl() {
-    if (this.playerConfig.metadata.mimeType === 'text/x-url') {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-      setTimeout(() => {
-        const newWindow = window.open('/learn/redirect', '_blank');
-        newWindow.redirectUrl = this.playerConfig.metadata.artifactUrl + '#&courseId=' + this.courseId + '#&contentId='
-          + this.contentId + '#&batchId=' + this.batchId + '#&uid=' + this.userService.userid;
-        this.windowScrollService.smoothScroll('app-player-collection-renderer');
-      }, 3000);
-    }
+    this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userService.userid, this.courseId, this.batchId);
   }
+
 
   private navigateToContent(content: { title: string, id: string }): void {
     const navigationExtras: NavigationExtras = {

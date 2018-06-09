@@ -134,24 +134,4 @@ describe('ContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
-
-  it('should open preview link in newtab for mimeType x-url',
-    inject([Router, ToasterService, ResourceService, PlayerService, WindowScrollService],
-      (router, toasterService, resourceService, playerservice, windowScrollService) => {
-        const playerService = TestBed.get(PlayerService);
-        resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
-        spyOn(playerService, 'getContent').and.returnValue(Observable.of(ExtUrlContentResponse.ServerResponse));
-        spyOn(toasterService, 'warning').and.callThrough();
-        spyOn(windowScrollService, 'smoothScroll');
-        const windowSpy = spyOn(window, 'open');
-        fixture.detectChanges();
-        component.getContent();
-        expect(component.showPlayer).toBeTruthy();
-        expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
-        expect(toasterService.warning).toBeDefined();
-        windowScrollService.smoothScroll('app-player-collection-renderer');
-        window.open('/learn/redirect', '_blank');
-        expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
-        expect(windowScrollService.smoothScroll).toHaveBeenCalled();
-      }));
 });
