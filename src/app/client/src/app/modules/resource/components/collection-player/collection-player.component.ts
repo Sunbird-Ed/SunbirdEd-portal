@@ -165,7 +165,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.showPlayer = true;
     this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     this.contentTitle = data.title;
-    console.log('data coll: ', data);
     this.initPlayer(data.id);
   }
 

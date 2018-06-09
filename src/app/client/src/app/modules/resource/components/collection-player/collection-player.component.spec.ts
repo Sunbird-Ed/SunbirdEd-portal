@@ -14,17 +14,12 @@ import { Observable } from 'rxjs/Observable';
 import { CollectionHierarchyGetMockResponse, ExtUrlContentResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-class RouterStub {
-  navigate = jasmine.createSpy('navigate');
-}
-
 describe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
   let fixture: ComponentFixture<CollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
 
-  const playcontentmock = { id: 'do_1125110622654464001294', title: 'A5 ext link' };
   const fakeActivatedRoute = {
     params: Observable.of({ id: collectionId }),
     queryParams: Observable.of({ contentId: contentId }),

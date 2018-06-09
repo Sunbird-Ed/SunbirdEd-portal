@@ -131,7 +131,6 @@ export class ContentPlayerComponent implements OnInit {
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
       option.params = { mode: 'edit' };
     }
-    const self = this;
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
