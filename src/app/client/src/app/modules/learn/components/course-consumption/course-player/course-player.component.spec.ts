@@ -7,11 +7,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
-import { } from 'jasmine';
+import {} from 'jasmine';
 import { CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import {
-  CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged,
-  ExtUrlContentResponse
+  CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged
 } from './course-player.component.mock.data';
 import { Subject } from 'rxjs/Subject';
 
@@ -22,10 +21,10 @@ describe('CoursePlayerComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const resourceServiceMockData = {
-    messages: {
+    messages : {
       imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error' }
+      emsg: { m0005: 'error'}
     },
     frmelmnts: {
       btn: {
@@ -40,13 +39,13 @@ describe('CoursePlayerComponent', () => {
   class ActivatedRouteStub {
     snapshot = {
       data: {
-        telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+        telemetry:  { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
       }
     };
-    paramsMock = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160' };
-    queryParamsMock = { contentId: 'do_112270494168555520130' };
-    queryParams = Observable.of(this.queryParamsMock);
-    params = { first: () => Observable.of(this.paramsMock) };
+    paramsMock = {courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160' };
+    queryParamsMock = {contentId: 'do_112270494168555520130' };
+    queryParams =  Observable.of(this.queryParamsMock);
+    params = {first: () => Observable.of(this.paramsMock) };
     public changeParams(params) {
       this.paramsMock = params;
     }
@@ -70,32 +69,21 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursePlayerComponent],
-      providers: [CourseConsumptionService, CourseProgressService,
+      declarations: [ CoursePlayerComponent ],
+      providers: [ CourseConsumptionService, CourseProgressService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-      ],
-      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule],
+    ],
+      imports: [ SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
   });
-
-  xit('should display error if player content data is error', inject([Router, CourseConsumptionService, ToasterService,
-    ResourceService, WindowScrollService],
-    (router, courseconsumptionservice, toasterService, resourceService, windowScrollService) => {
-      resourceService.messages = ExtUrlContentResponse.resourceBundle.messages;
-      spyOn(courseconsumptionservice, 'getConfigByContent').and.callFake(() => Observable.throw({}));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.playContent('do_2123475531394826241107');
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.stmsg.m0009);
-    }));
-
 
   it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -147,15 +135,15 @@ describe('CoursePlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').
-      and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result.content));
+    and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result.content));
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result));
     component.ngOnInit();
-    expect(component.enrolledCourse).toBeTruthy();
-    expect(component.contentId).toBeUndefined();
-    expect(component.flaggedCourse).toBeTruthy();
-    expect(component.playerConfig).toBeUndefined();
-    expect(component.contentTitle).toBeUndefined();
-    expect(component.enableContentPlayer).toBeFalsy();
+      expect(component.enrolledCourse).toBeTruthy();
+      expect(component.contentId).toBeUndefined();
+      expect(component.flaggedCourse).toBeTruthy();
+      expect(component.playerConfig).toBeUndefined();
+      expect(component.contentTitle).toBeUndefined();
+      expect(component.enableContentPlayer).toBeFalsy();
     component.ngOnDestroy();
   });
 
@@ -171,11 +159,11 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
-    component.ngOnInit();
-    expect(component.enrolledCourse).toBeFalsy();
-    expect(component.contentId).toBeUndefined();
-    expect(component.playerConfig).toBeUndefined();
-    expect(component.enableContentPlayer).toBeFalsy();
+      component.ngOnInit();
+      expect(component.enrolledCourse).toBeFalsy();
+      expect(component.contentId).toBeUndefined();
+      expect(component.playerConfig).toBeUndefined();
+      expect(component.enableContentPlayer).toBeFalsy();
     component.ngOnDestroy();
   });
 
@@ -183,7 +171,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
-    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178', courseStatus: 'Unlisted' });
+    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178', courseStatus: 'Unlisted'});
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -192,10 +180,10 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
-    expect(component.enrolledCourse).toBeFalsy();
-    expect(component.contentId).toBeDefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+      expect(component.enrolledCourse).toBeFalsy();
+      expect(component.contentId).toBeDefined();
+      expect(component.playerConfig).toBeDefined();
+      expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
 
@@ -210,14 +198,14 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
-    expect(component.enrolledCourse).toBeTruthy();
-    expect(component.contentId).toBeDefined();
-    expect(component.contentId).toBeDefined();
-    expect(component.prevPlaylistItem).toBeDefined();
-    expect(component.nextPlaylistItem).toBeUndefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.contentTitle).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+      expect(component.enrolledCourse).toBeTruthy();
+      expect(component.contentId).toBeDefined();
+      expect(component.contentId).toBeDefined();
+      expect(component.prevPlaylistItem).toBeDefined();
+      expect(component.nextPlaylistItem).toBeUndefined();
+      expect(component.playerConfig).toBeDefined();
+      expect(component.contentTitle).toBeDefined();
+      expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
 

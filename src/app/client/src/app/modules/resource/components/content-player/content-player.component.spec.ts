@@ -8,7 +8,6 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ExtUrlContentResponse } from './content-player.component.mock.data';
 const serverRes = {
   id: 'api.content.read',
   ver: '1.0',

@@ -142,7 +142,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion || '1',
-        rollup: { l1: this.collectionId }
+        rollup: {l1: this.collectionId}
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
@@ -270,7 +270,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToResource('/resources');
+    this.navigationHelperService.navigateToResource();
   }
   closeContentPlayer() {
     this.showPlayer = false;

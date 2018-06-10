@@ -175,7 +175,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/resources');
+    this.navigationHelperService.navigateToResource();
   }
 
   /**

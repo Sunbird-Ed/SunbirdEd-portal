@@ -11,7 +11,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-import { CollectionHierarchyGetMockResponse, ExtUrlContentResponse } from './collection-player.spec.data';
+import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CollectionPlayerComponent', () => {
@@ -88,7 +88,7 @@ describe('CollectionPlayerComponent', () => {
     expect(component.loader).toBeFalsy();
   });
 
-  xit('should navigate to error page on invalid collection id', () => { });
-  xit('should navigate to error page on valid collection id but invalid content id', () => { });
-  xit('should show service unavailable message on API server error', () => { });
+  xit('should navigate to error page on invalid collection id', () => {});
+  xit('should navigate to error page on valid collection id but invalid content id', () => {});
+  xit('should show service unavailable message on API server error', () => {});
 });
