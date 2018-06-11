@@ -55,6 +55,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   public loader: Boolean = true;
 
+  /**
+  * userId as param for the external url content
+  */
+  userId = 'anonymous';
   private subsrciption: Subscription;
   public closeCollectionPlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
