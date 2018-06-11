@@ -22,11 +22,14 @@ const routes: Routes = [
   },
   {
     path: 'course', component: CourseConsumptionPageComponent,
-     data: {  telemetry: { env: telemetryEnv }},
+    data: { telemetry: { env: telemetryEnv } },
     children: [
       {
         path: ':courseId', component: CoursePlayerComponent,
         data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+          },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [

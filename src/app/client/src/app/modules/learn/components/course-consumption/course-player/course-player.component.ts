@@ -172,7 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
-          ver: this.courseHierarchy.pkgVersion || '1'
+          ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
         };
         if (this.courseHierarchy.status === 'Flagged') {
           this.flaggedCourse = true;
@@ -207,7 +207,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.contentInteractObject = {
         id: config.metadata.identifier,
         type: config.metadata.contentType || config.metadata.resourceType || 'content',
-        ver: config.metadata.pkgVersion || '1',
+        ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
         rollup: {l1: this.courseId}
         // rollup: this.courseInteractObject
       };
