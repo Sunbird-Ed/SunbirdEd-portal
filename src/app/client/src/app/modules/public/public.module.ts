@@ -13,7 +13,7 @@ import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import { SignupService, PublicPlayerService, OrgManagementService } from './services';
 import { SharedModule } from '@sunbird/shared';
-import { DiscussionModule } from '@sunbird/discussion';
+// import { DiscussionModule } from '@sunbird/discussion';
 import { PublicRoutingModule } from './public-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -26,7 +26,7 @@ import { NgInviewModule } from 'angular-inport';
     SuiModule,
     FormsModule,
     ReactiveFormsModule,
-    DiscussionModule,
+    // DiscussionModule,
     PublicRoutingModule,
     TelemetryModule,
     NgInviewModule

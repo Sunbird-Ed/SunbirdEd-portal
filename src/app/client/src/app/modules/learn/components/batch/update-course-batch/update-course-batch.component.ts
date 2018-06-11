@@ -82,7 +82,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 	 * telemetryImpression object for update batch page
 	*/
   telemetryImpression: IImpressionEventInput;
-
+  pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
   public courseConsumptionService: CourseConsumptionService;
   /**
 	 * Constructor to create injected service(s) object
@@ -330,13 +330,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       users = $('#users').dropdown('get value').split(',');
       mentors = $('#mentors').dropdown('get value').split(',');
     }
+    const startDate = new Date(this.batchUpdateForm.value.startDate.setHours(23, 59, 59, 999));
+    const endDate = this.batchUpdateForm.value.endDate ?
+    new Date(this.batchUpdateForm.value.endDate.setHours(23, 59, 59, 999)) : null;
     const requestBody = {
       'id': this.batchId,
       'name': this.batchUpdateForm.value.name,
       'description': this.batchUpdateForm.value.description,
       'enrollmentType': this.batchUpdateForm.value.enrollmentType,
-      'startDate': this.batchUpdateForm.value.startDate,
-      'endDate': this.batchUpdateForm.value.endDate || '',
+      'startDate': startDate,
+      'endDate': endDate,
       'createdFor': this.orgIds,
       'mentors': _.compact(mentors)
     };

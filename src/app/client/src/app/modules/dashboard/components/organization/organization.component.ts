@@ -173,7 +173,6 @@ export class OrganisationComponent implements OnDestroy {
     this.route = route;
     this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
-      this.getMyOrganisations();
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
@@ -189,6 +188,7 @@ export class OrganisationComponent implements OnDestroy {
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
+    this.getMyOrganisations();
   }
 
   /**
@@ -342,10 +342,10 @@ export class OrganisationComponent implements OnDestroy {
     const data = this.searchService.searchedOrganisationList;
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
-      // if (this.myOrganizations.length === 1) {
-      //   this.identifier = this.myOrganizations[0].identifier;
-      //   this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
-      // }
+      if (this.myOrganizations.length === 1) {
+        this.identifier = this.myOrganizations[0].identifier;
+        this.route.navigate(['orgDashboard/organization', this.datasetType, this.identifier, this.timePeriod]);
+      }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
     } else {
