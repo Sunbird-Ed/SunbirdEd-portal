@@ -211,6 +211,28 @@ export class BatchService {
     return this.learnerService.get(option);
   }
 
+  getUserDetails(searchParams) {
+    return this.getUserList(searchParams);
+  }
+  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          query: requestParam.query || ''
+        }
+      }
+    };
+    const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+    if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+      option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
+    } else if (mentorOrg) {
+      option.data.request.filters['organisations.organisationId'] = mentorOrg;
+    }
+    return this.learnerService.post(option);
+  }
+
 
   /**
   * method setBatchData

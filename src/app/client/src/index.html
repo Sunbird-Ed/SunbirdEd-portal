@@ -23,12 +23,16 @@
   <% if (defaultTenant) { %>
     <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
   <% } %>
+  <% if (exploreButtonVisibility) { %>
+    <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
+  <% } %>
   <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <input type="hidden" id="theme" value="<%=theme%>" />
   <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
   <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>"/>
   <input type="hidden" id="instance" value="<%=instance%>" />
   <input type="hidden" id="contentChannelFilter" value="<%=contentChannelFilter%>" /> 
+  <input type="hidden" id="deviceId"/>
   <app-root></app-root>
 </body>
 </html>

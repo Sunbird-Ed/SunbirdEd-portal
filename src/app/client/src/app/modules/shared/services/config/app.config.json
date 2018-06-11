@@ -1,7 +1,4 @@
 {
-  "landingPage": {
-    "showExploreButton": true
-  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -471,7 +468,8 @@
     "library": "library",
     "allmycontent":"allmycontent",
     "explore": "explore",
-    "resourcebundle": "resourcebundle"
+    "resourcebundle": "resourcebundle",
+    "upforreview" :"upforreview"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
