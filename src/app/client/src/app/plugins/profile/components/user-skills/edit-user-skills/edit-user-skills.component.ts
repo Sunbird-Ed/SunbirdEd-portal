@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy } from '@angular/core';
 import { ResourceService, IUserProfile, IUserData, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
@@ -12,7 +12,8 @@ declare var jQuery: any;
   templateUrl: './edit-user-skills.component.html',
   styleUrls: ['./edit-user-skills.component.css']
 })
-export class EditUserSkillsComponent implements OnInit {
+export class EditUserSkillsComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   /**
    * Reference of User Profile interface
    */
@@ -95,5 +96,7 @@ export class EditUserSkillsComponent implements OnInit {
       type: 'user',
       ver: '1.0'
     };
+  } ngOnDestroy() {
+    this.modal.deny();
   }
 }
