@@ -105,9 +105,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
-    // this.pickerMinDate.setHours(0);
-    // this.pickerMinDate.setMinutes(0);
-    // this.pickerMinDate.setDate(-1);
   }
 
   /**
