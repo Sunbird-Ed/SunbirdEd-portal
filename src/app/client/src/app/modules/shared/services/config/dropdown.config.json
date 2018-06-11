@@ -347,7 +347,7 @@
                     "name": "Subjects"
                 },
                 {
-                    "id": "Content",
+                    "id": "contentType",
                     "name": "Content Types"
                 }
             ]

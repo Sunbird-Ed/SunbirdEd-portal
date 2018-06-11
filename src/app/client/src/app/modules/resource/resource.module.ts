@@ -7,7 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
-import { DiscussionModule } from '@sunbird/discussion';
+// import { DiscussionModule } from '@sunbird/discussion';
 import { NotesModule } from '@sunbird/notes';
 import { BadgingModule } from '@sunbird/badge';
 import { NgInviewModule } from 'angular-inport';
@@ -21,7 +21,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SlickModule,
     FormsModule,
     CoreModule,
-    DiscussionModule,
+    // DiscussionModule,
     NotesModule,
     BadgingModule,
     TelemetryModule,

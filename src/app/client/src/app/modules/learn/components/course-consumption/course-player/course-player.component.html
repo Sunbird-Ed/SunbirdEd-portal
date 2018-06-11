@@ -81,50 +81,50 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ui row padding-top-none">
-                            <div class="three wide column ">
-                                <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
-                                    <div class="toc-left-nav-btn-content">
-                                        <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
-                                        <p class=" font-white">{{prevPlaylistItem?.title || noContentToPlay}}</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="two wide column "></div>
-                            <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
-                                <h2 class="ui center aligned icon tiny header toc-note">
-                                    <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
-                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
-                                            (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                        <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
-                                        <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
-                                    </a>
-                                </h2>
-                            </div>
-                            <div class="two wide column "></div>
-                            <div class="three wide column ">
-                                <button class="ui blue button right floated  fluid" (click)="navigateToContent(nextPlaylistItem)" [disabled]="nextPlaylistItem === undefined">
-                                    <div class="toc-right-nav-btn-content">
-                                        <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}
-                                        </h4>
-                                        <p class=" font-white">{{nextPlaylistItem?.title || noContentToPlay}}</p>
-                                    </div>
-                                </button>
+                            <div class="ui row padding-top-none">
+                                <div class="three wide column ">
+                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
+                                        <div class="toc-left-nav-btn-content">
+                                            <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
+                                            <p class=" font-white">{{prevPlaylistItem?.title || noContentToPlay}}</p>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="two wide column "></div>
+                                <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
+                                    <h2 class="ui center aligned icon tiny header toc-note">
+                                        <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
+                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
+                                                (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
+                                            <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
+                                            <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                                <div class="two wide column "></div>
+                                <div class="three wide column ">
+                                    <button class="ui blue button right floated  fluid" (click)="navigateToContent(nextPlaylistItem)" [disabled]="nextPlaylistItem === undefined">
+                                        <div class="toc-right-nav-btn-content">
+                                            <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}
+                                            </h4>
+                                            <p class=" font-white">{{nextPlaylistItem?.title || noContentToPlay}}</p>
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui section divider"></div>
-            <div class="two wide column"></div>
-            <div class="ui grid">
-                <div class="row">
-                    <div class="eight wide column">
-                        <!-- <course-discussions></course-discussions> -->
-                    </div>
-                    <div class="four wide column toc-note-content">
-                        <!-- <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card> -->
+                <div class="ui section divider"></div>
+                <div class="two wide column"></div>
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="eight wide column">
+                            <!-- <course-discussions></course-discussions> -->
+                        </div>
+                        <div class="four wide column toc-note-content">
+                                <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
+                        </div>
                     </div>
                 </div>
             </div>

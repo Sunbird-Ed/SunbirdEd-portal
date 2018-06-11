@@ -45,7 +45,7 @@ export class WorkSpace {
     */
     removeContent(contentList, requestData) {
         return contentList.filter((content) => {
-            return requestData.indexOf(content.identifier) === -1;
+            return requestData.indexOf(content.metaData.identifier) === -1;
         });
     }
     /**

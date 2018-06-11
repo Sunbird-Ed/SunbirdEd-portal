@@ -10,6 +10,9 @@ import * as moment from 'moment';
  */
 @Injectable()
 export class ResourceService {
+  // Workaround for issue https://github.com/angular/angular/issues/12889
+  // Dependency injection creates new instance each time if used in router sub-modules
+  static singletonInstance: ResourceService;
   /**
   * messages bundle
   */
@@ -36,16 +39,17 @@ export class ResourceService {
    * @param {HttpClient} http LearnerService reference
    */
   constructor(config: ConfigService, http: HttpClient) {
-    /**
-     * @param {HttpClient} http LearnerService reference
-    */
-    this.http = http;
-    this.config = config;
-    this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
-    try {
-      this._instance = (<HTMLInputElement>document.getElementById('instance')).value;
-    } catch (error) {
+    if (!ResourceService.singletonInstance) {
+      this.http = http;
+      this.config = config;
+      this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
+      try {
+        this._instance = (<HTMLInputElement>document.getElementById('instance')).value;
+      } catch (error) {
+      }
+      ResourceService.singletonInstance = this;
     }
+    return ResourceService.singletonInstance;
   }
   public initialize() {
     this.getResource();
