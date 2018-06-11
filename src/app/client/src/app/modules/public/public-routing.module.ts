@@ -11,12 +11,17 @@ import {
 const routes: Routes = [
   {
     path: '', // root path '/' for the app
-    component: LandingPageComponent
+    component: LandingPageComponent,
+    data: {
+      telemetry: {
+        env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate'
+      }
+    }
   },
   {
     path: 'signup', component: SignupComponent, data: {
       telemetry: {
-        env: 'signup', pageid: 'signup', type: 'edit', subtype: 'paginate'
+        env: 'public', pageid: 'signup', type: 'edit', subtype: 'paginate'
       }
     }
   },

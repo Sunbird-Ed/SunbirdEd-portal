@@ -148,7 +148,7 @@ export class CourseConsumptionComponent {
     // init the default impression event
     this.initTelemetryImpressionEvent();
     this.activatedRoute.params.subscribe(params => {
-      this.getMyContent();
+
       if (params.id && params.timePeriod) {
 
         // update the impression event after a course is selected
@@ -165,6 +165,7 @@ export class CourseConsumptionComponent {
       }
     }
     );
+    this.getMyContent();
   }
 
   /**

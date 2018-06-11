@@ -212,13 +212,19 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         contentType: ['Collection']
       };
     }
-
+    if (this.userService.contentChannelFilter) {
+      window.config.searchCriteria = {
+        filters: {
+          channel: this.userService.contentChannelFilter
+        }
+      };
+    }
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 
     if (this.state === state.UP_FOR_REVIEW &&
       _.intersection(this.userProfile.userRoles,
-        ['CONTENT_REVIEWER', 'CONTENT_REVIEW']).length > 0) {
+        ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
       window.config.editorConfig.publishMode = true;
     } else if (this.state === state.FLAGGED &&
       _.intersection(this.userProfile.userRoles,

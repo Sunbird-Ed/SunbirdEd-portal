@@ -42,6 +42,8 @@ let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 const oneDayMS = 86400000;
 const request = require('request');
 const ejs = require('ejs');
+const packageObj =   JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const uuidv4 = require('uuid/v4')
 
 let memoryStore = null
 
@@ -88,7 +90,6 @@ app.get(['/dist/*.js', '/dist/*.css',
   '/dist/*.svg'
 ],
   compression(), function (req, res, next) {
-    console.log(req.originalUrl)
     res.setHeader("Cache-Control", "public, max-age=" + oneDayMS * 30);
     res.setHeader("Expires", new Date(Date.now() + oneDayMS * 30).toUTCString());
     next();
@@ -146,9 +147,9 @@ function indexPage(req, res) {
     res.locals[key] = value
   })
   if (envHelper.PORTAL_CDN_URL) {
-    request(envHelper.PORTAL_CDN_URL + 'index.ejs', function (error, response, body) {
-      if (error) {
-        console.log('error loading indx.ejs from CDN', error)
+    request(envHelper.PORTAL_CDN_URL + 'index.ejs?version='+uuidv4(), function (error, response, body) {
+      if (error || response.statusCode !== 200) {
+        console.log('error while fetching index.ejs from CDN', error)
         res.render(path.join(__dirname, 'dist', 'index.ejs'))
       } else {
         res.send(ejs.render(body, getLocals(req)))
