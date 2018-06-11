@@ -132,6 +132,10 @@ describe('DraftComponent', () => {
   it('should call deleteConfirmModal method to delte the content', inject([],
     () => {
       component.deleteConfirmModal('do_2124339707713126401772');
+      spyOn(component, 'removeContent').and.callThrough();
+      component.removeContent(testData.localContentData, 'do_112523105235623936168');
+      expect(component.removeContent).toHaveBeenCalled();
+      expect(component.draftList.length).toBeLessThanOrEqual(1);
       expect(component.showLoader).toBeTruthy();
     }));
 
