@@ -16,7 +16,15 @@ export class DataService {
   /**
    * Contains rootOrg Id
    */
-  rootOrgId = '';
+  rootOrgId: string;
+  /**
+   * Contains channel Id
+   */
+  channelId: string;
+  /**
+   * Contains devoce Id
+   */
+  deviceId: string;
   /**
    * Contains base Url for api end points
    */
@@ -118,12 +126,20 @@ export class DataService {
     const default_headers = {
       'Accept': 'application/json',
       'X-Consumer-ID': 'X-Consumer-ID',
-      'X-Device-ID': 'X-Device-ID',
-      'X-Org-code': this.rootOrgId,
       'X-Source': 'web',
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
+    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    if (this.deviceId) {
+      default_headers['X-Device-ID'] = this.deviceId;
+    }
+    if (this.rootOrgId) {
+      default_headers['X-Org-code'] = this.rootOrgId;
+    }
+    if (this.channelId) {
+      default_headers['X-Channel-Id'] = this.channelId;
+    }
     if (headers) {
       return { ...default_headers, ...headers };
     } else {

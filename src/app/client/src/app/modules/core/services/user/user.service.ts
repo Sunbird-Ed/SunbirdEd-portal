@@ -44,7 +44,7 @@ export class UserService {
   /**
    * reference of lerner service.
    */
-  public learner: LearnerService;
+  public learnerService: LearnerService;
   /**
  * Contains hashTag id
  */
@@ -84,7 +84,7 @@ export class UserService {
   constructor(config: ConfigService, learner: LearnerService,
     private http: HttpClient, contentService: ContentService) {
     this.config = config;
-    this.learner = learner;
+    this.learnerService = learner;
     this.contentService = contentService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
@@ -128,7 +128,7 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learner.get(option).subscribe(
+    this.learnerService.get(option).subscribe(
       (data: ServerResponse) => {
         this.setUserProfile(data);
       },
@@ -212,6 +212,7 @@ export class UserService {
     this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
+    this.setOrgDetailsToHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   setContentChannelFilter() {
@@ -224,9 +225,16 @@ export class UserService {
       console.log('unable to set content channel filter');
     }
   }
+  setOrgDetailsToHeaders() {
+    this.learnerService.rootOrgId = this._rootOrgId;
+    this.learnerService.channelId = this._channel;
+    this.contentService.rootOrgId = this._rootOrgId;
+    this.contentService.channelId = this._channel;
+  }
   get contentChannelFilter() {
     return this._contentChannelFilter;
   }
+
   /**
    * Get organization details.
    *

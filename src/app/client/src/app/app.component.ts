@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -83,6 +84,13 @@ export class AppComponent implements OnInit {
     this.telemetryService.syncEvents();
   }
   ngOnInit() {
+    const fingerPrint2 = new Fingerprint2();
+    fingerPrint2.get((deviceId, components) => {
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.initializeApp();
+    });
+  }
+  initializeApp() {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     this.conceptPickerService.initialize();
@@ -121,7 +129,6 @@ export class AppComponent implements OnInit {
       });
     }
   }
-
   public initTelemetryService() {
     let config: ITelemetryContext;
     if (this.userService.loggedIn) {
@@ -153,7 +160,8 @@ export class AppComponent implements OnInit {
         uid: this.userProfile.userId,
         sid: this.userService.sessionId,
         channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
-        env: 'home'
+        env: 'home',
+        telemetryValidation: environment.telemetryValidation
       }
     };
   }
@@ -176,7 +184,8 @@ export class AppComponent implements OnInit {
         uid: 'anonymous',
         sid: this.userService.anonymousSid,
         channel: this.orgDetails.channel,
-        env: 'home'
+        env: 'home',
+        telemetryValidation: environment.telemetryValidation
       }
     };
   }
