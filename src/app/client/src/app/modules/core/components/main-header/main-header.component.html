@@ -52,7 +52,7 @@
                 <div class="ui secondary right pointing dropdown" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
+                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                         <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
                             <a  href="/home" class="sunblogin">
