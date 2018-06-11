@@ -47,7 +47,7 @@
             <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input [attr.disabled]="batchData.status !== 0 ? true : null" suiDatepicker formControlName="startDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchData.status !== 0 ? true : null" suiDatepicker formControlName="startDate" [pickerMinDate]='pickerMinDate' [pickerMode]="'date'">
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@
             <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input [attr.disabled]="batchData.status === 2 ? true : null"  suiDatepicker formControlName="endDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchData.status === 2 ? true : null"  [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
               </div>
             </div>
           </div>

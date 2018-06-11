@@ -105,6 +105,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -294,35 +295,6 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
     this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
   }
 
-  // getBatchDetails() {
-  //   this.batchData = this.batchService.getBatchData();
-  //   if (_.isEmpty(this.batchData)) {
-  //     this.batchService.getBatchDetailsById({ batchId: this.batchId }).subscribe(
-  //       (apiResponse: ServerResponse) => {
-  //         if (apiResponse) {
-  //           this.batchData = apiResponse.result.response;
-  //           const selectedParticipants = this.getSelectedUser(this.batchData.participant);
-  //           const users = _.concat(selectedParticipants, this.batchData.mentors);
-  //           this.getUserList(undefined, users);
-  //           this.initializeFormFields();
-  //           this.setInteractEventData(this.batchData);
-  //         } else {
-  //           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
-  //         }
-  //       },
-  //       err => {
-  //         this.toasterService.error(this.resourceService.messages.fmsg.m0054);
-  //       });
-  //   } else {
-  //     const selectedParticipants = this.getSelectedUser(this.batchData.participant);
-  //     const users = _.concat(selectedParticipants, this.batchData.mentors);
-  //     this.getUserList(undefined, users);
-  //     this.initializeFormFields();
-  //     this.setInteractEventData(this.batchData);
-  //   }
-  // }
-
-
   /**
   *  api call to get user list
   */
@@ -393,6 +365,9 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         users = $('#users').dropdown('get value').split(',');
         mentors = $('#mentors').dropdown('get value').split(',');
       }
+      const startDate = new Date(this.batchAddUserForm.value.startDate.setHours(23, 59, 59, 999));
+      const endDate = this.batchAddUserForm.value.endDate ?
+       new Date(this.batchAddUserForm.value.endDate.setHours(23, 59, 59, 999)) : null;
       const requestParam = {
         name: this.batchAddUserForm.value.name,
         description: this.batchAddUserForm.value.description,
