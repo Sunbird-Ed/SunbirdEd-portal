@@ -73,6 +73,10 @@ export class ContentPlayerComponent implements OnInit {
    */
   createNoteData: INoteData;
   closeUrl: any;
+  /**
+ * userId as param for the external url content
+ */
+  userId = this.userService.userid;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -140,7 +144,6 @@ export class ContentPlayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
-          this.checkExtUrl();
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
@@ -154,13 +157,6 @@ export class ContentPlayerComponent implements OnInit {
         this.showError = true;
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
       });
-  }
-/**
- * To check if the mimeType is text/x-url
- * if mimeType is text/x-url extcontentpreview plugin will be invoked
- */
-  checkExtUrl() {
-    this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userService.userid);
   }
   /**
    * retry launching player with same content details

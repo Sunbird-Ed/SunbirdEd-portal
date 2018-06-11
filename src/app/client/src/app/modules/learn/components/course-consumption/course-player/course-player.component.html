@@ -75,7 +75,8 @@
                                     </div>
                                     <div class="ui grid">
                                         <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                            <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
+                                            <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig" 
+                                            [userId]="userId" [courseId]="courseId" [batchId]="batchId"></app-player>
                                         </div>
                                     </div>
                                 </div>

@@ -71,7 +71,7 @@ export class ContentUtilsServiceService {
       setTimeout(() => {
         const newWindow = window.open('/learn/redirect', '_blank');
         newWindow.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '') + '#&contentId='
-          + playerconfigMeta.identifier + '#&batchId=' + (batchId !== undefined ? batchId : '') + '#&uid=' + userId;
+          + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
       }, 3000);
     }
   }

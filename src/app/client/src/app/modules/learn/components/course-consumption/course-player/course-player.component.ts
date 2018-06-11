@@ -105,6 +105,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
 
   telemetryCourseStart: IStartEventInput;
+/**
+ * userId as param for the external url content
+ */
+  userId = this.userService.userid;
 
   contentIds = [];
   contentStatus: any;
@@ -222,7 +226,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.playerConfig = config;
       this.enableContentPlayer = true;
       this.contentTitle = data.title;
-      this.checkExtUrl();
       this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
       this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
     }, (err) => {
@@ -230,16 +233,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.stmsg.m0009);
     });
   }
-
-
- /**
- * To check if the mimeType is text/x-url
- * if mimeType is text/x-url extcontentpreview plugin will be invoked
- */
-  checkExtUrl() {
-    this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userService.userid, this.courseId, this.batchId);
-  }
-
 
   private navigateToContent(content: { title: string, id: string }): void {
     const navigationExtras: NavigationExtras = {

@@ -52,6 +52,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public triggerContentImpression = false;
   public showCopyLoader: Boolean = false;
   /**
+   * userId as param for the external url content
+   */
+  userId = this.userService.userid;
+  /**
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
@@ -142,23 +146,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion || '1',
-        rollup: {l1: this.collectionId}
+        rollup: { l1: this.collectionId }
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;
-      this.checkExtUrl(content);
       return content;
     }).catch((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
     });
-  }
-  /**
-   * To check if the mimeType is text/x-url
-   * if mimeType is text/x-url extcontentpreview plugin will be invoked
-   */
-  checkExtUrl(content) {
-    this.contentUtilsServiceService.getRedirectUrl(content.metadata, this.userService.userid);
   }
 
   public playContent(data: any): void {
