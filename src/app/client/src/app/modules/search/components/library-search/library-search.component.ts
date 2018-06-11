@@ -103,8 +103,6 @@ export class LibrarySearchComponent implements OnInit {
    */
   queryParams: any;
 
-  public filters: any;
-
   public filterType: any;
 
   public redirectUrl: string;
@@ -137,11 +135,11 @@ export class LibrarySearchComponent implements OnInit {
   /**
    * This method sets the make an api call to get all search data with page No and offset
    */
-  populateContentSearch() {
+  populateContentSearch(filters) {
     this.showLoader = true;
     this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
     const requestParams = {
-      filters:  _.pickBy(this.filters, value => value.length > 0),
+      filters:  _.pickBy(filters, value => value.length > 0),
       limit: this.pageLimit,
       pageNumber: this.pageNumber,
       query: this.queryParams.key,
@@ -198,7 +196,6 @@ export class LibrarySearchComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.filters = {};
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
     Observable
@@ -216,19 +213,17 @@ export class LibrarySearchComponent implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = { ...bothParams.queryParams };
-        if (_.isEmpty(this.queryParams)) {
-          this.filters = {};
-        } else {
+        let filters = {};
+        if (!_.isEmpty(this.queryParams)) {
           _.forOwn(this.queryParams, (queryValue, queryParam) => {
-            if (queryParam !== 'key' && queryParam !== 'sort_by' && queryParam !== 'sortType') {
-              this.filters[queryParam] = queryValue;
-            }
+              filters[queryParam] = queryValue;
           });
+          filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
         }
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
         }
-        this.populateContentSearch();
+        this.populateContentSearch(filters);
       });
       this.setInteractEventData();
       this.telemetryImpression = {

@@ -1,11 +1,11 @@
 <div class="ui clearing divider">
 </div>
-<div *ngIf="metaData" class="ui grid">
+<div *ngIf="metaData" class="ui stackable grid">
   <div *ngIf="metaData.author" class="three wide column">
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.author}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.author}}</div>
           <div class="description padding-top-1rem">{{metaData.author}}</div>
         </div>
       </div>
@@ -15,7 +15,7 @@
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.medium}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.medium}}</div>
           <div class="description padding-top-1rem">{{metaData.medium}}</div>
         </div>
       </div>
@@ -25,7 +25,7 @@
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.class}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
           <div class="description padding-top-1rem">{{metaData.gradeLevel}}</div>
         </div>
       </div>
@@ -35,7 +35,7 @@
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.subject}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.subject}}</div>
           <div class="description padding-top-1rem">{{metaData.subject}}</div>
         </div>
       </div>
@@ -45,7 +45,7 @@
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.lastupdate}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.lastupdate}}</div>
           <div class="description padding-top-1rem">{{metaData.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</div>
         </div>
       </div>
@@ -55,7 +55,7 @@
     <div class="ui list">
       <div class="item">
         <div class="content">
-          <div class="header">{{resourceService.frmelmnts.lbl.createdon}}</div>
+          <div class="header">{{resourceService?.frmelmnts?.lbl?.createdon}}</div>
           <div class="description padding-top-1rem">{{metaData.createdOn | dateFormat: 'MMMM Do YYYY'}}</div>
         </div>
       </div>

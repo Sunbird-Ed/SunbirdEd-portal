@@ -41,7 +41,7 @@ export class BatchDetailsComponent implements OnInit {
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,
       type: 'Course',
-      ver: this.courseHierarchy.pkgVersion || '1'
+      ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
     };
     this.updateBatchIntractEdata = {
       id: 'update-batch',

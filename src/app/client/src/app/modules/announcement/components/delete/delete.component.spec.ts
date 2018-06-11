@@ -31,7 +31,7 @@ describe('DeleteComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DeleteComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-        SuiModule, SharedModule.forRoot(), TelemetryModule],
+        SuiModule, SharedModule.forRoot(),  TelemetryModule.forRoot()],
       providers: [HttpClientModule, AnnouncementService,
         ResourceService, ToasterService, ConfigService, HttpClient, RouterNavigationService,
         { provide: Router, useClass: RouterStub },
