@@ -60,7 +60,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       this.courseInteractObject = {
         id: this.courseHierarchy.identifier,
         type: 'Course',
-        ver: this.courseHierarchy.pkgVersion || '1',
+        ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0',
       };
       if (this.courseHierarchy.status === 'Flagged') {
         this.flaggedCourse = true;
@@ -124,7 +124,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
-      ver: param.pkgVersion ? param.pkgVersion : 1
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
 }
