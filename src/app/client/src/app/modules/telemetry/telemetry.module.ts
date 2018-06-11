@@ -1,4 +1,4 @@
-import { TelemetryService, TELEMETRY_PROVIDER } from './services';
+import { TelemetryService } from './services';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TelemetryInteractDirective,  TelemetryStartDirective, TelemetryEndDirective, TelemetryImpressionDirective,
@@ -16,7 +16,7 @@ export class TelemetryModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: TelemetryModule,
-      providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
+      providers: [TelemetryService]
     };
   }
 }
