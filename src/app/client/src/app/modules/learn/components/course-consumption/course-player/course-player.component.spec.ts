@@ -11,6 +11,7 @@ import {} from 'jasmine';
 import { CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
 import { Subject } from 'rxjs/Subject';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
@@ -72,7 +73,7 @@ describe('CoursePlayerComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
      ],
-      imports: [ SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule ],
+      imports: [ SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot() ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -165,7 +166,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-  it('should play content if course status is unlisted', () => {
+ it('should play content if course status is unlisted', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
