@@ -1,5 +1,5 @@
 <div>
-  <div class="ui grid">
+  <div class="ui stackable grid">
     <div class="twelve wide column">
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="accordionDefaultOpen">
@@ -28,7 +28,7 @@
             </div>
             <div *ngIf="refresh && showFilter">
               <form class="ui form">
-                <div *ngIf="formFieldProperties" class="ui grid">
+                <div *ngIf="formFieldProperties" class="ui stackable grid">
                   <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                     <div *ngIf="field.inputType==='select'" class="field">
                       <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"

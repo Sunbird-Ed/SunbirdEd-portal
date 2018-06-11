@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import * as _ from 'lodash';
 
 /**
  * This component holds the note card widget.
@@ -157,10 +158,10 @@ export class NoteCardComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.createNoteData) {
-    this.notesList = this.notesList || [];
-    this.notesList.unshift(this.createNoteData);
-    this.setSelectedNote(this.notesList[0], 0);
-    this.showCreateEditor = false;
+      this.notesList = this.notesList || [];
+      this.notesList.unshift(this.createNoteData);
+      this.setSelectedNote(this.notesList[0], 0);
+      this.showCreateEditor = false;
     }
   }
 
@@ -181,19 +182,19 @@ export class NoteCardComponent implements OnInit, OnChanges {
       }
     };
 
-      if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
-        this.noteService.search(requestBody).subscribe(
-          (apiResponse: ServerResponse) => {
-            this.showLoader = false;
-            this.notesList = apiResponse.result.response.note;
-            this.selectedNote = this.notesList[0];
-          },
-          (err) => {
-            this.showLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0033);
-          }
-        );
-      }
+    if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
+      this.noteService.search(requestBody).subscribe(
+        (apiResponse: ServerResponse) => {
+          this.showLoader = false;
+          this.notesList = apiResponse.result.response.note;
+          this.selectedNote = this.notesList[0];
+        },
+        (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+        }
+      );
+    }
   }
 
   /**
@@ -221,8 +222,11 @@ export class NoteCardComponent implements OnInit, OnChanges {
   public viewAllNotes() {
     this.activatedRoute.params.subscribe(params => {
       this.batchId = params.batchId;
-      if (this.batchId) {
-        this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes']);
+      const queryContentId = _.get(this.activatedRoute, 'snapshot.queryParams.contentId');
+      if (this.batchId && queryContentId) {
+          this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes', queryContentId]);
+        } else if (this.batchId) {
+          this.route.navigate(['/learn/course', this.ids.courseId, 'batch', this.batchId, 'notes']);
       } else {
         this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
       }
