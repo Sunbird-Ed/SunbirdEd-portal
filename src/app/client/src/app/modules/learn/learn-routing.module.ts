@@ -76,6 +76,15 @@ const routes: Routes = [
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
       {
+        path: ':courseId/batch/:batchId/notes/:contentId', component: NoteListComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
+          }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+        },
+        children: [{ path: 'flag', component: FlagContentComponent }]
+      },
+      {
         path: ':courseId/:courseStatus', component: CoursePlayerComponent
       }
     ]

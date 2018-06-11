@@ -262,7 +262,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToResource();
+    this.navigationHelperService.navigateToResource('/resources');
   }
   closeContentPlayer() {
     this.showPlayer = false;

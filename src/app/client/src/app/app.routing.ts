@@ -14,6 +14,14 @@ const appRoutes: Routes = [
   {
     path: 'resources',
     loadChildren: 'app/modules/resource/resource.module#ResourceModule'
+  },
+  {
+    path: 'search',
+    loadChildren: 'app/modules/search/search.module#SearchModule'
+  },
+  {
+    path: 'workspace',
+    loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   }
 ];
 
