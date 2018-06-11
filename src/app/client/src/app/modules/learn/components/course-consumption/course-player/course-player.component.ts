@@ -213,13 +213,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.contentInteractObject = {
         id: config.metadata.identifier,
         type: config.metadata.contentType || config.metadata.resourceType || 'content',
-<<<<<<< HEAD
-        ver: config.metadata.pkgVersion || '1',
-        rollup: { l1: this.courseId }
-=======
         ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
         rollup: {l1: this.courseId}
->>>>>>> 137b950f5522390de1110b90324ebb10654812ff
         // rollup: this.courseInteractObject
       };
       this.closeContentIntractEdata = {
