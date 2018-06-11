@@ -39,7 +39,7 @@
             </div>
         </div>
         <ng-template #showLoginBtn>
-            <div class="right floated two wide column tablet computer only">
+            <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10">
                     <button *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" class="ui item text-upper-case" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
@@ -48,16 +48,22 @@
                     </a>
                 </div>
             </div>
-            <div class="right floated four wide column mobile only">
-                <div class="beforelogin ui secondary pointing menu padding-top-10">
-                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
-                    <a  href="/home" class="sunblogin">
-                        <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
-                    </a>
+            <div class="right floated two wide column mobile only padding-top-15">                
+                <div class="ui secondary right pointing dropdown" suiDropdown>
+                    <i class="large bars icon"></i>
+                    <div class="menu" suiDropdownMenu>
+                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && config.appConfig.landingPage.showExploreButton" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
+                        <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
+                        <div class="item">
+                            <a  href="/home" class="sunblogin">
+                                <div class="item">{{resourceService.frmelmnts?.btn?.login}}</div>
+                            </a>
+                        </div>        
+                    </div>
                 </div>
             </div>
         </ng-template>
-        <div class="one wide column"></div>
+        <div class="one wide tablet computer only column"></div>
     </div>
 </div>
 <app-main-menu></app-main-menu>
@@ -128,7 +134,7 @@
     <div class="ui grid margin-top-0">
         <!--tablet computer sub header view code starts-->
         <div class="center aligned twelve wide tablet computer only column anon-consumption-sec-menu padding-top-none">
-            <div class="ui grid margin-top-20">
+            <div class="ui grid margin-top-0">
                 <div class="one wide column"></div>
                 <div class="two wide column">
                     <button class="ui basic button left-float" (click)="showQrmodal = true;">
