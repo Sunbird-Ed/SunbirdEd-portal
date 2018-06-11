@@ -57,7 +57,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   /**
    * Adjust player height after load
    */
-  adjustPlayerHeight() {
+  adjustPlayerHeight () {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {
       const height = playerWidth * (9 / 16);

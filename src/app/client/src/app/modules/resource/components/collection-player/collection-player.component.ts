@@ -5,8 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService, ITelemetryShare
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData, ITelemetryShare
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -102,7 +101,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService, private userService: UserService) {
+    private userService: UserService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
