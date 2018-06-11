@@ -2,7 +2,7 @@ import { WindowScrollService, ConfigService, ContentUtilsServiceService } from '
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
-import { PlayerConfig } from './../../interfaces';
+import {PlayerConfig} from './../../interfaces';
 
 @Component({
   selector: 'app-player',

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
@@ -105,9 +105,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
 
   telemetryCourseStart: IStartEventInput;
-/**
- * userId as param for the external url content
- */
+  /**
+   * userId as param for the external url content
+   */
   userId = this.userService.userid;
 
   contentIds = [];
@@ -143,7 +143,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-     private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -214,7 +214,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         id: config.metadata.identifier,
         type: config.metadata.contentType || config.metadata.resourceType || 'content',
         ver: config.metadata.pkgVersion || '1',
-        rollup: {l1: this.courseId}
+        rollup: { l1: this.courseId }
         // rollup: this.courseInteractObject
       };
       this.closeContentIntractEdata = {
@@ -384,15 +384,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-       object: {
+      object: {
         id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode:  'play'
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play'
       }
     };
     this.telemetryCourseEndEvent = {
