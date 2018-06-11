@@ -212,7 +212,7 @@ export class UserService {
     this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
-    this.setOrgDetailsToHeaders();
+    this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
   }
   setContentChannelFilter() {
@@ -225,7 +225,7 @@ export class UserService {
       console.log('unable to set content channel filter');
     }
   }
-  setOrgDetailsToHeaders() {
+  setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
     this.learnerService.channelId = this._channel;
     this.contentService.rootOrgId = this._rootOrgId;

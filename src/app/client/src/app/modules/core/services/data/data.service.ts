@@ -21,6 +21,7 @@ export class DataService {
    * Contains channel Id
    */
   channelId: string;
+  appId: string;
   /**
    * Contains devoce Id
    */
@@ -125,7 +126,7 @@ export class DataService {
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
     const default_headers = {
       'Accept': 'application/json',
-      'X-Consumer-ID': 'X-Consumer-ID',
+      // 'X-Consumer-ID': 'X-Consumer-ID',
       'X-Source': 'web',
       'ts': moment().format(),
       'X-msgid': UUID.UUID()

@@ -85,49 +85,55 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     const fingerPrint2 = new Fingerprint2();
-    fingerPrint2.get((deviceId, components) => {
-      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-      this.initializeApp();
-    });
-  }
-  initializeApp() {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     this.conceptPickerService.initialize();
     if (this.userService.loggedIn) {
-      this.userService.startSession();
-      this.userService.initialize(true);
-      this.permissionService.initialize();
-      this.courseService.initialize();
-      const userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
-        if (user && !user.err) {
-          userDataUnsubscribe.unsubscribe();
-          this.initApp = true;
-          this.userProfile = user.userProfile;
-          const slug = _.get(user, 'userProfile.rootOrg.slug');
-          this.initTelemetryService();
-          this.initTenantService(slug);
-        } else if (user && user.err) {
-          userDataUnsubscribe.unsubscribe();
-          this.initApp = true;
-          this.initTenantService();
-        }
+      fingerPrint2.get((deviceId, components) => {
+        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.initializeLogedInsession();
       });
     } else {
       this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
-        this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
-          .first().subscribe((data) => {
-            this.orgDetails = data;
-            this.initTelemetryService();
-            this.initTenantService();
-            this.userService.initialize(false);
-            this.initApp = true;
-          }, (err) => {
-            this.initApp = true;
-            console.log('unable to get organization details');
-          });
+        fingerPrint2.get((deviceId, components) => {
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.initializeAnonymousSession();
+        });
       });
     }
+  }
+  initializeLogedInsession() {
+    this.userService.startSession();
+    this.userService.initialize(true);
+    this.permissionService.initialize();
+    this.courseService.initialize();
+    const userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
+      if (user && !user.err) {
+        userDataUnsubscribe.unsubscribe();
+        this.initApp = true;
+        this.userProfile = user.userProfile;
+        const slug = _.get(user, 'userProfile.rootOrg.slug');
+        this.initTelemetryService();
+        this.initTenantService(slug);
+      } else if (user && user.err) {
+        userDataUnsubscribe.unsubscribe();
+        this.initApp = true;
+        this.initTenantService();
+      }
+    });
+  }
+  initializeAnonymousSession() {
+    this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
+    .first().subscribe((data) => {
+      this.orgDetails = data;
+      this.initTelemetryService();
+      this.initTenantService();
+      this.userService.initialize(false);
+      this.initApp = true;
+    }, (err) => {
+      this.initApp = true;
+      console.log('unable to get organization details');
+    });
   }
   public initTelemetryService() {
     let config: ITelemetryContext;
