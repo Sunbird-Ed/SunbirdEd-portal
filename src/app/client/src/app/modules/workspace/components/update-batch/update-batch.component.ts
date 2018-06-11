@@ -390,8 +390,8 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       this.batchService.updateBatchDetails(requestParam).subscribe(
         (apiResponse: ServerResponse) => {
           if (apiResponse) {
+            this.toasterService.success(this.resourceService.messages.smsg.m0034);
             if (batchData.enrollmentType !== 'open') {
-              // const users = this.batchAddUserForm.value.users;
               if (users && users.length > 0) {
                 const userRequest = {
                   userIds: users
