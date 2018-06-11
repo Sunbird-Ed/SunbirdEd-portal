@@ -19,7 +19,7 @@ import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
 import { SearchModule } from '@sunbird/search';
-import { DiscussionModule } from '@sunbird/discussion';
+// import { DiscussionModule } from '@sunbird/discussion';
 import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
@@ -42,7 +42,7 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
     AppRoutingModule,
     HttpClientModule,
     SuiModule,
-    CommunityModule,
+    // CommunityModule,
     SharedModule.forRoot(),
     HomeModule,
     DashboardModule,
@@ -51,11 +51,11 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
     NotesModule,
     // ResourceModule, // Lazy load
     // LearnModule, // Lazy load
-    WorkspaceModule,
+    // WorkspaceModule, // Lazy load
     OrgManagementModule,
     PublicModule,
-    SearchModule,
-    DiscussionModule,
+    // SearchModule, // Lazy load
+    // DiscussionModule,
     WebExtensionModule.forRoot(),
     BadgingModule,
     ...PluginModules,
