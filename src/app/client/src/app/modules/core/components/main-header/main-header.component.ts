@@ -20,6 +20,7 @@ export class MainHeaderComponent implements OnInit {
   /**
    * organization log
    */
+  exploreButtonVisibility: string;
   logo: string;
   key: string;
   queryParam: any = {};
@@ -90,6 +91,11 @@ export class MainHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    try {
+      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+    } catch (error) {
+      this.exploreButtonVisibility = 'false';
+    }
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };

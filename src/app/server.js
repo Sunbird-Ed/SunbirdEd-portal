@@ -138,6 +138,7 @@ function getLocals(req){
   locals.ekstepEnv = envHelper.EKSTEP_ENV
   locals.defaultTenant = envHelper.DEFAUULT_TENANT
   locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
+  locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   return locals;
 }
 
