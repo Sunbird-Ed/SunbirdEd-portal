@@ -93,7 +93,7 @@
                                 <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                     <h2 class="ui center aligned icon tiny header toc-note">
                                         <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
-                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
+                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                                 (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
                                             <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
                                             <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
@@ -122,7 +122,7 @@
                             <!-- <course-discussions></course-discussions> -->
                         </div>
                         <div class="four wide column toc-note-content">
-                            <!-- <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card> -->
+                                <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
                         </div>
                     </div>
                 </div>
