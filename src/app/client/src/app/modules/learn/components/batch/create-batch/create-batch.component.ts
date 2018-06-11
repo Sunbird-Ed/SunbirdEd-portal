@@ -83,7 +83,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryImpression: IImpressionEventInput;
 
   public courseConsumptionService: CourseConsumptionService;
-  pickerMinDate = new Date();
+  pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -105,6 +105,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
+    // this.pickerMinDate.setHours(0);
+    // this.pickerMinDate.setMinutes(0);
+    // this.pickerMinDate.setDate(-1);
   }
 
   /**
@@ -251,13 +254,16 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       users = $('#users').dropdown('get value').split(',');
       mentors = $('#mentors').dropdown('get value').split(',');
     }
+    const startDate = new Date(this.createBatchUserForm.value.startDate.setHours(23, 59, 59, 999));
+    const endDate = this.createBatchUserForm.value.endDate ?
+    new Date(this.createBatchUserForm.value.endDate.setHours(23, 59, 59, 999)) : null;
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchUserForm.value.name,
       'description': this.createBatchUserForm.value.description,
       'enrollmentType': this.createBatchUserForm.value.enrollmentType,
-      'startDate': this.createBatchUserForm.value.startDate,
-      'endDate': this.createBatchUserForm.value.endDate,
+      'startDate': startDate,
+      'endDate': endDate,
       'createdBy': this.userId,
       'createdFor': this.orgIds,
       'mentors': _.compact(mentors)
@@ -346,6 +352,3 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 }
-
-
-
