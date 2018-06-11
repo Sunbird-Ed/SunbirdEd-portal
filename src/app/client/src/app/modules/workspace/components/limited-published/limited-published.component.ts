@@ -320,7 +320,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
-      ver: param.pkgVersion ? param.pkgVersion.toString() : 1
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
 }
