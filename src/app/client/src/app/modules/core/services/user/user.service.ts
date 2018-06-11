@@ -67,6 +67,7 @@ export class UserService {
   private _env: string;
   private _authenticated: boolean;
   public anonymousSid: string;
+  private _contentChannelFilter: string;
   /**
    * Reference of content service.
    */
@@ -208,9 +209,23 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this._userData$.next({ err: null, userProfile: this._userProfile });
+  }
+  setContentChannelFilter() {
+    try {
+      const contentChannelFilter = (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
+      if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
+        this._contentChannelFilter = this.channel;
+      }
+    } catch (error) {
+      console.log('unable to set content channel filter');
+    }
+  }
+  get contentChannelFilter() {
+    return this._contentChannelFilter;
   }
   /**
    * Get organization details.

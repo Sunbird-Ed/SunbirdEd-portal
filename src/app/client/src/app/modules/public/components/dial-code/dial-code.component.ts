@@ -164,5 +164,4 @@ export class DialCodeComponent implements OnInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-
 }
