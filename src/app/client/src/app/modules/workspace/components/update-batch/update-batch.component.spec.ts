@@ -71,7 +71,7 @@ describe('UpdateBatchComponent', () => {
       declarations: [UpdateBatchComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule,
          RouterTestingModule, SharedModule.forRoot(),
-        TelemetryModule],
+        TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
