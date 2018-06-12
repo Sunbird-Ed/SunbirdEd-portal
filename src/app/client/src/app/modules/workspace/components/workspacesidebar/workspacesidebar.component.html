@@ -40,8 +40,8 @@
     [class.active]="router.isActive('/workspace/content/flagged')">
     {{resourceService?.frmelmnts?.snav?.flagged}}
   </a>
-  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='limitedPublishingRole' [routerLink]="['limited/publish',1]"
-    [class.active]="router.isActive('/workspace/content/limited/publish')">
+  <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='limitedPublishingRole' [routerLink]="['limited-publish',1]"
+    [class.active]="router.isActive('/workspace/content/limited-publish')">
    {{resourceService?.frmelmnts?.snav?.limitedPublishing}}
   </a>
 </div>
