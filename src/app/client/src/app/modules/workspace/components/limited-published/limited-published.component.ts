@@ -179,7 +179,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'message': this.resourceService.messages.stmsg.m0008,
       'messageText': this.resourceService.messages.stmsg.m0083
     };
-    this.state = 'limited/publish';
+    this.state = 'limited-publish';
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
