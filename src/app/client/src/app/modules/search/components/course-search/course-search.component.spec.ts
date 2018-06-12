@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseSearchComponent } from './course-search.component';
 import { Response } from './course-search.component.spec.data';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('CourseSearchComponent', () => {
   let component: CourseSearchComponent;
   let fixture: ComponentFixture<CourseSearchComponent>;
@@ -41,7 +41,7 @@ describe('CourseSearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [CourseSearchComponent],
       providers: [ConfigService, CoursesService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },

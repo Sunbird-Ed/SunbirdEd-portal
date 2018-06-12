@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetComponent } from './get.component';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('GetComponent', () => {
   let component: GetComponent;
   let fixture: ComponentFixture<GetComponent>;
@@ -28,7 +28,7 @@ describe('GetComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), TelemetryModule.forRoot(), Ng2IziToastModule],
       declarations: [ GetComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
