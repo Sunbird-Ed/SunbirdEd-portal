@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  telemetryValidation: true
+  enableValidation: true
 };

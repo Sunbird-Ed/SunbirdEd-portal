@@ -1,4 +1,4 @@
-import { environment } from './../environments/environment';
+import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -167,7 +167,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.sessionId,
         channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        telemetryValidation: environment.telemetryValidation
+        enableValidation: environment.enableValidation
       }
     };
   }
@@ -191,7 +191,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.anonymousSid,
         channel: this.orgDetails.channel,
         env: 'home',
-        telemetryValidation: environment.telemetryValidation
+        enableValidation: environment.enableValidation
       }
     };
   }
