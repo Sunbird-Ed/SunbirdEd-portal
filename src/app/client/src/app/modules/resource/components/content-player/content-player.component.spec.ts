@@ -18,8 +18,7 @@ const serverRes = {
     content: {
       mimeType: 'application/vnd.ekstep.ecml-archive',
       body: 'body',
-      identifier: 'do_1125110622654464001294',
-      language: ['English'],
+      identifier: 'domain_66675',
       versionKey: '1497028761823',
       status: 'Live',
       me_averageRating: '4',
@@ -31,7 +30,7 @@ const serverRes = {
 };
 const resourceServiceMockData = {
   messages: {
-    imsg: { m0027: 'Something went wrong' },
+    imsg: { m0027: 'Something went wrong'},
     stmsg: { m0009: 'error' }
   },
   frmelmnts: {
