@@ -180,7 +180,7 @@ describe('LimitedPublishedComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited/publish', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited-publish', component.pageNumber]);
     }));
 
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
