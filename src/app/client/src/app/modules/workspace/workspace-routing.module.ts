@@ -151,10 +151,10 @@ const routes: Routes = [
         }
       },
       {
-        path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent, canActivate: [AuthGuard],
+        path: 'limited-publish/:pageNumber', component: LimitedPublishedComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'workspace-content-unlisted', subtype: 'scroll', uri: '/workspace/content/limited/publish',
+            env: telemetryEnv, pageid: 'workspace-content-unlisted', subtype: 'scroll', uri: '/workspace/content/limited-publish',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'limitedPublishingRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]

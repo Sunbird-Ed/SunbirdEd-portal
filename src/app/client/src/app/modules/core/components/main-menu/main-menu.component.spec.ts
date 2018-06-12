@@ -15,8 +15,7 @@ describe('MainMenuComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, TelemetryModule, WebExtensionModule.forRoot(), CoreModule.forRoot(), SharedModule.forRoot()],
-      declarations: [MainMenuComponent],
+      imports: [HttpClientModule, WebExtensionModule.forRoot(), CoreModule.forRoot(), SharedModule.forRoot()],
       providers: [HttpClient, ResourceService, ConfigService, UserService,
         LearnerService, ContentService,
         { provide: Router, useClass: RouterStub }]

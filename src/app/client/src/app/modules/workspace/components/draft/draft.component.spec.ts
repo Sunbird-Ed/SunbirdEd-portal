@@ -62,7 +62,7 @@ describe('DraftComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
-        TelemetryModule, NgInviewModule],
+        TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
