@@ -130,7 +130,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         object: {
           id: content.metadata.identifier,
           type: content.metadata.contentType || content.metadata.resourceType || content,
-          ver: content.metadata.pkgVersion || '1',
+          ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
         }
       };
       this.closeContentIntractEdata = {
@@ -141,7 +141,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       this.objectContentInteract = {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
-        ver: content.metadata.pkgVersion || '1',
+        ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
         rollup: {l1: this.collectionId}
         // rollup: this.collectionInteractObject
       };
@@ -225,7 +225,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       object: {
         id: this.collectionId,
         type: this.collectionData.contentType,
-        ver: this.collectionData.pkgVersion || '1'
+        ver: this.collectionData.pkgVersion ? this.collectionData.pkgVersion.toString() : '1.0'
       },
       edata: {
         type: this.route.snapshot.data.telemetry.type,
@@ -242,7 +242,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.collectionInteractObject = {
       id: this.collectionId,
       type: this.collectionData.contentType,
-      ver: this.collectionData.pkgVersion || '1'
+      ver: this.collectionData.pkgVersion ? this.collectionData.pkgVersion.toString() : '1.0'
     };
   }
 
@@ -262,7 +262,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       });
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToResource();
+    this.navigationHelperService.navigateToResource('/resources');
   }
   closeContentPlayer() {
     this.showPlayer = false;
@@ -297,7 +297,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
-      ver: param.pkgVersion ? param.pkgVersion : 1
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
 }

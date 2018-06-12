@@ -27,7 +27,7 @@ import { DashboardModule } from '@sunbird/dashboard';
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    DiscussionModule,
+    // DiscussionModule,
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,

@@ -3,10 +3,10 @@
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
       <sui-progress class="top attached active" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
     </div>
-    <div class="ui image" (click)="onAction(data,data.action.onImage)"  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion:'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata">
+    <div class="ui image" (click)="onAction(data,data.action.onImage)"  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata">
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
-      <img *ngIf="data.showImage? false : true" src="{{ data.image || '/assets/images/default.png' | cdnprefixurl}}">
+      <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
       <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}">
         <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
            <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>

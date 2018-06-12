@@ -128,8 +128,8 @@ export class DataDrivenFilterComponent implements OnInit {
             }
           });
           this.formInputData = _.pickBy(this.queryParams);
-          if (this.formInputData && this.formInputData.concept) {
-            this.formInputData.concept = this.conceptPickerService.processConcepts(this.formInputData.concept, this.selectedConcepts);
+          if (this.formInputData && this.formInputData.concepts) {
+            this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
           }
           this.showFilter = true;
         });
@@ -216,7 +216,7 @@ export class DataDrivenFilterComponent implements OnInit {
  * to get selected concepts from concept picker.
  */
   concepts(events) {
-    this.formInputData['concept'] = events;
+    this.formInputData['concepts'] = events;
   }
   /**
  * To check filterType.
@@ -227,7 +227,7 @@ export class DataDrivenFilterComponent implements OnInit {
     this.queryParams = _.pickBy(this.formInputData, value => value.length > 0);
     let queryParams = {};
     _.forIn(this.queryParams, (value, key) => {
-      if (key === 'concept') {
+      if (key === 'concepts') {
         queryParams[key] = [];
         value.forEach((conceptDetails) => {
           queryParams[key].push(conceptDetails.identifier);

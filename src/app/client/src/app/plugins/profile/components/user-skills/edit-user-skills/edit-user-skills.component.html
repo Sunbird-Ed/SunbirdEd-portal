@@ -1,4 +1,4 @@
-<sui-modal *ngIf="profileData" class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()"
+<sui-modal id="addSkillModal" *ngIf="profileData" class="custom-sui-modal" [isClosable]="true" [size]="'large'" (dismissed)="modal.deny(); redirect()"
   #modal>
   <div class="header">
     <div class="ui grid">
@@ -8,24 +8,26 @@
     </div>
   </div>
   <div class="content">
-    <form class="ui form">
-      <div class="ui form">
-        <div class=" field">
-          <div class="field">
-            <sui-multi-select class="ui fluid multiple search selection dropdown" [isSearchable]="true" name="skills" class="selection"
-              [(ngModel)]="skill" [options]="profileData.skills" #multiSelect>
-              <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"> </sui-select-option>
-            </sui-multi-select>
-          </div>
+    <div class="ui form">
+      <div id="addSkill" class="ui fluid addSkillsMarginCursor multiple search selection dropdown">
+        <input type="hidden">
+        <i class="dropdown icon"></i>
+        <div class="default text">
+          {{resourceService?.frmelmnts.instn.t0020}}
+        </div>
+        <div class="menu">
+          <div class="item" *ngFor="let option of profileData.skills" maxlength="10" [attr.data-value]="option">{{option}}</div>
         </div>
       </div>
-    </form>
+    </div>
   </div>
   <div class="actions margin-top-40">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelAddSKillsInteractEdata" class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelAddSKillsInteractEdata"
+      class="ui cancel primary basic button left floated" (click)="redirect(); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="finishAddSkillsInteractEdata" class="ui approve primary button" (click)="addSkill(skill); modal.deny()">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="finishAddSkillsInteractEdata"
+      class="ui approve primary button" (click)="addSkill(); modal.deny()">
       {{resourceService?.frmelmnts?.btn?.finish}}
     </button>
   </div>

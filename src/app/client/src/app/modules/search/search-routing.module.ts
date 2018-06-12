@@ -7,7 +7,7 @@ import {
 } from './components';
 const routes: Routes = [
   {
-    path: 'search/All/:pageNumber', component: HomeSearchComponent,
+    path: 'All/:pageNumber', component: HomeSearchComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }],
       telemetry: {
@@ -17,7 +17,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'search/Courses/:pageNumber', component: CourseSearchComponent,
+    path: 'Courses/:pageNumber', component: CourseSearchComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }],
       telemetry: {
@@ -27,7 +27,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'search/Library/:pageNumber', component: LibrarySearchComponent,
+    path: 'Library/:pageNumber', component: LibrarySearchComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Search', url: '' }],
       telemetry: {
@@ -37,7 +37,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'search/Users/:pageNumber', component: UserSearchComponent,
+    path: 'Users/:pageNumber', component: UserSearchComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
       telemetry: {
@@ -56,7 +56,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'search/Users/:pageNumber/view/:userId', component: UserProfileComponent,
+    path: 'Users/:pageNumber/view/:userId', component: UserProfileComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }],
       telemetry: {
@@ -65,7 +65,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'search/Organisations/:pageNumber', component: OrgSearchComponent,
+    path: 'Organisations/:pageNumber', component: OrgSearchComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'Search', url: '' }],
       telemetry: {
@@ -79,7 +79,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forChild(routes)
   ],
   exports: [RouterModule]
 })

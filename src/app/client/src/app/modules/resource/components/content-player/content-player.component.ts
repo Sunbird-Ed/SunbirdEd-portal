@@ -110,7 +110,7 @@ export class ContentPlayerComponent implements OnInit {
       object: {
         id: this.contentId,
         type: this.contentData.contentType,
-        ver: this.contentData.pkgVersion || '1'
+        ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -127,7 +127,7 @@ export class ContentPlayerComponent implements OnInit {
     this.objectInteract = {
       id: this.contentId,
       type: this.contentData.contentType,
-      ver: this.contentData.pkgVersion || '1'
+      ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
   }
   /**
@@ -174,7 +174,7 @@ export class ContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource();
+    this.navigationHelperService.navigateToResource('/resources');
   }
 
   /**
@@ -204,7 +204,7 @@ export class ContentPlayerComponent implements OnInit {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
-      ver: param.pkgVersion ? param.pkgVersion : 1
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
 }
