@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -13,7 +13,7 @@ import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata } fro
   templateUrl: './update-batch.component.html',
   styleUrls: ['./update-batch.component.css']
 })
-export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy {
+export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('updatemodal') updatemodal;
   /**
   * updatebatchIntractEdata
@@ -27,20 +27,22 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   * batchId
   */
   batchId: string;
+  showUpdateModal = false;
+
   /**
   * coursecreatedby
   */
   coursecreatedby: string;
   /**
-  * selectedUsers for mentorlist
+  * selectedUsers for menterList
   */
   selectedUsers = [];
   /**
-  * selectedMentors for mentorlist
+  * selectedMentors for menterList
   */
   selectedMentors = [];
   /**
-  * userList for mentorlist
+  * userList for menterList
   */
   userList = [];
 
@@ -52,6 +54,8 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   * menterList for mentors in the batch
   */
   menterList: Array<IMenter> = [];
+
+  userSearchTime: any;
 
   /**
   * userId for checking the enrollment type.
@@ -101,6 +105,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -154,6 +159,39 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       }
     };
   }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      $('#users').dropdown({
+        forceSelection: false,
+        fullTextSearch: true,
+        onAdd: () =>  {
+        }
+      });
+      $('#mentors').dropdown({
+        fullTextSearch: true,
+        forceSelection: false,
+        onAdd: () =>  {
+        }
+      });
+      $('#users input.search').on('keyup', (e) =>  {
+        this.getUserListWithQuery($('#users input.search').val(), 'userList');
+      });
+      $('#mentors input.search').on('keyup', (e) => {
+        this.getUserListWithQuery($('#mentors input.search').val(), 'menterList');
+      });
+    }, 1000);
+  }
+
+  getUserListWithQuery(query, type) {
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
+  }
+
   ngOnDestroy() {
     if (this.updatemodal && this.updatemodal.deny) {
       this.updatemodal.deny();
@@ -200,118 +238,160 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   * api call to get batch by Id
   */
   getBatchDetails() {
-    this.batchData = this.batchService.getBatchData();
-    if (_.isEmpty(this.batchData)) {
-      this.batchService.getBatchDetailsById({ batchId: this.batchId }).subscribe(
-        (apiResponse: ServerResponse) => {
-          if (apiResponse) {
-            this.batchData = apiResponse.result.response;
-            const selectedParticipants = this.getSelectedUser(this.batchData.participant);
-            const users = _.concat(selectedParticipants, this.batchData.mentors);
-            this.getUserList(undefined, users);
-            this.initializeFormFields();
-            this.setInteractEventData(this.batchData);
-          } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0054);
-          }
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0054);
-        });
-    } else {
-      const selectedParticipants = this.getSelectedUser(this.batchData.participant);
-      const users = _.concat(selectedParticipants, this.batchData.mentors);
-      this.getUserList(undefined, users);
+    this.batchService.getBatchDetailsById({ batchId: this.batchId }).subscribe((apiResponse: ServerResponse) => {
+      this.batchData = apiResponse.result.response;
       this.initializeFormFields();
       this.setInteractEventData(this.batchData);
+      this.fetchParticipantsMentorsDetails();
+    }, (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0054);
+      }
+      this.redirect();
+    });
+  }
+
+  fetchParticipantsMentorsDetails() {
+    if (this.batchData.participant || ( this.batchData.mentors && this.batchData.mentors.length > 0)) {
+      const request =  {
+        filters: {
+          identifier: _.union(_.keys(this.batchData.participant), this.batchData.mentors)
+        }
+      };
+      this.batchService.getUserDetails(request).subscribe((res) => {
+        // this.batchData.participantDetails = res.result.response.content;
+        this.processParticipantsMentorsDetails(res);
+        this.showUpdateModal = true;
+      }, (err) => {
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        }
+        this.redirect();
+      });
+    } else {
+      this.showUpdateModal = true;
     }
   }
+
+  processParticipantsMentorsDetails(res) {
+    const users = this.formatUserList(res);
+    const userList = users.userList;
+    const menterList = users.menterList;
+    _.forEach(this.batchData.participant, (value, key) => {
+      if (!_.isUndefined(_.find(userList, ['id', key]))) {
+        this.selectedUsers.push(_.find(userList, ['id', key]));
+      }
+    });
+    this.selectedUsers = _.uniqBy(this.selectedUsers, 'id');
+    _.forEach(this.batchData.mentors, (mentorVal, key) => {
+      if (!_.isUndefined(_.find(menterList, ['id', mentorVal]))) {
+        this.selectedMentors.push(_.find(menterList, ['id', mentorVal]));
+      }
+    });
+    this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
+  }
+
   /**
   *  api call to get user list
   */
-  getUserList(query?: string, users?: string[]) {
-    const request = this.batchService.getRequestBodyForUserSearch(query, users);
-    const userId = this.userService.userid;
-    this.UserList(request.request).subscribe(
-      (res: ServerResponse) => {
-        if (res.result.response.count && res.result.response.content.length > 0) {
-          _.forEach(res.result.response.content, (userData) => {
-            if (userData.identifier !== userId) {
-              if (this.batchService.filterUserSearchResult(userData, query)) {
-                const user = {
-                  id: userData.identifier,
-                  name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
-                  avatar: userData.avatar,
-                  otherDetail: this.batchService.getUserOtherDetail(userData)
-                };
-                _.forEach(userData.organisations, (userOrgData) => {
-                  if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-                    this.menterList.push(user);
-                  }
-                });
-                this.userList.push(user);
-              }
-            }
-          });
-          this.userList = _.uniqBy(this.userList, 'id');
-          this.menterList = _.uniqBy(this.menterList, 'id');
-          this.showUpdateBatchModal();
+  getUserList(query: string = '', type?) {
+    const requestBody = {
+      filters: {},
+      query: query
+    };
+    this.batchService.getUserList(requestBody).subscribe((res) => {
+      const list = this.formatUserList(res);
+      if (type) {
+        if (type === 'userList') {
+          this.userList = list.userList;
         } else {
-
+          this.menterList = list.menterList;
         }
-      },
-      (err: ServerResponse) => {
+        this[type] = list[type];
+      } else {
+        this.userList = list.userList;
+        this.menterList = list.menterList;
+      }
+      // this.showUpdateBatchModal();
+    },
+    (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0056);
       }
-    );
-  }
-  /**
-  *  it helps to make a lsit of user and selected mentors,selected users
-  */
-  showUpdateBatchModal() {
-    this.coursecreatedby = this.batchData.courseCreator;
-    _.forEach(this.batchData.participant, (value, key) => {
-      if (!_.isUndefined(_.find(this.userList, ['id', key]))) {
-        this.selectedUsers.push(_.find(this.userList, ['id', key]));
-        this.userList = _.reject(this.userList, ['id', key]);
-        this.selectedUsers = _.uniqBy(this.selectedUsers, 'id');
-      }
-    });
-    _.forEach(this.batchData.mentors, (mentorVal, key) => {
-      if (!_.isUndefined(_.find(this.menterList, ['id', mentorVal]))) {
-        this.selectedMentors.push(_.find(this.menterList, ['id', mentorVal]));
-        this.menterList = _.reject(this.menterList, ['id', mentorVal]);
-        this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
-      }
     });
   }
+
+  formatUserList(res) {
+    const userList = [];
+    const menterList = [];
+    if (res.result.response.content && res.result.response.content.length > 0) {
+      _.forEach(res.result.response.content, (userData) => {
+        if (userData.identifier !== this.userService.userid) {
+          const user = {
+            id: userData.identifier,
+            name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
+            avatar: userData.avatar,
+            otherDetail: this.batchService.getUserOtherDetail(userData)
+          };
+          _.forEach(userData.organisations, (userOrgData) => {
+            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+              menterList.push(user);
+            }
+          });
+          userList.push(user);
+        }
+      });
+    }
+    return {
+      userList: _.uniqBy(userList, 'id'),
+      menterList: _.uniqBy(menterList, 'id')
+    };
+  }
+
   /**
   *  api call to update batch
   */
   updateBatchDetails(batchData, updatemodal) {
-    if (this.batchAddUserForm.valid) {
+    if (this.batchAddUserForm.valid && this.batchData.status !== 2) {
+      let users = [];
+      let mentors = [];
+      if (this.batchData.enrollmentType !== 'open') {
+        users = $('#users').dropdown('get value').split(',');
+        mentors = $('#mentors').dropdown('get value').split(',');
+      }
+      const startDate = new Date(this.batchAddUserForm.value.startDate.setHours(23, 59, 59, 999));
+      const endDate = this.batchAddUserForm.value.endDate ?
+       new Date(this.batchAddUserForm.value.endDate.setHours(23, 59, 59, 999)) : null;
       const requestParam = {
         name: this.batchAddUserForm.value.name,
         description: this.batchAddUserForm.value.description,
         enrollmentType: batchData.enrollmentType,
         startDate: batchData.startDate,
-        endDate: batchData.endDate,
+        endDate: this.batchAddUserForm.value.endDate,
         createdFor: batchData.createdFor,
-        id: batchData.id
+        id: batchData.id,
+        mentors: _.compact(mentors)
       };
+
       if (batchData.enrollmentType !== 'open') {
         const selected = [];
         _.forEach(this.selectedMentors, (value) => {
           selected.push(value.id);
         });
-        requestParam['mentors'] = _.concat(_.compact(this.batchAddUserForm.value.mentors), selected);
+        requestParam['mentors'] = _.concat(_.compact(requestParam['mentors']), selected);
       }
 
       this.batchService.updateBatchDetails(requestParam).subscribe(
         (apiResponse: ServerResponse) => {
           if (apiResponse) {
+            this.toasterService.success(this.resourceService.messages.smsg.m0034);
             if (batchData.enrollmentType !== 'open') {
-              const users = this.batchAddUserForm.value.users;
               if (users && users.length > 0) {
                 const userRequest = {
                   userIds: users
@@ -341,6 +421,10 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
           this.toasterService.error(this.resourceService.messages.fmsg.m0055);
         });
     }
+  }
+
+  redirect() {
+    this.route.navigate(['./'], {relativeTo: this.activatedRoute.parent});
   }
 
   /**

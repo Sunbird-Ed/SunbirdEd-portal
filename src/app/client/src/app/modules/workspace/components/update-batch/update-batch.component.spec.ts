@@ -18,6 +18,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './update-batch.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+
 describe('UpdateBatchComponent', () => {
   let component: UpdateBatchComponent;
   let fixture: ComponentFixture<UpdateBatchComponent>;
@@ -92,7 +93,8 @@ describe('UpdateBatchComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = roleOrgMap;
+    userService._userProfile = Response.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.of(Response.batchlistSucessData));
     fixture.detectChanges();
     component.getBatchDetails();
@@ -102,7 +104,8 @@ describe('UpdateBatchComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = roleOrgMap;
+    userService._userProfile = Response.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.throw({}));
     fixture.detectChanges();
     expect(component.batchData).toBeUndefined();
@@ -112,7 +115,8 @@ describe('UpdateBatchComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = roleOrgMap;
+    userService._userProfile = Response.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(Response.uselistSucessData));
     fixture.detectChanges();
   }));
@@ -120,7 +124,8 @@ describe('UpdateBatchComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = roleOrgMap;
+    userService._userProfile = Response.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
     component.ngOnInit();
     component.clearForm();
     component.batchAddUserForm.reset();
@@ -141,7 +146,8 @@ describe('UpdateBatchComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = roleOrgMap;
+    userService._userProfile = Response.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(batchService, 'updateBatchDetails').and.callFake(() => Observable.of(Response.updateBatchDetails.request));
     fixture.detectChanges();
     const requestParam = {
