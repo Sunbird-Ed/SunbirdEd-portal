@@ -163,7 +163,7 @@ describe('LimitedPublishedComponent', () => {
       };
       component.contentClick(params);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'limited/publish', 'NCF']);
+        'do_2124341006465925121871', 'TextBook', 'limited-publish', 'NCF']);
       fixture.detectChanges();
     }));
   it('should throw error', inject([SearchService], (searchService) => {
