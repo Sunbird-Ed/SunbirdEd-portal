@@ -34,7 +34,7 @@ describe('SignupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SignupComponent],
       imports: [FormsModule, ReactiveFormsModule, SuiModule,
-         SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule],
+         SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       providers: [FormBuilder, ResourceService, SignupService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule, WindowScrollService } from '@sunbird/shared';
 import { UserService, CoreModule } from '@sunbird/core';
@@ -16,7 +17,7 @@ describe('EditUserAdditionalInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditUserAdditionalInfoComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule,
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, TelemetryModule.forRoot(),
         HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), RouterTestingModule],
       providers: [UserService, ProfileService, WindowScrollService],
       schemas: [NO_ERRORS_SCHEMA]

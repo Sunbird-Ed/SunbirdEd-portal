@@ -294,7 +294,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/limited/publish', this.pageNumber]);
+    this.route.navigate(['workspace/content/limited-publish', this.pageNumber]);
   }
   /**
   * get inview  Data

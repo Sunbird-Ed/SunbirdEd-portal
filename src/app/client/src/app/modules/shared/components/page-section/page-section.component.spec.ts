@@ -27,7 +27,7 @@ describe('PageSectionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [ PageSectionComponent ],
       providers: [ ResourceService, ConfigService, { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
       schemas: [NO_ERRORS_SCHEMA]

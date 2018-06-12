@@ -8,12 +8,14 @@ import { UserService, CoursesService, LearnerService } from '@sunbird/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import * as mockData from './profile-card.component.spec.data';
 const testData = mockData.mockRes;
+import { TelemetryModule } from '@sunbird/telemetry';
+import { SharedModule } from '@sunbird/shared';
 describe('ProfileCardComponent', () => {
   let component: ProfileCardComponent;
   let fixture: ComponentFixture<ProfileCardComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), SuiModule],
       declarations: [ProfileCardComponent],
       providers: [ResourceService, UserService, LearnerService, ConfigService],
       schemas: [NO_ERRORS_SCHEMA]

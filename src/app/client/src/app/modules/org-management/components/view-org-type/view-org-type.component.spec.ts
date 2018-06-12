@@ -38,7 +38,7 @@ describe('ViewOrgTypeComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ViewOrgTypeComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
-                RouterTestingModule, TelemetryModule,
+                RouterTestingModule, TelemetryModule.forRoot(),
                 SharedModule.forRoot()],
             providers: [HttpClientModule, OrgTypeService, HttpClient,
                 PaginationService, ToasterService, ResourceService, LearnerService,

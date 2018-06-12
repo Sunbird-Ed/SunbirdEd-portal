@@ -131,7 +131,9 @@ export class DataService {
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
-    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    try {
+      this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    } catch (err) {}
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;
     }

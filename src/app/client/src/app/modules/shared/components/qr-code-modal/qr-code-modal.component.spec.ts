@@ -2,10 +2,9 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ResourceService, ConfigService  } from '@sunbird/shared';
+import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { HttpClientModule } from '@angular/common/http';
 import { QrCodeModalComponent } from './qr-code-modal.component';
-
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
@@ -16,8 +15,7 @@ describe('QrCodeModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QrCodeModalComponent ],
-      imports: [SuiModule, RouterTestingModule, HttpClientModule],
+      imports: [SuiModule, RouterTestingModule, HttpClientModule, SharedModule.forRoot()],
       providers: [ResourceService, ConfigService, { provide: Router, useClass: RouterStub }]
     })
     .compileComponents();
