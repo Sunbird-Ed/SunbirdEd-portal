@@ -143,8 +143,7 @@ function getLocals(req) {
 
 function indexPage(req, res) {
   const mobileDetect = new MobileDetect(req.headers['user-agent']);
-  if ((req.path === '/get' || req.path === '/get/dial/' + req.params.dialCode ||
-    req.path === '/' + req.params.slug + '/get' || req.path === '/' + req.params.slug + '/get/dial/' + req.params.dialCode)
+  if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
     && mobileDetect.os() === 'AndroidOS') {
     res.redirect(envHelper.ANDROID_APP_URL)
   } else {
