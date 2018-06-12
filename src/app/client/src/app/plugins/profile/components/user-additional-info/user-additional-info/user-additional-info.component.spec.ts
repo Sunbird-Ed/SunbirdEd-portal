@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule } from '@sunbird/shared';
 import { UserService, CoreModule } from '@sunbird/core';
@@ -11,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditUserAdditionalInfoComponent } from '../../user-additional-info/edit-user-additional-info/edit-user-additional-info.component';
 import { ProfileService } from '../../../services';
 import { mockRes } from './user-additional-info.component.spec.data';
-
 describe('UserAdditionalInfoComponent', () => {
   let component: EditUserAdditionalInfoComponent;
   let fixture: ComponentFixture<EditUserAdditionalInfoComponent>;
@@ -45,7 +45,8 @@ describe('UserAdditionalInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserAdditionalInfoComponent, EditUserAdditionalInfoComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule,
+        TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [ResourceService, ConfigService, UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="sliderCards content">
-            <div class="sliderCardDesc fixedRatingCard" *ngIf="enrolledCourses.description"> 
-                {{ enrolledCourses.description | slice:0:55 }}
+            <div class="sliderCardDesc fixedRatingCard" > 
+               <span *ngIf="enrolledCourses.description">{{ enrolledCourses.description | slice:0:55 }}</span> 
                 <i *ngIf="enrolledCourses.description && enrolledCourses.description.length >= 55" class="ellipsis horizontal icon popup-button link" [attr.data-content]="enrolledCourses.description"
                     [attr.data-variation]="wide"></i>
             </div>

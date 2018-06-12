@@ -22,7 +22,7 @@ describe('ContentBadgeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentBadgeComponent],
-      imports: [SuiModule, CoreModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule],
+      imports: [SuiModule, CoreModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       providers: [ContentBadgeService, ResourceService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]

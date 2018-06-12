@@ -3,6 +3,7 @@ import { ResourceService } from '@sunbird/shared';
 import { ActionCard } from './../../interfaces/index';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
+
 /**
  *This Component contains the details about enrolled courses.
  */
