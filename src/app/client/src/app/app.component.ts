@@ -87,16 +87,17 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.conceptPickerService.initialize();
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId, components) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.conceptPickerService.initialize();
         this.initializeLogedInsession();
       });
     } else {
       this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
         fingerPrint2.get((deviceId, components) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.conceptPickerService.initialize();
           this.initializeAnonymousSession();
         });
       });

@@ -144,7 +144,7 @@ module.exports = {
   /**
    * This function helps to generate the api call event
    */
-  logAPICallEvent: function (req) {
+  logAPICallEvent: function (req) { // function call is commented in all files    
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
 
     let object = {}
@@ -378,14 +378,17 @@ module.exports = {
       { 'req': req.body }
     ]
     const edata = telemetry.logEventData('api_access', 'INFO', '', params)
-    var channel = (req.session && req.session.rootOrghashTagId) || _.get(req, 'headers.X-Channel-Id')
+    var channel = (req.session && req.session.rootOrghashTagId) || req.get('x-channel-id')
     if (channel) {
-      var dims = _.clone(req.session.orgs || [])
-      dims = dims ? _.concat(dims, channel) : channel
-
+      var dims = req.session['rootOrgId'] || []
+      dims = req.session.orgs ? _.concat(dims, req.session.orgs) : dims
+      dims = _.concat(dims, channel)
       const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
-      if (req.session && req.session.sessionID) {
-        context.sid = req.session.sessionID
+      if (req.sessionID) {         
+        context.sid = req.sessionID
+      }
+      if (req.get('x-device-id')) {         
+        context.did = req.get('x-device-id')
       }
       context.rollup = telemetry.getRollUpData(dims)
       telemetry.log({
