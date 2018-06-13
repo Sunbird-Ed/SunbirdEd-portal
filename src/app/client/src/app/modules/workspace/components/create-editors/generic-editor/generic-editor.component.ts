@@ -182,7 +182,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
 
     };
-    window.config.enableValidation = environment.enableValidation; // telemetry validation
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     if (this.userService.contentChannelFilter) {
       window.config.searchCriteria = {
         filters: {

@@ -189,7 +189,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     };
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
-    window.config.enableValidation = environment.enableValidation; // telemetry validation
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
