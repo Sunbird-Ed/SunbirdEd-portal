@@ -139,7 +139,7 @@ export class UserExperienceViewComponent implements OnInit {
     const addExp: any = {};
     if (this.addChild.experienceForm.touched === true && this.addChild.experienceForm.valid === true) {
       _.forIn(this.addChild.experienceForm.value, (value, key) => {
-        if (value && value !== '' && value !== null) {
+        if (value !== undefined && value !== '' && value !== null) {
           if (key === 'joiningDate' || key === 'endDate') {
             addExp[key] = moment(value).format('YYYY-MM-DD');
           } else {

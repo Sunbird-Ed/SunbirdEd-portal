@@ -23,9 +23,9 @@ export class EditUserEducationComponent implements OnInit {
    */
   today = new Date();
   constructor(public resourceService: ResourceService, public userService: UserService, public windowScrollService: WindowScrollService) { }
-    /**
-   * This method creates an instance of FormGroup
-   */
+  /**
+ * This method creates an instance of FormGroup
+ */
   ngOnInit() {
     this.windowScrollService.smoothScroll('education');
     if (this.education) {
@@ -33,8 +33,9 @@ export class EditUserEducationComponent implements OnInit {
       this.educationForm = new FormGroup({
         degree: new FormControl(this.education.degree, [Validators.required]),
         yearOfPassing: new FormControl(yearOfPassing),
-        percentage: new FormControl(this.education.percentage),
-        grade: new FormControl(this.education.grade),
+        percentage: new FormControl(this.education.percentage,
+          [Validators.pattern(/(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/)]),
+        grade: new FormControl(this.education.grade, [Validators.pattern(/^[A-F]{1}$/)]),
         name: new FormControl(this.education.name, [Validators.required]),
         boardOrUniversity: new FormControl(this.education.boardOrUniversity)
       });
@@ -42,8 +43,9 @@ export class EditUserEducationComponent implements OnInit {
       this.educationForm = new FormGroup({
         degree: new FormControl(null, [Validators.required]),
         yearOfPassing: new FormControl(null),
-        percentage: new FormControl(null),
-        grade: new FormControl(null),
+        percentage: new FormControl(null,
+          [Validators.pattern(/(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/)]),
+        grade: new FormControl(null, [Validators.pattern(/^[A-F]{1}$/)]),
         name: new FormControl(null, [Validators.required]),
         boardOrUniversity: new FormControl(null),
       });
