@@ -1,10 +1,8 @@
-import { OrgManagementService } from '@sunbird/public';
-
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import {
   UserService, LearnerService, CoursesService, PermissionService, TenantService,
-  ConceptPickerService, SearchService, ContentService
+  ConceptPickerService, SearchService, ContentService, CoreModule
 } from '@sunbird/core';
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
@@ -20,12 +18,12 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
       RouterTestingModule],
       declarations: [
         AppComponent
       ],
-      providers: [ToasterService, TenantService, OrgManagementService,
+      providers: [ToasterService, TenantService,
         UserService, ConfigService, LearnerService,
         PermissionService, ResourceService, CoursesService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, ConceptPickerService, SearchService, ContentService],
