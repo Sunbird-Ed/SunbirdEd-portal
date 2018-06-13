@@ -23,7 +23,9 @@
                                         </a>
                                     </div>
                                     <div *ngIf=" item.type !== 'profile'">
-                                        <app-action-card [enrolledCourses]="item" (clickEvent)="playContent($event)"></app-action-card>
+                                            <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
+                                            [telemetryInteractObject]="{id:item.metaData.courseId,type:item.metaData.contentType || 'Course',ver:'1.0'}"
+                                            [data]="item" (clickEvent)="playContent($event)" ></app-card>
                                     </div>
                                 </div>
                             </ngx-slick>

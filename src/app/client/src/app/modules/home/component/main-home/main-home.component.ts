@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
 import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 /**
@@ -34,6 +34,7 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	 * telemetryInteractObject
 	*/
   telemetryInteractObject: IInteractEventObject;
+  cardIntractEdata: IInteractEventEdata;
   courseSubscription: ISubscription;
   userSubscription: ISubscription;
   /**
@@ -62,10 +63,16 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    * To show toaster(error, success etc) after any API calls.
    */
   private toasterService: ToasterService;
+
+  public utilService: UtilService;
   /**
    * Contains details of userprofile and enrolled courses.
    */
   toDoList: Array<object> = [];
+/**
+* Contains config service reference
+*/
+public configService: ConfigService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -87,13 +94,15 @@ export class MainHomeComponent implements OnInit, OnDestroy {
    */
   constructor(resourceService: ResourceService, private playerService: PlayerService,
     userService: UserService, courseService: CoursesService, toasterService: ToasterService,
-    route: Router, activatedRoute: ActivatedRoute) {
+    route: Router, activatedRoute: ActivatedRoute, configService: ConfigService, utilService: UtilService) {
     this.userService = userService;
     this.courseService = courseService;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
     this.activatedRoute = activatedRoute;
+    this.configService = configService;
+    this.utilService = utilService;
   }
   /**
    * This method calls the user API.
@@ -127,7 +136,15 @@ export class MainHomeComponent implements OnInit, OnDestroy {
       data => {
         if (data && !data.err) {
           this.showLoader = false;
-          this.toDoList = this.toDoList.concat(data.enrolledCourses);
+          const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
+            const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+            const dynamicFields = {
+              'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
+              'progress': this.configService.appConfig.Course.enrolledCourses.progress
+            };
+            const courses = this.utilService.getDataForCard(data.enrolledCourses,
+              constantData, dynamicFields, metaData);
+          this.toDoList = this.toDoList.concat(courses);
         } else if (data && data.err) {
           this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
@@ -146,11 +163,11 @@ export class MainHomeComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    if (event.data.batchId) {
-      event.data.mimeType = 'application/vnd.ekstep.content-collection';
-      event.data.contentType = 'Course';
+     if (event.data.metaData.batchId) {
+      event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+      event.data.metaData.contentType = 'Course';
     }
-    this.playerService.playContent(event.data);
+    this.playerService.playContent(event.data.metaData);
   }
   /**
   *This method calls the populateUserProfile and populateCourse to show
