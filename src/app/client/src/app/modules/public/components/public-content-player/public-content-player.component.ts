@@ -47,6 +47,10 @@ export class PublicContentPlayerComponent implements OnInit {
   selectedLanguage: string;
   queryParams: any;
   contentData: ContentData;
+  /**
+  * userId as param for the external url content
+  */
+  userId = 'anonymous';
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,

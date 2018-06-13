@@ -43,7 +43,7 @@
                     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                         <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
                     </div>
-                    <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+                    <app-player class="content-player" [playerConfig]="playerConfig" [userId]="userId"></app-player>
 
                     <div class="twelve wide column contentMetaSection">
                         <div class="ui stackable grid margin-top-10">

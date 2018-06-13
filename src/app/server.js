@@ -133,6 +133,7 @@ function getLocals(req){
   locals.theme = envHelper.PORTAL_THEME
   locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   locals.instance = process.env.sunbird_instance
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTERNAL_CONTENT_WHITELISTED_DOMAINS
   locals.appId = envHelper.APPID
   locals.ekstepEnv = envHelper.EKSTEP_ENV
   locals.defaultTenant = envHelper.DEFAUULT_TENANT

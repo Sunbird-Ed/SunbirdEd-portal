@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
@@ -52,6 +52,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public triggerContentImpression = false;
   public showCopyLoader: Boolean = false;
   /**
+   * userId as param for the external url content
+   */
+  userId = this.userService.userid;
+  /**
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
@@ -98,7 +102,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, private userService: UserService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
