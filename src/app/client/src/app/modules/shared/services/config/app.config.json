@@ -182,8 +182,7 @@
       "html": "application/vnd.ekstep.html-archive",
       "ePub": "application/epub",
       "h5p": "application/vnd.ekstep.h5p-archive",
-      "webm": "video/webm",
-      "xUrl": "text/x-url"
+      "webm": "video/webm"
     },
     "baseURL": "/content/preview/preview.html?webview=true"
   },

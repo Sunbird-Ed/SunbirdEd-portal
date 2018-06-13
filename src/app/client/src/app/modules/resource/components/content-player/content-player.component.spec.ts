@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 const serverRes = {
-  id: 'api.content.read',
+  id : 'api.content.read',
   ver: '1.0',
   ts: '2018-05-03T10:51:12.648Z',
   params: 'params',
@@ -29,7 +29,7 @@ const serverRes = {
   }
 };
 const resourceServiceMockData = {
-  messages: {
+  messages : {
     imsg: { m0027: 'Something went wrong'},
     stmsg: { m0009: 'error' }
   },
@@ -64,12 +64,12 @@ describe('ContentPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
-      declarations: [ContentPlayerComponent],
+      declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
-      { provide: Router, useClass: RouterStub }]
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
+        { provide: Router, useClass: RouterStub }]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
