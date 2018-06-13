@@ -74,8 +74,8 @@ export class ContentPlayerComponent implements OnInit {
   createNoteData: INoteData;
   closeUrl: any;
   /**
- * userId as param for the external url content
- */
+   * userId as param for the external url content
+   */
   userId = this.userService.userid;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,

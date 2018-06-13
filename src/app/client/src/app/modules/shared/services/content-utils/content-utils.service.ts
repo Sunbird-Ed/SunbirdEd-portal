@@ -60,8 +60,8 @@ export class ContentUtilsServiceService {
     return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
   }
   /**
-   * getRedirectUrl
-   * @param playerconfigMeta Playerconfig data
+   * getRedirectUrl function is to redirect to the external url link in a new tab
+   * @param playerconfigMeta Playerconfig data to get artifacturl and contentId of the item in the player
    * @param courseId course id of the enrolled / playing course
    * @param userId  user id of the loggedin user
    */

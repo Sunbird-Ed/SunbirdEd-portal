@@ -48,9 +48,9 @@ export class PlayerComponent implements OnInit, OnChanges {
     });
   }
   /**
- * To check if the mimeType is text/x-url
- * if mimeType is text/x-url extcontentpreview plugin will be invoked
- */
+  * To check if the mimeType is text/x-url
+  * if mimeType is text/x-url extcontentpreview plugin will be invoked
+  */
   checkExtUrl() {
     this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userId, this.courseId, this.batchId);
   }

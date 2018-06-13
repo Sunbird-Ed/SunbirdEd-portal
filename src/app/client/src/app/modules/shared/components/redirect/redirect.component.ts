@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 /**
  * Redirectcomponent is called when the content played is of mimeType text/x-url
- * and when the route lean/redict is called this component is invoked
+ * and when the route learn/redirect is called this component is invoked
  */
 export class RedirectComponent implements OnInit {
   constructor(public resourceService: ResourceService) {}
