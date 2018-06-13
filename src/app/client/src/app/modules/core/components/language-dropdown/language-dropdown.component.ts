@@ -51,33 +51,26 @@ export class LanguageDropdownComponent implements OnInit {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.languages = data[0].range;
     } else {
-      this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
-        if (frameworkData && !frameworkData.err) {
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.filterEnv,
-            framework: frameworkData.framework
-          };
-          this.formService.getFormConfig(formServiceInputParams, this.channelId).subscribe(
-            (data: ServerResponse) => {
-              this.languages = data[0].range;
-              this._cacheService.set(this.filterEnv + this.formAction, data,
-                {
-                  maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-                  this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-                });
-            },
-            (err: ServerResponse) => {
-              this.languages = [{ 'value': 'en', 'name': 'English' }];
-              this.onLanguageChange('en');
-            }
-          );
-        } else if (frameworkData && frameworkData.err) {
+      const formServiceInputParams = {
+        formType: this.formType,
+        formAction: this.formAction,
+        contentType: this.filterEnv,
+        framework: ''
+      };
+      this.formService.getFormConfig(formServiceInputParams, this.channelId).subscribe(
+        (data: ServerResponse) => {
+          this.languages = data[0].range;
+          this._cacheService.set(this.filterEnv + this.formAction, data,
+            {
+              maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+              this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+            });
+        },
+        (err: ServerResponse) => {
           this.languages = [{ 'value': 'en', 'name': 'English' }];
           this.onLanguageChange('en');
         }
-      });
+      );
     }
   }
 

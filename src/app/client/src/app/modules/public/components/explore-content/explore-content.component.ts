@@ -2,13 +2,13 @@ import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
+import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort, OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { OrgManagementService } from './../../services';
+// import { OrgManagementService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
@@ -133,7 +133,7 @@ export class ExploreContentComponent implements OnInit {
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
-        config: ConfigService, public utilService: UtilService, public orgManagementService: OrgManagementService,
+        config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService) {
         this.searchService = searchService;
         this.route = route;
@@ -209,9 +209,9 @@ export class ExploreContentComponent implements OnInit {
     }
 
     getChannelId() {
-        this.orgManagementService.getChannel(this.slug).subscribe(
-            (apiResponse) => {
-                this.hashTagId = apiResponse;
+        this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+            (apiResponse: any) => {
+                this.hashTagId = apiResponse.hashTagId;
                 this.setFilters();
             },
             err => {

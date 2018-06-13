@@ -5,9 +5,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
 } from '@sunbird/core';
-import { OrgManagementService } from '@sunbird/public';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -65,7 +64,7 @@ export class AppComponent implements OnInit {
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
-    config: ConfigService, public orgManagementService: OrgManagementService, public activatedRoute: ActivatedRoute) {
+    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -123,7 +122,7 @@ export class AppComponent implements OnInit {
     });
   }
   initializeAnonymousSession() {
-    this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
+    this.orgDetailsService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
     .first().subscribe((data) => {
       this.orgDetails = data;
       this.initTelemetryService();
