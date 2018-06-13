@@ -64,7 +64,7 @@ export class DataDrivenFilterComponent implements OnInit {
   public permissionService: PermissionService;
 
   selectedConcepts: Array<object>;
-  showFilter = false;
+  showConcepts = false;
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
@@ -122,7 +122,7 @@ export class DataDrivenFilterComponent implements OnInit {
           if (this.formInputData && this.formInputData.concepts) {
             this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
           }
-          this.showFilter = true;
+          this.showConcepts = true;
         });
       }
     });
