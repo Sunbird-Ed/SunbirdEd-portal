@@ -1,0 +1,21 @@
+{
+  "name": "diksha-dial-code-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp compress",
+    "start": "http-server ./dist --cors"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-htmlmin": "^4.0.0",
+    "gulp-inline-css": "^3.3.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}

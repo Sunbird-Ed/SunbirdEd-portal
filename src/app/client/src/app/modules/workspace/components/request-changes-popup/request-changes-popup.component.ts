@@ -150,7 +150,8 @@ export class RequestChangesPopupComponent implements OnInit {
    * Method to redirect to parent url
    */
   redirect() {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    this.modal.deny();
+    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
   }
 
   /**
