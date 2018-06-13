@@ -73,10 +73,6 @@ export class ContentPlayerComponent implements OnInit {
    */
   createNoteData: INoteData;
   closeUrl: any;
-  /**
-   * userId as param for the external url content
-   */
-  userId = this.userService.userid;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -133,7 +129,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = { mode: 'edit' };
+      option.params = {mode: 'edit'};
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
@@ -195,9 +191,9 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
-    this.setTelemetryShareData(this.contentData);
+     this.setTelemetryShareData(this.contentData);
   }
-  setTelemetryShareData(param) {
+    setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,

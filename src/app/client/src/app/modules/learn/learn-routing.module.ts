@@ -1,4 +1,3 @@
-import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
@@ -20,9 +19,6 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
     }
-  },
-  {
-    path: 'redirect', component: RedirectComponent
   },
   {
     path: 'course', component: CourseConsumptionPageComponent,
