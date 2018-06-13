@@ -34,7 +34,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
 	 * telemetryInteractObject
 	*/
   telemetryInteractObject: IInteractEventObject;
-  cardIntractEdata: IInteractEventEdata;
   courseSubscription: ISubscription;
   userSubscription: ISubscription;
   /**
