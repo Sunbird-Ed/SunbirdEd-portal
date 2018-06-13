@@ -7,7 +7,6 @@ interface NodeModule {
 interface Window {
   config: any;
   context: any;
-  redirectUrl: any;
 }
 
 declare module '*.json' {
@@ -26,4 +25,3 @@ interface JQuery {
 
 // TreeModel helps to manipulate and traverse through the tree model.
 declare const TreeModel: any;
-
