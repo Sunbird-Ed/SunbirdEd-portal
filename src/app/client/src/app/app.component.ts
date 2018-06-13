@@ -167,7 +167,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.sessionId,
         channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        enableTelemetryValidation: environment.enableTelemetryValidation
+        enableValidation: environment.enableTelemetryValidation
       }
     };
   }
@@ -191,7 +191,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.anonymousSid,
         channel: this.orgDetails.channel,
         env: 'home',
-        enableTelemetryValidation: environment.enableTelemetryValidation
+        enableValidation: environment.enableTelemetryValidation
       }
     };
   }
