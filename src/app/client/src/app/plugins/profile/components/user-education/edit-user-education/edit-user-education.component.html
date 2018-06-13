@@ -8,7 +8,8 @@
     <div class="field">
       <label>{{resourceService?.frmelmnts?.lbl?.yop}}</label>
       <div class="field">
-        <input class="cursor-pointer" name="yearOfPassing" suiDatepicker [pickerMaxDate]="today" readonly formControlName="yearOfPassing" [pickerMode]="'year'">
+        <input class="cursor-pointer" name="yearOfPassing" suiDatepicker [pickerMaxDate]="today" readonly formControlName="yearOfPassing"
+          [pickerMode]="'year'">
       </div>
     </div>
   </div>
@@ -16,13 +17,19 @@
     {{resourceService?.messages?.stmsg?.m0062}}
   </div>
   <div class="two fields">
-    <div class="field">
+    <div class="field" [ngClass]="educationForm.controls['percentage'].errors?.pattern ? 'error' : ''">
       <label>{{resourceService?.frmelmnts?.lbl?.percentage}}</label>
       <input type="text" name="percentage" formControlName="percentage">
+      <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="educationForm.controls['percentage'].errors?.pattern">
+        {{resourceService?.messages?.stmsg?.m0094}}
+      </div>
     </div>
-    <div class="field">
+    <div class="field" [ngClass]="educationForm.controls['grade'].errors?.pattern ? 'error' : ''">
       <label>{{resourceService?.frmelmnts?.lbl?.grade}}</label>
       <input type="text" name="grade" formControlName="grade">
+      <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="educationForm.controls['grade'].errors?.pattern">
+        {{resourceService?.messages?.stmsg?.m0104}}
+      </div>
     </div>
   </div>
   <div class="two fields">

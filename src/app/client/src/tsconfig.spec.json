@@ -60,6 +60,9 @@
       ],
       "@sunbird/public": [
         "app/modules/public"
+      ],
+      "@sunbird/environment": [
+        "environments/environment"
       ]
     },
     "module": "commonjs",

@@ -12,6 +12,19 @@ const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/art
 const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-3.3.0.zip'
 const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-3.3.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
+const telemetryLibrary = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/telemetry-1.0.min.js'
+const telemetryLibraryPath = 'client/src/assets/libs'
+const telemetryLibraryFileName = 'telemetry.min.js'
+
+gulp.task('clean:telemetryLibrary', () => {
+  return gulp.src('./' + telemetryLibraryPath + '/' + telemetryLibraryFileName, {read: false})
+        .pipe(clean())
+})
+gulp.task('download:telemetryLibrary', ['clean:telemetryLibrary'], () => {
+  return download(telemetryLibrary)
+  .pipe(rename(telemetryLibraryFileName))
+  .pipe(gulp.dest(telemetryLibraryPath))
+})
 
 gulp.task('clean:editors', () => {
   return gulp.src('./' + editorsDestPath, {read: false})
@@ -113,6 +126,7 @@ gulp.task('build-resource-bundles', (cb) => {
 gulp.task('deploy',
   gulpSequence('clean:app:dist',
     'clean:editors',
+    'download:telemetryLibrary',
     ['download:content:editor',
       'download:collection:editor',
       'download:generic:editor'],
