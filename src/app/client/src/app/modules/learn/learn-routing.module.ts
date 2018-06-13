@@ -9,7 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
-
+import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -41,14 +41,15 @@ const routes: Routes = [
             }
           },
           {
-            path: 'update/batch/:batchId', component: UpdateCourseBatchComponent,
+            path: 'update/batch/:batchId', component: UpdateCourseBatchComponent, canActivate: [AuthGuard],
             data: {
-              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } }
+              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
+              roles: 'coursebacthesRole'
             }
           },
           {
-            path: 'create/batch', component: CreateBatchComponent,
-            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } }
+            path: 'create/batch', component: CreateBatchComponent, canActivate: [AuthGuard],
+            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } ,  roles: 'coursebacthesRole' }
           }
         ]
       },
