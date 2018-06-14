@@ -18,7 +18,8 @@ describe('DialCodeComponent', () => {
     'messages': {
       'stmsg': {
         'm0007': 'Search for something else',
-        'm0006': 'No result'
+        'm0006': 'No result',
+        'm0112': 'Content coming soon'
       },
       'fmsg': {
         'm0049': 'Fetching serach result failed'

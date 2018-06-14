@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
@@ -16,7 +16,8 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.css']
 })
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   /**
 	 * Contains unique announcement id
 	 */
@@ -99,7 +100,7 @@ export class UserEditComponent implements OnInit {
 	 *
 	 */
   redirect(): void {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    this.route.navigate(['../../'], {relativeTo: this.activatedRoute});
   }
 
   populateOrgName() {
@@ -243,6 +244,9 @@ export class UserEditComponent implements OnInit {
       type: 'click',
       pageid: 'user-edit'
     };
+  }
+   ngOnDestroy() {
+    this.modal.deny();
   }
 }
 

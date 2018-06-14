@@ -2727,3 +2727,6 @@ iframe.iziModal-iframe {
 .padding-top-15 {
   padding-top: 15px !important;
 }
+.ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
+  pointer-events: auto;
+}

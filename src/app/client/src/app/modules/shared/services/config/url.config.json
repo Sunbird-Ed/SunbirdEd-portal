@@ -119,7 +119,7 @@
       "READ": "data/v1/form/read"
     },
     "GEO_EXPLORER": {
-      "LOCATION_READ": "org/v1/location/read/"
+      "LOCATION_READ": "org/v1/location/read"
     },
     "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
     "LOCATION_READ": "org/v1/location/read",
