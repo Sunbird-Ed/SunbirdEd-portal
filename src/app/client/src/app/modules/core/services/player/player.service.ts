@@ -92,7 +92,7 @@ export class PlayerService {
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
     {} : contentDetails.contentData.body;
-    configuration.config.enableValidation = environment.enableValidation; // telemetry validation
+    configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     return configuration;
   }
 
