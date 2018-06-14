@@ -283,7 +283,7 @@ app.all('/content/data/v1/telemetry',
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
-      return require('url').parse(envHelper.TELEMETRY_LOCAL_SERVICE_URL + '/v1/telemetry').path
+      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
     }
   }))
 
