@@ -17,6 +17,8 @@ import { SharedModule } from '@sunbird/shared';
 import { PublicRoutingModule } from './public-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @NgModule({
   imports: [
@@ -33,6 +35,6 @@ import { NgInviewModule } from 'angular-inport';
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
-  providers: [SignupService, PublicPlayerService, OrgManagementService]
+  providers: [SignupService, PublicPlayerService, OrgManagementService, DeviceDetectorModule, DeviceDetectorService]
 })
 export class PublicModule { }
