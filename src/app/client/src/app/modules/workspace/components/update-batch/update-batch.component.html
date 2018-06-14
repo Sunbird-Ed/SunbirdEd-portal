@@ -107,6 +107,6 @@
   </div>
   <div class="actions">
     <div class="ui secondary button" (click)="clearForm()" [ngClass]="{ 'disabled': batchData.status === 2 }">Clear</div>
-    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)"  [ngClass]="{ 'disabled': batchData.status === 2 }">Update</div>
+    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)"  [ngClass]="{ 'disabled': batchData.status === 2 || disableSubmitBtn}">Update</div>
   </div>
 </sui-modal>
