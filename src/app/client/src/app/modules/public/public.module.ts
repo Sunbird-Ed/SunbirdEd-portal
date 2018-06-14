@@ -31,10 +31,11 @@ import { DeviceDetectorService } from 'ngx-device-detector';
     // DiscussionModule,
     PublicRoutingModule,
     TelemetryModule,
-    NgInviewModule
+    NgInviewModule,
+    DeviceDetectorModule
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
-  providers: [SignupService, PublicPlayerService, OrgManagementService, DeviceDetectorModule, DeviceDetectorService]
+  providers: [SignupService, PublicPlayerService, OrgManagementService, DeviceDetectorService]
 })
 export class PublicModule { }
