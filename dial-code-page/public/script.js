@@ -7,16 +7,16 @@
     tenantId = getUrlParameter('tenant');
     $('#loader').hide(); // hide loader on page load
     $('#noResultMessage').hide(); // hide no result found message
-    if (dialcode) { 
+    if (dialcode) {
       $('#searchSection').hide();
       $('#resultSection').show();
-      $('#resultPageHeader').text("Dial Code '" + dialcode + "'"); 
+      $('#resultPageHeader').text("Dial Code '" + dialcode + "'");
     } else {
       $('#searchSection').show();
       $('#resultSection').hide();
     }
     getTenantInfo(tenantId);
-    getOrgInfo(tenantId).done(function() {
+    getOrgInfo(tenantId).done(function () {
       initTelemetryService();
       logImpressionEvent();
     });
@@ -38,12 +38,14 @@
   $("#searchInput").keypress(function (event) {
     if (event.which == 13) {
       var dialCode = $("#searchInput").val();
-      searchDialCode(dialCode);
-      $('#searchSection').hide();
-      $('#resultSection').show(); //show result page
-      $('#resultPageHeader').text("Dial Code '" + dialCode + "'");
-      // log impression event on navigating to result page
-      logImpressionEvent();
+      if (dialCode.length === 6) {
+        searchDialCode(dialCode);
+        $('#searchSection').hide();
+        $('#resultSection').show(); //show result page
+        $('#resultPageHeader').text("Dial Code '" + dialCode + "'");
+        // log impression event on navigating to result page
+        logImpressionEvent();
+      }
     }
   });
 
@@ -113,7 +115,7 @@
     return $.ajax({
       method: "GET",
       url: URL
-    }).done(function(response) {
+    }).done(function (response) {
       if (response && response.responseCode === "OK") {
         $('#appLogo').attr('src', response.result.appLogo);
         $('#favicon').attr('href', response.result.favicon);
@@ -133,7 +135,7 @@
         }
       }),
       contentType: "application/json"
-    }).done(function(response) {
+    }).done(function (response) {
       if (response && response.responseCode === "OK") {
         orgInfo = response.result.response.content[0];
       }
@@ -143,24 +145,24 @@
   function getAnonymousUserConfig() {
     var endpoint = "/data/v1/telemetry"
     return {
-        pdata: {
-          id: 'prod.diksha.portal',
-          ver: '1.7.0',
-          pid: 'sunbird-portal'
-        },
-        endpoint: endpoint,
-        apislug: "/content",
-        host: hostURL,
-        uid: 'anonymous',
-        sid: window.uuidv1(),
-        channel: orgInfo.channel,
-        env: 'dialcode-search-page',
-        enableValidation: true
+      pdata: {
+        id: 'prod.diksha.portal',
+        ver: '1.7.0',
+        pid: 'sunbird-portal'
+      },
+      endpoint: endpoint,
+      apislug: "/content",
+      host: hostURL,
+      uid: 'anonymous',
+      sid: window.uuidv1(),
+      channel: orgInfo.channel,
+      env: 'dialcode-search-page',
+      enableValidation: true
     }
   }
 
   function initTelemetryService() {
-    var config = getAnonymousUserConfig(); 
+    var config = getAnonymousUserConfig();
     window.EkTelemetry.initialize(config);
   }
 
