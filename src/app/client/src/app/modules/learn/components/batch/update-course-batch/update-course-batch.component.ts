@@ -83,6 +83,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 	*/
   telemetryImpression: IImpressionEventInput;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
+
   public courseConsumptionService: CourseConsumptionService;
   /**
 	 * Constructor to create injected service(s) object
@@ -269,9 +272,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: new FormControl(),
       users: new FormControl()
     });
-    // this.batchUpdateForm.valueChanges.subscribe(val => {
-    //   this.enableButton();
-    // });
+    this.batchUpdateForm.valueChanges.subscribe(val => {
+      this.enableButton();
+    });
   }
 
   fetchParticipantsMentorsDetails() {

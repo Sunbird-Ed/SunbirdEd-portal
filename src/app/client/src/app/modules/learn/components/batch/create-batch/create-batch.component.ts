@@ -84,6 +84,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public courseConsumptionService: CourseConsumptionService;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -274,7 +276,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     },
     (err) => {
-      this.disableSubmitBtn = true;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -323,6 +324,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: new FormControl(),
       users: new FormControl(),
     });
+    this.disableSubmitBtn = true;
     this.showCreateModal = true;
     this.createBatchUserForm.valueChanges.subscribe(val => {
       this.enableButton();
@@ -337,6 +339,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.disableSubmitBtn = true;
     }
   }
+
   getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';
