@@ -1,4 +1,25 @@
 {
+  "Home": {
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        },
+        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
+        "telemetryObjectType":"home"
+      },
+      "metaData": ["batchId", "courseId"],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
+    }
+
+  },
   "Course": {
     "otherCourse": {
       "constantData": {

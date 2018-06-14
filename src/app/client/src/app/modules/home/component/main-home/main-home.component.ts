@@ -135,11 +135,11 @@ public configService: ConfigService;
       data => {
         if (data && !data.err) {
           this.showLoader = false;
-          const constantData = this.configService.appConfig.Course.enrolledCourses.constantData;
-            const metaData = { metaData: this.configService.appConfig.Course.enrolledCourses.metaData };
+          const constantData = this.configService.appConfig.Home.enrolledCourses.constantData;
+            const metaData = { metaData: this.configService.appConfig.Home.enrolledCourses.metaData };
             const dynamicFields = {
-              'maxCount': this.configService.appConfig.Course.enrolledCourses.maxCount,
-              'progress': this.configService.appConfig.Course.enrolledCourses.progress
+              'maxCount': this.configService.appConfig.Home.enrolledCourses.maxCount,
+              'progress': this.configService.appConfig.Home.enrolledCourses.progress
             };
             const courses = this.utilService.getDataForCard(data.enrolledCourses,
               constantData, dynamicFields, metaData);
