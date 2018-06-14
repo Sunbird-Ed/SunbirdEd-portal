@@ -616,3 +616,12 @@ html {
   border-color: transparent;
   border-top-color: inherit;
  }
+ .ui.small.header .sub.header {
+  font-size: 1rem;
+ }
+ .ui.small.header {
+  font-size: 1.5em;
+}
+.ui.medium.header {
+  font-size: 1.75em;
+}
