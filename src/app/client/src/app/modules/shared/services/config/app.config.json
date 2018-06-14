@@ -218,7 +218,7 @@
       "draft",
       "uploaded",
       "published",
-      "limited/publish",
+      "limited-publish",
       "allcontent"
     ],
     "Draft": {
