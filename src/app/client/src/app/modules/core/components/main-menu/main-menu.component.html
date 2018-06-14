@@ -1,4 +1,4 @@
-<div class="ui secondary pointing menu" *ngIf="userService.userid">
+<div class="ui secondary pointing menu" *ngIf="userService.userid && !showExploreHeader">
 	<a class="item"  [class.active]="router.isActive('/search/All') || router.isActive('/home')"  routerLink="/home" >
 		{{resourceService?.frmelmnts?.tab?.home}}
 	    </a>

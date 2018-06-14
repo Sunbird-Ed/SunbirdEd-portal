@@ -1,7 +1,8 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
 import { UserService } from '../../services';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import * as _ from 'lodash';
 
 /**
  * Main menu component
@@ -12,6 +13,7 @@ import {Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./main-menu.component.css']
 })
 export class MainMenuComponent {
+  showExploreHeader = false;
   /**
    * reference of resourceService service.
    */
@@ -31,6 +33,17 @@ export class MainMenuComponent {
     this.resourceService = resourceService;
     this.userService = userService;
     this.router = router;
+    this.getUrl();
   }
 
+  getUrl() {
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+      const urlSegment = urlAfterRedirects.url.split('/');
+      if (_.includes(urlSegment, 'explore')) {
+        this.showExploreHeader = true;
+      } else {
+        this.showExploreHeader = false;
+      }
+    });
+  }
 }
