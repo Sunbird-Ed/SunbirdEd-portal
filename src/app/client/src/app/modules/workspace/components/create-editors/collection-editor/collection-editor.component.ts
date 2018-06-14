@@ -341,6 +341,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'flagged';
     }
+    if ( status.toLowerCase() === 'unlisted') {
+      window.config.editorConfig.mode = 'Edit';
+    }
   }
 
 

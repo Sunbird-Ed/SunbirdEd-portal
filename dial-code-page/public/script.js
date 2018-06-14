@@ -7,20 +7,18 @@
     tenantId = getUrlParameter('tenant');
     $('#loader').hide(); // hide loader on page load
     $('#noResultMessage').hide(); // hide no result found message
-    if (dialcode) {
-      $('#searchSection').hide();
-      $('#resultSection').show();
-      $('#resultPageHeader').text("Dial Code '" + dialcode + "'");
-    } else {
-      $('#searchSection').show();
-      $('#resultSection').hide();
-    }
+    dialcode ? navigateToResultPage() : navigateToSearchPage()
     getTenantInfo(tenantId);
     getOrgInfo(tenantId).done(function () {
       initTelemetryService();
       logImpressionEvent();
     });
-    if (typeof dialcode === "string") searchDialCode(dialcode);
+    searchDialCode(dialcode);
+  }
+
+  function navigateToSearchPage() {
+    $('#searchSection').show();
+    $('#resultSection').hide();
   }
 
   function getUrlParameter(param) {
@@ -37,17 +35,21 @@
   // Attach keypress event to search input
   $("#searchInput").keypress(function (event) {
     if (event.which == 13) {
-      var dialCode = $("#searchInput").val();
-      if (dialCode.length === 6) {
-        searchDialCode(dialCode);
-        $('#searchSection').hide();
-        $('#resultSection').show(); //show result page
-        $('#resultPageHeader').text("Dial Code '" + dialCode + "'");
-        // log impression event on navigating to result page
+      dialcode = $("#searchInput").val();
+      if (dialcode.length === 6) {
+        searchDialCode(dialcode);
+        navigateToResultPage();
+        // on navigate generate Impression event
         logImpressionEvent();
       }
     }
   });
+
+  function navigateToResultPage() {
+    $('#searchSection').hide();
+    $('#resultSection').show(); //show result page
+    $('#resultPageHeader').text("Dial Code '" + dialcode + "'");
+  }
 
   // to search dial code
   function searchDialCode(id) {
@@ -66,7 +68,7 @@
     })
       .done(function (response) {
         $('#loader').hide();
-        console.log('composite search response', response);
+        // console.log('composite search response', response);
         if (response && response.responseCode === "OK") {
           response.result.count && response.result.content.forEach(function (data) {
             createCard(data);
@@ -156,7 +158,7 @@
       uid: 'anonymous',
       sid: window.uuidv1(),
       channel: orgInfo.channel,
-      env: 'dialcode-search-page',
+      env: 'public',
       enableValidation: true
     }
   }
@@ -169,25 +171,25 @@
   function logImpressionEvent() {
     var options = {
       context: {
-        env: 'dialcode-search-page',
+        env: 'public',
         channel: orgInfo.channel,
         uid: 'anonymous',
         cdata: [],
         rollup: getRollupData([orgInfo.rootOrgId])
       },
-      object: {
+      object: dialcode ? {
         id: dialcode,
         type: 'dialcode',
         ver: '1.0',
         rollup: {}
-      },
+      } : {},
       tags: [orgInfo.rootOrgId]
     };
     var edata = {
       type: 'view',
       pageid: 'get',
       subtype: 'paginate',
-      uri: window.location.href || "",
+      uri: '/get',
       visits: []
     };
     window.EkTelemetry.impression(edata, options);
