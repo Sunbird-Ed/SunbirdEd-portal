@@ -53,9 +53,9 @@
               Start exploring content by searching for content or by searching for a Dial code
             </div>
           </h1>
-          <div class="ui fluid icon input dial-section-input">
+          <div class="ui fluid icon input dial-section-input" data-tooltip="Enter 6 digit code!" data-position="bottom left">
             <input type="text" id="searchInput" name="search" placeholder="Search for content" title="Search" maxlength="6" />
-            <i class="search icon"></i>
+            <i class="circular search link icon" onclick="$('#searchInput').trigger(jQuery.Event( 'keypress', { keyCode: 13, which: 13 } ))"></i>
           </div>
         </div>
         <div class="column">
