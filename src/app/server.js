@@ -152,7 +152,7 @@ function indexPage(req, res) {
       res.locals[key] = value
     })
     if (envHelper.PORTAL_CDN_URL) {
-      request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version, function (error, response, body) {
+      request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
         if (error || response.statusCode !== 200) {
           console.log('error while fetching index.ejs from CDN', error)
           res.render(path.join(__dirname, 'dist', 'index.ejs'))

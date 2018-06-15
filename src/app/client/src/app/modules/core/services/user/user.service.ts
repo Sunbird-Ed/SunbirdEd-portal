@@ -214,6 +214,7 @@ export class UserService {
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
+    document.title = this._userProfile.rootOrg.orgName;
   }
   setContentChannelFilter() {
     try {
