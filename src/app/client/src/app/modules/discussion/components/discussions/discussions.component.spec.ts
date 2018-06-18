@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@sunbird/shared';
 import { DiscussionsComponent } from './discussions.component';
 
 describe('DiscussionsComponent', () => {
@@ -8,6 +8,7 @@ describe('DiscussionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule.forRoot()],
       declarations: [ DiscussionsComponent ]
     })
     .compileComponents();

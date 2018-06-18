@@ -4,6 +4,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-generic-editor',
@@ -181,6 +182,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
 
     };
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     if (this.userService.contentChannelFilter) {
       window.config.searchCriteria = {
         filters: {

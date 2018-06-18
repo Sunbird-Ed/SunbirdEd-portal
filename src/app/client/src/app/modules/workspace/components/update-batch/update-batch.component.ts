@@ -30,6 +30,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   showUpdateModal = false;
   disableSubmitBtn = false;
 
+
   /**
   * coursecreatedby
   */
@@ -391,9 +392,10 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         });
         requestParam['mentors'] = _.concat(_.compact(requestParam['mentors']), selected);
       }
-
+      this.disableSubmitBtn = true;
       this.batchService.updateBatchDetails(requestParam).subscribe(
         (apiResponse: ServerResponse) => {
+          this.disableSubmitBtn = false;
           if (apiResponse) {
             this.toasterService.success(this.resourceService.messages.smsg.m0034);
             if (batchData.enrollmentType !== 'open') {
@@ -423,6 +425,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
           }
         },
         err => {
+          this.disableSubmitBtn = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0055);
         });
     }

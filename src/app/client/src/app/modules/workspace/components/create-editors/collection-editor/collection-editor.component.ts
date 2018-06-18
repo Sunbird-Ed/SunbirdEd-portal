@@ -8,6 +8,7 @@ import { UserService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-collection-editor',
@@ -188,7 +189,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     };
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
-
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({

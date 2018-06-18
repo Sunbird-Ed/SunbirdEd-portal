@@ -6,6 +6,7 @@ import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserDa
 import { UserService, PermissionService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-content-editor',
@@ -237,6 +238,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         showEndPage: false
       }
     };
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     if (this.userService.contentChannelFilter) {
       window.config.searchCriteria = {
         filters: {

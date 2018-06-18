@@ -246,7 +246,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createBatch() {
-    this.disableSubmitBtn = false;
     let users = [];
     let mentors = [];
     if ( this.createBatchUserForm.value.enrollmentType !== 'open') {
@@ -267,15 +266,18 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       'createdFor': this.orgIds,
       'mentors': _.compact(mentors)
     };
+    this.disableSubmitBtn = true;
     this.courseBatchService.createBatch(requestBody).subscribe((response) => {
       if (users && users.length > 0) {
         this.addUserToBatch(response.result.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -289,11 +291,12 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
-        this.disableSubmitBtn = true;
+        this.disableSubmitBtn = false;
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
