@@ -338,6 +338,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
     }
+
+    if (status.toLowerCase() === 'flagdraft') {
+      window.config.editorConfig.mode = 'Edit';
+      window.config.editorConfig.contentStatus = 'draft';
+    }
+
     if (status.toLowerCase() === 'review') {
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'draft';
@@ -350,7 +356,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'flagged';
     }
-    if ( status.toLowerCase() === 'unlisted') {
+    if (status.toLowerCase() === 'unlisted') {
       window.config.editorConfig.mode = 'Edit';
     }
   }
