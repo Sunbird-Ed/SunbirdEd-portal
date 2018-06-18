@@ -152,7 +152,7 @@ function indexPage(req, res) {
       res.locals[key] = value
     })
     if (envHelper.PORTAL_CDN_URL) {
-      request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version, function (error, response, body) {
+      request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
         if (error || response.statusCode !== 200) {
           console.log('error while fetching index.ejs from CDN', error)
           res.render(path.join(__dirname, 'dist', 'index.ejs'))
@@ -283,7 +283,7 @@ app.all('/content/data/v1/telemetry',
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
-      return require('url').parse(envHelper.TELEMETRY_LOCAL_SERVICE_URL + '/v1/telemetry').path
+      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
     }
   }))
 
@@ -399,14 +399,10 @@ function endSession(request, response, next) {
   delete request.session['orgs']
   if (request.session) {
     if (_.get(request, 'kauth.grant.access_token.content.sub')) { telemetryHelper.logSessionEnd(request) }
-    telemetry.syncOnExit(function (err, res) { // sync on session end
-      if (err) {
-        console.log('error while syncing', err)
-      }
+    
       request.session.sessionEvents = request.session.sessionEvents || []
       delete request.session.sessionEvents
       delete request.session['deviceId']
-    })
   }
   next()
 }
@@ -418,14 +414,9 @@ keycloak.deauthenticated = function (request) {
   req.session.logSession = true
   if (request.session) {
     telemetryHelper.logSessionEnd(request)
-    telemetry.syncOnExit(function (err, res) { // sync on session end
-      if (err) {
-        console.log('error while syncing', err)
-      }
-      request.session.sessionEvents = request.session.sessionEvents || []
-      delete request.session.sessionEvents
-      delete request.session['deviceId']
-    })
+    request.session.sessionEvents = request.session.sessionEvents || []
+    delete request.session.sessionEvents
+    delete request.session['deviceId']
   }
 }
 
@@ -457,20 +448,6 @@ const telemetryConfig = {
 
 telemetry.init(telemetryConfig)
 
-// Handle Telemetry data on server close
-function exitHandler(options, err) {
-  console.log('Exit', options, err)
-  telemetry.syncOnExit(function (err, res) {
-    if (err) {
-      process.exit()
-    } else {
-      process.exit()
-    }
-  })
-}
 
-// catches ctrl+c event
-process.on('SIGINT', exitHandler)
 
-// catches uncaught exceptions
-process.on('uncaughtException', exitHandler)
+

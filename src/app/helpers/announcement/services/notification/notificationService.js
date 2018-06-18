@@ -75,7 +75,7 @@ class NotificationService {
           }
         }
       }
-      telemetry.generateApiCallLogEvent(reqID, config, this.uri)
+      // telemetry.generateApiCallLogEvent(reqID, config, this.uri)
       config.headers = this.httpService.getRequestHeader(this.userAccessToken)
       config.body.request.data.notificationpayload = payload
       config.body.request.type = this.type

@@ -79,7 +79,7 @@ module.exports = {
             options: options,
             uri: 'test',
             userId: jwt.decode(req.query['token']).sub || req.headers['x-consumer-userid']}
-          telemetryHelper.logAPICallEvent(telemetryData)
+          // telemetryHelper.logAPICallEvent(telemetryData)
 
           request(options, function (error, response, body) {
             telemetryData.statusCode = response.statusCode
@@ -221,7 +221,7 @@ module.exports = {
       type: 'user',
       id: loginId,
       userId: loginId}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
@@ -270,7 +270,7 @@ module.exports = {
       type: 'user',
       id: options.headers['x-consumer-id'],
       userId: options.headers['x-consumer-id']}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
