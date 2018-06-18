@@ -350,15 +350,18 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       });
       requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     }
+    this.disableSubmitBtn = true;
     this.courseBatchService.updateBatch(requestBody).subscribe((response) => {
       if (users && users.length > 0) {
         this.updateUserToBatch(this.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -372,10 +375,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
+        this.disableSubmitBtn = false;
         if (err.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
