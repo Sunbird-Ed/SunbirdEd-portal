@@ -428,9 +428,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
 }
 
 portal.server = app.listen(port, function () {
-  if(envHelper.PORTAL_CDN_URL){
-    request(envHelper.PORTAL_CDN_URL + 'index.ejs?version='packageObj.version+'.'+packageObj.buildNumber).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
-  }
+  request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs?version=' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
   console.log('app running on port ' + port)
 })
 
