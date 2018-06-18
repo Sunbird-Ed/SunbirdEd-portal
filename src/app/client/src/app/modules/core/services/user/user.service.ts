@@ -76,6 +76,9 @@ export class UserService {
    * Reference of orgNames
    */
   private orgNames: Array<string> = [];
+
+  public rootOrgName: string;
+
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -214,7 +217,7 @@ export class UserService {
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
-    document.title = this._userProfile.rootOrg.orgName;
+    this.rootOrgName = this._userProfile.rootOrg.orgName;
   }
   setContentChannelFilter() {
     try {
