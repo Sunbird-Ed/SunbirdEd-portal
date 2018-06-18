@@ -72,7 +72,7 @@ describe('MainHeaderComponent', () => {
     expect(fixture.nativeElement.querySelector('img').src).toEqual(mockUserData.tenantSuccess.result.logo);
   });
 
-  it('Should route properly with only key and language', () => {
+  it('All query param should be removed except key and language', () => {
     component.queryParamLanguage = 'en';
     component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
     component.onEnter('test');
