@@ -26,7 +26,8 @@ export class ContentPlayerMetadataComponent implements OnInit {
   }
 
   validateContent() {
-    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords', 'resourceTypes'];
+    this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords',
+    'resourceTypes', 'attributions'];
     _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {
@@ -56,6 +57,10 @@ export class ContentPlayerMetadataComponent implements OnInit {
           this.conceptNames = _.map(this.filteredConcepts, 'name');
         }
         this.metadata.concepts =  this.conceptNames.join(', ');
+      } else if (data  && data.err) {
+        this.conceptNames = _.map(this.metadata.concepts, 'name');
+        this.metadata.concepts =  this.conceptNames.join(', ');
+        console.log(this.metadata.concepts);
       }
     });
   }
