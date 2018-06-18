@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { UserService, PermissionService } from '@sunbird/core';
+import { UserService, PermissionService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
@@ -39,6 +39,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * user profile details.
    */
   public userProfile: IUserProfile;
+
+  /**
+   * user tenant details.
+   */
+  public tenantService: TenantService;
   /**
    * Content id for editor
    */
@@ -81,7 +86,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     private router: Router,
     config: ConfigService,
     userService: UserService, public _zone: NgZone,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    tenantService: TenantService
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -89,6 +95,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.config = config;
     this.activatedRoute = activatedRoute;
     this.userService = userService;
+    this.tenantService = tenantService;
   }
 
 
@@ -193,7 +200,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       modalId: 'contentEditor',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo: '',
+      headerLogo: this.tenantService.tenantData.logo,
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
         this.userService.env + '/', 'https://ekstep-public-' +
         this.userService.env + '.s3-ap-south-1.amazonaws.com/'],

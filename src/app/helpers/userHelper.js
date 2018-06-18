@@ -38,7 +38,7 @@ module.exports = {
       type: 'user',
       id: data.request.userId,
       userId: data.request.userId}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
