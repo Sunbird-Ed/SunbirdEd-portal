@@ -66,7 +66,7 @@
         <div class="one wide tablet computer only column"></div>
     </div>
 </div>
-<app-main-menu></app-main-menu>
+<span *ngIf="!showExploreHeader"><app-main-menu></app-main-menu></span>
 
 <div *ngIf="showExploreHeader" class="ui fluid container">
     <div class="ui grid margin-none">
@@ -76,7 +76,7 @@
                 <div class="one wide column"></div>
                 <div class="two wide column">
                     <a (click)="navigateToHome()">
-                        <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                        <img class="image centered header-logo-before-login"
                             alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
@@ -107,7 +107,7 @@
             <div class="ui grid margin-none">
                 <div class="three wide column padding-10">
                     <a (click)="navigateToHome()">
-                        <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
+                        <img class="image centered header-logo-before-login"
                             alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>

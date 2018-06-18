@@ -1160,7 +1160,7 @@ class AnnouncementController {
                     headers: this.httpService.getRequestHeader(authUserToken)
                 }
                 telemetry.addObjectData(reqID, telemetry.getObjectData(tokenDetails.userId, 'user'))
-                telemetry.generateApiCallLogEvent(reqID, options, 'user/v1/read/')
+                // telemetry.generateApiCallLogEvent(reqID, options, 'user/v1/read/')
                 this.httpService.call(options).then((data) => {
                         data.body = JSON.parse(data.body)
                         resolve(_.get(data, 'body.result.response'))
