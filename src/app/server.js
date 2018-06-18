@@ -151,18 +151,18 @@ function indexPage(req, res) {
     _.forIn(getLocals(req), function (value, key) {
       res.locals[key] = value
     })
-    if (envHelper.PORTAL_CDN_URL) {
-      request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
-        if (error || response.statusCode !== 200) {
-          console.log('error while fetching index.ejs from CDN', error)
-          res.render(path.join(__dirname, 'dist', 'index.ejs'))
-        } else {
-          res.send(ejs.render(body, getLocals(req)))
-        }
-      });
-    } else {
+    // if (envHelper.PORTAL_CDN_URL) {
+    //   request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
+    //     if (error || response.statusCode !== 200) {
+    //       console.log('error while fetching index.ejs from CDN', error)
+    //       res.render(path.join(__dirname, 'dist', 'index.ejs'))
+    //     } else {
+    //       res.send(ejs.render(body, getLocals(req)))
+    //     }
+    //   });
+    // } else {
       res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    }
+    //}
   }
 }
 app.get('/get/envData', function (req, res) {
