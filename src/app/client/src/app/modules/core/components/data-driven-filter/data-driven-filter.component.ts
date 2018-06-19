@@ -108,12 +108,6 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   getQueryParams() {
-    this.conceptPickerService.conceptData$.subscribe(conceptData => {
-      if (conceptData && !conceptData.err) {
-        this.selectedConcepts = conceptData.data;
-      }
-    });
-
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
       _.forIn(params, (value, key) => {
@@ -122,10 +116,15 @@ export class DataDrivenFilterComponent implements OnInit {
         }
       });
       this.formInputData = _.pickBy(this.queryParams);
-      if (this.formInputData && this.formInputData.concepts) {
-        this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
-      }
-      this.showConcepts = true;
+      this.conceptPickerService.conceptData$.subscribe(conceptData => {
+        if (conceptData && !conceptData.err) {
+          this.selectedConcepts = conceptData.data;
+          if (this.formInputData && this.formInputData.concepts) {
+            this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
+          }
+          this.showConcepts = true;
+        }
+      });
     });
   }
   /**
