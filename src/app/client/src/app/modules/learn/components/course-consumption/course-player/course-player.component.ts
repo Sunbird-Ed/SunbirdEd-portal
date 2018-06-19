@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentUtilsServiceService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
@@ -14,6 +14,7 @@ import {
   IInteractEventInput, IImpressionEventInput, IEndEventInput,
   IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
+
 
 @Component({
   selector: 'app-course-player',
@@ -143,7 +144,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -153,6 +154,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRouteSubscription = this.activatedRoute.params.first()
       .flatMap((params) => {
+        console.log('params', params);
         this.courseId = params.courseId;
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
@@ -239,6 +241,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
+    console.log('navigationExtras cotent: ', content);
     if ((this.batchId && !this.flaggedCourse) || this.courseStatus === 'Unlisted') {
       this.router.navigate([], navigationExtras);
     }
@@ -261,6 +264,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   setContentNavigators() {
     const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
     this.prevPlaylistItem = this.contentDetails[index - 1];
+    console.log('contentDetails ', this.contentDetails);
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
 
@@ -268,8 +272,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
+        console.log('content:', content);
         if (content) {
-
+          this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userId, this.courseId, this.batchId);
           // Create the telemetry impression event for content player page
           this.telemetryContentImpression = {
             context: {
@@ -312,6 +317,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
         this.contentIds.push(node.model.identifier);
+      }
+      if (node.model.mimeType === 'text/x-url') {
+
       }
     });
     _.forEach(mimeTypeCount, (value, key) => {
