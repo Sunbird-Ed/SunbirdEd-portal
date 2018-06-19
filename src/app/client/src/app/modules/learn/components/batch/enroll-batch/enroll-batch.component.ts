@@ -46,7 +46,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           }
       };
 
-      this.courseBatchService.getEnrollBatchDetails(this.batchId).subscribe((data) => {
+      this.courseBatchService.getEnrollToBatchDetails(this.batchId).subscribe((data) => {
         this.batchDetails = data;
         this.fetchParticipantsDetails();
       }, (err) => {
