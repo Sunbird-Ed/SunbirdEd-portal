@@ -1,5 +1,5 @@
-import { ContentService, PlayerService, UserService } from './../../services';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ContentService, PlayerService, UserService, FlagContentService } from './../../services';
+import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import {
   ResourceService, ToasterService, ServerResponse, ConfigService, ContentData,
@@ -23,6 +23,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 })
 export class FlagContentComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
+  @Output() disableFlagOnSuccess = new EventEmitter<boolean>();
   /**
    * It is type of IFlagReason containing name, value and description
    */
@@ -66,6 +67,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
   /**
    * Input data for request (flagreason and comment)
    */
+  public flagService: FlagContentService;
   public flagData: IFlagData = {};
   /**
      * This variable hepls to show and hide page loader.
@@ -97,7 +99,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     contentService: ContentService,
     config: ConfigService,
     playerService: PlayerService,
-    userService: UserService) {
+    userService: UserService,
+    flagService: FlagContentService) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -106,6 +109,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     this.playerService = playerService;
     this.userService = userService;
     this.flagReasons = this.config.appConfig.FLAGREASONS;
+    this.flagService = flagService;
   }
   /**
    * This method use to get content Data
@@ -135,6 +139,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.modal.deny();
       this.redirect();
+      this.toasterService.success(this.resourceService.messages.smsg.m0045);
+      this.flagService.updateFlag();
     }, (err) => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0050);
