@@ -96,7 +96,6 @@ describe('CoursePlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
-    console.log(component.batchId);
     expect(component.courseHierarchy).toBeDefined();
     component.ngOnDestroy();
   });
@@ -128,7 +127,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
-    console.log(component.enrolledBatchInfo);
     expect(component.enrolledCourse).toBeTruthy();
     expect(courseConsumptionService.getContentStatus).toHaveBeenCalled();
     expect(component.contentStatus).toBeDefined();
@@ -156,27 +154,28 @@ describe('CoursePlayerComponent', () => {
       expect(component.enableContentPlayer).toBeFalsy();
     component.ngOnDestroy();
   });
-  it('should not play the content enrolled batch status is 0', () => {
+  it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
     const courseBatchService = TestBed.get(CourseBatchService);
-    enrolledBatch.result.response.status = 0;
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
       component.ngOnInit();
       expect(component.enrolledCourse).toBeTruthy();
-      expect(component.contentId).toBeUndefined();
-      expect(component.playerConfig).toBeUndefined();
-      expect(component.contentTitle).toBeUndefined();
-      expect(component.enableContentPlayer).toBeFalsy();
+      expect(component.contentId).toBeDefined();
+      expect(component.prevPlaylistItem).toBeDefined();
+      expect(component.nextPlaylistItem).toBeUndefined();
+      expect(component.playerConfig).toBeDefined();
+      expect(component.contentTitle).toBeDefined();
+      expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
-
    it('should not play content if course is not enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
@@ -216,31 +215,26 @@ describe('CoursePlayerComponent', () => {
       expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
-
-   it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
+  it('should not play the content enrolled batch status is 0', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
     const courseBatchService = TestBed.get(CourseBatchService);
+    enrolledBatch.result.response.status = 0;
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
-    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
       component.ngOnInit();
       expect(component.enrolledCourse).toBeTruthy();
-      expect(component.contentId).toBeDefined();
-      expect(component.contentId).toBeDefined();
-      expect(component.prevPlaylistItem).toBeDefined();
-      expect(component.nextPlaylistItem).toBeUndefined();
-      expect(component.playerConfig).toBeDefined();
-      expect(component.contentTitle).toBeDefined();
-      expect(component.enableContentPlayer).toBeTruthy();
+      expect(component.contentId).toBeUndefined();
+      expect(component.playerConfig).toBeUndefined();
+      expect(component.contentTitle).toBeUndefined();
+      expect(component.enableContentPlayer).toBeFalsy();
     component.ngOnDestroy();
   });
-
    it('should update createNoteData on recieving a note data from createEventEmitter', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);

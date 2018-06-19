@@ -261,7 +261,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id, options)
       .subscribe((config) => {
         this.setContentInteractData(config);
-        console.log(config);
         this.loader = false;
         this.playerConfig = config;
         this.enableContentPlayer = true;
