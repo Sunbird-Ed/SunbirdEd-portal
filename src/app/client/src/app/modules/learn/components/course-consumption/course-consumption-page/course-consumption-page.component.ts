@@ -23,7 +23,6 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
-      this.router.onSameUrlNavigation = 'reload';
     }
 
   ngOnInit() {
