@@ -19,6 +19,9 @@ import { IFancytreeOptions } from '../../interfaces';
   ::ng-deep span.fancytree-icon {
     vertical-align: middle;
   }
+  ::ng-deep span.fancytree-expander {
+    vertical-align: middle;
+  }
   `]
 })
 export class FancyTreeComponent implements AfterViewInit {

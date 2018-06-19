@@ -65,7 +65,7 @@ export class DataDrivenFilterComponent implements OnInit {
   public permissionService: PermissionService;
 
   selectedConcepts: Array<object>;
-  showFilter = false;
+  showConcepts = false;
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
@@ -117,23 +117,23 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   getQueryParams() {
-    this.conceptPickerService.conceptData$.subscribe(conceptData => {
-      if (conceptData && !conceptData.err) {
-        this.selectedConcepts = conceptData.data;
-        this.activatedRoute.queryParams.subscribe((params) => {
-          this.queryParams = { ...params };
-          _.forIn(params, (value, key) => {
-            if (typeof value === 'string' && key !== 'key' && key !== 'language') {
-              this.queryParams[key] = [value];
-            }
-          });
-          this.formInputData = _.pickBy(this.queryParams);
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = { ...params };
+      _.forIn(params, (value, key) => {
+        if (typeof value === 'string' && key !== 'key' && key !== 'language') {
+          this.queryParams[key] = [value];
+        }
+      });
+      this.formInputData = _.pickBy(this.queryParams);
+      this.conceptPickerService.conceptData$.subscribe(conceptData => {
+        if (conceptData && !conceptData.err) {
+          this.selectedConcepts = conceptData.data;
           if (this.formInputData && this.formInputData.concepts) {
             this.formInputData.concepts = this.conceptPickerService.processConcepts(this.formInputData.concepts, this.selectedConcepts);
           }
-          this.showFilter = true;
-        });
-      }
+          this.showConcepts = true;
+        }
+      });
     });
   }
   /**
@@ -196,7 +196,7 @@ export class DataDrivenFilterComponent implements OnInit {
     this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
       {
         maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
       });
   }
 

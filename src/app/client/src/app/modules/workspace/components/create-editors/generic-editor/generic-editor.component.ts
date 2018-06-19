@@ -2,8 +2,9 @@ import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/co
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
+import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-generic-editor',
@@ -52,6 +53,12 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * Boolean to show and hide modal
    */
   public showModal: boolean;
+
+  /**
+   * user tenant details.
+   */
+  public tenantService: TenantService;
+
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -59,11 +66,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private activatedRoute: ActivatedRoute;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute) {
+    activatedRoute: ActivatedRoute, tenantService: TenantService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
-
+    this.tenantService = tenantService;
   }
   ngOnInit() {
     /**
@@ -149,7 +156,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo: '',
+      headerLogo: this.tenantService.tenantData.logo,
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
@@ -181,6 +188,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       }
 
     };
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     if (this.userService.contentChannelFilter) {
       window.config.searchCriteria = {
         filters: {

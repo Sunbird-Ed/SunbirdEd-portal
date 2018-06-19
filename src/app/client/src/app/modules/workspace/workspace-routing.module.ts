@@ -171,12 +171,13 @@ const routes: Routes = [
         }
       },
       {
-        path: 'update/batch/:batchId', component: UpdateBatchComponent,
+        path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
             type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },

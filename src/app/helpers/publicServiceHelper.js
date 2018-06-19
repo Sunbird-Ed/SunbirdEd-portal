@@ -29,7 +29,7 @@ module.exports = {
       options: options,
       uri: 'org/v1/search',
       userId: 'Public'}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode

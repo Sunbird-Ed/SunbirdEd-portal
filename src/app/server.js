@@ -42,8 +42,8 @@ let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 const oneDayMS = 86400000;
 const request = require('request');
 const ejs = require('ejs');
-const packageObj =   JSON.parse(fs.readFileSync('package.json', 'utf8'));
-
+const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const MobileDetect = require('mobile-detect');
 let memoryStore = null
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
@@ -125,7 +125,7 @@ app.all('/logoff', endSession, function (req, res) {
   res.redirect('/logout')
 })
 
-function getLocals(req){
+function getLocals(req) {
   var locals = {};
   locals.userId = _.get(req, 'kauth.grant.access_token.content.sub') ? req.kauth.grant.access_token.content.sub : null
   locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'kauth.grant.access_token.content.sub') ? req.sessionID : null
@@ -142,25 +142,28 @@ function getLocals(req){
 }
 
 function indexPage(req, res) {
-  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
-  _.forIn(getLocals(req), function(value, key){
-    res.locals[key] = value
-  })
-  if (envHelper.PORTAL_CDN_URL) {
-    request(envHelper.PORTAL_CDN_URL + 'index.ejs?version='+packageObj.version, function (error, response, body) {
-      if (error || response.statusCode !== 200) {
-        console.log('error while fetching index.ejs from CDN', error)
-        res.render(path.join(__dirname, 'dist', 'index.ejs'))
-      } else {
-        res.send(ejs.render(body, getLocals(req)))
-      }
-    });
+  const mobileDetect = new MobileDetect(req.headers['user-agent']);
+  if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
+    && mobileDetect.os() === 'AndroidOS') {
+    res.redirect(envHelper.ANDROID_APP_URL)
   } else {
-    res.render(path.join(__dirname, 'dist', 'index.ejs'))
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+    _.forIn(getLocals(req), function (value, key) {
+      res.locals[key] = value
+    })
+    // if (envHelper.PORTAL_CDN_URL) {
+    //   request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
+    //     if (error || response.statusCode !== 200) {
+    //       console.log('error while fetching index.ejs from CDN', error)
+    //       res.render(path.join(__dirname, 'dist', 'index.ejs'))
+    //     } else {
+    //       res.send(ejs.render(body, getLocals(req)))
+    //     }
+    //   });
+    // } else {
+      res.render(path.join(__dirname, 'dist', 'index.ejs'))
+    //}
   }
-
- 
-
 }
 app.get('/get/envData', function (req, res) {
   res.status(200)
@@ -193,9 +196,9 @@ app.all('/myActivity', keycloak.protect(), indexPage)
 app.all('/myActivity/*', keycloak.protect(), indexPage)
 app.all('/signup', indexPage)
 app.all('/get/dial/:dialCode', indexPage)
-app.all('*/get/dial/:dialCode', function (req, res) { res.redirect('/get/dial/:dialCode') })
+app.all('/:slug/get/dial/:dialCode', function (req, res) { res.redirect('/get/dial/:dialCode') })
 app.all('/get', indexPage)
-app.all('*/get', function (req, res) { res.redirect('/get') })
+app.all('/:slug/get', function (req, res) { res.redirect('/get') })
 app.all('/:slug/explore/*', indexPage)
 app.all('/explore', indexPage)
 app.all('/explore/*', indexPage)
@@ -396,14 +399,10 @@ function endSession(request, response, next) {
   delete request.session['orgs']
   if (request.session) {
     if (_.get(request, 'kauth.grant.access_token.content.sub')) { telemetryHelper.logSessionEnd(request) }
-    telemetry.syncOnExit(function (err, res) { // sync on session end
-      if (err) {
-        console.log('error while syncing', err)
-      }
+    
       request.session.sessionEvents = request.session.sessionEvents || []
       delete request.session.sessionEvents
       delete request.session['deviceId']
-    })
   }
   next()
 }
@@ -415,14 +414,9 @@ keycloak.deauthenticated = function (request) {
   req.session.logSession = true
   if (request.session) {
     telemetryHelper.logSessionEnd(request)
-    telemetry.syncOnExit(function (err, res) { // sync on session end
-      if (err) {
-        console.log('error while syncing', err)
-      }
-      request.session.sessionEvents = request.session.sessionEvents || []
-      delete request.session.sessionEvents
-      delete request.session['deviceId']
-    })
+    request.session.sessionEvents = request.session.sessionEvents || []
+    delete request.session.sessionEvents
+    delete request.session['deviceId']
   }
 }
 
@@ -434,6 +428,9 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
 }
 
 portal.server = app.listen(port, function () {
+  if(envHelper.PORTAL_CDN_URL){
+    request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs?version=' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
+  }
   console.log('app running on port ' + port)
 })
 
@@ -454,20 +451,6 @@ const telemetryConfig = {
 
 telemetry.init(telemetryConfig)
 
-// Handle Telemetry data on server close
-function exitHandler(options, err) {
-  console.log('Exit', options, err)
-  telemetry.syncOnExit(function (err, res) {
-    if (err) {
-      process.exit()
-    } else {
-      process.exit()
-    }
-  })
-}
 
-// catches ctrl+c event
-process.on('SIGINT', exitHandler)
 
-// catches uncaught exceptions
-process.on('uncaughtException', exitHandler)
+

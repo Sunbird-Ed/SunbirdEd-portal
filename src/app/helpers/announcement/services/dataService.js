@@ -46,7 +46,7 @@ class DataService {
         },
         json: true
       }
-      telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/notification/audience')
+      // telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/notification/audience')
       console.log('Announcement - get audience - Request', JSON.stringify(options))
 
       this.service.call(options).then((data) => {
@@ -88,7 +88,7 @@ class DataService {
           'json': true
         }
         options.headers = this.service.getRequestHeader(token)
-        telemetry.generateApiCallLogEvent(reqID, options, 'org/v1/search')
+        // telemetry.generateApiCallLogEvent(reqID, options, 'org/v1/search')
         console.log('Announcement - get geolocations - Request', JSON.stringify(options))
 
         let data = new Promise((resolve, reject) => {

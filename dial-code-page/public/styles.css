@@ -1,0 +1,627 @@
+/*get dial code page responsive css*/
+.ui.footer.segment {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 989898;
+}
+
+.get-page-background {
+background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+height: 100vh;
+}
+.dailcode-page-background {
+background: #f9f9f9;
+height: 100vh;
+}
+
+.dial-section-header {
+margin-top: 3em;
+}
+.dail-section-meta {
+color: white;
+}
+.ui.header.dial-section-header-text {
+color:#fff;
+}
+.ui.header .sub.header.dial-section-subheader-text {
+color: #fff;
+font-size: 1rem;
+}
+.dial-section-input {
+margin-top: 10em;
+}
+@media screen and  (min-width: 240px) and (max-width: 768px) {
+.dial-section-input {
+  margin-top: 2em;
+}
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+.ui.header.dial-section-header-text {
+  padding-top: 4em !important;
+}
+}
+.dial-code-section-bg {
+background: #fff;
+}
+@media only screen and (max-width: 767px) {
+.ui.container.public-responvive-container {    
+  margin-right: 0 !important; 
+} 
+}
+@media only screen and (min-width: 768px) {
+.closeBtn-dial-code {
+  float:right;
+}
+}
+@media screen and  (min-width: 320px) and (max-width: 768px) {
+.ui.small.header.popUp-dial-code-header {
+  font-size: 1.2em;
+}
+}
+.menu-public-header{
+border-top: 2px solid rgba(0,0,0,.13);
+}
+
+/* header css */
+
+.left-float {
+  float: left;
+}
+
+.header-logo-before-login {
+  display: block;
+  max-width: 70px;
+  max-height: 70px;
+  width: auto;
+  height: auto;
+  left: 10%;
+}
+
+/* header css */
+
+/*sunbird Regular font*/
+@font-face {
+  font-family: 'sunbirdregularfont';
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+/*sunbird Bold font*/
+@font-face {
+  font-family: 'sunbirdboldfont';
+  src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
+}
+
+/* cards used in slider fonts*/
+.sliderCardHeading {
+  font-family: 'sunbirdboldfont';
+  font-size: 1.1875em;
+  float: left;
+  padding-left: 10px;
+}
+
+
+/*terms and condition fonts*/
+
+.padding-top-10 {
+  padding-top: 10px !important;
+}
+.padding-top-30 {
+  padding-top: 30px !important;
+}
+
+.padding-top-5 {
+  padding-top: 5px!important;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px !important;
+}
+.margin-top-20 {
+  margin-top: 20px !important;
+}
+
+.margin-bottom-30 {
+  margin-bottom: 30px !important;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0 !important;
+}
+
+.text-align-right {
+  text-align: right !important;
+}
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+.float-ContentLeft {
+  float: left !important;
+}
+.float-ContentRight {
+  float: right !important;
+}
+.right-float {
+  float: right !important;
+}
+.width-100 {
+  width: 100% !important;
+}
+.height-100 {
+  height: 100% !important;
+}
+.lower-case {
+  text-transform: lowercase !important;
+}
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.cursor-pointerText {
+  cursor: text;
+  pointer-events: none !important;
+}
+.mouse-pointer {
+  cursor: pointer;
+}
+.text-align-center {
+  text-align: center !important;
+}
+.padding-left-50 {
+  padding-left: 3rem !important;
+}
+.padding-right-50 {
+  padding-right: 3rem !important;
+}
+.vertical-align-middle {
+  vertical-align: middle !important;
+}
+.right-floated {
+  float: right !important;
+}
+a {
+  outline: none !important;
+}
+a:active,
+a:focus,
+a:hover {
+  outline: none !important;
+}
+.ui.menu {
+  font-family: 'sunbirdregularfont';
+  color: #333333;
+}
+.padding-top-circular-human-icon {
+  padding-top: 0.9rem;
+  z-index: 88;
+}
+
+.beforelogin.ui.secondary.pointing.menu {
+  border-bottom: 0;
+}
+
+.padding-top-1rem {
+  padding-top: 1rem;
+}
+.ui.secondary.pointing.menu .active.item {
+  border-color: #007AFF;
+  color: #333333;
+  font-family: 'sunbirdmediumfont';
+}
+.ui.secondary.pointing.menu {
+  background: #fdfdfd;
+  margin: 0rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.searchfilterinput .ng-empty + .icon.search,
+.searchfilterinput .ng-empty + .icon.search:hover {
+  cursor: auto !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
+
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+
+/*for the text on image in card */
+.cardImageText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 100%;
+  margin: 0;
+  max-height: 70px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+div:focus {
+  outline: none;
+}
+.ui.cards > .card > .content {
+  padding-right: 3px;
+}
+
+/*rating responsive in card*/
+@media screen and (max-width: 1100px) and (min-width: 1024px) {
+  .ui.rating {
+    font-size: 0.8em;
+  }
+}
+
+/*semantic ui modal form field changes*/
+
+.ui.form input[type=text],
+.ui.form input[type=text]:focus,
+.ui.form input[type=email],
+.ui.form input[type=number],
+.ui.form input[type=password],
+.ui.form input[type=url],
+.ui.form input:not([type]),
+.ui.form input:not([type]):focus
+ {
+  border: 0;
+  border-bottom: 1px solid #333;
+  border-radius: 0;
+  padding: 0.8em 0 0.8em 1em;
+  font-family: Roboto, sans-serif;
+}
+
+
+
+.ui.form input:not([type]):focus {
+  border-color: #333;
+}
+.centered.grid.no-result-container {
+  margin-top: 12%;
+}
+.no-result-container .column img {
+  display: block;
+  height: 9em;
+  margin: auto;
+  width: 9em;
+}
+
+.no-result-container .no-result-text {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #7c7b7b;
+}
+.no-result-container .no-result-search-text {
+  text-align: center;
+  padding-top: 5px;
+  font-size: 16px;
+  /* font-weight: 600; */
+  color: #7c7b7b;
+}
+
+.header-logo {
+  display: block;
+  max-width: 200px;
+  max-height: 80px;
+  width: auto;
+  height: auto;
+  top: 14%;
+  left: 10%;
+  position: absolute;
+}
+.header-logo-before-login {
+  display: block;
+  max-width: 70px;
+  max-height: 70px;
+  width: auto;
+  height: auto;
+  left: 10%;
+}
+
+.blue-text-color-sunbird {
+  color: #007AFF;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                 supported by Chrome and Opera */
+  cursor: default !important;
+  border: none !important;
+  background-color: none !important;
+}
+.text-cencapitalize {
+  text-transform: capitalize;
+}
+
+.serch-allresult {
+  color: #717171;
+}
+.search-content-header {
+  background: transparent;
+  box-shadow: none;
+}
+#search-suggestions {
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  background: white;
+  text-align: left;
+  width: 600px;
+}
+#search-suggestions .result .content .title {
+  font-size: 13px;
+  padding: 2px;
+  color: #717171;
+  cursor: pointer;
+}
+#search-suggestions .result .content .title:hover {
+  color: black;
+}
+
+/*share content modal ui*/
+
+
+body {
+  position: relative;
+  background: #fdfdfd;
+}
+html {
+  height: 100%;
+}
+
+
+.overflow-word-wrap {
+  overflow-wrap: break-word !important;
+}
+
+
+.cardImageText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #FFFFFF;
+  width: 100%;
+  margin: 0;
+  max-height: 70px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.card-component-description {
+  color: #7c7b7b;
+  font-family: 'sunbirdregularfont';
+  font-size: 1em;
+  height: 2.8em;
+  max-height: 2.8em;
+  overflow: hidden;   
+  overflow-wrap: break-word;
+}
+
+.card .ui.image {
+  height: 150px;
+  overflow: hidden;
+}
+
+.ui.tiny.header {
+  font-size: 1.25em;
+}
+
+.ui[class*="right ribbon"].label:after {
+  left: auto;
+  right: 0;
+  border-style: solid;
+  border-width: 0em 0em 0 0 !important;
+  border-color: transparent;
+  border-top-color: inherit;
+ }
+ .ui.small.header .sub.header {
+  font-size: 1rem;
+ }
+ .ui.small.header {
+  font-size: 1.5em;
+}
+.ui.medium.header {
+  font-size: 1.75em;
+}
