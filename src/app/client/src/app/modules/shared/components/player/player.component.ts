@@ -39,8 +39,13 @@ export class PlayerComponent implements OnInit, OnChanges {
       };
     }, 0);
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-      if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' || event.detail.telemetryData.eid === 'END')) {
+      if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
         this.contentProgressEvent.emit(event);
+      } else if (event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
+        const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
+        if (summary) {
+          this.contentProgressEvent.emit(event);
+        }
       }
     });
   }
