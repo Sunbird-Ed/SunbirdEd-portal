@@ -109,7 +109,6 @@ export class MainHomeComponent implements OnInit, OnDestroy {
             _.forEach( user.userProfile.missingFields, (val, key) => {
               val = val.match(/([A-Z]?[^A-Z]*)/g).join(' ');
               missingField.push(_.capitalize(val));
-              console.log(missingField);
             });
             this.toDoList.unshift({
               type: profile,
