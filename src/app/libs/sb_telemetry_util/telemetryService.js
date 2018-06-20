@@ -3,7 +3,8 @@ var telemetrySyncManager = require('./telemetrySyncManager.js')
 
 var default_config = {
   'runningEnv': 'server',
-  'dispatcher': undefined
+  'dispatcher': undefined,
+  'batchsize': 200
 }
 
 function telemetryService () {
@@ -29,7 +30,6 @@ telemetryService.prototype.init = function (config) {
  */
 
 telemetryService.prototype.start = function (data) {
-  console.log("Start event")
   if (data.context) { this.context.push(data.context) }
   Telemetry.start(this.config, data.contentId, data.contentVer, data.edata, {
     context: data.context,
@@ -45,7 +45,6 @@ telemetryService.prototype.start = function (data) {
  * data object have these properties {'edata', context', 'object', 'tags'}
  */
 telemetryService.prototype.end = function (data) {
-  console.log('Portal end event')
   var context = this.context.pop()
   Telemetry.end(data.edata, {
     context: context,
@@ -76,7 +75,6 @@ telemetryService.prototype.audit = function (data) {
  */
 
 telemetryService.prototype.error = function (data) {
-  console.log('Error event data')
   Telemetry.error(data.edata, {
     context: data.context,
     actor: data.actor,
@@ -124,7 +122,7 @@ telemetryService.prototype.startEventData = function (type, pageid, mode, durati
     mode: mode,
     duration: duration,
     pageid: pageid,
-    uaspec: uaspec
+    uaspec: uaspec    
   }
   return JSON.parse(JSON.stringify(startEventData))
 }
@@ -210,6 +208,7 @@ telemetryService.prototype.getContextData = function (data) {
   cObj.env = data.env
   cObj.cdata = data.cdata
   cObj.rollup = data.rollup
+  cObj.did = data['did'] || ''
   return JSON.parse(JSON.stringify(cObj))
 }
 
@@ -222,9 +221,9 @@ telemetryService.prototype.getActorData = function (userId, type) {
   if (!userId || !type) {
     console.log("Required params are missing for actor")
     return;
-  }
+    }
   return {
-    id: userId,
+    id: userId.toString(),
     type: type
   }
 }
@@ -239,7 +238,7 @@ telemetryService.prototype.pData = function (id, version, pid) {
   if (!id || !version) {
     console.log("Required params are missing for p data")
     return
-  }
+    }
   const pData = {
     id: id,
     pid: pid,
@@ -257,7 +256,7 @@ telemetryService.prototype.getObjectData = function (data) {
   if (data && (!data.id || !data.type)) {
     console.log("Required params are missing for object data")
     return
-  }
+    }
   obj.id = data.id
   obj.type = data.type
   obj.ver = data.ver

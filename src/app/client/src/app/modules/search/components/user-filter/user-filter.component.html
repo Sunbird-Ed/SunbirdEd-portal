@@ -27,7 +27,7 @@
                 </div>
                 <div class="two wide column ">
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Grades" [options]="options" [hasLabels]=false
-                  placeholder="Grades"  #multiSelect>
+                  placeholder="Class"  #multiSelect>
                     <sui-select-option *ngFor="let grades of searchGrades" [value]="grades"> </sui-select-option>
                   </sui-multi-select>
 

@@ -7,20 +7,18 @@
     tenantId = getUrlParameter('tenant');
     $('#loader').hide(); // hide loader on page load
     $('#noResultMessage').hide(); // hide no result found message
-    if (dialcode) { 
-      $('#searchSection').hide();
-      $('#resultSection').show();
-      $('#resultPageHeader').text("Dial Code '" + dialcode + "'"); 
-    } else {
-      $('#searchSection').show();
-      $('#resultSection').hide();
-    }
+    dialcode ? navigateToResultPage() : navigateToSearchPage()
     getTenantInfo(tenantId);
-    getOrgInfo(tenantId).done(function() {
+    getOrgInfo(tenantId).done(function () {
       initTelemetryService();
       logImpressionEvent();
     });
-    if (typeof dialcode === "string") searchDialCode(dialcode);
+    searchDialCode(dialcode);
+  }
+
+  function navigateToSearchPage() {
+    $('#searchSection').show();
+    $('#resultSection').hide();
   }
 
   function getUrlParameter(param) {
@@ -37,15 +35,21 @@
   // Attach keypress event to search input
   $("#searchInput").keypress(function (event) {
     if (event.which == 13) {
-      var dialCode = $("#searchInput").val();
-      searchDialCode(dialCode);
-      $('#searchSection').hide();
-      $('#resultSection').show(); //show result page
-      $('#resultPageHeader').text("Dial Code '" + dialCode + "'");
-      // log impression event on navigating to result page
-      logImpressionEvent();
+      dialcode = $("#searchInput").val();
+      if (dialcode.length === 6) {
+        searchDialCode(dialcode);
+        navigateToResultPage();
+        // on navigate generate Impression event
+        logImpressionEvent();
+      }
     }
   });
+
+  function navigateToResultPage() {
+    $('#searchSection').hide();
+    $('#resultSection').show(); //show result page
+    $('#resultPageHeader').text("Dial Code '" + dialcode + "'");
+  }
 
   // to search dial code
   function searchDialCode(id) {
@@ -64,7 +68,7 @@
     })
       .done(function (response) {
         $('#loader').hide();
-        console.log('composite search response', response);
+        // console.log('composite search response', response);
         if (response && response.responseCode === "OK") {
           response.result.count && response.result.content.forEach(function (data) {
             createCard(data);
@@ -113,7 +117,7 @@
     return $.ajax({
       method: "GET",
       url: URL
-    }).done(function(response) {
+    }).done(function (response) {
       if (response && response.responseCode === "OK") {
         $('#appLogo').attr('src', response.result.appLogo);
         $('#favicon').attr('href', response.result.favicon);
@@ -133,7 +137,7 @@
         }
       }),
       contentType: "application/json"
-    }).done(function(response) {
+    }).done(function (response) {
       if (response && response.responseCode === "OK") {
         orgInfo = response.result.response.content[0];
       }
@@ -143,49 +147,49 @@
   function getAnonymousUserConfig() {
     var endpoint = "/data/v1/telemetry"
     return {
-        pdata: {
-          id: 'prod.diksha.portal',
-          ver: '1.7.0',
-          pid: 'sunbird-portal'
-        },
-        endpoint: endpoint,
-        apislug: "/content",
-        host: hostURL,
-        uid: 'anonymous',
-        sid: window.uuidv1(),
-        channel: orgInfo.channel,
-        env: 'dialcode-search-page',
-        enableValidation: true
+      pdata: {
+        id: 'prod.diksha.portal',
+        ver: '1.7.0',
+        pid: 'sunbird-portal'
+      },
+      endpoint: endpoint,
+      apislug: "/content",
+      host: hostURL,
+      uid: 'anonymous',
+      sid: window.uuidv1(),
+      channel: orgInfo.channel,
+      env: 'public',
+      enableValidation: true
     }
   }
 
   function initTelemetryService() {
-    var config = getAnonymousUserConfig(); 
+    var config = getAnonymousUserConfig();
     window.EkTelemetry.initialize(config);
   }
 
   function logImpressionEvent() {
     var options = {
       context: {
-        env: 'dialcode-search-page',
+        env: 'public',
         channel: orgInfo.channel,
         uid: 'anonymous',
         cdata: [],
         rollup: getRollupData([orgInfo.rootOrgId])
       },
-      object: {
+      object: dialcode ? {
         id: dialcode,
         type: 'dialcode',
         ver: '1.0',
         rollup: {}
-      },
+      } : {},
       tags: [orgInfo.rootOrgId]
     };
     var edata = {
       type: 'view',
       pageid: 'get',
       subtype: 'paginate',
-      uri: window.location.href || "",
+      uri: '/get',
       visits: []
     };
     window.EkTelemetry.impression(edata, options);
