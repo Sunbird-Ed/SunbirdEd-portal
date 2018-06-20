@@ -133,7 +133,7 @@ export class MainHeaderComponent implements OnInit {
     this.setInteractEventData();
     const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
     (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
-    this.enableSignup = (enableSignupButton === 'true');
+    this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
   }
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
