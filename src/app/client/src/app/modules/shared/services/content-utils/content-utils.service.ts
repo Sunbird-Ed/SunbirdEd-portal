@@ -1,12 +1,6 @@
-import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
-import { ResourceService } from './../resource/resource.service';
-import { ToasterService } from './../toaster/toaster.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Router } from '@angular/router';
-
 
 @Injectable()
 export class ContentUtilsServiceService {
@@ -18,24 +12,8 @@ export class ContentUtilsServiceService {
   *input for Sharelink;
   */
   contentShare: ISharelink;
-  /**
-  * To navigate to other pages
-  */
- route: Router;
-   /**
-   * BehaviorSubject Containing user profile.
-   */
-  private _extLinkData$ = new BehaviorSubject<any>(undefined);
-  /**
-   * Read only observable Containing user profile.
-   */
-  public readonly extLinkData$: Observable<any> = this._extLinkData$.asObservable();
-
-  newWindow: any;
-  constructor(public configService: ConfigService, public resourceService: ResourceService,
-    public toasterService: ToasterService, route: Router) {
+  constructor(public configService: ConfigService) {
     this.baseUrl = document.location.origin + '/';
-    this.route = route;
   }
   /**
    * getBase64Url
@@ -78,36 +56,4 @@ export class ContentUtilsServiceService {
     }
     return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
   }
-  /**
-   * getRedirectUrl function is to redirect to the external url link in a new tab
-   * @param playerconfigMeta Playerconfig data to get artifacturl and contentId of the item in the player
-   * @param courseId course id of the enrolled / playing course
-   * @param userId  user id of the loggedin user
-   */
-  getRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
-    // if (playerconfigMeta.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0034);
-      setTimeout(() => {
-        // this.newWindow = this.getNativeWindow();
-        // this.newWindow.open(this.route.navigate(['/learn/redirect']), '_blank');
-        const newWindow = window.open('/learn/redirect', '_blank');
-
-
-        newWindow.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '')
-         + '#&contentId=' + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
-
-       const extUrlLink = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '') + '#&contentId='
-          + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
-          console.log('ext', extUrlLink);
-          this._extLinkData$.next(extUrlLink);
-          console.log('next', this._extLinkData$.next(extUrlLink));
-      }, 1000);
-    // }
-  }
-
-  getNativeWindow() {
-    return window;
 }
-}
-
-

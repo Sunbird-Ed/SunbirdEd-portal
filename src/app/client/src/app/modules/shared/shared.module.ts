@@ -9,7 +9,7 @@ import {
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
-  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService
+  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlpreviewService
 } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
@@ -47,7 +47,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService]
+        DeviceDetectorModule, DeviceDetectorService, ExternalUrlpreviewService]
     };
   }
 }

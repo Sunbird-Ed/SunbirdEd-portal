@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService, ContentUtilsServiceService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlpreviewService
 } from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
@@ -85,7 +85,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public externalUrlpreviewService: ExternalUrlpreviewService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -140,12 +140,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': id },
       relativeTo: this.route
     };
-    // const contentDet = this.findContentById( this.collectionTreeNodes, id);
-    // if (contentDet.model.mimeType === 'text/x-url') {
-    //   // this.contentUtilsServiceService.getRedirectUrl(contentDet.model, this.userService.userid, this.courseId, this.batchId);
-    //   const newWindow  = window.open('/learn/redirect', '_blank');
-    //   newWindow.redirectUrl = contentDet.model.artifactUrl  + '#&contentId=' + contentDet.model.identifier;
-    // }
     this.router.navigate([], navigationExtras);
   }
 
@@ -177,9 +171,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
       if (contentDet.model.mimeType === 'text/x-url') {
-        // this.contentUtilsServiceService.getRedirectUrl(contentDet.model, this.userService.userid, this.courseId, this.batchId);
-        const newWindow  = window.open('/learn/redirect', '_blank');
-        newWindow.redirectUrl = contentDet.model.artifactUrl  + '#&contentId=' + contentDet.model.identifier;
+        this.externalUrlpreviewService.getRedirectUrl(contentDet.model);
       }
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);

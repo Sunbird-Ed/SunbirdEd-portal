@@ -1,7 +1,5 @@
-
 import { ResourceService } from '../../services';
 import { Component, OnInit, Input } from '@angular/core';
-import { ContentUtilsServiceService } from '../../services/content-utils/content-utils.service';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,44 +13,33 @@ import { ActivatedRoute } from '@angular/router';
  * and when the route learn/redirect is called this component is invoked
  */
 export class RedirectComponent implements OnInit {
-      /**
-     * To send activatedRoute.snapshot to router navigation
-     * service for redirection to draft  component
-    */
-   private activatedRoute: ActivatedRoute;
   /**
-* telemetryImpression
-*/
+   * To send activatedRoute.snapshot to router navigation
+   * service for redirection to draft  component
+   */
+  private activatedRoute: ActivatedRoute;
+  /**
+   * telemetryImpression
+   */
   telemetryImpression: IImpressionEventInput;
-  constructor(public resourceService: ResourceService, public contentUtilsServiceService: ContentUtilsServiceService,
-    activatedRoute: ActivatedRoute) { 
-      this.activatedRoute = activatedRoute;
-    }
+  constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute) {
+    this.activatedRoute = activatedRoute;
+  }
   /**
    * oninit the window opens a new window tab with the redirectUrl values in the url
    */
   ngOnInit() {
     this.telemetryImpression = {
       context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env
       },
       edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-          visits: []
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
+        visits: []
       }
-  };
-    this.contentUtilsServiceService.extLinkData$.subscribe((data) => {
-      console.log('extlinkdata', data);
-      setTimeout(() => {
-        if (data !== undefined) {
-          location.href = data;
-        } else {
-          // window.open(window.redirectUrl, '_self');
-        }
-      }, 5000);
-    });
+    };
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
     }, 500);
