@@ -146,7 +146,7 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course/do_212347136096788480178']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
     component.ngOnDestroy();
   });
   it('should stay on the same page if course is enrolled and batchId obtained from url', () => {
@@ -179,7 +179,7 @@ describe('CourseConsumptionPageComponent', () => {
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     expect(component.toasterService.error).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course/do_212347136096788480178']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
     component.ngOnDestroy();
   });
 });

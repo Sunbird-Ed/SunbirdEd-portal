@@ -20,13 +20,23 @@ describe('PlayerComponent', () => {
   });
 
   it('should create', () => {
-    let telemetryEvent;
+    let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
-      telemetryEvent = data;
+      contentProgressEvent = data;
     });
     component.contentProgressEvent.emit({eid: 'start'});
     fixture.detectChanges();
-    expect(telemetryEvent).toBeTruthy();
+    expect(contentProgressEvent).toBeTruthy();
+    expect(component).toBeTruthy();
+  });
+  fit('should emit "END" event only if content progress is 100', () => {
+    let contentProgressEvent;
+    component.contentProgressEvent.subscribe((data) => {
+      contentProgressEvent = data;
+    });
+    spyOn(component.contentIframe.nativeElement, '');
+    fixture.detectChanges();
+    expect(contentProgressEvent).toBeTruthy();
     expect(component).toBeTruthy();
   });
 });

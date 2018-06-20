@@ -90,11 +90,11 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
           const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, {'batchId': this.batchId});
           if (enrollCourse === undefined) {
             this.toasterService.error(this.resourceService.messages.fmsg.m0001);
-            this.router.navigate([`/learn/course/${this.courseId}`]);
+            this.router.navigate([`/learn`]);
           }
       } else if (enrolledCourses && enrolledCourses.err) {
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
-          this.router.navigate([`/learn/course/${this.courseId}`]);
+          this.router.navigate([`/learn`]);
       }
     });
   }
