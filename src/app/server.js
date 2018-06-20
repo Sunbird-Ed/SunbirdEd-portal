@@ -283,7 +283,7 @@ app.all('/content/data/v1/telemetry',
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
-      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
+      return require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + '/v1/telemetry').path
     }
   }))
 
@@ -445,7 +445,7 @@ const telemetryConfig = {
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
   endpoint: telemtryEventConfig.endpoint,
-  host: contentURL,
+  host: TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
 
