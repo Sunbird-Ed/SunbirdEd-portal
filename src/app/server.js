@@ -32,7 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAUULT_TENANT
+const defaultTenant = envHelper.DEFAULT_TENANT
 const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
@@ -45,6 +45,7 @@ const ejs = require('ejs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
+let defaultTenantIndexStatus = 'false';
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -135,9 +136,11 @@ function getLocals(req) {
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.ekstepEnv = envHelper.EKSTEP_ENV
-  locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  locals.defaultTenant = envHelper.DEFAULT_TENANT
   locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
+  locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
+  locals.enableSignup = envHelper.ENABLE_SIGNUP;
   return locals;
 }
 
@@ -259,6 +262,14 @@ app.post('/learner/content/v1/media/upload',
       return JSON.stringify(data)
     }
   }))
+
+app.post('/learner/user/v1/create', function(req, res, next){
+  if(envHelper.ENABLE_SIGNUP === 'false'){
+    res.sendStatus(403);
+  } else{
+    next();
+  }
+});
 
 app.all('/learner/*',
   proxyUtils.verifyToken(),
@@ -431,6 +442,7 @@ portal.server = app.listen(port, function () {
   if(envHelper.PORTAL_CDN_URL){
     request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs?version=' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
   }
+  defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState();
   console.log('app running on port ' + port)
 })
 
