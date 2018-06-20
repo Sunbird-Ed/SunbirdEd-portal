@@ -53,9 +53,9 @@ export class RedirectComponent implements OnInit {
         }
       }, 5000);
     });
-    // setTimeout(() => {
-    //   window.open(window.redirectUrl, '_self');
-    // }, 500);
+    setTimeout(() => {
+      window.open(window.redirectUrl, '_self');
+    }, 500);
   }
 
   /**
