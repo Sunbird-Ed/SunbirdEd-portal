@@ -26,7 +26,7 @@
         </div>
         <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
 
-          <app-player class="content-player" [playerConfig]="playerConfig" [userId]="userId"></app-player>
+          <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
           <div class="twelve wide column contentMetaSection">
             <div class="ui grid margin-top-10">
@@ -82,3 +82,4 @@
   </div>
   <div class="one wide column"></div>
 </div>
+<app-public-footer *ngIf="showFooter"></app-public-footer>

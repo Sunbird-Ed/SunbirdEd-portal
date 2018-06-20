@@ -22,7 +22,7 @@ const fakeActivatedRoute = {
                     path: 'content',
                   },
                   {
-                    path: 'limited/publish',
+                    path: 'limited-publish',
                   },
                 ],
               }

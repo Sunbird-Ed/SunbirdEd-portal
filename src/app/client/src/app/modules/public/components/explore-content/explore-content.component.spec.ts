@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
 import { Response } from './explore-content.component.spec.data';
 import { OrgManagementService } from './../../services';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
@@ -48,7 +48,7 @@ describe('ExploreContentComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [ConfigService, SearchService, LearnerService, OrgManagementService,
         { provide: ResourceService, useValue: resourceBundle },

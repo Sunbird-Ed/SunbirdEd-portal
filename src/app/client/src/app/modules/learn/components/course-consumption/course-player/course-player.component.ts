@@ -10,10 +10,8 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import {
-  IInteractEventInput, IImpressionEventInput, IEndEventInput,
-  IStartEventInput, IInteractEventObject, IInteractEventEdata
-} from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
+  IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 
 @Component({
@@ -106,10 +104,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
 
   telemetryCourseStart: IStartEventInput;
-  /**
-   * userId as param for the external url content
-   */
-  userId = this.userService.userid;
 
   contentIds = [];
   contentStatus: any;
@@ -241,7 +235,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    console.log('navigationExtras cotent: ', content);
+    const contentDet = this.findContentById(content.id);
+    if (contentDet.model.mimeType === 'text/x-url') {
+      // this.contentUtilsServiceService.getRedirectUrl(contentDet.model, this.userService.userid, this.courseId, this.batchId);
+      const newWindow  = window.open('/learn/redirect', '_blank');
+      newWindow.redirectUrl = contentDet.model.artifactUrl + (this.courseId !== undefined ? '#&courseId=' + this.courseId : '')
+      + '#&contentId=' + contentDet.model.identifier + (this.batchId !== undefined ? '#&batchId=' + this.batchId : '') + '#&uid='
+      + this.userService.userid;
+    }
     if ((this.batchId && !this.flaggedCourse) || this.courseStatus === 'Unlisted') {
       this.router.navigate([], navigationExtras);
     }
@@ -274,7 +275,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const content = this.findContentById(queryParams.contentId);
         console.log('content:', content);
         if (content) {
-          this.contentUtilsServiceService.getRedirectUrl(this.playerConfig.metadata, this.userId, this.courseId, this.batchId);
           // Create the telemetry impression event for content player page
           this.telemetryContentImpression = {
             context: {
@@ -317,9 +317,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
         this.contentIds.push(node.model.identifier);
-      }
-      if (node.model.mimeType === 'text/x-url') {
-
       }
     });
     _.forEach(mimeTypeCount, (value, key) => {
@@ -392,15 +389,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-      object: {
+     object: {
         id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'play'
+        pageid:  this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode:  'play'
       }
     };
     this.telemetryCourseEndEvent = {

@@ -2,6 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import {
@@ -46,15 +47,13 @@ export class PublicContentPlayerComponent implements OnInit {
    */
   selectedLanguage: string;
   queryParams: any;
+
+  public showFooter: Boolean = false;
   contentData: ContentData;
-  /**
-  * userId as param for the external url content
-  */
-  userId = 'anonymous';
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
-    public navigationHelperService: NavigationHelperService, public router: Router
+    public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService
   ) {
   }
   /**
@@ -66,6 +65,7 @@ export class PublicContentPlayerComponent implements OnInit {
       this.contentId = params.contentId;
       this.setTelemetryData();
       this.getContent();
+      this.deviceDetector();
     });
   }
   setTelemetryData() {
@@ -120,5 +120,12 @@ export class PublicContentPlayerComponent implements OnInit {
    */
   close() {
     this.navigationHelperService.navigateToResource('/explore/1');
+  }
+
+  deviceDetector() {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
+      this.showFooter = true;
+    }
   }
 }

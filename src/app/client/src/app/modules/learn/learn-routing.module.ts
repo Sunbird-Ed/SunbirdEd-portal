@@ -1,4 +1,3 @@
-import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
@@ -8,8 +7,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { FlagContentComponent } from '@sunbird/core';
+import { FlagContentComponent , AuthGuard} from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
+import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 
 const telemetryEnv = 'course';
 const objectType = 'course';
@@ -22,7 +22,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'redirect', component: RedirectComponent
+    path: 'redirect', component: RedirectComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Redirect', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'redirect', type: 'view' }
+    }
   },
   {
     path: 'course', component: CourseConsumptionPageComponent,
@@ -45,14 +49,15 @@ const routes: Routes = [
             }
           },
           {
-            path: 'update/batch/:batchId', component: UpdateCourseBatchComponent,
+            path: 'update/batch/:batchId', component: UpdateCourseBatchComponent, canActivate: [AuthGuard],
             data: {
-              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } }
+              telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
+              roles: 'coursebacthesRole'
             }
           },
           {
-            path: 'create/batch', component: CreateBatchComponent,
-            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } }
+            path: 'create/batch', component: CreateBatchComponent, canActivate: [AuthGuard],
+            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } ,  roles: 'coursebacthesRole' }
           }
         ]
       },

@@ -59,8 +59,8 @@
       "@sunbird/badge": [
         "app/modules/badging"
       ],
-      "@sunbird/telemetry": [
-        "app/modules/telemetry"
+      "@sunbird/environment": [
+        "environments/environment"
       ]
     },
     "module": "es2015",

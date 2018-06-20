@@ -59,7 +59,7 @@ describe('ReviewSubmissionsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
-        TelemetryModule, NgInviewModule],
+        TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ToasterService,

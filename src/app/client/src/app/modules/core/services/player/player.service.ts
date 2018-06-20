@@ -8,7 +8,7 @@ import { ConfigService, IUserData, ResourceService, ServerResponse,
 import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-
+import { environment } from '@sunbird/environment';
   /**
    * helper services to fetch content details and preparing content player config
    */
@@ -92,6 +92,7 @@ export class PlayerService {
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
     {} : contentDetails.contentData.body;
+    configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     return configuration;
   }
 

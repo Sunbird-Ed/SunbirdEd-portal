@@ -13,11 +13,10 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CreateOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 import {
   SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse, RouterNavigationService
 } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('CreateOrgTypeComponent', () => {
   let component: CreateOrgTypeComponent;
@@ -41,7 +40,7 @@ describe('CreateOrgTypeComponent', () => {
       declarations: [CreateOrgTypeComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
-        SharedModule.forRoot(), TelemetryModule],
+        SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, OrgTypeService,
         PaginationService, ToasterService, ResourceService, LearnerService, RouterNavigationService,
         { provide: Router, useClass: RouterStub },

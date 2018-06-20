@@ -25,7 +25,7 @@ export class ContentUtilsServiceService {
    /**
    * BehaviorSubject Containing user profile.
    */
-  private _extLinkData$ = new BehaviorSubject(undefined);
+  private _extLinkData$ = new BehaviorSubject<any>(undefined);
   /**
    * Read only observable Containing user profile.
    */
@@ -84,23 +84,25 @@ export class ContentUtilsServiceService {
    * @param courseId course id of the enrolled / playing course
    * @param userId  user id of the loggedin user
    */
-  getRedirectUrl(playerconfigMeta: any, userId: string, courseId?: string, batchId?: string) {
-    if (playerconfigMeta.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+  getRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
+    // if (playerconfigMeta.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
       this.toasterService.warning(this.resourceService.messages.imsg.m0034);
       setTimeout(() => {
-        // // this.newWindow = this.getNativeWindow();
+        // this.newWindow = this.getNativeWindow();
         // this.newWindow.open(this.route.navigate(['/learn/redirect']), '_blank');
-        // const newWindo = window.open('/learn/redirect', '_blank');
+        const newWindow = window.open('/learn/redirect', '_blank');
 
-        // const newWindow = window.open('/learn/redirect', '_blank');
-        window.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '') + '#&contentId='
-          + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
+
+        newWindow.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '')
+         + '#&contentId=' + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
 
        const extUrlLink = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '') + '#&contentId='
           + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
+          console.log('ext', extUrlLink);
           this._extLinkData$.next(extUrlLink);
-      }, 3000);
-    }
+          console.log('next', this._extLinkData$.next(extUrlLink));
+      }, 1000);
+    // }
   }
 
   getNativeWindow() {

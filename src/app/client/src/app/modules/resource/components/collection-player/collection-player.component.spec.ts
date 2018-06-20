@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { ContentService, PlayerService, CoreModule, UserService } from '@sunbird/core';
+import { ContentService, PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { WindowScrollService, ConfigService, SharedModule } from '../../../shared';
-import {
-  ToasterService, ResourceService
-} from '@sunbird/shared';
+import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTreeComponent } from '../../../shared/components';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
+import { inject } from '@angular/core/src/render3';
 import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 

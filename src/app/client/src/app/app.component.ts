@@ -1,13 +1,12 @@
-import { environment } from './../environments/environment';
+import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
 } from '@sunbird/core';
-import { OrgManagementService } from '@sunbird/public';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -65,7 +64,7 @@ export class AppComponent implements OnInit {
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
     telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
-    config: ConfigService, public orgManagementService: OrgManagementService, public activatedRoute: ActivatedRoute) {
+    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -87,16 +86,17 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.conceptPickerService.initialize();
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId, components) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.conceptPickerService.initialize();
         this.initializeLogedInsession();
       });
     } else {
       this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
         fingerPrint2.get((deviceId, components) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.conceptPickerService.initialize();
           this.initializeAnonymousSession();
         });
       });
@@ -123,17 +123,17 @@ export class AppComponent implements OnInit {
     });
   }
   initializeAnonymousSession() {
-    this.orgManagementService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
-    .first().subscribe((data) => {
-      this.orgDetails = data;
-      this.initTelemetryService();
-      this.initTenantService();
-      this.userService.initialize(false);
-      this.initApp = true;
-    }, (err) => {
-      this.initApp = true;
-      console.log('unable to get organization details');
-    });
+    this.orgDetailsService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
+      .first().subscribe((data) => {
+        this.orgDetails = data;
+        this.initTelemetryService();
+        this.initTenantService();
+        this.userService.initialize(false);
+        this.initApp = true;
+      }, (err) => {
+        this.initApp = true;
+        console.log('unable to get organization details');
+      });
   }
   public initTelemetryService() {
     let config: ITelemetryContext;
@@ -167,7 +167,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.sessionId,
         channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
         env: 'home',
-        telemetryValidation: environment.telemetryValidation
+        enableValidation: environment.enableTelemetryValidation
       }
     };
   }
@@ -191,7 +191,7 @@ export class AppComponent implements OnInit {
         sid: this.userService.anonymousSid,
         channel: this.orgDetails.channel,
         env: 'home',
-        telemetryValidation: environment.telemetryValidation
+        enableValidation: environment.enableTelemetryValidation
       }
     };
   }
@@ -201,7 +201,7 @@ export class AppComponent implements OnInit {
     this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
-          document.title = data.tenantData.titleName;
+          document.title = this.userService.rootOrgName || data.tenantData.titleName;
           document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
         }
       }

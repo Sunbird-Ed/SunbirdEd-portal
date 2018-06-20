@@ -4,10 +4,11 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
+import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services';
 import { state } from './../../../classes/state';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-collection-editor',
@@ -70,6 +71,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    * reference of UserService service.
   */
   userService: UserService;
+
+  /**
+   * user tenant details.
+   */
+  public tenantService: TenantService;
+
   /**
    * Show Modal for loader
    */
@@ -91,7 +98,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     route: Router,
     userService: UserService,
     public _zone: NgZone,
-    config: ConfigService) {
+    config: ConfigService,
+    tenantService: TenantService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
@@ -99,6 +107,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.config = config;
+    this.tenantService =  tenantService;
   }
 
   ngOnInit() {
@@ -188,7 +197,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     };
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
-
+    window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    window.config.headerLogo = this.tenantService.tenantData.logo;
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
@@ -328,6 +338,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
     }
+
+    if (status.toLowerCase() === 'flagdraft') {
+      window.config.editorConfig.mode = 'Edit';
+      window.config.editorConfig.contentStatus = 'draft';
+    }
+
     if (status.toLowerCase() === 'review') {
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'draft';
@@ -339,6 +355,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     if (status.toLowerCase() === 'flagged') {
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'flagged';
+    }
+    if (status.toLowerCase() === 'unlisted') {
+      window.config.editorConfig.mode = 'Edit';
     }
   }
 

@@ -124,7 +124,7 @@ export class DialCodeComponent implements OnInit {
           const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
           this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
-          this.toasterService.error(this.resourceService.messages.stmsg.m0006);
+          this.toasterService.error(this.resourceService.messages.stmsg.m0112);
         }
       },
       err => {

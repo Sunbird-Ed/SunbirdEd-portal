@@ -2,11 +2,10 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  ContentCardComponent, AnnouncementInboxCardComponent,
+   AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
-  RedirectComponent, BrowserCompatibilityComponent,
-   QrCodeModalComponent
+  BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
@@ -33,12 +32,12 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     NgInviewModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent,
-    DateFormatPipe, PageSectionComponent, ContentCardComponent, NoResultComponent, DateFilterXtimeAgoPipe,
+    DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
     RedirectComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
-    PageSectionComponent, ContentCardComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
+    PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
     QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent]
 })
