@@ -148,7 +148,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRouteSubscription = this.activatedRoute.params.first()
       .flatMap((params) => {
-        console.log('params', params);
         this.courseId = params.courseId;
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
@@ -261,7 +260,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   setContentNavigators() {
     const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
     this.prevPlaylistItem = this.contentDetails[index - 1];
-    console.log('contentDetails ', this.contentDetails);
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
 
@@ -269,7 +267,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
-        console.log('content:', content);
         if (content) {
           // Create the telemetry impression event for content player page
           this.telemetryContentImpression = {

@@ -4,7 +4,6 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, OnDestr
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import {PlayerConfig} from './../../interfaces';
-import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-player',
@@ -38,9 +37,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.adjustPlayerHeight();
         this.contentIframe.nativeElement.contentWindow.initializePreview(this.playerConfig);
       };
-      // this.checkExtUrl();
     }, 0);
- 
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
       if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' || event.detail.telemetryData.eid === 'END')) {
         this.contentProgressEvent.emit(event);

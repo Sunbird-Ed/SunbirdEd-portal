@@ -5,8 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlpreviewService
-} from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlpreviewService} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -150,7 +149,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   private findContentById(collection: any, id: string) {
     const model = new TreeModel();
     return model.parse(collection.data).first((node) => {
-
       return node.model.identifier === id;
     });
   }
