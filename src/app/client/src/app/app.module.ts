@@ -53,14 +53,14 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
     // LearnModule, // Lazy load
     // WorkspaceModule, // Lazy load
     OrgManagementModule,
-    PublicModule,
     // SearchModule, // Lazy load
     // DiscussionModule,
     WebExtensionModule.forRoot(),
     BadgingModule,
     ...PluginModules,
     // ...WebExtensionsConfig.plugins.map((data) => data.module),
-    TelemetryModule.forRoot()
+    TelemetryModule.forRoot(),
+    PublicModule // don't any  module below this because it is having wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
