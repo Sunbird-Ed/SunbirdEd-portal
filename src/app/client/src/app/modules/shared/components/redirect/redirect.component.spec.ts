@@ -23,7 +23,7 @@ describe('RedirectComponent', () => {
       window.open(window.redirectUrl, '_self');
     }, 500);
     expect(component).toBeTruthy();
-    expect(window.open).toBeDefined(); 
+    expect(window.open).toBeDefined();
   });
 
   it('test goback function', () => {
