@@ -49,6 +49,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0003);
+        this.router.navigate([`/learn`]);
       });
 
     this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
