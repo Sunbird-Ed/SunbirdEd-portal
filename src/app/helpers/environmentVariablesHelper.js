@@ -37,8 +37,7 @@ let envVariables = {
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content_service_content_service:5000',
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
   EXPLORE_BUTTON_VISIBILITY: env.sunbird_explore_button_visibility || 'true',
-  ENABLE_SIGNUP: env.sunbird_enable_signup || 'true',
-  TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/'
+  ENABLE_SIGNUP: env.sunbird_enable_signup || 'true'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
