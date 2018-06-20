@@ -63,7 +63,7 @@ class ObjectStoreRest extends ObjectStore {
                 console.log("Announcement - create object - Request", JSON.stringify(options))
 
                 //Generate api call event
-                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/create')
+                // telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/create')
                 let result = await (this.service.call(options))
 
                 console.log("Announcement - create object - Response", result)
@@ -108,7 +108,7 @@ class ObjectStoreRest extends ObjectStore {
                     options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
                     console.log("Announcement - find object - Request", JSON.stringify(options))
 
-                    telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/search')
+                    // telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/search')
                     let result = await (this.service.call(options))
 
                     console.log("Announcement - find object - Response", result)
@@ -159,7 +159,7 @@ class ObjectStoreRest extends ObjectStore {
                 }
 
                 console.log("Announcement - update object - Request", JSON.stringify(options))
-                telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/update')
+                // telemetry.generateApiCallLogEvent(data.reqID, options, 'data/v1/object/update')
                 let result = await (this.service.call(options))
 
                 console.log("Announcement - find object - Response", result)
@@ -200,7 +200,7 @@ class ObjectStoreRest extends ObjectStore {
                 options.body.request = _.pickBy(options.body.request, _.identity); // Removes all falsey values
 
                 console.log("Announcement - get metrics - Request", JSON.stringify(options))
-                telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/metrics')
+                // telemetry.generateApiCallLogEvent(reqID, options, 'data/v1/object/metrics')
                 
                 let result = await (this.service.call(options))
 
