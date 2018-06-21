@@ -110,7 +110,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/generic-editor/index.html',
+      iframeURL: '/thirdparty/editors/generic-editor/index.html?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
