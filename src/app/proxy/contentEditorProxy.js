@@ -20,11 +20,11 @@ module.exports = function (app) {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/content-plugins/*', proxy(contentProxyUrl, {
-    preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-    proxyReqPathResolver: proxyReqPathResolverMethod
-  }))
+  // app.use('/content-plugins/*', proxy(contentProxyUrl, {
+  //   preserveHostHdr: true,
+  //   proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+  //   proxyReqPathResolver: proxyReqPathResolverMethod
+  // }))
 
   app.use('/plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
@@ -32,17 +32,17 @@ module.exports = function (app) {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/assets/public/*', proxy(contentProxyUrl, {
-    preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-    proxyReqPathResolver: proxyReqPathResolverMethod
-  }))
+  // app.use('/assets/public/*', proxy(contentProxyUrl, {
+  //   preserveHostHdr: true,
+  //   proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+  //   proxyReqPathResolver: proxyReqPathResolverMethod
+  // }))
 
-  app.use('/content/preview/*', proxy(contentProxyUrl, {
-    preserveHostHdr: true,
-    proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
-    proxyReqPathResolver: proxyReqPathResolverMethod
-  }))
+  // app.use('/content/preview/*', proxy(contentProxyUrl, {
+  //   preserveHostHdr: true,
+  //   proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
+  //   proxyReqPathResolver: proxyReqPathResolverMethod
+  // }))
 
   // Log telemetry for action api's
   app.all('/action/*', telemetryHelper.generateTelemetryForProxy)
