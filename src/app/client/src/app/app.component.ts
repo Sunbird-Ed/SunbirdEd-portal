@@ -161,8 +161,8 @@ export class AppComponent implements OnInit {
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.TELEMETRY.APISLUG,
-        host: this.config.urlConFig.URLS.TELEMETRY.host,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
         uid: this.userProfile.userId,
         sid: this.userService.sessionId,
         channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
@@ -185,8 +185,8 @@ export class AppComponent implements OnInit {
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.TELEMETRY.APISLUG,
-        host: this.config.urlConFig.URLS.TELEMETRY.host,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
         uid: 'anonymous',
         sid: this.userService.anonymousSid,
         channel: this.orgDetails.channel,
