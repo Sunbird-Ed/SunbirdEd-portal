@@ -302,9 +302,23 @@ app.all('/content/data/v1/telemetry',
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
 
+// middleware to add CORS headers
+function addCorsHeaders(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+                                              'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+  } else {
+    next()
+  };
+}
+
 // tenant Api's
-app.get('/v1/tenant/info', tenantHelper.getInfo)
-app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
+app.get('/v1/tenant/info', addCorsHeaders, tenantHelper.getInfo)
+app.get('/v1/tenant/info/:tenantId', addCorsHeaders, tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
