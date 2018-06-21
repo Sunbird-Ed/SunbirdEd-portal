@@ -67,6 +67,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   public showModal: boolean;
 
+  private buildNumber: string;
   /**
   * Default method of classs ContentEditorComponent
   *
@@ -96,6 +97,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
 
 
@@ -200,6 +206,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       modalId: 'contentEditor',
       apislug: '/action',
       alertOnUnload: true,
+      build_number: this.buildNumber,
       headerLogo: this.tenantService.tenantData.logo,
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
         this.userService.env + '/', 'https://ekstep-public-' +

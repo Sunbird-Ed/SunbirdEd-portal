@@ -141,6 +141,7 @@ function getLocals(req) {
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
+  locals.buildNumber = envHelper.BUILD_NUMBER
   return locals;
 }
 
