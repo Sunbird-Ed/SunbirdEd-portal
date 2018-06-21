@@ -1,5 +1,5 @@
-<div class="ui link cards margin-right-20 margin-top-15 margin-bottom-0" *ngIf="data">
-  <div class="card margin-top-10" [ngClass]="customClass">
+<div class="ui link cards margin-top-10 margin-bottom-0" *ngIf="data">
+  <div class="ui fluid card margin-top-10" [ngClass]="customClass">
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
       <sui-progress class="top attached active" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
     </div>
