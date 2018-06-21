@@ -105,9 +105,14 @@ export class MainHomeComponent implements OnInit, OnDestroy {
         if (user && !user.err) {
           this.showLoader = false;
           if (user.userProfile.completeness < 100) {
+            const missingField = [];
+            _.forEach( user.userProfile.missingFields, (val, key) => {
+              val = val.match(/([A-Z]?[^A-Z]*)/g).join(' ');
+              missingField.push(_.capitalize(val));
+            });
             this.toDoList.unshift({
               type: profile,
-              missingFields: user.userProfile.missingFields,
+              missingFields: missingField,
               value: user.userProfile.completeness,
               image: user.userProfile.avatar
             });
