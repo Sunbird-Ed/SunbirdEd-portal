@@ -59,6 +59,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public tenantService: TenantService;
 
+  private buildNumber: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -71,6 +72,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
   ngOnInit() {
     /**
@@ -156,6 +162,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
+      build_number: this.buildNumber,
       headerLogo: this.tenantService.tenantData.logo,
       loadingImage: '',
       plugins: [{
