@@ -538,20 +538,18 @@ export const mockRes = {
     },
 
     userError: {
-        'id ': 'api.user.read ',
-        'ver ': 'v1 ',
-        'ts ': '2018-02-28 12:07:33:518+0000 ',
-        'params ': {
-            'resmsgid ': 'UNAUTHORIZED',
-            'msgid ': 'bdf695fd-3916-adb0-2072-1d53deb14aea ',
-            'err ': 'UNAUTHORIZED',
-            'status ': 'failed ',
-            'errmsg ': 'UNAUTHORIZED'
+        'id': 'api.user.update',
+        'ver': 'v1',
+        'ts': '2018-04-18 08:06:51:626+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '093f2a76-fba1-338f-65c7-8a1e234a477a',
+            'err': 'INVALID_DATA',
+            'status': 'INVALID_DATA',
+            'errmsg': null
         },
-        'responseCode ': 'error',
-        'result': {
-            'response': {}
-        }
+        'responseCode': 'CLIENT_ERROR',
+        'result': {}
     },
 
     courseSuccess: {
