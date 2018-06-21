@@ -60,7 +60,6 @@ export class ContentPlayerMetadataComponent implements OnInit {
       } else if (data  && data.err) {
         this.conceptNames = _.map(this.metadata.concepts, 'name');
         this.metadata.concepts =  this.conceptNames.join(', ');
-        console.log(this.metadata.concepts);
       }
     });
   }
