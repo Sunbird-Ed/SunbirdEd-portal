@@ -132,7 +132,7 @@
   }
 
   function getTenantInfo(id) {
-    var URL = "https://diksha.gov.in/v1/tenant/info";
+    var URL = hostURL + "/v1/tenant/info";
     if (id) URL += "/" + id;
     return $.ajax({
       method: "GET",
