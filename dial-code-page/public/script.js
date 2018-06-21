@@ -13,7 +13,7 @@
       initTelemetryService();
       logImpressionEvent();
     });
-    searchDialCode(dialcode);
+    if (dialcode) searchDialCode(dialcode);
   }
 
   function navigateToSearchPage() {
