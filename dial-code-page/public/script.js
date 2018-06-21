@@ -3,17 +3,21 @@
   var hostURL = "https://dev.open-sunbird.org";
 
   function OnLoad() {
-    dialcode = getUrlParameter('dialcode');
-    tenantId = getUrlParameter('tenant');
+    dialcode = getUrlQueryParameter('dialcode') || findDialcodeFromPath();
+    tenantId = getUrlQueryParameter('tenant') || findTenantFromPath();
     $('#loader').hide(); // hide loader on page load
     $('#noResultMessage').hide(); // hide no result found message
-    dialcode ? navigateToResultPage() : navigateToSearchPage()
+    if (dialcode && dialcode !== "") {
+      navigateToResultPage()
+      searchDialCode(dialcode);
+    } else {
+      navigateToSearchPage()
+    }
     getTenantInfo(tenantId);
     getOrgInfo(tenantId).done(function () {
       initTelemetryService();
       logImpressionEvent();
     });
-    if (dialcode) searchDialCode(dialcode);
   }
 
   function navigateToSearchPage() {
@@ -21,7 +25,23 @@
     $('#resultSection').hide();
   }
 
-  function getUrlParameter(param) {
+  function findDialcodeFromPath() {
+    var pathList = window.location.pathname.split('/');
+    var pathIndex = pathList.findIndex(function (elem) {
+      return elem === 'dial'
+    });
+    if (pathIndex !== -1) return pathList[pathIndex + 1] === "" ? undefined : pathList[pathIndex + 1]; // get whatever next to 'dial'
+  }
+
+  function findTenantFromPath() {
+    var pathList = window.location.pathname.split('/');
+    var pathIndex = pathList.findIndex(function (elem) {
+      return elem === 'get'
+    });
+    if (pathIndex !== -1) return pathList[pathIndex - 1]  === "" ? undefined : pathList[pathIndex - 1]; // get whatever before to 'get'
+  }
+
+  function getUrlQueryParameter(param) {
     var url = decodeURIComponent(window.location.search.substring(1)),
       urlVar = url.split('&'), paramName, i;
     for (i = 0; i < urlVar.length; i++) {
