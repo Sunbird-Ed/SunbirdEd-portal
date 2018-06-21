@@ -1,5 +1,7 @@
 'use strict'
 const env = process.env
+const fs = require('fs')
+const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 let envVariables = {
   LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
@@ -38,7 +40,7 @@ let envVariables = {
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
   EXPLORE_BUTTON_VISIBILITY: env.sunbird_explore_button_visibility || 'true',
   ENABLE_SIGNUP: env.sunbird_enable_signup || 'true',
-  BUILD_NUMBER: env.build_number || '1.0',
+  BUILD_NUMBER: env.build_number || packageObj.version+'.'+packageObj.buildNumber,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/'
 }
 
