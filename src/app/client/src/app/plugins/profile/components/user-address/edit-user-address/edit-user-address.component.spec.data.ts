@@ -50,5 +50,45 @@ export const response = {
                 'zipcode': null
             }]
         }
+    },
+    address: {
+        userProfile: {
+            'address': [{
+                'addType': 'permanent',
+                'addressLine1': 'aksdkas',
+                'addressLine2': null,
+                'city': 'asdasds',
+                'country': null,
+                'createdBy': '230cb747-6ce9-4e1c-91a8-1067ae291cb9',
+                'createdDate': '2018-04-05 13:33:36:909+0000',
+                'id': '01247588682584064030',
+                'isDeleted': null,
+                'state': null,
+                'updatedBy': null,
+                'updatedDate': null,
+                'userId': '230cb747-6ce9-4e1c-91a8-1067ae291cb9',
+                'zipcode': null
+            }]
+        }
+    },
+    invalidData: {
+        userProfile: {
+            'address': [{
+                'addType': 'abc',
+                'addressLine1': 'aksdkas',
+                'addressLine2': null,
+                'city': 'asdasds',
+                'country': null,
+                'createdBy': '230cb747-6ce9-4e1c-91a8-1067ae291cb9',
+                'createdDate': '2018-04-05 13:33:36:909+0000',
+                'id': '01247588682584064030',
+                'isDeleted': null,
+                'state': null,
+                'updatedBy': null,
+                'updatedDate': null,
+                'userId': '230cb747-6ce9-4e1c-91a8-1067ae291cb9',
+                'zipcode': null
+            }]
+        }
     }
 };
