@@ -1,4 +1,3 @@
-export * from './action-card/action-card.component';
 export * from './home-calendar-card/home-calendar-card.component';
 export * from './home-feed-card/home-feed-card.component';
 export * from './main-home/main-home.component';
