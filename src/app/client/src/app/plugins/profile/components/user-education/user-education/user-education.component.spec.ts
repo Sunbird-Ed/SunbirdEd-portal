@@ -5,10 +5,10 @@ import { ProfileService } from './../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, CoreModule } from '@sunbird/core';
-import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule } from '@sunbird/shared';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule, ToasterService } from '@sunbird/shared';
+import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, QueryList } from '@angular/core';
 import { EditUserEducationComponent } from '../../user-education/edit-user-education/edit-user-education.component';
 import { UserEducationComponent } from './user-education.component';
 import {mockRes} from './user-education.component.spec.data';
@@ -68,26 +68,29 @@ describe('UserEducationComponent', () => {
     parentFixture.detectChanges();
     expect(router.navigate).not.toHaveBeenCalledWith(['/profile']);
   });
-  xit('should call editExperience method', () => {
+  it('should call editEducation method', () => {
+    const profileService = TestBed.get(ProfileService);
+    const router = TestBed.get(Router);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    const profileService = TestBed.get(ProfileService);
+    parentComp.editChild = new QueryList<EditUserEducationComponent>();
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.editEducation();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
-  xit('should call addExperience method', () => {
+  xit('should call addEducation method', () => {
     const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
     const router = TestBed.get(Router);
     resourceService.messages = mockRes.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
-    parentComp.userProfile.jobProfile = [];
-    expect(parentFixture.componentInstance.addChild).toBeUndefined();
-    parentFixture.detectChanges();
-    expect(parentFixture.componentInstance.addChild).toBeDefined();
-    const addChild = parentFixture.componentInstance.addChild;
+    // expect(parentFixture.componentInstance.addChild).toBeUndefined();
     parentComp.addChild = component;
+    parentComp.addChild.educationForm = new FormGroup({});
+    parentComp.addChild.educationForm = component.educationForm;
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(toasterService, 'error').and.callThrough();
     parentComp.addEducation();
-    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.fmsg.m0076);
   });
 });
