@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
@@ -20,7 +21,7 @@ import * as _ from 'lodash';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.css']
 })
-export class CourseConsumptionComponent {
+export class CourseConsumptionComponent implements OnDestroy {
   timePeriodInteractData: IInteractEventEdata;
   interactObject: any;
   /**
@@ -126,6 +127,7 @@ export class CourseConsumptionComponent {
 	 * telemetryImpression object for course consumption dashboard page
 	*/
   telemetryImpression: IImpressionEventInput;
+  subscription: Subscription;
 
   /**
    * Default method of CourseConsumptionComponent class
@@ -147,7 +149,7 @@ export class CourseConsumptionComponent {
     this.route = route;
     // init the default impression event
     this.initTelemetryImpressionEvent();
-    this.activatedRoute.params.subscribe(params => {
+    const subscribe = this.activatedRoute.params.subscribe(params => {
 
       if (params.id && params.timePeriod) {
 
@@ -165,6 +167,9 @@ export class CourseConsumptionComponent {
       }
     }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
     this.getMyContent();
   }
 
@@ -186,7 +191,7 @@ export class CourseConsumptionComponent {
         timePeriod: this.timePeriod
       }
     };
-    this.consumptionService.getDashboardData(params)
+    const subscribe = this.consumptionService.getDashboardData(params)
       .subscribe((data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -196,6 +201,10 @@ export class CourseConsumptionComponent {
         this.showLoader = false;
       }
       );
+
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
   }
 
   /**
@@ -237,7 +246,7 @@ export class CourseConsumptionComponent {
     } else {
       // Make search api call
       const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-      this.searchService.searchContentByUserId(searchParams).subscribe(
+      const subscribe = this.searchService.searchContentByUserId(searchParams).subscribe(
         (data: ServerResponse) => {
           if (data.result.count && data.result.content) {
             this.myCoursesList = data.result.content;
@@ -258,6 +267,10 @@ export class CourseConsumptionComponent {
           this.showLoader = false;
         }
       );
+
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
     }
   }
 
@@ -316,5 +329,11 @@ export class CourseConsumptionComponent {
         uri: '/myActivity'
       }
     };
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
