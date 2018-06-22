@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
@@ -15,7 +16,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInte
   templateUrl: './outbox.component.html',
   styleUrls: ['./outbox.component.css']
 })
-export class OutboxComponent implements OnInit {
+export class OutboxComponent implements OnInit, OnDestroy {
   /**
 	 * inviewLogs
 	*/
@@ -98,6 +99,7 @@ export class OutboxComponent implements OnInit {
    * telemetryInteract event
    */
   telemetryInteract: IInteractEventInput;
+  subscription: Subscription;
   resendId;
   public createAnnouncementInteractEdata: IInteractEventEdata;
   public deleteAnnouncementInteractEdata: IInteractEventEdata;
@@ -152,7 +154,7 @@ export class OutboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getOutboxData(option).subscribe(
+    const subscribe = this.announcementService.getOutboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
         this.showLoader = false;
@@ -164,6 +166,9 @@ export class OutboxComponent implements OnInit {
         this.showWarningDiv = true;
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
   }
 
   /**
@@ -208,18 +213,25 @@ export class OutboxComponent implements OnInit {
 	 *
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    const subscribe = this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateOutboxData(this.config.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
 
-    this.announcementService.announcementDeleteEvent.subscribe(data => {
+    const deleteEventSubscription = this.announcementService.announcementDeleteEvent.subscribe(data => {
       _.each(this.outboxData.announcements, (key, index) => {
         if (data && data === key.id) {
           this.outboxData.announcements[index].status = 'cancelled';
         }
       });
     });
+    if (this.subscription) {
+      this.subscription.add(deleteEventSubscription);
+      }
+
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -259,5 +271,11 @@ export class OutboxComponent implements OnInit {
       type: 'announcement',
       ver: '1.0'
     };
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      }
   }
 }

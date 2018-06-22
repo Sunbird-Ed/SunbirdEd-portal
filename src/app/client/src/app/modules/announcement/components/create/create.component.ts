@@ -41,6 +41,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   announcementForm: FormGroup;
   userDataSubscription: Subscription;
+  subscription: Subscription;
+  testSubscription: Subscription;
   /**
    * Contains reference of FormBuilder
    */
@@ -194,7 +196,7 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       this.showResendLoader = false;
     } else {
-      this.createService.getAnnouncementTypes().subscribe(
+      const subscribe = this.createService.getAnnouncementTypes().subscribe(
         (data: ServerResponse) => {
           if (data.result.announcementTypes) {
             _.each(data.result.announcementTypes, (key) => {
@@ -210,6 +212,9 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.redirectToOutbox();
         }
       );
+      if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
     }
   }
 
@@ -297,7 +302,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   saveAnnouncement() {
     this.announcementDetails.target = this.recipientsList;
-    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
+    const subscribe = this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
       subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
@@ -307,6 +312,9 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.formErrorFlag = false;
         }
       );
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+        }
   }
 
   /**
@@ -340,7 +348,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges
+    const subscribe = this.announcementForm.valueChanges
       .map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
@@ -351,6 +359,9 @@ export class CreateComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.enableSelectRecipientsBtn();
       });
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+        }
   }
 
   /**
@@ -416,7 +427,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   getAnnouncementDetails() {
     this.showResendLoader = true;
-    this.createService.resendAnnouncement(this.identifier).subscribe(
+    const subscribe = this.createService.resendAnnouncement(this.identifier).subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
         this.enableSelectRecipientsBtn();
@@ -431,6 +442,9 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.redirectToOutbox();
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
   }
 
   /**
@@ -490,14 +504,26 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
-    this.fileUpload.uploadEvent.subscribe(uploadData => {
+    // const subscribe = 
+    this.testSubscription = this.fileUpload.uploadEvent.subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
+    // if (this.subscription) {
+    //   this.subscription.add(subscribe);
+    //   }
+      console.log(this.subscription);
     this.setInteractEventData();
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.testSubscription) {
+      this.testSubscription.unsubscribe();
     }
   }
   setInteractEventData() {

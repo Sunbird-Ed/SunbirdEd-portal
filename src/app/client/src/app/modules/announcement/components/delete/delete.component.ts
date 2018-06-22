@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -13,7 +14,7 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
   templateUrl: './delete.component.html',
   styleUrls: ['./delete.component.css']
 })
-export class DeleteComponent implements OnInit {
+export class DeleteComponent implements OnInit, OnDestroy {
   /**
 	 * Contains unique announcement id
 	 */
@@ -48,6 +49,7 @@ export class DeleteComponent implements OnInit {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
+  subscription: Subscription;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -79,7 +81,7 @@ export class DeleteComponent implements OnInit {
 	 */
   deleteAnnouncement(): void {
     const option = { announcementId: this.announcementId };
-    this.announcementService.deleteAnnouncement(option).subscribe(
+    const subscribe = this.announcementService.deleteAnnouncement(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
@@ -89,6 +91,9 @@ export class DeleteComponent implements OnInit {
         this.redirect();
       }
     );
+    if (this.subscription) {
+    this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -108,8 +113,17 @@ export class DeleteComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
     });
-    this.activatedRoute.parent.params.subscribe((params) => {
+    const subscribe = this.activatedRoute.parent.params.subscribe((params) => {
       this.pageNumber = Number(params.pageNumber);
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      }
   }
 }

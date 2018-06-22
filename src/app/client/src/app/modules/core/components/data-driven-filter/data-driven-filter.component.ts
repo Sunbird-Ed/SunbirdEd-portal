@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './data-driven-filter.component.html',
   styleUrls: ['./data-driven-filter.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit {
+export class DataDrivenFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
@@ -68,6 +69,8 @@ export class DataDrivenFilterComponent implements OnInit {
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
+  subscription: Subscription;
+  frameworkDataSubscription: Subscription;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -108,7 +111,7 @@ export class DataDrivenFilterComponent implements OnInit {
   }
 
   getQueryParams() {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    const subscribe = this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
       _.forIn(params, (value, key) => {
         if (typeof value === 'string' && key !== 'key' && key !== 'language') {
@@ -126,6 +129,10 @@ export class DataDrivenFilterComponent implements OnInit {
         }
       });
     });
+
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
   }
   /**
 * fetchFilterMetaData is gives form config data
@@ -136,7 +143,7 @@ export class DataDrivenFilterComponent implements OnInit {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
     } else {
-      this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
           this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
           this.framework = frameworkData.framework;
@@ -248,5 +255,14 @@ export class DataDrivenFilterComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      }
+      if (this.frameworkDataSubscription) {
+        this.frameworkDataSubscription.unsubscribe();
+        }
   }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -15,7 +16,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './details-popup.component.html',
   styleUrls: ['./details-popup.component.css']
 })
-export class DetailsPopupComponent implements OnInit {
+export class DetailsPopupComponent implements OnInit, OnDestroy {
    /**
 	 * telemetryImpression
 	*/
@@ -38,6 +39,8 @@ export class DetailsPopupComponent implements OnInit {
    * any data
 	 */
   showLoader = true;
+
+  subscription: Subscription;
 
   /**
    * To make get announcement by id
@@ -99,7 +102,7 @@ export class DetailsPopupComponent implements OnInit {
     if (this.announcementService.announcementDetailsObject === undefined ||
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
-      this.announcementService.getAnnouncementById(option).subscribe(
+      const subscribe = this.announcementService.getAnnouncementById(option).subscribe(
         (apiResponse: ServerResponse) => {
           this.announcementDetails = apiResponse.result;
           if (apiResponse.result.announcement) {
@@ -113,6 +116,9 @@ export class DetailsPopupComponent implements OnInit {
           this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
         }
       );
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+        }
     } else {
       this.showLoader = false;
       this.announcementDetails = this.announcementService.announcementDetailsObject;
@@ -124,9 +130,12 @@ export class DetailsPopupComponent implements OnInit {
    * of a particular announcement
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    const subscribe = this.activatedRoute.params.subscribe(params => {
       this.announcementId = params.announcementId;
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
     this.getDetails(this.announcementId);
     this.telemetryImpression = {
       context: {
@@ -143,6 +152,12 @@ export class DetailsPopupComponent implements OnInit {
         uri: '/announcement/outbox/' + this.announcementId,
       }
     };
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      }
   }
 }
 

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
@@ -14,7 +15,7 @@ import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEvent
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, OnDestroy {
 
   /**
 	 * Contains result object returned from get inbox API
@@ -91,6 +92,7 @@ export class InboxComponent implements OnInit {
  * telemetryInteract event
  */
   telemetryInteract: IInteractEventInput;
+  subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -140,7 +142,7 @@ export class InboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getInboxData(option).subscribe(
+    const subscribe = this.announcementService.getInboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.inboxData = apiResponse.result;
         this.showLoader = false;
@@ -160,6 +162,9 @@ export class InboxComponent implements OnInit {
         this.showLoader = false;
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
   }
 
   /**
@@ -172,7 +177,7 @@ export class InboxComponent implements OnInit {
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+      const subscribe = this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
         (response: ServerResponse) => {
           _.each(this.inboxData.announcements, (key, index) => {
             if (announcementId === key.id) {
@@ -181,6 +186,9 @@ export class InboxComponent implements OnInit {
           });
         }
       );
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+        }
     }
   }
 
@@ -225,10 +233,13 @@ export class InboxComponent implements OnInit {
    * This method calls the populateInboxData to show inbox list.
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    const subscribe = this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+      }
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -240,5 +251,11 @@ export class InboxComponent implements OnInit {
         uri: '/announcement/inbox/' + this.pageNumber
       }
     };
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      }
   }
 }

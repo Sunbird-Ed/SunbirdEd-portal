@@ -15,7 +15,7 @@ import * as _ from 'lodash';
     templateUrl: './breadcrumbs.component.html',
     styleUrls: ['./breadcrumbs.component.css']
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
     /**
      * This variable stores the data passed from routing module
@@ -39,6 +39,7 @@ export class BreadcrumbsComponent implements OnInit {
      * Reference of BreadcrumbService.
      */
     breadcrumbsService: BreadcrumbsService;
+    subscription: Subscription;
 
 
     /**
@@ -63,7 +64,7 @@ export class BreadcrumbsComponent implements OnInit {
          * The breadcrumb data is gathered from router and by looping through each
          * child component.
          */
-        this.router.events.filter(event => event instanceof NavigationEnd)
+        const routeSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
             .subscribe(event => {
                 this.breadCrumbsData = [];
                 let currentRoute = this.activatedRoute.root;
@@ -80,11 +81,15 @@ export class BreadcrumbsComponent implements OnInit {
                 }
 
             });
+
+            if (this.subscription) {
+                this.subscription.add(routeSubscription);
+                }
         /**
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
+        const dynamicSubscription = this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
             if (data.length > 0) {
             data.forEach(breadcrumb => {
             this.breadCrumbsData.push(breadcrumb);
@@ -94,6 +99,9 @@ export class BreadcrumbsComponent implements OnInit {
         }
         );
 
+        if (this.subscription) {
+            this.subscription.add(dynamicSubscription);
+            }
     }
 
     /**
@@ -102,6 +110,12 @@ export class BreadcrumbsComponent implements OnInit {
      */
     openLink(url) {
         this.router.navigateByUrl(url);
+    }
+
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+            }
     }
 }
 

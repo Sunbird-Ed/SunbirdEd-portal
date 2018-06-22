@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash';
@@ -15,7 +16,7 @@ import * as _ from 'lodash';
            }
        `]
 })
-export class SortByComponent implements OnInit {
+export class SortByComponent implements OnInit, OnDestroy {
 
   @Input() sortingOptions: Array<any>;
   @Input() url: string;
@@ -33,6 +34,7 @@ export class SortByComponent implements OnInit {
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
+  subscription: Subscription;
   /**
     * To show / hide sortIcon
    */
@@ -45,7 +47,7 @@ export class SortByComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams
+    const subscribe = this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
         const checkSortByType = this.queryParams['sort_by'] instanceof Array;
@@ -59,6 +61,10 @@ export class SortByComponent implements OnInit {
           this.sortByOption = '';
         }
       });
+
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
   }
 
   applySorting() {
@@ -68,5 +74,10 @@ export class SortByComponent implements OnInit {
     this.route.navigate([this.url], { queryParams: this.queryParams });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
 }

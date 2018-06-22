@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -188,10 +189,16 @@ describe('CreateComponent', () => {
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
 
-  it('should unsubscribe to userData observable', () => {
+  fit('should unsubscribe to userData observable', () => {
     component.ngOnInit();
+    component.setAnnouncementTypes();
+    // component.saveAnnouncement();
+    // component.onFormValueChanges();
+    // component.getAnnouncementDetails();
     spyOn(component.userDataSubscription, 'unsubscribe');
+    spyOn(component.testSubscription, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.testSubscription.unsubscribe).toHaveBeenCalled();
   });
 });

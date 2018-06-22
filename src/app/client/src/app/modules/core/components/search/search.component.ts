@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { SearchService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -11,7 +12,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   /**
    * Sui dropdown initiator
    */
@@ -55,6 +56,7 @@ export class SearchComponent implements OnInit {
   * service for redirection to parent component
   */
   private activatedRoute: ActivatedRoute;
+  subscription: Subscription;
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -95,11 +97,14 @@ export class SearchComponent implements OnInit {
   setFilters() {
     this.search = this.config.dropDownConfig.FILTER.SEARCH.search;
     this.searchUrl = this.config.dropDownConfig.FILTER.SEARCH.searchUrl;
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    const subscribe = this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.route.events
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
+    const routeSubscribe = this.route.events
       .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
@@ -115,6 +120,9 @@ export class SearchComponent implements OnInit {
           this.showInput = false;
         }
       });
+      if (this.subscription) {
+        this.subscription.add(routeSubscribe);
+      }
   }
   /**
    * gets the current url,
@@ -122,5 +130,11 @@ export class SearchComponent implements OnInit {
    */
   ngOnInit() {
     this.setFilters();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

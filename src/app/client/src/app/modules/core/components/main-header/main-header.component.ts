@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs/Subscription';
 import { UserService, PermissionService, TenantService } from './../../services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
@@ -12,7 +13,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.css']
 })
-export class MainHeaderComponent implements OnInit {
+export class MainHeaderComponent implements OnInit, OnDestroy {
   /**
    * reference of tenant service.
    */
@@ -77,6 +78,9 @@ export class MainHeaderComponent implements OnInit {
   public permissionService: PermissionService;
   public signUpInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  subscription: Subscription;
+  tenantDataSubscription: Subscription;
+  userDataSubscription: Subscription;
   /*
   * constructor
   */
@@ -97,7 +101,7 @@ export class MainHeaderComponent implements OnInit {
       this.exploreButtonVisibility = 'false';
     }
     this.getUrl();
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    const subscribe = this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
       if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
@@ -105,12 +109,13 @@ export class MainHeaderComponent implements OnInit {
         this.resourceService.getResource(this.queryParam['language']);
       }
     });
+    this.subscription.add(subscribe);
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
-    this.tenantService.tenantData$.subscribe(
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
           this.logo = data.tenantData.logo;
@@ -118,7 +123,7 @@ export class MainHeaderComponent implements OnInit {
         }
       }
     );
-    this.userService.userData$.subscribe(
+    this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
@@ -153,7 +158,7 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+    const subscribe = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
       const urlSegment = urlAfterRedirects.url.split('/');
       if (_.includes(urlSegment, 'explore')) {
         this.showExploreHeader = true;
@@ -161,6 +166,9 @@ export class MainHeaderComponent implements OnInit {
         this.showExploreHeader = false;
       }
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   closeQrModalEvent(event) {
@@ -177,5 +185,11 @@ export class MainHeaderComponent implements OnInit {
       type: 'signup',
       ver: '1.0'
     };
+  }
+
+  ngOnDestroy() {
+    this.tenantDataSubscription.unsubscribe();
+    this.userDataSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

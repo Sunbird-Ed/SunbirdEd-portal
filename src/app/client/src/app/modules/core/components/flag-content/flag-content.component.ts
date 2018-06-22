@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -77,6 +78,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
   * Contains loader message to display
   */
   loaderMessage: ILoaderMessage;
+  subscription: Subscription;
   /**
 	 * Consructor to create injected service(s) object
 	 *
@@ -112,9 +114,12 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.contentData && this.playerService.contentData.identifier === this.identifier) {
       this.contentData = this.playerService.contentData;
     } else {
-      this.playerService.getContent(this.identifier).subscribe(response => {
+      const subscribe = this.playerService.getContent(this.identifier).subscribe(response => {
         this.contentData = response.result.content;
       });
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
     }
   }
   /**
@@ -129,7 +134,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.identifier}`,
       data: { 'request': requestData }
     };
-    this.contentService.post(option).subscribe(response => {
+    const subscribe = this.contentService.post(option).subscribe(response => {
       this.showLoader = false;
       this.modal.deny();
       this.redirect();
@@ -137,6 +142,9 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0050);
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
   /**
    * This method use to create request Data for api call
@@ -169,9 +177,12 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.collectionData && this.playerService.collectionData.identifier === this.identifier) {
       this.contentData = this.playerService.collectionData;
     } else {
-      this.playerService.getCollectionHierarchy(this.identifier).subscribe(response => {
+      const subscribe = this.playerService.getCollectionHierarchy(this.identifier).subscribe(response => {
         this.contentData = response.result.content;
       });
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
     }
   }
   /**
@@ -179,7 +190,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
    * activated route
 	 */
   ngOnInit() {
-    this.activatedRoute.parent.params.subscribe(params => {
+    const subscribe = this.activatedRoute.parent.params.subscribe(params => {
       if (params.contentId) {
         this.identifier = params.contentId;
         this.getContentData();
@@ -188,10 +199,18 @@ export class FlagContentComponent implements OnInit, OnDestroy {
         this.getCollectionHierarchy();
       }
     });
+
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
+    }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }
