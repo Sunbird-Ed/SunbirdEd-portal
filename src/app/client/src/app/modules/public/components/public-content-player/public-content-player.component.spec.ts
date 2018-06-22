@@ -83,4 +83,11 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
+  it('should call tryAgain method', () => {
+    spyOn(component, 'tryAgain').and.callThrough();
+    spyOn(component, 'getContent').and.callThrough();
+    component.tryAgain();
+    expect(component.showError).toBeFalsy();
+    expect(component.getContent).toHaveBeenCalled();
+  });
 });

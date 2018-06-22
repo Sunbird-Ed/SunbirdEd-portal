@@ -24,6 +24,90 @@ export const Response = {
             }
         }
       },
+      collectionData: {
+        'id': 'api.content.read',
+        'ver': '1.0',
+        'ts': '2018-06-13T13:17:40.031Z',
+        'params': {
+          'resmsgid': '25dcacf0-6f0c-11e8-8ab5-d3aR0c85aab3a',
+          'msgid': '25d6b980-6f0c-11e8-a2ba-e1b2012d0735',
+          'status': 'successful',
+          'err': null,
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'content': {
+            'code': 'Test_QA',
+            'keywords': [
+              'QA_Content'
+            ],
+            'methods': [],
+            'description': 'Test_QA',
+            'language': [
+              'English'
+            ],
+            'mimeType': 'application/vnd.ekstep.ecml-archive',
+            'createdOn': '2017-03-10T09:22:12.728+0000',
+            'gradeLevel': [
+              'Grade 1'
+            ],
+            'collections': [
+              {
+                'identifier': 'do_112199033074647040125',
+                'name': 'TextBook3-CollectionParentLive',
+                'objectType': 'Content',
+                'relation': 'hasSequenceMember',
+                'description': 'Books for learning about colours, animals, fruits, vegetables, shapes',
+                'index': null,
+                'status': null,
+                'depth': null,
+                'mimeType': null,
+                'visibility': null,
+                'compatibilityLevel': null
+              },
+              {
+                'identifier': 'do_112199017862299648121',
+                'name': 'TextBook3-CollectionParentLive',
+                'objectType': 'Content',
+                'relation': 'hasSequenceMember',
+                'description': 'Books for learning about colours, animals, fruits, vegetables, shapes',
+                'index': null,
+                'status': null,
+                'depth': null,
+                'mimeType': null,
+                'visibility': null,
+                'compatibilityLevel': null
+              }
+            ],
+            'children': [],
+            'usesContent': [],
+            'artifactUrl': 'https://ekstep-public-dev./artifact/uploadcontent_1489137771342.zip',
+            'lastUpdatedOn': '2017-05-24T17:32:39.568+0000',
+            'contentType': 'Story',
+            'item_sets': [],
+            'identifier': 'do_112199016306507776117',
+            'audience': [
+              'Learner'
+            ],
+            'visibility': 'Default',
+            'libraries': [],
+            'mediaType': 'content',
+            'osId': 'org.ekstep.quiz.app',
+            'ageGroup': [
+              '5-6'
+            ],
+            'languageCode': 'en',
+            'versionKey': '1496989757647',
+            'tags': [
+              'QA_Content'
+            ],
+            'concepts': [],
+            'name': 'Content2EcmlStory',
+            'status': 'Live'
+          }
+        }
+      },
     successFlag: {
         'id': 'api.content.flag',
         'ver': '1.0',
