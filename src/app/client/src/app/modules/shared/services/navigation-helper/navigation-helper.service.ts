@@ -16,7 +16,7 @@ export class NavigationHelperService {
   /**
    * Stores workspaceCloseUrl
    */
-  private _workspaceCloseUrl: UrlHistory;
+  public _workspaceCloseUrl: UrlHistory;
   /**
    * Stores routing history
    */
@@ -58,6 +58,9 @@ export class NavigationHelperService {
   }
   storeWorkSpaceCloseUrl() {
     this._workspaceCloseUrl = this.history[this._history.length - 1];
+  }
+  resetWorkSpaceUrl() {
+    this._workspaceCloseUrl = undefined;
   }
   public navigateToResource(defaultUrl: string = '/home') {
     if (this._resourceCloseUrl && this._resourceCloseUrl.url) {

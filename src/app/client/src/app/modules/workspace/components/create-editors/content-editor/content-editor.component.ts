@@ -8,6 +8,8 @@ import { UserService, PermissionService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
+import { PlatformLocation } from '@angular/common';
+
 
 @Component({
   selector: 'app-content-editor',
@@ -89,7 +91,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     userService: UserService, public _zone: NgZone,
     private renderer: Renderer2,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    location: PlatformLocation
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -117,9 +120,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.type = params['type'];
       this.framework = params['framework'];
     });
-
+    this.navigationHelperService.storeWorkSpaceCloseUrl();
     this.setRenderer();
-
   }
 
   setRenderer() {
