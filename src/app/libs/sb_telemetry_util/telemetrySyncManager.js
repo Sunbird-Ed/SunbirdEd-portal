@@ -101,7 +101,7 @@ telemetrySyncManager.prototype.sync = function (events, callback) {
       } else if (_.get(body, 'params.err') === 'VALIDATION_ERROR') {
         callback(null, body)
       } else {
-        console.log('Telemetry sync failed, due to ', err, res.statusCode)
+        console.log('Telemetry sync failed, due to ', err)
         callback(new Error('sync failed'), null, options.body.events)
       }
     })

@@ -52,5 +52,32 @@ describe('PageSectionComponent', () => {
     expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
    expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
   });
+  it('should call inview method for visits data', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call inview method for visits data for courseId', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event1);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call inviewChange method for visits data', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inviewChange').and.callThrough();
+    component.inviewChange(Response.slideContentList, Response.slideEventData);
+    expect(component.inviewChange).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call playContent', () => {
+    spyOn(component, 'playContent').and.callThrough();
+   component.playContent(Response.playContentData) ;
+   component.playEvent.emit(Response.playContentData);
+   expect(component.playContent).toHaveBeenCalled();
+  });
 
 });

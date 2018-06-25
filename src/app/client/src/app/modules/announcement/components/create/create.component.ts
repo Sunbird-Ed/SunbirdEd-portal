@@ -28,6 +28,8 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
 
+  @ViewChild('successModal') successModal;
+  @ViewChild('cancelModal') cancelModal;
   /**
    * Reference of Geo explorer component
    *
@@ -510,6 +512,15 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
   }
   ngOnDestroy() {
+    if (this.createModal) {
+      this.createModal.deny();
+    }
+    if (this.successModal) {
+      this.successModal.deny();
+    }
+    if (this.cancelModal) {
+      this.cancelModal.deny();
+    }
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }

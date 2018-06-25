@@ -119,6 +119,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
         }
       });
       this.formInputData = _.pickBy(this.queryParams);
+      this.refresh = false;
+      this.cdr.detectChanges();
+      this.refresh = true;
       this.conceptPickerService.conceptData$.subscribe(conceptData => {
         if (conceptData && !conceptData.err) {
           this.selectedConcepts = conceptData.data;

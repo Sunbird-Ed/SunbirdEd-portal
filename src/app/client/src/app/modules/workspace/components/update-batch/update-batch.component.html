@@ -20,6 +20,9 @@
             <input type="text" name="name" formControlName="name" [attr.disabled]="batchData.status === 2 ? true : null">
           </div>
         </div>
+        <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="batchAddUserForm.controls.name.invalid && batchAddUserForm.controls['name'].errors.required && !batchAddUserForm.controls['name'].pristine">
+            {{resourceService?.messages?.stmsg?.m0114}}
+        </div>
         <div class="one field">
           <div class="field">
             <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
@@ -44,11 +47,14 @@
         <div class="two fields">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+            <div class="ui read-only calendar rangestartAdd margin-bottom-10" id="rangestartAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
                 <input [attr.disabled]="batchData.status !== 0 ? true : null" suiDatepicker formControlName="startDate" [pickerMinDate]='pickerMinDate' [pickerMode]="'date'">
               </div>
+            </div>
+             <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="batchAddUserForm.controls.startDate.invalid && batchAddUserForm.controls['startDate'].errors.required && !batchAddUserForm.controls['startDate'].pristine">
+              {{resourceService?.messages?.stmsg?.m0113}}
             </div>
           </div>
           <div class="field">
@@ -56,7 +62,7 @@
             <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input [attr.disabled]="batchData.status === 2 ? true : null"  [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchData.status === 2 ? true : null"  [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
               </div>
             </div>
           </div>
@@ -107,6 +113,6 @@
   </div>
   <div class="actions">
     <div class="ui secondary button" (click)="clearForm()" [ngClass]="{ 'disabled': batchData.status === 2 }">Clear</div>
-    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)"  [ngClass]="{ 'disabled': batchData.status === 2 }">Update</div>
+    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)"  [ngClass]="{ 'disabled': batchData.status === 2 || disableSubmitBtn}">Update</div>
   </div>
 </sui-modal>

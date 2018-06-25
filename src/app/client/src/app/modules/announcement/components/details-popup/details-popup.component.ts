@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -22,6 +22,7 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
 
+  @ViewChild('modal') modal;
    /**
 	 * telemetryImpression
 	*/
@@ -159,6 +160,7 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    this.modal.deny();
   }
 }
 

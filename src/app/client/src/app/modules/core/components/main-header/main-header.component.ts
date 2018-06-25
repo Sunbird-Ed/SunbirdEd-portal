@@ -148,6 +148,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
   onEnter(key) {
     this.key = key;
+    this.queryParam = {};
+    this.queryParam['language'] = this.queryParamLanguage;
     this.queryParam['key'] = this.key;
     if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;
