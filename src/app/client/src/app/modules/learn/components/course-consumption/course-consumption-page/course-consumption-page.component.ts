@@ -1,6 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
-import { CourseConsumptionService } from './../../../services';
+import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -18,20 +18,38 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   showLoader = true;
   showError = false;
   courseHierarchy: any;
-  enrolledCourse: boolean;
   eventSubscription: any;
+  enrolledBatchInfo: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
-    private coursesService: CoursesService, public toasterService: ToasterService,
-    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) { }
+    private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
+    private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) {
+    }
 
   ngOnInit() {
     this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.firstChild.params,
       (params, firstChildParams) => {
         return { ...params, ...firstChildParams };
-      }).subscribe((params) => {
+      }).flatMap( (params) => {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
-        this.getCourseHierarchy(params.courseId);
+        if (this.batchId) {
+          return Observable.combineLatest(this.courseConsumptionService.getCourseHierarchy(params.courseId),
+          this.getEnrolledCourseBatchDetails(), (courseHierarchy, enrolledBatchDetails) => {
+           return { courseHierarchy, enrolledBatchDetails };
+         });
+        } else {
+          return this.courseConsumptionService.getCourseHierarchy(params.courseId).map((courseHierarchy) => {
+            return { courseHierarchy };
+          });
+        }
+      }).subscribe((data) => {
+        this.processCourseHierarchy(data.courseHierarchy);
+        this.showLoader = false;
+      }, (err) => {
+        this.showLoader = false;
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0003);
+        this.router.navigate([`/learn`]);
       });
 
     this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
@@ -50,50 +68,33 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  private getCourseHierarchy(courseId: string) {
-    this.courseConsumptionService.getCourseHierarchy(courseId).subscribe((response) => {
-      if (response.status === 'Live' || response.status === 'Unlisted' || response.status === 'Flagged') {
-        this.courseHierarchy = response;
+  private processCourseHierarchy(courseHierarchy) {
+      if (courseHierarchy.status === 'Live' || courseHierarchy.status === 'Unlisted' || courseHierarchy.status === 'Flagged') {
+        this.courseHierarchy = courseHierarchy;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId }]);
-        this.getBatch();
       } else {
         this.toasterService.warning(this.resourceService.messages.imsg.m0026);
         this.router.navigate(['/learn']);
       }
-    }, (err) => {
-      this.showLoader = false;
-      this.showError = true;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0003);
+  }
+  private getEnrolledCourseBatchDetails() {
+    return this.courseBatchService.getEnrolledBatchDetails(this.batchId).map((data) => {
+      this.enrolledBatchInfo = data;
+      this.processBatch();
+      return data;
     });
   }
-  getBatch() {
+  private processBatch() {
     this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
       if (enrolledCourses && !enrolledCourses.err) {
-        if (this.batchId) {
-          const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, (value, index) => {
-            if (this.batchId === value.batchId) {
-              return value;
-            }
-          });
-          if (enrollCourse && enrollCourse.batchId) {
-            this.enrolledCourse = true;
-            this.courseHierarchy.progress = enrollCourse.progress || 0;
-          } else {
-            this.enrolledCourse = false;
-            this.router.navigate([`/learn/course/${this.courseId}`]);
+          const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, {'batchId': this.batchId});
+          if (enrollCourse === undefined) {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0001);
+            this.router.navigate([`/learn`]);
           }
-          this.showLoader = false;
-        } else {
-          this.showLoader = false;
-          this.enrolledCourse = false;
-        }
       } else if (enrolledCourses && enrolledCourses.err) {
-        this.enrolledCourse = false;
-        this.showLoader = false;
-        if (this.batchId) {
           this.toasterService.error(this.resourceService.messages.fmsg.m0001);
-        }
-        this.router.navigate([`/learn/course/${this.courseId}`]);
+          this.router.navigate([`/learn`]);
       }
     });
   }
