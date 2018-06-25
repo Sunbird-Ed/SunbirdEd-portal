@@ -62,7 +62,11 @@ export class ResourceService {
   */
   public getResource(language = 'en'): void {
     const exists: boolean = this.cacheService.exists('resourcebundles' + language);
-    if (!exists) {
+    if (exists) {
+      const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
+      this.messages = resourcebundles.messages;
+      this.frmelmnts = resourcebundles.frmelmnts;
+    } else {
       const option = {
         url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
       };
@@ -70,7 +74,7 @@ export class ResourceService {
         (data: ServerResponse) => {
           this.messages = data.result.messages;
           this.frmelmnts = data.result.frmelmnts;
-          this.cacheService.set('resourcebundles' + language , {
+          this.cacheService.set('resourcebundles' + language, {
             messages: data.result.messages,
             frmelmnts: data.result.frmelmnts
           });
@@ -78,12 +82,6 @@ export class ResourceService {
         (err: ServerResponse) => {
         }
       );
-    } else  {
-      const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
-      if (resourcebundles) {
-        this.messages = resourcebundles.messages;
-        this.frmelmnts = resourcebundles.frmelmnts;
-      }
     }
   }
   get(requestParam: RequestParam): Observable<any> {
