@@ -40,6 +40,6 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    margin: -.875em 0 0 -.5em;
+    margin: -.875em -.5em -.815em 0;
 }
 
