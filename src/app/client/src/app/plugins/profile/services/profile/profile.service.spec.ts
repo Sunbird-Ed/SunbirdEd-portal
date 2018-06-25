@@ -12,7 +12,7 @@ describe('ProfileService', () => {
       providers: [ProfileService]
     });
   });
-  fit('should call getSkills method', () => {
+  it('should call getSkills method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.successData));
@@ -20,7 +20,7 @@ describe('ProfileService', () => {
     profileService.getSkills();
     expect(profileService.getSkills).toHaveBeenCalled();
   });
-  fit('should call add method', () => {
+  it('should call add method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -34,7 +34,7 @@ describe('ProfileService', () => {
     });
     expect(profileService.add).toHaveBeenCalled();
   });
-  fit('should call uploadMedia method', () => {
+  it('should call uploadMedia method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -43,7 +43,7 @@ describe('ProfileService', () => {
     profileService.uploadMedia(request);
     expect(profileService.uploadMedia).toHaveBeenCalled();
   });
-  fit('should call formatRequest method', () => {
+  it('should call formatRequest method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     const request = {
@@ -54,7 +54,7 @@ describe('ProfileService', () => {
     profileService.formatRequest(request);
     expect(profileService.formatRequest).toHaveBeenCalled();
   });
-  fit('should call updateAvatar method', () => {
+  it('should call updateAvatar method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -65,7 +65,7 @@ describe('ProfileService', () => {
     });
     expect(profileService.updateAvatar).toHaveBeenCalled();
   });
-  fit('should call updateProfile method', () => {
+  it('should call updateProfile method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'patch').and.returnValue(Observable.of(mockRes.successData));
@@ -78,7 +78,7 @@ describe('ProfileService', () => {
     });
     expect(profileService.updateProfile).toHaveBeenCalled();
   });
-  fit('should call updateProfileFieldVisibility method', () => {
+  it('should call updateProfileFieldVisibility method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
