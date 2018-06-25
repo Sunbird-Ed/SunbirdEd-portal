@@ -195,6 +195,7 @@ describe('CreateComponent', () => {
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
   });
+
   it('should unsubscribe from all observable subscriptions', () => {
     component.setAnnouncementTypes();
     component.getAnnouncementDetails();
