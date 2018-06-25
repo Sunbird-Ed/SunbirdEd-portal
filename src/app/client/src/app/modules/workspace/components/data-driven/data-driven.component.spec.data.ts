@@ -905,6 +905,12 @@ export const mockFrameworkData = {
            'versionKey': '1522321143354'
         }
     },
+    redirectUrlData : {
+        'url': 'http://localhost:3000/workspace/content/edit/collection/do_1125332330742906881419/Course/draft/NCFCOPY'
+    },
+    redirectUrlFakeData : {
+        'url': 'http://localhost:3000/learn/content/edit/collection/do_1125332330742906881419/Course/draft/NCFCOPY'
+    },
     userMockData : {
 
         'lastName': 'User',
