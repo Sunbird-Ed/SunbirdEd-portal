@@ -12,7 +12,7 @@ describe('ProfileService', () => {
       providers: [ProfileService]
     });
   });
-  fit('should call getSkills method', () => {
+  it('should call getSkills method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.successData));
@@ -21,7 +21,7 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  fit('should call add method', () => {
+  it('should call add method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -34,7 +34,7 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  fit('should call uploadMedia method', () => {
+  it('should call uploadMedia method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -44,7 +44,7 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  fit('should call updateAvatar method', () => {
+  it('should call updateAvatar method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -54,7 +54,7 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  fit('should call updateProfile method', () => {
+  it('should call updateProfile method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'patch').and.returnValue(Observable.of(mockRes.successData));
@@ -66,7 +66,7 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  fit('should call updateProfileFieldVisibility method', () => {
+  it('should call updateProfileFieldVisibility method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
