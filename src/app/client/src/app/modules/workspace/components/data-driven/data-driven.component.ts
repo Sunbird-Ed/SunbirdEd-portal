@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
-  ILoaderMessage
+  ILoaderMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-data-driven',
@@ -113,7 +114,9 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     userService: UserService,
     configService: ConfigService,
     formService: FormService,
-    private _cacheService: CacheService
+    private _cacheService: CacheService,
+    public navigationHelperService: NavigationHelperService,
+    public location: PlatformLocation
   ) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -129,6 +132,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     this.resourceType = this.configService.appConfig.resourceType[this.contentType];
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
+
 
   ngOnInit() {
     /**
@@ -156,6 +160,13 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
         uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
     };
+
+    /**
+      * check for previous route and redirect based on the url
+    */
+    this.activatedRoute.url.subscribe(url => {
+      this.checkForPreviousRouteForRedirect();
+    });
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
@@ -275,5 +286,21 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0010);
       });
     }
+  }
+
+  checkForPreviousRouteForRedirect() {
+    const previousUrlObj = this.navigationHelperService._workspaceCloseUrl;
+    if (previousUrlObj && previousUrlObj.url) {
+      const previousUrl = previousUrlObj.url.split('/');
+      if (previousUrl.indexOf('edit') !== -1 &&
+        previousUrl.indexOf('draft') !== -1) {
+        this.navigationHelperService.resetWorkSpaceUrl();
+        this.redirect();
+      }
+    }
+  }
+
+  redirect() {
+    this.router.navigate(['/workspace/content/create']);
   }
 }
