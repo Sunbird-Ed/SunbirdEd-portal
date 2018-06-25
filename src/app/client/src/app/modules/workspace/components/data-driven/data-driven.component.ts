@@ -11,7 +11,6 @@ import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-data-driven',
@@ -115,8 +114,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     configService: ConfigService,
     formService: FormService,
     private _cacheService: CacheService,
-    public navigationHelperService: NavigationHelperService,
-    public location: PlatformLocation
+    public navigationHelperService: NavigationHelperService
   ) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -164,9 +162,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     /**
       * check for previous route and redirect based on the url
     */
-    this.activatedRoute.url.subscribe(url => {
-      this.checkForPreviousRouteForRedirect();
-    });
+    this.checkForPreviousRouteForRedirect();
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
@@ -289,12 +285,11 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   }
 
   checkForPreviousRouteForRedirect() {
-    const previousUrlObj = this.navigationHelperService._workspaceCloseUrl;
+    const previousUrlObj = this.navigationHelperService.getPreviousUrl();
     if (previousUrlObj && previousUrlObj.url) {
       const previousUrl = previousUrlObj.url.split('/');
       if (previousUrl.indexOf('edit') !== -1 &&
         previousUrl.indexOf('draft') !== -1) {
-        this.navigationHelperService.resetWorkSpaceUrl();
         this.redirect();
       }
     }

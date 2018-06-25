@@ -59,9 +59,6 @@ export class NavigationHelperService {
   storeWorkSpaceCloseUrl() {
     this._workspaceCloseUrl = this.history[this._history.length - 1];
   }
-  resetWorkSpaceUrl() {
-    this._workspaceCloseUrl = undefined;
-  }
   public navigateToResource(defaultUrl: string = '/home') {
     if (this._resourceCloseUrl && this._resourceCloseUrl.url) {
       if (this._resourceCloseUrl.queryParams) {
