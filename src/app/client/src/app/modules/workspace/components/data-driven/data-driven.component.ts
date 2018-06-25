@@ -133,11 +133,13 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+
+     this.checkForPreviousRouteForRedirect();
+
     /**
      * fetchFrameworkMetaData is called to config the form data and framework data
      */
     this.fetchFrameworkMetaData();
-
     /***
  * Call User service to get user data
  */
@@ -158,11 +160,6 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
         uri: this.activatedRoute.snapshot.data.telemetry.uri
       }
     };
-
-    /**
-      * check for previous route and redirect based on the url
-    */
-    this.checkForPreviousRouteForRedirect();
   }
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
@@ -284,14 +281,13 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+    * check for previous route and redirect based on the url
+  */
   checkForPreviousRouteForRedirect() {
     const previousUrlObj = this.navigationHelperService.getPreviousUrl();
-    if (previousUrlObj && previousUrlObj.url) {
-      const previousUrl = previousUrlObj.url.split('/');
-      if (previousUrl.indexOf('edit') !== -1 &&
-        previousUrl.indexOf('draft') !== -1) {
-        this.redirect();
-      }
+    if (previousUrlObj && previousUrlObj.url && previousUrlObj.url.includes('workspace/content/edit')) {
+      this.redirect();
     }
   }
 
