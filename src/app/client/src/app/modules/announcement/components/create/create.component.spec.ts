@@ -195,7 +195,7 @@ describe('CreateComponent', () => {
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
   });
-  fit('should unsubscribe from all observable subscriptions', () => {
+  it('should unsubscribe from all observable subscriptions', () => {
     component.setAnnouncementTypes();
     component.getAnnouncementDetails();
     spyOn(component.unsubscribe, 'complete');
