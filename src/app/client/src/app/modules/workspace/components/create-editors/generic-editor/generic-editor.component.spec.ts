@@ -6,7 +6,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { NavigationHelperService,ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile } from '@sunbird/shared';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -64,11 +65,11 @@ describe('GenericEditorComponent', () => {
   it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();
     setTimeout(() => {
-      component.navigateToUploads();
+      component.navigateToWorkSpace();
     }, 1000);
-    expect(component.navigateToUploads).not.toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
     jasmine.clock().tick(1001);
-    expect(component.navigateToUploads).toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
   }));
 });
