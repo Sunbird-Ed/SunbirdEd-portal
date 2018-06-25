@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
