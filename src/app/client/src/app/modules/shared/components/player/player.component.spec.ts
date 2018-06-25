@@ -19,7 +19,7 @@ describe('PlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
@@ -29,7 +29,7 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeTruthy();
     expect(component).toBeTruthy();
   });
-  xit('should emit "END" event only if content progress is 100', () => {
+  it('should emit "END" event only if content progress is 100', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
