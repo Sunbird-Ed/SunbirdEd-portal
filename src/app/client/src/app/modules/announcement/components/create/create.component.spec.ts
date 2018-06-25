@@ -189,16 +189,17 @@ describe('CreateComponent', () => {
       expect(route.navigate).toHaveBeenCalledWith(['announcement/create', 1]);
     }));
 
-  fit('should unsubscribe to userData observable', () => {
+  it('should unsubscribe to userData observable', () => {
     component.ngOnInit();
-    component.setAnnouncementTypes();
-    // component.saveAnnouncement();
-    // component.onFormValueChanges();
-    // component.getAnnouncementDetails();
     spyOn(component.userDataSubscription, 'unsubscribe');
-    spyOn(component.testSubscription, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
-    expect(component.testSubscription.unsubscribe).toHaveBeenCalled();
+  });
+  fit('should unsubscribe from all observable subscriptions', () => {
+    component.setAnnouncementTypes();
+    component.getAnnouncementDetails();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

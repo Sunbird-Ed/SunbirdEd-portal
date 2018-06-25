@@ -3,6 +3,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The delete component deletes the announcement
@@ -15,6 +17,8 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
   styleUrls: ['./delete.component.css']
 })
 export class DeleteComponent implements OnInit, OnDestroy {
+
+  public unsubscribe = new Subject<void>();
   /**
 	 * Contains unique announcement id
 	 */
@@ -81,7 +85,9 @@ export class DeleteComponent implements OnInit, OnDestroy {
 	 */
   deleteAnnouncement(): void {
     const option = { announcementId: this.announcementId };
-    const subscribe = this.announcementService.deleteAnnouncement(option).subscribe(
+    this.announcementService.deleteAnnouncement(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
@@ -91,9 +97,6 @@ export class DeleteComponent implements OnInit, OnDestroy {
         this.redirect();
       }
     );
-    if (this.subscription) {
-    this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -110,20 +113,20 @@ export class DeleteComponent implements OnInit, OnDestroy {
    * activated route
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params
+    .takeUntil(this.unsubscribe)
+    .subscribe(params => {
       this.announcementId = params.announcementId;
     });
-    const subscribe = this.activatedRoute.parent.params.subscribe((params) => {
+    this.activatedRoute.parent.params
+    .takeUntil(this.unsubscribe)
+    .subscribe((params) => {
       this.pageNumber = Number(params.pageNumber);
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

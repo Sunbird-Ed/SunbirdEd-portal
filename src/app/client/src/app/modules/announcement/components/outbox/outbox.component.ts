@@ -154,7 +154,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
       limit: this.pageLimit
     };
 
-    const subscribe = this.announcementService.getOutboxData(option).subscribe(
+    // const subscribe =
+    this.announcementService.getOutboxData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
         this.showLoader = false;
@@ -166,9 +167,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
         this.showWarningDiv = true;
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
+    // if (this.subscription) {
+    //   this.subscription.add(subscribe);
+    //   }
   }
 
   /**
@@ -213,24 +214,26 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	 *
 	 */
   ngOnInit() {
-    const subscribe = this.activatedRoute.params.subscribe(params => {
+    // const subscribe =
+    this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateOutboxData(this.config.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
+    // if (this.subscription) {
+    //   this.subscription.add(subscribe);
+    //   }
 
-    const deleteEventSubscription = this.announcementService.announcementDeleteEvent.subscribe(data => {
+    // const deleteEventSubscription =
+    this.announcementService.announcementDeleteEvent.subscribe(data => {
       _.each(this.outboxData.announcements, (key, index) => {
         if (data && data === key.id) {
           this.outboxData.announcements[index].status = 'cancelled';
         }
       });
     });
-    if (this.subscription) {
-      this.subscription.add(deleteEventSubscription);
-      }
+    // if (this.subscription) {
+    //   this.subscription.add(deleteEventSubscription);
+    //   }
 
     this.telemetryImpression = {
       context: {
@@ -274,8 +277,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      }
+    // if (this.subscription) {
+    //   this.subscription.unsubscribe();
+    //   }
   }
 }

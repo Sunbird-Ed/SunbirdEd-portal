@@ -109,7 +109,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.resourceService.getResource(this.queryParam['language']);
       }
     });
-    this.subscription.add(subscribe);
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;

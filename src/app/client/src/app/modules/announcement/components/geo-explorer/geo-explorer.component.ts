@@ -5,6 +5,8 @@ import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The Geo-explorer component.
@@ -21,6 +23,7 @@ import * as _ from 'lodash';
  */
 export class GeoExplorerComponent implements OnInit, OnDestroy {
 
+  public unsubscribe = new Subject<void>();
   /**
    * To receive config from child component
    *
@@ -143,7 +146,10 @@ export class GeoExplorerComponent implements OnInit, OnDestroy {
     } else {
       const params = { rootOrgId: this.rootOrgId };
       // Make api call to get location(s)
-      const subscribe = this.geo.getLocations(params).subscribe(
+
+      this.geo.getLocations(params)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.response) {
             this.locationList = (data.result.response);
@@ -156,9 +162,6 @@ export class GeoExplorerComponent implements OnInit, OnDestroy {
           this.showError = true;
         }
       );
-      if (this.subscription) {
-        this.subscription.add(subscribe);
-        }
     }
   }
 
@@ -188,8 +191,7 @@ export class GeoExplorerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

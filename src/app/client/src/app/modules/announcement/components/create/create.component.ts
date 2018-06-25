@@ -14,6 +14,8 @@ import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 /**
  * This component helps to create and resend announcement
  */
@@ -23,6 +25,8 @@ import {
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit, OnDestroy {
+
+  public unsubscribe = new Subject<void>();
 
   /**
    * Reference of Geo explorer component
@@ -196,7 +200,9 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       this.showResendLoader = false;
     } else {
-      const subscribe = this.createService.getAnnouncementTypes().subscribe(
+      this.createService.getAnnouncementTypes()
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.announcementTypes) {
             _.each(data.result.announcementTypes, (key) => {
@@ -212,9 +218,6 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.redirectToOutbox();
         }
       );
-      if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
     }
   }
 
@@ -302,8 +305,9 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   saveAnnouncement() {
     this.announcementDetails.target = this.recipientsList;
-    const subscribe = this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
-      subscribe(
+    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false)
+    .takeUntil(this.unsubscribe)
+      .subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
         },
@@ -312,9 +316,6 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.formErrorFlag = false;
         }
       );
-      if (this.subscription) {
-        this.subscription.add(subscribe);
-        }
   }
 
   /**
@@ -348,7 +349,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    const subscribe = this.announcementForm.valueChanges
+    this.announcementForm.valueChanges
+    .takeUntil(this.unsubscribe)
       .map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
@@ -359,9 +361,6 @@ export class CreateComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.enableSelectRecipientsBtn();
       });
-      if (this.subscription) {
-        this.subscription.add(subscribe);
-        }
   }
 
   /**
@@ -427,7 +426,9 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   getAnnouncementDetails() {
     this.showResendLoader = true;
-    const subscribe = this.createService.resendAnnouncement(this.identifier).subscribe(
+    this.createService.resendAnnouncement(this.identifier)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
         this.enableSelectRecipientsBtn();
@@ -442,9 +443,6 @@ export class CreateComponent implements OnInit, OnDestroy {
         this.redirectToOutbox();
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
   }
 
   /**
@@ -504,27 +502,19 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
-    // const subscribe = 
-    this.testSubscription = this.fileUpload.uploadEvent.subscribe(uploadData => {
+    this.fileUpload.uploadEvent
+    .takeUntil(this.unsubscribe)
+    .subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
-    // if (this.subscription) {
-    //   this.subscription.add(subscribe);
-    //   }
-      console.log(this.subscription);
     this.setInteractEventData();
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.testSubscription) {
-      this.testSubscription.unsubscribe();
-    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   setInteractEventData() {
     this.confirmAnnouncementInteractEdata = {
