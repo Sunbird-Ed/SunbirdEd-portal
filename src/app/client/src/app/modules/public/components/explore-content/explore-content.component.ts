@@ -2,7 +2,8 @@ import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort, OrgDetailsService } from '@sunbird/core';
+import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
+    OrgDetailsService, ConceptPickerService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -131,7 +132,7 @@ export class ExploreContentComponent implements OnInit {
      */
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
-        resourceService: ResourceService, toasterService: ToasterService,
+        resourceService: ResourceService, toasterService: ToasterService, private conceptPickerService: ConceptPickerService,
         config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService) {
         this.searchService = searchService;
@@ -272,6 +273,7 @@ export class ExploreContentComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.conceptPickerService.initialize();
         this.slug = this.activatedRoute.snapshot.params.slug;
         this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
