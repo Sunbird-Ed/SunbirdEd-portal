@@ -22,5 +22,5 @@ export const mockRes = {
             'errmsg': 'Cannot set property of undefined'
         }, 'responseCode': 'CLIENT_ERROR',
         'result': {}
-    },
+    }
 };

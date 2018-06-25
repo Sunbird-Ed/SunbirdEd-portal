@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ProfileService } from '@sunbird/profile';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, LearnerService } from '@sunbird/core';
+import { CoreModule, LearnerService, UserService } from '@sunbird/core';
 import { mockRes } from './profile.service.spec.data';
 import { Observable } from 'rxjs/Observable';
 describe('ProfileService', () => {
@@ -12,15 +12,16 @@ describe('ProfileService', () => {
       providers: [ProfileService]
     });
   });
-  it('should call getSkills method', () => {
+  fit('should call getSkills method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockRes.successData));
-    spyOn(profileService, 'getSkills').and.callThrough();
-    profileService.getSkills();
-    expect(profileService.getSkills).toHaveBeenCalled();
+    profileService.getSkills().subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
   });
-  it('should call add method', () => {
+  fit('should call add method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -28,57 +29,44 @@ describe('ProfileService', () => {
       'skillName': ['skills'],
       'endorsedUserId': '159e93d1-da0c-4231-be94-e75b0c226d7c'
     };
-    spyOn(profileService, 'add').and.callThrough();
     profileService.add(request).subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
     });
-    expect(profileService.add).toHaveBeenCalled();
   });
-  it('should call uploadMedia method', () => {
+  fit('should call uploadMedia method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
     const request = new FormData;
-    spyOn(profileService, 'uploadMedia').and.callThrough();
-    profileService.uploadMedia(request);
-    expect(profileService.uploadMedia).toHaveBeenCalled();
+    profileService.uploadMedia(request).subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
   });
-  it('should call formatRequest method', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const profileService = TestBed.get(ProfileService);
-    const request = {
-      'skillName': ['skills'],
-      'endorsedUserId': '159e93d1-da0c-4231-be94-e75b0c226d7c'
-    };
-    spyOn(profileService, 'formatRequest').and.callThrough();
-    profileService.formatRequest(request);
-    expect(profileService.formatRequest).toHaveBeenCalled();
-  });
-  it('should call updateAvatar method', () => {
+  fit('should call updateAvatar method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
     const request = new FormData;
-    spyOn(profileService, 'updateAvatar').and.callThrough();
     profileService.updateAvatar(request).subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
     });
-    expect(profileService.updateAvatar).toHaveBeenCalled();
   });
-  it('should call updateProfile method', () => {
+  fit('should call updateProfile method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'patch').and.returnValue(Observable.of(mockRes.successData));
     const request = {
       profileSummary: 'summary'
     };
-    spyOn(profileService, 'updateProfile').and.callThrough();
     profileService.updateProfile(request).subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
     });
-    expect(profileService.updateProfile).toHaveBeenCalled();
   });
-  it('should call updateProfileFieldVisibility method', () => {
+  fit('should call updateProfileFieldVisibility method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);
     spyOn(learnerService, 'post').and.returnValue(Observable.of(mockRes.successData));
@@ -86,8 +74,9 @@ describe('ProfileService', () => {
       private: ['address'],
       userId: '159e93d1-da0c-4231-be94-e75b0c226d7c'
     };
-    spyOn(profileService, 'updateProfileFieldVisibility').and.callThrough();
-    profileService.updateProfileFieldVisibility(request);
-    expect(profileService.updateProfileFieldVisibility).toHaveBeenCalled();
+    profileService.updateProfileFieldVisibility(request).subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
   });
 });
