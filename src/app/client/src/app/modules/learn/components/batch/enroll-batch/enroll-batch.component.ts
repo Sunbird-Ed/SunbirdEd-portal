@@ -45,7 +45,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           ver: this.activatedRoute.snapshot.data.telemetry.object.ver
           }
       };
-      this.courseBatchService.getEnrollBatchDetails(this.batchId).subscribe((data) => {
+
+      this.courseBatchService.getEnrollToBatchDetails(this.batchId).subscribe((data) => {
         this.batchDetails = data;
         if (this.batchDetails.enrollmentType !== 'open') {
           this.toasterService.error(this.resourceService.messages.fmsg.m0082);
