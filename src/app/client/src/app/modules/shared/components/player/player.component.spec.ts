@@ -19,7 +19,7 @@ describe('PlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {
       contentProgressEvent = data;
