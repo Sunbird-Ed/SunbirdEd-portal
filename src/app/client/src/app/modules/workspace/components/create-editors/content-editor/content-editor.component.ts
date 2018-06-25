@@ -9,7 +9,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
 
-
 @Component({
   selector: 'app-content-editor',
   templateUrl: './content-editor.component.html',
@@ -89,7 +88,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     config: ConfigService,
     userService: UserService, public _zone: NgZone,
     private renderer: Renderer2,
-    tenantService: TenantService
+    tenantService: TenantService,
+    public navigationHelperService: NavigationHelperService
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
