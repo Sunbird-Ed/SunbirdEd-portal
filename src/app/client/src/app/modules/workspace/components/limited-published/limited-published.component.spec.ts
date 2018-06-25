@@ -93,6 +93,38 @@ describe('LimitedPublishedComponent', () => {
     expect(component.showLoader).toBeFalsy();
   }));
 
+  it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
+    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    component.pageNumber = 1;
+    component.pageLimit = 1;
+    const searchParams = {
+    'filters': {
+    'status': [
+      'Unlisted'
+    ],
+    'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'contentType': [
+      'Collection',
+      'TextBook',
+      'Course',
+      'LessonPlan',
+      'Resource'
+    ],
+    'objectType': 'Content'
+    },
+    'offset': 0,
+    'limit': 1,
+    'sort_by': {
+    'lastUpdatedOn': 'desc'
+    }
+    };
+    component.fetchLimitedPublished(1, 1);
+    fixture.detectChanges();
+    expect(component.search).toHaveBeenCalledWith(searchParams);
+    expect(component.limitedPublishList).toBeDefined();
+    expect(component.showLoader).toBeFalsy();
+  }));
+
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
     component.fetchLimitedPublished(9, 1);
