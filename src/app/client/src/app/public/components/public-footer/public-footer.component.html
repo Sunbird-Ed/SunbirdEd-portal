@@ -1,0 +1,28 @@
+ <!-- footer -->
+  
+ <div *ngIf="appFooter" class="ui footer basic segment">
+    <div class="ui grid">
+      <div class="ten wide mobile eleven wide tablet eleven wide column">
+        <a href='app'>
+            <div class="ui container stackable two column grid">
+              <div class="column left floated left aligned">
+                <h1  class="ui small header popUp-dial-code-header"> {{resourceService.frmelmnts?.lbl?.downloadThe}} <span class="capitalize-text">{{instanceName}} {{resourceService.frmelmnts?.lbl?.app}}</span> 
+                <div class="sub header padding-top-5"> 
+                  {{resourceService.frmelmnts?.lbl?.publicFooterGetAccess}}
+                </div>
+              </h1>
+              <div class="ui tiny image">
+                    <img src="https://play.google.com/intl/en_us/badges/images/badge_new.png">
+                </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="two wide mobile one wide tablet one wide computer column">
+        <i class="close icon closeBtn-dial-code" (click)="appFooter=false"></i>
+      </div>
+      <div class="column computer only">
+        <img class="ui tiny centered image" src="">
+      </div>
+    </div>
+  </div>

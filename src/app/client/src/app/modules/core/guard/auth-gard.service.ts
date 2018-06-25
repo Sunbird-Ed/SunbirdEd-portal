@@ -1,14 +1,16 @@
+import { UserService } from './../services/user/user.service';
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route } from '@angular/router';
 import { PermissionService } from './../services';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
+
 /**
  * Service for Route Guards to restrict the access of route
  * based on roles and permission of logged in user.
 */
 @Injectable()
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate, CanLoad {
     /**
       * reference of permissionService service.
     */
@@ -29,10 +31,20 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     * @param {Router} route  Reference of Router
     */
     constructor(private router: Router, permissionService: PermissionService, resourceService: ResourceService,
-    config: ConfigService, private toasterService: ToasterService) {
+    config: ConfigService, private toasterService: ToasterService, private userService: UserService) {
         this.permissionService = permissionService;
         this.resourceService = resourceService;
         this.config = config;
+    }
+     /**
+    * method CanLoad for guard.
+    */
+    canLoad(): boolean {
+        if (this.userService.loggedIn) {
+            return true;
+        } else {
+            return false;
+        }
     }
     /**
     * method CanActivate for guard .
@@ -40,9 +52,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     canActivate(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
         return this.getPermission(activatedRouteSnapshot.data.roles);
     }
-    canActivateChild(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
-        return this.getPermission(activatedRouteSnapshot.url[0].path);
-    }
+    // canActivateChild(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
+    //     return this.getPermission(activatedRouteSnapshot.url[0].path);
+    // }
 
     getPermission(roles) {
         return Observable.create(observer => {

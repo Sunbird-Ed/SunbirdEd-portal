@@ -1,0 +1,49 @@
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
+  <div class="row">
+    <div class="six wide computer eleven wide mobile eight wide tablet column centered padding-top-10">
+      <div class="ui fluid icon input">
+        <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
+          title="Search" />
+        <i class="search icon dialcode-search-icon" (click)="navigateToSearch()"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="twelve wide column" *ngIf="showLoader">
+        <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div *ngIf="!showLoader" class="row dial-code-section-bg">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div style="font-weight: 650 !important;" class="ui tiny header"> {{resourceService.frmelmnts?.lbl?.dialCode}} '{{dialCode}}'
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div *ngIf="searchResults.length > 0" class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div style="font-weight: 650 !important;" class="ui tiny header padding-top-30"> {{resourceService.frmelmnts?.lbl?.linkedContents}} ({{searchResults.length}})
+      </div>
+
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  <div class="row">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchResults" class="ui stackable four column grid dynamic-section-card ">
+        <div in-view-item [id]="i" [data]="content" class="column padding-top-5 padding-bottom-5 padding-left-10" *ngFor="let content of searchResults;let i = index;">
+            <app-card [data]="content" (clickEvent)="getEvent($event)"></app-card>
+        </div>
+      </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+</div>
+<app-public-footer [instanceName]="instanceName"></app-public-footer>

@@ -53,7 +53,7 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
     // LearnModule, // Lazy load
     // WorkspaceModule, // Lazy load
     OrgManagementModule,
-    PublicModule,
+    // PublicModule,
     // SearchModule, // Lazy load
     // DiscussionModule,
     WebExtensionModule.forRoot(),

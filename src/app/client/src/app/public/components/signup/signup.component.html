@@ -1,0 +1,92 @@
+<sui-modal [appTelemetryImpression]="telemetryImpression" [isClosable]="false" [size]="'normal'" (dismissed)="redirect();" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide tablet computer only column">
+        <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
+      </div>
+      <div class="one wide tablet computer only column">
+        <i class="close icon" (click)="modal.deny()"></i>
+      </div>
+      <div class="ten wide mobile only column">
+          <span class="ui header">{{resourceService?.frmelmnts?.scttl?.signup}}</span>
+        </div>
+        <div class="two wide mobile only column">
+          <i class="close icon" (click)="modal.deny()"></i>
+        </div>
+    </div>
+  </div>
+  <div class="content">
+    <form *ngIf="!showLoader" [formGroup]="signUpForm" autocomplete="off" id="signUpForm" class="ui form">
+      <div class="field">
+        <div class=" two fields">
+          <div class="required field" [ngClass]="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern) ? 'error' : ''">
+            <label>{{resourceService?.frmelmnts?.lbl?.username}}</label>
+            <input type="text" formControlName="userName" placeholder="eg:user.name , min 5 character required">
+            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.userName.invalid && signUpForm.controls['userName'].errors.required && !signUpForm.controls['userName'].pristine || (signUpForm.controls['userName'].errors && signUpForm.controls['userName'].errors.pattern)">
+              {{resourceService?.messages?.stmsg?.m0087}}
+            </div>
+          </div>
+          <div class="required field" [ngClass]="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern) ? 'error' : ''">
+            <label>{{resourceService?.frmelmnts?.lbl?.password}}</label>
+            <input type="password" formControlName="password" placeholder="Password" />
+            <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.password.invalid && signUpForm.controls['password'].errors.required && !signUpForm.controls['password'].pristine || (signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.pattern)">
+              {{resourceService?.messages?.stmsg?.m0088}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="two fields">
+          <div class="required field" [ngClass]="signUpForm.controls.firstName.invalid && signUpForm.controls['firstName'].errors.required && !signUpForm.controls['firstName'].pristine || (signUpForm.controls['firstName'].errors && signUpForm.controls['firstName'].errors.pattern) ? 'error' : ''">
+            <label>{{resourceService?.frmelmnts?.lbl?.name}}</label>
+            <input type="text" formControlName="firstName" placeholder="First Name">
+          </div>
+          <div class="field">
+            <label>&nbsp; </label>
+            <input type="text" formControlName="lastName" placeholder="Last Name">
+          </div>
+        </div>
+      </div>
+      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.firstName.invalid && signUpForm.controls['firstName'].errors.required && !signUpForm.controls['firstName'].pristine || (signUpForm.controls['firstName'].errors && signUpForm.controls['firstName'].errors.pattern)">
+        {{resourceService?.messages?.stmsg?.m0092}}
+      </div>
+      <div class="two fields">
+        <div class="required field" [ngClass]="signUpForm.controls.phone.invalid && signUpForm.controls['phone'].errors.required && !signUpForm.controls['phone'].pristine || (signUpForm.controls['phone'].errors && signUpForm.controls['phone'].errors.pattern) ? 'error' : ''">
+          <label>{{resourceService?.frmelmnts?.lbl?.phonenumber}}</label>
+          <input type="text" formControlName="phone" placeholder="eg:XXXXXXXXXX">
+          <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.phone.invalid && signUpForm.controls['phone'].errors.required && !signUpForm.controls['phone'].pristine || (signUpForm.controls['phone'].errors && signUpForm.controls['phone'].errors.pattern)">
+            {{resourceService?.messages?.stmsg?.m0091}}
+          </div>
+        </div>
+        <div class="required field" [ngClass]="signUpForm.controls.email.invalid && signUpForm.controls['email'].errors.required && !signUpForm.controls['email'].pristine || (signUpForm.controls['email'].errors && signUpForm.controls['email'].errors.pattern) ? 'error' : ''">
+          <label>{{resourceService?.frmelmnts?.lbl?.email}}</label>
+          <input type="text" formControlName="email" placeholder="User@example.com">
+          <div class="margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.email.invalid && signUpForm.controls['email'].errors.required && !signUpForm.controls['email'].pristine || (signUpForm.controls['email'].errors && signUpForm.controls['email'].errors.pattern)">
+            {{resourceService?.messages?.stmsg?.m0089}}
+          </div>
+        </div>
+      </div>
+      <div class="required field" [ngClass]="signUpForm.controls.language.invalid && signUpForm.controls['language'].errors.required && !signUpForm.controls['language'].pristine ? 'error' : ''">
+        <label>{{resourceService?.frmelmnts?.lbl?.lang}}</label>
+        <div class="field">
+          <sui-multi-select class="selection" formControlName="language" [options]="languages" #multiSelect>
+            <sui-select-option *ngFor="let option of languages" [value]="option"> </sui-select-option>
+          </sui-multi-select>
+        </div>
+      </div>
+      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="signUpForm.controls.language.invalid && signUpForm.controls['language'].errors.required && !signUpForm.controls['language'].pristine">
+        {{resourceService?.messages?.stmsg?.m0090}}
+      </div>
+      <div class="ui error message">
+      </div>
+    </form>
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="actions">
+    <button [disabled]="signUpForm.invalid" class="ui primary button" (click)="onSubmitForm()">{{resourceService?.frmelmnts?.btn?.signup}}</button>
+  </div>
+</sui-modal>

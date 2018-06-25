@@ -50,4 +50,16 @@ describe('AuthGardService', () => {
     const result = authservice.canActivate(snapshotroute, RouterStateSnapshot);
     expect(result).toBeTruthy();
   });
+  it('be able to hit route when user is not logged in', () => {
+    const authservice = TestBed.get(AuthGuard);
+    const result = authservice.canLoad();
+    expect(result).toBeFalsy();
+  });
+  it('be able to hit route when user is logged in', () => {
+    const authservice = TestBed.get(AuthGuard);
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    const result = authservice.canLoad();
+    expect(result).toBeTruthy();
+  });
 });
