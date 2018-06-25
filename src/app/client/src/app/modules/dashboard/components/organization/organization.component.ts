@@ -147,6 +147,7 @@ export class OrganisationComponent implements OnDestroy {
 	 * telemetryImpression object for org admin dashboard page
 	*/
   telemetryImpression: IImpressionEventInput;
+  subscription: Subscription;
 
   /**
    * Default method of OrganisationService class
@@ -172,7 +173,7 @@ export class OrganisationComponent implements OnDestroy {
     this.userService = userService;
     this.route = route;
     this.initTelemetryImpressionEvent();
-    this.activatedRoute.params.subscribe(params => {
+    const subscribe = this.activatedRoute.params.subscribe(params => {
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
@@ -188,6 +189,9 @@ export class OrganisationComponent implements OnDestroy {
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
     this.getMyOrganisations();
   }
 
@@ -229,7 +233,7 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.orgService.getDashboardData(params).subscribe(
+    const subscribe = this.orgService.getDashboardData(params).subscribe(
       (data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -241,6 +245,9 @@ export class OrganisationComponent implements OnDestroy {
         this.toasterService.error(`Root org doesn't exist for this Organization Id and channel`);
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -374,7 +381,7 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.downloadService.getReport(option).subscribe(
+    const subscribe = this.downloadService.getReport(option).subscribe(
       (data: ServerResponse) => {
         this.showDownloadSuccessModal = true;
         this.disabledClass = false;
@@ -383,6 +390,9 @@ export class OrganisationComponent implements OnDestroy {
         this.disabledClass = false;
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -394,7 +404,7 @@ export class OrganisationComponent implements OnDestroy {
    */
   getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
-      this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
+      const subscribe = this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {
             this.myOrganizations = data.result.response.content;
@@ -415,11 +425,17 @@ export class OrganisationComponent implements OnDestroy {
           this.setError(true);
         }
       );
+      if (this.subscription) {
+        this.subscription.add(subscribe);
+      }
     }
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

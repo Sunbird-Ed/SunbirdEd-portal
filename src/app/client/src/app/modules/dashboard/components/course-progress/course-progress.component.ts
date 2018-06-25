@@ -107,6 +107,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
+  subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -145,7 +146,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       status: ['1', '2', '3'],
       createdBy: this.userId
     };
-    this.courseProgressService.getBatches(option).subscribe(
+    const subscribe = this.courseProgressService.getBatches(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.batchlist = apiResponse.result.response.content;
         this.showLoader = false;
@@ -169,6 +170,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.showNoBatch = true;
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -227,7 +231,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     };
     this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
       + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
-    this.courseProgressService.getDashboardData(option).subscribe(
+    const subscribe = this.courseProgressService.getDashboardData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
         this.showLoader = false;
@@ -237,6 +241,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.showLoader = false;
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -257,7 +264,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       batchIdentifier: this.queryParams.batchIdentifier,
       timePeriod: this.queryParams.timePeriod
     };
-    this.courseProgressService.downloadDashboardData(option).subscribe(
+    const subscribe = this.courseProgressService.downloadDashboardData(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.showDownloadModal = true;
       },
@@ -265,6 +272,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
+    if (this.subscription) {
+      this.subscription.add(subscribe);
+    }
   }
 
   /**
@@ -314,6 +324,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }
