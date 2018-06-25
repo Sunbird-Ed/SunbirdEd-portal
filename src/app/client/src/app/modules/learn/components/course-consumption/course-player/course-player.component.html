@@ -85,7 +85,7 @@
                                     <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
                                         <div class="toc-left-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
-                                            <p class=" font-white">{{prevPlaylistItem?.title || noContentToPlay}}</p>
+                                            <p class=" font-white text-ellipsis">{{prevPlaylistItem?.title || noContentToPlay}}</p>
                                         </div>
                                     </button>
                                 </div>
@@ -106,7 +106,7 @@
                                         <div class="toc-right-nav-btn-content">
                                             <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}
                                             </h4>
-                                            <p class=" font-white">{{nextPlaylistItem?.title || noContentToPlay}}</p>
+                                            <p class=" font-white text-ellipsis">{{nextPlaylistItem?.title || noContentToPlay}}</p>
                                         </div>
                                     </button>
                                 </div>
