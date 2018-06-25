@@ -48,7 +48,7 @@ describe('BatchCardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BatchCardComponent, UpdateBatchComponent],
       imports: [SuiModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule],
+        HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

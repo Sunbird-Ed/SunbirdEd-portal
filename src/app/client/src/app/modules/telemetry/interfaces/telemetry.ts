@@ -201,12 +201,13 @@ export interface ITelemetry {
   'tags'?: Array<string>;
   'cdata'?: Array<{}>;
   'dispatcher'?: undefined;
+  'enableValidation': boolean;
 }
 
 export interface IUserOrgDetails {
   'userId': IUserProfile['userId'];
   'rootOrgId': IUserProfile['rootOrgId'];
-  'rootOrg': IUserProfile['rootOrg'];
+  'rootOrg'?: IUserProfile['rootOrg'];
   'organisationIds': IUserProfile['organisationIds'];
 }
 

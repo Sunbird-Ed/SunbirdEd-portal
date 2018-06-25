@@ -1,6 +1,24 @@
 {
-  "landingPage": {
-    "showExploreButton": true
+  "Home": {
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        },
+        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
+        "telemetryObjectType":"home"
+      },
+      "metaData": ["batchId", "courseId"],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
+    }
+
   },
   "Course": {
     "otherCourse": {
@@ -44,7 +62,9 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} }
+        "left": {"class":  "ui blue left ribbon label"} },
+        "telemetryInteractEdata": {"id":"dial-code-view-card","type":"click","pageid":"dial-code"},
+        "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
      "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
@@ -219,7 +239,7 @@
       "draft",
       "uploaded",
       "published",
-      "limited/publish",
+      "limited-publish",
       "allcontent"
     ],
     "Draft": {
@@ -233,9 +253,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"draftContentId","type":"click","pageid":"DraftContent"},
+        "telemetryObjectType":"draft"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Published": {
@@ -249,9 +271,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"published","type":"click","pageid":"published"},
+        "telemetryObjectType":"published"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Uploaded": {
@@ -265,9 +289,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"uploadedContent","type":"click","pageid":"UploadContent"},
+        "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "Flagged": {
@@ -277,9 +303,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"flagged","type":"click","pageid":"Flagged"},
+        "telemetryObjectType":"UploadContent"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "ReviewSubmission": {
@@ -289,9 +317,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"reviewSubmissionId","type":"click","pageid":"ReviewSubmission"},
+        "telemetryObjectType":"ReviewSubmission"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     },
     "LimitedPublishing": {
@@ -310,9 +340,11 @@
             "eventName": "onImage"
           }
         },
-        "ribbon": {"right":{"class": "ui black right ribbon label"}}
+        "ribbon": {"right":{"class": "ui black right ribbon label"}},
+        "telemetryInteractEdata": {"id":"limitedPublish","type":"click","pageid":"LimitedPublish"},
+        "telemetryObjectType":"limitedPublish"
       },
-      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
+      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType","pkgVersion"]},
       "dynamicFields": {"ribbon.right.name": "contentType"}
     }
   },
@@ -434,9 +466,8 @@
     "searchPageredirectUrl": "/search/Library/1"
   },
   "upForReview": {
-    "filterType": "library",
-    "inPageredirectUrl": "/workspace/content/upForReview/1",
-    "searchPageredirectUrl": "/search/Library/1"
+    "filterType": "upforreview",
+    "inPageredirectUrl": "/workspace/content/upForReview/1"
   },
    "allmycontent": {
     "filterType": "allmycontent",
@@ -456,7 +487,9 @@
     "lessonplan": "lessonplan",
     "library": "library",
     "allmycontent":"allmycontent",
-    "explore": "explore"
+    "explore": "explore",
+    "resourcebundle": "resourcebundle",
+    "upforreview" :"upforreview"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -595,6 +628,21 @@
     "read": {
       "title": "Review Comments",
       "subtitle": ""
+    }
+  },
+  "collectionTreeOptions": {
+    "fileIcon": "fa fa-file-o fa-lg",
+    "customFileIcon": {
+      "video": "fa fa-file-video-o fa-lg",
+      "pdf": "fa fa-file-pdf-o fa-lg",
+      "youtube": "fa fa-youtube fa-lg fancy_tree_red",
+      "H5P": "fa fa-html5 fa-lg",
+      "audio": "fa fa-file-audio-o fa-lg",
+      "ECML": "fa fa-file-code-o fa-lg",
+      "HTML": "fa fa-html5 fa-lg",
+      "collection": "fa fa-file-archive-o fa-lg",
+      "epub": "fa fa-file-text fa-lg",
+      "doc": "fa fa-file-text fa-lg"
     }
   }
 }

@@ -20,7 +20,6 @@ import { NgInviewModule } from 'angular-inport';
     SuiModule,
     FormsModule,
     OrderModule,
-    BrowserModule,
     SharedModule,
     MarkdownModule.forRoot(),
     TelemetryModule,

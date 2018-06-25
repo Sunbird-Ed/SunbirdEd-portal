@@ -45,7 +45,7 @@ describe('ProfilePageComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule,
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
       TelemetryModule, NgInviewModule],
       declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,

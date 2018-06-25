@@ -10,10 +10,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-
 import { ViewOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse
 } from '@sunbird/shared';
@@ -21,7 +20,16 @@ import {
 describe('ViewOrgTypeComponent', () => {
     let component: ViewOrgTypeComponent;
     let fixture: ComponentFixture<ViewOrgTypeComponent>;
-    const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+    const fakeActivatedRoute = {
+        'params': Observable.from([{ 'pageNumber': 1 }]),
+        snapshot: {
+            data: {
+                telemetry: {
+                    env: 'org-management', pageid: 'view-organization-type', type: 'view'
+                }
+            }
+        }
+    };
     class RouterStub {
         navigate = jasmine.createSpy('navigate');
     }
@@ -30,8 +38,8 @@ describe('ViewOrgTypeComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ViewOrgTypeComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
-                RouterTestingModule,
-                SharedModule],
+                RouterTestingModule, TelemetryModule.forRoot(),
+                SharedModule.forRoot()],
             providers: [HttpClientModule, OrgTypeService, HttpClient,
                 PaginationService, ToasterService, ResourceService, LearnerService,
                 { provide: Router, useClass: RouterStub },

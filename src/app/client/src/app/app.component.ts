@@ -1,11 +1,12 @@
+import { environment } from '@sunbird/environment';
+import { ITelemetryContext } from '@sunbird/telemetry';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, IUserData, IUserProfile, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
-  UserService, PermissionService, CoursesService, IUserOrgDetails,
-  ITelemetryContext, TenantService, ConceptPickerService
+  UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
 } from '@sunbird/core';
-
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
@@ -55,14 +56,15 @@ export class AppComponent implements OnInit {
   */
   public config: ConfigService;
   public initApp = false;
+  private orgDetails: any;
   /**
    * constructor
    */
   constructor(userService: UserService, public navigationHelperService: NavigationHelperService,
     permissionService: PermissionService, resourceService: ResourceService,
     courseService: CoursesService, tenantService: TenantService,
-    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService,
-    config: ConfigService) {
+    telemetryService: TelemetryService, conceptPickerService: ConceptPickerService, public router: Router,
+    config: ConfigService, public orgDetailsService: OrgDetailsService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.userService = userService;
@@ -78,84 +80,120 @@ export class AppComponent implements OnInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    document.dispatchEvent(new CustomEvent('TelemetryEvent', { detail: { name: 'window:unload' } }));
+    this.telemetryService.syncEvents();
   }
   ngOnInit() {
+    const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.conceptPickerService.initialize();
-    if (this.userService.userid && this.userService.sessionId) {
-      this.userService.startSession();
-      this.userService.initialize(true);
-      this.permissionService.initialize();
-      this.courseService.initialize();
-      this.initTelemetryService();
-      this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err) {
-            this.initApp = true;
-            const slug = _.get(user, 'userProfile.rootOrg.slug');
-            this.initTenantService(slug);
-          } else if ( user && user.err) {
-            this.initApp = true;
-            this.initTenantService();
-          }
+    if (this.userService.loggedIn) {
+      fingerPrint2.get((deviceId, components) => {
+        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.conceptPickerService.initialize();
+        this.initializeLogedInsession();
       });
     } else {
-      this.initApp = true;
-      this.initTenantService();
-      this.userService.initialize(false);
+      this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
+        fingerPrint2.get((deviceId, components) => {
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.conceptPickerService.initialize();
+          this.initializeAnonymousSession();
+        });
+      });
+    }
+  }
+  initializeLogedInsession() {
+    this.userService.startSession();
+    this.userService.initialize(true);
+    this.permissionService.initialize();
+    this.courseService.initialize();
+    const userDataUnsubscribe = this.userService.userData$.subscribe((user: IUserData) => {
+      if (user && !user.err) {
+        userDataUnsubscribe.unsubscribe();
+        this.initApp = true;
+        this.userProfile = user.userProfile;
+        const slug = _.get(user, 'userProfile.rootOrg.slug');
+        this.initTelemetryService();
+        this.initTenantService(slug);
+      } else if (user && user.err) {
+        userDataUnsubscribe.unsubscribe();
+        this.initApp = true;
+        this.initTenantService();
+      }
+    });
+  }
+  initializeAnonymousSession() {
+    this.orgDetailsService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
+      .first().subscribe((data) => {
+        this.orgDetails = data;
+        this.initTelemetryService();
+        this.initTenantService();
+        this.userService.initialize(false);
+        this.initApp = true;
+      }, (err) => {
+        this.initApp = true;
+        console.log('unable to get organization details');
+      });
+  }
+  public initTelemetryService() {
+    let config: ITelemetryContext;
+    if (this.userService.loggedIn) {
+      config = this.getLoggedInUserConfig();
+      this.telemetryService.initialize(config);
+    } else {
+      config = this.getAnonymousUserConfig();
+      this.telemetryService.initialize(config);
     }
   }
 
-  public initTelemetryService() {
-    this.getTelemetryConfig().then((config: ITelemetryContext) => {
-      this.telemetryService.initialize(config);
-    }).catch((error) => {
-      console.log('unable to initialize telemetry service due to: ', error);
-    });
+  private getLoggedInUserConfig(): ITelemetryContext {
+    return {
+      userOrgDetails: {
+        userId: this.userProfile.userId,
+        rootOrgId: this.userProfile.rootOrgId,
+        rootOrg: this.userProfile.rootOrg,
+        organisationIds: _.map(this.userProfile.organisations, (org) => org.organisationId)
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: this.config.appConfig.TELEMETRY.VERSION,
+          pid: this.config.appConfig.TELEMETRY.PID
+        },
+        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        uid: this.userProfile.userId,
+        sid: this.userService.sessionId,
+        channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation
+      }
+    };
   }
-
-  private getTelemetryConfig(): Promise<ITelemetryContext> {
-    return new Promise((resolve, reject) => {
-      this.getUserOrgDetails().then((userOrg: IUserOrgDetails) => {
-        const config: ITelemetryContext = {
-          userOrgDetails: userOrg,
-          config: {
-            pdata: {
-              id: this.userService.appId,
-              ver: this.config.appConfig.TELEMETRY.VERSION,
-              pid: this.config.appConfig.TELEMETRY.PID
-            },
-            endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-            apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-            host: '',
-            uid: userOrg.userId,
-            sid: this.userService.sessionId,
-            channel: _.get(userOrg, 'rootOrg.hashTagId') ,
-            env: 'home'
-           }
-        };
-        resolve(config);
-      }).catch((error) => {
-        reject(error);
-      });
-    });
-  }
-
-  private getUserOrgDetails(): Promise<IUserOrgDetails> {
-    return new Promise((resolve, reject) => {
-      const userService = this.userService.userData$.subscribe(data => {
-        if (data && data.userProfile) {
-          userService.unsubscribe();
-          resolve({
-            userId: data.userProfile.userId, rootOrgId: data.userProfile.rootOrgId,
-            rootOrg: data.userProfile.rootOrg, organisationIds: _.map(data.userProfile.organisations, (org) => org.organisationId),
-          });
-        } else if (data && data.err) {
-          reject(new Error('unable to get userProfile from userService!'));
-        }
-      });
-    });
+  getAnonymousUserConfig() {
+    return {
+      userOrgDetails: {
+        userId: 'anonymous',
+        rootOrgId: this.orgDetails.rootOrgId,
+        organisationIds: [this.orgDetails.rootOrgId]
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: this.config.appConfig.TELEMETRY.VERSION,
+          pid: this.config.appConfig.TELEMETRY.PID
+        },
+        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        uid: 'anonymous',
+        sid: this.userService.anonymousSid,
+        channel: this.orgDetails.channel,
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation
+      }
+    };
   }
 
   private initTenantService(slug?: string) {
@@ -163,11 +201,10 @@ export class AppComponent implements OnInit {
     this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
-          document.title = data.tenantData.titleName;
+          document.title = this.userService.rootOrgName || data.tenantData.titleName;
           document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
         }
       }
     );
   }
 }
-

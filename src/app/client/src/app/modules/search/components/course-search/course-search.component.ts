@@ -340,7 +340,7 @@ export class CourseSearchComponent implements OnInit {
       });
       if (obj === undefined) {
         this.inviewLogs.push({
-          objid: inview.data.metaData.identifier,
+          objid: inview.data.metaData.identifier || inview.data.metaData.courseId,
           objtype: inview.data.metaData.contentType || 'content',
           index: inview.id
         });

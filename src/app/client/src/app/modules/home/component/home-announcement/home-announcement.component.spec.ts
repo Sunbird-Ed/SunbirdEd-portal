@@ -8,6 +8,7 @@ import { HomeAnnouncementComponent } from './home-announcement.component';
 import { AnnouncementService } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
 import * as mockData from './home-announcement.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
 const testData = mockData.mockRes;
 describe('HomeAnnouncementComponent', () => {
   let component: HomeAnnouncementComponent;
@@ -18,8 +19,8 @@ describe('HomeAnnouncementComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule,
-      NgInviewModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
+      NgInviewModule, TelemetryModule],
       declarations: [HomeAnnouncementComponent],
       providers: [ResourceService, AnnouncementService, ConfigService,
         { provide: Router, useClass: RouterStub },

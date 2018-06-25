@@ -23,8 +23,8 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class UpForReviewComponent extends WorkSpace implements OnInit {
   /**
-     * To navigate to other pages
-     */
+  * To navigate to other pages
+  */
   route: Router;
 
   /**
@@ -211,15 +211,15 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         status: ['Review'],
         createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
           rolesMap['BOOK_REVIEWER'],
-          rolesMap['FLAG_REVIEWER'])),
+          rolesMap['FLAG_REVIEWER'],
+          rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
-        contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
-        Content: bothParams.queryParams.Content
+        contentType: bothParams.queryParams.contentType ? bothParams.queryParams.contentType : this.config.appConfig.WORKSPACE.contentType
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

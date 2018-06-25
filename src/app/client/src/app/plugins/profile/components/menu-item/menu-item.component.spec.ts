@@ -11,7 +11,7 @@ describe('MenuItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
       declarations: [MenuItemComponent]
     })
       .compileComponents();

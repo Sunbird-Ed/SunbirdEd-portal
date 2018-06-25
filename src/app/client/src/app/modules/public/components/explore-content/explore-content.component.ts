@@ -2,13 +2,13 @@ import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort } from '@sunbird/core';
+import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort, OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { OrgManagementService } from './../../services';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
     selector: 'app-explore-content',
@@ -16,6 +16,11 @@ import { OrgManagementService } from './../../services';
     styleUrls: ['./explore-content.component.css']
 })
 export class ExploreContentComponent implements OnInit {
+    inviewLogs: any = [];
+    /**
+       * telemetryImpression
+      */
+    telemetryImpression: IImpressionEventInput;
     /**
      * To call searchService which helps to use list of courses
      */
@@ -127,7 +132,7 @@ export class ExploreContentComponent implements OnInit {
     constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
-        config: ConfigService, public utilService: UtilService, public orgManagementService: OrgManagementService,
+        config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         public navigationHelperService: NavigationHelperService) {
         this.searchService = searchService;
         this.route = route;
@@ -154,7 +159,7 @@ export class ExploreContentComponent implements OnInit {
         };
         this.searchService.contentSearch(requestParams).subscribe(
             (apiResponse: ServerResponse) => {
-                if (apiResponse.result.count && apiResponse.result.content.length > 0) {
+                if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                     this.showLoader = false;
                     this.noResult = false;
                     this.searchList = apiResponse.result.content;
@@ -203,15 +208,25 @@ export class ExploreContentComponent implements OnInit {
     }
 
     getChannelId() {
-        this.orgManagementService.getChannel(this.slug).subscribe(
-            (apiResponse) => {
-                this.hashTagId = apiResponse;
+        this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+            (apiResponse: any) => {
+                this.hashTagId = apiResponse.hashTagId;
                 this.setFilters();
             },
             err => {
                 this.route.navigate(['']);
             }
         );
+    }
+
+    compareObjects(a, b) {
+        if (a !== undefined) {
+            a = _.omit(a, ['language']);
+        }
+        if (b !== undefined) {
+            b = _.omit(b, ['language']);
+        }
+        return _.isEqual(a, b);
     }
 
     setFilters() {
@@ -232,39 +247,49 @@ export class ExploreContentComponent implements OnInit {
                 };
             })
             .subscribe(bothParams => {
+                this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
                     this.pageNumber = Number(bothParams.params.pageNumber);
                 }
                 this.queryParams = { ...bothParams.queryParams };
-                if (this.queryParams['language'] && this.queryParams['language'] !== this.selectedLanguage) {
-                    this.selectedLanguage = this.queryParams['language'];
-                    this.resourceService.getResource(this.selectedLanguage);
-                }
-
-                if (_.isEmpty(this.queryParams)) {
-                    this.filters = {
-                        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
-                    };
-                } else {
+                this.filters = {
+                    contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
+                };
+                if (!_.isEmpty(this.queryParams)) {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
-                        if (queryParam !== 'key' && queryParam !== 'sort_by'
-                            && queryParam !== 'sortType' && queryParam !== 'language') {
-                            this.filters[queryParam] = queryValue;
-                        }
+                        this.filters[queryParam] = queryValue;
                     });
+                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType', 'language']);
                 }
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();
                 }
-                this.populateContentSearch();
+                if (this.tempPageNumber !== this.pageNumber || !this.isSearchable) {
+                    this.tempPageNumber = this.pageNumber;
+                    this.populateContentSearch();
+                }
             });
     }
 
     ngOnInit() {
+        this.slug = this.activatedRoute.snapshot.params.slug;
+        this.getChannelId();
         this.activatedRoute.params.subscribe(params => {
-            this.slug = params.slug;
-            this.getChannelId();
+            this.setTelemetryData();
         });
+    }
+    setTelemetryData() {
+        this.telemetryImpression = {
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.route.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+            }
+        };
     }
 
     public playContent(event) {
@@ -278,5 +303,22 @@ export class ExploreContentComponent implements OnInit {
                 queryParams: _.pick(this.queryParams, ['language'])
             });
         }
+    }
+    inview(event) {
+        _.forEach(event.inview, (inview, key) => {
+            const obj = _.find(this.inviewLogs, (o) => {
+                return o.objid === inview.data.metaData.identifier;
+            });
+            if (obj === undefined) {
+                this.inviewLogs.push({
+                    objid: inview.data.metaData.identifier,
+                    objtype: inview.data.metaData.contentType || 'content',
+                    index: inview.id
+                });
+            }
+        });
+        this.telemetryImpression.edata.visits = this.inviewLogs;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 }

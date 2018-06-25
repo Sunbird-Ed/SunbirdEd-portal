@@ -12,7 +12,7 @@ import { FrameworkService, FormService, ContentService, UserService, CoreModule 
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
 import { mockFrameworkData } from './data-driven.component.spec.data';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;
@@ -52,7 +52,8 @@ describe('DataDrivenComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        TelemetryModule.forRoot()],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
       providers: [FrameworkService, FormService, UserService, ContentService,
         CacheService, EditorService,

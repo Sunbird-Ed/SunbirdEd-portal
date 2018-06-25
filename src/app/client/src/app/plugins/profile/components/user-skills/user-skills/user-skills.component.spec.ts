@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';
@@ -11,7 +12,6 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule }
 import { EditUserSkillsComponent } from '../../user-skills/edit-user-skills/edit-user-skills.component';
 import { UserSkillsComponent } from './user-skills.component';
 import { mockSkillResponse } from './user-skills.component.spec.data';
-
 describe('UserSkillsComponent', () => {
   let component: UserSkillsComponent;
   let fixture: ComponentFixture<UserSkillsComponent>;
@@ -24,7 +24,8 @@ describe('UserSkillsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserSkillsComponent, EditUserSkillsComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule,
+        TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

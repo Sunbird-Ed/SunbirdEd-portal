@@ -24,7 +24,7 @@ describe('CourseConsumptionService', () => {
   }
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), RouterTestingModule],
       providers: [CourseConsumptionService, CourseProgressService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute}]

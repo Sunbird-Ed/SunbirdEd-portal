@@ -1,7 +1,7 @@
 import { Directive, Input, OnInit } from '@angular/core';
-import { IShareEventInput } from '../../interfaces';
+import { IShareEventInput, IShareEventData } from '../../interfaces';
 import { TelemetryService } from '../../services';
-
+import { ActivatedRoute } from '@angular/router';
 /**
  * TelemetryInteract Directive
  */
@@ -12,7 +12,8 @@ export class TelemetryShareDirective implements OnInit {
   /**
    * Interact event input
   */
-  @Input('appTelemetryShare') appTelemetryShare: IShareEventInput;
+  appTelemetryShare: IShareEventInput;
+   @Input() TelemetryShareEdata: IShareEventData;
   /**
    * reference of permissionService service.
   */
@@ -22,11 +23,17 @@ export class TelemetryShareDirective implements OnInit {
   Default method of Draft Component class
   * @param {TelemetryService} telemetryService Reference of TelemetryService
   */
-  constructor( telemetryService: TelemetryService) {
+  constructor( telemetryService: TelemetryService, private activatedRoute: ActivatedRoute) {
     this.telemetryService = telemetryService;
   }
   ngOnInit() {
-    if (this.appTelemetryShare) {
+    if (this.TelemetryShareEdata) {
+      this.appTelemetryShare = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: this.TelemetryShareEdata
+      };
       this.telemetryService.share(this.appTelemetryShare);
     }
   }

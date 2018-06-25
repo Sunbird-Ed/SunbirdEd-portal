@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-public-footer',
@@ -16,7 +17,7 @@ export class PublicFooterComponent implements OnInit {
 */
 appFooter = true;
 
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
   }

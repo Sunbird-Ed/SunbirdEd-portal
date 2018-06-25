@@ -34,8 +34,8 @@ describe('FlagConentplayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FlagConentplayerComponent ],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-      CoreModule,
-      RouterTestingModule, SharedModule],
+      CoreModule.forRoot(),
+      RouterTestingModule, SharedModule.forRoot()],
       providers: [ ResourceService, ToasterService, NavigationHelperService,
       { provide: ResourceService, useValue: resourceBundle }
       ]

@@ -36,7 +36,7 @@ describe('DetailsPopupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DetailsPopupComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule,
-        SuiModule, SharedModule, TelemetryModule],
+        SuiModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [HttpClientModule, AnnouncementService, RouterNavigationService,
         ResourceService, ToasterService, ConfigService, HttpClient,
         { provide: Router, useClass: RouterStub },

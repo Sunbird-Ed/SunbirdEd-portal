@@ -111,7 +111,7 @@ export class RequestChangesPopupComponent implements OnInit {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.reasons && this.reasons.length > 0 && this.comment && this.comment.length > 0) {
+    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -127,7 +127,7 @@ export class RequestChangesPopupComponent implements OnInit {
       request: {
         content: {
           rejectReasons: this.reasons,
-          rejectComment: this.comment
+          rejectComment: _.trim(this.comment)
         }
       }
     };
@@ -150,7 +150,8 @@ export class RequestChangesPopupComponent implements OnInit {
    * Method to redirect to parent url
    */
   redirect() {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    this.modal.deny();
+    this.route.navigate(['../'], {relativeTo: this.activatedRoute});
   }
 
   /**

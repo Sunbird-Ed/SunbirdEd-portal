@@ -1,4 +1,4 @@
-<div class="ui stackable grid margin-top-20">
+<div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]= "telemetryCourseEndEvent">
     <div class="one wide column"></div>
     <div class="ten wide column">
             <div *ngIf="!enableContentPlayer && !loader">
@@ -31,7 +31,7 @@
                                 <!-- <app-course-discussions></app-course-discussions> -->
                             </div>
                             <div class='three wide column'>
-                                <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse"></app-batch-details>
+                                <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId" [enrolledCourse]="enrolledCourse" [courseHierarchy]="courseHierarchy"></app-batch-details>
                                 <div *ngIf="enrolledCourse" class="margin-bottom-15 margin-top-15">
                                     <div>
                                         <br>
@@ -67,14 +67,15 @@
                                     <div class="ui grid" id="app-player-collection-renderer">
                                         <div class="twelve wide column">
                                             <span class="ui HomeAccordianHeading left floated header">{{contentTitle}}</span>
-                                            <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
+                                            <h5 appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
+                                            class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeContentPlayer()">
                                                 <i class="ui remove icon"></i>
                                             </h5>
                                         </div>
                                     </div>
                                     <div class="ui grid">
                                         <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                            <app-player (contentProgressEvent)="contentProgressEventnew($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
+                                            <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
                                         </div>
                                     </div>
                                 </div>
@@ -92,9 +93,9 @@
                                 <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
                                     <h2 class="ui center aligned icon tiny header toc-note">
                                         <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
-                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
+                                            <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
                                                 (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                            <img src="assets/images/takenote.png">
+                                            <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
                                             <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
                                         </a>
                                     </h2>
@@ -121,7 +122,7 @@
                             <!-- <course-discussions></course-discussions> -->
                         </div>
                         <div class="four wide column toc-note-content">
-                            <!-- <note-card ng-if="toc.courseType === 'ENROLLED_COURSE'" shownotecard="toc.courseType === 'ENROLLED_COURSE' ? true : false" courseid="toc.courseId" contentid="contentPlayer.contentData.identifier"></note-card> -->
+                                <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"></app-note-card>
                         </div>
                     </div>
                 </div>

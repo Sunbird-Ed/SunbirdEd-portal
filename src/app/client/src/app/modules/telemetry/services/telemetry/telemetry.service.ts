@@ -5,7 +5,7 @@ import {
   IStartEventInput, IImpressionEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext
 } from './../../interfaces/telemetry';
-export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
+ export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
 */
@@ -45,8 +45,9 @@ export class TelemetryService {
    * @param {*} telemetryProvider
    * @memberof TelemetryService
    */
-  constructor(@Inject(TELEMETRY_PROVIDER) telemetryProvider: any) {
-    this.telemetryProvider = telemetryProvider;
+  constructor() {
+    // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
+    this.telemetryProvider = EkTelemetry;
   }
 
   /**
@@ -60,6 +61,16 @@ export class TelemetryService {
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
     console.log('Telemetry Service is Initialized!', this.context);
+  }
+
+  /**
+   *
+   * Telemetry data sync method
+   * @memberof TelemetryService
+   */
+  public syncEvents() {
+    this.telemetryProvider.syncEvents();
+    console.log('Telemetry data is Synced!');
   }
 
   /**

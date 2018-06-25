@@ -19,47 +19,55 @@ import { WorkspaceModule } from '@sunbird/workspace';
 import { OrgManagementModule } from '@sunbird/org-management';
 import { PublicModule } from '@sunbird/public';
 import { SearchModule } from '@sunbird/search';
-import { DiscussionModule } from '@sunbird/discussion';
+// import { DiscussionModule } from '@sunbird/discussion';
 import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
 // portal-extensions
 import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
-import { WebExtensionsConfig } from './framework.config';
+import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { BadgingModule } from '@sunbird/badge';
+import { CacheService } from 'ng2-cache-service';
+import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
+import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/memory/cache-memory.service';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    CoreModule,
+    CoreModule.forRoot(),
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     SuiModule,
-    CommunityModule,
-    SharedModule,
+    // CommunityModule,
+    SharedModule.forRoot(),
     HomeModule,
     DashboardModule,
     AnnouncementModule,
     Ng2IziToastModule,
     NotesModule,
-    ResourceModule,
-    LearnModule,
-    WorkspaceModule,
+    // ResourceModule, // Lazy load
+    // LearnModule, // Lazy load
+    // WorkspaceModule, // Lazy load
     OrgManagementModule,
     PublicModule,
-    SearchModule,
-    DiscussionModule,
-    WebExtensionModule,
+    // SearchModule, // Lazy load
+    // DiscussionModule,
+    WebExtensionModule.forRoot(),
     BadgingModule,
-    ...WebExtensionsConfig.plugins.map((data) => data.module),
-    TelemetryModule
+    ...PluginModules,
+    // ...WebExtensionsConfig.plugins.map((data) => data.module),
+    TelemetryModule.forRoot()
   ],
-  providers: [],
   entryComponents: [AppComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    CacheService,
+    {provide: CacheStorageAbstract, useClass: CacheMemoryStorage},
+  ]
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {

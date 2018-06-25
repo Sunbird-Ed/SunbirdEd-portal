@@ -1,4 +1,4 @@
-<div class="ui grid">
+<div [appTelemetryImpression]="telemetryImpression" class="ui grid">
   <div id="app-player-collection-renderer" *ngIf="showPlayer" class="row">
     <div class="twelve wide column">
       <div class="ui grid">
@@ -29,7 +29,7 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
-      <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
+      <h5 appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
     </div>
@@ -52,3 +52,4 @@
     <div class="one wide column"></div>
   </div>
 </div>
+<app-public-footer *ngIf="showFooter"></app-public-footer>

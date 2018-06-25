@@ -6,7 +6,7 @@ import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage,
-  ContentUtilsServiceService
+  ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
@@ -138,6 +138,10 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   /**
+	 * telemetryShareData
+	*/
+  telemetryShareData: Array<ITelemetryShare>;
+  /**
 	 * inviewLogs
 	*/
   inviewLogs = [];
@@ -175,7 +179,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       'message': this.resourceService.messages.stmsg.m0008,
       'messageText': this.resourceService.messages.stmsg.m0083
     };
-    this.state = 'limited/publish';
+    this.state = 'limited-publish';
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -210,8 +214,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
         objectType: 'Content'
       },
       limit: this.pageLimit,
-      pageNumber: this.pageNumber,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
@@ -243,6 +247,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       this.deleteConfirmModal(param.data.metaData.identifier);
     } else if (param.action.eventName === 'share') {
       this.shareLink = this.contentUtilsServiceService.getUnlistedShareUrl(param.data.metaData);
+      this.setTelemetryShareData(param.data.metaData);
       this.sharelinkModal = true;
     } else {
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);
@@ -289,7 +294,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/limited/publish', this.pageNumber]);
+    this.route.navigate(['workspace/content/limited-publish', this.pageNumber]);
   }
   /**
   * get inview  Data
@@ -310,5 +315,12 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
   }
 }

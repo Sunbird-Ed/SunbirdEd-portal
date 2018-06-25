@@ -21,26 +21,30 @@ describe('NoteListComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-  const fakeActivatedRoute = {
-    'params': Observable.from([{ courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160' }]),
-    snapshot: {
-      data: {
-        telemetry: {
-          env: 'library', pageid: 'content-note-read', type: 'list',
-          object: { type: 'library', ver: '1.0' }
-        }
-      }
+
+  class ActivatedRouteStub {
+    snapshot = { params : {contentId : 'do_112270494168555520130'}};
+    parent = {};
+    paramsMock = {courseId: 'do_212347136096788480178', batchId: '01250892550857523234', contentId: 'do_112498388508524544160'};
+    queryParamsMock = {contentId: 'do_112270494168555520130'};
+    queryParams =  Observable.of(this.queryParamsMock);
+    params =  Observable.of(this.paramsMock);
+    public changeParams(params) {
+      this.paramsMock = params;
     }
-  };
+    public changeSnapshot(snapshot) {
+      this.snapshot = snapshot;
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, OrderModule, SharedModule, CoreModule,
+      imports: [HttpClientTestingModule, OrderModule, SharedModule.forRoot(), CoreModule.forRoot(),
         TelemetryModule, NgInviewModule],
       declarations: [NoteListComponent, TimeAgoPipe],
       providers: [NotesService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -122,5 +126,21 @@ describe('NoteListComponent', () => {
     component.inview(response.event.inview);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
+  });
+
+  it('Should redirect to the respective content when batchId and contentId(from queryParams) is available', () => {
+    const route = TestBed.get(Router);
+    component.batchId = '01250892550857523234';
+    component.courseId = 'do_112270494168555520130';
+    component.redirect();
+    expect(route.navigate).toHaveBeenCalledWith(['do_112270494168555520130', 'batch', '01250892550857523234'],
+    {queryParams: {contentId: 'do_112270494168555520130'}, relativeTo: {}});
+  });
+
+  it('Should redirect to the respective resource when no parameters are available', () => {
+    const route = TestBed.get(Router);
+    component.contentId = 'do_112270494168555520130';
+    component.redirect();
+    expect(route.navigate).toHaveBeenCalledWith([ '/resources/play/content/', 'do_112270494168555520130' ]);
   });
 });

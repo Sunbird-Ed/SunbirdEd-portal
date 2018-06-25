@@ -15,17 +15,19 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { DiscussionModule } from '@sunbird/discussion';
 import { NotesModule } from '@sunbird/notes';
+import { DashboardModule } from '@sunbird/dashboard';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     SuiModule,
+    DashboardModule,
     SlickModule,
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    DiscussionModule,
+    // DiscussionModule,
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,

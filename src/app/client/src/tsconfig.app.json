@@ -2,11 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
+    "experimentalDecorators": true,
     "baseUrl": "./",
     "paths": {
-      "sunbird-web-extension": [
-        "libs/sunbird-web-extension/esm5"
-      ],
       "@sunbird/core": [
         "app/modules/core"
       ],
@@ -61,8 +59,8 @@
       "@sunbird/badge": [
         "app/modules/badging"
       ],
-      "@sunbird/telemetry": [
-        "app/modules/telemetry"
+      "@sunbird/environment": [
+        "environments/environment"
       ]
     },
     "module": "es2015",

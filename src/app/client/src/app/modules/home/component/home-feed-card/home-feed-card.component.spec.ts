@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@sunbird/shared';
 import { HomeFeedCardComponent } from './home-feed-card.component';
 
 describe('HomeFeedCardComponent', () => {
@@ -8,6 +8,7 @@ describe('HomeFeedCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule.forRoot()],
       declarations: [ HomeFeedCardComponent ]
     })
     .compileComponents();

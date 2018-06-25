@@ -3,6 +3,7 @@ import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilSer
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam } from '@sunbird/core';
 import * as _ from 'lodash';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-dial-code',
@@ -10,7 +11,11 @@ import * as _ from 'lodash';
   styleUrls: ['./dial-code.component.css']
 })
 export class DialCodeComponent implements OnInit {
-
+  inviewLogs: any = [];
+  /**
+	 * telemetryImpression
+	*/
+  telemetryImpression: IImpressionEventInput;
   /**
    * reference of SearchService
    */
@@ -82,9 +87,27 @@ export class DialCodeComponent implements OnInit {
       this.searchResults = [];
       this.searchKeyword = this.dialCode = params.dialCode;
       this.searchDialCode();
+      this.setTelemetryData();
     });
   }
-
+  setTelemetryData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.dialCode,
+        type: 'dialCode',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+  }
   public searchDialCode() {
     this.showLoader = true;
     const searchParams: SearchParam = {
@@ -101,7 +124,7 @@ export class DialCodeComponent implements OnInit {
           const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
           this.searchResults = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
         } else {
-          this.toasterService.error(this.resourceService.messages.stmsg.m0006);
+          this.toasterService.error(this.resourceService.messages.stmsg.m0112);
         }
       },
       err => {
@@ -124,5 +147,21 @@ export class DialCodeComponent implements OnInit {
       this.router.navigate(['play/content', event.data.metaData.identifier]);
     }
   }
-
+  inview(event) {
+    _.forEach(event.inview, (inview, key) => {
+      const obj = _.find(this.inviewLogs, (o) => {
+        return o.objid === inview.data.metaData.identifier;
+      });
+      if (obj === undefined) {
+        this.inviewLogs.push({
+          objid: inview.data.metaData.identifier,
+          objtype: inview.data.metaData.contentType || 'content',
+          index: inview.id
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
 }

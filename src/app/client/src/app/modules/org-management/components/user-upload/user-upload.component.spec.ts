@@ -12,7 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { UserUploadComponent } from './user-upload.component';
 import { mockRes } from './user-upload.component.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('UserUploadComponent', () => {
   let component: UserUploadComponent;
   let fixture: ComponentFixture<UserUploadComponent>;
@@ -67,7 +67,8 @@ describe('UserUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule, SharedModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot(), SharedModule.forRoot(),
+        TelemetryModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },

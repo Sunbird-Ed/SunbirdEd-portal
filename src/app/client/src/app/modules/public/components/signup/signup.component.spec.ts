@@ -6,12 +6,22 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SignupService } from '../../services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { mockSignUpResponse } from './signup.component.spec.data';
 import { Observable } from 'rxjs/Observable';
 import { CoreModule, LearnerService } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TelemetryModule } from '@sunbird/telemetry';
 
+const fakeActivatedRoute = {
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'signup', pageid: 'signup', type: 'edit', subtype: 'paginate'
+      }
+    }
+  }
+};
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
@@ -23,9 +33,11 @@ describe('SignupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SignupComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, SharedModule, CoreModule, HttpClientTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule,
+         SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       providers: [FormBuilder, ResourceService, SignupService,
-        { provide: Router, useClass: RouterStub }],
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

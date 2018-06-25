@@ -14,7 +14,7 @@ describe('ProfileHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot()],
       declarations: [ProfileHeaderComponent],
       providers: [ProfileService, UserService, ResourceService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -43,7 +43,7 @@ describe('ProfileHeaderComponent', () => {
     const formData = mockProfileHeaderData.profileResult;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
-    component.updateAvatar(img[0]);
+    component.updateAvatar(img);
     expect(component.updateAvatar).toHaveBeenCalled();
   });
   it('should not call user service as the image size is more', () => {
@@ -57,7 +57,7 @@ describe('ProfileHeaderComponent', () => {
     const formData = mockProfileHeaderData.profileResult;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
-    component.updateAvatar(img[0]);
+    component.updateAvatar(img);
     expect(profileService.updateAvatar).not.toHaveBeenCalled();
   });
   it('should call user service as the file format is invalid', () => {
@@ -71,7 +71,7 @@ describe('ProfileHeaderComponent', () => {
     const formData = mockProfileHeaderData.profileErr;
     spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.throw(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
-    component.updateAvatar(img[0]);
+    component.updateAvatar(img);
     expect(profileService.updateAvatar).not.toHaveBeenCalled();
   });
 });

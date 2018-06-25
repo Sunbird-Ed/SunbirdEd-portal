@@ -11,7 +11,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { StatusComponent } from './status.component';
 import { FormBuilder } from '@angular/forms';
 import { mockRes } from './status.component.spec.data';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
@@ -33,7 +33,8 @@ describe('StatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot(),
+        TelemetryModule.forRoot()],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

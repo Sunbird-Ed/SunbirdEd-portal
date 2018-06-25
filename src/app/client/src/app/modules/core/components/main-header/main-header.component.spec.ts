@@ -9,6 +9,8 @@ import { ConfigService, ResourceService, ToasterService, SharedModule } from '@s
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { WebExtensionModule } from 'sunbird-web-extension';
+import { TelemetryModule} from '@sunbird/telemetry';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -16,7 +18,8 @@ describe('MainHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
+        TelemetryModule.forRoot(), RouterTestingModule, WebExtensionModule.forRoot()],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService,
@@ -33,6 +36,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should subscribe to user service', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
@@ -42,6 +46,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should subscribe to tenant service and update logo and tenant name', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
     spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
@@ -51,17 +56,26 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should not update logo unless tenant service returns it', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     component.ngOnInit();
     expect(component.logo).toBeUndefined();
     expect(component.tenantName).toBeUndefined();
   });
 
   it('Should update the logo on initialization', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
     spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('img').src).toEqual(mockUserData.tenantSuccess.result.logo);
+  });
+
+  it('All query param should be removed except key and language', () => {
+    component.queryParamLanguage = 'en';
+    component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
+    component.onEnter('test');
+    expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
   });
 });

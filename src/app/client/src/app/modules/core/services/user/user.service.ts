@@ -44,7 +44,7 @@ export class UserService {
   /**
    * reference of lerner service.
    */
-  public learner: LearnerService;
+  public learnerService: LearnerService;
   /**
  * Contains hashTag id
  */
@@ -65,7 +65,7 @@ export class UserService {
    * Reference of Ekstep_env
    */
   private _env: string;
-  public _authenticated: boolean;
+  private _authenticated: boolean;
   public anonymousSid: string;
   private _contentChannelFilter: string;
   /**
@@ -76,6 +76,9 @@ export class UserService {
    * Reference of orgNames
    */
   private orgNames: Array<string> = [];
+
+  public rootOrgName: string;
+
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -84,7 +87,7 @@ export class UserService {
   constructor(config: ConfigService, learner: LearnerService,
     private http: HttpClient, contentService: ContentService) {
     this.config = config;
-    this.learner = learner;
+    this.learnerService = learner;
     this.contentService = contentService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
@@ -102,9 +105,9 @@ export class UserService {
 
   }
   /**
-   * get method to fetch userid.
+   * returns login status.
    */
-  get authentication(): boolean {
+  get loggedIn(): boolean {
     return this._authenticated;
   }
 
@@ -128,7 +131,7 @@ export class UserService {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${this.userid}`,
       param: this.config.urlConFig.params.userReadParam
     };
-    this.learner.get(option).subscribe(
+    this.learnerService.get(option).subscribe(
       (data: ServerResponse) => {
         this.setUserProfile(data);
       },
@@ -212,7 +215,9 @@ export class UserService {
     this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
+    this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
+    this.rootOrgName = this._userProfile.rootOrg.orgName;
   }
   setContentChannelFilter() {
     try {
@@ -220,18 +225,25 @@ export class UserService {
       if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
         this._contentChannelFilter = this.channel;
       }
-    } catch {
-
+    } catch (error) {
+      console.log('unable to set content channel filter');
     }
+  }
+  setOrgDetailsToRequestHeaders() {
+    this.learnerService.rootOrgId = this._rootOrgId;
+    this.learnerService.channelId = this._channel;
+    this.contentService.rootOrgId = this._rootOrgId;
+    this.contentService.channelId = this._channel;
   }
   get contentChannelFilter() {
     return this._contentChannelFilter;
   }
+
   /**
-* Get organization details.
-*
-* @param {requestParam} requestParam api request data
-*/
+   * Get organization details.
+   *
+   * @param {requestParam} requestParam api request data
+   */
   getOrganisationDetails(organisationIds) {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,

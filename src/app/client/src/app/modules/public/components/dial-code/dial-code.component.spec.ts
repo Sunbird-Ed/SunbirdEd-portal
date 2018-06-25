@@ -10,6 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from './dial-code.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
   let fixture: ComponentFixture<DialCodeComponent>;
@@ -17,7 +18,8 @@ describe('DialCodeComponent', () => {
     'messages': {
       'stmsg': {
         'm0007': 'Search for something else',
-        'm0006': 'No result'
+        'm0006': 'No result',
+        'm0112': 'Content coming soon'
       },
       'fmsg': {
         'm0049': 'Fetching serach result failed'
@@ -26,14 +28,21 @@ describe('DialCodeComponent', () => {
   };
   const fakeActivatedRoute = {
     'params': Observable.from([{ dialCode: '61U24C' }]),
-    'queryParams': Observable.from([])
+    'queryParams': Observable.from([]),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), TelemetryModule.forRoot(),  Ng2IziToastModule],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [SearchService,

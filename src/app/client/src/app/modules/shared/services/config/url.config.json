@@ -3,7 +3,7 @@
     "userReadParam": {
       "fields": "completeness,missingFields,lastLoginTime"
     },
-    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework"
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license"
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
@@ -119,7 +119,7 @@
       "READ": "data/v1/form/read"
     },
     "GEO_EXPLORER": {
-      "LOCATION_READ": "org/v1/location/read/"
+      "LOCATION_READ": "org/v1/location/read"
     },
     "CONTENT_COLLECTION": "application/vnd.ekstep.content-collection",
     "LOCATION_READ": "org/v1/location/read",

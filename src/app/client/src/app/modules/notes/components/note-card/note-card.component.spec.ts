@@ -13,24 +13,36 @@ import { response } from './note-card-component.spec.data';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 import { NoteCardComponent } from './note-card.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import * as _ from 'lodash';
 
 describe('NoteCardComponent', () => {
   let component: NoteCardComponent;
   let fixture: ComponentFixture<NoteCardComponent>;
-  const fakeActivatedRoute = {
-    'params' : Observable.from([{courseId: 'do_212347136096788480178', contentId: 'do_112498388508524544160'}])
-  };
+
+  class ActivatedRouteStub {
+    snapshot = { queryParams : {contentId : 'do_112270494168555520130'}};
+    paramsMock = {courseId: 'do_212347136096788480178', batchId: '01250892550857523234', contentId: 'do_112498388508524544160'};
+    queryParamsMock = {contentId: 'do_112270494168555520130'};
+    queryParams =  Observable.of(this.queryParamsMock);
+    params =  Observable.of(this.paramsMock);
+    public changeParams(params) {
+      this.paramsMock = params;
+    }
+    public changeSnapshot(snapshot) {
+      this.snapshot = snapshot;
+    }
+  }
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ OrderModule, HttpClientTestingModule, SharedModule, CoreModule ],
+      imports: [ OrderModule, HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot() ],
       declarations: [ NoteCardComponent, TimeAgoPipe ],
       providers: [ NotesService,
          { provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
+         { provide: ActivatedRoute, useClass: ActivatedRouteStub } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents()
@@ -105,5 +117,20 @@ describe('NoteCardComponent', () => {
     component.createNoteData = response.testNote;
     component.ngOnChanges();
     expect(component.notesList[0]).toBe(component.createNoteData);
+  });
+
+  it('Should redirect to notes list component when batchId and contentId(from queryParams) is available', () => {
+    const route = TestBed.get(Router);
+    component.viewAllNotes();
+    expect(route.navigate).toHaveBeenCalledWith(['/learn/course', 'do_212347136096788480178', 'batch', '01250892550857523234',
+     'notes', 'do_112270494168555520130']);
+  });
+
+  it('Should redirect to notes list component when the only parameter available is batchId', () => {
+    const route = TestBed.get(Router);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    activatedRouteStub.changeSnapshot(undefined);
+    component.viewAllNotes();
+    expect(route.navigate).toHaveBeenCalledWith(['/learn/course', 'do_212347136096788480178', 'batch', '01250892550857523234', 'notes']);
   });
 });

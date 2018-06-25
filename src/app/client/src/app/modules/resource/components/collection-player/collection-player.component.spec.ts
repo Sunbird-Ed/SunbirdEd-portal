@@ -21,13 +21,20 @@ describe('CollectionPlayerComponent', () => {
 
   const fakeActivatedRoute = {
     params: Observable.of({ id: collectionId }),
-    queryParams: Observable.of({ contentId: contentId })
+    queryParams: Observable.of({ contentId: contentId }),
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
-      imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule, RouterTestingModule],
+      imports: [SuiModule, HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })

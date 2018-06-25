@@ -1,4 +1,4 @@
-<div class="ui cards">
+<div class="ui cards margin-top-10">
     <div class="sliderCards profilUpdateCards ui link card margin-right-20 margin-top-15 margin-left-10 link">
         <div class="course-progress ui tiny progress  progressBar-margin orange">
             <sui-progress class="top attached  active" [value]="profile.value" [maximum]="100"></sui-progress>
@@ -7,7 +7,7 @@
             <div class="profile">
                 <div class="profileCard-circular-image light small blue margin-right-20">
                     <div class="profpic">
-                        <img class="ui circular floated image" src="{{ profile.image || '/assets/images/user_logo.png' }}"
+                        <img class="ui circular floated image" src="{{ profile.image || '/assets/images/user_logo.png' | cdnprefixurl }}"
                         />
                     </div>
                 </div>

@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
@@ -48,7 +49,7 @@ describe('HomeSearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [HomeSearchComponent],
       providers: [ConfigService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },

@@ -29,10 +29,11 @@
     </tr>
   </thead>
   <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="allContent">
-    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of allContent let i = index;" [id]="i" [data]="content" (click)="contentClick(content)">
+    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of allContent let i = index;" [id]="i" [data]="content" (click)="contentClick(content)"
+     appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }" [telemetryInteractEdata]="{id:'allcontent',type:'click',pageid:'AllContent'}">
       <td>
         <h5 class="ui image header">
-          <img src="{{content.appIcon  ? content.appIcon : 'assets/images/default.png'}}" class="ui tiny image UpReviewTinyImage">
+          <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
           <div class="content ">
             <div class="UpReviewHeader">{{content.name | slice:0:40}}
               <i *ngIf="content.name.length > 40">...</i>

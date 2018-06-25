@@ -68,7 +68,7 @@ describe('UpForReviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

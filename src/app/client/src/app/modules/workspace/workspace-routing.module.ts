@@ -12,7 +12,7 @@ const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
   {
-    path: 'workspace/content', component: WorkspaceComponent, canActivate: [AuthGuard], data: { roles: 'workspace' },
+    path: 'content', component: WorkspaceComponent, canActivate: [AuthGuard], data: { roles: 'workspace' },
     children: [
       {
         path: 'create', component: CreateContentComponent, canActivate: [AuthGuard],
@@ -151,10 +151,10 @@ const routes: Routes = [
         }
       },
       {
-        path: 'limited/publish/:pageNumber', component: LimitedPublishedComponent, canActivate: [AuthGuard],
+        path: 'limited-publish/:pageNumber', component: LimitedPublishedComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'workspace-content-unlisted', subtype: 'scroll', uri: '/workspace/content/limited/publish',
+            env: telemetryEnv, pageid: 'workspace-content-unlisted', subtype: 'scroll', uri: '/workspace/content/limited-publish',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'limitedPublishingRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -171,12 +171,13 @@ const routes: Routes = [
         }
       },
       {
-        path: 'update/batch/:batchId', component: UpdateBatchComponent,
+        path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
             type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
       { path: 'update/batch/:batchId', component: UpdateBatchComponent },
@@ -194,7 +195,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'workspace/content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
+    path: 'content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
     data: {
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -205,14 +206,14 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'workspace/content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
+    path: 'content/flag/content/:contentId', component: FlagConentplayerComponent, canActivate: [AuthGuard],
     data: {
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
   },
   {
-    path: 'workspace/content/review/content/:contentId', component: ReviewsubmissionsContentplayerComponent, canActivate: [AuthGuard],
+    path: 'content/review/content/:contentId', component: ReviewsubmissionsContentplayerComponent, canActivate: [AuthGuard],
     data: {
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]

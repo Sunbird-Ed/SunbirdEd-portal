@@ -1,4 +1,4 @@
-<sui-modal [isClosable]="false" #updatemodal>
+<sui-modal *ngIf='showUpdateModal' [isClosable]="false" #updatemodal>
   <div class="header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui grid">
       <div class="eleven wide column">
@@ -14,45 +14,47 @@
 
   <div class="scrolling content">
     <form *ngIf="batchData" [formGroup]="batchAddUserForm" class="ui form batchAddUserForm">
-
-      <div *ngIf="batchData.status === 0 ">
         <div class="one field" [ngClass]="{'error':batchAddUserForm.controls['name'].hasError('required') }">
-          <div class="required field">
+          <div class="required field" >
             <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
-            <input type="text" name="name" formControlName="name">
+            <input type="text" name="name" formControlName="name" [attr.disabled]="batchData.status === 2 ? true : null">
           </div>
+        </div>
+        <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="batchAddUserForm.controls.name.invalid && batchAddUserForm.controls['name'].errors.required && !batchAddUserForm.controls['name'].pristine">
+            {{resourceService?.messages?.stmsg?.m0114}}
         </div>
         <div class="one field">
           <div class="field">
             <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
-            <input type="text" name="description" formControlName="description">
+            <input type="text" name="description" formControlName="description" [attr.disabled]="batchData.status === 2 ? true : null">
           </div>
         </div>
         <div class="inline fields">
           <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
           <div class="field">
             <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'invite-only'" name="enrollmentType" formControlName="enrollmentType">
+              <input type="radio" [attr.disabled]="batchData.status !== 0 ? true : null" [checked]="batchData.enrollmentType == 'invite-only'" name="enrollmentType" formControlName="enrollmentType">
               <label>Invite-only</label>
             </div>
           </div>
           <div class="field" *ngIf="batchData.createdBy == userId">
             <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'open'" name="enrollmentType" formControlName="enrollmentType">
+              <input [attr.disabled]="batchData.status !== 0 ? true : null" type="radio" [checked]="batchData.enrollmentType == 'open'" name="enrollmentType" formControlName="enrollmentType">
               <label>Open</label>
             </div>
           </div>
         </div>
-
-
         <div class="two fields">
           <div class="required field">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+            <div class="ui read-only calendar rangestartAdd margin-bottom-10" id="rangestartAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input disabled="true" suiDatepicker formControlName="startDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchData.status !== 0 ? true : null" suiDatepicker formControlName="startDate" [pickerMinDate]='pickerMinDate' [pickerMode]="'date'">
               </div>
+            </div>
+             <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="batchAddUserForm.controls.startDate.invalid && batchAddUserForm.controls['startDate'].errors.required && !batchAddUserForm.controls['startDate'].pristine">
+              {{resourceService?.messages?.stmsg?.m0113}}
             </div>
           </div>
           <div class="field">
@@ -60,245 +62,57 @@
             <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input suiDatepicker formControlName="endDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchData.status === 2 ? true : null"  [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
               </div>
             </div>
           </div>
         </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <ng-template let-mentor #optionTemplate>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
-          </ng-template>
-          <sui-multi-select [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-            [options]="menterList" #templated class="selection ">
-            <div class="scrolling menu">
-              <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
-              </sui-select-option>
+        <div class="one field " *ngIf="batchData.enrollmentType !== 'open'">
+            <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" [ngClass]="{ 'disabled': batchData.status === 2 }">
+                <input id="mentorSelList">
+                <i class="dropdown icon"></i>
+                <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+                <div class="menu">
+                    <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of menterList">
+                        <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
+                    </div>
+                </div>
             </div>
-          </sui-multi-select>
+        </div>
+        <div class="one field" *ngIf="batchData.enrollmentType !== 'open' && selectedMentors.length > 0">
+            <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
+            <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
+            <img class="ui right spaced avatar image" src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
+            {{selectmentor.name}}{{selectmentor.otherDetail}}
+          </a>
         </div>
 
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
-          <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
-          {{selectmentor.name}}{{selectmentor.otherDetail}}
-        </a>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-
-          <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
-          </ng-template>
-          <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
-            [options]="userList" #userselect class="selection ">
-            <sui-select-option *ngFor="let user of userselect.filteredOptions" [value]="user">
-            </sui-select-option>
-
-          </sui-multi-select>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
-          <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
-          {{user.name}}{{user.otherDetail}}
-        </a>
-        </div>
-      </div>
-      <div *ngIf="batchData.status === 1 ">
-        <div class="one field" [ngClass]="{'error':batchAddUserForm.controls['name'].hasError('required') }">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
-            <input type="text" name="name" formControlName="name">
-          </div>
-        </div>
-        <div class="one field">
-          <div class="field">
-            <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
-            <input type="text" name="description" formControlName="description">
-          </div>
-        </div>
-        <div class="inline fields">
-          <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'invite-only'" name="enrollmentType" formControlName="enrollmentType">
-              <label>Invite-only</label>
+        <div class="one field " *ngIf="batchData.enrollmentType !== 'open'">
+            <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users"
+                ng-class="batch.isUserSearch === 1 ? 'loading' : undefined" [ngClass]="{ 'disabled': batchData.status === 2 }">
+                <input id="userSelList">
+                <i class="dropdown icon"></i>
+                <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+                <div class="menu">
+                    <div class="item" *ngFor="let user of userList" [attr.data-value]="user.id">
+                        <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="field" *ngIf="batchData.createdBy == userId">
-            <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'open'" name="enrollmentType" formControlName="enrollmentType">
-              <label>Open</label>
-            </div>
-          </div>
         </div>
-
-
-        <div class="two fields">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-              <div class="ui input left icon">
-                <i class="calendar icon date-calendar"></i>
-                <input disabled="true" suiDatepicker formControlName="startDate" [pickerMode]="'date'">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
-            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
-              <div class="ui input left icon">
-                <i class="calendar icon date-calendar"></i>
-                <input suiDatepicker formControlName="endDate" [pickerMode]="'date'">
-              </div>
-            </div>
-          </div>
+        <div class="one field" *ngIf="batchData.enrollmentType !== 'open' && selectedUsers.length > 0">
+            <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
+            <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
+            <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
+            {{user.name}}{{user.otherDetail}}
+          </a>
         </div>
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <ng-template let-mentor #optionTemplates>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
-          </ng-template>
-          <sui-multi-select class="selection " [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplates"
-            [options]="menterList" #templated>
-            <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
-            </sui-select-option>
-          </sui-multi-select>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
-          <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
-          {{selectmentor.name}}{{selectmentor.otherDetail}}
-        </a>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-          <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
-          </ng-template>
-          <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
-            [options]="userList" #userselect class="selection ">
-            <sui-select-option *ngFor="let user of userselect.filteredOptions" [value]="user">
-            </sui-select-option>
-
-          </sui-multi-select>
-
-
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
-          <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
-          {{user.name}}{{user.otherDetail}}
-        </a>
-        </div>
-      </div>
-      <div *ngIf="batchData.status === 2">
-        <div class="one field" [ngClass]="{'error':batchAddUserForm.controls['name'].hasError('required') }">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
-            <input type="text" name="name" formControlName="name">
-          </div>
-        </div>
-        <div class="one field">
-          <div class="field">
-            <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
-            <input type="text" name="description" formControlName="description">
-          </div>
-        </div>
-        <div class="inline fields">
-          <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'invite-only'" name="enrollmentType" formControlName="enrollmentType">
-              <label>Invite-only</label>
-            </div>
-          </div>
-          <div class="field" *ngIf="batchData.createdBy == userId">
-            <div class="ui radio checkbox">
-              <input type="radio" [checked]="batchData.enrollmentType == 'open'" name="enrollmentType" formControlName="enrollmentType">
-              <label>Open</label>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="two fields">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-            <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-              <div class="ui input left icon">
-                <i class="calendar icon date-calendar"></i>
-                <input disabled="true" suiDatepicker formControlName="startDate" [pickerMode]="'date'">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
-            <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
-              <div class="ui input left icon">
-                <i class="calendar icon date-calendar"></i>
-                <input suiDatepicker formControlName="endDate" [pickerMode]="'date'">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <ng-template let-mentor #optionTemplate>
-            <img class="ui mini avatar image" src="{{mentor.avatar || '/assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
-          </ng-template>
-          <sui-multi-select  [isSearchable]="true" formControlName="mentors" labelField="name" valueField="id" [optionTemplate]="optionTemplate"
-            [options]="menterList" #templated class="selection ">
-            <sui-select-option *ngFor="let mentor of templated.filteredOptions" [value]="mentor">
-            </sui-select-option>
-          </sui-multi-select>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedMentors.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
-          <a class="ui label margin-top--5" *ngFor="let selectmentor of selectedMentors">
-          <img class="ui right spaced avatar image" src="{{selectmentor.avatar || '/assets/images/user_logo.png'}}"> 
-          {{selectmentor.name}}{{selectmentor.otherDetail}}
-        </a>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only'">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-          <ng-template let-user #useroptionTemplate>
-            <img class="ui mini avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
-          </ng-template>
-          <sui-multi-select formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate" 
-          [options]="userList"
-            #userselect class="selection ">
-            <sui-select-option *ngFor="let user of userselect.filteredOptions " [value]="user">
-            </sui-select-option>
-          </sui-multi-select>
-        </div>
-
-        <div class="one field" *ngIf="batchData.enrollmentType == 'invite-only' && selectedUsers.length > 0">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
-          <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
-          <img class="ui right spaced avatar image" src="{{user.avatar || '/assets/images/user_logo.png'}}"> 
-          {{user.name}}{{user.otherDetail}}
-        </a>
-        </div>
-      </div>
     </form>
   </div>
   <div class="actions">
-    <div class="ui secondary button" (click)="clearForm()">Clear</div>
-    <div class="ui primary button" (click)="updateBatchDetails(batchData,updatemodal)">Update</div>
+    <div class="ui secondary button" (click)="clearForm()" [ngClass]="{ 'disabled': batchData.status === 2 }">Clear</div>
+    <div class="ui primary button"  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updatebatchIntractEdata" (click)="updateBatchDetails(batchData,updatemodal)"  [ngClass]="{ 'disabled': batchData.status === 2 || disableSubmitBtn}">Update</div>
   </div>
 </sui-modal>

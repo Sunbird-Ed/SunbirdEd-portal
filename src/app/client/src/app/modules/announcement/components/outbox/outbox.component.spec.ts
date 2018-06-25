@@ -50,7 +50,7 @@ describe('OutboxComponent', () => {
             declarations: [OutboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 SuiModule, RouterTestingModule,
-                SharedModule, TelemetryModule, NgInviewModule],
+                SharedModule.forRoot(), TelemetryModule.forRoot(), NgInviewModule],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },

@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
@@ -44,7 +45,7 @@ describe('LibrarySearchComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [LibrarySearchComponent],
       providers: [ConfigService, SearchService, LearnerService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -63,7 +64,8 @@ describe('LibrarySearchComponent', () => {
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
     component.searchList = Response.successData.result.content;
     component.queryParams = mockQueryParma;
-    component.populateContentSearch();
+    const filters = {board: ['NCERT'], gradeLevel: ['KG']};
+    component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -75,7 +77,8 @@ describe('LibrarySearchComponent', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.throw({}));
     component.queryParams = mockQueryParma;
-    component.populateContentSearch();
+    const filters = {board: ['NCERT'], gradeLevel: ['KG']};
+    component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeTruthy();
@@ -86,7 +89,8 @@ describe('LibrarySearchComponent', () => {
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;
-    component.populateContentSearch();
+    const filters = {board: ['NCERT'], gradeLevel: ['KG']};
+    component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });

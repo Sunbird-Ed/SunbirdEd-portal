@@ -57,8 +57,8 @@ describe('UploadedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UploadedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
-        TelemetryModule, NgInviewModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+        TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

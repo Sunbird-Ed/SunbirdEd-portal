@@ -1,4 +1,4 @@
-<sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
+<sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [mustScroll]="true" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
   (dismissed)="redirectToOutbox()" #createModal>
   <i class="close icon" (click)="modalName = 'cancel'"></i>
   <div class="ui segment margin-top-10" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression">
@@ -147,7 +147,7 @@
         <div *ngIf="stepNumber === 3" class="ui list ui grid">
           <div class="eight wide column create-ann-form-scroller">
             <div class="ui message padding-10" *ngFor="let item of recipientsList">
-              <i class="close icon" (click)="removeRecipient(item)" ></i>
+              <i appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="removeRecipientInteractEdata" class="close icon" (click)="removeRecipient(item)" ></i>
               <span class="create-ann-Selected-secepient">{{item.location}}</span>
             </div>
           </div>
@@ -162,14 +162,14 @@
     </div>
   </div>
   <div class="actions">
-    <button class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1))" >
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="backBtnInteractEdata" class="ui primary basic button float-ContentLeft" *ngIf="stepNumber !== 1" (click)="navigateToWizardNumber((+stepNumber - 1))" >
       <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.back}}</span>
     </button>
-    <div class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients()" >{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
-    <div class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage()" >{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
-    <button type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true" 
+    <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="confirmAnnouncementInteractEdata" class="ui primary button" *ngIf="stepNumber === 2" (click)="confirmRecipients()" >{{resource?.frmelmnts?.btn?.anncmntconfirmrecipients}}</div>
+    <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="previewInteractEdata" class="ui primary button" *ngIf="stepNumber === 3" (click)="navigateToPreviewPage()" >{{resource?.frmelmnts?.btn?.anncmntpreview}}</div>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="sendAnnouncementInteractEdata" type="button" class="ui primary button" *ngIf="stepNumber === 4" (click)="saveAnnouncement();formErrorFlag = true" 
       [disabled]="formErrorFlag">{{resource?.frmelmnts?.btn?.anncmntsendanncmnt}}</button>
-    <button type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber === 1" class="ui primary button"
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="selectInteractEdata" type="button" [disabled]="announcementForm.invalid || formErrorFlag" *ngIf="stepNumber === 1" class="ui primary button"
       (click)="navigateToWizardNumber(2)" >
       {{ identifier ? resource?.frmelmnts?.btn?.anncmnteditrecipients : resource?.frmelmnts?.btn?.anncmntselectrecipients}}
     </button>
@@ -194,7 +194,7 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <button class="ui primary basic button announcement-button btn-width-34 approve" (click)="successModal.deny(); redirectToOutbox();">
+          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="announcementSentInteractEdata" class="ui primary basic button announcement-button btn-width-34 approve" (click)="successModal.deny(); redirectToOutbox();">
             <span class="announcement-button-text">{{resource?.frmelmnts?.btn?.anncmntgotit}}</span>
           </button>
         </div>
@@ -223,8 +223,8 @@
         </div>
         <br/>
         <div class="row ui two column centered grid margin-top-20 actions">
-          <div class="ui primary basic button announcement-button btn-width-34"  (click)="cancelModal.deny();redirectToOutbox();" [appTelemetryEnd]= "telemetryEnd" >{{resource?.frmelmnts?.btn?.yes}}</div>
-          <div class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create';"  >{{resource?.frmelmnts?.btn?.no}}</div>
+          <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingYesInteractEdata" class="ui primary basic button announcement-button btn-width-34"  (click)="cancelModal.deny();redirectToOutbox();" [appTelemetryEnd]= "telemetryEnd" >{{resource?.frmelmnts?.btn?.yes}}</div>
+          <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="stopCreatingNoInteractEdata" class="ui primary button announcement-button btn-width-34" (click)="modalName = 'create';"  >{{resource?.frmelmnts?.btn?.no}}</div>
         </div>
       </div>
     </div>

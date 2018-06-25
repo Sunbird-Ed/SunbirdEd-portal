@@ -65,7 +65,7 @@ describe('FlaggedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlaggedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule, TelemetryModule,
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot(),
         NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

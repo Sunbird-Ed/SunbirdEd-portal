@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  env: 'prod',
+  production: true,
+  enableTelemetryValidation: false
 };

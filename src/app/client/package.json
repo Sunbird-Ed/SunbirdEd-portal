@@ -6,13 +6,14 @@
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
-    "build": "ng build --prod --aot=false --deployUrl dist/",
+    "build": "ng build --prod --deployUrl dist/",
     "test": "ng test --tags $tags",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "ng lint",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
-    "test-coverage": "ng test --code-coverage=true --watch=false"
+    "test-coverage": "ng test --code-coverage=true --watch=false",
+    "build-cdn": "ng build --prod"
   },
   "nodemonConfig": {
     "ext": "ts,html,json,css"
@@ -56,9 +57,9 @@
     "ngx-md": "3.1.1",
     "ngx-order-pipe": "^2.0.1",
     "ngx-slick": "^0.1.3",
-    "pagedown-core": "git+https://github.com/edrohler/pagedown-core.git",
     "rxjs": "^5.5.6",
     "slick-carousel": "1.6.0",
+    "sunbird-web-extension": "./src/libs/sunbird-web-extension",
     "time-ago-pipe": "^1.3.2",
     "tree-model": "^1.0.6",
     "zone.js": "^0.8.19"

@@ -1,11 +1,10 @@
-<br>
 <div id="content-player" class="ui grid">
     <div class="one wide column"></div>
     <div class="ten wide column">
         <div class='margin-top--5 videosegment ui segment'>
             <div class='content-player-body'>
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
-                    <div class="ui grid">
+                    <div [appTelemetryImpression]="telemetryImpression" class="ui grid">
                         <div class="row margin-auto padding-bottom-none">
                             <div class="twelve wide column">
                                 <div class="ten wide column" id="player-auto-scroll">
@@ -14,7 +13,7 @@
                                     </span>
                                 </div>
                                 <div class="two wide column">
-                                    <h5 class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
+                                    <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="close()">
                                         <i class="ui remove icon"></i>
                                     </h5>
                                 </div>
@@ -59,7 +58,7 @@
                                                     <a class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
                                                         <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
                                                             (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                                        <img src="assets/images/takenote.png">
+                                                        <img src="{{'assets/images/takenote.png' | cdnprefixurl }}">
                                                         <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
                                                     </a>
                                                 </h2>
@@ -80,7 +79,7 @@
                                     <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
                                 </div>
                                 <div class="twelve wide column margin-top-20">
-                                    <app-discussions></app-discussions>
+                                    <!-- <app-discussions></app-discussions> -->
                                 </div>
                             </div>
                             <div *ngIf="contentStatus !== 'Unlisted'" class="four wide column">
@@ -111,6 +110,6 @@
     </div>
     <div class="one wide column"></div>
 </div>
-<app-share-link [shareLink]="shareLink" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
 <router-outlet></router-outlet>

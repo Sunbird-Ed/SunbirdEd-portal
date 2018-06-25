@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule, WindowScrollService } from '@sunbird/shared';
 import { UserService, CoreModule } from '@sunbird/core';
@@ -8,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditUserAdditionalInfoComponent } from './edit-user-additional-info.component';
 import { mockRes } from './edit-user-additional-info.component.spec.data';
 import { ProfileService } from '../../../services/index';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('EditUserAdditionalInfoComponent', () => {
   let component: EditUserAdditionalInfoComponent;
@@ -15,7 +17,8 @@ describe('EditUserAdditionalInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditUserAdditionalInfoComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, TelemetryModule.forRoot(),
+        HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), RouterTestingModule],
       providers: [UserService, ProfileService, WindowScrollService],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -34,6 +37,21 @@ describe('EditUserAdditionalInfoComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     component.webPages = mockRes.data.userProfile.webPages;
-    expect(component).toBeTruthy();
+    component.basicInfo = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      gender: '',
+      dob: '',
+      location: '',
+      subject: [],
+      grade: [],
+      language: [],
+      webPages: []
+    };
+    component.ngOnInit();
+    expect(component.isEdit).toBe(true);
   });
 });

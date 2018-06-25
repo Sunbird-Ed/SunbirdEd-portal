@@ -57,6 +57,7 @@ export class TenantService extends DataService {
     const url = `${this.config.urlConFig.URLS.TENANT.INFO + '/'}` + (slug ? slug : '');
     this.get({ url }).subscribe(
       (apiResponse: ServerResponse) => {
+        this.tenantData = apiResponse.result;
         this._tenantData$.next({ err: null, tenantData: apiResponse.result });
       },
       (err: ServerResponse) => {

@@ -43,7 +43,7 @@ describe('InboxComponent', () => {
             declarations: [InboxComponent],
             imports: [HttpClientTestingModule, Ng2IziToastModule,
                 SuiModule, RouterTestingModule, NgInviewModule,
-                SharedModule, TelemetryModule],
+                SharedModule.forRoot(), TelemetryModule.forRoot()],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
                 PaginationService, ToasterService, ResourceService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },

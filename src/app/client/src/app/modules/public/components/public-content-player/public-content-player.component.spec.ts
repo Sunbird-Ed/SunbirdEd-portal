@@ -5,25 +5,49 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { CoreModule, UserService } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = Observable.from([{ id: 1, url: '/play', urlAfterRedirects: '/play' }]);
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }])
+  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+      }
+    }
+  }
 };
-
+const resourceServiceMockData = {
+  messages: {
+    imsg: { m0027: 'Something went wrong' },
+    stmsg: { m0009: 'error' }
+  },
+  frmelmnts: {
+    btn: {
+      tryagain: 'tryagain',
+      close: 'close'
+    },
+    lbl: {
+      description: 'description'
+    }
+  }
+};
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule, SharedModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
+      TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PublicPlayerService,
@@ -38,24 +62,32 @@ describe('PublicContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should get content player', () => {
+  it('should config content player if content status is "Live"', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = serverRes.resourceServiceMockData.messages;
-    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    serverRes.result.result.content.status = 'Live';
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes.result));
-    fixture.detectChanges();
+    component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
-    expect(component.showPlayer).toBeTruthy();
   });
-  xit('should throw error', () => {
+  it('should throw error if content api throws error', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = serverRes.resourceServiceMockData.messages;
-    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
-    spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes.failureResult));
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(playerService, 'getContent').and.returnValue(Observable.throw(serverRes.failureResult));
     fixture.detectChanges();
-    expect(component.playerConfig).toBeTruthy();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.showError).toBeTruthy();
+    expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
+  });
+  it('should call tryAgain method', () => {
+    spyOn(component, 'tryAgain').and.callThrough();
+    spyOn(component, 'getContent').and.callThrough();
+    component.tryAgain();
     expect(component.showError).toBeFalsy();
+    expect(component.getContent).toHaveBeenCalled();
   });
 });

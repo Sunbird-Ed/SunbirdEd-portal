@@ -48,8 +48,8 @@ describe('CreateComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateComponent, GeoExplorerComponent, DetailsComponent, FileUploaderComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule,
-        Ng2IziToastModule, CoreModule, TelemetryModule],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule.forRoot(),
+        Ng2IziToastModule, CoreModule.forRoot(), TelemetryModule.forRoot()],
       providers: [ToasterService, ResourceService, CreateService, UserService,
         LearnerService, AnnouncementService, FileUploadService,
         GeoExplorerService, ConfigService,

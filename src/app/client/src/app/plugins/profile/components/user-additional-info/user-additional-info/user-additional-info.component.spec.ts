@@ -1,25 +1,28 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule, IBasicInfo } from '@sunbird/shared';
 import { UserService, CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserAdditionalInfoComponent } from './user-additional-info.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditUserAdditionalInfoComponent } from '../../user-additional-info/edit-user-additional-info/edit-user-additional-info.component';
 import { ProfileService } from '../../../services';
 import { mockRes } from './user-additional-info.component.spec.data';
-
 describe('UserAdditionalInfoComponent', () => {
   let component: EditUserAdditionalInfoComponent;
   let fixture: ComponentFixture<EditUserAdditionalInfoComponent>;
   let parentComp: UserAdditionalInfoComponent;
   let parentFixture: ComponentFixture<UserAdditionalInfoComponent>;
-  const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'additionalInfo', 'action': 'edit' }])
-  };
+  class FakeActivatedRoute {
+    params =  Observable.of([{ 'section': 'additionalInfo', 'action': 'edit' }]);
+    changeParams(params) {
+      this.params = params;
+    }
+  }
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -45,10 +48,11 @@ describe('UserAdditionalInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserAdditionalInfoComponent, EditUserAdditionalInfoComponent],
-      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [FormsModule, ReactiveFormsModule, SuiModule, HttpClientTestingModule,
+        TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [ResourceService, ConfigService, UserService, ProfileService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -86,14 +90,51 @@ describe('UserAdditionalInfoComponent', () => {
       'section': 'address',
       'action': 'add'
     };
+    activatedRoute.changeParams(undefined);
+    expect(parentComp.action).toBe('view');
     expect(component).toBeTruthy();
   });
-  xit('should call editBasicInfo method', () => {
+  it('should call editBasicInfo method', () => {
     const profileService = TestBed.get(ProfileService);
+    const router = TestBed.get(Router);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
+    parentComp.editChild = component;
+    parentComp.editChild.basicInfo = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      gender: '',
+      dob: '',
+      location: '',
+      subject: [],
+      grade: [],
+      language: [],
+      webPages: []
+    };
+    parentComp.editChild.basicInfoForm = new FormGroup({});
+    parentComp.editChild.basicInfoForm = component.basicInfoForm;
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.response));
     parentComp.editBasicInfo();
-    expect(component).toBeTruthy();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+  });
+  it('should call setInteractEventData method', () => {
+    const edata = {
+      id: '',
+      type: '',
+      pageid: ''
+    };
+    parentComp.editAdditionalInfoInteractEdata = edata;
+    parentComp.closeAdditionalInfoInteractEdata = edata;
+    parentComp.saveEditAdditionalInfoInteractEdata = edata;
+    parentComp.telemetryInteractObject = {
+      id: '',
+      type: '',
+      ver: ''
+    };
+    parentComp.setInteractEventData();
+    expect(parentComp.editAdditionalInfoInteractEdata).toBeDefined();
   });
 });

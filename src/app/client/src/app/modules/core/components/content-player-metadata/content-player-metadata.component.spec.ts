@@ -10,7 +10,7 @@ describe('ContentMetadataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, HttpClientTestingModule, CoreModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule.forRoot()],
       declarations: []
     })
     .compileComponents();

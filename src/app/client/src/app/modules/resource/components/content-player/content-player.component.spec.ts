@@ -48,7 +48,14 @@ class RouterStub {
 
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }])
+  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+      }
+    }
+  }
 };
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
@@ -56,7 +63,7 @@ describe('ContentPlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule, SharedModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},

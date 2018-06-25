@@ -60,7 +60,7 @@ let PERMISSIONS_HELPER = {
       options: options,
       uri: 'data/v1/role/read',
       userId: reqObj.kauth.grant.access_token.content.sub}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode
@@ -137,7 +137,7 @@ let PERMISSIONS_HELPER = {
       type: 'user',
       id: userId,
       userId: userId}
-    telemetryHelper.logAPICallEvent(telemetryData)
+    // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
       telemetryData.statusCode = response.statusCode

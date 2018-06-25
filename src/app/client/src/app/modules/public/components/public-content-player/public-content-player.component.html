@@ -1,4 +1,4 @@
-<div id="content-player" class="ui stackable grid">
+<div [appTelemetryImpression]="telemetryImpression" id="content-player" class="ui stackable grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class='margin-top--5 videosegment ui segment'>
@@ -82,3 +82,4 @@
   </div>
   <div class="one wide column"></div>
 </div>
+<app-public-footer *ngIf="showFooter"></app-public-footer>

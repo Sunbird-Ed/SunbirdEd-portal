@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
 import { Response } from './explore-content.component.spec.data';
 import { OrgManagementService } from './../../services';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
@@ -34,11 +34,21 @@ describe('ExploreContentComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}])
+    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    snapshot: {
+      params: {
+        slug: 'ap'
+      },
+      data: {
+        telemetry: {
+          env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+        }
+      }
+    }
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [ConfigService, SearchService, LearnerService, OrgManagementService,
         { provide: ResourceService, useValue: resourceBundle },
@@ -93,4 +103,3 @@ describe('ExploreContentComponent', () => {
     expect(component.showLoader).toBeFalsy();
   });
 });
-

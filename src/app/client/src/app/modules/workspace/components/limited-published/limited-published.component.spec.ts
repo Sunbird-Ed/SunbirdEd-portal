@@ -65,8 +65,8 @@ describe('LimitedPublishedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule,
-        TelemetryModule, NgInviewModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, SharedModule.forRoot(),
+        TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -163,7 +163,7 @@ describe('LimitedPublishedComponent', () => {
       };
       component.contentClick(params);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'limited/publish', 'NCF']);
+        'do_2124341006465925121871', 'TextBook', 'limited-publish', 'NCF']);
       fixture.detectChanges();
     }));
   it('should throw error', inject([SearchService], (searchService) => {
@@ -180,7 +180,7 @@ describe('LimitedPublishedComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited/publish', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/limited-publish', component.pageNumber]);
     }));
 
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],

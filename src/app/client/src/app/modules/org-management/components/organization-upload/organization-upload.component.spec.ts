@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { mockRes } from './organization-upload.component.spec.data';
-
+import { TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 
 describe('OrganizationUploadComponent', () => {
@@ -58,7 +58,8 @@ describe('OrganizationUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
-      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule, SharedModule],
+      imports: [SuiModule, HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot(), SharedModule.forRoot(),
+        TelemetryModule.forRoot()],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

@@ -21,6 +21,7 @@
   font-family: 'sunbirdboldfont';
   src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
 }
+
 /*cards fonts*/
 .cardsHeading {
   font-family: 'sunbirdboldfont';
@@ -1017,7 +1018,7 @@ i.large.icon.limitedPublishingLinkIcon {
   overflow: auto;
 }
 /*concept selector pop up */
-.ui.tree-picker.modal .header .menu {
+.ui.tree-picker.modal .header .ui.menu {
   margin-top: -12px;
 }
 /*removing border and box-shadow for popup modal in workspace*/
@@ -2715,4 +2716,17 @@ iframe.iziModal-iframe {
 /*adding outline none because router link of angular is adding extra outline, */
 .remove-outline {
   outline: none !important;
+}
+
+.capitalize-text {
+  text-transform: capitalize;
+}
+.left-float {
+  float: left !important;
+}
+.padding-top-15 {
+  padding-top: 15px !important;
+}
+.ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
+  pointer-events: auto;
 }

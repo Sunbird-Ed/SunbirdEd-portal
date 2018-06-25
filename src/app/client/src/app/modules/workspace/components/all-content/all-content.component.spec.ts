@@ -10,7 +10,7 @@ import { UserService, LearnerService, CoursesService, PermissionService } from '
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import {Response} from './all-content.component.spec.data';
+import { Response } from './all-content.component.spec.data';
 
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
@@ -37,7 +37,7 @@ describe('AllContentComponent', () => {
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
     'queryParams': Observable.from([{ subject: ['english', 'odia'] }]),
-     snapshot: {
+    snapshot: {
       params: [
         {
           pageNumber: '1',
@@ -55,7 +55,7 @@ describe('AllContentComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AllContentComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -95,13 +95,52 @@ describe('AllContentComponent', () => {
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],
     (configService, route) => {
-    component.queryParams = { subject: ['english'] };
-    const queryParams = {subject: [ ]};
-    spyOn(component, 'fecthAllContent').and.callThrough();
-    component.fecthAllContent(9, 1, bothParams);
-    fixture.detectChanges();
-    expect(component.fecthAllContent).toHaveBeenCalledWith(9, 1, bothParams);
-  }));
+      component.queryParams = { subject: ['english'] };
+      const queryParams = { subject: [] };
+      spyOn(component, 'fecthAllContent').and.callThrough();
+      component.fecthAllContent(9, 1, bothParams);
+      fixture.detectChanges();
+      expect(component.fecthAllContent).toHaveBeenCalledWith(9, 1, bothParams);
+    }));
+  it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
+    (configService, route) => {
+      component.pager = Response.pager;
+      component.pager.totalPages = 0;
+      component.navigateToPage(3);
+      fixture.detectChanges();
+      expect(component.pageNumber).toEqual(1);
+    }));
+  it('should call setpage method and set proper page number', inject([ConfigService, Router],
+    (configService, route) => {
+      component.pager = Response.pager;
+      component.pager.totalPages = 8;
+      component.navigateToPage(1);
+      const sortByOption = 'Created On';
+      component.queryParams = { subject: ['english'] };
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/allcontent', 1], { queryParams: undefined });
+    }));
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.telemetryImpression = {
+      context: { env: 'workspace', cdata: [] },
+      edata: {
+        pageid: 'workspace-content-create',
+        type: 'view', uri: '/workspace/content/create'
+      }
+    };
+    component.inview(Response.event);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should open collection edition on list click   ', inject([WorkSpaceService, Router],
+    (workSpaceService, route, http) => {
+      spyOn(component, 'contentClick').and.callThrough();
+      component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
+      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
+      'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
+      fixture.detectChanges();
+    }));
 });
 
 

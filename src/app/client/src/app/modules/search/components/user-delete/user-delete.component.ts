@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, RouterModule , Router } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { UserSearchService } from './../../services';
 
@@ -13,7 +13,8 @@ import { UserSearchService } from './../../services';
   templateUrl: './user-delete.component.html',
   styleUrls: ['./user-delete.component.css']
 })
-export class UserDeleteComponent implements OnInit {
+export class UserDeleteComponent implements OnInit, OnDestroy {
+   @ViewChild('modal') modal;
   /**
 	 * Contains unique announcement id
 	 */
@@ -71,7 +72,7 @@ export class UserDeleteComponent implements OnInit {
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    routerNavigationService: RouterNavigationService) {
+    routerNavigationService: RouterNavigationService , public route: Router) {
     this.userSearchService = userSearchService;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -104,7 +105,7 @@ export class UserDeleteComponent implements OnInit {
 	 *
 	 */
   redirect(): void {
-    this.routerNavigationService.navigateToParentUrl(this.activatedRoute.snapshot);
+    this.route.navigate(['../../'], {relativeTo: this.activatedRoute});
   }
 
   setUserDetails() {
@@ -134,6 +135,9 @@ export class UserDeleteComponent implements OnInit {
       this.userId = params.userId;
     });
     this.setUserDetails();
+  }
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }
 

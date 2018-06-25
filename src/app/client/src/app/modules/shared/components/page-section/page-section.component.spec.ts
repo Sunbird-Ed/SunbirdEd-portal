@@ -7,15 +7,29 @@ import { SlickModule } from 'ngx-slick';
 import { ResourceService, ConfigService  } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './page-section.component.spec.data';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+
+const fakeActivatedRoute = {
+  snapshot: {
+    data: {
+      telemetry: {
+        env: 'course', pageid: 'course-search', type: 'view', subtype: 'paginate'
+      }
+    }
+  }
+};
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [ PageSectionComponent ],
-      providers: [ ResourceService, ConfigService ],
+      providers: [ ResourceService, ConfigService, { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -37,6 +51,33 @@ describe('PageSectionComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div .sectionHeading')).toEqual(null);
    expect(fixture.nativeElement.querySelector('div span.circular')).toEqual(null);
+  });
+  it('should call inview method for visits data', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call inview method for visits data for courseId', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event1);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call inviewChange method for visits data', () => {
+    component.section = {name: 'courseTest', length: 1};
+    spyOn(component, 'inviewChange').and.callThrough();
+    component.inviewChange(Response.slideContentList, Response.slideEventData);
+    expect(component.inviewChange).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
+  });
+  it('should call playContent', () => {
+    spyOn(component, 'playContent').and.callThrough();
+   component.playContent(Response.playContentData) ;
+   component.playEvent.emit(Response.playContentData);
+   expect(component.playContent).toHaveBeenCalled();
   });
 
 });

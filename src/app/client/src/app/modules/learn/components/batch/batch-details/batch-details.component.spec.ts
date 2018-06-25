@@ -37,7 +37,7 @@ describe('BatchDetailsComponent', () => {
   let fixture: ComponentFixture<BatchDetailsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, CoreModule, SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), SuiModule],
       declarations: [BatchDetailsComponent],
       providers: [CourseBatchService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -56,7 +56,8 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = true;
     component.courseId = 'do_1125083286221291521153';
     component.batchId = '01250836468775321655';
-    spyOn(courseBatchService, 'getBatchDetails').and.returnValue(Observable.of(enrolledBatch));
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     component.ngOnInit();
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.enrolledBatchInfo.participant.length).toEqual(1);
@@ -65,6 +66,7 @@ describe('BatchDetailsComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(Observable.of(allBatchDetails));
     spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(userSearch));
     component.ngOnInit();
@@ -87,6 +89,7 @@ describe('BatchDetailsComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -108,6 +111,7 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(Observable.of(allBatchDetails));
     spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(userSearch));
@@ -137,7 +141,7 @@ describe('BatchDetailsComponent', () => {
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const route = TestBed.get(Router);
-    spyOn(courseBatchService, 'setEnrollBatchDetails');
+    spyOn(courseBatchService, 'setEnrollToBatchDetails');
     component.enrollBatch({identifier: '123'});
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], {relativeTo: component.activatedRoute});
   });
