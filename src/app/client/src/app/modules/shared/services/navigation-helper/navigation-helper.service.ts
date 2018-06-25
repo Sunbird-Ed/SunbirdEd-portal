@@ -16,7 +16,7 @@ export class NavigationHelperService {
   /**
    * Stores workspaceCloseUrl
    */
-  public _workspaceCloseUrl: UrlHistory;
+  private _workspaceCloseUrl: UrlHistory;
   /**
    * Stores routing history
    */

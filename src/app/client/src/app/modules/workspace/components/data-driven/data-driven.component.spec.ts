@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';

@@ -131,7 +131,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       this.type = params['type'];
       this.framework = params['framework'];
     });
-    this.navigationHelperService.storeWorkSpaceCloseUrl();
   }
 
   ngAfterViewInit() {
