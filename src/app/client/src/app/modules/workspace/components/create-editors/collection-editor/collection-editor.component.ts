@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/co
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services';
@@ -99,7 +99,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     userService: UserService,
     public _zone: NgZone,
     config: ConfigService,
-    tenantService: TenantService) {
+    tenantService: TenantService, 
+    public navigationHelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
@@ -282,19 +283,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToDraft();
+      this.navigateToWorkSpace();
     }, 1000);
   }
-
-  navigateToDraft() {
+  navigateToWorkSpace() {
     if (document.getElementById('collectionEditor')) {
-      document.getElementById('collectionEditor').remove();
+       document.getElementById('collectionEditor').remove();
     }
-    if (this.state) {
-      this.route.navigate(['workspace/content/', this.state, '1']);
-    } else {
-      this.route.navigate(['workspace/content/draft/1']);
-    }
+    this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     this.showModal = false;
   }
 
