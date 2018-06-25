@@ -29,13 +29,13 @@ describe('ProfileCardComponent', () => {
   it('for success test data', () => {
     component.profile = testData.successData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div span .completness').innerText).toEqual('69');
+    expect(fixture.nativeElement.querySelector('div span.profile-update-subheading span').innerText).toEqual('69');
     expect(fixture.nativeElement.querySelector('div.padding-top-5').innerText).toEqual('Add dob');
   });
   it('for no test data', () => {
     component.profile = testData.parsedData;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('div span .completness').innerText).toEqual('');
+    expect(fixture.nativeElement.querySelector('div span.profile-update-subheading span').innerText).toEqual('');
     expect(fixture.nativeElement.querySelector('div.padding-top-5')).toEqual(null);
   });
 });
