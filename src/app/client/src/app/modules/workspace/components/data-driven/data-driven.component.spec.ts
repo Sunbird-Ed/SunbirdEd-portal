@@ -186,17 +186,17 @@ describe('DataDrivenComponent', () => {
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
   });
-  it('test to navigate to content create page on click of backbutton from content edit page', () => {
+  it('test to navigate back to content create page if previous url is not from content create page', () => {
     const router = TestBed.get(Router);
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlData);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlTrueCase);
     componentParent.checkForPreviousRouteForRedirect();
     expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
   });
-  it('test to not to navigate to content create page if previous url is not from content edit page', () => {
+  it('test to not to navigate to content create page if previous url is from content create page', () => {
     const router = TestBed.get(Router);
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlFakeData);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlFalseCase);
     spyOn(componentParent, 'redirect');
     componentParent.checkForPreviousRouteForRedirect();
     expect(componentParent.redirect).not.toHaveBeenCalled();

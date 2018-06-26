@@ -282,11 +282,11 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * If previous url is content edit page (/content/edit) redirect current page to workspace/content/create
+    * Issue #SB-1448,  If previous url is not from create page, redirect current page to 'workspace/content/create'
   */
   checkForPreviousRouteForRedirect() {
     const previousUrlObj = this.navigationHelperService.getPreviousUrl();
-    if (previousUrlObj && previousUrlObj.url && previousUrlObj.url.includes('workspace/content/edit')) {
+    if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }
   }
