@@ -1,7 +1,7 @@
 import { ResourceService } from '../../services';
 import { Component, OnInit, Input } from '@angular/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-redirect',
@@ -22,13 +22,15 @@ export class RedirectComponent implements OnInit {
    * telemetryImpression
    */
   telemetryImpression: IImpressionEventInput;
-  constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute) {
+  constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute, public router: Router) {
     this.activatedRoute = activatedRoute;
+    this.router = router;
   }
   /**
    * oninit the window opens a new window tab with the redirectUrl values in the url
    */
   ngOnInit() {
+    console.log('this.activatedRoute.snapshot.data.telemetry', this.activatedRoute.snapshot.data.telemetry);
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -36,13 +38,13 @@ export class RedirectComponent implements OnInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.activatedRoute.snapshot.data.telemetry.uri + '/' + this.activatedRoute.snapshot.params.pageNumber,
-        visits: []
+        uri: this.router.url,
+        target: window.redirectUrl
       }
     };
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
-    }, 500);
+    }, 3000);
   }
 
   /**
