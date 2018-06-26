@@ -237,7 +237,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       localDispatcherEndpoint: '/content-editor/telemetry',
       showHelp: false,
       previewConfig: {
-        repos: ['/content-plugins/renderer'],
+        repos: ['/sunbird-plugins/renderer'],
         plugins: [{
           id: 'org.sunbird.player.endpage',
           ver: 1.0,

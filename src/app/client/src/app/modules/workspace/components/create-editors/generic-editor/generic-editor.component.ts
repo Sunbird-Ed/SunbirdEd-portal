@@ -179,7 +179,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         type: 'plugin'
       }],
       previewConfig: {
-        'repos': ['/content-plugins/renderer'],
+        'repos': ['/sunbird-plugins/renderer'],
         plugins: [{
           'id': 'org.sunbird.player.endpage',
           ver: 1.0,
