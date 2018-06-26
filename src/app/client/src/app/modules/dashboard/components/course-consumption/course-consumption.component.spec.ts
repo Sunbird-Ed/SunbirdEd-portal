@@ -99,9 +99,11 @@ describe('CourseConsumptionComponent', () => {
   it('should call validateIdentifier method when counet is more than 1 ', inject([SearchService], (searchService) => {
     component.isMultipleCourses = false;
     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(component, 'validateIdentifier').and.callThrough();
     component.getMyContent();
     component.validateIdentifier(testData.searchSuccessWithCountTwo.result.content[0].identifier);
     fixture.detectChanges();
+    expect(component.selectedCourse).toBe(testData.searchSuccessWithCountTwo.result.content[0]);
     expect(component.myCoursesList).toBeDefined();
     expect(component.isMultipleCourses).toEqual(true);
     expect(component.myCoursesList.length).toBeGreaterThan(1);
