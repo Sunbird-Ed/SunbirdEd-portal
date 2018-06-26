@@ -96,6 +96,17 @@ describe('CourseConsumptionComponent', () => {
     expect(component.myCoursesList.length).toBeGreaterThan(1);
   }));
 
+  it('should call validateIdentifier method when counet is more than 1 ', inject([SearchService], (searchService) => {
+    component.isMultipleCourses = false;
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    component.getMyContent();
+    component.validateIdentifier(testData.searchSuccessWithCountTwo.result.content[0].identifier);
+    fixture.detectChanges();
+    expect(component.myCoursesList).toBeDefined();
+    expect(component.isMultipleCourses).toEqual(true);
+    expect(component.myCoursesList.length).toBeGreaterThan(1);
+  }));
+
   // When course consumption api's return response
   it('should call dashboard api and return valid response', inject([CourseConsumptionService],
     (courseConsumptionService) => {

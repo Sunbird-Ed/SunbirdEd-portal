@@ -209,6 +209,7 @@ export class CourseConsumptionComponent {
    * @example validateIdentifier(do_xxxxx)
    */
   validateIdentifier(identifier: string) {
+    console.log('call this ', this.selectedCourse);
     if (identifier) {
       const selectedCourse = _.find(this.myCoursesList, ['identifier', identifier]);
       if (selectedCourse && selectedCourse.identifier) {
@@ -233,6 +234,7 @@ export class CourseConsumptionComponent {
         this.courseName = this.myCoursesList[0].name;
         this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
       }
+      this.validateIdentifier(this.identifier);
       this.showLoader = false;
     } else {
       // Make search api call
