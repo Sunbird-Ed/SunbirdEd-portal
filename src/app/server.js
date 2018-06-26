@@ -289,8 +289,16 @@ app.all('/learner/*',
     }
   }))
 
-
 app.all('/content/data/v1/telemetry',
+  proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemtryEventConfig.endpoint).path
+    }
+  }))
+
+app.all('/action/data/v3/telemetry',
   proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
