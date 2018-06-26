@@ -39,4 +39,5 @@ export interface ContentData {
     userName: string;
     pkgVersion?: string;
     visibility?: string;
+    attributions?: Array<string>;
 }

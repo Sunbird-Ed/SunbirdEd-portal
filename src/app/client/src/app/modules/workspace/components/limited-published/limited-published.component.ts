@@ -214,8 +214,8 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit {
         objectType: 'Content'
       },
       limit: this.pageLimit,
-      pageNumber: this.pageNumber,
-      params: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      offset: (this.pageNumber - 1) * (this.pageLimit),
+      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {

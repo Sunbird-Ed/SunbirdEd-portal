@@ -1,4 +1,4 @@
-<sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
+<sui-modal *ngIf="!showAnnouncementForm" [isClosable]="false" [mustScroll]="true" [size]="'large'" [hidden]="(modalName === 'success' || modalName === 'cancel')"
   (dismissed)="redirectToOutbox()" #createModal>
   <i class="close icon" (click)="modalName = 'cancel'"></i>
   <div class="ui segment margin-top-10" [appTelemetryStart]="telemetryStart" [appTelemetryImpression]="telemetryImpression">
