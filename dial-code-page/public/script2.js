@@ -1,8 +1,9 @@
 (function () {
   var dialcode, tenantId, tenantInfo, orgInfo;
-  var hostURL = "https://dev.open-sunbird.org";
+  var hostURL = window.__dial_page_config.hostURL;
 
   function OnLoad() {
+    addHeaderNavLink();
     dialcode = getUrlQueryParameter('dialcode') || findDialcodeFromPath();
     tenantId = getUrlQueryParameter('tenant') || findTenantFromPath();
     $('#loader').hide(); // hide loader on page load
@@ -23,6 +24,11 @@
   function navigateToSearchPage() {
     $('#searchSection').show();
     $('#resultSection').hide();
+  }
+
+  function addHeaderNavLink() {
+    $('#appLogoLink').attr('href', hostURL);
+    $('#loginBtn').attr('href', hostURL);
   }
 
   function findDialcodeFromPath() {
@@ -167,19 +173,14 @@
   function getAnonymousUserConfig() {
     var endpoint = "/data/v1/telemetry"
     return {
-      pdata: {
-        id: 'prod.diksha.portal',
-        ver: '1.7.0',
-        pid: 'sunbird-portal'
-      },
+      pdata: window.__dial_page_config.telemetry.pdata,
       endpoint: endpoint,
       apislug: "/content",
       host: hostURL,
       uid: 'anonymous',
       sid: window.uuidv1(),
       channel: orgInfo.channel,
-      env: 'public',
-      enableValidation: true
+      env: 'public'
     }
   }
 
