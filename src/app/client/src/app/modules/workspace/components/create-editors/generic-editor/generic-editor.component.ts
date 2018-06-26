@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
@@ -66,7 +67,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private activatedRoute: ActivatedRoute;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute, tenantService: TenantService) {
+    activatedRoute: ActivatedRoute, tenantService: TenantService,
+    public navigationHelperService: NavigationHelperService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -203,19 +205,26 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToUploads();
+      this.navigateToWorkSpace();
     }, 1000);
   }
 
-  navigateToUploads() {
-    if (this.state) {
-      this.router.navigate(['workspace/content/', this.state, '1']);
-    } else {
-      this.router.navigate(['workspace/content/uploaded/1']);
+  // navigateToUploads() {
+  //   if (this.state) {
+  //     this.router.navigate(['workspace/content/', this.state, '1']);
+  //   } else {
+  //     this.router.navigate(['workspace/content/uploaded/1']);
+  //   }
+  //   this.showModal = false;
+  // }
+
+  navigateToWorkSpace() {
+    if (document.getElementById('collectionEditor')) {
+       document.getElementById('collectionEditor').remove();
     }
+    this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
     this.showModal = false;
   }
-
   /**
    * On componenet destroy remove the genericEditor id from DOM
    */

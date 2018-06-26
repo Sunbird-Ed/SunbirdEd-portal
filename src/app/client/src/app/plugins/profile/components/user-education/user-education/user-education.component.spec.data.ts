@@ -28,8 +28,7 @@ export const mockRes = {
                 'm0042': 'Experience delete failed. Please try again later...'
             },
             'smsg': {
-                'm0015': 'Experience deleted successfully',
-                'm0021': 'Experience updated successfully',
+                'm0020': 'Education updated successfully',
                 'm0024': 'Education added successfully'
             }
         }

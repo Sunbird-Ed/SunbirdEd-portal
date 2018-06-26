@@ -103,8 +103,8 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
-      this.enrolledBatchInfo = data.result.response;
+    this.courseBatchService.getEnrolledBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
+      this.enrolledBatchInfo = data;
       if (this.enrolledBatchInfo.participant) {
         const participant = [];
         _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
@@ -145,7 +145,7 @@ export class BatchDetailsComponent implements OnInit {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
-    this.courseBatchService.setEnrollBatchDetails(batch);
+    this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
   }
 }

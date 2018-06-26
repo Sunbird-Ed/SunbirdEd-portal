@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ViewChild, QueryList } from '@angular/core';
 import * as _ from 'lodash';
 import {
   ResourceService, ConfigService, IUserProfile, IUserData, SharedModule, ToasterService
@@ -74,9 +74,11 @@ describe('UserExperienceViewComponent', () => {
     };
     expect(component).toBeTruthy();
   });
-  xit('should call editExperience method', () => {
+  it('should call editExperience method', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
+    parentComp.editChild = new QueryList<EditExperienceComponent>();
+    component.experienceForm = new FormGroup({});
     const profileService = TestBed.get(ProfileService);
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.editExperience();
@@ -92,6 +94,7 @@ describe('UserExperienceViewComponent', () => {
     expect(parentFixture.componentInstance.addChild).toBeDefined();
     const addChild = parentFixture.componentInstance.addChild;
     parentComp.addChild = component;
+    component.experienceForm = new FormGroup({});
     spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
     parentComp.addExperience();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);

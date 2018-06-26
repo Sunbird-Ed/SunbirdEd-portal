@@ -97,12 +97,32 @@ export const mockRes = {
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
     },
     validateModal: {
-        state: [ 'upForReview',
-        'review',
-        'published',
-        'flagged',
-        'limitedPublish'],
+        state: ['upForReview',
+            'review',
+            'published',
+            'flagged',
+            'limitedPublish'],
         status: ['Review', 'Draft', 'Live', 'Flagged', 'Unlisted'],
         mimeType: 'application/vnd.ekstep.content-collection'
+    },
+    tenantMockData: {
+        'id': 'api.tenant.info',
+        'ver': '1.0',
+        'ts': '2018-04-10 15:34:45:875+0530',
+        'params': {
+            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
+            'msgid': null,
+            'status': 'successful',
+            'err': '',
+            'errmsg': ''
+        },
+        'responseCode': 'OK',
+        'result': {
+            'titleName': 'Sunbird',
+            'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+            'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
+        }
     }
 };

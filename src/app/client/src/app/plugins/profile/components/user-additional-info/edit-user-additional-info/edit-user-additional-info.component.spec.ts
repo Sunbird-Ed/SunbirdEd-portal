@@ -37,6 +37,21 @@ describe('EditUserAdditionalInfoComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     component.webPages = mockRes.data.userProfile.webPages;
-    expect(component).toBeTruthy();
+    component.basicInfo = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      gender: '',
+      dob: '',
+      location: '',
+      subject: [],
+      grade: [],
+      language: [],
+      webPages: []
+    };
+    component.ngOnInit();
+    expect(component.isEdit).toBe(true);
   });
 });

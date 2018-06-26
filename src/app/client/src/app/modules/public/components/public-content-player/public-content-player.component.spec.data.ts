@@ -15,7 +15,12 @@ export const serverRes = {
                 me_averageRating: '4',
                 description: 'ffgg',
                 name: 'ffgh',
-                concepts: ['AI', 'ML']
+                concepts: ['AI', 'ML'],
+                contentType: '',
+                code: '',
+                framework: '',
+                userId: '',
+                userName: ''
             }
         }
     },
