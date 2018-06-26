@@ -7,6 +7,8 @@ import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The organization component
@@ -23,6 +25,11 @@ import * as _ from 'lodash';
  * @class OrganisationComponent
  */
 export class OrganisationComponent implements OnDestroy {
+  /**
+   * Variable to gather and unsubscribe all observable subscriptions in this component.
+   */
+  public unsubscribe = new Subject<void>();
+
   interactObject: any;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -173,7 +180,7 @@ export class OrganisationComponent implements OnDestroy {
     this.userService = userService;
     this.route = route;
     this.initTelemetryImpressionEvent();
-    const subscribe = this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       if (params.id && params.timePeriod) {
         this.datasetType = params.datasetType;
         this.showDashboard = false;
@@ -189,9 +196,6 @@ export class OrganisationComponent implements OnDestroy {
         this.getDashboardData(params.timePeriod, params.id);
       }
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
     this.getMyOrganisations();
   }
 
@@ -233,7 +237,9 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    const subscribe = this.orgService.getDashboardData(params).subscribe(
+    this.orgService.getDashboardData(params)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -245,9 +251,6 @@ export class OrganisationComponent implements OnDestroy {
         this.toasterService.error(`Root org doesn't exist for this Organization Id and channel`);
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -381,7 +384,9 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    const subscribe = this.downloadService.getReport(option).subscribe(
+    this.downloadService.getReport(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (data: ServerResponse) => {
         this.showDownloadSuccessModal = true;
         this.disabledClass = false;
@@ -390,9 +395,6 @@ export class OrganisationComponent implements OnDestroy {
         this.disabledClass = false;
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -404,7 +406,9 @@ export class OrganisationComponent implements OnDestroy {
    */
   getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
-      const subscribe = this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
+      this.searchService.getOrganisationDetails({ orgid: orgIds })
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {
             this.myOrganizations = data.result.response.content;
@@ -425,17 +429,13 @@ export class OrganisationComponent implements OnDestroy {
           this.setError(true);
         }
       );
-      if (this.subscription) {
-        this.subscription.add(subscribe);
-      }
     }
   }
   ngOnDestroy() {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

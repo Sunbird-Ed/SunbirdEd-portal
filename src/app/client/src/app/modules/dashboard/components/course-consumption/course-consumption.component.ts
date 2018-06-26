@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -133,7 +132,6 @@ export class CourseConsumptionComponent implements OnDestroy {
 	 * telemetryImpression object for course consumption dashboard page
 	*/
   telemetryImpression: IImpressionEventInput;
-  subscription: Subscription;
 
   /**
    * Default method of CourseConsumptionComponent class

@@ -8,6 +8,8 @@ import { CourseProgressService } from './../../services';
 import { Observable } from 'rxjs/Observable';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component shows the course progress dashboard
@@ -18,6 +20,11 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   styleUrls: ['./course-progress.component.css']
 })
 export class CourseProgressComponent implements OnInit, OnDestroy {
+  /**
+   * Variable to gather and unsubscribe all observable subscriptions in this component.
+   */
+  public unsubscribe = new Subject<void>();
+
   interactObject: any;
   /**
 	 * This variable helps to show and hide page loader.
@@ -146,7 +153,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       status: ['1', '2', '3'],
       createdBy: this.userId
     };
-    const subscribe = this.courseProgressService.getBatches(option).subscribe(
+    this.courseProgressService.getBatches(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.batchlist = apiResponse.result.response.content;
         this.showLoader = false;
@@ -170,9 +179,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.showNoBatch = true;
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -231,7 +237,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     };
     this.telemetryImpression.edata.uri = '/learn/course/' + this.courseId + '/dashboard?timePeriod='
       + this.queryParams.timePeriod + '&batchIdentifier=' + this.queryParams.batchIdentifier;
-    const subscribe = this.courseProgressService.getDashboardData(option).subscribe(
+    this.courseProgressService.getDashboardData(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.dashboarData = this.courseProgressService.parseDasboardResponse(apiResponse.result);
         this.showLoader = false;
@@ -241,9 +249,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.showLoader = false;
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -264,7 +269,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
       batchIdentifier: this.queryParams.batchIdentifier,
       timePeriod: this.queryParams.timePeriod
     };
-    const subscribe = this.courseProgressService.downloadDashboardData(option).subscribe(
+    this.courseProgressService.downloadDashboardData(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showDownloadModal = true;
       },
@@ -272,9 +279,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     );
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   /**
@@ -325,8 +329,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
