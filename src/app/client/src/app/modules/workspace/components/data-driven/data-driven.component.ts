@@ -282,7 +282,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * check for previous route and redirect based on the url
+    * If previous url is content edit page (/content/edit) redirect current page to workspace/content/create
   */
   checkForPreviousRouteForRedirect() {
     const previousUrlObj = this.navigationHelperService.getPreviousUrl();
