@@ -77,7 +77,10 @@ export class ResourceService {
           this.cacheService.set('resourcebundles' + language, {
             messages: data.result.messages,
             frmelmnts: data.result.frmelmnts
-          });
+          }, {
+              maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes *
+              this.config.appConfig.cacheServiceConfig.setTimeInSeconds
+            });
         },
         (err: ServerResponse) => {
         }
