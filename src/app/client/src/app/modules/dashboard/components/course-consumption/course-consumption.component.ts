@@ -209,7 +209,6 @@ export class CourseConsumptionComponent {
    * @example validateIdentifier(do_xxxxx)
    */
   validateIdentifier(identifier: string) {
-    console.log('call this ', this.selectedCourse);
     if (identifier) {
       const selectedCourse = _.find(this.myCoursesList, ['identifier', identifier]);
       if (selectedCourse && selectedCourse.identifier) {
