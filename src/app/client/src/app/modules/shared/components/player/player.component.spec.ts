@@ -42,7 +42,6 @@ describe('PlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-
   it('should emit "START"', () => {
     let contentProgressEvent;
     component.contentProgressEvent.subscribe((data) => {

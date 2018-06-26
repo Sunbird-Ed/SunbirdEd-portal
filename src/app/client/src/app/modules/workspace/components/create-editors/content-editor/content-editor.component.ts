@@ -117,6 +117,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.type = params['type'];
       this.framework = params['framework'];
     });
+
     this.setRenderer();
   }
 
