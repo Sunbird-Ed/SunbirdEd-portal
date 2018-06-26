@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
@@ -45,8 +44,6 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
    * any data
 	 */
   showLoader = true;
-
-  subscription: Subscription;
 
   /**
    * To make get announcement by id

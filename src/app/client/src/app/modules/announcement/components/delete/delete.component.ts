@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
@@ -53,7 +52,6 @@ export class DeleteComponent implements OnInit, OnDestroy {
    * To navigate back to parent component
    */
   public routerNavigationService: RouterNavigationService;
-  subscription: Subscription;
 
   /**
 	 * Constructor to create injected service(s) object

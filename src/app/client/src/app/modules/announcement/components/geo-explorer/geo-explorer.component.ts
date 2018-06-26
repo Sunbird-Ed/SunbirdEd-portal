@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
@@ -67,8 +66,6 @@ export class GeoExplorerComponent implements OnInit, OnDestroy {
    * Flag to show error if any occur
    */
   showError = false;
-
-  subscription: Subscription;
 
   /**
    * Reference of user service

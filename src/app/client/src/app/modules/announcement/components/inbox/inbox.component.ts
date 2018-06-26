@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -96,7 +95,6 @@ export class InboxComponent implements OnInit, OnDestroy {
  * telemetryInteract event
  */
   telemetryInteract: IInteractEventInput;
-  subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
 	 *

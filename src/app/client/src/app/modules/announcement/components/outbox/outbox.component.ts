@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -6,6 +5,9 @@ import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -17,6 +19,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInte
   styleUrls: ['./outbox.component.css']
 })
 export class OutboxComponent implements OnInit, OnDestroy {
+  public unsubscribe = new Subject<void>();
   /**
 	 * inviewLogs
 	*/
@@ -99,7 +102,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
    * telemetryInteract event
    */
   telemetryInteract: IInteractEventInput;
-  subscription: Subscription;
   resendId;
   public createAnnouncementInteractEdata: IInteractEventEdata;
   public deleteAnnouncementInteractEdata: IInteractEventEdata;
@@ -155,7 +157,9 @@ export class OutboxComponent implements OnInit, OnDestroy {
     };
 
     // const subscribe =
-    this.announcementService.getOutboxData(option).subscribe(
+    this.announcementService.getOutboxData(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
         this.showLoader = false;
@@ -167,9 +171,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
         this.showWarningDiv = true;
       }
     );
-    // if (this.subscription) {
-    //   this.subscription.add(subscribe);
-    //   }
   }
 
   /**
@@ -215,25 +216,22 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	 */
   ngOnInit() {
     // const subscribe =
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params
+    .takeUntil(this.unsubscribe)
+    .subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateOutboxData(this.config.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
-    // if (this.subscription) {
-    //   this.subscription.add(subscribe);
-    //   }
 
-    // const deleteEventSubscription =
-    this.announcementService.announcementDeleteEvent.subscribe(data => {
+    this.announcementService.announcementDeleteEvent
+    .takeUntil(this.unsubscribe)
+    .subscribe(data => {
       _.each(this.outboxData.announcements, (key, index) => {
         if (data && data === key.id) {
           this.outboxData.announcements[index].status = 'cancelled';
         }
       });
     });
-    // if (this.subscription) {
-    //   this.subscription.add(deleteEventSubscription);
-    //   }
 
     this.telemetryImpression = {
       context: {
@@ -277,8 +275,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.subscription) {
-    //   this.subscription.unsubscribe();
-    //   }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
