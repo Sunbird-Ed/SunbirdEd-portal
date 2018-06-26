@@ -4,7 +4,7 @@ import { PublicContentPlayerComponent } from './public-content-player.component'
 import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -63,6 +63,8 @@ describe('PublicContentPlayerComponent', () => {
   });
 
   it('should config content player if content status is "Live"', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
     serverRes.result.result.content.status = 'Live';
@@ -73,6 +75,8 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.playerConfig).toBeTruthy();
   });
   it('should throw error if content api throws error', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -84,6 +88,8 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
   it('should call tryAgain method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
     spyOn(component, 'getContent').and.callThrough();
     component.tryAgain();
