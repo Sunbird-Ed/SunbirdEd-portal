@@ -14,15 +14,11 @@
         </span>
       </div>
       <div class="four wide column float-ContentLeft course-dropdown" *ngIf="myCoursesList && myCoursesList.length > 1">
-        <ng-template let-option #optionTemplate>
-          {{ option.name }}
-        </ng-template>
-        <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="options"
-          labelField="name" [placeholder]="'Select Course To See Dashboard'" [optionTemplate]="optionTemplate" [isSearchable]="true"
-          #templated>
-          <sui-select-option *ngFor="let course of myCoursesList" [value]="course" [ngClass]="{'active': course.identifier === identifier }"
-          appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'course', ver: '1.0' }" [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}">
-
+        <sui-select class="selection" [(ngModel)]="selectedCourse" (ngModelChange)="onAfterCourseChange($event)" [options]="myCoursesList"
+          labelField="name" [placeholder]="'Select Course '" [isSearchable]="true" #select>
+          <sui-select-option [ngClass]="{'active': course.identifier === identifier }" *ngFor="let course of select.filteredOptions"
+            [value]="course" appTelemetryInteract [telemetryInteractObject]="{ id: course.identifier, type: 'course', ver: '1.0' }"
+            [telemetryInteractEdata]="{id:'courseDropdown',type:'click',pageid:'course-creator-dashboard'}">
           </sui-select-option>
         </sui-select>
       </div>
@@ -32,15 +28,15 @@
       <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
         <div class="ui text menu float-ContentLeft padding-top-10">
           <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
-          appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-creator-dashboard'}">
+            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }"
-          appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'14d',type:'click',pageid:'course-creator-dashboard'}">
+            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'14d',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }"
-          appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'5w',type:'click',pageid:'course-creator-dashboard'}">
+            appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'5w',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
@@ -89,7 +85,7 @@
             </div>
             <div class="corse-graph-navigation-btn">
               <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }"
-              appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'previous',type:'click',pageid:'course-creator-dashboard'}">
+                appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'previous',type:'click',pageid:'course-creator-dashboard'}">
                 <i class="left arrow icon"></i>
               </button>
               <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
