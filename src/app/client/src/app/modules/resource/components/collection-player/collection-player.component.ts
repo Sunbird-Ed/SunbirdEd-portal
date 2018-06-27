@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService,
-   FlagContentService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
@@ -24,11 +23,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
   private route: ActivatedRoute;
-  public flagService: FlagContentService;
 
   public showPlayer: Boolean = false;
-
-  public disableFlag: Boolean = false;
 
   private collectionId: string;
 
@@ -102,20 +98,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
-    public contentUtilsServiceService: ContentUtilsServiceService, flagService: FlagContentService) {
+    public contentUtilsServiceService: ContentUtilsServiceService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
-    this.flagService = flagService;
   }
   ngOnInit() {
     this.getContent();
-    this.flagService.disableFlagOnSuccess.subscribe( data => {
-    this.disableFlag = true;
-    });
   }
 
   ngOnDestroy() {

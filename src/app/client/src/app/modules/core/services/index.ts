@@ -17,4 +17,3 @@ export * from './breadcrumbs/breadcrumbs.service';
 export * from './player/player.service';
 export * from './copy-content/copy-content.service';
 export * from './org-details/org-details.service';
-export * from './flag-content/flag-content.service';
