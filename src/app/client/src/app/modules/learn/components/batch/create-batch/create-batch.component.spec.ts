@@ -76,11 +76,7 @@ describe('CreateBatchComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should disable the button on click of submit button in create batch', fakeAsync(() => {
+  fit('should disable the button on click of submit button in create batch', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -88,9 +84,9 @@ describe('CreateBatchComponent', () => {
     resourceService.messages = mockResponse.resourceBundle.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(component, 'getUserList');
+    spyOn(component, 'createBatch');
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     fixture.detectChanges();
-    spyOn(component, 'createBatch');
     const button = fixture.debugElement.query(By.css('#submitbutton'));
     button.triggerEventHandler('click', null);
     tick(1000);
@@ -98,7 +94,7 @@ describe('CreateBatchComponent', () => {
     expect(component.disableSubmitBtn).toEqual(true);
   }));
 
-  it('should enable the submit button which was disabled during click of createBatch function on api error', fakeAsync(() => {
+  fit('should enable the submit button which was disabled during click of createBatch function on api error', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -106,12 +102,12 @@ describe('CreateBatchComponent', () => {
     resourceService.messages = mockResponse.resourceBundle.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(component, 'getUserList');
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    fixture.detectChanges();
-    component.createBatchUserForm.value.startDate = new Date();
     spyOn(component, 'createBatch').and.callThrough();
     spyOn(toasterService, 'error');
     spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.throw(mockResponse.errorResponse));
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    component.createBatchUserForm.value.startDate = new Date();
+    fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('#submitbutton'));
     button.triggerEventHandler('click', null);
     tick(1000);
@@ -120,7 +116,7 @@ describe('CreateBatchComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
-  it('should enable the submit button which was disabled during click of createBatch function on success response', fakeAsync(() => {
+  fit('should enable the submit button which was disabled during click of createBatch function on success response', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -128,12 +124,12 @@ describe('CreateBatchComponent', () => {
     resourceService.messages = mockResponse.resourceBundle.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(component, 'getUserList');
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    fixture.detectChanges();
-    component.createBatchUserForm.value.startDate = new Date();
     spyOn(component, 'createBatch').and.callThrough();
     spyOn(toasterService, 'success');
     spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.of(mockResponse.returnValue));
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    component.createBatchUserForm.value.startDate = new Date();
+    fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('#submitbutton'));
     button.triggerEventHandler('click', null);
     tick(1000);
