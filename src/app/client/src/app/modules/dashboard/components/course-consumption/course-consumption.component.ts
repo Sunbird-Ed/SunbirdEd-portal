@@ -242,6 +242,7 @@ export class CourseConsumptionComponent implements OnDestroy {
         this.courseName = this.myCoursesList[0].name;
         this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
       }
+      this.validateIdentifier(this.identifier);
       this.showLoader = false;
     } else {
       // Make search api call

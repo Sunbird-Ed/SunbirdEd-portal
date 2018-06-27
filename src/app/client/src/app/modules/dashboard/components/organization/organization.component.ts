@@ -358,6 +358,7 @@ export class OrganisationComponent implements OnDestroy {
       }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
+      this.validateIdentifier(this.identifier);
     } else {
       this.userDataSubscription = this.userService.userData$.first().subscribe(
         user => {
