@@ -26,9 +26,9 @@ telemetrySyncManager.prototype.init = function (config) {
   this.failedList = []
   var self = this;
   setInterval(function () {
-    // if (telemetryBatchUtil.get()) {
-    //   self.syncBatches();
-    // }
+    if (telemetryBatchUtil.get()) {
+      self.syncBatches();
+    }
   }, 10000)
 }
 
@@ -39,12 +39,12 @@ telemetrySyncManager.prototype.dispatch = function (telemetryEvent) {
   var event = _.cloneDeep(telemetryEvent)
   this.teleData.push(event)
   if ((event.eid.toUpperCase() == 'END') || (this.teleData.length >= this.config.batchsize)) {
-    // var events = this.teleData.splice(0, this.config.batchsize) 
-    // this.sync(events, function(error, res, failedEvents){
-    //   if(error) {
-    //     telemetryBatchUtil.add(failedEvents)
-    //   }
-    // })
+    var events = this.teleData.splice(0, this.config.batchsize) 
+    this.sync(events, function(error, res, failedEvents){
+      if(error) {
+        telemetryBatchUtil.add(failedEvents)
+      }
+    })
   }
 }
 
@@ -96,11 +96,10 @@ telemetrySyncManager.prototype.sync = function (events, callback) {
     const options = this.getHttpOption(events)
 
     request(options, function (err, res, body) {
-      if (body && body.params && _.toLower(body.params.status) === 'successful') {
-        callback(null, body)
-      } else if (_.get(body, 'params.err') === 'VALIDATION_ERROR') {
-        callback(null, body)
-      } else {
+      if (res && res.statusCode === "SUCCESS") {
+        callback(null, true)
+      }
+      if (err) {
         console.log('Telemetry sync failed, due to ', err)
         callback(new Error('sync failed'), null, options.body.events)
       }
@@ -118,12 +117,12 @@ telemetrySyncManager.prototype.syncBatches = function (callback) {
   var batches = telemetryBatchUtil.get();
   _.forEach(batches, function (batch) {
     (function (batch) {
-      // self.sync(batch.events, function (error, response) {
-      //   if (!error) {
-      //     console.log('Telemetry batch submitted successfully with batch id: ', batch.id)
-      //     telemetryBatchUtil.delete(batch.id);
-      //   }
-      // })
+      self.sync(batch.events, function (error, response) {
+        if (!error) {
+          console.log('Telemetry batch submitted successfully with batch id: ', batch.id)
+          telemetryBatchUtil.delete(batch.id);
+        }
+      })
     })(batch)
   })
 }

@@ -282,7 +282,7 @@ telemetryService.prototype.getRollUpData = function (data) {
 }
 
 telemetryService.prototype.syncOnExit = function (cb) {
-  // default_config.dispatcher.sync(cb)
+  default_config.dispatcher.sync(cb)
 }
 
 /**
