@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,6 +20,7 @@ describe('SearchComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
   class MockRouter {
+    navigate = jasmine.createSpy('navigate');
     public navigationEnd = new NavigationEnd(1, '/learn', '/learn');
     public navigationEnd2 = new NavigationEnd(2, '/search/All/1', '/search/All/1');
     public events = new Observable(observer => {
@@ -50,5 +51,19 @@ describe('SearchComponent', () => {
   });
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should call onchange method', ( ) => {
+    component.search = {All: '/search/All'};
+    component.selectedOption = 'All';
+    component.onChange();
+    expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1]);
+  });
+  it('should call onEnter method', ( ) => {
+    component.search = {All: '/search/All'};
+    component.selectedOption = 'All';
+    const key = 'hello';
+    component.queryParam['key'] = key;
+    component.onEnter(key);
+    expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams:  component.queryParam});
   });
 });

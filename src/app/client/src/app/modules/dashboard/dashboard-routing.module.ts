@@ -8,7 +8,7 @@ const routes: Routes = [
     data: {
       telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Course', url: '/profile' }, { label: 'Course Creator Dashboard', url: '' }]
+      { label: 'Course', url: '/learn' }, { label: 'Course Creator Dashboard', url: '' }]
     }
   },
   {
