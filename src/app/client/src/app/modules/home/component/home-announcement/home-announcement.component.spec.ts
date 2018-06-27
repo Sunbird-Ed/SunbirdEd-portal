@@ -59,4 +59,11 @@ describe('HomeAnnouncementComponent', () => {
       expect(component.inviewEvent.emit).toHaveBeenCalled();
       expect(component.inviewEvent.emit).toHaveBeenCalledWith(testData.inviewData);
     }));
+  fit('should unsubscribe from all observable subscriptions', () => {
+      component.populateHomeInboxData(2, 1);
+      component.readAnnouncement('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43', true);
+      spyOn(component.unsubscribe, 'complete');
+      component.ngOnDestroy();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
+    });
 });
