@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
@@ -124,7 +124,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService) {
+    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -170,7 +170,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             this.fetchContentStatus();
             this.subscribeToQueryParam();
           }
-        } else if (this.courseStatus === 'Unlisted') {
+        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+        || this.courseHierarchy.createdBy === this.userService.userid) {
           this.parseChildContent();
           this.subscribeToQueryParam();
         } else {
@@ -237,7 +238,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   private OnPlayContent(content: { title: string, id: string }) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
-      this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted')) {
+      this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
+      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+      || this.courseHierarchy.createdBy === this.userService.userid)) {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
       this.setContentNavigators();
@@ -278,7 +281,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.activatedRoute
     };
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-      || this.courseStatus === 'Unlisted') {
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+      || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
     }
   }
