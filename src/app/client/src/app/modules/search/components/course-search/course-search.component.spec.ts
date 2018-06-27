@@ -1,7 +1,7 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
+import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -59,29 +59,25 @@ describe('CourseSearchComponent', () => {
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.courseSuccess));
-    courseService.getEnrolledCourses();
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService.initialize();
     fixture.detectChanges();
     component.populateEnrolledCourse();
-    fixture.detectChanges();
-    expect(component.queryParams.sortType).toString();
-    expect(component.queryParams.sortType).toBe('desc');
     expect(component.showLoader).toBeTruthy();
   });
   it('should throw error when courseService api throw error ', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.errorCourse));
-    courseService.getEnrolledCourses();
+    courseService._enrolledCourseData$.next({ err: Response.errorCourse, enrolledCourses: null});
+    courseService.initialize();
     fixture.detectChanges();
     component.populateEnrolledCourse();
-    fixture.detectChanges();
     expect(component.showLoader).toBeTruthy();
   });
-  xit('should subscribe to searchService', () => {
+  it('should subscribe to searchService', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
-    // component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
+     component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
@@ -89,10 +85,10 @@ describe('CourseSearchComponent', () => {
     expect(component.searchList).toBeDefined();
     expect(component.totalCount).toBeDefined();
   });
-  xit('should show resume button if enrolled course and other courses have same identifier ', () => {
+  it('should show resume button if enrolled course and other courses have same identifier ', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
-    // component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
+    component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
@@ -142,5 +138,18 @@ describe('CourseSearchComponent', () => {
     expect(component.pageNumber).toEqual(3);
     expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
     expect(route.navigate).toHaveBeenCalledWith(['search/Courses', 3], { queryParams: queryParams });
+  });
+  it('should call playcontent', () => {
+    const playerService = TestBed.get(PlayerService);
+    const event = { data: { metaData: { batchId: '0122838911932661768' } } };
+    spyOn(playerService, 'playContent').and.callFake(() => Observable.of(event.data.metaData));
+    component.playContent(event);
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
   });
 });

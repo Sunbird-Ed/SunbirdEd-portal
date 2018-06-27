@@ -225,5 +225,19 @@
                 </div>
             </div>
         </div>
+        <div class="item padding-top-10 padding-bottom-5">
+            <div class="ui grid">
+                <div class="three wide column">
+                    <div class="content content-detail">
+                        {{resourceService.frmelmnts.lbl.credits}}
+                    </div>
+                </div>
+                <div class="nine wide column">
+                    <div class="content" *ngIf="metadata.attributions">
+                        {{metadata.attributions}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
