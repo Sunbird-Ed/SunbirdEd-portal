@@ -79,7 +79,7 @@ describe('AnnouncementInboxCardComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should show TEST data in html element', () => {
+  it('should show TEST data in html element', () => {
     component.announcementDetails = testData.mockRes.detailsObject;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('div p.annType').innerText).toEqual('CIRCULAR');
