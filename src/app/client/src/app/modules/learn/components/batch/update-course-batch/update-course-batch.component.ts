@@ -83,6 +83,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 	*/
   telemetryImpression: IImpressionEventInput;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
+
   public courseConsumptionService: CourseConsumptionService;
   /**
 	 * Constructor to create injected service(s) object
@@ -269,9 +272,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: new FormControl(),
       users: new FormControl()
     });
-    // this.batchUpdateForm.valueChanges.subscribe(val => {
-    //   this.enableButton();
-    // });
+    this.batchUpdateForm.valueChanges.subscribe(val => {
+      this.enableButton();
+    });
   }
 
   fetchParticipantsMentorsDetails() {
@@ -350,15 +353,18 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       });
       requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     }
+    this.disableSubmitBtn = true;
     this.courseBatchService.updateBatch(requestBody).subscribe((response) => {
       if (users && users.length > 0) {
         this.updateUserToBatch(this.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -372,10 +378,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     };
     setTimeout(() => {
       this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
+        this.disableSubmitBtn = false;
         if (err.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {

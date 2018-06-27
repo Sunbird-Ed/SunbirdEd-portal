@@ -7,9 +7,10 @@ import {SearchParam, LearnerService, UserService, ContentService, SearchService 
 
 @Injectable()
 export class CourseBatchService {
-  private _enrollBatchDetails: any;
+  private _enrollToBatchDetails: any;
   private _updateBatchDetails: any;
   public updateEvent = new EventEmitter();
+  private _enrolledBatchDetails: any;
   constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
@@ -55,18 +56,18 @@ export class CourseBatchService {
     };
     return this.learnerService.get(option);
   }
-  setEnrollBatchDetails(enrollBatchDetails: any) {
-    this._enrollBatchDetails = enrollBatchDetails;
+  setEnrollToBatchDetails(enrollBatchDetails: any) {
+    this._enrollToBatchDetails = enrollBatchDetails;
   }
   setUpdateBatchDetails(enrollBatchDetails: any) {
     this._updateBatchDetails = enrollBatchDetails;
   }
-  getEnrollBatchDetails(bathId) {
-    if (this._enrollBatchDetails && bathId === this._enrollBatchDetails.identifier) {
-      return Observable.of(this._enrollBatchDetails);
+  getEnrollToBatchDetails(bathId) {
+    if (this._enrollToBatchDetails && bathId === this._enrollToBatchDetails.identifier) {
+      return Observable.of(this._enrollToBatchDetails);
     } else {
-      return this.getBatchDetails(bathId).map((date) => {
-        return date.result.response;
+      return this.getBatchDetails(bathId).map((data) => {
+        return data.result.response;
       });
     }
   }
@@ -113,5 +114,15 @@ export class CourseBatchService {
       }
     };
     return this.learnerService.post(option);
+  }
+  getEnrolledBatchDetails(batchId) {
+    if (this._enrolledBatchDetails && this._enrolledBatchDetails.identifier === batchId) {
+      return Observable.of(this._enrolledBatchDetails);
+    } else {
+      return this.getBatchDetails(batchId).map((data) => {
+        this._enrolledBatchDetails = data.result.response;
+        return data.result.response;
+      });
+    }
   }
 }
