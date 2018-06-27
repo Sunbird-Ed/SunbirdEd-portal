@@ -14,7 +14,6 @@ export class ExternalUrlpreviewService {
       * @param userId  user id of the loggedin user
       */
     getRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
-        // if (playerconfigMeta.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
         this.toasterService.warning(this.resourceService.messages.imsg.m0034);
         setTimeout(() => {
             const newWindow = window.open('/learn/redirect', '_blank');

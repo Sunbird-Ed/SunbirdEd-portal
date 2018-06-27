@@ -1,0 +1,45 @@
+.card-component-description {
+    height: 2.6em;
+    max-height: 2.6em;
+}
+
+@media only screen and (min-width: 1023px) and (max-width: 1200px)  {
+    .card-component-description {
+        height: 1.3em;
+    }
+}
+.ui.image.profile-card {
+    align-items: center;
+    display: flex;
+    background: #fff;
+    height: 150px;
+    overflow: hidden;
+    justify-content: center;
+    flex-direction: row;
+}
+.profile-card-content {
+    display:flex;
+}
+.ui.circular.image.profile-card-avatar {
+    max-width: 70px;
+    max-height: 70px;
+    width: 70px;
+    height: 70px;
+    margin-left: 20px;
+}
+.profile-update-heading {
+    font-family: 'sunbirdboldfont';
+    font-size: 1.3em;
+}
+.profile-update-subheading{
+    font-family: 'sunbirdregularfont';
+    font-size: 0.875em;
+    color: #7c7b7b;
+}
+.ui.cards {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: -.875em -.5em -.815em 0;
+}
+

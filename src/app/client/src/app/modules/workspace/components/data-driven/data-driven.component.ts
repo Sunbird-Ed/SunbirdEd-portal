@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
-  ILoaderMessage
+  ILoaderMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
@@ -113,7 +113,8 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     userService: UserService,
     configService: ConfigService,
     formService: FormService,
-    private _cacheService: CacheService
+    private _cacheService: CacheService,
+    public navigationHelperService: NavigationHelperService
   ) {
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -130,12 +131,15 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
     this.creationFormLable = this.configService.appConfig.contentCreateTypeLable[this.contentType];
   }
 
+
   ngOnInit() {
+
+     this.checkForPreviousRouteForRedirect();
+
     /**
      * fetchFrameworkMetaData is called to config the form data and framework data
      */
     this.fetchFrameworkMetaData();
-
     /***
  * Call User service to get user data
  */
@@ -275,5 +279,19 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0010);
       });
     }
+  }
+
+  /**
+    * Issue #SB-1448,  If previous url is not from create page, redirect current page to 'workspace/content/create'
+  */
+  checkForPreviousRouteForRedirect() {
+    const previousUrlObj = this.navigationHelperService.getPreviousUrl();
+    if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
+      this.redirect();
+    }
+  }
+
+  redirect() {
+    this.router.navigate(['/workspace/content/create']);
   }
 }

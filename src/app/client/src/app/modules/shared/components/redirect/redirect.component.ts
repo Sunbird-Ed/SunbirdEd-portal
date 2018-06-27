@@ -33,13 +33,12 @@ export class RedirectComponent implements OnInit {
     console.log('this.activatedRoute.snapshot.data.telemetry', this.activatedRoute.snapshot.data.telemetry);
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: 'redirect'
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
-        target: window.redirectUrl
+        uri: window.redirectUrl
       }
     };
     setTimeout(() => {

@@ -444,7 +444,7 @@ exports.close = function () {
 const telemetryConfig = {
   pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
   method: 'POST',
-  batchsize: process.env.sunbird_telemetry_sync_batch_size || 20,
+  batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemtryEventConfig.endpoint,
   host: contentURL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN

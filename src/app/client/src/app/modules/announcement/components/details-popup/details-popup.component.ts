@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -15,7 +15,8 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './details-popup.component.html',
   styleUrls: ['./details-popup.component.css']
 })
-export class DetailsPopupComponent implements OnInit {
+export class DetailsPopupComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
    /**
 	 * telemetryImpression
 	*/
@@ -143,6 +144,10 @@ export class DetailsPopupComponent implements OnInit {
         uri: '/announcement/outbox/' + this.announcementId,
       }
     };
+  }
+
+  ngOnDestroy() {
+    this.modal.deny();
   }
 }
 

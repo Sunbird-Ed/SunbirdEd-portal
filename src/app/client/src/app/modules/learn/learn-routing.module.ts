@@ -25,7 +25,7 @@ const routes: Routes = [
     path: 'redirect', component: RedirectComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Redirect', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'redirect', type: 'view' }
+      telemetry: { env: telemetryEnv, pageid: 'learn-redirect', type: 'view' }
     }
   },
   {
@@ -94,7 +94,13 @@ const routes: Routes = [
         children: [{ path: 'flag', component: FlagContentComponent }]
       },
       {
-        path: ':courseId/:courseStatus', component: CoursePlayerComponent
+        path: ':courseId/:courseStatus', component: CoursePlayerComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'course-player-unlisted', type: 'view', object: { ver: '1.0', type: 'batch' }
+          },
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
+        }
       }
     ]
   }
