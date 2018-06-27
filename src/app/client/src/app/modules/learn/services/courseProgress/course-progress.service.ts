@@ -195,7 +195,7 @@ export class CourseProgressService {
             return this.courseProgress[courseId_batchId];
           });
       } else {
-        console.log('contentId/courseId not matched', req, this.courseProgress[courseId_batchId]);
+        console.log('contentId/courseId not matched or status is 2', req, this.courseProgress[courseId_batchId]);
         return Observable.of(this.courseProgress[courseId_batchId]);
       }
     } else {

@@ -54,6 +54,8 @@ describe('PublicCollectionPlayerComponent', () => {
     fixture.detectChanges();
   });
   it('should create', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     expect(component).toBeTruthy();
     expect(component.showPlayer).toBeFalsy();
     expect(component.loader).toBeTruthy();
@@ -72,6 +74,8 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.loader).toBeFalsy();
   });
   it('should call setInteractEventData method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const edata = {
       id: '',
       type: '',
@@ -87,6 +91,8 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.closeCollectionPlayerInteractEdata).toBeDefined();
   });
   it('should call closeContentPlayer method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const router = TestBed.get(Router);
     const route = TestBed.get(ActivatedRoute);
     const navigation = {
@@ -97,6 +103,8 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith([], navigation);
   });
   it('should call playContent method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const content = {
       id: 'do_112474267785674752118',
       title: 'Test'
@@ -106,6 +114,8 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.contentTitle).toEqual(content.title);
   });
   it('should call onPlayContent method', () => {
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
     const content = {
       id: 'do_112474267785674752118',
       title: 'Test'
