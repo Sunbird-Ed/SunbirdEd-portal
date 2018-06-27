@@ -212,7 +212,6 @@ export class ExploreContentComponent implements OnInit {
         this.orgDetailsService.getOrgDetails(this.slug).subscribe(
             (apiResponse: any) => {
                 this.hashTagId = apiResponse.hashTagId;
-                console.log(this.hashTagId);
                 this.setFilters();
             },
             err => {
