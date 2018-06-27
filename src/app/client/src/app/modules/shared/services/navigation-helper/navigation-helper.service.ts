@@ -14,6 +14,10 @@ export class NavigationHelperService {
 
   private _resourceCloseUrl: UrlHistory;
   /**
+   * Stores workspaceCloseUrl
+   */
+  private _workspaceCloseUrl: UrlHistory;
+  /**
    * Stores routing history
    */
   private _history: Array<UrlHistory> = [];
@@ -52,12 +56,29 @@ export class NavigationHelperService {
   storeResourceCloseUrl() {
     this._resourceCloseUrl = this._history[this._history.length - 1];
   }
+  storeWorkSpaceCloseUrl() {
+    this._workspaceCloseUrl = this.history[this._history.length - 1];
+  }
   public navigateToResource(defaultUrl: string = '/home') {
     if (this._resourceCloseUrl && this._resourceCloseUrl.url) {
       if (this._resourceCloseUrl.queryParams) {
         this.router.navigate([this._resourceCloseUrl.url], {queryParams: this._resourceCloseUrl.queryParams});
       } else {
         this.router.navigate([this._resourceCloseUrl.url]);
+      }
+    } else {
+      this.router.navigate([defaultUrl]);
+    }
+  }
+
+  public navigateToWorkSpace(defaultUrl: string = '/home') {
+    if (this._workspaceCloseUrl && this._workspaceCloseUrl.url) {
+      if (this._workspaceCloseUrl.queryParams) {
+        this.router.navigate([this._workspaceCloseUrl.url], {queryParams: this._workspaceCloseUrl.queryParams});
+        this._workspaceCloseUrl = undefined;
+      } else {
+        this.router.navigate([this._workspaceCloseUrl.url]);
+        this._workspaceCloseUrl = undefined;
       }
     } else {
       this.router.navigate([defaultUrl]);
