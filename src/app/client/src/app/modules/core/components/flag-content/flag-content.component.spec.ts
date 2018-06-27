@@ -1,10 +1,10 @@
 import { ContentService, PlayerService, UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { SharedModule , ResourceService, ToasterService} from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FlagContentComponent } from './flag-content.component';
-import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
+import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Response } from './flag-content.component.spec.data';
 describe('FlagContentComponent', () => {
@@ -14,31 +14,42 @@ describe('FlagContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-const fakeActivatedRoute = { parent: { params: Observable.of({contentId: 'testId', contentName: 'hello'}) },
-snapshot: {
-  parent: {
-    url: [
-      {
-        path: 'play',
-      },
-      {
-        path: 'content',
-      },
-      {
-        path: 'do_112498456959754240121',
-      },
-    ],
-  }
-}};
+  const fakeActivatedRoute = {
+    parent: {
+      params: Observable.of({ contentId: 'testId', contentName: 'hello' }),
+      snapshot: {
+        data: {
+          telemetry: {
+            env: 'library'
+          }
+        }
+      }
+    },
+    snapshot: {
+      parent: {
+        url: [
+          {
+            path: 'play',
+          },
+          {
+            path: 'content',
+          },
+          {
+            path: 'do_112498456959754240121',
+          },
+        ],
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot()],
       providers: [{ provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -73,11 +84,11 @@ snapshot: {
     const requestData = {
       flaggedBy: 'Cretation User',
       versionKey: '1496989757647',
-     flagReasons: 'others'
+      flagReasons: 'others'
     };
     spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successFlag));
-   component.populateFlagContent(requestData);
-   expect(component.showLoader).toBeFalsy();
+    component.populateFlagContent(requestData);
+    expect(component.showLoader).toBeFalsy();
   });
   it('should  throw error when call flag api', () => {
     const playerService = TestBed.get(PlayerService);
@@ -91,23 +102,23 @@ snapshot: {
     };
     spyOn(contentService, 'post').and.callFake(() => Observable.throw({}));
     spyOn(toasterService, 'error').and.callThrough();
-   component.populateFlagContent(requestData);
-   fixture.detectChanges();
-   expect(component.showLoader).toBeFalsy();
-   expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0050);
+    component.populateFlagContent(requestData);
+    fixture.detectChanges();
+    expect(component.showLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0050);
   });
   it('should call getCollectionHierarchy ', () => {
     const playerService = TestBed.get(PlayerService);
     playerService.contentData = {};
     spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => Observable.of(Response.collectionData));
-   component.getCollectionHierarchy();
-   expect(component.contentData).toBeDefined();
+    component.getCollectionHierarchy();
+    expect(component.contentData).toBeDefined();
   });
   it('should call getCollectionHierarchy when data is already present', () => {
     const playerService = TestBed.get(PlayerService);
     playerService.collectionData = Response.collectionData;
-   component.getCollectionHierarchy();
-   component.contentData =  playerService.collectionData;
-   expect(component.contentData).toBeDefined();
+    component.getCollectionHierarchy();
+    component.contentData = playerService.collectionData;
+    expect(component.contentData).toBeDefined();
   });
 });
