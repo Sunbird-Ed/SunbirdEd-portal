@@ -177,9 +177,7 @@ describe('CourseProgressComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
-    component.populateBatchData();
-    component.populateCourseDashboardData();
-    component.downloadReport();
+    component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
