@@ -268,7 +268,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.disableSubmitBtn = true;
     this.courseBatchService.createBatch(requestBody).subscribe((response) => {
-      if (users && users.length > 0) {
+      if (users && users.length > 0 && users[0]) {
         this.addUserToBatch(response.result.batchId, users);
       } else {
         this.disableSubmitBtn = false;
