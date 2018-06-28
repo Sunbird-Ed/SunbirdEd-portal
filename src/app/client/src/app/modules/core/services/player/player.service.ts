@@ -89,7 +89,7 @@ export class PlayerService {
       configuration.context.dims = cloneDims;
     }
     const tags = [];
-    configuration.context.tags = _.forEach(this.userService.userProfile.organisations, (org) => {
+    _.forEach(this.userService.userProfile.organisations, (org) => {
       if (org.hashTagId) {
         tags.push(org.hashTagId);
       } else if (org.organisationId) {
