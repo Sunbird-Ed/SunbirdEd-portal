@@ -16,6 +16,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NgInviewModule } from 'angular-inport';
 import { AnnouncementService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
     ConfigService, DateFormatPipe, ServerResponse
@@ -45,7 +46,7 @@ describe('InboxComponent', () => {
                 SuiModule, RouterTestingModule, NgInviewModule,
                 SharedModule.forRoot(), TelemetryModule.forRoot()],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
-                PaginationService, ToasterService, ResourceService, DateFormatPipe,
+                PaginationService, ToasterService, ResourceService, CacheService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
                 { provide: RouterOutlet, useValue: fakeActivatedRoute }

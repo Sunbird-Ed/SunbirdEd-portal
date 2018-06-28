@@ -4,9 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CacheService } from 'ng2-cache-service';
 // Import services
 import { ResourceService, ConfigService  } from '../../services/index';
+import { CacheService } from 'ng2-cache-service';
 import { DateFormatPipe } from '../../pipes/index';
 import { Announcement } from '../../interfaces/index';
 import { AnnouncementInboxCardComponent } from './announcement-inbox-card.component';
