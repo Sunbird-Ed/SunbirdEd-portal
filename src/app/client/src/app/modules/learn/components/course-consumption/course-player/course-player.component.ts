@@ -166,8 +166,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.enrolledCourse = true;
           this.setTelemetryStartEndData();
           this.parseChildContent();
-          if (this.enrolledBatchInfo.status > 0) {
-            this.fetchContentStatus();
+          if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
+            this.getContentState();
             this.subscribeToQueryParam();
           }
         } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
@@ -203,17 +203,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.curriculum.push({ mimeType: key, count: value });
     });
   }
-  private fetchContentStatus() {
+  private getContentState() {
     const req = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
+    this.courseConsumptionService.getContentState(req).subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
-      console.log('content read api failed');
+      console.log(err, 'content read api failed');
     });
   }
   private subscribeToQueryParam() {
@@ -287,7 +287,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
-    if (this.batchId) {
+    if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
       const eid = event.detail.telemetryData.eid;
       const request: any = {
         userId: this.userService.userid,
@@ -296,8 +296,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         batchId: this.batchId,
         status: eid === 'END' ? 2 : 1
       };
-      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+      .subscribe((updatedRes) => {
         this.contentStatus = updatedRes.content;
+      }, (err) => {
+        console.log('updating content status failed', err);
       });
     }
   }

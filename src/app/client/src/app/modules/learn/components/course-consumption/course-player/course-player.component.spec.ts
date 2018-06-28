@@ -115,7 +115,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-   it('should fetch contentStatus if course is enrolled', () => {
+   it('should get content state if course is enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -125,10 +125,10 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
-    expect(courseConsumptionService.getContentStatus).toHaveBeenCalled();
+    expect(courseConsumptionService.getContentState).toHaveBeenCalled();
     expect(component.contentStatus).toBeDefined();
     component.ngOnDestroy();
   });
@@ -144,7 +144,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').
     and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
@@ -164,7 +164,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
@@ -186,7 +186,7 @@ describe('CoursePlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
@@ -206,7 +206,7 @@ describe('CoursePlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
@@ -226,7 +226,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentStatus').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();

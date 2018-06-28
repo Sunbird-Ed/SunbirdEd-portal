@@ -81,11 +81,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
       if (!this.flaggedCourse && this.onPageLoadResume &&
-        !this.contentId && this.enrolledBatchInfo.status > 0) {
+        !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
         this.onPageLoadResume = false;
         this.showResumeCourse = false;
         this.resumeCourse();
-      } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0) {
+      } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
         this.onPageLoadResume = false;
         this.showResumeCourse = false;
       } else {
