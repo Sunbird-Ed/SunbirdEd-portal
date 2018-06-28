@@ -13,7 +13,7 @@ import { AnnouncementInboxCardComponent } from './announcement-inbox-card.compon
 // Test data
 import * as mockData from './announcement-inbox-card.component.spec.data';
 const testData = mockData.mockRes;
-
+import { CacheService } from 'ng2-cache-service';
 describe('AnnouncementInboxCardComponent', () => {
   let component: AnnouncementInboxCardComponent;
   let fixture: ComponentFixture<AnnouncementInboxCardComponent>;
