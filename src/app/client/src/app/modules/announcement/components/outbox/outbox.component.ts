@@ -156,7 +156,6 @@ export class OutboxComponent implements OnInit, OnDestroy {
       limit: this.pageLimit
     };
 
-    // const subscribe =
     this.announcementService.getOutboxData(option)
     .takeUntil(this.unsubscribe)
     .subscribe(
@@ -215,7 +214,7 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	 *
 	 */
   ngOnInit() {
-    // const subscribe =
+
     this.activatedRoute.params
     .takeUntil(this.unsubscribe)
     .subscribe(params => {

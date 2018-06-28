@@ -1,9 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -21,7 +22,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   formType = 'content';
   formAction = 'search';
   filterEnv = 'resourcebundle';
-  subscription: Subscription;
+  public unsubscribe = new Subject<void>();
 
   constructor(public router: Router, public activatedRoute: ActivatedRoute,
     public orgDetailsService: OrgDetailsService,
@@ -32,27 +33,21 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.slug = this.activatedRoute.snapshot.params.slug;
     this.getChannelId();
-    const subscribe = this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.selectedLanguage = this.queryParam['language'] || 'en';
     });
-
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   getChannelId() {
-    const subscribe = this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+    this.orgDetailsService.getOrgDetails(this.slug)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: any) => {
         this.channelId = apiResponse.hashTagId;
         this.getLanguage();
       },
     );
-
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   getLanguage() {
@@ -67,7 +62,9 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
         contentType: this.filterEnv,
         framework: ''
       };
-      const subscribe = this.formService.getFormConfig(formServiceInputParams, this.channelId).subscribe(
+      this.formService.getFormConfig(formServiceInputParams, this.channelId)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           this.languages = data[0].range;
           this._cacheService.set(this.filterEnv + this.formAction, data,
@@ -81,9 +78,6 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
           this.onLanguageChange('en');
         }
       );
-      if (this.subscription) {
-        this.subscription.add(subscribe);
-      }
     }
   }
 
@@ -95,8 +89,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

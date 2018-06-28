@@ -78,7 +78,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   public permissionService: PermissionService;
   public signUpInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  subscription: Subscription;
   tenantDataSubscription: Subscription;
   userDataSubscription: Subscription;
   /*
@@ -101,7 +100,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
     }
     this.getUrl();
-    const subscribe = this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
       if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
@@ -109,9 +108,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.resourceService.getResource(this.queryParam['language']);
       }
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
@@ -162,7 +158,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getUrl() {
-    const subscribe = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
       const urlSegment = urlAfterRedirects.url.split('/');
       if (_.includes(urlSegment, 'explore')) {
         this.showExploreHeader = true;
@@ -170,9 +166,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.showExploreHeader = false;
       }
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
   }
 
   closeQrModalEvent(event) {
@@ -194,6 +187,5 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.tenantDataSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
-    this.subscription.unsubscribe();
   }
 }

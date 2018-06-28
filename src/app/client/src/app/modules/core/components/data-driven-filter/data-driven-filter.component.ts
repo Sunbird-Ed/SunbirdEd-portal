@@ -69,7 +69,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
-  subscription: Subscription;
   frameworkDataSubscription: Subscription;
   /**
     * Constructor to create injected service(s) object
@@ -111,7 +110,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
   }
 
   getQueryParams() {
-    const subscribe = this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = { ...params };
       _.forIn(params, (value, key) => {
         if (typeof value === 'string' && key !== 'key' && key !== 'language') {
@@ -132,10 +131,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
         }
       });
     });
-
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
   }
   /**
 * fetchFilterMetaData is gives form config data
@@ -261,9 +256,6 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      }
       if (this.frameworkDataSubscription) {
         this.frameworkDataSubscription.unsubscribe();
         }

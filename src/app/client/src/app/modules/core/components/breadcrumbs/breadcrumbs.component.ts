@@ -4,6 +4,8 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -39,7 +41,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
      * Reference of BreadcrumbService.
      */
     breadcrumbsService: BreadcrumbsService;
-    subscription: Subscription;
+
+    public unsubscribe = new Subject<void>();
 
 
     /**
@@ -64,7 +67,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
          * The breadcrumb data is gathered from router and by looping through each
          * child component.
          */
-        const routeSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
+        this.router.events.filter(event => event instanceof NavigationEnd)
             .subscribe(event => {
                 this.breadCrumbsData = [];
                 let currentRoute = this.activatedRoute.root;
@@ -82,14 +85,13 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
             });
 
-            if (this.subscription) {
-                this.subscription.add(routeSubscription);
-                }
         /**
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        const dynamicSubscription = this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
+        this.breadcrumbsService.dynamicBreadcrumbs
+        .takeUntil(this.unsubscribe)
+        .subscribe(data => {
             if (data.length > 0) {
             data.forEach(breadcrumb => {
             this.breadCrumbsData.push(breadcrumb);
@@ -98,10 +100,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
             this.cdr.detectChanges();
         }
         );
-
-        if (this.subscription) {
-            this.subscription.add(dynamicSubscription);
-            }
     }
 
     /**
@@ -113,9 +111,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-            }
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
 

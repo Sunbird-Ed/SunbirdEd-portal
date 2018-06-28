@@ -6,7 +6,8 @@ import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-content-badge',
   templateUrl: './content-badge.component.html',
@@ -17,7 +18,7 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
   @Input() data: Array<object>;
   public contentId: string;
   userDataSubscription: Subscription;
-  subscription: Subscription;
+  public unsubscribe = new Subject<void>();
   /**
    * Reference of User Profile interface
    */
@@ -45,12 +46,9 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
           this.getBadgeDetails();
         }
       });
-    const subscribe = this.activatedRoute.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.collectionId;
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
     this.setInteractEventData();
   }
 
@@ -66,7 +64,9 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
         }
       }
     };
-    const subscribe = this.badgeService.getAllBadgeList(req).subscribe((response) => {
+    this.badgeService.getAllBadgeList(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       this.allBadgeList = _.differenceBy(response.result.badges, this.data, 'badgeId');
     }, (err) => {
       if (err && err.error && err.error.params) {
@@ -75,9 +75,6 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0080);
       }
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
   }
   public setBadge(Badge) {
     this.badge = Badge;
@@ -90,7 +87,9 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
       'recipientId': this.contentId,
       'recipientType': 'content'
     };
-    const subscribe = this.contentBadgeService.addBadge(req).subscribe((response) => {
+    this.contentBadgeService.addBadge(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       if (this.data === undefined) {
         this.data = [];
       }
@@ -102,9 +101,6 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0079);
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-      }
   }
   setInteractEventData() {
     this.badgeInteractEdata = {
@@ -133,8 +129,7 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
       }
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

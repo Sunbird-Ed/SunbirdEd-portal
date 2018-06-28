@@ -1,6 +1,5 @@
-import { Subscription } from 'rxjs/Subscription';
 import { SearchService } from './../../services';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 
@@ -12,7 +11,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit {
   /**
    * Sui dropdown initiator
    */
@@ -56,7 +55,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   * service for redirection to parent component
   */
   private activatedRoute: ActivatedRoute;
-  subscription: Subscription;
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -97,14 +95,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   setFilters() {
     this.search = this.config.dropDownConfig.FILTER.SEARCH.search;
     this.searchUrl = this.config.dropDownConfig.FILTER.SEARCH.searchUrl;
-    const subscribe = this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    if (this.subscription) {
-      this.subscription.add(subscribe);
-    }
-    const routeSubscribe = this.route.events
+    this.route.events
       .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
@@ -120,9 +115,6 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.showInput = false;
         }
       });
-      if (this.subscription) {
-        this.subscription.add(routeSubscribe);
-      }
   }
   /**
    * gets the current url,
@@ -130,11 +122,5 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.setFilters();
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }
