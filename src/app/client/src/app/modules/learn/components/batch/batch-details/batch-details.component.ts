@@ -1,16 +1,19 @@
 import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html',
   styleUrls: ['./batch-details.component.css']
 })
-export class BatchDetailsComponent implements OnInit {
+export class BatchDetailsComponent implements OnInit, OnDestroy {
+  public unsubscribe = new Subject<void>();
   batchStatus: Number;
   @Input() courseId: string;
   @Input() enrolledCourse: boolean;
@@ -68,7 +71,9 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       this.getAllBatchDetails();
     }
-    this.courseBatchService.updateEvent.subscribe((data) => {
+    this.courseBatchService.updateEvent
+    .takeUntil(this.unsubscribe)
+    .subscribe((data) => {
       this.getAllBatchDetails();
     });
   }
@@ -89,7 +94,9 @@ export class BatchDetailsComponent implements OnInit {
     } else {
       searchParams.filters.enrollmentType = 'open';
     }
-    this.courseBatchService.getAllBatchDetails(searchParams).subscribe((data: ServerResponse) => {
+    this.courseBatchService.getAllBatchDetails(searchParams)
+    .takeUntil(this.unsubscribe)
+    .subscribe((data: ServerResponse) => {
       if (data.result.response.content && data.result.response.content.length > 0) {
         this.batchList = data.result.response.content;
         this.fetchUserDetails();
@@ -103,7 +110,9 @@ export class BatchDetailsComponent implements OnInit {
     });
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getBatchDetails(this.batchId).subscribe((data: ServerResponse) => {
+    this.courseBatchService.getBatchDetails(this.batchId)
+    .takeUntil(this.unsubscribe)
+    .subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data.result.response;
       if (this.enrolledBatchInfo.participant) {
         const participant = [];
@@ -128,7 +137,9 @@ export class BatchDetailsComponent implements OnInit {
         identifier: this.userList
       }
     };
-    this.courseBatchService.getUserDetails(request).subscribe((res) => {
+    this.courseBatchService.getUserDetails(request)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       _.forEach(res.result.response.content, (user) =>  {
         this.userNames[user.identifier] = user;
       });
@@ -147,5 +158,9 @@ export class BatchDetailsComponent implements OnInit {
   enrollBatch(batch) {
     this.courseBatchService.setEnrollBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
+  }
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

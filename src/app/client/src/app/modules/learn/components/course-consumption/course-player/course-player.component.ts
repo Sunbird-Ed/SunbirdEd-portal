@@ -12,6 +12,8 @@ import { CourseConsumptionService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
   IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-course-player',
@@ -133,6 +135,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   };
 
+  public unsubscribe = new Subject<void>();
+
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -167,7 +171,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           }
         };
         return this.courseConsumptionService.getCourseHierarchy(params.courseId);
-      }).subscribe((response) => {
+      })
+      .takeUntil(this.unsubscribe)
+      .subscribe((response) => {
         this.courseHierarchy = response;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
@@ -319,7 +325,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
+    this.courseConsumptionService.getContentStatus(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
     });
@@ -371,6 +379,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.updateContentsStateSubscription) {
       this.updateContentsStateSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   setTelemetryStartEndData() {

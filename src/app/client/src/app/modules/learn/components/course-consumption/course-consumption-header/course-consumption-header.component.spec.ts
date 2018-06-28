@@ -111,4 +111,9 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.showResumeCourse).toBeTruthy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

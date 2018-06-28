@@ -177,4 +177,10 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course/do_212347136096788480178']);
     component.ngOnDestroy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

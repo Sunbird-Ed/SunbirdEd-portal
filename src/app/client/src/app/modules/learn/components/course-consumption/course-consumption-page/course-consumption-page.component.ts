@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ResourceService } from '@sunbird/shared';
 import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
 import { CourseConsumptionService } from './../../../services';
@@ -6,6 +7,8 @@ import { ActivatedRoute, Router, NavigationExtras, NavigationEnd } from '@angula
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, BreadcrumbsService } from '@sunbird/core';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-course-consumption-page',
   templateUrl: './course-consumption-page.component.html',
@@ -20,6 +23,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   courseHierarchy: any;
   enrolledCourse: boolean;
   eventSubscription: any;
+  courseDataSubscription: Subscription;
+  public unsubscribe = new Subject<void>();
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService,
     private resourceService: ResourceService, public router: Router, public breadcrumbsService: BreadcrumbsService) { }
@@ -28,7 +34,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.firstChild.params,
       (params, firstChildParams) => {
         return { ...params, ...firstChildParams };
-      }).subscribe((params) => {
+      })
+      .takeUntil(this.unsubscribe)
+      .subscribe((params) => {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
         this.getCourseHierarchy(params.courseId);
@@ -51,7 +59,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     });
   }
   private getCourseHierarchy(courseId: string) {
-    this.courseConsumptionService.getCourseHierarchy(courseId).subscribe((response) => {
+    this.courseConsumptionService.getCourseHierarchy(courseId)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       if (response.status === 'Live' || response.status === 'Unlisted' || response.status === 'Flagged') {
         this.courseHierarchy = response;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.courseHierarchy.name, url: '/learn/course/' + this.courseId }]);
@@ -67,7 +77,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     });
   }
   getBatch() {
-    this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
+    this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
       if (enrolledCourses && !enrolledCourses.err) {
         if (this.batchId) {
           const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, (value, index) => {
@@ -102,5 +112,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     if (this.eventSubscription) {
       this.eventSubscription.unsubscribe();
     }
+    if (this.courseDataSubscription) {
+      this.courseDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

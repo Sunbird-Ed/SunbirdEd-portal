@@ -212,4 +212,11 @@ describe('CoursePlayerComponent', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.fetchContentStatus('');
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
