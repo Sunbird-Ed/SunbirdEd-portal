@@ -175,4 +175,11 @@ describe('CourseProgressComponent', () => {
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalledTimes(1);
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
