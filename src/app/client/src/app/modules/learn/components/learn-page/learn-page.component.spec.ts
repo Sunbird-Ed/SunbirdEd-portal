@@ -124,6 +124,7 @@ describe('LearnPageComponent', () => {
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
   it('should call inview method for visits data', () => {
     spyOn(component, 'prepareVisits').and.callThrough();
     component.prepareVisits(Response.event);

@@ -242,7 +242,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
-    component.fetchContentStatus('');
+    component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
