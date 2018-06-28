@@ -76,7 +76,7 @@ describe('CreateBatchComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should disable the button on click of submit button in create batch', fakeAsync(() => {
+  it('should disable the button on click of submit button in create batch', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -94,7 +94,7 @@ describe('CreateBatchComponent', () => {
     expect(component.disableSubmitBtn).toEqual(true);
   }));
 
-  fit('should enable the submit button which was disabled during click of createBatch function on api error', fakeAsync(() => {
+  it('should enable the submit button which was disabled during click of createBatch function on api error', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
@@ -116,7 +116,7 @@ describe('CreateBatchComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
-  fit('should enable the submit button which was disabled during click of createBatch function on success response', fakeAsync(() => {
+  it('should enable the submit button which was disabled during click of createBatch function on success response', fakeAsync(() => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
