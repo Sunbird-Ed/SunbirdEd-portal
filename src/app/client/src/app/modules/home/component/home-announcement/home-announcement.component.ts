@@ -76,10 +76,10 @@ export class HomeAnnouncementComponent implements OnInit {
       limit: this.pageLimit
     };
     this.announcementService.getInboxData(option).subscribe(
-      (apiResponse: ServerResponse) => {
+      (apiResponse) => {
         this.showLoader = false;
-        if (apiResponse && apiResponse.result.count > 0) {
-          this.announcementlist = apiResponse.result;
+        if (apiResponse && apiResponse.announcements) {
+          this.announcementlist = apiResponse;
           // Calling received API
           _.each(this.announcementlist.announcements, (key) => {
             if (key.received === false) {

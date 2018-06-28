@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
-
+import { CacheService } from 'ng2-cache-service';
+import * as _ from 'lodash';
 /**
  * Service for all announcement API calls
  *
@@ -44,7 +45,7 @@ export class AnnouncementService extends DataService {
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http HttpClient reference
    */
-  constructor(config: ConfigService, http: HttpClient) {
+  constructor(config: ConfigService, http: HttpClient, private cacheService: CacheService) {
     super(http);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.ANNOUNCEMENT_PREFIX;
@@ -57,16 +58,31 @@ export class AnnouncementService extends DataService {
   * @param {IAnnouncementSericeParam} requestParam Request object needed for inbox API call
   */
   getInboxData(requestParam: IAnnouncementSericeParam) {
-    const option = {
-      url: this.config.urlConFig.URLS.ANNOUNCEMENT.INBOX_LIST,
-      data: {
-        'request': {
-          'limit': requestParam.limit,
-          'offset': (requestParam.pageNumber - 1) * requestParam.limit
+     const InboxData: any = this.cacheService.get('AnnouncementInboxData');
+    if (InboxData) {
+      return Observable.of(InboxData);
+    } else {
+      const option = {
+        url: this.config.urlConFig.URLS.ANNOUNCEMENT.INBOX_LIST,
+        data: {
+          'request': {
+            'limit': requestParam.limit,
+            'offset': (requestParam.pageNumber - 1) * requestParam.limit
+          }
         }
-      }
-    };
-    return this.post(option);
+      };
+      return this.post(option).map((data) => {
+         this.setData(data, requestParam);
+        return { announcements: data.result.announcements };
+      });
+    }
+  }
+
+  setData(data, requestParam) {
+      this.cacheService.set('AnnouncementInboxData', { announcements: data.result.announcements }, {
+        maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes *
+          this.config.appConfig.cacheServiceConfig.setTimeInSeconds
+    });
   }
 
   /**

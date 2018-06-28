@@ -145,15 +145,15 @@ export class LearnPageComponent implements OnInit {
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
     this.pageSectionService.getPageData(option).subscribe(
-      (apiResponse: ServerResponse) => {
+      (apiResponse) => {
         this.noResultMessage = {
           'message': this.resourceService.messages.stmsg.m0007,
           'messageText': this.resourceService.messages.stmsg.m0006
         };
         let noResultCounter = 0;
-        if (apiResponse && apiResponse.result.response.sections.length > 0) {
+        if (apiResponse && apiResponse.sections) {
           this.showLoader = false;
-          const sections = this.processActionObject(apiResponse.result.response.sections);
+          const sections = this.processActionObject(apiResponse.sections);
           this.caraouselData = this.caraouselData.concat(sections);
           if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {
@@ -187,11 +187,13 @@ export class LearnPageComponent implements OnInit {
    * This method process the action object.
    */
   processActionObject(sections) {
+    console.log('sections', sections);
     const enrolledCoursesId = [];
     _.forEach(this.enrolledCourses, (value, index) => {
       enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
     });
     _.forEach(sections, (value, index) => {
+      console.log('value', value);
       _.forEach(sections[index].contents, (value2, index2) => {
         if (this.enrolledCourses && this.enrolledCourses.length > 0) {
           if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1) {
