@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
@@ -9,6 +9,8 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The course consumption dashboard component
@@ -20,7 +22,11 @@ import * as _ from 'lodash';
   templateUrl: './course-consumption.component.html',
   styleUrls: ['./course-consumption.component.css']
 })
-export class CourseConsumptionComponent {
+export class CourseConsumptionComponent implements OnDestroy {
+  /**
+   * Variable to gather and unsubscribe all observable subscriptions in this component.
+   */
+  public unsubscribe = new Subject<void>();
   timePeriodInteractData: IInteractEventEdata;
   interactObject: any;
   /**
@@ -147,7 +153,9 @@ export class CourseConsumptionComponent {
     this.route = route;
     // init the default impression event
     this.initTelemetryImpressionEvent();
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params
+    .takeUntil(this.unsubscribe)
+    .subscribe(params => {
 
       if (params.id && params.timePeriod) {
 
@@ -187,6 +195,7 @@ export class CourseConsumptionComponent {
       }
     };
     this.consumptionService.getDashboardData(params)
+    .takeUntil(this.unsubscribe)
       .subscribe((data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -233,11 +242,14 @@ export class CourseConsumptionComponent {
         this.courseName = this.myCoursesList[0].name;
         this.route.navigate(['activity/course/consumption', this.identifier, this.timePeriod]);
       }
+      this.validateIdentifier(this.identifier);
       this.showLoader = false;
     } else {
       // Make search api call
       const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-      this.searchService.searchContentByUserId(searchParams).subscribe(
+      this.searchService.searchContentByUserId(searchParams)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.count && data.result.content) {
             this.myCoursesList = data.result.content;
@@ -316,5 +328,10 @@ export class CourseConsumptionComponent {
         uri: '/myActivity'
       }
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

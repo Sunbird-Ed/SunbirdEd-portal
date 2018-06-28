@@ -60,10 +60,12 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
 
   it('should call  content api and return content data', () => {
     const playerService = TestBed.get(PlayerService);
+    const userService = TestBed.get(UserService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(testData.sucessRes));
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
     component.getContent();
     fixture.detectChanges();
     expect(component.contentData).toBeDefined();

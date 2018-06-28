@@ -49,10 +49,14 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           }
       };
 
-      this.courseBatchService.getEnrollBatchDetails(this.batchId)
+      this.courseBatchService.getEnrollToBatchDetails(this.batchId)
       .takeUntil(this.unsubscribe)
       .subscribe((data) => {
         this.batchDetails = data;
+        if (this.batchDetails.enrollmentType !== 'open') {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0082);
+          this.redirect();
+        }
         this.fetchParticipantsDetails();
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0054);
@@ -98,7 +102,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
         batchId: this.batchDetails.identifier
       }
     };
-    this.courseBatchService.enrollToCourse(request)
+this.disableSubmitBtn = true;
+this.courseBatchService.enrollToCourse(request)
     .takeUntil(this.unsubscribe)
     .subscribe((data) => {
       this.disableSubmitBtn = true;
@@ -107,17 +112,18 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       this.disableSubmitBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);
     });
-    this.disableSubmitBtn = false;
   }
   fetchEnrolledCourseData() {
     setTimeout(() => {
       this.coursesService.getEnrolledCourses()
       .takeUntil(this.unsubscribe)
       .subscribe(() => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
         this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
         window.location.reload();
       }, (err) => {
+        this.disableSubmitBtn = false;
         this.router.navigate(['/learn']);
       });
     }, 2000);

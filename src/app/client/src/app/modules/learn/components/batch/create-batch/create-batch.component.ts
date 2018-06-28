@@ -89,6 +89,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public courseConsumptionService: CourseConsumptionService;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -258,12 +260,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createBatch() {
-    this.disableSubmitBtn = false;
     let users = [];
     let mentors = [];
     if ( this.createBatchUserForm.value.enrollmentType !== 'open') {
-      users = $('#users').dropdown('get value').split(',');
-      mentors = $('#mentors').dropdown('get value').split(',');
+      users = $('#users').dropdown('get value') ? $('#users').dropdown('get value').split(',') : [];
+      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     const startDate = new Date(this.createBatchUserForm.value.startDate.setHours(23, 59, 59, 999));
     const endDate = this.createBatchUserForm.value.endDate ?
@@ -279,18 +280,20 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       'createdFor': this.orgIds,
       'mentors': _.compact(mentors)
     };
-    this.courseBatchService.createBatch(requestBody)
+this.disableSubmitBtn = true;
+this.courseBatchService.createBatch(requestBody)
     .takeUntil(this.unsubscribe)
     .subscribe((response) => {
       if (users && users.length > 0) {
         this.addUserToBatch(response.result.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
-      this.disableSubmitBtn = true;
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -306,11 +309,12 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.courseBatchService.addUsersToBatch(userRequest, batchId)
       .takeUntil(this.unsubscribe)
       .subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
-        this.disableSubmitBtn = true;
+        this.disableSubmitBtn = false;
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
@@ -341,6 +345,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: new FormControl(),
       users: new FormControl(),
     });
+    this.disableSubmitBtn = true;
     this.showCreateModal = true;
     this.createBatchUserForm.valueChanges
     .takeUntil(this.unsubscribe)
@@ -357,6 +362,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.disableSubmitBtn = true;
     }
   }
+
   getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';

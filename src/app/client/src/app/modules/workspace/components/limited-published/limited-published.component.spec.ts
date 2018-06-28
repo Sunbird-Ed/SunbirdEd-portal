@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
 } from 'ng2-semantic-ui';
-
+import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
@@ -90,6 +90,43 @@ describe('LimitedPublishedComponent', () => {
     fixture.detectChanges();
     expect(component.limitedPublishList).toBeDefined();
     expect(component.limitedPublishList.length).toBeGreaterThan(1);
+    expect(component.showLoader).toBeFalsy();
+  }));
+
+  it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    userService._userData$.next({ err: null, userProfile: mockUserData.success });
+    userService._userProfile = mockUserData.success;
+    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(component, 'search').and.callThrough();
+    component.pageNumber = 1;
+    component.pageLimit = 1;
+    const searchParams = {
+    'filters': {
+    'status': [
+      'Unlisted'
+    ],
+    'createdBy': userService._userProfile.userid,
+    'contentType': [
+      'Collection',
+      'TextBook',
+      'Course',
+      'LessonPlan',
+      'Resource'
+    ],
+    'objectType': 'Content'
+    },
+    'offset': 0,
+    'limit': 1,
+    'sort_by': {
+    'lastUpdatedOn': 'desc'
+    }
+    };
+    component.fetchLimitedPublished(1, 1);
+    expect(component.search).toHaveBeenCalledWith(searchParams);
+    expect(component.limitedPublishList).toBeDefined();
     expect(component.showLoader).toBeFalsy();
   }));
 

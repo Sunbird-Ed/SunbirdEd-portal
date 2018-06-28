@@ -86,6 +86,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 	*/
   telemetryImpression: IImpressionEventInput;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
+
   public courseConsumptionService: CourseConsumptionService;
   public unsubscribe = new Subject<void>();
   userDataSubscription: Subscription;
@@ -285,9 +288,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: new FormControl(),
       users: new FormControl()
     });
-    // this.batchUpdateForm.valueChanges.subscribe(val => {
-    //   this.enableButton();
-    // });
+    this.batchUpdateForm.valueChanges.subscribe(val => {
+      this.enableButton();
+    });
   }
 
   fetchParticipantsMentorsDetails() {
@@ -347,8 +350,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     let users = [];
     let mentors = [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-      users = $('#users').dropdown('get value').split(',');
-      mentors = $('#mentors').dropdown('get value').split(',');
+      users = $('#users').dropdown('get value') ? $('#users').dropdown('get value').split(',') : [];
+      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     const startDate = new Date(this.batchUpdateForm.value.startDate.setHours(23, 59, 59, 999));
     const endDate = this.batchUpdateForm.value.endDate ?
@@ -370,17 +373,20 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       });
       requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     }
-    this.courseBatchService.updateBatch(requestBody)
+this.disableSubmitBtn = true;
+this.courseBatchService.updateBatch(requestBody)
     .takeUntil(this.unsubscribe)
     .subscribe((response) => {
       if (users && users.length > 0) {
         this.updateUserToBatch(this.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -396,10 +402,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.courseBatchService.addUsersToBatch(userRequest, batchId)
       .takeUntil(this.unsubscribe)
       .subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
+        this.disableSubmitBtn = false;
         if (err.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {

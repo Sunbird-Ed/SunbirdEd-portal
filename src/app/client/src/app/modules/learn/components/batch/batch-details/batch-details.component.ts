@@ -113,7 +113,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.courseBatchService.getBatchDetails(this.batchId)
     .takeUntil(this.unsubscribe)
     .subscribe((data: ServerResponse) => {
-      this.enrolledBatchInfo = data.result.response;
+      this.enrolledBatchInfo = data;
       if (this.enrolledBatchInfo.participant) {
         const participant = [];
         _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
@@ -156,7 +156,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
   }
   enrollBatch(batch) {
-    this.courseBatchService.setEnrollBatchDetails(batch);
+    this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
   }
   ngOnDestroy() {

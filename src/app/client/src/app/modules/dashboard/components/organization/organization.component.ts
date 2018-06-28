@@ -7,6 +7,8 @@ import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The organization component
@@ -23,6 +25,11 @@ import * as _ from 'lodash';
  * @class OrganisationComponent
  */
 export class OrganisationComponent implements OnDestroy {
+  /**
+   * Variable to gather and unsubscribe all observable subscriptions in this component.
+   */
+  public unsubscribe = new Subject<void>();
+
   interactObject: any;
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -147,6 +154,7 @@ export class OrganisationComponent implements OnDestroy {
 	 * telemetryImpression object for org admin dashboard page
 	*/
   telemetryImpression: IImpressionEventInput;
+  subscription: Subscription;
 
   /**
    * Default method of OrganisationService class
@@ -229,7 +237,9 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.orgService.getDashboardData(params).subscribe(
+    this.orgService.getDashboardData(params)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -348,6 +358,7 @@ export class OrganisationComponent implements OnDestroy {
       }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
       this.showLoader = false;
+      this.validateIdentifier(this.identifier);
     } else {
       this.userDataSubscription = this.userService.userData$.first().subscribe(
         user => {
@@ -374,7 +385,9 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.downloadService.getReport(option).subscribe(
+    this.downloadService.getReport(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (data: ServerResponse) => {
         this.showDownloadSuccessModal = true;
         this.disabledClass = false;
@@ -394,7 +407,9 @@ export class OrganisationComponent implements OnDestroy {
    */
   getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
-      this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
+      this.searchService.getOrganisationDetails({ orgid: orgIds })
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {
             this.myOrganizations = data.result.response.content;
@@ -421,5 +436,7 @@ export class OrganisationComponent implements OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
