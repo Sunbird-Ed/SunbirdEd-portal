@@ -88,7 +88,18 @@ export class PlayerService {
       }
       configuration.context.dims = cloneDims;
     }
-    configuration.context.tags = _.concat([], this.userService.channel);
+    const tags = [];
+    _.forEach(this.userService.userProfile.organisations, (org) => {
+      if (org.hashTagId) {
+        tags.push(org.hashTagId);
+      } else if (org.organisationId) {
+        tags.push(org.organisationId);
+      }
+    });
+    if (this.userService.channel) {
+      tags.push(this.userService.channel);
+    }
+    configuration.context.tags = tags;
     configuration.context.app = [this.userService.channel];
     if (contentDetails.courseId) {
       configuration.context.cdata = [{
