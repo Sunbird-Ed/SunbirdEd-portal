@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
-import * as _ from 'lodash';
+
 /**
  * Service for all announcement API calls
  *
