@@ -10,13 +10,12 @@ import { Observable } from 'rxjs/Observable';
 
 import { AnnouncementService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
 
 describe('AnnouncementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpClientModule, AnnouncementService, ConfigService, CacheService]
+      providers: [HttpClientModule, AnnouncementService, ConfigService]
     });
   });
 
@@ -24,26 +23,13 @@ describe('AnnouncementService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should make inbox api call and get success response when no cache', inject([AnnouncementService, CacheService],
-    (service: AnnouncementService, cacheService: CacheService ) => {
+  it('should make inbox api call and get success response', inject([AnnouncementService], (service: AnnouncementService) => {
     const params = { data: { 'request': { 'limit': 10, 'offset': 10 } } };
-   cacheService.set('AnnouncementInboxData', null , { maxAge: 10 * 60});
-   spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.inboxSuccess));
+    spyOn(service, 'post').and.callFake(() => Observable.of(testData.mockRes.inboxSuccess));
     service.getInboxData(params).subscribe(
       apiResponse => {
-        expect(apiResponse.announcements).toBeDefined();
-        expect(apiResponse.announcements).toEqual(testData.mockRes.inboxSuccess.result.announcements);
-      }
-    );
-  }));
-  it('should make inbox api call and get success response with cache data', inject([AnnouncementService, CacheService],
-    (service: AnnouncementService, cacheService: CacheService ) => {
-    const params = { data: { 'request': { 'limit': 10, 'offset': 10 } } };
-   cacheService.set('AnnouncementInboxData', {announcements: testData.mockRes.inboxSuccess.result.announcements} , { maxAge: 10 * 60});
-    service.getInboxData(params).subscribe(
-      apiResponse => {
-        expect(apiResponse.announcements).toBeDefined();
-        expect(apiResponse.announcements).toEqual(testData.mockRes.inboxSuccess.result.announcements);
+        expect(apiResponse.responseCode).toBe('OK');
+        expect(apiResponse.result.count).toBe(1169);
       }
     );
   }));

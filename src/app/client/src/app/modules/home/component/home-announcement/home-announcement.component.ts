@@ -1,8 +1,10 @@
+import { HomeAnnouncementService } from './../../service/index';
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
+
 import { IAnnouncementListData } from '@sunbird/announcement';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import 'rxjs/add/operator/takeUntil';
@@ -26,6 +28,10 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
    * To call resource service which helps to use language constant.
    */
   public resourceService: ResourceService;
+  /**
+   * To make inbox API calls.
+   */
+  private homeAnnouncementService: HomeAnnouncementService;
   /**
    * To make inbox API calls.
    */
@@ -62,9 +68,10 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
    * @param {AnnouncementService} announcement Reference of AnnouncementService.
    * @param {ConfigService} config Reference of config service.
    */
-  constructor(resourceService: ResourceService, announcementService: AnnouncementService,
-    config: ConfigService) {
+  constructor(resourceService: ResourceService, homeAnnouncementService: HomeAnnouncementService,
+    config: ConfigService, announcementService: AnnouncementService) {
     this.resourceService = resourceService;
+    this.homeAnnouncementService = homeAnnouncementService;
     this.announcementService = announcementService;
     this.config = config;
   }
@@ -78,12 +85,12 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    this.announcementService.getInboxData(option)
+    this.homeAnnouncementService.getInboxData(option)
     .takeUntil(this.unsubscribe)
     .subscribe(
       (apiResponse) => {
         this.showLoader = false;
-        if (apiResponse && apiResponse.announcements) {
+        if (apiResponse) {
           this.announcementlist = apiResponse;
           // Calling received API
           _.each(this.announcementlist.announcements, (key) => {
