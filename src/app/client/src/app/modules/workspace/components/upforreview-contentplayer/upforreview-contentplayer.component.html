@@ -25,7 +25,8 @@
 
     <div class="row margin-top-10" *ngIf="!showLoader">
       <div class="margin-top--5 videosegment ui clearing segment">
-        <div *ngIf="permissionService.permissionAvailable && contentData && contentData.status === 'Review' && userId !== contentData.createdBy" appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER']">
+        <div *ngIf="permissionService.permissionAvailable && contentData && 
+          (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy" appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
           <button [routerLink]="['publish']" class="ui right floated primary button mouse-pointer">
             {{resourceService?.frmelmnts?.btn?.publish}}
           </button>
