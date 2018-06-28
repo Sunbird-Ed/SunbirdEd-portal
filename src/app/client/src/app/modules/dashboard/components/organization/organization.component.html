@@ -4,23 +4,22 @@
     <div class="ui grid margin-top-20">
       <div class="nine wide column">
         <!-- If user is member of only one organization -->
+        <span class="dashBoardSectionHeading padding-right-10" *ngIf="myOrganizations && myOrganizations.length >= 1">
+            <i class="bar chart icon"></i>
+        </span>
         <span class="dashBoardSectionHeading" *ngIf="myOrganizations && myOrganizations.length === 1">
-          <i class="bar chart icon"></i> &nbsp; {{myOrganizations[0].orgName}}
+         &nbsp; {{myOrganizations[0].orgName}}
         </span>
         <!-- If user is member of multiple organization -->
-        <div class="ui dropdown" suiDropdown *ngIf="myOrganizations && myOrganizations.length > 1">
-          <span class="dashBoardSectionHeading padding-right-10">
-            <i class="bar chart icon"></i>
-          </span>
-          <div class="text dashBoardSectionHeading">{{SelectedOrg || resourceService?.frmelmnts?.lbl?.dashboardselectorg}}</div>
-          <span class="dashBoardSectionHeading">
-            <i class="dropdown icon"></i>
-          </span>
+        <div class="ui dropdown " suiDropdown *ngIf="myOrganizations && myOrganizations.length > 1">
+          <div class="text dashBoardSectionHeading">{{SelectedOrg || resourceService?.frmelmnts?.lbl?.dashboardselectorg}}
+            <span>
+              <i class="dropdown icon"></i>
+            </span>
+          </div>  
           <div class="menu" suiDropdownMenu>
-            <div class="item" [ngClass]="{'active': organization.identifier === identifier }" *ngFor="let organization of myOrganizations"
-              (click)="onAfterOrgChange(organization.identifier, organization.orgName); SelectedOrg = organization.orgName;"
-              appTelemetryInteract [telemetryInteractObject]="{ id: organization.identifier, type: 'organization', ver: '1.0' }" [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
-              {{organization.orgName}}
+            <div class="item" [ngClass]="{'active': organization.identifier === identifier }" *ngFor="let organization of myOrganizations" (click)="onAfterOrgChange(organization.identifier, organization.orgName); SelectedOrg = organization.orgName;" appTelemetryInteract [telemetryInteractObject]="{ id: organization.identifier, type: 'organization', ver: '1.0' }"  [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
+                {{organization.orgName}}
             </div>
           </div>
         </div>
