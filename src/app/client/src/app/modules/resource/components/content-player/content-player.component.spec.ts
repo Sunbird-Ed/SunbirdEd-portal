@@ -85,6 +85,7 @@ describe('ContentPlayerComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
@@ -97,6 +98,7 @@ describe('ContentPlayerComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes));
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
