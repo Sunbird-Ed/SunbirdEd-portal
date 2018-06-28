@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -7,7 +7,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { EditorService } from './../../services';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import { ResourceService, SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { Observable } from 'rxjs/Observable';
@@ -56,7 +56,7 @@ describe('DataDrivenComponent', () => {
         TelemetryModule.forRoot()],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
       providers: [FrameworkService, FormService, UserService, ContentService,
-        CacheService, EditorService,
+        CacheService, EditorService, NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -185,5 +185,20 @@ describe('DataDrivenComponent', () => {
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
+  });
+  it('test to navigate back to content create page if previous url is not from content create page', () => {
+    const router = TestBed.get(Router);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlTrueCase);
+    componentParent.checkForPreviousRouteForRedirect();
+    expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
+  });
+  it('test to not to navigate to content create page if previous url is from content create page', () => {
+    const router = TestBed.get(Router);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue(mockFrameworkData.redirectUrlFalseCase);
+    spyOn(componentParent, 'redirect');
+    componentParent.checkForPreviousRouteForRedirect();
+    expect(componentParent.redirect).not.toHaveBeenCalled();
   });
 });

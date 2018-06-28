@@ -113,6 +113,7 @@ export interface IOrganization {
     isApproved: boolean | any;
     orgjoindate: string;
     orgLeftDate: string;
+    hashTagId?: string;
 }
 export interface IEducation {
     updatedBy: string;

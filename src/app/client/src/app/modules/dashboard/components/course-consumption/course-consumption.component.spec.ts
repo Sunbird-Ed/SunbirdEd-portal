@@ -96,6 +96,19 @@ describe('CourseConsumptionComponent', () => {
     expect(component.myCoursesList.length).toBeGreaterThan(1);
   }));
 
+  it('should call validateIdentifier method when counet is more than 1 ', inject([SearchService], (searchService) => {
+    component.isMultipleCourses = false;
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(component, 'validateIdentifier').and.callThrough();
+    component.getMyContent();
+    component.validateIdentifier(testData.searchSuccessWithCountTwo.result.content[0].identifier);
+    fixture.detectChanges();
+    expect(component.selectedCourse).toBe(testData.searchSuccessWithCountTwo.result.content[0]);
+    expect(component.myCoursesList).toBeDefined();
+    expect(component.isMultipleCourses).toEqual(true);
+    expect(component.myCoursesList.length).toBeGreaterThan(1);
+  }));
+
   // When course consumption api's return response
   it('should call dashboard api and return valid response', inject([CourseConsumptionService],
     (courseConsumptionService) => {
@@ -184,4 +197,13 @@ describe('CourseConsumptionComponent', () => {
       expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
       expect(component.showLoader).toEqual(false);
     }));
+
+    it('should unsubscribe from all observable subscriptions', () => {
+      component.initTelemetryImpressionEvent();
+      component.getDashboardData('7d', 'do_2123250076616048641482');
+      component.getMyContent();
+      spyOn(component.unsubscribe, 'complete');
+      component.ngOnDestroy();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
+    });
 });

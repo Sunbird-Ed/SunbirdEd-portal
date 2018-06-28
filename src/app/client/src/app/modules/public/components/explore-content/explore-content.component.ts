@@ -149,13 +149,14 @@ export class ExploreContentComponent implements OnInit {
     populateContentSearch() {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
+        const filters = _.pickBy(this.filters, value => value.length > 0);
+        filters.channel = this.hashTagId;
         const requestParams = {
-            filters: _.pickBy(this.filters, value => value.length > 0),
+            filters: filters,
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 1 },
-            sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+            softConstraints: { badgeAssertions: 2, channel: 1 }
         };
         this.searchService.contentSearch(requestParams).subscribe(
             (apiResponse: ServerResponse) => {
