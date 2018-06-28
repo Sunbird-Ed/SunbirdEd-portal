@@ -2,12 +2,14 @@ import { PopupEditorComponent } from './../popup-editor/popup-editor.component';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Input, OnChanges, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component holds the note card widget.
@@ -18,7 +20,7 @@ import * as _ from 'lodash';
   templateUrl: './note-card.component.html',
   styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
-export class NoteCardComponent implements OnInit, OnChanges {
+export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * This variable holds the content and course id.
    */
@@ -97,6 +99,7 @@ export class NoteCardComponent implements OnInit, OnChanges {
   modalService: SuiModalService;
   activatedRoute: ActivatedRoute;
   batchId: string;
+  public unsubscribe = new Subject<void>();
 
 
   /**
@@ -168,7 +171,9 @@ export class NoteCardComponent implements OnInit, OnChanges {
     };
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
-      this.noteService.search(requestBody).subscribe(
+      this.noteService.search(requestBody)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
           this.notesList = apiResponse.result.response.note;
@@ -216,5 +221,9 @@ export class NoteCardComponent implements OnInit, OnChanges {
         this.route.navigate(['/resources/play/content/', this.ids.contentId, 'note']);
       }
     });
+  }
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

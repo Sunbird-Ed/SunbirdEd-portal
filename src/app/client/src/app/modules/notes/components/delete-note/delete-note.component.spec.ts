@@ -61,4 +61,11 @@ describe('DeleteNoteComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.removeNote();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

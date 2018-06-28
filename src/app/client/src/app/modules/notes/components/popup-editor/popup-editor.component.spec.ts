@@ -99,4 +99,13 @@ describe('PopupEditorComponent', () => {
     expect(component.noteData.title).toBe('');
     expect(component.noteData.note).toBe('');
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.updateData = response.selectedNote;
+    component.createNote();
+    component.updateNote();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

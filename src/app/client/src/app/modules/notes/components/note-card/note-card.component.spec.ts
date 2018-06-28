@@ -133,4 +133,11 @@ describe('NoteCardComponent', () => {
     component.viewAllNotes();
     expect(route.navigate).toHaveBeenCalledWith(['/learn/course', 'do_212347136096788480178', 'batch', '01250892550857523234', 'notes']);
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.getAllNotes();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

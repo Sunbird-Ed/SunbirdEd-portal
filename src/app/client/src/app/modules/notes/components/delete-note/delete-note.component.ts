@@ -1,7 +1,9 @@
 import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { INoteData } from '@sunbird/notes';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component helps in deleting a selected note.
@@ -13,7 +15,7 @@ import { INoteData } from '@sunbird/notes';
   styleUrls: ['./delete-note.component.css']
 })
 
-export class DeleteNoteComponent {
+export class DeleteNoteComponent implements OnDestroy {
   /**
    * This variable contains the details of the note to be deleted.
    */
@@ -51,6 +53,8 @@ export class DeleteNoteComponent {
    */
   notesService: NotesService;
 
+  public unsubscribe = new Subject<void>();
+
   /**
    * Constructor for Delete Note Component
    *
@@ -83,7 +87,9 @@ export class DeleteNoteComponent {
       noteId: this.deleteNote.id
     };
 
-    this.notesService.remove(requestData).subscribe(
+    this.notesService.remove(requestData)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.deleteEventEmitter.emit(this.deleteNote.id);
@@ -94,5 +100,9 @@ export class DeleteNoteComponent {
       }
     );
 
+  }
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
