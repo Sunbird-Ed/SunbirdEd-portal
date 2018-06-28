@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 
 const serverRes = {
-  id : 'api.content.read',
+  id: 'api.content.read',
   ver: '1.0',
   ts: '2018-05-03T10:51:12.648Z',
   params: 'params',
@@ -49,6 +49,7 @@ describe('PlayerService', () => {
     userService._channel = 'd5773f35773feab';
     userService._dims = ['d5773f35773feab'];
     userService._appId = 'd5773f35773feab';
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
     const PlayerMeta = {
       contentId: serverRes.result.content.identifier,
       contentData: serverRes.result.content
@@ -74,6 +75,7 @@ describe('PlayerService', () => {
       contentData: serverRes.result.content,
       courseId: 'do_66675'
     };
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
     const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig.context.contentId).toContain('domain_66675');
     expect(playerConfig.context.dims).toContain('do_66675');

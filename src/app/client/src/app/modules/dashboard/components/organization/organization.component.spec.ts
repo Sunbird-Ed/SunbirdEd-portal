@@ -261,4 +261,12 @@ describe('OrganisationComponent', () => {
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.getDashboardData('7d', 'do_2123250076616048641482');
+    component.downloadReport();
+    component.getOrgDetails(['01229679766115942443', '0123150108807004166']);
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
