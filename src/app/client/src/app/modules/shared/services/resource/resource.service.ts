@@ -61,9 +61,8 @@ export class ResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en'): void {
-    const exists: boolean = this.cacheService.exists('resourcebundles' + language);
-    if (exists) {
-      const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
+    const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
+    if (resourcebundles) {
       this.messages = resourcebundles.messages;
       this.frmelmnts = resourcebundles.frmelmnts;
     } else {
