@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CacheService } from 'ng2-cache-service';
 // Import services
 import { ResourceService, ConfigService  } from '../../services/index';
 import { DateFormatPipe } from '../../pipes/index';
@@ -21,7 +22,7 @@ describe('AnnouncementInboxCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule],
       declarations: [AnnouncementInboxCardComponent, DateFormatPipe],
-      providers: [ ResourceService, ConfigService ],
+      providers: [ ResourceService, ConfigService , CacheService ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
