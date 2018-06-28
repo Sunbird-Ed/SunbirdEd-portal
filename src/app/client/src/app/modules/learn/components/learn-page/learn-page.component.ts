@@ -187,13 +187,11 @@ export class LearnPageComponent implements OnInit {
    * This method process the action object.
    */
   processActionObject(sections) {
-    console.log('sections', sections);
     const enrolledCoursesId = [];
     _.forEach(this.enrolledCourses, (value, index) => {
       enrolledCoursesId[index] = _.get(this.enrolledCourses[index], 'courseId');
     });
     _.forEach(sections, (value, index) => {
-      console.log('value', value);
       _.forEach(sections[index].contents, (value2, index2) => {
         if (this.enrolledCourses && this.enrolledCourses.length > 0) {
           if (_.indexOf(enrolledCoursesId, sections[index].contents[index2].identifier) !== -1) {
