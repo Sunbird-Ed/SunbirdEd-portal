@@ -93,7 +93,16 @@ describe('OrganisationComponent', () => {
       expect(component.myOrganizations.length).not.toBeUndefined();
       expect(component.myOrganizations.length).toEqual(1);
     }));
-
+    it('should call validateIdentifier method when  org details 1 ', inject([SearchService], (searchService) => {
+    spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgDetailsSuccess));
+    spyOn(component, 'validateIdentifier').and.callThrough();
+    component.getOrgDetails(['01229679766115942443']);
+    component.validateIdentifier(testData.orgDetailsSuccess.result.response.content[0].identifier);
+    fixture.detectChanges();
+    expect(component.SelectedOrg).toBe(testData.orgDetailsSuccess.result.response.content[0].orgName);
+    expect(component.myOrganizations).toBeDefined();
+    expect(component.myOrganizations.length).toBeGreaterThanOrEqual(1);
+  }));
   // When search api throws error
   it('should throw error while getting org details', inject([OrganisationService, SearchService, UserService],
     (organisationService, searchService, userService) => {
@@ -251,5 +260,13 @@ describe('OrganisationComponent', () => {
     spyOn(component.userDataSubscription, 'unsubscribe').and.callThrough();
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.getDashboardData('7d', 'do_2123250076616048641482');
+    component.downloadReport();
+    component.getOrgDetails(['01229679766115942443', '0123150108807004166']);
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

@@ -1,10 +1,12 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { IAnnouncementListData } from '@sunbird/announcement';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component displays announcement inbox card on the home page.
@@ -14,7 +16,8 @@ import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from
   templateUrl: './home-announcement.component.html',
   styleUrls: ['./home-announcement.component.css']
 })
-export class HomeAnnouncementComponent implements OnInit {
+export class HomeAnnouncementComponent implements OnInit, OnDestroy {
+  public unsubscribe = new Subject<void>();
   @Output('inviewEvent')
   inviewEvent = new EventEmitter<any>();
 
@@ -75,7 +78,9 @@ export class HomeAnnouncementComponent implements OnInit {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    this.announcementService.getInboxData(option).subscribe(
+    this.announcementService.getInboxData(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse && apiResponse.result.count > 0) {
@@ -105,7 +110,9 @@ export class HomeAnnouncementComponent implements OnInit {
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+      this.announcementService.readAnnouncement({ announcementId: announcementId })
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (response: ServerResponse) => {
           _.each(this.announcementlist.announcements, (key, index) => {
             if (announcementId === key.id) {
@@ -139,5 +146,10 @@ export class HomeAnnouncementComponent implements OnInit {
       type: 'announcement',
       ver: '1.0'
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
