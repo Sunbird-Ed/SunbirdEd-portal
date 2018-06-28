@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlpreviewService} from '@sunbird/shared';
+  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlpreviewService, ConfigService} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -84,7 +84,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
-    public externalUrlpreviewService: ExternalUrlpreviewService) {
+    public externalUrlpreviewService: ExternalUrlpreviewService, private configService: ConfigService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -163,16 +163,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  playContentOnClick(content: { title: string, id: string }) {
+  public playContentOnClick(content: { title: string, id: string }) {
     if (content && content.id) {
       const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
-      if (contentDet.model.mimeType === 'text/x-url') {
+      console.log('contentDet', contentDet);
+      if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
         this.externalUrlpreviewService.getRedirectUrl(contentDet.model);
       }
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }
-
   }
 
   private getContent(): void {

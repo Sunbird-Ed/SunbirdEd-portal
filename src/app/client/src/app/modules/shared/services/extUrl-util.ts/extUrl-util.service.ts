@@ -18,9 +18,7 @@ export class ExternalUrlpreviewService {
         setTimeout(() => {
             const newWindow = window.open('/learn/redirect', '_blank');
             newWindow.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '')
-                + '#&contentId=' + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') + '#&uid=' + userId;
-            const extUrlLink = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '') + '#&contentId='
-                + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') +
+                + '#&contentId=' + playerconfigMeta.identifier + (batchId !== undefined ? '#&batchId=' + batchId : '') +
                 (userId !== undefined ? '#&uid=' + userId : '');
         }, 1000);
     }
