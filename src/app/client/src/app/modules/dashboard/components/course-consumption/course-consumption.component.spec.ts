@@ -197,4 +197,13 @@ describe('CourseConsumptionComponent', () => {
       expect(route.navigate).toHaveBeenCalledWith(['activity/course/consumption', component.identifier, '7d']);
       expect(component.showLoader).toEqual(false);
     }));
+
+    it('should unsubscribe from all observable subscriptions', () => {
+      component.initTelemetryImpressionEvent();
+      component.getDashboardData('7d', 'do_2123250076616048641482');
+      component.getMyContent();
+      spyOn(component.unsubscribe, 'complete');
+      component.ngOnDestroy();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
+    });
 });
