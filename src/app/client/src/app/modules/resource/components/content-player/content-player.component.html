@@ -27,8 +27,8 @@
                                 <a (click)="onShareLink();sharelinkModal=true;">
                                     <i class="cursor-pointer large blue share alternate icon"></i>
                                 </a>
-                                <a routerLink="flag">
-                                    <i class="ui large blue flag outline icon"></i>
+                                <a routerLink="flag" [ngClass]="!disableFlag ? 'flag-icon-color' : 'disableIcon'">
+                                    <i class="ui large flag outline icon"></i>
                                 </a>
                                 <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
                                     (click)="copyContent(contentData)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
