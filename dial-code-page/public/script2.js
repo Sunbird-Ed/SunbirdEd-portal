@@ -179,7 +179,7 @@
       host: hostURL,
       uid: 'anonymous',
       sid: window.uuidv1(),
-      channel: orgInfo.channel,
+      channel: orgInfo.rootOrgId,
       env: 'public'
     }
   }
@@ -193,7 +193,7 @@
     var options = {
       context: {
         env: 'public',
-        channel: orgInfo.channel,
+        channel: orgInfo.rootOrgId,
         uid: 'anonymous',
         cdata: [],
         rollup: getRollupData([orgInfo.rootOrgId])
@@ -208,9 +208,8 @@
     };
     var edata = {
       type: 'view',
-      pageid: 'get',
-      subtype: 'paginate',
-      uri: '/get',
+      pageid: 'dialcode',
+      uri: encodeURI(window.location.href),
       visits: []
     };
     window.EkTelemetry.impression(edata, options);
