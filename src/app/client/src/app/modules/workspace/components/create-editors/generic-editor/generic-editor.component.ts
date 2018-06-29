@@ -60,6 +60,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public tenantService: TenantService;
 
+  public logo: string;
+
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -94,9 +96,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit() {
     /**
-     * Launch the generic editor after window load
+     * Fetch header logo and launch the generic editor after window load
      */
-    this.openGenericEditor();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.openGenericEditor();
+      } else if (data && data.err) {
+        this.openGenericEditor();
+      }
+    });
   }
   /**
    *Launch Genreic Editor in the modal
@@ -158,7 +167,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo: this.tenantService.tenantData.logo,
+      headerLogo: this.logo,
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',

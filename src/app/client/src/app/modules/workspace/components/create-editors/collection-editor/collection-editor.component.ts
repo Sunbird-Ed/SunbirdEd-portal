@@ -78,6 +78,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   public tenantService: TenantService;
 
+  public logo: string;
+
   /**
    * Show Modal for loader
    */
@@ -137,7 +139,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     /**
      * Create the collection editor
      */
-    this.openCollectionEditor();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.openCollectionEditor();
+      } else if (data && data.err) {
+        this.openCollectionEditor();
+      }
+    });
   }
 
   /**
@@ -200,7 +209,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
-    window.config.headerLogo = this.tenantService.tenantData.logo;
+    window.config.headerLogo = this.logo;
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({
