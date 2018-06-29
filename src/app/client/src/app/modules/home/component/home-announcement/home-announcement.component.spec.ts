@@ -24,7 +24,7 @@ describe('HomeAnnouncementComponent', () => {
       imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
       NgInviewModule, TelemetryModule],
       declarations: [HomeAnnouncementComponent],
-      providers: [ResourceService, AnnouncementService, ConfigService, CacheService, HomeAnnouncementService,CacheService
+      providers: [ResourceService, AnnouncementService, ConfigService, CacheService, HomeAnnouncementService, CacheService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: RouterOutlet, useValue: fakeActivatedRoute }]
