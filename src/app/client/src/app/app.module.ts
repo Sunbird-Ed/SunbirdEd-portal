@@ -23,14 +23,14 @@ import { SearchModule } from '@sunbird/search';
 import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
+
 // portal-extensions
 import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
 import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { BadgingModule } from '@sunbird/badge';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
-import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/memory/cache-memory.service';
-
+import {CacheSessionStorage} from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 @NgModule({
   declarations: [
     AppComponent
@@ -66,7 +66,7 @@ import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/me
   bootstrap: [AppComponent],
   providers: [
     CacheService,
-    {provide: CacheStorageAbstract, useClass: CacheMemoryStorage},
+    {provide: CacheStorageAbstract, useClass: CacheSessionStorage},
   ]
 })
 export class AppModule {

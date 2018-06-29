@@ -152,15 +152,15 @@ export class LearnPageComponent implements OnInit, OnDestroy {
     this.pageSectionService.getPageData(option)
     .takeUntil(this.unsubscribe)
     .subscribe(
-      (apiResponse: ServerResponse) => {
+      (apiResponse) => {
         this.noResultMessage = {
           'message': this.resourceService.messages.stmsg.m0007,
           'messageText': this.resourceService.messages.stmsg.m0006
         };
         let noResultCounter = 0;
-        if (apiResponse && apiResponse.result.response.sections.length > 0) {
+        if (apiResponse && apiResponse.sections) {
           this.showLoader = false;
-          const sections = this.processActionObject(apiResponse.result.response.sections);
+          const sections = this.processActionObject(apiResponse.sections);
           this.caraouselData = this.caraouselData.concat(sections);
           if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {

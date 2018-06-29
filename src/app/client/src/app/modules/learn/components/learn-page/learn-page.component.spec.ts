@@ -156,7 +156,6 @@ describe('LearnPageComponent', () => {
     component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.throw({}));
     spyOn(toasterService, 'error').and.callThrough();
-    component.caraouselData = Response.successData.result.response.sections;
     component.populatePageData();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
