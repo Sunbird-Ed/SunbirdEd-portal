@@ -54,7 +54,7 @@ describe('ContentEditorComponent', () => {
   it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
     ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();

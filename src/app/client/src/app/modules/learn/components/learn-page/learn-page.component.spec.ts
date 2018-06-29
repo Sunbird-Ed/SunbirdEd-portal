@@ -119,6 +119,12 @@ describe('LearnPageComponent', () => {
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeTruthy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
   it('should call inview method for visits data', () => {
     spyOn(component, 'prepareVisits').and.callThrough();
     component.prepareVisits(Response.event);
@@ -150,7 +156,6 @@ describe('LearnPageComponent', () => {
     component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
     spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.throw({}));
     spyOn(toasterService, 'error').and.callThrough();
-    component.caraouselData = Response.successData.result.response.sections;
     component.populatePageData();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

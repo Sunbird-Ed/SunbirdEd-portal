@@ -6,6 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './share-link.component.spec.data';
 import { By } from '@angular/platform-browser';
+import { CacheService } from 'ng2-cache-service';
 describe('ShareLinkComponent', () => {
   let component: ShareLinkComponent;
   let fixture: ComponentFixture<ShareLinkComponent>;
@@ -14,7 +15,7 @@ describe('ShareLinkComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule , HttpClientTestingModule ],
       declarations: [ShareLinkComponent],
-      providers: [ResourceService, ConfigService],
+      providers: [ResourceService, ConfigService, CacheService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

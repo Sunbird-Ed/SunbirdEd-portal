@@ -63,7 +63,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -74,7 +74,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service and no contents', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.secondData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.secondData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -85,7 +85,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service and contents to be undefined', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.thirdData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.thirdData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');

@@ -16,6 +16,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NgInviewModule } from 'angular-inport';
 import { AnnouncementService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
     ConfigService, DateFormatPipe, ServerResponse
@@ -45,7 +46,7 @@ describe('InboxComponent', () => {
                 SuiModule, RouterTestingModule, NgInviewModule,
                 SharedModule.forRoot(), TelemetryModule.forRoot()],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
-                PaginationService, ToasterService, ResourceService, DateFormatPipe,
+                PaginationService, ToasterService, ResourceService, CacheService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
                 { provide: RouterOutlet, useValue: fakeActivatedRoute }
@@ -150,5 +151,14 @@ describe('InboxComponent', () => {
             expect(component.pageLimit).toBe(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
             expect(component.inboxData.count).toBe(1173);
         }));
+
+        it('should unsubscribe from all observable subscriptions', () => {
+            component.populateInboxData(5, 1);
+            component.readAnnouncement('6f6932b0-db3e-11e7-b902-bf7fe7f2023a', false);
+            component.ngOnInit();
+            spyOn(component.unsubscribe, 'complete');
+            component.ngOnDestroy();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+          });
 });
 
