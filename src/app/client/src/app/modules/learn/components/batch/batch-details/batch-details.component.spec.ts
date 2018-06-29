@@ -151,4 +151,11 @@ describe('BatchDetailsComponent', () => {
     component.createBatch();
     expect(route.navigate).toHaveBeenCalledWith(['create/batch'], {relativeTo: component.activatedRoute});
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

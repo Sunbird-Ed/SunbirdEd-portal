@@ -19,6 +19,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { SignupGuard } from './signup.guard';
+import { LandingpageGuard } from './landingpage.guard';
 
 @NgModule({
   imports: [
@@ -36,6 +38,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ExploreContentComponent],
-  providers: [SignupService, PublicPlayerService, OrgManagementService, DeviceDetectorService]
+  providers: [SignupService, PublicPlayerService, OrgManagementService, DeviceDetectorService, SignupGuard, LandingpageGuard]
 })
 export class PublicModule { }
