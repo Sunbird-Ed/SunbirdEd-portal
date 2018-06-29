@@ -6,6 +6,8 @@ import {
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -77,6 +79,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
   * Contains loader message to display
   */
   loaderMessage: ILoaderMessage;
+  public unsubscribe = new Subject<void>();
   /**
 	 * Consructor to create injected service(s) object
 	 *
@@ -112,7 +115,9 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.contentData && this.playerService.contentData.identifier === this.identifier) {
       this.contentData = this.playerService.contentData;
     } else {
-      this.playerService.getContent(this.identifier).subscribe(response => {
+      this.playerService.getContent(this.identifier)
+      .takeUntil(this.unsubscribe)
+      .subscribe(response => {
         this.contentData = response.result.content;
       });
     }
@@ -129,7 +134,9 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.identifier}`,
       data: { 'request': requestData }
     };
-    this.contentService.post(option).subscribe(response => {
+    this.contentService.post(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(response => {
       this.showLoader = false;
       this.modal.deny();
       this.redirect();
@@ -169,7 +176,9 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.collectionData && this.playerService.collectionData.identifier === this.identifier) {
       this.contentData = this.playerService.collectionData;
     } else {
-      this.playerService.getCollectionHierarchy(this.identifier).subscribe(response => {
+      this.playerService.getCollectionHierarchy(this.identifier)
+      .takeUntil(this.unsubscribe)
+      .subscribe(response => {
         this.contentData = response.result.content;
       });
     }
@@ -193,6 +202,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
 

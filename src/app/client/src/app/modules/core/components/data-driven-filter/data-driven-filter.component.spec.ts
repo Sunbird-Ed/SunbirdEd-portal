@@ -147,4 +147,19 @@ const fakeActivatedRoute = {
     component.removeFilterSelection('subject', 'English');
     fixture.detectChanges();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    const formService = TestBed.get(FormService);
+    const cacheService = TestBed.get(CacheService);
+    component.formFieldProperties = mockData.mockRes.formConfigData;
+    spyOn(cacheService, 'exists').and.returnValue(false);
+    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
+    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
+    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
+    component.fetchFilterMetaData();
+    fixture.detectChanges();
+    spyOn(component.frameworkDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.frameworkDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEventInput } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 /**
  * The announcement inbox component displays all
  * the announcement which is received by the logged in user
@@ -14,7 +16,9 @@ import { IEndEventInput, IStartEventInput, IImpressionEventInput, IInteractEvent
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, OnDestroy {
+
+  public unsubscribe = new Subject<void>();
 
   /**
 	 * Contains result object returned from get inbox API
@@ -140,7 +144,9 @@ export class InboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getInboxData(option).subscribe(
+    this.announcementService.getInboxData(option)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.inboxData = apiResponse.result;
         this.showLoader = false;
@@ -172,7 +178,9 @@ export class InboxComponent implements OnInit {
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId }).subscribe(
+      this.announcementService.readAnnouncement({ announcementId: announcementId })
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (response: ServerResponse) => {
           _.each(this.inboxData.announcements, (key, index) => {
             if (announcementId === key.id) {
@@ -225,7 +233,9 @@ export class InboxComponent implements OnInit {
    * This method calls the populateInboxData to show inbox list.
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params
+    .takeUntil(this.unsubscribe)
+    .subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateInboxData(this.config.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT, this.pageNumber);
     });
@@ -240,5 +250,10 @@ export class InboxComponent implements OnInit {
         uri: '/announcement/inbox/' + this.pageNumber
       }
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

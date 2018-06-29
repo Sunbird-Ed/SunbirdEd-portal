@@ -71,5 +71,12 @@ describe('LanguageDropdownComponent', () => {
     component.getChannelId();
     expect(component.channelId).toBe('0123166374296453124');
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
 
