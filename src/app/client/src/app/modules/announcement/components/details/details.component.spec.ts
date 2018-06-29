@@ -59,7 +59,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, DateFormatPipe } from '@sunbird/shared';
 import { DetailsComponent, IAnnouncementDetails } from '@sunbird/announcement';
 // Test data
-
+import { CacheService } from 'ng2-cache-service';
 describe('AnnouncementInboxCardComponent', () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
@@ -68,7 +68,7 @@ describe('AnnouncementInboxCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule],
       declarations: [DetailsComponent, DateFormatPipe],
-      providers: [ResourceService, ConfigService],
+      providers: [ResourceService, ConfigService, CacheService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

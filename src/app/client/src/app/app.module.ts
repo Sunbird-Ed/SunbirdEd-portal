@@ -31,7 +31,6 @@ import { BadgingModule } from '@sunbird/badge';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import {CacheSessionStorage} from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
-
 @NgModule({
   declarations: [
     AppComponent

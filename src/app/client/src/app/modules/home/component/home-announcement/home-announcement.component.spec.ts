@@ -10,6 +10,7 @@ import { NgInviewModule } from 'angular-inport';
 import { HomeAnnouncementService } from './../../service/index';
 import * as mockData from './home-announcement.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 const testData = mockData.mockRes;
 describe('HomeAnnouncementComponent', () => {
   let component: HomeAnnouncementComponent;
@@ -23,7 +24,7 @@ describe('HomeAnnouncementComponent', () => {
       imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule,
       NgInviewModule, TelemetryModule],
       declarations: [HomeAnnouncementComponent],
-      providers: [ResourceService, AnnouncementService, ConfigService, HomeAnnouncementService,
+      providers: [ResourceService, AnnouncementService, ConfigService, CacheService, HomeAnnouncementService, CacheService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: RouterOutlet, useValue: fakeActivatedRoute }]
