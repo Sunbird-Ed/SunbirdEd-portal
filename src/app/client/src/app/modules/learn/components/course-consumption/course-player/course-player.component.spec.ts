@@ -282,6 +282,29 @@ describe('CoursePlayerComponent', () => {
     expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
+  it('should not play content if not course mentor', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR']);
+    expect(component.contentId).toBeUndefined();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
+    component.ngOnDestroy();
+  });
   it('should not play the content enrolled batch status is 0', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
