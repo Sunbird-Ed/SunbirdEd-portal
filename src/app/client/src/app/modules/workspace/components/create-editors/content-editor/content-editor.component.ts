@@ -69,6 +69,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   public showModal: boolean;
 
   private buildNumber: string;
+
+  public logo: string;
+
   /**
   * Default method of classs ContentEditorComponent
   *
@@ -144,7 +147,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit() {
     /**
-    * Launch the generic editor after window load
+    * Fetch header logo and launch the content editor after window load
     */
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
@@ -166,9 +169,15 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         });
       }
     });
-    this.getContentData();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.getContentData();
+      } else if (data && data.err) {
+        this.getContentData();
+      }
+    });
   }
-
 
   ngOnDestroy() {
     this.setRenderer();
@@ -208,7 +217,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       apislug: '/action',
       alertOnUnload: true,
       build_number: this.buildNumber,
-      headerLogo: this.tenantService.tenantData.logo,
+      headerLogo: this.logo,
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
         this.userService.env + '/', 'https://ekstep-public-' +
         this.userService.env + '.s3-ap-south-1.amazonaws.com/'],

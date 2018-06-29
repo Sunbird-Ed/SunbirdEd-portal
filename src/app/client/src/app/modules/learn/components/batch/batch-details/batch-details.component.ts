@@ -110,7 +110,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     });
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getBatchDetails(this.batchId)
+    this.courseBatchService.getEnrolledBatchDetails(this.batchId)
     .takeUntil(this.unsubscribe)
     .subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data;
