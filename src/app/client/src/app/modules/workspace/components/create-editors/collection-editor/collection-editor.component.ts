@@ -258,6 +258,10 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       _.intersection(this.userProfile.userRoles,
         ['FLAG_REVIEWER']).length > 0) {
       window.config.editorConfig.isFlagReviewer = true;
+    } else if (this.state === state.FLAG_REVIEW &&
+      _.intersection(this.userProfile.userRoles,
+        ['FLAG_REVIEWER']).length > 0) {
+      window.config.editorConfig.isFlagReviewer = true;
     }
     setTimeout(() => {
       jQuery('#collectionEditor').iziModal('open');
