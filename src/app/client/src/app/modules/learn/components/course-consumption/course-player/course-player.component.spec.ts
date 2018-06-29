@@ -276,7 +276,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR']);
+    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER']);
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
@@ -299,7 +299,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR']);
+    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER']);
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();

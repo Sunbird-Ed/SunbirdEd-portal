@@ -172,7 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             this.getContentState();
             this.subscribeToQueryParam();
           }
-        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
         || this.courseHierarchy.createdBy === this.userService.userid) {
           this.parseChildContent();
           this.subscribeToQueryParam();
@@ -243,7 +243,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   private OnPlayContent(content: { title: string, id: string }) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
-      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
       || this.courseHierarchy.createdBy === this.userService.userid)) {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
@@ -285,7 +285,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       relativeTo: this.activatedRoute
     };
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
       || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
     }
