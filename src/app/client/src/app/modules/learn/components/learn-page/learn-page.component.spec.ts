@@ -119,6 +119,12 @@ describe('LearnPageComponent', () => {
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeTruthy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
   it('should call inview method for visits data', () => {
     spyOn(component, 'prepareVisits').and.callThrough();
     component.prepareVisits(Response.event);

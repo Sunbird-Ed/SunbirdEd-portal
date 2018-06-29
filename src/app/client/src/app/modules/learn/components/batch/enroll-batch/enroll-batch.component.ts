@@ -5,6 +5,8 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-enroll-batch',
@@ -18,6 +20,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   showEnrollDetails = false;
   readMore = false;
   disableSubmitBtn = false;
+  public unsubscribe = new Subject<void>();
   /**
 	 * telemetryImpression object for update batch page
 	*/
@@ -46,7 +49,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           }
       };
 
-      this.courseBatchService.getEnrollToBatchDetails(this.batchId).subscribe((data) => {
+      this.courseBatchService.getEnrollToBatchDetails(this.batchId)
+      .takeUntil(this.unsubscribe)
+      .subscribe((data) => {
         this.batchDetails = data;
         if (this.batchDetails.enrollmentType !== 'open') {
           this.toasterService.error(this.resourceService.messages.fmsg.m0082);
@@ -63,6 +68,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
     if (this.enrollBatch && this.enrollBatch.deny) {
       this.enrollBatch.deny();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
@@ -74,7 +81,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           identifier: _.keys(this.batchDetails.participant)
         }
       };
-      this.courseBatchService.getUserDetails(request).subscribe((res) => {
+      this.courseBatchService.getUserDetails(request)
+      .takeUntil(this.unsubscribe)
+      .subscribe((res) => {
         this.batchDetails.participantDetails = res.result.response.content;
         this.showEnrollDetails = true;
       }, (err) => {
@@ -93,8 +102,11 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
         batchId: this.batchDetails.identifier
       }
     };
-    this.disableSubmitBtn = true;
-    this.courseBatchService.enrollToCourse(request).subscribe((data) => {
+this.disableSubmitBtn = true;
+this.courseBatchService.enrollToCourse(request)
+    .takeUntil(this.unsubscribe)
+    .subscribe((data) => {
+      this.disableSubmitBtn = true;
       this.fetchEnrolledCourseData();
     }, (err) => {
       this.disableSubmitBtn = false;
@@ -103,7 +115,9 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
   }
   fetchEnrolledCourseData() {
     setTimeout(() => {
-      this.coursesService.getEnrolledCourses().subscribe(() => {
+      this.coursesService.getEnrolledCourses()
+      .takeUntil(this.unsubscribe)
+      .subscribe(() => {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
         this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
