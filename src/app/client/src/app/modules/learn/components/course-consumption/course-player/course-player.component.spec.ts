@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, UserService, PermissionService } from '@sunbird/core';
 import { INoteData } from '@sunbird/notes';
 import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,6 +13,8 @@ import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged }
 import { Subject } from 'rxjs/Subject';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
+import { mockUserData } from './../../../../core/services/user/user.mock.spec.data';
+import { mockPermissionRes } from './../../../../core/services/permission/permission.mock.spec.data';
 
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
@@ -210,6 +212,71 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
+    expect(component.contentId).toBeDefined();
+    expect(component.playerConfig).toBeDefined();
+    expect(component.enableContentPlayer).toBeTruthy();
+    component.ngOnDestroy();
+  });
+  it('should play content for course creator', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser';
+    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    expect(component.contentId).toBeDefined();
+    expect(component.playerConfig).toBeDefined();
+    expect(component.enableContentPlayer).toBeTruthy();
+    component.ngOnDestroy();
+  });
+  it('should not play content if his not course creator', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser2';
+    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    expect(component.contentId).toBeUndefined();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
+    component.ngOnDestroy();
+  });
+  it('should play content for course mentor', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    expect(component.permissionService.checkRolesPermissions).toHaveBeenCalledWith(['COURSE_MENTOR']);
     expect(component.contentId).toBeDefined();
     expect(component.playerConfig).toBeDefined();
     expect(component.enableContentPlayer).toBeTruthy();
