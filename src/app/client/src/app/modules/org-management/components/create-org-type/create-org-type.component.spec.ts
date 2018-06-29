@@ -88,4 +88,13 @@ describe('CreateOrgTypeComponent', () => {
       );
       fixture.detectChanges();
     }));
+
+    it('should unsubscribe from all observable subscriptions', () => {
+      component.addOrgType();
+      component.updateOrgType();
+      component.ngOnInit();
+      spyOn(component.unsubscribe, 'complete');
+      component.ngOnDestroy();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
+    });
 });

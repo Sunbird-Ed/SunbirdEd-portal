@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -6,6 +6,8 @@ import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component helps to display the creation/updation popup.
@@ -17,7 +19,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInte
   templateUrl: './create-org-type.component.html',
   styleUrls: ['./create-org-type.component.css']
 })
-export class CreateOrgTypeComponent implements OnInit {
+export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
@@ -72,6 +74,8 @@ export class CreateOrgTypeComponent implements OnInit {
    */
   public orgTypeService: OrgTypeService;
 
+  public unsubscribe = new Subject<void>();
+
 
   /**
 	 * Constructor to create injected service(s) object
@@ -104,7 +108,9 @@ export class CreateOrgTypeComponent implements OnInit {
    * with proper messaga.
 	 */
   addOrgType(): void {
-    this.orgTypeService.addOrgType(this.orgName.value).subscribe(
+    this.orgTypeService.addOrgType(this.orgName.value)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0035);
         this.redirect();
@@ -125,7 +131,9 @@ export class CreateOrgTypeComponent implements OnInit {
 	 */
   updateOrgType(): void {
     const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
-    this.orgTypeService.updateOrgType(param).subscribe(
+    this.orgTypeService.updateOrgType(param)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
         this.redirect();
@@ -206,6 +214,11 @@ export class CreateOrgTypeComponent implements OnInit {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
 
