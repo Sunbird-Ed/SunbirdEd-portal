@@ -240,7 +240,8 @@
       "uploaded",
       "published",
       "limited-publish",
-      "allcontent"
+      "allcontent",
+      "flagreviewer"
     ],
     "Draft": {
       "constantData": {
