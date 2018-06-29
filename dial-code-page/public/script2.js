@@ -1,19 +1,24 @@
 (function () {
   var dialcode, tenantId, tenantInfo, orgInfo;
-  var hostURL = "https://dev.open-sunbird.org";
+  var hostURL = window.__dial_page_config.hostURL;
 
   function OnLoad() {
-    dialcode = getUrlParameter('dialcode');
-    tenantId = getUrlParameter('tenant');
+    addHeaderNavLink();
+    dialcode = getUrlQueryParameter('dialcode') || findDialcodeFromPath();
+    tenantId = getUrlQueryParameter('tenant') || findTenantFromPath();
     $('#loader').hide(); // hide loader on page load
     $('#noResultMessage').hide(); // hide no result found message
-    dialcode ? navigateToResultPage() : navigateToSearchPage()
+    if (dialcode && dialcode !== "") {
+      navigateToResultPage()
+      searchDialCode(dialcode);
+    } else {
+      navigateToSearchPage()
+    }
     getTenantInfo(tenantId);
     getOrgInfo(tenantId).done(function () {
       initTelemetryService();
       logImpressionEvent();
     });
-    searchDialCode(dialcode);
   }
 
   function navigateToSearchPage() {
@@ -21,7 +26,28 @@
     $('#resultSection').hide();
   }
 
-  function getUrlParameter(param) {
+  function addHeaderNavLink() {
+    $('#appLogoLink').attr('href', hostURL);
+    $('#loginBtn').attr('href', hostURL);
+  }
+
+  function findDialcodeFromPath() {
+    var pathList = window.location.pathname.split('/');
+    var pathIndex = pathList.findIndex(function (elem) {
+      return elem === 'dial'
+    });
+    if (pathIndex !== -1) return pathList[pathIndex + 1] === "" ? undefined : pathList[pathIndex + 1]; // get whatever next to 'dial'
+  }
+
+  function findTenantFromPath() {
+    var pathList = window.location.pathname.split('/');
+    var pathIndex = pathList.findIndex(function (elem) {
+      return elem === 'get'
+    });
+    if (pathIndex !== -1) return pathList[pathIndex - 1]  === "" ? undefined : pathList[pathIndex - 1]; // get whatever before to 'get'
+  }
+
+  function getUrlQueryParameter(param) {
     var url = decodeURIComponent(window.location.search.substring(1)),
       urlVar = url.split('&'), paramName, i;
     for (i = 0; i < urlVar.length; i++) {
@@ -112,7 +138,7 @@
   }
 
   function getTenantInfo(id) {
-    var URL = "https://diksha.gov.in/v1/tenant/info";
+    var URL = hostURL + "/v1/tenant/info";
     if (id) URL += "/" + id;
     return $.ajax({
       method: "GET",
@@ -147,19 +173,14 @@
   function getAnonymousUserConfig() {
     var endpoint = "/data/v1/telemetry"
     return {
-      pdata: {
-        id: 'prod.diksha.portal',
-        ver: '1.7.0',
-        pid: 'sunbird-portal'
-      },
+      pdata: window.__dial_page_config.telemetry.pdata,
       endpoint: endpoint,
       apislug: "/content",
       host: hostURL,
       uid: 'anonymous',
       sid: window.uuidv1(),
-      channel: orgInfo.channel,
-      env: 'public',
-      enableValidation: true
+      channel: orgInfo.rootOrgId,
+      env: 'public'
     }
   }
 
@@ -172,7 +193,7 @@
     var options = {
       context: {
         env: 'public',
-        channel: orgInfo.channel,
+        channel: orgInfo.rootOrgId,
         uid: 'anonymous',
         cdata: [],
         rollup: getRollupData([orgInfo.rootOrgId])
@@ -187,9 +208,8 @@
     };
     var edata = {
       type: 'view',
-      pageid: 'get',
-      subtype: 'paginate',
-      uri: '/get',
+      pageid: 'dialcode',
+      uri: encodeURI(window.location.href),
       visits: []
     };
     window.EkTelemetry.impression(edata, options);
