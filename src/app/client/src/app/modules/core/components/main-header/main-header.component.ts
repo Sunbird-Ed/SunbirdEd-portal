@@ -80,6 +80,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   tenantDataSubscription: Subscription;
   userDataSubscription: Subscription;
+
+  /**
+  * value to enable and disable signUp button
+  */
+  enableSignup = true;
+
   /*
   * constructor
   */
@@ -128,6 +134,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         }
       });
     this.setInteractEventData();
+    try {
+      const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
+      (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
+      this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
+    } catch {
+      console.log('error while fetching enableSignup');
+    }
   }
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();

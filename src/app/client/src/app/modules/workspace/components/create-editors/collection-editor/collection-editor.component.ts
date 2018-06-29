@@ -78,6 +78,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    */
   public tenantService: TenantService;
 
+  private buildNumber: string;
+  public logo: string;
   /**
    * Show Modal for loader
    */
@@ -110,6 +112,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     this.userService = userService;
     this.config = config;
     this.tenantService =  tenantService;
+    // buildNumber
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
 
   ngOnInit() {
@@ -137,7 +145,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     /**
      * Create the collection editor
      */
-    this.openCollectionEditor();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.openCollectionEditor();
+      } else if (data && data.err) {
+        this.openCollectionEditor();
+      }
+    });
   }
 
   /**
@@ -148,7 +163,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/collection-editor/index.html',
+      iframeURL: '/thirdparty/editors/collection-editor/index.html?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
@@ -200,7 +215,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
 
     window.config = { ...editorWindowConfig, ...dynamicConfig };
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
-    window.config.headerLogo = this.tenantService.tenantData.logo;
+    window.config.headerLogo = this.logo;
+    window.config.build_number = this.buildNumber;
 
     if (this.type.toLowerCase() === 'textbook') {
       window.config.plugins.push({

@@ -84,12 +84,12 @@ border-top: 2px solid rgba(0,0,0,.13);
 /*sunbird Regular font*/
 @font-face {
   font-family: 'sunbirdregularfont';
-  src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Regular.woff') format('woff');
 }
 /*sunbird Bold font*/
 @font-face {
   font-family: 'sunbirdboldfont';
-  src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
+  src: url('./assets/fonts/OpenSans-Bold.woff') format('woff');
 }
 
 /* cards used in slider fonts*/

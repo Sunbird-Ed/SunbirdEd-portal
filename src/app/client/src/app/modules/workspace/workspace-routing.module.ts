@@ -6,7 +6,8 @@ import {
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent} from './components';
+  AllContentComponent
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -86,10 +87,22 @@ const routes: Routes = [
           }
         ]
       },
-      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      { path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
-      { path: 'edit/generic', component: GenericEditorComponent },
-      { path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
+      {
+        path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent, canActivate: [AuthGuard],
+        data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/generic', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
       {
         path: 'draft/:pageNumber', component: DraftComponent, canActivate: [AuthGuard],
         data: {
