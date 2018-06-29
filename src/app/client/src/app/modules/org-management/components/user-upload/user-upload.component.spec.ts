@@ -59,7 +59,12 @@ describe('UserUploadComponent', () => {
         't0065': 'If user is not passing organisationId but passing OrgProvider, then user should pass OrgExternalId',
         't0066': 'ExternalId: Identity of user in an external system. If user is passing externalId then they have to pass Provider.',
         't0067': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
-        If user is passing ExternalId then they have to pass Provider.`
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0068': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0069': `ExternalIds: An array of external IDs (represented as a JSON string) that a user has.
+         Format: "[{"id":"someId","idType": "someIdType","provider":"someProvider", "operation": "ADD"}]".
+         Supported operations on an external ID are ADD, EDIT and REMOVE.`
       }
     }
   };
