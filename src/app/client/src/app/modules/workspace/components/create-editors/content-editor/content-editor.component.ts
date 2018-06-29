@@ -68,6 +68,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   public showModal: boolean;
 
+  private buildNumber: string;
+
   public logo: string;
 
   /**
@@ -100,6 +102,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
 
 
@@ -146,7 +153,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/content-editor/index.html',
+      iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
 
       navigateArrows: false,
       fullscreen: true,
@@ -209,6 +216,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       modalId: 'contentEditor',
       apislug: '/action',
       alertOnUnload: true,
+      build_number: this.buildNumber,
       headerLogo: this.logo,
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
         this.userService.env + '/', 'https://ekstep-public-' +
@@ -239,7 +247,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       localDispatcherEndpoint: '/content-editor/telemetry',
       showHelp: false,
       previewConfig: {
-        repos: ['/content-plugins/renderer'],
+        repos: ['/sunbird-plugins/renderer'],
         plugins: [{
           id: 'org.sunbird.player.endpage',
           ver: 1.0,
