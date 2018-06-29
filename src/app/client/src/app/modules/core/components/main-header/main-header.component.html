@@ -42,7 +42,10 @@
             <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10">
                     <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
-                    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
+                    <button  appTelemetryInteract 
+                    [telemetryInteractObject]="telemetryInteractObject" 
+                    [telemetryInteractEdata]="signUpInteractEdata" *ngIf="enableSignup && router.isActive('', true)" 
+                    class="ui item" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a  href="/home" class="sunblogin">
                         <button class="ui item">{{resourceService.frmelmnts?.btn?.login}}</button>
                     </a>
@@ -53,7 +56,8 @@
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
                         <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
-                        <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true)" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
+                        <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+                        [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
                             <a  href="/home" class="sunblogin">
                                 <div class="item">{{resourceService.frmelmnts?.btn?.login}}</div>

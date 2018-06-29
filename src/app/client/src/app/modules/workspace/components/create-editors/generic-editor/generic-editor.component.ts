@@ -60,6 +60,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public tenantService: TenantService;
 
+  private buildNumber: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -73,6 +74,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
   ngOnInit() {
     /**
@@ -106,7 +112,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/generic-editor/index.html',
+      iframeURL: '/thirdparty/editors/generic-editor/index.html?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -158,6 +164,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
+      build_number: this.buildNumber,
       headerLogo: this.tenantService.tenantData.logo,
       loadingImage: '',
       plugins: [{
@@ -174,7 +181,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         type: 'plugin'
       }],
       previewConfig: {
-        'repos': ['/content-plugins/renderer'],
+        'repos': ['/sunbird-plugins/renderer'],
         plugins: [{
           'id': 'org.sunbird.player.endpage',
           ver: 1.0,

@@ -23,13 +23,13 @@ import { SearchModule } from '@sunbird/search';
 import {TelemetryModule} from '@sunbird/telemetry';
 import * as $ from 'jquery';
 
+
 // portal-extensions
 import { BootstrapFramework, WebExtensionModule } from 'sunbird-web-extension';
 import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { BadgingModule } from '@sunbird/badge';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
-import {CacheMemoryStorage} from 'ng2-cache-service/dist/src/services/storage/memory/cache-memory.service';
 import {CacheSessionStorage} from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 @NgModule({
   declarations: [
@@ -53,14 +53,14 @@ import {CacheSessionStorage} from 'ng2-cache-service/dist/src/services/storage/s
     // LearnModule, // Lazy load
     // WorkspaceModule, // Lazy load
     OrgManagementModule,
-    PublicModule,
     // SearchModule, // Lazy load
     // DiscussionModule,
     WebExtensionModule.forRoot(),
     BadgingModule,
     ...PluginModules,
     // ...WebExtensionsConfig.plugins.map((data) => data.module),
-    TelemetryModule.forRoot()
+    TelemetryModule.forRoot(),
+    PublicModule // don't any  module below this because it is having wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],

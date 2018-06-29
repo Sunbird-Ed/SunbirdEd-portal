@@ -16,7 +16,7 @@
                 }
             ],
             "previewConfig": {
-                "repos": "['/content-plugins/renderer']",
+                "repos": "['/sunbird-plugins/renderer']",
                 "plugins": [
                     {
                         "id": "org.sunbird.player.endpage",
@@ -52,7 +52,7 @@
             "showHelp": false,
             "previewConfig": {
                 "repos": [
-                    "/content-plugins/renderer"
+                    "/sunbird-plugins/renderer"
                 ],
                 "plugins": [
                     {
@@ -111,7 +111,7 @@
                 "defaultTemplate": {}
             },
             "previewConfig": {
-                "repos": "['/content-plugins/renderer']",
+                "repos": "['/sunbird-plugins/renderer']",
                 "plugins": [
                     {
                         "id": "org.sunbird.player.endpage",
@@ -457,7 +457,7 @@
             "PLUGIN_TYPE": "plugin",
             "LESSON_BROWSER": "org.ekstep.lessonbrowser",
             "LESSON_BROWSER_VERSION": "1.3",
-            "RENDERER_URL": "['/content-plugins/renderer']",
+            "RENDERER_URL": "['/sunbird-plugins/renderer']",
             "RULES_LEVEL": "7",
             "PLUGIN_ENDPAGE": "org.sunbird.player.endpage",
             "localDispatcherEndpoint": "/collection-editor/telemetry",
