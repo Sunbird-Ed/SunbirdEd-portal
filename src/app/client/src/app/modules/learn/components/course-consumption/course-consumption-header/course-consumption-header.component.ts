@@ -3,7 +3,8 @@ import { CourseConsumptionService, CourseProgressService } from './../../../serv
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService,
+   FlagContentService } from '@sunbird/core';
 import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import 'rxjs/add/operator/takeUntil';
@@ -25,6 +26,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 	*/
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
+  public flagService: FlagContentService;
+  public disableFlag: Boolean = false;
   /**
    * to show loader while copying content
    */
@@ -47,7 +50,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
-    private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService) {
+    private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
+    flagService: FlagContentService) {
+      this.flagService = flagService;
 
   }
 
@@ -76,6 +81,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       if (this.batchId) {
         this.enrolledCourse = true;
       }
+    });
+
+    this.flagService.disableFlagOnSuccess.subscribe( data => {
+      this.disableFlag = true;
     });
   }
   ngAfterViewInit() {

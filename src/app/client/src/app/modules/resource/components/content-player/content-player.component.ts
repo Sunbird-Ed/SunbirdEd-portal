@@ -1,7 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
+import {
+  ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService,
+  FlagContentService
+} from '@sunbird/core';
 import * as _ from 'lodash';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
 import {
@@ -73,11 +76,16 @@ export class ContentPlayerComponent implements OnInit {
    */
   createNoteData: INoteData;
   closeUrl: any;
+  public flagService: FlagContentService;
+  public disableFlag: Boolean = false;
+
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    flagService: FlagContentService) {
+    this.flagService = flagService;
   }
   /**
    *
@@ -93,6 +101,9 @@ export class ContentPlayerComponent implements OnInit {
             this.getContent();
           }
         });
+    });
+    this.flagService.disableFlagOnSuccess.subscribe(data => {
+      this.disableFlag = true;
     });
   }
   setTelemetryData() {
@@ -129,7 +140,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
@@ -191,9 +202,9 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
-     this.setTelemetryShareData(this.contentData);
+    this.setTelemetryShareData(this.contentData);
   }
-    setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,

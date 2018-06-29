@@ -1,0 +1,7 @@
+.disableIcon {
+    pointer-events: none;
+    color: red;
+}
+.flag-icon-color {
+    color: #007aff;
+}
