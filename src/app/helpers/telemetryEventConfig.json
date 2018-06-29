@@ -1,5 +1,5 @@
 {
-  "endpoint": "data/v1/telemetry",
+  "endpoint": "v1/telemetry",
   "pdata": {
     "ver": "0.0.1"
   },
