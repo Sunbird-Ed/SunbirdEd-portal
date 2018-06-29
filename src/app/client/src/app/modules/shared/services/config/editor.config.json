@@ -411,7 +411,8 @@
             "review",
             "published",
             "flagged",
-            "limitedPublish"
+            "limitedPublish",
+            "flagreviewer"
         ],
         "collectionStatus": [
             "Review",
@@ -429,7 +430,8 @@
             "upForReview",
             "review",
             "published",
-            "limitedPublish"
+            "limitedPublish",
+             "flagreviewer"
         ],
         "contentStatus": [
             "Review",
