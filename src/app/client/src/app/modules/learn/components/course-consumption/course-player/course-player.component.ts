@@ -10,10 +10,10 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import {
-  IInteractEventInput, IImpressionEventInput, IEndEventInput,
-  IStartEventInput, IInteractEventObject, IInteractEventEdata
-} from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
+  IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-course-player',
@@ -120,6 +120,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public collectionTreeOptions: ICollectionTreeOptions;
 
+  public unsubscribe = new Subject<void>();
+
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -210,7 +212,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentState(req).subscribe((res) => {
+    this.courseConsumptionService.getContentState(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
       console.log(err, 'content read api failed');
@@ -330,6 +334,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.updateContentsStateSubscription) {
       this.updateContentsStateSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
     this.telemetryCourseStart = {
