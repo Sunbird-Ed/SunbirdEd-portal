@@ -1136,8 +1136,6 @@ i.large.icon.limitedPublishingLinkIcon {
   max-height: 80px;
   width: auto;
   height: auto;
-  top: 15%;
-  left: 3%;
   position: absolute;
 }
 .header-logo-before-login {
@@ -1147,11 +1145,13 @@ i.large.icon.limitedPublishingLinkIcon {
   width: auto;
   height: auto;
   position: absolute;
+  transform: translateY(15%);  
 }
 
-@media only screen and (min-width: 769px) {
+@media only screen and (min-width: 320px) and (max-width:768){
   .header-logo-before-login {
-    top:15%;
+    max-width: 60px;
+    max-height: 30px;  
   }
 }
 
