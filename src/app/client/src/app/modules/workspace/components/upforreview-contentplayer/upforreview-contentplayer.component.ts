@@ -151,14 +151,6 @@ export class UpforreviewContentplayerComponent implements OnInit {
   * @memberof ContentPlayerComponent
   */
   close() {
-    if (this.closeUrl.url !== '/home') {
-      if (this.closeUrl.queryParams) {
-        this.router.navigate([this.closeUrl.url], { queryParams : this.closeUrl.queryParams});
-      } else {
-        this.router.navigate([this.closeUrl.url]);
-      }
-    } else {
-      this.router.navigate(['/workspace/content/upForReview/1']);
-    }
+   this.navigationHelperService.navigateToWorkSpace('/workspace/content/upForReview/1');
   }
 }

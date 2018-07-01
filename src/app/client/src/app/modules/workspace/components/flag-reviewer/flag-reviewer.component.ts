@@ -13,15 +13,14 @@ import { Observable } from 'rxjs/Observable';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
- * The upforReview component search for all the upforreview content
+ * The  FlagReviewerComponent search for all the flag-reviewer
 */
-
 @Component({
-  selector: 'app-up-for-review',
-  templateUrl: './up-for-review.component.html',
-  styleUrls: ['./up-for-review.component.css']
+  selector: 'app-flag-reviewer',
+  templateUrl: './flag-reviewer.component.html',
+  styleUrls: ['./flag-reviewer.component.css']
 })
-export class UpForReviewComponent extends WorkSpace implements OnInit {
+export class FlagReviewerComponent extends WorkSpace implements OnInit {
   /**
   * To navigate to other pages
   */
@@ -38,9 +37,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   */
   contentIds: string;
   /**
-   * Contains list of published course(s) of logged-in user
+   * Contains list of flageReviewerContentData
   */
-  upForReviewContentData: Array<IContents> = [];
+  flageReviewerContentData: Array<IContents> = [];
 
   /**
    * To show / hide loader
@@ -61,6 +60,14 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
    * To show / hide error
   */
   showError = false;
+  /**
+  * type of filter
+  */
+  public filterType: any;
+  /**
+  * redirect url
+  */
+  public redirectUrl: string;
 
   /**
    * no result  message
@@ -95,6 +102,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     * totalCount of the list
   */
   totalCount: Number;
+  /**
+  sortByOption ;
+  */
+  sortByOption: string;
 
   /**
   * Contains returned object of the pagination service
@@ -153,13 +164,17 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.resourceService = resourceService;
     this.config = config;
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0032,
+      'loaderMessage': this.resourceService.messages.stmsg.m0115,
     };
-    this.state = 'upForReview';
+    this.state = 'flagreviewer';
     this.permissionService = permissionService;
+    this.sortByOption = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
 
   ngOnInit() {
+
+    this.filterType = this.config.appConfig.upForReview.filterType;
+    this.redirectUrl = this.config.appConfig.flagReviewer.inPageredirectUrl;
     Observable.combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
@@ -174,7 +189,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = bothParams.queryParams;
-        this.fecthUpForReviewContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+        this.fecthFlagReviewerContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
 
     this.telemetryImpression = {
@@ -192,9 +207,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   }
 
   /**
-  * This method sets the make an api call to get all UpForReviewContent with page No and offset
+  * This method sets the make an api call to get all FlagReviewerContent with page No and offset
   */
-  fecthUpForReviewContent(limit: number, pageNumber: number, bothParams) {
+  fecthFlagReviewerContent(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
@@ -208,10 +223,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     const rolesMap = this.userService.RoleOrgMap;
     const searchParams = {
       filters: {
-        status: ['Review'],
-        createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
-          rolesMap['BOOK_REVIEWER'],
-          rolesMap['CONTENT_REVIEW'])),
+        status: ['FlagReview'],
+        createdFor: this.userService.RoleOrgMap && _.compact(_.union(
+          rolesMap['FLAG_REVIEWER'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
@@ -228,7 +242,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.upForReviewContentData = data.result.content;
+          this.flageReviewerContentData = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;
@@ -247,7 +261,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         this.showLoader = false;
         this.noResult = false;
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0021);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0083);
       }
     );
   }
@@ -265,7 +279,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/upForReview', this.pageNumber], { queryParams: this.queryParams });
+    this.route.navigate(['workspace/content/flagreviewer', this.pageNumber], { queryParams: this.queryParams });
   }
   contentClick(content) {
     this.workSpaceService.navigateToContent(content, this.state);
