@@ -32,7 +32,7 @@
               </div>
               <div class="two wide column ">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Curriculum" [options]="options" [hasLabels]=false
-                defaultSelectionText="Curriculum" zeroSelectionText="Select" #multiSelect>
+                defaultSelectionText="Board" zeroSelectionText="Select" #multiSelect>
                   <sui-select-option *ngFor="let board of searchBoards" [value]="board"> </sui-select-option>
                 </sui-multi-select>
               </div>
