@@ -129,4 +129,13 @@ describe('ExploreContentComponent', () => {
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.searchList = Response.noResult.result.content;
+    component.totalCount = Response.noResult.result.count;
+    component.queryParams = mockQueryParma;
+    component.populateContentSearch();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

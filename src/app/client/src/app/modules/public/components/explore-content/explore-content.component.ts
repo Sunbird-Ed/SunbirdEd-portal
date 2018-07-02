@@ -4,19 +4,20 @@ import {
 } from '@sunbird/shared';
 import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
     OrgDetailsService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
     styleUrls: ['./explore-content.component.css']
 })
-export class ExploreContentComponent implements OnInit {
+export class ExploreContentComponent implements OnInit, OnDestroy {
     inviewLogs: any = [];
     /**
        * telemetryImpression
@@ -118,6 +119,7 @@ export class ExploreContentComponent implements OnInit {
 
     public redirectUrl: string;
     sortingOptions: Array<ISort>;
+    public unsubscribe = new Subject<void>();
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -159,7 +161,9 @@ export class ExploreContentComponent implements OnInit {
             query: this.queryParams.key,
             softConstraints: { badgeAssertions: 2, channel: 1 }
         };
-        this.searchService.contentSearch(requestParams).subscribe(
+        this.searchService.contentSearch(requestParams)
+        .takeUntil(this.unsubscribe)
+        .subscribe(
             (apiResponse: ServerResponse) => {
                 if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                     this.showLoader = false;
@@ -210,7 +214,9 @@ export class ExploreContentComponent implements OnInit {
     }
 
     getChannelId() {
-        this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+        this.orgDetailsService.getOrgDetails(this.slug)
+        .takeUntil(this.unsubscribe)
+        .subscribe(
             (apiResponse: any) => {
                 this.hashTagId = apiResponse.hashTagId;
                 this.setFilters();
@@ -248,6 +254,7 @@ export class ExploreContentComponent implements OnInit {
                     queryParams: queryParams
                 };
             })
+            .takeUntil(this.unsubscribe)
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -322,5 +329,9 @@ export class ExploreContentComponent implements OnInit {
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
