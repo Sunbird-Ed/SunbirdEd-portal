@@ -41,7 +41,8 @@ let envVariables = {
   EXPLORE_BUTTON_VISIBILITY: env.sunbird_explore_button_visibility || 'true',
   ENABLE_SIGNUP: env.sunbird_enable_signup || 'true',
   BUILD_NUMBER: env.build_number || packageObj.version+'.'+packageObj.buildNumber,
-  TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/'
+  TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
+  PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

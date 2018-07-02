@@ -142,6 +142,7 @@ function getLocals(req) {
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
   locals.buildNumber = envHelper.BUILD_NUMBER
+  locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   return locals;
 }
 
