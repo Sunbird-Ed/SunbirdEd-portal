@@ -305,15 +305,15 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       contentType: []
     };
 
-    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1) {
-       request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+      request.contentType = ['TextBook'];
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&
       _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
      request.contentType = this.config.appConfig.WORKSPACE.contentType;
     }
-    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-      request.contentType = ['TextBook'];
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1) {
+     request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
     }
     return request;
   }
