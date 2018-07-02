@@ -5,6 +5,7 @@ import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbir
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 /**
  * Main header component
  */
@@ -91,7 +92,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   */
   constructor(config: ConfigService, resourceService: ResourceService, public router: Router,
     permissionService: PermissionService, userService: UserService, tenantService: TenantService,
-    public activatedRoute: ActivatedRoute) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService) {
     this.config = config;
     this.resourceService = resourceService;
     this.permissionService = permissionService;
@@ -195,6 +196,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       type: 'signup',
       ver: '1.0'
     };
+  }
+
+  logout() {
+    window.location.replace('/logoff');
+    this.cacheService.removeAll();
   }
 
   ngOnDestroy() {
