@@ -54,13 +54,13 @@ describe('GenericEditorComponent', () => {
   it('should call userservice, call open editor', inject([UserService, Router, ToasterService,
     ResourceService, TenantService], (userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
       expect(component.openGenericEditor).toBeDefined();
       component.openGenericEditor();
-    }));
+  }));
 
   it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();

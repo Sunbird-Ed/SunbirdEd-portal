@@ -66,7 +66,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component = fixture.componentInstance;
   });
 
-   it(`should enable resume button if course is not flagged, batch status is not "0" and
+  it(`should enable resume button if course is not flagged, batch status is not "0" and
   courseProgressData obtained from courseProgressService`, () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
@@ -77,7 +77,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.ngOnInit();
     component.ngAfterViewInit();
-    courseProgressService.courseProgressData.emit({});
+    courseProgressService.courseProgressData.emit({lastPlayedContentId: 'do_123'});
     expect(component.courseHierarchy).toBeDefined();
     expect(component.flaggedCourse).toBeFalsy();
     expect(component.enrolledCourse).toBeTruthy();
@@ -113,5 +113,10 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.courseHierarchy).toBeDefined();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.showResumeCourse).toBeTruthy();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

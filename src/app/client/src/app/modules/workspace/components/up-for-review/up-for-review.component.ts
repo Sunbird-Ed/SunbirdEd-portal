@@ -211,7 +211,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
         status: ['Review'],
         createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
           rolesMap['BOOK_REVIEWER'],
-          rolesMap['FLAG_REVIEWER'],
           rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
         objectType: this.config.appConfig.WORKSPACE.objectType,

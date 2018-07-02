@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './data-driven-filter.component.html',
   styleUrls: ['./data-driven-filter.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit, OnChanges {
+export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterEnv: string;
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
@@ -71,6 +72,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
+  frameworkDataSubscription: Subscription;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -142,7 +144,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
     } else {
-      this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
           this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
           this.framework = frameworkData.framework;
@@ -297,7 +299,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     console.log('enrichedRange', enrichedRange);
     const rangeArray = [];
     _.forIn(enrichedRange, (val) => {
-      if (val.name === 'kg' || val.name === 'ncert' || val.name === 'cbse' || val.name === 'icse' ) {
+      if (val.name === 'kg' || val.name === 'ncert' || val.name === 'cbse' || val.name === 'icse') {
         val.name = _.toUpper(val.name);
       } else {
         val.name = _.capitalize(val.name);
@@ -311,7 +313,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges {
     });
     console.log('array', rangeArray);
     return _.compact(rangeArray);
+  }
 
-
+  ngOnDestroy() {
+    if (this.frameworkDataSubscription) {
+      this.frameworkDataSubscription.unsubscribe();
+    }
   }
 }

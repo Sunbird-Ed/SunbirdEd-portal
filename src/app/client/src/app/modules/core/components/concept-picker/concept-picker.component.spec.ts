@@ -27,5 +27,10 @@ describe('ConceptPickerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.conceptDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.conceptDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });
