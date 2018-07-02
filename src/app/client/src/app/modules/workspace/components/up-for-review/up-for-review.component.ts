@@ -230,7 +230,6 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       sort_by: this.sort
     };
     const contentType = this.getContentType && this.getContentType().contentType;
-    console.log(contentType);
     searchParams.filters.contentType = contentType;
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
