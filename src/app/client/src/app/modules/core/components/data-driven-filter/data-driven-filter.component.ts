@@ -155,9 +155,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
             (data: ServerResponse) => {
               this.formFieldProperties = data;
               _.forEach(this.formFieldProperties, (formFieldCategory) => {
-                if (formFieldCategory && formFieldCategory.allowedUsers) {
-                  const userRoles = formFieldCategory.allowedUsers.filter(element => this.userRoles.includes(element));
-                  if (!this.showField(formFieldCategory.allowedUsers)) {
+                if (formFieldCategory && formFieldCategory.allowedRoles) {
+                  const userRoles = formFieldCategory.allowedRoles.filter(element => this.userRoles.includes(element));
+                  if (!this.showField(formFieldCategory.allowedRoles)) {
                     this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
                   }
                 }
@@ -247,9 +247,9 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  showField(allowedUsers) {
-    if (allowedUsers) {
-      return this.permissionService.checkRolesPermissions(allowedUsers);
+  showField(allowedRoles) {
+    if (allowedRoles) {
+      return this.permissionService.checkRolesPermissions(allowedRoles);
     } else {
       return true;
     }

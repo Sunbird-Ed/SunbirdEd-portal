@@ -136,7 +136,7 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType().contentType;
-    const ContentType = ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'];
+    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
     expect(returnContentType).toEqual(ContentType);
   }));
 });
