@@ -10,7 +10,7 @@ export class BrowserCacheTtlService {
   /**
    * Contains user id
    */
-  private _browserCacheTtl: string;
+  private _browserCacheTtl = '600';
   constructor() {
     try {
       this._browserCacheTtl = (<HTMLInputElement>document.getElementById('apiCacheTtl')).value;
