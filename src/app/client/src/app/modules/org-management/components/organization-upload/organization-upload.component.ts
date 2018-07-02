@@ -5,6 +5,8 @@ import { OrgManagementService } from '../../services';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component helps to upload bulk organizations data (csv file)
@@ -66,6 +68,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   orgUploadInteractEdata: IInteractEventEdata;
   downloadSampleOrgCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  public unsubscribe = new Subject<void>();
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
     config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router) {
     this.activatedRoute = activatedRoute;
@@ -157,7 +160,9 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       formData.append('org', file[0]);
       const fd = formData;
-      this.orgManagementService.bulkOrgUpload(fd).subscribe(
+      this.orgManagementService.bulkOrgUpload(fd)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
           this.processId = apiResponse.result.processId;
@@ -175,6 +180,8 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   setInteractEventData() {
     this.orgUploadInteractEdata = {

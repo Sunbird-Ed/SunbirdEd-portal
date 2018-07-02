@@ -90,4 +90,13 @@ describe('ViewOrgTypeComponent', () => {
             }
         );
     });
+
+    it('should unsubscribe from all observable subscriptions', () => {
+        component.ngOnInit();
+        spyOn(component.orgTypeSubscription, 'unsubscribe');
+        spyOn(component.orgUpdateSubscription, 'unsubscribe');
+        component.ngOnDestroy();
+        expect(component.orgTypeSubscription.unsubscribe).toHaveBeenCalled();
+        expect(component.orgUpdateSubscription.unsubscribe).toHaveBeenCalled();
+      });
 });

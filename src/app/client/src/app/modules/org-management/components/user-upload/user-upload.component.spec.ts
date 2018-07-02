@@ -141,4 +141,10 @@ describe('UserUploadComponent', () => {
     component.ngOnDestroy();
     expect(component.modal).toBeDefined();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.uploadUsersCSV(mockRes.validfile);
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
