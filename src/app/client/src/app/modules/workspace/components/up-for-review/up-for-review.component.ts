@@ -111,6 +111,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   sort: object;
   state: string;
   /**
+   * userRoles
+  */
+  userRoles = [];
+  /**
   * To call resource service which helps to use language constant
  */
   public resourceService: ResourceService;
@@ -225,6 +229,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
       query: bothParams.queryParams.query,
       sort_by: this.sort
     };
+    const contentType = this.getContentType && this.getContentType().contentType;
+    console.log(contentType);
+    searchParams.filters.contentType = contentType;
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
@@ -289,5 +296,31 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  getContentType() {
+    this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        this.userRoles = user.userProfile.userRoles;
+      });
+    const request = {
+      contentType: []
+    };
+
+    if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+       request.contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+    }
+
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') === -1 &&
+      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+     request.contentType = ['TextBook'];
+    }
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&
+      _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
+     request.contentType = this.config.appConfig.WORKSPACE.contentType;
+    }
+    if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1) {
+     request.contentType = this.config.appConfig.WORKSPACE.contentType;
+    }
+    return request;
   }
 }
