@@ -43,7 +43,7 @@ describe('UserUploadComponent', () => {
         't0037': 'Password: Unique or common password given by organization',
         't0038': `All other columns are optional. These columns include information about the user such as:`,
         't0039': 'Phone',
-        't0040': `Role: User's role on DIKSHA. Examples for this column:
+        't0040': `Role: User's role on sunbird. Examples for this column:
         CONTENT_CREATOR, CONTENT_REVIEWER, FLAG_REVIEWER, COURSE_MENTOR, ORG_ADMIN, SYSTEM_ADMINISTRATION, COURSE_ADMIN, COURSE_CREATOR`,
         't0041': `Grade: Classes taught by the user`,
         't0042': `Location: User's place of location of the user`,
