@@ -33,7 +33,7 @@
                     <div *ngIf="field.inputType==='select'" class="field">
                       <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
                         [options]="options" [hasLabels]="false" #multiSelect>
-                        <sui-select-option *ngFor="let option of field.range" [value]="option.code"></sui-select-option>
+                        <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                       </sui-multi-select>
                     </div>
                     <!-- <div *ngIf="field.inputType==='select' && field.code==='Content'" class="field">

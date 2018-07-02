@@ -329,7 +329,6 @@ export class ExploreContentComponent implements OnInit {
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
     filterData(event) {
-        console.log(event);
         this.facetArray = event;
     }
     processFilterData() {

@@ -267,14 +267,13 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
   ngOnChanges() {
-    console.log('facet', this.filtersDetails);
     const enrichedArray = [];
     if (this.enrichFilters) {
       _.forIn(this.formFieldProperties, (value, key) => {
         if (this.enrichFilters[value.code]) {
           const enrichedObj = {};
           enrichedObj['code'] = value.code;
-          enrichedObj['range'] = this.generateRange(value.range, this.enrichFilters[value.code]);
+          enrichedObj['range'] = this.generateRange(this.enrichFilters[value.code]);
           enrichedObj['name'] = value.name;
           enrichedObj['inputType'] = value.inputType;
           enrichedObj['renderingHints'] = value.renderingHints;
@@ -293,25 +292,15 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
       });
     }
     this.filtersDetails = enrichedArray;
-    console.log(enrichedArray);
   }
-  generateRange(filterRange, enrichedRange) {
-    console.log('enrichedRange', enrichedRange);
+  generateRange(enrichedRange) {
     const rangeArray = [];
-    _.forIn(enrichedRange, (val) => {
-      if (val.name === 'kg' || val.name === 'ncert' || val.name === 'cbse' || val.name === 'icse') {
-        val.name = _.toUpper(val.name);
-      } else {
-        val.name = _.capitalize(val.name);
+    _.forEach(enrichedRange, (value) => {
+      if (value && value.name !== '') {
+        const rangeObj = _.find(enrichedRange, { name: value.name });
+        rangeArray.push(rangeObj);
       }
     });
-    _.forEach(filterRange, (value) => {
-      console.log('rangeval', value);
-      const rangeObj = _.find(enrichedRange, { name: value.name });
-      rangeArray.push(rangeObj);
-      console.log('obj', rangeObj);
-    });
-    console.log('array', rangeArray);
     return _.compact(rangeArray);
   }
 
