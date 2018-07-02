@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, LearnerService,
    ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -42,7 +42,7 @@ const fakeActivatedRoute = {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
       declarations: [ DataDrivenFilterComponent ],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService,
+        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],

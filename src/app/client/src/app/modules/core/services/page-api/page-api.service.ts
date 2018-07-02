@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UserService } from './../user/user.service';
 import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Observable } from 'rxjs/Observable';
 import { CacheService } from 'ng2-cache-service';
@@ -36,7 +36,7 @@ export class PageApiService {
   * @param {ConfigService} config Reference of ConfigService
   */
   constructor(config: ConfigService, learnerService: LearnerService, public userService: UserService,
-    private cacheService: CacheService ) {
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService ) {
     this.config = config;
     this.learnerService = learnerService;
   }
@@ -73,8 +73,7 @@ export class PageApiService {
     const sort_by = _.has(requestParam.sort_by, 'lastUpdatedOn') || _.has(requestParam.sort_by, 'createdOn');
     if (_.isEmpty(requestParam.filters) && !sort_by) {
       this.cacheService.set('pageApi' + requestParam.name, { sections: data.result.response.sections }, {
-        maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes *
-          this.config.appConfig.cacheServiceConfig.setTimeInSeconds
+        maxAge: this.browserCacheTtlService.browserCacheTtl
       });
     }
   }

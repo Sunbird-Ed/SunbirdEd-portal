@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
@@ -87,7 +87,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
     formService: FormService,
     toasterService: ToasterService,
     public conceptPickerService: ConceptPickerService,
-    permissionService: PermissionService
+    permissionService: PermissionService,
+    private browserCacheTtlService: BrowserCacheTtlService
 
   ) {
     this.configService = configService;
@@ -191,8 +192,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy {
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
     this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
       {
-        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+        maxAge: this.browserCacheTtlService.browserCacheTtl
       });
   }
 
