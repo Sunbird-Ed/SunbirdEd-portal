@@ -1,5 +1,5 @@
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './data-driven-filter.component.html',
   styleUrls: ['./data-driven-filter.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit {
+export class DataDrivenFilterComponent implements OnInit, OnChanges {
   @Input() filterEnv: string;
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
@@ -19,6 +19,8 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
+  @Input() enrichFilters: object;
+  @Output() filters = new EventEmitter();
 
   /**
  * To get url, app configs
@@ -42,6 +44,7 @@ export class DataDrivenFilterComponent implements OnInit {
   public formService: FormService;
 
   public formFieldProperties: any;
+  public filtersDetails: any;
 
   public categoryMasterList: any;
 
@@ -190,8 +193,17 @@ export class DataDrivenFilterComponent implements OnInit {
     this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
       {
         maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+          this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
       });
+    this.createFacets();
+  }
+  createFacets() {
+    this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+    const filterArray = [];
+    _.forEach(this.filtersDetails, (value) => {
+      filterArray.push(value.code);
+    });
+    this.filters.emit(filterArray);
   }
 
   resetFilters() {
@@ -251,5 +263,55 @@ export class DataDrivenFilterComponent implements OnInit {
     } else {
       return true;
     }
+  }
+  ngOnChanges() {
+    console.log('facet', this.filtersDetails);
+    const enrichedArray = [];
+    if (this.enrichFilters) {
+      _.forIn(this.formFieldProperties, (value, key) => {
+        if (this.enrichFilters[value.code]) {
+          const enrichedObj = {};
+          enrichedObj['code'] = value.code;
+          enrichedObj['range'] = this.generateRange(value.range, this.enrichFilters[value.code]);
+          enrichedObj['name'] = value.name;
+          enrichedObj['inputType'] = value.inputType;
+          enrichedObj['renderingHints'] = value.renderingHints;
+          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
+          enrichedArray.push(enrichedObj);
+        } else {
+          const enrichedObj = {};
+          enrichedObj['code'] = value.code;
+          enrichedObj['range'] = [];
+          enrichedObj['name'] = value.name;
+          enrichedObj['inputType'] = value.inputType;
+          enrichedObj['renderingHints'] = value.renderingHints;
+          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
+          enrichedArray.push(enrichedObj);
+        }
+      });
+    }
+    this.filtersDetails = enrichedArray;
+    console.log(enrichedArray);
+  }
+  generateRange(filterRange, enrichedRange) {
+    console.log('enrichedRange', enrichedRange);
+    const rangeArray = [];
+    _.forIn(enrichedRange, (val) => {
+      if (val.name === 'kg' || val.name === 'ncert' || val.name === 'cbse' || val.name === 'icse' ) {
+        val.name = _.toUpper(val.name);
+      } else {
+        val.name = _.capitalize(val.name);
+      }
+    });
+    _.forEach(filterRange, (value) => {
+      console.log('rangeval', value);
+      const rangeObj = _.find(enrichedRange, { name: value.name });
+      rangeArray.push(rangeObj);
+      console.log('obj', rangeObj);
+    });
+    console.log('array', rangeArray);
+    return _.compact(rangeArray);
+
+
   }
 }
