@@ -144,6 +144,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.filtersDetails = _.cloneDeep(this.formFieldProperties);
     } else {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
