@@ -3,7 +3,7 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 
 @Injectable()
 export class CourseBatchService {
@@ -11,7 +11,8 @@ export class CourseBatchService {
   private _updateBatchDetails: any;
   public updateEvent = new EventEmitter();
   private _enrolledBatchDetails: any;
-  constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
+  constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
+    public config: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
     return this.batchSearch(searchParams);
@@ -42,9 +43,9 @@ export class CourseBatchService {
         }
       }
     };
-    const mentorOrg = this.user.userProfile.roleOrgMap['COURSE_MENTOR'];
-    if (mentorOrg && mentorOrg.includes(this.user.rootOrgId)) {
-      option.data.request.filters['rootOrgId'] = this.user.rootOrgId;
+    const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+    if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+      option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
     } else if (mentorOrg) {
       option.data.request.filters['organisations.organisationId'] = mentorOrg;
     }
