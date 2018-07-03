@@ -126,7 +126,8 @@ export const Response = {
     'softConstraints': {
       'badgeAssertions': 2,
       'channel': 1
-    }
+    },
+    'facets': undefined
   }
 };
 

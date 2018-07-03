@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, LearnerService,
    ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -42,7 +42,7 @@ const fakeActivatedRoute = {
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
       declarations: [ DataDrivenFilterComponent ],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService,
+        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle}],
@@ -101,6 +101,8 @@ const fakeActivatedRoute = {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
+    expect(component.filtersDetails).toBeDefined();
+    expect(component.filtersDetails).toEqual(component.formFieldProperties);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -146,5 +148,20 @@ const fakeActivatedRoute = {
     component.formInputData = {'subject': ['English']};
     component.removeFilterSelection('subject', 'English');
     fixture.detectChanges();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    const formService = TestBed.get(FormService);
+    const cacheService = TestBed.get(CacheService);
+    component.formFieldProperties = mockData.mockRes.formConfigData;
+    spyOn(cacheService, 'exists').and.returnValue(false);
+    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
+    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
+    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
+    component.fetchFilterMetaData();
+    fixture.detectChanges();
+    spyOn(component.frameworkDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.frameworkDataSubscription.unsubscribe).toHaveBeenCalled();
   });
 });

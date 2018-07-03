@@ -8,9 +8,10 @@ import { LearnerService } from './../learner/learner.service';
 import { Observable } from 'rxjs/Observable';
 import { SearchParam } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
-import { ConfigService, ResourceService, ToasterService} from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService} from '@sunbird/shared';
 import { ConceptPickerService } from './concept-picker.service';
 import {mockRes} from './concept-picker.service.spec.data';
+import { CacheService } from 'ng2-cache-service';
 describe('ConceptPickerService', () => {
   const resourceBundle = {
     'messages': {
@@ -22,8 +23,8 @@ describe('ConceptPickerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule],
-      providers: [ConceptPickerService, SearchService, UserService, ConfigService, LearnerService,
-        ToasterService, ContentService, { provide: ResourceService, useValue: resourceBundle }]
+      providers: [ConceptPickerService, SearchService, UserService, ConfigService, LearnerService, BrowserCacheTtlService,
+      CacheService, ToasterService, ContentService, { provide: ResourceService, useValue: resourceBundle }]
     });
   });
   it('should be created', inject([ConceptPickerService, SearchService, ContentService], (service: ConceptPickerService,
@@ -41,5 +42,27 @@ describe('ConceptPickerService', () => {
       service.loadDomains();
       expect(service).toBeTruthy();
       expect(contentService.post).toHaveBeenCalled();
+  }));
+  it('should call get concept and  when concept is not cached',
+   inject([ConceptPickerService, SearchService, ContentService, CacheService],
+    (service: ConceptPickerService, searchService: SearchService, contentService: ContentService, cacheService: CacheService ) => {
+    cacheService.set('concepts', null , { maxAge: 10 * 60});
+    spyOn(service, 'initialize').and.callThrough();
+    spyOn(service, 'getConcept').and.callThrough();
+    spyOn(contentService, 'post').and.callFake(() => Observable.of(mockRes.conceptData));
+    service.initialize();
+    expect(service).toBeTruthy();
+    expect(contentService.post).toHaveBeenCalled();
+  }));
+  it('should not call get concept  when concept is cached',
+   inject([ConceptPickerService, SearchService, ContentService, CacheService],
+    (service: ConceptPickerService, searchService: SearchService, contentService: ContentService, cacheService: CacheService ) => {
+    cacheService.set('concepts', mockRes.cachedConceptData , { maxAge: 10 * 60});
+    spyOn(service, 'initialize').and.callThrough();
+    service.initialize();
+    service.conceptData$.subscribe(conceptData => {
+      expect(conceptData.data).toBeDefined();
+    });
+    expect(service).toBeTruthy();
   }));
 });

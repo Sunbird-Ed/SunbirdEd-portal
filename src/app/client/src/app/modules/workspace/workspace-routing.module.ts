@@ -6,7 +6,7 @@ import {
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent} from './components';
+  AllContentComponent, FlagReviewerComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -86,10 +86,22 @@ const routes: Routes = [
           }
         ]
       },
-      { path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent },
-      { path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent },
-      { path: 'edit/generic', component: GenericEditorComponent },
-      { path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent },
+      {
+        path: 'edit/collection/:contentId/:type/:state/:framework', component: CollectionEditorComponent, canActivate: [AuthGuard],
+        data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/content/:contentId/:state/:framework', component: ContentEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/generic', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/generic/:contentId/:state/:framework', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
       {
         path: 'draft/:pageNumber', component: DraftComponent, canActivate: [AuthGuard],
         data: {
@@ -191,11 +203,32 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
       },
+      {
+        path: 'flagreviewer/:pageNumber', component: FlagReviewerComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-flagreviewer', subtype: 'scroll', uri: 'workspace/content/flagreviewer',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'flagReviewerRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
+      },
       // { path: '**', redirectTo: 'create' }
     ]
   },
   {
     path: 'content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'workspace',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+    },
+    children: [
+      { path: 'publish', component: PublishedPopupComponent },
+      { path: 'requestchanges', component: RequestChangesPopupComponent }
+    ]
+  },
+  {
+    path: 'content/flagreviewer/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],
     data: {
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]

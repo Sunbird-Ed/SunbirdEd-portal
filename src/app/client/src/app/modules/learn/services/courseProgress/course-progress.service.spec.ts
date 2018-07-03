@@ -22,37 +22,6 @@ describe('CourseProgressService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should get course state from API', () => {
-    const service = TestBed.get(CourseProgressService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.successData));
-    service.getCourseStateFromAPI();
-    const reqData = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'courseId': ['do_1124785353783377921154'],
-    'contentIds': ['do_112474267785674752118', 'do_112473631695626240110', 'do_11246946881515520012', 'do_11246946840689868811']
-      };
-    service.getCourseStateFromAPI(reqData).subscribe(
-      apiResponse => {
-         expect(apiResponse.params.status).toBe('success');
-      }
-    );
-  });
-  it('should not get course state from API', () => {
-    const service = TestBed.get(CourseProgressService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'post').and.callFake(() => Observable.of(Response.errorData));
-    service.getCourseStateFromAPI();
-    const reqData = {  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'courseId': ['do_11247853537833779211'],
-    'contentIds': ['do_112474267785674752118', 'do_112473631695626240110', 'do_11246946881515520012', 'do_11246946840689868811']
-      };
-    service.getCourseStateFromAPI(reqData).subscribe(
-      apiResponse => {
-         expect(apiResponse.params.status).not.toBe('success');
-      }
-    );
-  });
-
   it('should update content state in server ', () => {
     const service = TestBed.get(CourseProgressService);
     const contentService = TestBed.get(ContentService);
@@ -67,8 +36,8 @@ describe('CourseProgressService', () => {
       'userId': '0f451be5-2c83-4688-9089-fc329ce3bc18',
     'contents': [req1]
     };
-    service.updateContentStateInServer(req1);
-    service.updateContentStateInServer(reqData).subscribe(
+    service.updateContentStateToServer(req1);
+    service.updateContentStateToServer(reqData).subscribe(
       apiResponse => {
          expect(apiResponse.params.status).toBe('success');
       }
@@ -98,8 +67,8 @@ describe('CourseProgressService', () => {
     'batchId': '01247853957897420815',
     'status' : 2
       };
-    service.updateContentStateInServer(req1);
-    service.updateContentStateInServer(reqData).subscribe(
+    service.updateContentStateToServer(req1);
+    service.updateContentStateToServer(reqData).subscribe(
       apiResponse => {
          expect(apiResponse.params.status).not.toBe('success');
       }

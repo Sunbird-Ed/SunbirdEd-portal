@@ -78,4 +78,12 @@ describe('MainHeaderComponent', () => {
     component.onEnter('test');
     expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    spyOn(component.tenantDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ConceptPickerService } from './../../services';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { ContentData, ResourceService } from '@sunbird/shared';
 
@@ -8,13 +9,14 @@ import { ContentData, ResourceService } from '@sunbird/shared';
   templateUrl: './content-player-metadata.component.html',
   styleUrls: ['./content-player-metadata.component.css']
 })
-export class ContentPlayerMetadataComponent implements OnInit {
+export class ContentPlayerMetadataComponent implements OnInit, OnDestroy {
   readMore = false;
   metadata: any;
   contentFieldData: any;
   fieldData = [];
   conceptNames: any;
   filteredConcepts: any;
+  conceptDataSubscription: Subscription;
 
   @Input() contentData: ContentData;
   constructor(public resourceService: ResourceService, public conceptPickerService: ConceptPickerService) { }
@@ -46,7 +48,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
    * @returns {string}
    */
   getConceptsNames() {
-  this.conceptPickerService.conceptData$.subscribe(data => {
+  this.conceptDataSubscription = this.conceptPickerService.conceptData$.subscribe(data => {
       if ( data  && !data.err ) {
         const conceptsData = this.conceptPickerService.concepts;
         this.conceptNames = _.map(this.metadata.concepts, 'name');
@@ -62,6 +64,12 @@ export class ContentPlayerMetadataComponent implements OnInit {
         this.metadata.concepts =  this.conceptNames.join(', ');
       }
     });
+  }
+
+  ngOnDestroy() {
+    if (this.conceptDataSubscription) {
+      this.conceptDataSubscription.unsubscribe();
+    }
   }
 }
 
