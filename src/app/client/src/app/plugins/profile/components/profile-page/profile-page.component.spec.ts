@@ -125,6 +125,15 @@ describe('ProfilePageComponent', () => {
     component.getMyContent();
     expect(component.contributions).toBeDefined();
   });
+  it('should not call user searchService searchContentByUserId when count is zero', () => {
+    const searchService = TestBed.get(SearchService);
+     searchService._searchedContentList = mockProfilePageData.zeroData.result;
+     const response = searchService.searchedContentList;
+    component.getMyContent();
+    expect(response.count).toEqual(0);
+    expect(component.contributions).toBeDefined();
+    expect(component.contributions).toEqual([]);
+  });
   it('should call player service', () => {
     const playerService = TestBed.get(PlayerService);
     const response = mockProfilePageData.success.result.content;
