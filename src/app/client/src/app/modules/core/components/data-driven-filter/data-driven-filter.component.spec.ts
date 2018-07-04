@@ -101,6 +101,8 @@ const fakeActivatedRoute = {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
+    expect(component.filtersDetails).toBeDefined();
+    expect(component.filtersDetails).toEqual(component.formFieldProperties);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);
