@@ -65,6 +65,11 @@ describe('DefaultTemplateComponent', () => {
     component.mapMasterCategoryList('');
     expect(component.categoryList).toBeDefined();
   });
+   it('should call mapMasterCategoryList with key', () => {
+    component.formFieldProperties = mockData.success;
+    component.mapMasterCategoryList('key');
+    expect(component.categoryList).toBeDefined();
+  });
   it('should call applyDependencyRules', () => {
     const range = mockData.formFieldMetaData;
     const associations =  mockData.frameworkAssociations.associations;

@@ -201,4 +201,11 @@ describe('DataDrivenComponent', () => {
     componentParent.checkForPreviousRouteForRedirect();
     expect(componentParent.redirect).not.toHaveBeenCalled();
   });
+
+  it('test to navigate to create ', () => {
+    const router = TestBed.get(Router);
+    spyOn(componentParent , 'goToCreate').and.callThrough();
+    componentParent.goToCreate();
+    expect(router.navigate).toHaveBeenCalledWith(['/workspace/content/create']);
+  });
 });
