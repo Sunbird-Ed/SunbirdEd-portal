@@ -129,4 +129,19 @@ describe('ExploreContentComponent', () => {
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should call filterData method', () => {
+    const facetArray = ['subject', 'medium', 'board'];
+    component.filterData(facetArray);
+    expect(component.facetArray).toEqual(facetArray);
+  });
+  it('should call processFilterData method', () => {
+    const facetArray = [{
+      name: 'gradeLevel',
+      values: [
+        {name: 'grade 9', count: 10}
+      ]
+    }];
+    component.processFilterData();
+    expect(component.facets).toEqual(undefined);
+  });
 });
