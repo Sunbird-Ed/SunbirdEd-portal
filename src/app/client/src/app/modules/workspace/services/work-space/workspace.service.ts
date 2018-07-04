@@ -100,8 +100,10 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
-      } else if (state === 'review') {
+      } else if (state === 'review' ) {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }
@@ -121,6 +123,8 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }

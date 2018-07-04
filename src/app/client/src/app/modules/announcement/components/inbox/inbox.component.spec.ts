@@ -151,5 +151,14 @@ describe('InboxComponent', () => {
             expect(component.pageLimit).toBe(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
             expect(component.inboxData.count).toBe(1173);
         }));
+
+        it('should unsubscribe from all observable subscriptions', () => {
+            component.populateInboxData(5, 1);
+            component.readAnnouncement('6f6932b0-db3e-11e7-b902-bf7fe7f2023a', false);
+            component.ngOnInit();
+            spyOn(component.unsubscribe, 'complete');
+            component.ngOnDestroy();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+          });
 });
 

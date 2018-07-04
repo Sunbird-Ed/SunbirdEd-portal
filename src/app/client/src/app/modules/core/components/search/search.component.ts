@@ -1,5 +1,5 @@
 import { SearchService } from './../../services';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 

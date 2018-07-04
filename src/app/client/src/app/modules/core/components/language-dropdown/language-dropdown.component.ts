@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-language-dropdown',
   templateUrl: './language-dropdown.component.html',
   styleUrls: ['./language-dropdown.component.css']
 })
-export class LanguageDropdownComponent implements OnInit {
+export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
   languages: any;
   selectedLanguage: string;
@@ -20,6 +22,7 @@ export class LanguageDropdownComponent implements OnInit {
   formType = 'content';
   formAction = 'search';
   filterEnv = 'resourcebundle';
+  public unsubscribe = new Subject<void>();
 
   constructor(public router: Router, public activatedRoute: ActivatedRoute,
     public orgDetailsService: OrgDetailsService,
@@ -37,7 +40,9 @@ export class LanguageDropdownComponent implements OnInit {
   }
 
   getChannelId() {
-    this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+    this.orgDetailsService.getOrgDetails(this.slug)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (apiResponse: any) => {
         this.channelId = apiResponse.hashTagId;
         this.getLanguage();
@@ -57,7 +62,9 @@ export class LanguageDropdownComponent implements OnInit {
         contentType: this.filterEnv,
         framework: ''
       };
-      this.formService.getFormConfig(formServiceInputParams, this.channelId).subscribe(
+      this.formService.getFormConfig(formServiceInputParams, this.channelId)
+      .takeUntil(this.unsubscribe)
+      .subscribe(
         (data: ServerResponse) => {
           this.languages = data[0].range;
           this._cacheService.set(this.filterEnv + this.formAction, data,
@@ -79,5 +86,10 @@ export class LanguageDropdownComponent implements OnInit {
     this.router.navigate([this.redirectUrl], {
       queryParams: this.queryParam
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { UpForReviewComponent } from './up-for-review.component';
+import { FlagReviewerComponent } from './flag-reviewer.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,25 +10,22 @@ import { UserService, LearnerService, CoursesService, PermissionService } from '
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { Response } from './up-for-review.component.spec.data';
+import { Response } from './flag-reviewer.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 
-describe('UpForReviewComponent', () => {
-  let component: UpForReviewComponent;
-  let fixture: ComponentFixture<UpForReviewComponent>;
+describe('FlagReviewerComponent', () => {
+  let component: FlagReviewerComponent;
+  let fixture: ComponentFixture<FlagReviewerComponent>;
   const resourceBundle = {
     'messages': {
       'fmsg': {
-        'm0021': 'Fetching up for review content failed, please try again',
+        'm0083': 'Fetching flagged review content failed, please try again',
         'm0004': ''
       },
       'stmsg': {
-        'm0032': 'We are fetching up for review...',
+        'm0115': 'We are fetching flagged review content',
         'm0008': 'no-results',
-        'm0033': 'You dont up for review...'
-      },
-      'smsg': {
-        'm0006': 'Content deleted successfully...'
+        'm0033': 'You dont have any content for review...'
       }
     }
   };
@@ -63,11 +60,11 @@ describe('UpForReviewComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const mockUserRoles = {
-    userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
+    userRoles: ['PUBLIC']
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UpForReviewComponent],
+      declarations: [FlagReviewerComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
@@ -82,7 +79,7 @@ describe('UpForReviewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpForReviewComponent);
+    fixture = TestBed.createComponent(FlagReviewerComponent);
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
@@ -92,9 +89,9 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
-    component.fecthUpForReviewContent(9, 1, bothParams);
+    component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();
-    expect(component.upForReviewContentData).toBeDefined();
+    expect(component.flageReviewerContentData).toBeDefined();
   }));
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
@@ -105,9 +102,9 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
     fixture.detectChanges();
-    component.fecthUpForReviewContent(9, 1, bothParams);
-    expect(component.upForReviewContentData.length).toBeLessThanOrEqual(0);
-    expect(component.upForReviewContentData.length).toEqual(0);
+    component.fecthFlagReviewerContent(9, 1, bothParams);
+    expect(component.flageReviewerContentData.length).toBeLessThanOrEqual(0);
+    expect(component.flageReviewerContentData.length).toEqual(0);
   }));
   // if result count is 0
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
@@ -117,9 +114,9 @@ describe('UpForReviewComponent', () => {
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountZero));
-    component.fecthUpForReviewContent(9, 1, bothParams);
+    component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();
-    expect(component.upForReviewContentData).toBeDefined();
+    expect(component.flageReviewerContentData).toBeDefined();
   }));
   it('should call inview method for visits data', () => {
     component.telemetryImpression = Response.telemetryData;
@@ -128,17 +125,6 @@ describe('UpForReviewComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
-  it('should call getContentType and return contentType based on orgrole', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
-    spyOn(component, 'getContentType').and.callThrough();
-    const returnContentType = component.getContentType().contentType;
-    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
-    expect(returnContentType).toEqual(ContentType);
-  }));
 });
 
 

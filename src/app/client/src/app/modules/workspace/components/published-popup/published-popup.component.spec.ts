@@ -7,7 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, CoreModule } from '@sunbird/core';
-import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Observable } from 'rxjs/Observable';
 import { PublishedPopupComponent } from './published-popup.component';
 
@@ -60,7 +60,7 @@ describe('RequestChangesPopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [PublishedPopupComponent],
-      providers: [ToasterService,
+      providers: [ToasterService, NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],

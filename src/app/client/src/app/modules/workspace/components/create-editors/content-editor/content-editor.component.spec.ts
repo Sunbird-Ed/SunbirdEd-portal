@@ -6,7 +6,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
@@ -28,7 +28,7 @@ describe('ContentEditorComponent', () => {
       declarations: [ContentEditorComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
       providers: [
-        EditorService, UserService, ContentService,
+        EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
         NavigationHelperService,
         { provide: Router, useClass: RouterStub },

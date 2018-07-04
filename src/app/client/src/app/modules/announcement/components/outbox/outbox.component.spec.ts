@@ -150,4 +150,12 @@ describe('OutboxComponent', () => {
                 }
             );
         }));
+
+    it('should unsubscribe from all observable subscriptions', () => {
+            component.populateOutboxData(5, 1);
+            component.ngOnInit();
+            spyOn(component.unsubscribe, 'complete');
+            component.ngOnDestroy();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+          });
 });

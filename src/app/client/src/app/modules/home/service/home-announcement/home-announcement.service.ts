@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {  IAnnouncementSericeParam } from '@sunbird/announcement';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash';
 
@@ -29,7 +29,8 @@ export class HomeAnnouncementService  extends DataService {
    * @param {HttpClient} http HttpClient reference
    */
 
-  constructor(config: ConfigService, http: HttpClient, private cacheService: CacheService) {
+  constructor(config: ConfigService, http: HttpClient, private cacheService: CacheService,
+    private browserCacheTtlService: BrowserCacheTtlService) {
     super(http);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.ANNOUNCEMENT_PREFIX;
@@ -63,8 +64,7 @@ export class HomeAnnouncementService  extends DataService {
 
  setData(data, requestParam) {
      this.cacheService.set('HomeAnnouncementInboxData', { announcements: data.result.announcements }, {
-       maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes *
-         this.config.appConfig.cacheServiceConfig.setTimeInSeconds
+       maxAge: this.browserCacheTtlService.browserCacheTtl
    });
  }
 }
