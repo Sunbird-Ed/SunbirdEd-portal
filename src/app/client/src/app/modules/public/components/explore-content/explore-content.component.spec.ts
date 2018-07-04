@@ -1,7 +1,7 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
+import { CoreModule, LearnerService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
