@@ -92,6 +92,12 @@ describe('HomeFilterComponent', () => {
      const check = typeof value;
      expect(check).toEqual('object');
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.conceptDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.conceptDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 
 });
 

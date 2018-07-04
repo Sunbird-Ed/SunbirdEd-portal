@@ -103,4 +103,11 @@ describe('OrgSearchComponent', () => {
     component.downloadOrganisation();
     fixture.detectChanges();
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

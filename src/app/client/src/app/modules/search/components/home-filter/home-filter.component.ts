@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
 import { IHomeQueryParams } from './../../interfaces';
 import { ConfigService, ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, ConceptPickerService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -10,7 +11,7 @@ import * as _ from 'lodash';
   styleUrls: ['./home-filter.component.css']
 })
 
-export class HomeFilterComponent implements OnInit {
+export class HomeFilterComponent implements OnInit, OnDestroy {
   /**
    * To get url, app configs
    */
@@ -36,6 +37,7 @@ export class HomeFilterComponent implements OnInit {
   queryParams: IHomeQueryParams;
   showFilter = false;
   isAccordianOpen = false;
+  conceptDataSubscription: Subscription;
 
   /**
     * Constructor to create injected service(s) object
@@ -126,7 +128,7 @@ export class HomeFilterComponent implements OnInit {
     this.queryParams = { ...this.config.dropDownConfig.FILTER.SEARCH.All.DROPDOWN, ...this.queryParams };
   }
   ngOnInit() {
-    this.conceptPickerService.conceptData$.subscribe(conceptData => {
+    this.conceptDataSubscription = this.conceptPickerService.conceptData$.subscribe(conceptData => {
       if (conceptData && !conceptData.err) {
         this.selectedConcepts = conceptData.data;
         this.activatedRoute.queryParams.subscribe((params) => {
@@ -140,5 +142,10 @@ export class HomeFilterComponent implements OnInit {
         });
       }
     });
+  }
+  ngOnDestroy() {
+    if (this.conceptDataSubscription) {
+      this.conceptDataSubscription.unsubscribe();
+    }
   }
 }

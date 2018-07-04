@@ -104,4 +104,12 @@ describe('UserDeleteComponent', () => {
     );
     fixture.detectChanges();
   });
+  xit('should unsubscribe from all observable subscriptions', () => {
+    const modal = fixture.componentInstance.modal;
+    component.ngOnInit();
+    component.setUserDetails();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
