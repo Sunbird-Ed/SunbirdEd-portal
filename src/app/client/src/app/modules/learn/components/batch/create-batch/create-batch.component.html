@@ -37,7 +37,7 @@
             <label>Invite-only</label>
           </div>
         </div>
-        <div class="field" *ngIf="courseCreatedBy === userId">
+        <div class="field" *ngIf="courseCreatedBy === userService.userid">
           <div class="ui radio checkbox">
             <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
             <label>Open</label>

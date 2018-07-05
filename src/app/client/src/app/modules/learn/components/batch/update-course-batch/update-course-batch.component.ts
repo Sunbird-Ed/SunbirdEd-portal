@@ -10,6 +10,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-update-course-batch',
@@ -308,8 +309,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
       mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
-    const startDate = new Date(this.batchUpdateForm.value.startDate.setHours(23, 59, 59, 999));
-    const endDate = this.batchUpdateForm.value.endDate && new Date(this.batchUpdateForm.value.endDate.setHours(23, 59, 59, 999));
+    const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       'id': this.batchId,
       'name': this.batchUpdateForm.value.name,

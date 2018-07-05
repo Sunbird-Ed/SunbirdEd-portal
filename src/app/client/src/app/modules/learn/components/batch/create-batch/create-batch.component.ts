@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import * as moment from 'moment';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
@@ -223,8 +224,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       participants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
       mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
-    const startDate = new Date(this.createBatchForm.value.startDate.setHours(23, 59, 59, 999));
-    const endDate = this.createBatchForm.value.endDate && new Date(this.createBatchForm.value.endDate.setHours(23, 59, 59, 999));
+    const startDate = moment(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.createBatchForm.value.endDate && moment(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       'courseId': this.courseId,
       'name': this.createBatchForm.value.name,
