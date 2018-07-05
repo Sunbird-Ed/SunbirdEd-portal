@@ -268,6 +268,7 @@ export class NoteListComponent implements OnInit {
     } else {
       this.setSelectedNote(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
     }
+    this.showDelete = false;
   }
 
   /**

@@ -102,6 +102,7 @@ describe('NoteListComponent', () => {
     component.deleteEventEmitter('01245874638382694454');
     expect(component.selectedIndex).toBe(0);
     expect(component.selectedNote).toBe(component.notesList[0]);
+    expect(component.showDelete).toBe(false);
 
   });
 
