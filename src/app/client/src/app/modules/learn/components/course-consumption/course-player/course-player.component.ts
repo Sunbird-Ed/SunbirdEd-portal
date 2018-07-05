@@ -279,9 +279,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    const contentDet = this.findContentById(content.id);
-    if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.externalUrlpreviewService.getRedirectUrl(contentDet.model, this.userService.userid, this.courseId, this.batchId);
+    const playContentDetail = this.findContentById(content.id);
+    if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+      this.externalUrlpreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
       || this.courseStatus === 'Unlisted') {
