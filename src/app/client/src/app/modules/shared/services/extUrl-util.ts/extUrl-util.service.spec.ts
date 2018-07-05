@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService, ToasterService } from '../../services';
-import { ExternalUrlpreviewService } from '../extUrl-util.ts/extUrl-util.service';
+import { ExternalUrlPreviewService } from '../extUrl-util.ts/extUrl-util.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -15,17 +15,17 @@ describe('ContentUtilsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, Ng2IziToastModule],
-            providers: [ExternalUrlpreviewService, ConfigService, ResourceService, ToasterService,
+            providers: [ExternalUrlPreviewService, ConfigService, ResourceService, ToasterService,
                 { provide: Router, useClass: RouterStub }]
         });
     });
 
-    it('should be created', inject([ExternalUrlpreviewService], (service: ExternalUrlpreviewService) => {
+    it('should be created', inject([ExternalUrlPreviewService], (service: ExternalUrlPreviewService) => {
         expect(service).toBeDefined();
     }));
 
     it('should open preview link in newtab for mimeType x-url',
-        inject([Router, ToasterService, ResourceService, ExternalUrlpreviewService], (router, toasterService, resourceService, service) => {
+        inject([Router, ToasterService, ResourceService, ExternalUrlPreviewService], (router, toasterService, resourceService, service) => {
             resourceService.messages = MockResponse.resourceBundle.messages;
             spyOn(toasterService, 'warning').and.callThrough();
             service.getRedirectUrl(MockResponse.ServerResponse, '9dvdkjlsds2423423', 'do_1125110622654464001294', '293482034290999');

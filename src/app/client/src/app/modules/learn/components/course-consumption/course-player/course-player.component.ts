@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ExternalUrlpreviewService,
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ExternalUrlPreviewService,
   ConfigService} from '@sunbird/shared';
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
@@ -128,7 +128,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
-    public externalUrlpreviewService: ExternalUrlpreviewService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -288,7 +288,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     const playContentDetail = this.findContentById(content.id);
     if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.externalUrlpreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
+      this.externalUrlPreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
       || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])

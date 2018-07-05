@@ -4,7 +4,7 @@ import { ToasterService } from './../toaster/toaster.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ExternalUrlpreviewService {
+export class ExternalUrlPreviewService {
     constructor(public configService: ConfigService, public resourceService: ResourceService,
         public toasterService: ToasterService) { }
     /**

@@ -30,7 +30,6 @@ export class RedirectComponent implements OnInit {
    * oninit the window opens a new window tab with the redirectUrl values in the url
    */
   ngOnInit() {
-    console.log('this.activatedRoute.snapshot.data.telemetry', this.activatedRoute.snapshot.data.telemetry);
     this.telemetryImpression = {
       context: {
         env: 'redirect'
