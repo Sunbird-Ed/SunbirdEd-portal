@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
@@ -10,10 +10,10 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
-import {
-  IInteractEventInput, IImpressionEventInput, IEndEventInput,
-  IStartEventInput, IInteractEventObject, IInteractEventEdata
-} from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, IEndEventInput,
+  IStartEventInput,  IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -121,12 +121,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public collectionTreeOptions: ICollectionTreeOptions;
 
+  public unsubscribe = new Subject<void>();
+
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public externalUrlpreviewService:
-    ExternalUrlpreviewService) {
+    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
+    public externalUrlpreviewService: ExternalUrlpreviewService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -168,11 +170,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.enrolledCourse = true;
           this.setTelemetryStartEndData();
           this.parseChildContent();
-          if (this.enrolledBatchInfo.status > 0) {
-            this.fetchContentStatus();
+          if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
+            this.getContentState();
             this.subscribeToQueryParam();
           }
-        } else if (this.courseStatus === 'Unlisted') {
+        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+        || this.courseHierarchy.createdBy === this.userService.userid) {
           this.parseChildContent();
           this.subscribeToQueryParam();
         } else {
@@ -204,17 +207,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.curriculum.push({ mimeType: key, count: value });
     });
   }
-  private fetchContentStatus() {
+  private getContentState() {
     const req = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentStatus(req).subscribe((res) => {
+    this.courseConsumptionService.getContentState(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       this.contentStatus = res.content;
     }, (err) => {
-      console.log('content read api failed');
+      console.log(err, 'content read api failed');
     });
   }
   private subscribeToQueryParam() {
@@ -239,7 +244,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   private OnPlayContent(content: { title: string, id: string }) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
-      this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted')) {
+      this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
+      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseHierarchy.createdBy === this.userService.userid)) {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
       this.setContentNavigators();
@@ -284,12 +291,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.externalUrlpreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-      || this.courseStatus === 'Unlisted') {
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
     }
   }
   public contentProgressEvent(event) {
-    if (this.batchId) {
+    if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
       const eid = event.detail.telemetryData.eid;
       const request: any = {
         userId: this.userService.userid,
@@ -298,8 +306,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         batchId: this.batchId,
         status: eid === 'END' ? 2 : 1
       };
-      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request).subscribe((updatedRes) => {
+      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+      .subscribe((updatedRes) => {
         this.contentStatus = updatedRes.content;
+      }, (err) => {
+        console.log('updating content status failed', err);
       });
     }
   }
@@ -329,6 +340,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.updateContentsStateSubscription) {
       this.updateContentsStateSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   private setTelemetryStartEndData() {
     this.telemetryCourseStart = {

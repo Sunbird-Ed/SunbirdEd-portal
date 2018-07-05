@@ -7,6 +7,7 @@ const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
 const appId = envHelper.APPID
+const defaultTenant = envHelper.DEFAULT_TENANT
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
@@ -16,12 +17,12 @@ module.exports = {
   getImagePath: function (baseUrl, tenantId, image, callback) {
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
       if (err) {
-        if (envHelper.DEFAUULT_TENANT && _.isString(envHelper.DEFAUULT_TENANT)) {
-          fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAUULT_TENANT, image), function (error, stat) {
+        if (envHelper.DEFAULT_TENANT && _.isString(envHelper.DEFAULT_TENANT)) {
+          fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_TENANT, image), function (error, stat) {
             if (error) {
               callback(null, null)
             } else {
-              callback(null, baseUrl + '/tenant/' + envHelper.DEFAUULT_TENANT + '/' + image)
+              callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_TENANT + '/' + image)
             }
           })
         } else {
@@ -33,7 +34,7 @@ module.exports = {
     })
   },
   getInfo: function (req, res) {
-    let tenantId = req.params.tenantId || envHelper.DEFAUULT_TENANT
+    let tenantId = req.params.tenantId || envHelper.DEFAULT_TENANT
     let host = req.hostname
     let headerHost = req.headers.host.split(':')
     let port = headerHost[1] || ''
@@ -83,7 +84,7 @@ module.exports = {
       uri: 'tenant/info',
       type: type,
       userId: userId,
-      channel: envHelper.DEFAUULT_TENANT
+      channel: envHelper.DEFAULT_TENANT
     }
     telemetryHelper.logAPIAccessEvent(telemetryData)
     res.status(successResponseStatusCode)
@@ -102,5 +103,22 @@ module.exports = {
       'result': result
     })
     res.end()
+  },
+  getDefaultTenantIndexState:  function() {
+    
+    if(!defaultTenant){
+      console.log('default_tenant env not set');
+      return false;
+    }
+
+    try {
+      var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
+      return stats.isFile()
+    } catch(e) {
+      console.log('default_tenant_index_file_stats_error ', e)
+      return false;
+    }
+    
   }
+
 }

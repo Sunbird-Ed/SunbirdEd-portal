@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
       this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
         fingerPrint2.get((deviceId, components) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.conceptPickerService.initialize();
           this.initializeAnonymousSession();
         });
       });

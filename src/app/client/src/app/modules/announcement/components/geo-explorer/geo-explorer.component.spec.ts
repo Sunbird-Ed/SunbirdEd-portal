@@ -127,4 +127,12 @@ describe('GeoExplorerComponent', () => {
     expect(component).toBeTruthy();
     expect(component.showError).toEqual(true);
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.initializeServiceAdopter();
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

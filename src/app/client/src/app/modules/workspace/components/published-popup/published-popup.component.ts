@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ContentService, UserService } from '@sunbird/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse,
+  RouterNavigationService, NavigationHelperService } from '@sunbird/shared';
 /**
  * This component displays the checklist for publish content for reviewer and
  * calls the Publish API to publish the content
@@ -73,6 +74,10 @@ export class PublishedPopupComponent implements OnInit {
    */
   checkListData: any;
   /**
+   * To close url
+  */
+  closeUrl: any;
+  /**
   * To get user profile of logged-in user
   */
   public userService: UserService;
@@ -97,7 +102,7 @@ export class PublishedPopupComponent implements OnInit {
     configService: ConfigService,
     routerNavigationService: RouterNavigationService,
     contentService: ContentService,
-    userService: UserService) {
+    userService: UserService, public navigationHelperService: NavigationHelperService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -154,7 +159,11 @@ export class PublishedPopupComponent implements OnInit {
     this.contentService.post(option).subscribe(response => {
       this.modal.deny();
       this.toasterService.success(this.resourceService.messages.smsg.m0004);
-      this.route.navigate(['workspace/content/upForReview/1']);
+      if (this.closeUrl.url.includes('flagreviewer')) {
+        this.route.navigate(['workspace/content/flagreviewer/1']);
+      } else {
+        this.route.navigate(['workspace/content/upForReview/1']);
+      }
     }, (err) => {
       this.modal.deny();
       this.toasterService.error(this.resourceService.messages.fmsg.m0019);
@@ -182,5 +191,6 @@ export class PublishedPopupComponent implements OnInit {
         });
       }
     });
+    this.closeUrl = this.navigationHelperService.getPreviousUrl();
   }
 }

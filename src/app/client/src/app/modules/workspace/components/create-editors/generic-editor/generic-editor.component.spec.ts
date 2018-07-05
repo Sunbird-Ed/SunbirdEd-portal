@@ -7,7 +7,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -31,7 +31,7 @@ describe('GenericEditorComponent', () => {
       providers: [
         UserService, LearnerService, ContentService,
         ResourceService, ToasterService, ConfigService,
-        NavigationHelperService,
+        NavigationHelperService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
@@ -54,13 +54,13 @@ describe('GenericEditorComponent', () => {
   it('should call userservice, call open editor', inject([UserService, Router, ToasterService,
     ResourceService, TenantService], (userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
       expect(component.openGenericEditor).toBeDefined();
       component.openGenericEditor();
-    }));
+  }));
 
   it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();

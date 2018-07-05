@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { ResourceService } from '@sunbird/shared';
 import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
@@ -6,6 +7,8 @@ import { ActivatedRoute, Router, NavigationExtras, NavigationEnd } from '@angula
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, BreadcrumbsService } from '@sunbird/core';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-course-consumption-page',
   templateUrl: './course-consumption-page.component.html',
@@ -19,6 +22,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   showError = false;
   courseHierarchy: any;
   eventSubscription: any;
+  courseDataSubscription: Subscription;
+  public unsubscribe = new Subject<void>();
+
   enrolledBatchInfo: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -85,7 +91,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     });
   }
   private processBatch() {
-    this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
+    this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
       if (enrolledCourses && !enrolledCourses.err) {
           const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, {'batchId': this.batchId});
           if (enrollCourse === undefined) {
@@ -103,5 +109,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     if (this.eventSubscription) {
       this.eventSubscription.unsubscribe();
     }
+    if (this.courseDataSubscription) {
+      this.courseDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

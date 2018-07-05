@@ -7,11 +7,14 @@ import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
   PublicCollectionPlayerComponent, ExploreContentComponent
 } from './components';
+import { SignupGuard } from './signup.guard';
+import { LandingpageGuard } from './landingpage.guard';
 
 const routes: Routes = [
   {
     path: '', // root path '/' for the app
     component: LandingPageComponent,
+    canActivate: [LandingpageGuard],
     data: {
       telemetry: {
         env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate'
@@ -19,7 +22,9 @@ const routes: Routes = [
     }
   },
   {
-    path: 'signup', component: SignupComponent, data: {
+    path: 'signup', component: SignupComponent,
+    canActivate: [SignupGuard],
+    data: {
       telemetry: {
         env: 'public', pageid: 'signup', type: 'edit', subtype: 'paginate'
       }
@@ -66,6 +71,11 @@ const routes: Routes = [
         env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
       }
     }
+  },
+  {
+    path: '**',
+    component: LandingPageComponent,
+    canActivate: [LandingpageGuard]
   }
 ];
 @NgModule({

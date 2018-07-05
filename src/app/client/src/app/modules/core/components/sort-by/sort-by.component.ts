@@ -68,5 +68,4 @@ export class SortByComponent implements OnInit {
     this.route.navigate([this.url], { queryParams: this.queryParams });
   }
 
-
 }

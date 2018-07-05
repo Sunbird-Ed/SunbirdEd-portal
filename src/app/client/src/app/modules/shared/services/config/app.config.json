@@ -114,7 +114,7 @@
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
-    "VERSION":"1.7.0",
+    "VERSION":"1.8.0",
     "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
@@ -145,7 +145,7 @@
         "partner": [],
         "pdata": {
           "id": "sunbird.portal",
-          "ver": "1.7.0",
+          "ver": "1.8.0",
           "pid": "sunbird-portal"
         }
       },
@@ -164,7 +164,7 @@
         },
         "apislug": "/action",
         "repos": [
-          "/content-plugins/renderer"
+          "/sunbird-plugins/renderer"
         ],
         "plugins": [
           {
@@ -405,9 +405,12 @@
         "email": "email",
         "userName": "userName",
         "password": "password",
-        "provider": "provider",
         "externalId": "externalId",
+        "externalIdType": "externalIdType",
+        "externalIdProvider": "externalIdProvider",
+        "externalIds": "externalIds",
         "phoneVerified": "phoneVerified",
+        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",
@@ -469,6 +472,9 @@
   "upForReview": {
     "filterType": "upforreview",
     "inPageredirectUrl": "/workspace/content/upForReview/1"
+  },
+  "flagReviewer":{
+    "inPageredirectUrl": "/workspace/content/flagreviewer/1"
   },
    "allmycontent": {
     "filterType": "allmycontent",

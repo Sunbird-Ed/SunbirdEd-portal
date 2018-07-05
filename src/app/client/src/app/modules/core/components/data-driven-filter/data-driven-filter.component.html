@@ -10,11 +10,11 @@
           </div>
           <div content>
             <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content margin-bottom-15">
-              <span *ngFor="let field of formFieldProperties">
-                <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0 && showFilter'>
+              <span *ngFor="let field of filtersDetails">
+                <span class="padded chip margin-top--5 margin-right-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
                   {{field.name}}:
                   <span *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label margin-top--5" *ngIf='!isObject(item) '>
+                    <a class="ui label margin-top--5" *ngIf='!isObject(item)'>
                       {{item}}
                       <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
@@ -29,9 +29,9 @@
             <div *ngIf="refresh">
               <form class="ui form">
                 <div *ngIf="formFieldProperties" class="ui stackable grid">
-                  <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
+                  <div *ngFor="let field of filtersDetails" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
                     <div *ngIf="field.inputType==='select'" class="field">
-                      <sui-multi-select id={{field.code}} name={{field.code}} placeholder={{field.name}} class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
+                      <sui-multi-select id={{field.code}} name={{field.code}} defaultSelectionText={{field.name}} zeroSelectionText="Select" class="selection filterFieldSearch" [(ngModel)]="formInputData[field.code]"
                         [options]="options" [hasLabels]="false" #multiSelect>
                         <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                       </sui-multi-select>

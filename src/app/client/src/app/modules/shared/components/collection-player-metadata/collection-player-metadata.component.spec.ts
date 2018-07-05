@@ -7,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
 import { DateFormatPipe } from '../../pipes';
-import { ResourceService, ConfigService } from '../../services';
-
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { CacheService } from 'ng2-cache-service';
 describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
@@ -19,7 +19,8 @@ describe('CollectionPlayerMetadataComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [ResourceService, ConfigService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      providers: [ResourceService, ConfigService, CacheService,
+        BrowserCacheTtlService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

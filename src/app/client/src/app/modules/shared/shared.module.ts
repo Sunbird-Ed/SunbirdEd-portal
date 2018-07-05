@@ -8,7 +8,7 @@ import {
   BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent
 } from './components';
 import {
-  ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService,
+  ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlpreviewService
 } from './services';
 import { CommonModule } from '@angular/common';
@@ -47,7 +47,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService, ExternalUrlpreviewService]
+        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlpreviewService]
     };
   }
 }

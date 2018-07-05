@@ -111,4 +111,12 @@ describe('DeleteComponent', () => {
     expect(component).toBeTruthy();
     expect(component.pageNumber).toEqual(10);
   }));
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.deleteAnnouncement();
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });
