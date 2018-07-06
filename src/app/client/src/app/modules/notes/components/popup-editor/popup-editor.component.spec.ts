@@ -104,8 +104,10 @@ describe('PopupEditorComponent', () => {
     component.updateData = response.selectedNote;
     component.createNote();
     component.updateNote();
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

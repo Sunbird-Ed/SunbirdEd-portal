@@ -99,10 +99,13 @@ describe('InlineEditorComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
     component.createNote();
     component.updateNote();
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

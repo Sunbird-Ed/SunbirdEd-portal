@@ -91,7 +91,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   noteService: NotesService;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * The constructor
@@ -167,7 +167,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
       this.noteService.create(requestData)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -205,7 +205,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
     this.noteService.update(requestData)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
@@ -225,7 +225,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

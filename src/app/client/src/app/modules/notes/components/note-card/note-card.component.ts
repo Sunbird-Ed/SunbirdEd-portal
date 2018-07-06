@@ -99,7 +99,7 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
   modalService: SuiModalService;
   activatedRoute: ActivatedRoute;
   batchId: string;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
 
   /**
@@ -172,7 +172,7 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
       this.noteService.search(requestBody)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -223,7 +223,7 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

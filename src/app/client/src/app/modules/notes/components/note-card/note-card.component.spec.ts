@@ -136,8 +136,10 @@ describe('NoteCardComponent', () => {
 
   it('should unsubscribe from all observable subscriptions', () => {
     component.getAllNotes();
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

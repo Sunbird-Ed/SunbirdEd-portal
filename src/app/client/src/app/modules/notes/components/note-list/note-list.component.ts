@@ -121,7 +121,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * The constructor - Constructor for Note List Component.
@@ -218,7 +218,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
       this.noteService.search(requestBody)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -314,7 +314,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

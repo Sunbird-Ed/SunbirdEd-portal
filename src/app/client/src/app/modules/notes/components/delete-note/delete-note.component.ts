@@ -53,7 +53,7 @@ export class DeleteNoteComponent implements OnDestroy {
    */
   notesService: NotesService;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * Constructor for Delete Note Component
@@ -88,7 +88,7 @@ export class DeleteNoteComponent implements OnDestroy {
     };
 
     this.notesService.remove(requestData)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
@@ -102,7 +102,7 @@ export class DeleteNoteComponent implements OnDestroy {
 
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
