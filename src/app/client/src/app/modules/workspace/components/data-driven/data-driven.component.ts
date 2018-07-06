@@ -184,6 +184,7 @@ export class DataDrivenComponent implements OnInit, OnDestroy {
           const data: any | null = this._cacheService.get(this.contentType + this.formAction);
           this.formFieldProperties = data;
         } else {
+          console.log('here');
           const formServiceInputParams = {
             formType: this.formType,
             formAction: this.formAction,
