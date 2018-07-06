@@ -264,10 +264,11 @@ describe('ExploreContentComponent', () => {
         type: '',
         pageid: '',
         uri: '',
-        subtype: ''
+        subtype: 'pageexit'
       }
     };
     const event = Response.inviewData;
     component.inview(event);
+    expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 });
