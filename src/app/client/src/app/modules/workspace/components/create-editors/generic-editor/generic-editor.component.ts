@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
@@ -59,6 +60,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   public tenantService: TenantService;
 
+  private buildNumber: string;
+
+  public logo: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -66,11 +70,17 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private activatedRoute: ActivatedRoute;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
-    activatedRoute: ActivatedRoute, tenantService: TenantService) {
+    activatedRoute: ActivatedRoute, tenantService: TenantService,
+    public navigationHelperService: NavigationHelperService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
   ngOnInit() {
     /**
@@ -92,9 +102,16 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit() {
     /**
-     * Launch the generic editor after window load
+     * Fetch header logo and launch the generic editor after window load
      */
-    this.openGenericEditor();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.openGenericEditor();
+      } else if (data && data.err) {
+        this.openGenericEditor();
+      }
+    });
   }
   /**
    *Launch Genreic Editor in the modal
@@ -104,7 +121,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/generic-editor/index.html',
+      iframeURL: '/thirdparty/editors/generic-editor/index.html?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -156,7 +173,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       dispatcher: 'local',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo: this.tenantService.tenantData.logo,
+      build_number: this.buildNumber,
+      headerLogo: this.logo,
       loadingImage: '',
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
@@ -172,7 +190,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         type: 'plugin'
       }],
       previewConfig: {
-        'repos': ['/content-plugins/renderer'],
+        'repos': ['/sunbird-plugins/renderer'],
         plugins: [{
           'id': 'org.sunbird.player.endpage',
           ver: 1.0,
@@ -203,19 +221,26 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   closeModal() {
     this.showModal = true;
     setTimeout(() => {
-      this.navigateToUploads();
+      this.navigateToWorkSpace();
     }, 1000);
   }
 
-  navigateToUploads() {
-    if (this.state) {
-      this.router.navigate(['workspace/content/', this.state, '1']);
-    } else {
-      this.router.navigate(['workspace/content/uploaded/1']);
+  // navigateToUploads() {
+  //   if (this.state) {
+  //     this.router.navigate(['workspace/content/', this.state, '1']);
+  //   } else {
+  //     this.router.navigate(['workspace/content/uploaded/1']);
+  //   }
+  //   this.showModal = false;
+  // }
+
+  navigateToWorkSpace() {
+    if (document.getElementById('collectionEditor')) {
+       document.getElementById('collectionEditor').remove();
     }
+    this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
     this.showModal = false;
   }
-
   /**
    * On componenet destroy remove the genericEditor id from DOM
    */

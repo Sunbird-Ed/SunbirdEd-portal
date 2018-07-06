@@ -2,16 +2,17 @@ import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
-import { ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails , PlayerConfig, ContentData, NavigationHelperService
- } from '@sunbird/shared';
+import {
+  ConfigService, IUserData, ResourceService, ServerResponse,
+  ContentDetails, PlayerConfig, ContentData, NavigationHelperService
+} from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '@sunbird/environment';
-  /**
-   * helper services to fetch content details and preparing content player config
-   */
+/**
+ * helper services to fetch content details and preparing content player config
+ */
 @Injectable()
 export class PlayerService {
   /**
@@ -23,7 +24,7 @@ export class PlayerService {
    */
   collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService ) {
+    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService) {
   }
 
   /**
@@ -32,13 +33,20 @@ export class PlayerService {
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
-  getConfigByContent(id: string, option: any = {params: {}}): Observable<PlayerConfig> {
+  getConfigByContent(id: string, option: any = { params: {} }): Observable<PlayerConfig> {
     return this.getContent(id, option)
-      .flatMap((contentDetails) => {
-        return Observable.of(this.getConfig({
-          contentId: contentDetails.result.content.identifier,
-          contentData: contentDetails.result.content
-        }));
+      .flatMap((content) => {
+        const contentDetails: ContentDetails = {
+          contentId: content.result.content.identifier,
+          contentData: content.result.content
+        };
+        if (option.courseId) {
+          contentDetails.courseId = option.courseId;
+        }
+        if (option.courseId && option.batchHashTagId) {
+          contentDetails.batchHashTagId = option.batchHashTagId;
+        }
+        return Observable.of(this.getConfig(contentDetails));
       });
   }
 
@@ -47,12 +55,12 @@ export class PlayerService {
    * @param {string} contentId
    * @returns {Observable<ServerResponse>}
    */
-  getContent(contentId: string, option: any = {params: {}}): Observable<ServerResponse> {
-    let param = {fields: this.configService.urlConFig.params.contentGet};
+  getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    let param = { fields: this.configService.urlConFig.params.contentGet };
     param = { ...param, ...option.params };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
-      param:  { ...param, ...option.params }
+      param: { ...param, ...option.params }
     };
     return this.contentService.get(req).map((response: ServerResponse) => {
       this.contentData = response.result.content;
@@ -64,7 +72,7 @@ export class PlayerService {
    * @param {ContentDetails} contentDetails
    * @memberof PlayerService
    */
-  getConfig (contentDetails: ContentDetails): PlayerConfig {
+  getConfig(contentDetails: ContentDetails): PlayerConfig {
     const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
@@ -80,7 +88,18 @@ export class PlayerService {
       }
       configuration.context.dims = cloneDims;
     }
-    configuration.context.tags = _.concat([], this.userService.channel);
+    const tags = [];
+    _.forEach(this.userService.userProfile.organisations, (org) => {
+      if (org.hashTagId) {
+        tags.push(org.hashTagId);
+      } else if (org.organisationId) {
+        tags.push(org.organisationId);
+      }
+    });
+    if (this.userService.channel) {
+      tags.push(this.userService.channel);
+    }
+    configuration.context.tags = tags;
     configuration.context.app = [this.userService.channel];
     if (contentDetails.courseId) {
       configuration.context.cdata = [{
@@ -91,12 +110,12 @@ export class PlayerService {
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
-    {} : contentDetails.contentData.body;
+      {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     return configuration;
   }
 
-  public getCollectionHierarchy(identifier: string, option: any = {params: {}}): Observable<CollectionHierarchyAPI.Get> {
+  public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
     const req = {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: option.params

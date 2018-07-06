@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService, ICaraouselData, IAction } from '@sunbird/shared';
-import { PageApiService, LearnerService, CoreModule } from '@sunbird/core';
+import { PageApiService, PlayerService, LearnerService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -8,7 +8,7 @@ import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceComponent } from './resource.component';
-import {Response} from './resource.component.spec.data';
+import { Response } from './resource.component.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -22,6 +22,9 @@ describe('ResourceComponent', () => {
         'm0007': 'Please search something else',
         'm0006': 'NO result found'
       },
+      'fmsg': {
+        'm0004': 'fetching details failed'
+      }
     }
   };
   class RouterStub {
@@ -29,7 +32,7 @@ describe('ResourceComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    'queryParams': Observable.from([{ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }]),
     snapshot: {
       data: {
         telemetry: {
@@ -42,11 +45,11 @@ describe('ResourceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule,
-         SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
+        SharedModule.forRoot(), CoreModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
-         { provide: Router, useClass: RouterStub },
-         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      { provide: Router, useClass: RouterStub },
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -60,12 +63,62 @@ describe('ResourceComponent', () => {
   it('should subscribe to service', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
     expect(component).toBeTruthy();
     expect(component.showLoader).toBeFalsy();
     expect(component.caraouselData).toBeDefined();
+  });
+  it('should subscribe to service and no contents', () => {
+    const pageSectionService = TestBed.get(PageApiService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.secondData.result.response));
+    component.populatePageData();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
+    expect(component).toBeTruthy();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.caraouselData).toBeDefined();
+  });
+  it('should subscribe to service and contents to be undefined', () => {
+    const pageSectionService = TestBed.get(PageApiService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.thirdData.result.response));
+    component.populatePageData();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
+    expect(component).toBeTruthy();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.caraouselData).toBeDefined();
+  });
+  it('should get error', () => {
+    const pageSectionService = TestBed.get(PageApiService);
+    const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.throw(Response.error));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.populatePageData();
+    expect(component.queryParams.sortType).toString();
+    expect(component.queryParams.sortType).toBe('desc');
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeTruthy();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0004);
+  });
+  it('should call playcontent', () => {
+    const playerService = TestBed.get(PlayerService);
+    const event = { data: { metaData: { identifier: '0122838911932661768' } } };
+    spyOn(playerService, 'playContent').and.callFake(() => Observable.of(event.data.metaData));
+    component.playContent(event);
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'prepareVisits').and.callThrough();
+    component.prepareVisits(Response.event);
+    expect(component.prepareVisits).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
   });
 });

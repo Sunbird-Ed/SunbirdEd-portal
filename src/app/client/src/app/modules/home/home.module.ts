@@ -10,9 +10,10 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule} from '@sunbird/shared';
 // Import component
 import {
-  ActionCardComponent, HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
+ HomeCalendarCardComponent, HomeFeedCardComponent, MainHomeComponent,
   ProfileCardComponent, HomeAnnouncementComponent, NotificationComponent
 } from './component/index';
+import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 @NgModule({
@@ -30,14 +31,13 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [
     ProfileCardComponent,
-    ActionCardComponent,
     MainHomeComponent,
     HomeFeedCardComponent,
     HomeCalendarCardComponent,
     HomeAnnouncementComponent,
     NotificationComponent,
   ],
-  providers: []
+  providers: [HomeAnnouncementService]
 })
 export class HomeModule {
 }

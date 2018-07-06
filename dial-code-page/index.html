@@ -11,12 +11,14 @@
 </head>
 
 <body>
+  <!-- inject:js -->
+  <!-- endinject -->
   <!-- header -->
   <div class="ui grid">
     <div class="center aligned twelve column row">
       <div class="one wide column"></div>
       <div class="ten wide column">
-        <a href="https://diksha.gov.in/home">
+        <a id="appLogoLink">
           <img id="appLogo" class="image centered header-logo-before-login" src="">
         </a>
       </div>
@@ -24,14 +26,14 @@
       </div>
       <div class="right floated two wide column tablet computer only">
         <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-          <a id="loginBtn" href="https://diksha.gov.in/home" class="sunblogin">
+          <a id="loginBtn" class="sunblogin">
             <button class="ui item">LOGIN</button>
           </a>
         </div>
       </div>
       <div class="right floated four wide column mobile only">
         <div class="beforelogin ui secondary pointing menu padding-top-1rem">
-          <a id="signupBtn" href="https://diksha.gov.in/home" class="sunblogin">
+          <a id="loginBtn" class="sunblogin">
             <button class="ui item">LOGIN</button>
           </a>
         </div>
@@ -162,7 +164,7 @@
   <script src="libs/telemetry.min.js"></script>
   <script src="libs/semantic.min.js"></script>
   <script src="libs/UUID.min.js"></script>
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

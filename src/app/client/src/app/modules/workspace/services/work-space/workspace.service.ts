@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ConfigService, ServerResponse, ICard, IUserData } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,7 +38,7 @@ export class WorkSpaceService {
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router) {
+    route: Router, public navigationHelperService: NavigationHelperService) {
     this.content = content;
     this.config = config;
     this.route = route;
@@ -68,6 +68,7 @@ export class WorkSpaceService {
  * @param {string}  state - Present state
  */
   navigateToContent(content, state) {
+    this.navigationHelperService.storeWorkSpaceCloseUrl();
     const mimeType = content.mimeType;
     if (mimeType === 'application/vnd.ekstep.content-collection') {
       this.openCollectionEditor(content, state);
@@ -99,8 +100,10 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
-      } else if (state === 'review') {
+      } else if (state === 'review' ) {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }
@@ -120,6 +123,8 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }

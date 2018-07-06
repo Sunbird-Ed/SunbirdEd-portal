@@ -8,6 +8,9 @@ import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
@@ -81,9 +84,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 	 * telemetryImpression object for create batch page
 	*/
   telemetryImpression: IImpressionEventInput;
+  userDataSubscription: Subscription;
+  public unsubscribe = new Subject<void>();
 
   public courseConsumptionService: CourseConsumptionService;
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -111,7 +118,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
    * Initialize form fields and getuserlist
   */
   ngOnInit() {
-    this.userService.userData$.subscribe(userdata => {
+    this.userDataSubscription = this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
         this.orgIds = userdata.userProfile.organisationIds;
@@ -176,7 +183,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       filters: {},
       query: query
     };
-    this.courseBatchService.getUserList(requestBody).subscribe((res) => {
+    this.courseBatchService.getUserList(requestBody)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       const list = this.formatUserList(res);
       if (type) {
         if (type === 'userList') {
@@ -229,9 +238,16 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.createBatchModel && this.createBatchModel.deny) {
       this.createBatchModel.deny();
     }
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   getCourseData() {
-    this.courseConsumptionService.getCourseHierarchy(this.courseId).subscribe((res) => {
+    this.courseConsumptionService.getCourseHierarchy(this.courseId)
+    .takeUntil(this.unsubscribe)
+    .subscribe((res) => {
       this.courseCreatedBy = res.createdBy;
     },
     (err) => {
@@ -244,12 +260,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createBatch() {
-    this.disableSubmitBtn = false;
     let users = [];
     let mentors = [];
     if ( this.createBatchUserForm.value.enrollmentType !== 'open') {
-      users = $('#users').dropdown('get value').split(',');
-      mentors = $('#mentors').dropdown('get value').split(',');
+      users = $('#users').dropdown('get value') ? $('#users').dropdown('get value').split(',') : [];
+      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
     const startDate = new Date(this.createBatchUserForm.value.startDate.setHours(23, 59, 59, 999));
     const endDate = this.createBatchUserForm.value.endDate ?
@@ -265,16 +280,20 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       'createdFor': this.orgIds,
       'mentors': _.compact(mentors)
     };
-    this.courseBatchService.createBatch(requestBody).subscribe((response) => {
+this.disableSubmitBtn = true;
+this.courseBatchService.createBatch(requestBody)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       if (users && users.length > 0) {
         this.addUserToBatch(response.result.batchId, users);
       } else {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       }
     },
     (err) => {
-      this.disableSubmitBtn = true;
+      this.disableSubmitBtn = false;
       if (err.error && err.error.params.errmsg) {
         this.toasterService.error(err.error.params.errmsg);
       } else {
@@ -287,12 +306,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       userIds: _.compact(users)
     };
     setTimeout(() => {
-      this.courseBatchService.addUsersToBatch(userRequest, batchId).subscribe((res) => {
+      this.courseBatchService.addUsersToBatch(userRequest, batchId)
+      .takeUntil(this.unsubscribe)
+      .subscribe((res) => {
+        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
       (err) => {
-        this.disableSubmitBtn = true;
+        this.disableSubmitBtn = false;
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
@@ -323,8 +345,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: new FormControl(),
       users: new FormControl(),
     });
+    this.disableSubmitBtn = true;
     this.showCreateModal = true;
-    this.createBatchUserForm.valueChanges.subscribe(val => {
+    this.createBatchUserForm.valueChanges
+    .takeUntil(this.unsubscribe)
+    .subscribe(val => {
       this.enableButton();
     });
   }
@@ -337,6 +362,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.disableSubmitBtn = true;
     }
   }
+
   getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';

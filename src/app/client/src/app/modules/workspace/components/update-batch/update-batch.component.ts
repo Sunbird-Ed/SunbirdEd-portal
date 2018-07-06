@@ -28,6 +28,8 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   */
   batchId: string;
   showUpdateModal = false;
+  disableSubmitBtn = false;
+
 
   /**
   * coursecreatedby
@@ -106,6 +108,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   telemetryImpression: IImpressionEventInput;
 
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -221,6 +224,9 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
       users: new FormControl(''),
     });
     this.batchAddUserForm.controls['enrollmentType'].disable();
+    this.batchAddUserForm.valueChanges.subscribe(val => {
+      this.enableButton();
+    });
   }
   /**
   * It helps to initialize local array of users
@@ -386,9 +392,10 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
         });
         requestParam['mentors'] = _.concat(_.compact(requestParam['mentors']), selected);
       }
-
+      this.disableSubmitBtn = true;
       this.batchService.updateBatchDetails(requestParam).subscribe(
         (apiResponse: ServerResponse) => {
+          this.disableSubmitBtn = false;
           if (apiResponse) {
             this.toasterService.success(this.resourceService.messages.smsg.m0034);
             if (batchData.enrollmentType !== 'open') {
@@ -418,6 +425,7 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
           }
         },
         err => {
+          this.disableSubmitBtn = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0055);
         });
     }
@@ -433,6 +441,17 @@ export class UpdateBatchComponent extends WorkSpace implements OnInit, OnDestroy
   clearForm() {
     this.batchAddUserForm.reset();
   }
+
+  enableButton() {
+    const data = this.batchAddUserForm ? this.batchAddUserForm.value : '';
+    if (this.batchAddUserForm.status === 'VALID' && (data.name && data.startDate)) {
+      this.disableSubmitBtn = false;
+    } else {
+      this.disableSubmitBtn = true;
+    }
+  }
+
+
  /**
   *  setInteractEventData
   */

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ContentService } from '@sunbird/core';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService } from '@sunbird/shared';
+import { ResourceService, ConfigService, ToasterService, ServerResponse, RouterNavigationService,
+NavigationHelperService } from '@sunbird/shared';
 /**
  * This component displays the checklist for request changes for reviewer and
  * calls the reject API to reject the content
@@ -63,7 +64,10 @@ export class RequestChangesPopupComponent implements OnInit {
    * Checklist config
    */
   checkListData: any;
-
+  /**
+   * To close url
+  */
+  closeUrl: any;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -82,7 +86,7 @@ export class RequestChangesPopupComponent implements OnInit {
     toasterService: ToasterService,
     configService: ConfigService,
     routerNavigationService: RouterNavigationService,
-    contentService: ContentService) {
+    contentService: ContentService, public navigationHelperService: NavigationHelperService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -111,7 +115,7 @@ export class RequestChangesPopupComponent implements OnInit {
    * If both the validation is passed it enables the request changes button
    */
   validateModal() {
-    if (this.reasons && this.reasons.length > 0 && this.comment && this.comment.length > 0) {
+    if (this.reasons && this.reasons.length > 0 && this.comment && _.trim(this.comment).length > 0) {
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -127,7 +131,7 @@ export class RequestChangesPopupComponent implements OnInit {
       request: {
         content: {
           rejectReasons: this.reasons,
-          rejectComment: this.comment
+          rejectComment: _.trim(this.comment)
         }
       }
     };
@@ -138,7 +142,11 @@ export class RequestChangesPopupComponent implements OnInit {
     this.contentService.post(option).subscribe(response => {
       this.modal.deny();
       this.toasterService.success(this.resourceService.messages.smsg.m0005);
-      this.route.navigate(['workspace/content/upForReview/1']);
+      if (this.closeUrl.url.includes('flagreviewer')) {
+        this.route.navigate(['workspace/content/flagreviewer/1']);
+      } else {
+        this.route.navigate(['workspace/content/upForReview/1']);
+      }
     }, (err) => {
       this.modal.deny();
       this.toasterService.error(this.resourceService.messages.fmsg.m0020);
@@ -161,5 +169,6 @@ export class RequestChangesPopupComponent implements OnInit {
     this.activatedRoute.parent.params.subscribe((params) => {
       this.contentId = params.contentId;
     });
+    this.closeUrl = this.navigationHelperService.getPreviousUrl();
   }
 }

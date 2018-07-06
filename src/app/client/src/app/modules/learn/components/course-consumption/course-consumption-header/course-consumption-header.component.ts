@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -6,13 +6,15 @@ import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
   styleUrls: ['./course-consumption-header.component.css']
 })
-export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
+export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   sharelinkModal: boolean;
   /**
    * contains link that can be shared
@@ -31,14 +33,17 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   courseInteractObject: IInteractEventObject;
   resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
-  @Input() enrolledCourse: boolean;
+  @Input() enrolledBatchInfo: any;
+  enrolledCourse: boolean;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
-  progress: number;
+  contentId: string;
+  progress = 0;
   courseStatus: string;
+  public unsubscribe = new Subject<void>();
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -47,11 +52,14 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.firstChild.params.subscribe((param) => {
-      this.courseId = param.courseId;
-      this.batchId = param.batchId;
-      this.courseStatus = param.courseStatus;
-      this.progress = this.courseHierarchy.progress;
+    Observable.combineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
+      (params, queryParams) => {
+        return { ...params, ...queryParams };
+      }).subscribe((params) => {
+      this.courseId = params.courseId;
+      this.batchId = params.batchId;
+      this.courseStatus = params.courseStatus;
+      this.contentId = params.contentId;
       this.resumeIntractEdata = {
         id: 'course-resume',
         type: 'click',
@@ -71,16 +79,22 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
     });
   }
   ngAfterViewInit() {
-    this.courseProgressService.courseProgressData.subscribe((courseProgressData) => {
+    this.courseProgressService.courseProgressData
+    .takeUntil(this.unsubscribe)
+    .subscribe((courseProgressData) => {
       this.enrolledCourse = true;
-      this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) :
-        this.progress;
-      // this.changeDetectorRef.detectChanges();
+      this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
       this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-      if (this.onPageLoadResume && !this.flaggedCourse) {
+      if (!this.flaggedCourse && this.onPageLoadResume &&
+        !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
         this.onPageLoadResume = false;
         this.showResumeCourse = false;
         this.resumeCourse();
+      } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+        this.onPageLoadResume = false;
+        this.showResumeCourse = false;
+      } else {
+        this.onPageLoadResume = false;
       }
     });
   }
@@ -106,7 +120,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
    */
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData).subscribe(
+    this.copyContentService.copyContent(contentData)
+    .takeUntil(this.unsubscribe)
+    .subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
@@ -126,5 +142,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

@@ -2,7 +2,8 @@ import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort, OrgDetailsService } from '@sunbird/core';
+import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
+    OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
@@ -116,6 +117,8 @@ export class ExploreContentComponent implements OnInit {
     public filterType: any;
 
     public redirectUrl: string;
+    public facetArray: Array<string>;
+    public facets: any;
     sortingOptions: Array<ISort>;
     /**
        * Constructor to create injected service(s) object
@@ -149,13 +152,15 @@ export class ExploreContentComponent implements OnInit {
     populateContentSearch() {
         this.showLoader = true;
         this.pageLimit = this.config.appConfig.SEARCH.PAGE_LIMIT;
+        const filters = _.pickBy(this.filters, value => value.length > 0);
+        filters.channel = this.hashTagId;
         const requestParams = {
-            filters: _.pickBy(this.filters, value => value.length > 0),
+            filters: filters,
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 1 },
-            sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
+            softConstraints: { badgeAssertions: 2, channel: 1 },
+            facets: this.facetArray
         };
         this.searchService.contentSearch(requestParams).subscribe(
             (apiResponse: ServerResponse) => {
@@ -164,6 +169,8 @@ export class ExploreContentComponent implements OnInit {
                     this.noResult = false;
                     this.searchList = apiResponse.result.content;
                     this.totalCount = apiResponse.result.count;
+                    this.facets = apiResponse.result.facets;
+                    this.processFilterData();
                     this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                     const constantData = this.config.appConfig.LibrarySearch.constantData;
                     const metaData = this.config.appConfig.LibrarySearch.metaData;
@@ -238,14 +245,14 @@ export class ExploreContentComponent implements OnInit {
         };
         Observable
             .combineLatest(
-            this.activatedRoute.params,
-            this.activatedRoute.queryParams,
-            (params: any, queryParams: any) => {
-                return {
-                    params: params,
-                    queryParams: queryParams
-                };
-            })
+                this.activatedRoute.params,
+                this.activatedRoute.queryParams,
+                (params: any, queryParams: any) => {
+                    return {
+                        params: params,
+                        queryParams: queryParams
+                    };
+                })
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -320,5 +327,19 @@ export class ExploreContentComponent implements OnInit {
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    filterData(event) {
+        this.facetArray = event;
+    }
+    processFilterData() {
+        const facetObj = {};
+        _.forEach(this.facets, (value) => {
+            if (value) {
+                let data = {};
+                data = value.values;
+                facetObj[value.name] = data;
+                this.facets = facetObj;
+            }
+        });
     }
 }

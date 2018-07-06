@@ -57,7 +57,7 @@ describe('BatchDetailsComponent', () => {
     component.courseId = 'do_1125083286221291521153';
     component.batchId = '01250836468775321655';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    spyOn(courseBatchService, 'getBatchDetails').and.returnValue(Observable.of(enrolledBatch));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     component.ngOnInit();
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.enrolledBatchInfo.participant.length).toEqual(1);
@@ -141,7 +141,7 @@ describe('BatchDetailsComponent', () => {
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const route = TestBed.get(Router);
-    spyOn(courseBatchService, 'setEnrollBatchDetails');
+    spyOn(courseBatchService, 'setEnrollToBatchDetails');
     component.enrollBatch({identifier: '123'});
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], {relativeTo: component.activatedRoute});
   });
@@ -150,5 +150,12 @@ describe('BatchDetailsComponent', () => {
     const route = TestBed.get(Router);
     component.createBatch();
     expect(route.navigate).toHaveBeenCalledWith(['create/batch'], {relativeTo: component.activatedRoute});
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

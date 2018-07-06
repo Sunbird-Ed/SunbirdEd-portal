@@ -27,33 +27,34 @@
                 </div>
                 <div class="two wide column ">
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Grades" [options]="options" [hasLabels]=false
-                  placeholder="Class"  #multiSelect>
+                    defaultSelectionText="Class" zeroSelectionText="Select" #multiSelect>
                     <sui-select-option *ngFor="let grades of searchGrades" [value]="grades"> </sui-select-option>
                   </sui-multi-select>
 
                 </div>
                 <div class="two wide column">
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Medium" [options]="options" [hasLabels]=false
-                  placeholder="Medium" #multiSelect>
+                    defaultSelectionText="Medium" zeroSelectionText="Select" #multiSelect>
                     <sui-select-option *ngFor="let medium of searchMediums" [value]="medium"> </sui-select-option>
                     <i class="dropdown icon"></i>
                   </sui-multi-select>
                 </div>
                 <div class="two wide column">
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Subjects" [options]="options" [hasLabels]=false
-                  placeholder="Subjects" #multiSelect>
+                   defaultSelectionText="Subjects" zeroSelectionText="Select" #multiSelect>
                     <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
                   </sui-multi-select>
                 </div>
                 <div class="two wide column">
                   <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Roles" labelField="roles.name" valueField="roles.id"
-                    [options]="options" [hasLabels]=false placeholder="Roles" #multiSelect>
+                    [options]="options" [hasLabels]=false   defaultSelectionText="Roles" zeroSelectionText="Select" #multiSelect>
                     <sui-select-option *ngFor="let roles of searchRoles" [value]="roles"> </sui-select-option>
                   </sui-multi-select>
                 </div>
                 <div class="two wide column">
                   <div class="ui input profileLocationFilter">
-                    <input type="text" class="filterLocationInput" placeholder="{{resourceService.frmelmnts?.prmpt?.userlocation}}" [(ngModel)]="queryParams.Location"
+                    <input type="text" class="filterLocationInput" placeholder="{{resourceService.frmelmnts?.prmpt?.userlocation}}" 
+                     [(ngModel)]="queryParams.Location"
                     />
                   </div>
                 </div>

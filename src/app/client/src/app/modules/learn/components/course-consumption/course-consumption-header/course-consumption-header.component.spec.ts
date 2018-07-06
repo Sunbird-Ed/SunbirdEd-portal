@@ -32,7 +32,8 @@ class ActivatedRouteStub {
   queryParams =  Observable.of(this.queryParamsMock);
   params = {first: () => Observable.of(this.paramsMock)};
   firstChild = {
-    params : Observable.of(this.paramsMock)
+    params : Observable.of(this.paramsMock),
+    queryParams: Observable.of(this.queryParamsMock)
   };
   public changeFirstChildParams(params) {
     this.firstChild.params = Observable.of(params);
@@ -65,23 +66,25 @@ describe('CourseConsumptionHeaderComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should enable resume button if course is not flagged and courseProgressData obtained from courseProgressService', () => {
+  it(`should enable resume button if course is not flagged, batch status is not "0" and
+  courseProgressData obtained from courseProgressService`, () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledBatchInfo = {status: 1};
     component.ngOnInit();
     component.ngAfterViewInit();
-    courseProgressService.courseProgressData.emit({});
+    courseProgressService.courseProgressData.emit({lastPlayedContentId: 'do_123'});
     expect(component.courseHierarchy).toBeDefined();
     expect(component.flaggedCourse).toBeFalsy();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.showResumeCourse).toBeFalsy();
   });
 
-  it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
+   it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
@@ -97,7 +100,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.showResumeCourse).toBeTruthy();
   });
 
-  it('should not enable resume button if batchId is not present', () => {
+   it('should not enable resume button if batchId is not present', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
@@ -110,5 +113,10 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.courseHierarchy).toBeDefined();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.showResumeCourse).toBeTruthy();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

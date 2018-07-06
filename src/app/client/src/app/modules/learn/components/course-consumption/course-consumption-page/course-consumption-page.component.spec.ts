@@ -1,3 +1,4 @@
+import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CourseHierarchyGetMockResponse } from './../course-player/course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
@@ -6,7 +7,7 @@ import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {CourseConsumptionService, CourseProgressService} from '../../../services';
+import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 
@@ -97,7 +98,7 @@ describe('CourseConsumptionPageComponent', () => {
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         CourseConsumptionService,  { provide: Router, useClass: MockRouter },
-        CourseProgressService],
+        CourseProgressService, CourseBatchService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -138,25 +139,28 @@ describe('CourseConsumptionPageComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
     spyOn(learnerService, 'get').and.returnValue(Observable.of(enrolledCourse.courseSuccessNotEnroll));
     courseService.initialize();
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.enrolledCourse).toBeFalsy();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course/do_212347136096788480178']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
     component.ngOnDestroy();
   });
   it('should stay on the same page if course is enrolled and batchId obtained from url', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseBatchService = TestBed.get(CourseBatchService);
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(Observable.of(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.enrolledCourse).toBeTruthy();
+    expect(component.batchId).toBeTruthy();
     component.ngOnDestroy();
   });
   it('should navigate to course view page if fetching enrolled course fails', () => {
@@ -165,6 +169,8 @@ describe('CourseConsumptionPageComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     courseService._enrolledCourseData$.next({err: {}, enrolledCourses: null});
@@ -172,9 +178,14 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(toasterService, 'error');
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.enrolledCourse).toBeFalsy();
     expect(component.toasterService.error).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course/do_212347136096788480178']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
     component.ngOnDestroy();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

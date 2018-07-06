@@ -1,4 +1,25 @@
 {
+  "Home": {
+    "enrolledCourses": {
+      "constantData": {
+        "action": {
+          "right": {
+            "class": "ui blue basic button",
+            "eventName": "Resume",
+            "displayType": "button",
+            "text": "Resume"
+          },
+          "onImage": {"eventName": "onImage"}
+        },
+        "telemetryInteractEdata": {"id":"courseId","type":"click","pageid":"home"},
+        "telemetryObjectType":"home"
+      },
+      "metaData": ["batchId", "courseId"],
+      "maxCount": "leafNodesCount",
+      "progress": "progress"
+    }
+
+  },
   "Course": {
     "otherCourse": {
       "constantData": {
@@ -93,7 +114,7 @@
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
-    "VERSION":"1.7.0",
+    "VERSION":"1.8.0",
     "PID":"sunbird-portal"
   },
   "FLAGREASONS": [
@@ -124,7 +145,7 @@
         "partner": [],
         "pdata": {
           "id": "sunbird.portal",
-          "ver": "1.7.0",
+          "ver": "1.8.0",
           "pid": "sunbird-portal"
         }
       },
@@ -143,7 +164,7 @@
         },
         "apislug": "/action",
         "repos": [
-          "/content-plugins/renderer"
+          "/sunbird-plugins/renderer"
         ],
         "plugins": [
           {
@@ -383,9 +404,12 @@
         "email": "email",
         "userName": "userName",
         "password": "password",
-        "provider": "provider",
         "externalId": "externalId",
+        "externalIdType": "externalIdType",
+        "externalIdProvider": "externalIdProvider",
+        "externalIds": "externalIds",
         "phoneVerified": "phoneVerified",
+        "emailVerified": "emailVerified",
         "roles": "roles",
         "position": "position",
         "grade": "grade",
@@ -447,6 +471,9 @@
   "upForReview": {
     "filterType": "upforreview",
     "inPageredirectUrl": "/workspace/content/upForReview/1"
+  },
+  "flagReviewer":{
+    "inPageredirectUrl": "/workspace/content/flagreviewer/1"
   },
    "allmycontent": {
     "filterType": "allmycontent",
@@ -607,6 +634,21 @@
     "read": {
       "title": "Review Comments",
       "subtitle": ""
+    }
+  },
+  "collectionTreeOptions": {
+    "fileIcon": "fa fa-file-o fa-lg",
+    "customFileIcon": {
+      "video": "fa fa-file-video-o fa-lg",
+      "pdf": "fa fa-file-pdf-o fa-lg",
+      "youtube": "fa fa-youtube fa-lg fancy_tree_red",
+      "H5P": "fa fa-html5 fa-lg",
+      "audio": "fa fa-file-audio-o fa-lg",
+      "ECML": "fa fa-file-code-o fa-lg",
+      "HTML": "fa fa-html5 fa-lg",
+      "collection": "fa fa-file-archive-o fa-lg",
+      "epub": "fa fa-file-text fa-lg",
+      "doc": "fa fa-file-text fa-lg"
     }
   }
 }

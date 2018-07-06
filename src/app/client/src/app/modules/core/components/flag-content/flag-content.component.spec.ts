@@ -45,14 +45,15 @@ snapshot: {
     fixture = TestBed.createComponent(FlagContentComponent);
     component = fixture.componentInstance;
   });
-  xit('should call get content', () => {
+  it('should call get content', () => {
     const playerService = TestBed.get(PlayerService);
-    component.contentData = Response.contentData;
+    playerService.collectionData = Response.contentData;
     component.getContentData();
+    component.contentData = Response.contentData;
     expect(component.contentData).toBeDefined();
     expect(component.contentData.name).toEqual('TextBook3-CollectionParentLive');
   });
-  xit('should call getContent api when data is not present ', () => {
+  it('should call getContent api when data is not present ', () => {
     const playerService = TestBed.get(PlayerService);
     playerService.contentData = {};
     spyOn(playerService, 'getContent').and.callFake(() => Observable.of(Response.successContentData));
@@ -63,7 +64,7 @@ snapshot: {
     expect(component.contentData.name).toEqual('TextBook3-CollectionParentLive');
     expect(component.contentData.versionKey).toEqual('1496989757647');
   });
-  xit('should call flag api', () => {
+  it('should call flag api', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
     const resourceService = TestBed.get(ResourceService);
@@ -78,7 +79,7 @@ snapshot: {
    component.populateFlagContent(requestData);
    expect(component.showLoader).toBeFalsy();
   });
-  xit('should  throw error when call flag api', () => {
+  it('should  throw error when call flag api', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
     const toasterService = TestBed.get(ToasterService);
@@ -94,5 +95,25 @@ snapshot: {
    fixture.detectChanges();
    expect(component.showLoader).toBeFalsy();
    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0050);
+  });
+  it('should call getCollectionHierarchy ', () => {
+    const playerService = TestBed.get(PlayerService);
+    playerService.contentData = {};
+    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => Observable.of(Response.collectionData));
+   component.getCollectionHierarchy();
+   expect(component.contentData).toBeDefined();
+  });
+  it('should call getCollectionHierarchy when data is already present', () => {
+    const playerService = TestBed.get(PlayerService);
+    playerService.collectionData = Response.collectionData;
+   component.getCollectionHierarchy();
+   component.contentData =  playerService.collectionData;
+   expect(component.contentData).toBeDefined();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

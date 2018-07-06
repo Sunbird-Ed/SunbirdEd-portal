@@ -6,8 +6,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
+import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -25,18 +26,24 @@ describe('GenericEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenericEditorComponent ],
-      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule],
-    providers: [
-      UserService, LearnerService, ContentService,
-      ResourceService, ToasterService, ConfigService,
-      { provide: Router, useClass: RouterStub },
-      { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'contentId': 'do_21247940906829414411032'
-       }]) }  }
-    ],
-    schemas: [NO_ERRORS_SCHEMA]
+      declarations: [GenericEditorComponent],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, RouterTestingModule, CoreModule.forRoot()],
+      providers: [
+        UserService, LearnerService, ContentService,
+        ResourceService, ToasterService, ConfigService,
+        NavigationHelperService, BrowserCacheTtlService,
+        { provide: Router, useClass: RouterStub },
+        {
+          provide: ActivatedRoute, useValue: {
+            'params': Observable.from([{
+              'contentId': 'do_21247940906829414411032'
+            }])
+          }
+        }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,22 +52,24 @@ describe('GenericEditorComponent', () => {
   });
 
   it('should call userservice, call open editor', inject([UserService, Router, ToasterService,
-    ResourceService], (userService, router, toasterService, resourceService) => {
-    userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-    fixture.detectChanges();
-    expect(component.openGenericEditor).toBeDefined();
-    component.openGenericEditor();
+    ResourceService, TenantService], (userService, router, toasterService, resourceService, tenantService) => {
+      userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
+      component.tenantService.tenantData = mockRes.tenantMockData.result;
+      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
+      fixture.detectChanges();
+      expect(component.openGenericEditor).toBeDefined();
+      component.openGenericEditor();
   }));
 
-   it('test to navigate to create content', inject([Router], (router) => () => {
+  it('test to navigate to create content', inject([Router], (router) => () => {
     component.closeModal();
     setTimeout(() => {
-      component.navigateToUploads();
+      component.navigateToWorkSpace();
     }, 1000);
-
-    expect(component.navigateToUploads).not.toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
     jasmine.clock().tick(1001);
-    expect(component.navigateToUploads).toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
   }));
 });

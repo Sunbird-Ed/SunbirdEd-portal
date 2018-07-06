@@ -23,3 +23,4 @@ export * from './reviewsubmissions-contentplayer/reviewsubmissions-contentplayer
 export * from './published-popup/published-popup.component';
 export * from './request-changes-popup/request-changes-popup.component';
 export * from './all-content/all-content.component';
+export * from './flag-reviewer/flag-reviewer.component';

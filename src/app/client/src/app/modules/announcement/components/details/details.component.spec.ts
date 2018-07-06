@@ -56,10 +56,10 @@ import { By } from '@angular/platform-browser';
 import 'rxjs/add/operator/mergeMap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import services
-import { ResourceService, ConfigService, DateFormatPipe } from '@sunbird/shared';
+import { ResourceService, ConfigService, DateFormatPipe, BrowserCacheTtlService } from '@sunbird/shared';
 import { DetailsComponent, IAnnouncementDetails } from '@sunbird/announcement';
 // Test data
-
+import { CacheService } from 'ng2-cache-service';
 describe('AnnouncementInboxCardComponent', () => {
   let component: DetailsComponent;
   let fixture: ComponentFixture<DetailsComponent>;
@@ -68,7 +68,7 @@ describe('AnnouncementInboxCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule],
       declarations: [DetailsComponent, DateFormatPipe],
-      providers: [ResourceService, ConfigService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

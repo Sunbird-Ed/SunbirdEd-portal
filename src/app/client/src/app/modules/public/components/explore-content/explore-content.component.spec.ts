@@ -34,7 +34,9 @@ describe('ExploreContentComponent', () => {
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn',
+     key : 'hello'}
+    ]),
     snapshot: {
       params: {
         slug: 'ap'
@@ -64,14 +66,39 @@ describe('ExploreContentComponent', () => {
   });
   it('should subscribe to searchService', () => {
     component.slug = '123456567';
+    component.queryParams = mockQueryParma;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgManagementService);
     spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
     component.searchList = Response.successData.result.content;
-    component.queryParams = mockQueryParma;
     component.populateContentSearch();
     fixture.detectChanges();
+    expect(component.queryParams.sortType).toString();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.searchList).toBeDefined();
+    expect(component.totalCount).toBeDefined();
+  });
+
+  it('should call searchService with badgeAssertions and channel', () => {
+    component.slug = '123456567';
+    component.hashTagId = '0123166367624478721';
+    // component.queryParams = mockQueryParma;
+    component.queryParams = {
+    'key': 'hello'
+    };
+    component.filters = {
+      contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
+    };
+    const requestParams = Response.requestParam;
+    const searchService = TestBed.get(SearchService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
+    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
+    component.searchList = Response.successData.result.content;
+    component.populateContentSearch();
+    fixture.detectChanges();
+    expect(searchService.contentSearch).toHaveBeenCalledWith(requestParams);
     expect(component.queryParams.sortType).toString();
     expect(component.showLoader).toBeFalsy();
     expect(component.searchList).toBeDefined();
@@ -101,5 +128,20 @@ describe('ExploreContentComponent', () => {
     component.populateContentSearch();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+  });
+  it('should call filterData method', () => {
+    const facetArray = ['subject', 'medium', 'board'];
+    component.filterData(facetArray);
+    expect(component.facetArray).toEqual(facetArray);
+  });
+  it('should call processFilterData method', () => {
+    const facetArray = [{
+      name: 'gradeLevel',
+      values: [
+        {name: 'grade 9', count: 10}
+      ]
+    }];
+    component.processFilterData();
+    expect(component.facets).toEqual(undefined);
   });
 });

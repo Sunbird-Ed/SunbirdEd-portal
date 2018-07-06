@@ -71,4 +71,19 @@ describe('MainHeaderComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('img').src).toEqual(mockUserData.tenantSuccess.result.logo);
   });
+
+  it('All query param should be removed except key and language', () => {
+    component.queryParamLanguage = 'en';
+    component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
+    component.onEnter('test');
+    expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    spyOn(component.tenantDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
 });

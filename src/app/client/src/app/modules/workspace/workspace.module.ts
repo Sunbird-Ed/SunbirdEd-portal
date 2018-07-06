@@ -15,11 +15,10 @@ import {
   BatchListComponent, BatchCardComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent
+  AllContentComponent, FlagReviewerComponent
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -43,7 +42,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     PublishedPopupComponent,
     RequestChangesPopupComponent,
     LimitedPublishedComponent,
-    AllContentComponent
+    AllContentComponent,
+    FlagReviewerComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })

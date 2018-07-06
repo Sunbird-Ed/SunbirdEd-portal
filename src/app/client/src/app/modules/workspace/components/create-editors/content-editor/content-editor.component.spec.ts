@@ -5,9 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import { ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
-import { ContentService, UserService, LearnerService } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
 import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,10 +26,11 @@ describe('ContentEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
-      imports: [HttpClientTestingModule, Ng2IziToastModule],
+      imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
       providers: [
-        EditorService, UserService, ContentService,
+        EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
+        NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
@@ -50,8 +52,11 @@ describe('ContentEditorComponent', () => {
   });
 
   it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
-    ResourceService], (editorService, userService, router, toasterService, resourceService) => {
+    ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
+      component.tenantService.tenantData = mockRes.tenantMockData.result;
+      component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
       spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
       component.getContentData();
@@ -77,12 +82,12 @@ describe('ContentEditorComponent', () => {
   it('test to navigate to drafts', inject([Router], (router) => () => {
     component.closeModal();
     setTimeout(() => {
-      component.navigateToDraft();
+      component.navigateToWorkSpace();
     }, 1000);
 
-    expect(component.navigateToDraft).not.toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).not.toHaveBeenCalled();
     jasmine.clock().tick(1001);
-    expect(component.navigateToDraft).toHaveBeenCalled();
+    expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
   }));
 

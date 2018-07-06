@@ -14,7 +14,14 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
-  constructor(public configService: ConfigService) { }
+  buildNumber: string;
+  constructor(public configService: ConfigService) {
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
+   }
   /**
    * showPlayer method will be called
    */
@@ -30,7 +37,7 @@ export class PlayerComponent implements OnInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   showPlayer () {
-    const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL;
+    const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.baseURL + '&build_number=' + this.buildNumber;
     setTimeout(() => {
       this.contentIframe.nativeElement.src = iFrameSrc;
       this.contentIframe.nativeElement.onload = () => {
@@ -39,9 +46,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       };
     }, 0);
     this.contentIframe.nativeElement.addEventListener('renderer:telemetry:event', (event: any) => {
-      if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' || event.detail.telemetryData.eid === 'END')) {
-        this.contentProgressEvent.emit(event);
-      }
+        this.generateContentReadEvent(event);
     });
   }
   /**
@@ -52,6 +57,16 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (playerWidth) {
       const height = playerWidth * (9 / 16);
       $('#contentPlayer').css('height', height + 'px');
+    }
+  }
+  generateContentReadEvent(event: any) {
+    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START')) {
+      this.contentProgressEvent.emit(event);
+    } else if (event.detail.telemetryData.eid === 'END' && _.get(event.detail.telemetryData, 'edata.summary')) {
+      const summary = _.find(event.detail.telemetryData.edata.summary , { progress: 100 });
+      if (summary) {
+        this.contentProgressEvent.emit(event);
+      }
     }
   }
 }

@@ -1,9 +1,10 @@
-<div class="ui link cards margin-right-20 margin-top-15 margin-bottom-0" *ngIf="data">
-  <div class="card margin-top-10" [ngClass]="customClass">
+<div class="ui link cards  margin-top-15 margin-bottom-0" *ngIf="data" (click)="onAction(data,data.action.onImage)" 
+ appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
+  <div class="ui fluid card margin-top-10" [ngClass]="customClass">
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
-      <sui-progress class="top attached active" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
+      <sui-progress class="top attached active orange ui progress" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
     </div>
-    <div class="ui image" (click)="onAction(data,data.action.onImage)"  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata">
+    <div class="ui image" >
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
@@ -25,12 +26,12 @@
       <div *ngIf=" data.action.right" class="right floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
-            <button class="{{data.action.right.class}}" (click)="onAction(data,data.action.right)">
+            <button class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
               <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right)">
+            <i class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
             </i>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
           </span>
@@ -39,12 +40,12 @@
       <div *ngIf=" data.action.left" class="left floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
-            <button class="{{data.action.left.class}}" (click)="onAction(data,data.action.left)">
+            <button class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
               <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.left.class}}" (click)="onAction(data,data.action.left)">
+            <i class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
             </i>
             <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
           </span>
