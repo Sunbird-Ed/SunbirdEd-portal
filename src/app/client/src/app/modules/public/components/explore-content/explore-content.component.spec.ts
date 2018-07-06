@@ -85,7 +85,6 @@ describe('ExploreContentComponent', () => {
   it('should call searchService with badgeAssertions and channel', () => {
     component.slug = '123456567';
     component.hashTagId = '0123166367624478721';
-    // component.queryParams = mockQueryParma;
     component.queryParams = {
       'key': 'hello'
     };
@@ -215,8 +214,10 @@ describe('ExploreContentComponent', () => {
   it('should call getChannelId method', () => {
     const orgService = TestBed.get(OrgDetailsService);
     spyOn(orgService, 'getOrgDetails').and.callFake(() => Observable.of(Response.orgDetailsSuccessData));
+    spyOn(component, 'setFilters').and.callThrough();
     component.getChannelId();
     expect(component.hashTagId).toEqual(Response.orgDetailsSuccessData.hashTagId);
+    expect(component.setFilters).toHaveBeenCalled();
   });
   it('should call getChannelId method and return error', () => {
     const router = TestBed.get(Router);
@@ -232,7 +233,7 @@ describe('ExploreContentComponent', () => {
     expect(component.filterType).toEqual('explore');
     expect(component.redirectUrl).toEqual('/explore/1');
   });
-  it('should call playContent method for if condition', () => {
+  it('should open collection player if mimeType is collection', () => {
     const router = TestBed.get(Router);
     const event = {
       data: {
@@ -243,7 +244,7 @@ describe('ExploreContentComponent', () => {
     component.playContent(event);
     expect(router.navigate).toHaveBeenCalledWith(['play/collection', event.data.metaData.identifier], { queryParams: {} });
   });
-  it('should call playContent method for else condition', () => {
+  it('should open content player if mimeType is not collection', () => {
     const router = TestBed.get(Router);
     const event = {
       data: {
@@ -254,7 +255,7 @@ describe('ExploreContentComponent', () => {
     component.playContent(event);
     expect(router.navigate).toHaveBeenCalledWith(['play/content', event.data.metaData.identifier], { queryParams: {} });
   });
-  it('should call playContent method for else condition', () => {
+  it('should call inview method', () => {
     component.telemetryImpression = {
       context: {
         env: 'public'
