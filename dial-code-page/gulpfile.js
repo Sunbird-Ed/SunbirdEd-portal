@@ -18,7 +18,7 @@ gulp.task('minify-css', () => {
 });
 
 gulp.task('minify-html', function () {
-  return gulp.src('index2.html')
+  return gulp.src('index.html')
     .pipe(inject(gulp.src(['config.js']), { // inject config
       starttag: '<!-- inject:js -->',
       transform: function (filePath, file) {
