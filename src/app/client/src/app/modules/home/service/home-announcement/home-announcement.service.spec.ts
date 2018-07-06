@@ -9,14 +9,14 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 import { HomeAnnouncementService } from './home-announcement.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService , BrowserCacheTtlService} from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 
 describe('HomeAnnouncementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpClientModule, HomeAnnouncementService, ConfigService, CacheService]
+      providers: [HttpClientModule, HomeAnnouncementService, ConfigService, CacheService, BrowserCacheTtlService]
     });
   });
 

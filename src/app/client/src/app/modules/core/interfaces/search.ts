@@ -65,4 +65,8 @@ export interface SearchParam {
     * filters badgeAssertions
   */
   softConstraints?: object;
+  /**
+    * facet filters
+  */
+ facets?: Array<string>;
 }

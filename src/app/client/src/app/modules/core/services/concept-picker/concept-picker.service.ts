@@ -2,7 +2,7 @@ import { SearchService } from './../search/search.service';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { SearchParam } from '@sunbird/core';
-import { ServerResponse, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { ServerResponse, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
@@ -28,7 +28,7 @@ export class ConceptPickerService {
     * @param {SearchService} searchService Reference of SearchService
   */
   constructor(searchService: SearchService, toasterService: ToasterService, resourceService: ResourceService,
-    private cacheService: CacheService, private configService: ConfigService) {
+    private cacheService: CacheService, private configService: ConfigService,  private browserCacheTtlService: BrowserCacheTtlService) {
     this.searchService = searchService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -105,8 +105,7 @@ export class ConceptPickerService {
           });
           this.cacheService.set('concepts', domains,
             {
-              maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-              this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+              maxAge: this.browserCacheTtlService.browserCacheTtl
             });
           this._conceptData$.next({ err: null, data: domains });
         }

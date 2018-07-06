@@ -49,7 +49,7 @@
           </div>
         </h5>
       </td>
-      <td class="UpForReviewStatusOrange">{{content.status}}</td>
+     <td class="UpForReviewStatusOrange" *ngIf ="content.status"> {{resourceService?.frmelmnts?.lbl?.flagReview}}</td>
     </tr>
   </tbody>
 </table>
