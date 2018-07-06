@@ -230,7 +230,7 @@ describe('LimitedPublishedComponent', () => {
     }));
   it('should call inview method for visits data', () => {
     spyOn(component, 'inview').and.callThrough();
-    component.inview(testData.event.inview);
+    component.inview(testData.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
