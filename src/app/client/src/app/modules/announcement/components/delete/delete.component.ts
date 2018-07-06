@@ -84,7 +84,6 @@ export class DeleteComponent implements OnInit, OnDestroy {
   deleteAnnouncement(): void {
     const option = { announcementId: this.announcementId };
     this.announcementService.deleteAnnouncement(option)
-    .takeUntil(this.unsubscribe)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
