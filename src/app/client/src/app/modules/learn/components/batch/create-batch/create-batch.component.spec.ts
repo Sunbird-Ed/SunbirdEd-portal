@@ -40,7 +40,6 @@ const resourceServiceMockData = {
     }
   }
 };
-// messages.smsg.m0033
 const fakeActivatedRoute = {
   'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]),
   'parent': { 'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]) },
@@ -91,7 +90,7 @@ describe('CreateBatchComponent', () => {
     expect(component.participantList.length).toBe(3);
     expect(component.mentorList.length).toBe(1);
     expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
-    expect(component.courseCreatedBy).toBeDefined();
+    expect(component.courseCreator).toBeDefined();
     expect(component.createBatchForm).toBeDefined();
     expect(component.showCreateModal).toBeTruthy();
   });

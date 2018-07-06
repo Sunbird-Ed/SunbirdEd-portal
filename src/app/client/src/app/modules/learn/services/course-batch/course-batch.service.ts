@@ -33,7 +33,7 @@ export class CourseBatchService {
     };
     return this.learnerService.post(option);
   }
-  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
+  getUserList(requestParam: SearchParam = { filters: {} }): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
       data: {

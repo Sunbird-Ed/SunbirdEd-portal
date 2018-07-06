@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import * as moment from 'moment';
   templateUrl: './update-course-batch.component.html',
   styleUrls: ['./update-course-batch.component.css']
 })
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
@@ -37,9 +37,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 
   private userSearchTime: any;
   /**
-  * courseCreatedBy
+  * courseCreator
   */
-  public courseCreatedBy: string;
+  public courseCreator = false;
   /**
   * participantList for users
   */
@@ -121,27 +121,26 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   */
   ngOnInit() {
     Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
-      (params, parentParams) => {
-        return { ...params, ...parentParams };
-      }).takeUntil(this.unsubscribe)
-      .subscribe((params) => {
+      (params, parentParams) => ({ ...params, ...parentParams }))
+      .flatMap((params) => {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
-        this.getUserList();
         this.setTelemetryImpressionData();
-        this.getCourseData();
-        this.getBatchDetails();
-      });
-  }
-  /**
-  * get batch details, if error navigate to parent
-  */
-  private getBatchDetails() {
-    this.courseBatchService.getUpdateBatchDetails(this.batchId).takeUntil(this.unsubscribe)
+        return this.fetchBatchDetails();
+      })
+      .takeUntil(this.unsubscribe)
       .subscribe((data) => {
-        this.batchDetails = data;
+        this.showUpdateModal = true;
+        if (data.courseDetails.createdBy === this.userService.userid) {
+          this.courseCreator = true;
+        }
+        this.batchDetails = data.batchDetails;
+        const userList = this.sortUsers(data.userDetails);
+        this.participantList = userList.participantList;
+        this.mentorList = userList.mentorList;
         this.initializeUpdateForm();
-        this.fetchUserDetails();
+        this.fetchParticipantDetails();
+        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -150,6 +149,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         }
         this.redirect();
       });
+  }
+  private fetchBatchDetails() {
+    return Observable.combineLatest(
+      this.courseBatchService.getUserList(),
+      this.courseConsumptionService.getCourseHierarchy(this.courseId),
+      this.courseBatchService.getUpdateBatchDetails(this.batchId),
+      (userDetails, courseDetails, batchDetails) => ({ userDetails, courseDetails, batchDetails })
+    );
   }
   /**
   * initializes form fields and apply field level validation
@@ -166,13 +173,17 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       users: new FormControl()
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
-      this.enableButton();
+      if (this.batchUpdateForm.status === 'VALID') {
+        this.disableSubmitBtn = false;
+      } else {
+        this.disableSubmitBtn = true;
+      }
     });
   }
   /**
   * fetch mentors and participant details
   */
-  private fetchUserDetails() {
+  private fetchParticipantDetails() {
     if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
       const request = {
         filters: {
@@ -181,8 +192,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       };
       this.courseBatchService.getUserDetails(request).takeUntil(this.unsubscribe)
         .subscribe((res) => {
-          this.processUserDetails(res);
-          this.showUpdateModal = true;
+          this.processParticipantDetails(res);
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -191,16 +201,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
           }
           this.redirect();
         });
-    } else {
-      this.showUpdateModal = true;
     }
   }
-  private processUserDetails(res) {
+  private processParticipantDetails(res) {
     const users = this.sortUsers(res);
-    const userList = users.participantList;
+    const participantList = users.participantList;
     const mentorList = users.mentorList;
     _.forEach(this.batchDetails.participant, (value, key) => {
-      const user = _.find(userList, ['id', key]);
+      const user = _.find(participantList, ['id', key]);
       if (user) {
         this.selectedParticipants.push(user);
       }
@@ -240,7 +248,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentorList: _.uniqBy(mentorList, 'id')
     };
   }
-  ngAfterViewInit() {
+  private initDropDown() {
     setTimeout(() => {
       $('#participant').dropdown({
         forceSelection: false,
@@ -260,7 +268,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 1000);
+    }, 0);
   }
   private getUserListWithQuery(query, type) {
     if (this.userSearchTime) {
@@ -273,7 +281,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   /**
   *  api call to get user list
   */
-  private getUserList(query: string = '', type?) {
+  private getUserList(query: string = '', type) {
     const requestBody = {
       filters: {},
       query: query
@@ -281,14 +289,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.courseBatchService.getUserList(requestBody).takeUntil(this.unsubscribe)
       .subscribe((res) => {
         const userList = this.sortUsers(res);
-        if (type) {
-          if (type === 'participant') {
-            this.participantList = userList.participantList;
-          } else {
-            this.mentorList = userList.mentorList;
-          }
-        } else {
+        if (type === 'participant') {
           this.participantList = userList.participantList;
+        } else {
           this.mentorList = userList.mentorList;
         }
       },
@@ -312,14 +315,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
-      'id': this.batchId,
-      'name': this.batchUpdateForm.value.name,
-      'description': this.batchUpdateForm.value.description,
-      'enrollmentType': this.batchUpdateForm.value.enrollmentType,
-      'startDate': startDate,
-      'endDate': endDate || null,
-      'createdFor': this.userService.userProfile.organisationIds,
-      'mentors': _.compact(mentors)
+      id: this.batchId,
+      name: this.batchUpdateForm.value.name,
+      description: this.batchUpdateForm.value.description,
+      enrollmentType: this.batchUpdateForm.value.enrollmentType,
+      startDate: startDate,
+      endDate: endDate || null,
+      createdFor: this.userService.userProfile.organisationIds,
+      mentors: _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
@@ -376,15 +379,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }, 1000);
   }
 
-  private enableButton() {
-    const data = this.batchUpdateForm ? this.batchUpdateForm.value : '';
-    if (this.batchUpdateForm.status === 'VALID' && (data.name && data.startDate)) {
-      this.disableSubmitBtn = false;
-    } else {
-      this.disableSubmitBtn = true;
-    }
-  }
-
   private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';
@@ -396,17 +390,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       return ' (' + userData.phone + ')';
     }
   }
-
-  private getCourseData() {
-    this.courseConsumptionService.getCourseHierarchy(this.courseId)
-      .takeUntil(this.unsubscribe)
-      .subscribe((res) => {
-        this.courseCreatedBy = res.createdBy;
-      },
-      (err) => {
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      });
-  }
   // Create the telemetry impression event for update batch page
   private setTelemetryImpressionData() {
     this.telemetryImpression = {
@@ -416,7 +399,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/update/batch/' + this.batchId
+        uri: this.router.url
       },
       object: {
         id: this.batchId,

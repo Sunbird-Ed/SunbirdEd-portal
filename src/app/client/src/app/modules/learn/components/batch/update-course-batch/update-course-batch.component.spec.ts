@@ -85,7 +85,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.participantList.length).toBe(3);
     expect(component.mentorList.length).toBe(1);
     expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
-    expect(component.courseCreatedBy).toBeDefined();
+    expect(component.courseCreator).toBeDefined();
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();
     expect(component.selectedParticipants.length).toBe(2);
@@ -107,14 +107,10 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(Observable.of({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     fixture.detectChanges();
-    expect(component.participantList.length).toBe(3);
-    expect(component.mentorList.length).toBe(1);
-    expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
-    expect(component.courseCreatedBy).toBeDefined();
     expect(toasterService.error).toHaveBeenCalledWith('error');
     expect(component.router.navigate).toHaveBeenCalledWith(['./'], {relativeTo: activatedRoute.parent});
   });
-  it('should navigate to parent page if fetching batch details fails', () => {
+  it('should navigate to parent page if fetching user details fails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
@@ -134,7 +130,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.participantList.length).toBe(3);
     expect(component.mentorList.length).toBe(1);
     expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
-    expect(component.courseCreatedBy).toBeDefined();
+    expect(component.courseCreator).toBeDefined();
     expect(toasterService.error).toHaveBeenCalledWith('error');
     expect(component.router.navigate).toHaveBeenCalledWith(['./'], {relativeTo: activatedRoute.parent});
   });
@@ -155,7 +151,7 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(Observable.of({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     fixture.detectChanges();
-    component.updateBatch(); // toasterService
+    component.updateBatch();
     expect(toasterService.success).toHaveBeenCalledWith('success');
   });
   it('should update batch and show error message if api fails', () => {
@@ -175,7 +171,7 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(Observable.of({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     fixture.detectChanges();
-    component.updateBatch(); // toasterService
+    component.updateBatch();
     expect(toasterService.error).toHaveBeenCalledWith('error');
   });
 });

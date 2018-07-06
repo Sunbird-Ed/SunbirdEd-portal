@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WorkSpaceService } from './../../../../workspace/services';
 import { UserService } from '@sunbird/core';
-import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
@@ -12,12 +10,13 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
   styleUrls: ['./create-batch.component.css']
 })
-export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CreateBatchComponent implements OnInit, OnDestroy {
 
   @ViewChild('createBatchModel') private createBatchModel;
 
@@ -29,13 +28,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showCreateModal = false;
 
-  disableSubmitBtn = false;
+  disableSubmitBtn = true;
 
   private courseId: string;
   /**
-  * courseCreatedBy
+  * courseCreator
   */
-  courseCreatedBy: string;
+  courseCreator = false;
   /**
   * participantList for mentorList
   */
@@ -82,8 +81,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 	*/
   telemetryImpression: IImpressionEventInput;
 
-  private userDataSubscription: Subscription;
-
   public unsubscribe = new Subject<void>();
 
   public courseConsumptionService: CourseConsumptionService;
@@ -119,13 +116,39 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
    * Initialize form fields and getuserlist
   */
   ngOnInit() {
-    this.activatedRoute.parent.params.subscribe(params => {
+    this.activatedRoute.parent.params
+    .flatMap((params) => {
       this.courseId = params.courseId;
-      this.getCourseData();
       this.setTelemetryImpressionData();
-      this.getUserList();
       this.initializeFormFields();
+      this.showCreateModal = true;
+      return this.fetchBatchDetails();
+    })
+    .takeUntil(this.unsubscribe)
+    .subscribe((data) => {
+      if (data.courseDetails.createdBy === this.userService.userid) {
+        this.courseCreator = true;
+      }
+      const userList = this.sortUsers(data.userDetails);
+      this.participantList = userList.participantList;
+      this.mentorList = userList.mentorList;
+      this.initDropDown();
+    }, (err) => {
+      if (err.error && err.error.params.errmsg) {
+        this.toasterService.error(err.error.params.errmsg);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+      }
+      this.redirect();
     });
+  }
+
+  private fetchBatchDetails() {
+    return Observable.combineLatest(
+      this.courseBatchService.getUserList(),
+      this.courseConsumptionService.getCourseHierarchy(this.courseId),
+      (userDetails, courseDetails) => ({ userDetails, courseDetails })
+    );
   }
   /**
   * It helps to initialize form fields and apply field level validation
@@ -140,41 +163,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: new FormControl(),
       users: new FormControl(),
     });
-    this.disableSubmitBtn = true;
-    this.showCreateModal = true;
     this.createBatchForm.valueChanges.subscribe(val => {
-      this.enableButton();
+      if (this.createBatchForm.status === 'VALID') {
+        this.disableSubmitBtn = false;
+      } else {
+        this.disableSubmitBtn = true;
+      }
     });
-  }
-  /**
-  *  api call to get user list
-  */
-  private getUserList(query: string = '', type?) {
-    const requestBody = {
-      filters: {},
-      query: query
-    };
-    this.courseBatchService.getUserList(requestBody).takeUntil(this.unsubscribe)
-      .subscribe((res) => {
-        const list = this.sortUsers(res);
-        if (type) {
-          if (type === 'participant') {
-            this.participantList = list.participantList;
-          } else {
-            this.mentorList = list.mentorList;
-          }
-        } else {
-          this.participantList = list.participantList;
-          this.mentorList = list.mentorList;
-        }
-      },
-      (err) => {
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        }
-      });
   }
   private sortUsers(res) {
     const participantList = [];
@@ -202,19 +197,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentorList: _.uniqBy(mentorList, 'id')
     };
   }
-  private getCourseData() {
-    this.courseConsumptionService.getCourseHierarchy(this.courseId).takeUntil(this.unsubscribe)
-      .subscribe((res) => {
-        this.courseCreatedBy = res.createdBy;
-      },
-      (err) => {
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        }
-      });
-  }
 
   public createBatch() {
     this.disableSubmitBtn = true;
@@ -227,15 +209,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     const startDate = moment(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.createBatchForm.value.endDate && moment(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
-      'courseId': this.courseId,
-      'name': this.createBatchForm.value.name,
-      'description': this.createBatchForm.value.description,
-      'enrollmentType': this.createBatchForm.value.enrollmentType,
-      'startDate': startDate,
-      'endDate': endDate || null,
-      'createdBy': this.userService.userid,
-      'createdFor': this.userService.userProfile.organisationIds,
-      'mentors': _.compact(mentors)
+      courseId: this.courseId,
+      name: this.createBatchForm.value.name,
+      description: this.createBatchForm.value.description,
+      enrollmentType: this.createBatchForm.value.enrollmentType,
+      startDate: startDate,
+      endDate: endDate || null,
+      createdBy: this.userService.userid,
+      createdFor: this.userService.userProfile.organisationIds,
+      mentors: _.compact(mentors)
     };
     this.courseBatchService.createBatch(requestBody).takeUntil(this.unsubscribe)
       .subscribe((response) => {
@@ -285,15 +267,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
 
-  private enableButton() {
-    const data = this.createBatchForm ? this.createBatchForm.value : '';
-    if (this.createBatchForm.status === 'VALID' && (data.name && data.startDate)) {
-      this.disableSubmitBtn = false;
-    } else {
-      this.disableSubmitBtn = true;
-    }
-  }
-
   private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';
@@ -305,7 +278,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       return ' (' + userData.phone + ')';
     }
   }
-  ngAfterViewInit() {
+  private initDropDown() {
     setTimeout(() => {
       $('#participants').dropdown({
         forceSelection: false,
@@ -325,7 +298,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 1000);
+    }, 0);
   }
   private getUserListWithQuery(query, type) {
     this.disableSubmitBtn = false;
@@ -336,6 +309,31 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getUserList(query, type);
     }, 1000);
   }
+  /**
+  *  api call to get user list
+  */
+  private getUserList(query: string = '', type) {
+    const requestBody = {
+      filters: {},
+      query: query
+    };
+    this.courseBatchService.getUserList(requestBody).takeUntil(this.unsubscribe)
+      .subscribe((res) => {
+        const list = this.sortUsers(res);
+        if (type === 'participant') {
+          this.participantList = list.participantList;
+        } else {
+          this.mentorList = list.mentorList;
+        }
+      },
+      (err) => {
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        }
+      });
+  }
   private setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
@@ -344,16 +342,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/create/batch'
+        uri: this.router.url
       }
     };
   }
   ngOnDestroy() {
     if (this.createBatchModel && this.createBatchModel.deny) {
       this.createBatchModel.deny();
-    }
-    if (this.userDataSubscription) {
-      this.userDataSubscription.unsubscribe();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();

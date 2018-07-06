@@ -1,7 +1,7 @@
 import { Injectable, Input } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchService, SearchParam, LearnerService, ContentService, UserService } from '@sunbird/core';
-import { Ibatch } from './../../interfaces/batch';
+import { Ibatch } from './../../interfaces';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -59,23 +59,45 @@ export class BatchService {
     this.configService = configService;
     this.learnerService = learnerService;
   }
-
+  getUserList(requestParam: SearchParam = { filters: {} }): Observable<ServerResponse> {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: requestParam.filters,
+          query: requestParam.query || ''
+        }
+      }
+    };
+    const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+    if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+      option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
+    } else if (mentorOrg) {
+      option.data.request.filters['organisations.organisationId'] = mentorOrg;
+    }
+    return this.learnerService.post(option);
+  }
   /**
    * Search batch by batch id.
    *
    * @param {SearchParam} requestParam api request data
    */
-
-  getBatchDetails(requestParam): Observable<ServerResponse> {
+  updateBatch(request) {
     const option = {
-      url: this.configService.urlConFig.URLS.BATCH.GET_DETAILS,
+      url: this.configService.urlConFig.URLS.BATCH.UPDATE,
       data: {
-        request: {
-          filters: requestParam.filters,
-        }
+        request: request
       }
     };
-    return this.learnerService.get(option);
+    return this.learnerService.patch(option);
+  }
+  getBatchDetails(bathId) {
+    const option = {
+      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+    };
+    return this.learnerService.get(option).map((date) => {
+      return date.result.response;
+    });
   }
   /**
   *  Method getRequestBodyForUserSearch
@@ -155,7 +177,7 @@ export class BatchService {
   * returns {Promise} Promise object containing response code.
   * instance
   */
-  updateBatchDetails(requestParam: Ibatch): Observable<ServerResponse> {
+  updateBatchDetails(requestParam): Observable<ServerResponse> {
     const option = {
       url: this.configService.urlConFig.URLS.BATCH.UPDATE,
       data: {
@@ -172,6 +194,15 @@ export class BatchService {
       }
     };
     return this.learnerService.patch(option);
+  }
+  addUsersToBatch(request, batchId) {
+    const option = {
+      url: this.configService.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
+      data: {
+        request: request
+      }
+    };
+    return this.learnerService.post(option);
   }
 
   /**
@@ -214,26 +245,6 @@ export class BatchService {
   getUserDetails(searchParams) {
     return this.getUserList(searchParams);
   }
-  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
-    const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
-      data: {
-        request: {
-          filters: requestParam.filters,
-          query: requestParam.query || ''
-        }
-      }
-    };
-    const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
-    if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
-      option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
-    } else if (mentorOrg) {
-      option.data.request.filters['organisations.organisationId'] = mentorOrg;
-    }
-    return this.learnerService.post(option);
-  }
-
-
   /**
   * method setBatchData
   */

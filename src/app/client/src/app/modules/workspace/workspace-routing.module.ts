@@ -180,19 +180,18 @@ const routes: Routes = [
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'coursebacthesRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        }
+        },
+        children: [{
+          path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
+          data: {
+            telemetry: {
+              env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
+              type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
+            }, roles: 'coursebacthesRole',
+            breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+          }
+        }]
       },
-      {
-        path: 'update/batch/:batchId', component: UpdateBatchComponent, canActivate: [AuthGuard],
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'batch-edit', uri: '/update/batch/',
-            type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
-          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        }
-      },
-      { path: 'update/batch/:batchId', component: UpdateBatchComponent },
       {
         path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
         data: {
