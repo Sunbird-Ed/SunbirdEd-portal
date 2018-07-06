@@ -7,7 +7,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 
 import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile , BrowserCacheTtlService} from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, CoreModule, TenantService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
@@ -29,7 +29,7 @@ describe('CollectionEditorComponent', () => {
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
-        NavigationHelperService,
+        NavigationHelperService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
@@ -53,7 +53,7 @@ describe('CollectionEditorComponent', () => {
   it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
     ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
@@ -73,7 +73,7 @@ describe('CollectionEditorComponent', () => {
     (editorService, userService, router, toasterService, resourceService, tenantService) => {
       resourceService.messages = mockRes.resourceBundle.messages;
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();

@@ -4,6 +4,8 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IBreadcrumb } from '../../interfaces';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component returns breadcrumbs in each relevant pages when provided
@@ -15,7 +17,7 @@ import * as _ from 'lodash';
     templateUrl: './breadcrumbs.component.html',
     styleUrls: ['./breadcrumbs.component.css']
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
     /**
      * This variable stores the data passed from routing module
@@ -39,6 +41,8 @@ export class BreadcrumbsComponent implements OnInit {
      * Reference of BreadcrumbService.
      */
     breadcrumbsService: BreadcrumbsService;
+
+    public unsubscribe = new Subject<void>();
 
 
     /**
@@ -80,11 +84,14 @@ export class BreadcrumbsComponent implements OnInit {
                 }
 
             });
+
         /**
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
+        this.breadcrumbsService.dynamicBreadcrumbs
+        .takeUntil(this.unsubscribe)
+        .subscribe(data => {
             if (data.length > 0) {
             data.forEach(breadcrumb => {
             this.breadCrumbsData.push(breadcrumb);
@@ -93,7 +100,6 @@ export class BreadcrumbsComponent implements OnInit {
             this.cdr.detectChanges();
         }
         );
-
     }
 
     /**
@@ -102,6 +108,11 @@ export class BreadcrumbsComponent implements OnInit {
      */
     openLink(url) {
         this.router.navigateByUrl(url);
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
 

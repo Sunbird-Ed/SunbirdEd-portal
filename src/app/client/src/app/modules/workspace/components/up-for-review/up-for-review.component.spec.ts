@@ -63,7 +63,7 @@ describe('UpForReviewComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const mockUserRoles = {
-    userRoles: ['PUBLIC']
+    userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -128,6 +128,17 @@ describe('UpForReviewComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
+  it('should call getContentType and return contentType based on orgrole', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
+    userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    spyOn(component, 'getContentType').and.callThrough();
+    const returnContentType = component.getContentType().contentType;
+    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
+    expect(returnContentType).toEqual(ContentType);
+  }));
 });
 
 

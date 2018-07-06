@@ -1,11 +1,12 @@
 {
-  "name": "diksha-dial-code-app",
+  "name": "dial-code-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp compress",
+    "dev-build": "NODE_ENV='development' gulp compress",
+    "staging-build": "NODE_ENV='staging' gulp compress",
+    "prod-build": "NODE_ENV='production' gulp compress",
     "start": "http-server ./dist --cors"
   },
   "author": "",
@@ -15,6 +16,7 @@
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.9.4",
     "gulp-htmlmin": "^4.0.0",
+    "gulp-inject": "^4.3.2",
     "gulp-inline-css": "^3.3.0",
     "gulp-uglify": "^3.0.0"
   }

@@ -117,6 +117,14 @@ describe('DetailsPopupComponent', () => {
         );
         expect(component.showLoader).toBe(false);
       }));
+
+      it('should unsubscribe from all observable subscriptions', () => {
+        component.getDetails('92ca4110-19df-11e8-8773-d9334313c305');
+        component.ngOnInit();
+        spyOn(component.unsubscribe, 'complete');
+        component.ngOnDestroy();
+        expect(component.unsubscribe.complete).toHaveBeenCalled();
+      });
 });
 
 

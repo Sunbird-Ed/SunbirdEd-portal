@@ -32,20 +32,20 @@
               </div>
               <div class="two wide column ">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Curriculum" [options]="options" [hasLabels]=false
-                  placeholder="Curriculum" #multiSelect>
+                defaultSelectionText="Board" zeroSelectionText="Select" #multiSelect>
                   <sui-select-option *ngFor="let board of searchBoards" [value]="board"> </sui-select-option>
                 </sui-multi-select>
               </div>
               <div class="two wide column">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Medium" [options]="options" [hasLabels]=false
-                  placeholder="Medium" #multiSelect>
+                defaultSelectionText="Medium" zeroSelectionText="Select"  #multiSelect>
                   <sui-select-option *ngFor="let language of searchLanguages" [value]="language"> </sui-select-option>
                   <i class="dropdown icon"></i>
                 </sui-multi-select>
               </div>
               <div class="two wide column">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.Subjects" [options]="options" [hasLabels]=false
-                  placeholder="Subjects" #multiSelect>
+                defaultSelectionText="Subjects" zeroSelectionText="Select" #multiSelect>
                   <sui-select-option *ngFor="let subject of searchSubjects" [value]="subject"> </sui-select-option>
                 </sui-multi-select>
               </div>

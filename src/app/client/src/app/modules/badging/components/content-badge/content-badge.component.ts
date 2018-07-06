@@ -1,20 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, BadgesService } from '@sunbird/core';
 import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-content-badge',
   templateUrl: './content-badge.component.html',
   styleUrls: ['./content-badge.component.css']
 })
-export class ContentBadgeComponent implements OnInit {
+export class ContentBadgeComponent implements OnInit, OnDestroy {
   showBadgeAssingModel: boolean;
   @Input() data: Array<object>;
   public contentId: string;
+  userDataSubscription: Subscription;
+  public unsubscribe = new Subject<void>();
   /**
    * Reference of User Profile interface
    */
@@ -34,7 +38,7 @@ export class ContentBadgeComponent implements OnInit {
     public activatedRoute: ActivatedRoute, public contentBadgeService: ContentBadgeService) { }
 
   ngOnInit() {
-    this.userService.userData$.subscribe(
+    this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
@@ -60,7 +64,9 @@ export class ContentBadgeComponent implements OnInit {
         }
       }
     };
-    this.badgeService.getAllBadgeList(req).subscribe((response) => {
+    this.badgeService.getAllBadgeList(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       this.allBadgeList = _.differenceBy(response.result.badges, this.data, 'badgeId');
     }, (err) => {
       if (err && err.error && err.error.params) {
@@ -81,7 +87,9 @@ export class ContentBadgeComponent implements OnInit {
       'recipientId': this.contentId,
       'recipientType': 'content'
     };
-    this.contentBadgeService.addBadge(req).subscribe((response) => {
+    this.contentBadgeService.addBadge(req)
+    .takeUntil(this.unsubscribe)
+    .subscribe((response) => {
       if (this.data === undefined) {
         this.data = [];
       }
@@ -115,5 +123,13 @@ export class ContentBadgeComponent implements OnInit {
       type: 'badge',
       ver: '1.0'
     };
+  }
+
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+      }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

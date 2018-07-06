@@ -43,7 +43,7 @@ describe('UserUploadComponent', () => {
         't0037': 'Password: Unique or common password given by organization',
         't0038': `All other columns are optional. These columns include information about the user such as:`,
         't0039': 'Phone',
-        't0040': `Role: User's role on DIKSHA. Examples for this column:
+        't0040': `Role: User's role on sunbird. Examples for this column:
         CONTENT_CREATOR, CONTENT_REVIEWER, FLAG_REVIEWER, COURSE_MENTOR, ORG_ADMIN, SYSTEM_ADMINISTRATION, COURSE_ADMIN, COURSE_CREATOR`,
         't0041': `Grade: Classes taught by the user`,
         't0042': `Location: User's place of location of the user`,
@@ -59,7 +59,12 @@ describe('UserUploadComponent', () => {
         't0065': 'If user is not passing organisationId but passing OrgProvider, then user should pass OrgExternalId',
         't0066': 'ExternalId: Identity of user in an external system. If user is passing externalId then they have to pass Provider.',
         't0067': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
-        If user is passing ExternalId then they have to pass Provider.`
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0068': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0069': `ExternalIds: An array of external IDs (represented as a JSON string) that a user has.
+         Format: "[{"id":"someId","idType": "someIdType","provider":"someProvider", "operation": "ADD"}]".
+         Supported operations on an external ID are ADD, EDIT and REMOVE.`
       }
     }
   };
