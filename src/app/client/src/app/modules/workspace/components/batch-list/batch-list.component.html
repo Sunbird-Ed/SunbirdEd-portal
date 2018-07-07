@@ -1,10 +1,6 @@
-<!-- Loader -->
-<div class="twelve wide column margin-top-20" *ngIf="showLoader">
-  <app-loader [data]="loaderMessage"></app-loader>
-</div>
-<div class="ui grid" *ngIf="!showLoader">
+<div class="ui grid">
   <div class="four wide column padding-top-30">
-    <sui-select  (selectedOptionChange)= "fetchBatchList()" class="inline" 
+    <sui-select  (selectedOptionChange)= "changeBatchStatus()" class="inline" 
     [(ngModel)]="status" [options]="statusOptions" valueField ="value" labelField="name" #statusselect>
       <sui-select-option *ngFor="let option of statusselect.filteredOptions" [value]="option">
       </sui-select-option>
@@ -37,5 +33,9 @@
       </div>
     </div>
   </div>
+</div>
+<!-- Loader -->
+<div class="twelve wide column margin-top-20" *ngIf="showLoader">
+  <app-loader [data]="loaderMessage"></app-loader>
 </div>
 <router-outlet></router-outlet>

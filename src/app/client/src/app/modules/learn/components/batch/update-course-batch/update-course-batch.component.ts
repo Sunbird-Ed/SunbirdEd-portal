@@ -190,7 +190,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
           identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
         }
       };
-      this.courseBatchService.getUserDetails(request).takeUntil(this.unsubscribe)
+      this.courseBatchService.getUserList(request).takeUntil(this.unsubscribe)
         .subscribe((res) => {
           this.processParticipantDetails(res);
         }, (err) => {

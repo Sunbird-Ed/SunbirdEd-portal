@@ -139,7 +139,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   private fetchBatchDetails() {
     return Observable.combineLatest(
       this.batchService.getUserList(),
-      this.batchService.getBatchDetails(this.batchId),
+      this.batchService.getUpdateBatchDetails(this.batchId),
       (userDetails, batchDetails) => ({ userDetails, batchDetails })
     );
   }
@@ -175,7 +175,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
           identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
         }
       };
-      this.batchService.getUserDetails(request).takeUntil(this.unsubscribe)
+      this.batchService.getUserList(request).takeUntil(this.unsubscribe)
         .subscribe((res) => {
           this.processParticipantDetails(res);
         }, (err) => {

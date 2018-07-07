@@ -179,7 +179,11 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       }
     };
   }
-
+  changeBatchStatus() {
+    this.pageNumber = 1;
+    this.route.navigate(['workspace/content/batches', 1]);
+    this.fetchBatchList();
+  }
   /**
     * This method sets the make an api call to get all batch with page No and offset
   */
