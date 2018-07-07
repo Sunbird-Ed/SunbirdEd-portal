@@ -21,16 +21,21 @@ import {
 describe('CreateOrgTypeComponent', () => {
   let component: CreateOrgTypeComponent;
   let fixture: ComponentFixture<CreateOrgTypeComponent>;
-  const fakeActivatedRoute = {
-    'url': Observable.from([]),
-    snapshot: {
+
+  class ActivatedRouteStub {
+    url = Observable.of([{ path: 'update' }]);
+    snapshot = {
+      params: { orgId: '01250975059541196818' },
       data: {
         telemetry: {
           env: 'org-management', pageid: 'create-organization-type', type: 'create'
         }
       }
+    };
+    public changeUrl(params) {
+      this.url = Observable.of([{ path: params }]);
     }
-  };
+  }
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -44,8 +49,8 @@ describe('CreateOrgTypeComponent', () => {
       providers: [HttpClientModule, OrgTypeService,
         PaginationService, ToasterService, ResourceService, LearnerService, RouterNavigationService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: RouterOutlet, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: RouterOutlet, useClass: ActivatedRouteStub }
       ]
     })
       .compileComponents();
@@ -54,38 +59,72 @@ describe('CreateOrgTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateOrgTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should call add api and get success response', inject([OrgTypeService, RouterNavigationService],
-    (orgTypeService, routerNavigationService) => {
+  it('should call add api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+    (orgTypeService, routerNavigationService, toasterService) => {
       const resourceService = TestBed.get(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(orgTypeService, 'addOrgType').and.callFake(() => Observable.of(mockRes.orgTypeAddSuccess));
+      spyOn(toasterService, 'success').and.callThrough();
       component.addOrgType();
-      orgTypeService.addOrgType('test').subscribe(
-        addResponse => {
-          expect(mockRes.orgTypeAddSuccess.params.status).toBe('success');
-        }
-      );
       fixture.detectChanges();
-      expect(component.createForm).toBe(true);
+      expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0035);
     }));
 
-  it('should call update api and get success response', inject([OrgTypeService, RouterNavigationService],
-    (orgTypeService, routerNavigationService) => {
+  it('should call add api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+    (orgTypeService, routerNavigationService, toasterService) => {
+      const resourceService = TestBed.get(ResourceService);
+      resourceService.messages = mockRes.resourceBundle.messages;
+      spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
+      spyOn(orgTypeService, 'addOrgType').and.callFake(() => Observable.throw(mockRes.orgTypeAddError));
+      spyOn(toasterService, 'error').and.callThrough();
+      component.addOrgType();
+      fixture.detectChanges();
+      expect(toasterService.error).toHaveBeenCalledWith(mockRes.orgTypeAddError.error.params.errmsg);
+    }));
+
+  it('should call update api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+    (orgTypeService, routerNavigationService, toasterService) => {
       const resourceService = TestBed.get(ResourceService);
       component.orgName = new FormControl('test');
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(orgTypeService, 'updateOrgType').and.callFake(() => Observable.of(mockRes.orgTypeUpdateSuccess));
+      spyOn(toasterService, 'success').and.callThrough();
       component.updateOrgType();
-      orgTypeService.updateOrgType({ 'id': '1', 'name': 'test' }).subscribe(
-        addResponse => {
-          expect(mockRes.orgTypeAddSuccess.params.status).toBe('success');
-        }
-      );
       fixture.detectChanges();
+      expect(toasterService.success).toHaveBeenCalledWith(component.orgName.value + ' ' + resourceService.messages.smsg.m0037);
+    }));
+
+  it('should call update api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+    (orgTypeService, routerNavigationService, toasterService) => {
+      const resourceService = TestBed.get(ResourceService);
+      component.orgName = new FormControl('test');
+      resourceService.messages = mockRes.resourceBundle.messages;
+      spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
+      spyOn(orgTypeService, 'updateOrgType').and.callFake(() => Observable.throw(mockRes.orgTypeUpdateError));
+      spyOn(toasterService, 'error').and.callThrough();
+      component.updateOrgType();
+      fixture.detectChanges();
+      expect(toasterService.error).toHaveBeenCalledWith(mockRes.orgTypeUpdateError.error.params.errmsg);
+    }));
+
+  it('When page is update', inject([OrgTypeService],
+    (orgTypeService) => {
+      orgTypeService._orgTypeData$.next({ err: null, orgTypeData: mockRes.getOrgType });
+      fixture.detectChanges();
+      expect(component.pageId).toEqual('update-organization-type');
+    }));
+
+  it('When page is create', inject([OrgTypeService],
+    (orgTypeService) => {
+      const activatedRouteStub = TestBed.get(ActivatedRoute);
+      activatedRouteStub.changeUrl('create');
+      fixture.detectChanges();
+      expect(component.createForm).toEqual(true);
+      expect(component.pageUri).toEqual('orgType/create');
+      expect(component.pageId).toEqual('create-organization-type');
     }));
 });
