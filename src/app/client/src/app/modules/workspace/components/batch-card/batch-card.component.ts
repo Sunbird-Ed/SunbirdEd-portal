@@ -21,7 +21,7 @@ export class BatchCardComponent {
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
   */
-  private activatedRoute: ActivatedRoute;
+  public activatedRoute: ActivatedRoute;
   /**
     * Reference for WorkSpaceService
   */

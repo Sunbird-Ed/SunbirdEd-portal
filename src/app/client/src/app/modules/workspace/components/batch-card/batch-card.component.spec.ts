@@ -77,7 +77,7 @@ describe('BatchCardComponent', () => {
     component.batch = Response.successData;
     const batchService = TestBed.get(BatchService);
     batchService.batchDetails = Response.successData;
-    expect(route.navigate).toHaveBeenCalledWith(['workspace/content/update/batch', Response.successData.identifier]);
+    expect(route.navigate).toHaveBeenCalledWith(['update/batch', Response.successData.identifier], {relativeTo: component.activatedRoute});
   }));
 });
 

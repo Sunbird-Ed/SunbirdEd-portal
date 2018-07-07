@@ -76,8 +76,13 @@ describe('UpdateCourseBatchComponent', () => {
   it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    spyOn(courseBatchService, 'getUserList').and.returnValue(Observable.of(getUserList));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(getUserDetails));
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return Observable.of(getUserDetails);
+      } else {
+        return Observable.of(getUserList);
+      }
+    });
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(Observable.of(updateBatchDetails));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(Observable.of({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
@@ -120,9 +125,14 @@ describe('UpdateCourseBatchComponent', () => {
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(courseBatchService, 'getUserList').and.returnValue(Observable.of(getUserList));
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return Observable.throw(getUserDetails);
+      } else {
+        return Observable.of(getUserList);
+      }
+    });
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(Observable.of(updateBatchDetails));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.throw(getUserDetails));
     spyOn(toasterService, 'error');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
     returnValue(Observable.of({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
@@ -143,8 +153,13 @@ describe('UpdateCourseBatchComponent', () => {
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(courseBatchService, 'getUserList').and.returnValue(Observable.of(getUserList));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(getUserDetails));
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return Observable.of(getUserDetails);
+      } else {
+        return Observable.of(getUserList);
+      }
+    });
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(Observable.of(updateBatchDetails));
     spyOn(courseBatchService, 'updateBatch').and.returnValue(Observable.of(updateBatchDetails));
     spyOn(toasterService, 'success');
@@ -163,8 +178,13 @@ describe('UpdateCourseBatchComponent', () => {
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(courseBatchService, 'getUserList').and.returnValue(Observable.of(getUserList));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(Observable.of(getUserDetails));
+    spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return Observable.of(getUserDetails);
+      } else {
+        return Observable.of(getUserList);
+      }
+    });
     spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(Observable.of(updateBatchDetails));
     spyOn(courseBatchService, 'updateBatch').and.returnValue(Observable.throw(updateBatchDetails));
     spyOn(toasterService, 'error');
