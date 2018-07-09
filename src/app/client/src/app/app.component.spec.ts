@@ -17,7 +17,6 @@ import {By} from '@angular/platform-browser';
   template: `<input type="hidden" id="buildNumber" value="1.9.0" />`
 })
 class AppComponent {
-  // value = '1.9.0';
   version = '';
 }
 describe('AppComponent', () => {
