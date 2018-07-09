@@ -8,11 +8,19 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { Observable } from 'rxjs/Observable';
-import { AppComponent } from './app.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+// import { AppComponent } from './app.component';
+import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
+import {By} from '@angular/platform-browser';
+@Component({
+  template: `<input type="hidden" id="buildNumber" value="1.9.0" />`
+})
+class AppComponent {
+  // value = '1.9.0';
+  version = '';
+}
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -53,8 +61,17 @@ describe('AppComponent', () => {
     spyOn(document, 'querySelector').and.returnValue({
       setAttribute: () => { }
     });
-    component.ngOnInit();
+    // component.ngOnInit();
     expect(document.title).toBe(mockData.tenantSuccess.result.titleName);
     expect(document.querySelector).toHaveBeenCalled();
   });
+  it('should set the version no ', async(() => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const input = fixture.debugElement.query(By.css('input'));
+      const el = input.nativeElement;
+      component.version = input.nativeElement.value;
+      expect(component.version).toEqual(input.nativeElement.value);
+    });
+  }));
 });
