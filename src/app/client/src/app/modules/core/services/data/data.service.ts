@@ -1,15 +1,14 @@
 
-import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 
-import {mergeMap} from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 /**
  * Service to provide base CRUD methods to make api request.
@@ -137,7 +136,7 @@ export class DataService {
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
-    } catch (err) {}
+    } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;
     }
