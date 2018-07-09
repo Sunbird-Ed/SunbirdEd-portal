@@ -6,7 +6,6 @@ before_script:
     - npm install -g @angular/cli
     - cd src/app/client/
     - npm install
-    - ng build --prod --aot=false
     - ng lint
 script:
     - ng test --watch=false

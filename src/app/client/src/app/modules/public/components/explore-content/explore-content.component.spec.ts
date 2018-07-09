@@ -1,7 +1,7 @@
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
+import { CoreModule, LearnerService, CoursesService, SearchService, OrgDetailsService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,15 +27,17 @@ describe('ExploreContentComponent', () => {
     }
   };
   const mockQueryParma = {
-   'query': 'hello'
+    'query': 'hello'
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
     'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn',
-     key : 'hello'}
+    'queryParams': Observable.from([{
+      sortType: 'desc', sort_by: 'lastUpdatedOn',
+      key: 'hello'
+    }
     ]),
     snapshot: {
       params: {
@@ -83,9 +85,8 @@ describe('ExploreContentComponent', () => {
   it('should call searchService with badgeAssertions and channel', () => {
     component.slug = '123456567';
     component.hashTagId = '0123166367624478721';
-    // component.queryParams = mockQueryParma;
     component.queryParams = {
-    'key': 'hello'
+      'key': 'hello'
     };
     component.filters = {
       contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
@@ -135,13 +136,139 @@ describe('ExploreContentComponent', () => {
     expect(component.facetArray).toEqual(facetArray);
   });
   it('should call processFilterData method', () => {
-    const facetArray = [{
-      name: 'gradeLevel',
-      values: [
-        {name: 'grade 9', count: 10}
+    const obj = {
+      'gradeLevel': [
+        {
+          'name': 'grade 7',
+          'count': 8
+        },
+        {
+          'name': 'class 2',
+          'count': 85
+        }
+      ],
+      'subject': [
+        {
+          'name': 'chemistry',
+          'count': 2
+        },
+        {
+          'name': 'marathi',
+          'count': 9
+        }
+      ],
+      'medium': [
+        {
+          'name': 'nepali',
+          'count': 1
+        },
+        {
+          'name': 'odia',
+          'count': 12
+        }
+      ],
+      'board': [
+        {
+          'name': 'state (uttar pradesh)',
+          'count': 7
+        },
+        {
+          'name': 'state (tamil nadu)',
+          'count': 5
+        }
       ]
-    }];
+    };
+    component.facets = Response.facetData;
     component.processFilterData();
+    expect(component.facets).toEqual(obj);
+  });
+  it('should call compareObjects method', () => {
+    const objA = {
+      board: ['gradeLevel']
+    };
+    const objB = {
+      board: ['gradeLevel']
+    };
+    component.compareObjects(objA, objB);
     expect(component.facets).toEqual(undefined);
+  });
+  it('should call navigateToPage method', () => {
+    const router = TestBed.get(Router);
+    const page = 3;
+    component.pager = {
+      currentPage: 3,
+      endIndex: 19,
+      endPage: 5,
+      pageSize: 20,
+      pages: [1, 2, 3, 4],
+      startIndex: 0,
+      startPage: 1,
+      totalItems: 45,
+      totalPages: 66
+    };
+    component.queryParams = { key: 'abc' };
+    component.navigateToPage(page);
+    expect(component.pageNumber).toEqual(page);
+    expect(router.navigate).toHaveBeenCalledWith(['explore', 3], { queryParams: component.queryParams });
+  });
+  it('should call getChannelId method', () => {
+    const orgService = TestBed.get(OrgDetailsService);
+    spyOn(orgService, 'getOrgDetails').and.callFake(() => Observable.of(Response.orgDetailsSuccessData));
+    spyOn(component, 'setFilters').and.callThrough();
+    component.getChannelId();
+    expect(component.hashTagId).toEqual(Response.orgDetailsSuccessData.hashTagId);
+    expect(component.setFilters).toHaveBeenCalled();
+  });
+  it('should call getChannelId method and return error', () => {
+    const router = TestBed.get(Router);
+    const orgService = TestBed.get(OrgDetailsService);
+    const response = {};
+    spyOn(orgService, 'getOrgDetails').and.callFake(() => Observable.throw(response));
+    spyOn(component, 'getChannelId').and.callThrough();
+    component.getChannelId();
+    expect(router.navigate).toHaveBeenCalledWith(['']);
+  });
+  it('should call setFilters method', () => {
+    component.setFilters();
+    expect(component.filterType).toEqual('explore');
+    expect(component.redirectUrl).toEqual('/explore/1');
+  });
+  it('should open collection player if mimeType is collection', () => {
+    const router = TestBed.get(Router);
+    const event = {
+      data: {
+        metaData:
+          { mimeType: 'application/vnd.ekstep.content-collection', identifier: '1234' }
+      }
+    };
+    component.playContent(event);
+    expect(router.navigate).toHaveBeenCalledWith(['play/collection', event.data.metaData.identifier], { queryParams: {} });
+  });
+  it('should open content player if mimeType is not collection', () => {
+    const router = TestBed.get(Router);
+    const event = {
+      data: {
+        metaData:
+          { mimeType: '', identifier: '1234' }
+      }
+    };
+    component.playContent(event);
+    expect(router.navigate).toHaveBeenCalledWith(['play/content', event.data.metaData.identifier], { queryParams: {} });
+  });
+  it('should call inview method', () => {
+    component.telemetryImpression = {
+      context: {
+        env: 'public'
+      },
+      edata: {
+        type: '',
+        pageid: '',
+        uri: '',
+        subtype: 'pageexit'
+      }
+    };
+    const event = Response.inviewData;
+    component.inview(event);
+    expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 });
