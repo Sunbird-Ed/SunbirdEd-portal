@@ -176,7 +176,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       build_number: this.buildNumber,
       headerLogo: this.logo,
       loadingImage: '',
-      extContWhitelistedDomains: jQuery('#extContWhitelistedDomains').val(),
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
         ver: '1.4',

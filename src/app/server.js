@@ -139,7 +139,6 @@ function getLocals(req) {
   locals.defaultTenant = envHelper.DEFAULT_TENANT
   locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
-  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
   locals.buildNumber = envHelper.BUILD_NUMBER
