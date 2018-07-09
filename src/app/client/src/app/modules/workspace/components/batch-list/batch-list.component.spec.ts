@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { BatchCardComponent } from './../batch-card/batch-card.component';
 import { BatchListComponent } from './batch-list.component';
 // Import NG testing module(s)
@@ -12,7 +14,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService } from
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService, BatchService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { Ibatch } from './../../interfaces/batch';
 // import batch card comoponet
 
@@ -56,7 +57,7 @@ describe('BatchListComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 1 }]),
+    'params': observableOf([{ 'pageNumber': 1 }]),
     snapshot: {
       params: [
         {
@@ -100,10 +101,10 @@ describe('BatchListComponent', () => {
   it('should call  batch search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     fixture.detectChanges();
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
@@ -115,10 +116,10 @@ describe('BatchListComponent', () => {
   it('should call  batch search api and returns result count 0', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
     fixture.detectChanges();
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
@@ -128,10 +129,10 @@ describe('BatchListComponent', () => {
   it('should throw error', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(searchService, 'batchSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fetchBatchList();
     expect(component.batchList.length).toBeLessThanOrEqual(0);
@@ -142,7 +143,7 @@ describe('BatchListComponent', () => {
     (route) => {
       const userService = TestBed.get(UserService);
       const learnerService = TestBed.get(LearnerService);
-      spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userSuccess.success));
+      spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
       userService._userProfile = testData.userSuccess.success;
       userService._userProfile.roleOrgMap = roleOrgMap;
       component.pager = testData.pager;
@@ -155,14 +156,14 @@ describe('BatchListComponent', () => {
   it('should call  user search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userlist));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(searchService, 'batchSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
-    spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(testData.userlist));
+    spyOn(searchService, 'getUserList').and.callFake(() => observableOf(testData.userlist));
     const req = {
       'filters': {
         'identifier': [
@@ -184,7 +185,7 @@ describe('BatchListComponent', () => {
     const userService = TestBed.get(UserService);
     component.telemetryImpression = testData.telemetryData;
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(testData.userlist));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(component, 'inview').and.callThrough();

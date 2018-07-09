@@ -147,45 +147,44 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           return observableCombineLatest(
             this.courseConsumptionService.getCourseHierarchy(params.courseId),
             this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-            (courseHierarchy, enrolledBatchDetails) => {
-              return { courseHierarchy, enrolledBatchDetails };
-            });
+            (courseHierarchy, enrolledBatchDetails) => ({ courseHierarchy, enrolledBatchDetails })
+          );
         } else {
           return this.courseConsumptionService.getCourseHierarchy(params.courseId)
             .pipe(map((courseHierarchy) => ({ courseHierarchy })));
-  }
-})).subscribe((response: any) => {
-  this.courseHierarchy = response.courseHierarchy;
-  this.courseInteractObject = {
-    id: this.courseHierarchy.identifier,
-    type: 'Course',
-    ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-  };
-  if (this.courseHierarchy.status === 'Flagged') {
-    this.flaggedCourse = true;
-  }
-  if (this.batchId) {
-    this.enrolledBatchInfo = response.enrolledBatchDetails;
-    this.enrolledCourse = true;
-    this.setTelemetryStartEndData();
-    this.parseChildContent();
-    if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
-      this.getContentState();
-      this.subscribeToQueryParam();
-    }
-  } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
-    || this.courseHierarchy.createdBy === this.userService.userid) {
-    this.parseChildContent();
-    this.subscribeToQueryParam();
-  } else {
-    this.parseChildContent();
-  }
-  this.collectionTreeNodes = { data: this.courseHierarchy };
-  this.loader = false;
-}, (error) => {
-  this.loader = false;
-  this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-});
+        }
+      })).subscribe((response: any) => {
+      this.courseHierarchy = response.courseHierarchy;
+      this.courseInteractObject = {
+        id: this.courseHierarchy.identifier,
+        type: 'Course',
+        ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
+      };
+      if (this.courseHierarchy.status === 'Flagged') {
+        this.flaggedCourse = true;
+      }
+      if (this.batchId) {
+        this.enrolledBatchInfo = response.enrolledBatchDetails;
+        this.enrolledCourse = true;
+        this.setTelemetryStartEndData();
+        this.parseChildContent();
+        if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
+          this.getContentState();
+          this.subscribeToQueryParam();
+        }
+      } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+        || this.courseHierarchy.createdBy === this.userService.userid) {
+        this.parseChildContent();
+        this.subscribeToQueryParam();
+      } else {
+        this.parseChildContent();
+      }
+      this.collectionTreeNodes = { data: this.courseHierarchy };
+      this.loader = false;
+    }, (error) => {
+      this.loader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
+    });
   }
   private parseChildContent() {
   const model = new TreeModel();

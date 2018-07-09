@@ -1,9 +1,10 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService } from '@sunbird/shared';
 import { BatchService } from './batch.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, LearnerService, ContentService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { Response } from './batch.service.spec.data';
 describe('BatchService', () => {
   beforeEach(() => {
@@ -35,8 +36,8 @@ describe('BatchService', () => {
           '8454cb21-3ce9-4e30-85b5-fade097880d8'
         ]
       };
-      spyOn(learnerService, 'patch').and.callFake(() => Observable.throw({}));
-      spyOn(batchService, 'updateBatchDetails').and.callFake(() => Observable.of(Response.updateSucess));
+      spyOn(learnerService, 'patch').and.callFake(() => observableThrowError({}));
+      spyOn(batchService, 'updateBatchDetails').and.callFake(() => observableOf(Response.updateSucess));
       batchService.updateBatchDetails(requestParam).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -53,8 +54,8 @@ describe('BatchService', () => {
           '6f3897a4-29d9-4a37-b4cb-5ad6c64ac3c5'
         ]
       };
-      spyOn(batchService, 'addUsers').and.callFake(() => Observable.of(Response.addUserSucess));
-      spyOn(learnerService, 'post').and.callFake(() => Observable.throw({}));
+      spyOn(batchService, 'addUsers').and.callFake(() => observableOf(Response.addUserSucess));
+      spyOn(learnerService, 'post').and.callFake(() => observableThrowError({}));
       batchService.addUsers(requestParam, '0124963527344947201').subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -69,8 +70,8 @@ describe('BatchService', () => {
       const requestParam = {
         'batchId': '0124963527344947201'
       };
-      spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.of(Response.getbatchDetailSucess));
-      spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
+      spyOn(batchService, 'getBatchDetailsById').and.callFake(() => observableOf(Response.getbatchDetailSucess));
+      spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
        batchService.getBatchDetailsById(requestParam).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');

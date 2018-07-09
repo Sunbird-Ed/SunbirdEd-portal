@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { IdDetails } from './../../interfaces/notes';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { response } from './inline-editor-component.spec.data';
@@ -37,8 +38,8 @@ describe('InlineEditorComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.createEventEmitter, 'emit');
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'create').and.returnValue(observableOf(response.successResponse));
     userService.getUserProfile();
     component.createNote();
     expect(component.showLoader).toBeFalsy();
@@ -53,8 +54,8 @@ describe('InlineEditorComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
+    spyOn(notesService, 'create').and.callFake(() => observableThrowError(response.errResponse));
     userService.getUserProfile();
     component.createNote();
     expect(component.showLoader).toBeFalsy();
@@ -66,9 +67,9 @@ describe('InlineEditorComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.updateEventEmitter, 'emit');
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.searchSuccess));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'update').and.returnValue(observableOf(response.successResponse));
     userService.getUserProfile();
     component.updateNote();
     expect(component.showLoader).toBeFalsy();
@@ -83,9 +84,9 @@ describe('InlineEditorComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.searchSuccess));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
+    spyOn(notesService, 'update').and.callFake(() => observableThrowError(response.errResponse));
     userService.getUserProfile();
     component.updateNote();
     expect(component.showLoader).toBeFalsy();

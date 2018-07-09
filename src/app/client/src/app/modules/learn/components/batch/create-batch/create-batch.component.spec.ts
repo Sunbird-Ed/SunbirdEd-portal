@@ -1,3 +1,5 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
@@ -8,7 +10,6 @@ import {CoreModule} from '@sunbird/core';
 import { CreateBatchComponent } from './create-batch.component';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -38,8 +39,8 @@ const resourceServiceMockData = {
 };
 
 const fakeActivatedRoute = {
-  'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]),
-  'parent': { 'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]) },
+  'params': observableOf([{ 'courseId': 'do_1125083286221291521153' }]),
+  'parent': { 'params': observableOf([{ 'courseId': 'do_1125083286221291521153' }]) },
   'snapshot': {
       params: [
         {
@@ -104,7 +105,7 @@ describe('CreateBatchComponent', () => {
     spyOn(component, 'getUserList');
     spyOn(component, 'createBatch').and.callThrough();
     spyOn(toasterService, 'error');
-    spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.throw(mockResponse.errorResponse));
+    spyOn(courseBatchService, 'createBatch').and.callFake(() => observableThrowError(mockResponse.errorResponse));
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     component.createBatchUserForm.value.startDate = new Date();
     fixture.detectChanges();
@@ -126,7 +127,7 @@ describe('CreateBatchComponent', () => {
     spyOn(component, 'getUserList');
     spyOn(component, 'createBatch').and.callThrough();
     spyOn(toasterService, 'success');
-    spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.of(mockResponse.returnValue));
+    spyOn(courseBatchService, 'createBatch').and.callFake(() => observableOf(mockResponse.returnValue));
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     component.createBatchUserForm.value.startDate = new Date();
     fixture.detectChanges();

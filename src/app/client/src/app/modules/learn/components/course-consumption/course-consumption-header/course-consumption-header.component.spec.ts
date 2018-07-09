@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { CourseHierarchyGetMockResponse,
   CourseHierarchyGetMockResponseFlagged } from './../course-player/course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseConsumptionHeaderComponent } from './course-consumption-header.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import {CourseConsumptionService, CourseProgressService} from '../../../services';
 import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -29,14 +30,14 @@ const resourceServiceMockData = {
 class ActivatedRouteStub {
   paramsMock = {courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   queryParamsMock = {contentId: 'do_112270494168555520130'};
-  queryParams =  Observable.of(this.queryParamsMock);
-  params = {first: () => Observable.of(this.paramsMock)};
+  queryParams =  observableOf(this.queryParamsMock);
+  params = {first: () => observableOf(this.paramsMock)};
   firstChild = {
-    params : Observable.of(this.paramsMock),
-    queryParams: Observable.of(this.queryParamsMock)
+    params : observableOf(this.paramsMock),
+    queryParams: observableOf(this.queryParamsMock)
   };
   public changeFirstChildParams(params) {
-    this.firstChild.params = Observable.of(params);
+    this.firstChild.params = observableOf(params);
   }
   public changeQueryParams(params) {
     this.paramsMock = params;

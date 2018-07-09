@@ -2,7 +2,7 @@ import { ProfileCardComponent } from './profile-card.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import 'rxjs/add/operator/mergeMap';
+
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService, CoursesService, LearnerService } from '@sunbird/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';

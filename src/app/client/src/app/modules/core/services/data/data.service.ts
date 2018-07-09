@@ -1,5 +1,5 @@
 
-import { of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError ,  Observable } from 'rxjs';
 
 import { mergeMap } from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
@@ -8,7 +8,6 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 
 /**
  * Service to provide base CRUD methods to make api request.

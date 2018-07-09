@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { CollectionEditorComponent } from './collection-editor.component';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -33,7 +34,7 @@ describe('CollectionEditorComponent', () => {
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf([{
               'contentId': 'do_21247940906829414411032',
               'type': 'collection', 'state': 'draft', 'framework': 'framework'
             }])
@@ -57,7 +58,7 @@ describe('CollectionEditorComponent', () => {
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.successResult));
       component.openCollectionEditor();
       const rspData = mockRes.successResult.result.content;
       component.validateRequest(rspData, mockRes.validateModal);
@@ -77,7 +78,7 @@ describe('CollectionEditorComponent', () => {
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.errorResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.errorResult));
       spyOn(toasterService, 'error').and.callThrough();
       component.openCollectionEditor();
       const rspData = mockRes.errorResult.result.content;

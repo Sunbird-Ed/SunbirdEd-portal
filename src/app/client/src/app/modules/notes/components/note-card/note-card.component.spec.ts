@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { IdDetails } from '@sunbird/notes';
 import { Router, ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,7 +7,6 @@ import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrderModule } from 'ngx-order-pipe';
 import { SuiModal } from 'ng2-semantic-ui';
@@ -23,8 +24,8 @@ describe('NoteCardComponent', () => {
     snapshot = { queryParams : {contentId : 'do_112270494168555520130'}};
     paramsMock = {courseId: 'do_212347136096788480178', batchId: '01250892550857523234', contentId: 'do_112498388508524544160'};
     queryParamsMock = {contentId: 'do_112270494168555520130'};
-    queryParams =  Observable.of(this.queryParamsMock);
-    params =  Observable.of(this.paramsMock);
+    queryParams =  observableOf(this.queryParamsMock);
+    params =  observableOf(this.paramsMock);
     public changeParams(params) {
       this.paramsMock = params;
     }
@@ -63,8 +64,8 @@ describe('NoteCardComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const noteService = TestBed.get(NotesService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    spyOn(noteService, 'search').and.returnValue(Observable.of(response.responseSuccess));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(noteService, 'search').and.returnValue(observableOf(response.responseSuccess));
     userService.getUserProfile();
     component.getAllNotes();
     expect(component.showLoader).toBeFalsy();
@@ -79,8 +80,8 @@ describe('NoteCardComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.responseFailed));
     userService.getUserProfile();
     component.getAllNotes();
     expect(component.showLoader).toBeFalsy();

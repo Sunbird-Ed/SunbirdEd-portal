@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { AllContentComponent } from './all-content.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -7,7 +9,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
@@ -35,8 +36,8 @@ describe('AllContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english', 'odia'] }]),
+    'params': observableOf([{ pageNumber: '1' }]),
+    'queryParams': observableOf([{ subject: ['english', 'odia'] }]),
     snapshot: {
       params: [
         {
@@ -73,21 +74,21 @@ describe('AllContentComponent', () => {
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
   }));
 
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthAllContent(9, 1, bothParams);
     expect(component.allContent.length).toBeLessThanOrEqual(0);
     expect(component.allContent.length).toEqual(0);
   }));
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthAllContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.allContent).toBeDefined();
@@ -142,7 +143,7 @@ describe('AllContentComponent', () => {
       fixture.detectChanges();
     }));
   it('should set lastUpdated Date by calling the filter', inject([SearchService], (searchService) => {
-    spyOn(searchService , 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
+    spyOn(searchService , 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     fixture.detectChanges();
     component.fecthAllContent(9, 1, bothParams);
     const  fromnow = new DateFilterXtimeAgoPipe();

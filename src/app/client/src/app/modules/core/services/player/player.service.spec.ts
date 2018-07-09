@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, ContentService, PlayerService, UserService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 
 const serverRes = {
@@ -31,7 +32,7 @@ describe('PlayerService', () => {
   it('should return content details', () => {
     const playerService = TestBed.get(PlayerService);
     const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(Observable.of(serverRes));
+    spyOn(contentService, 'get').and.returnValue(observableOf(serverRes));
     playerService.getContent(serverRes.result.content.identifier).subscribe((data) => {
       expect(data).toBeTruthy();
       expect(playerService.contentData).toBeTruthy();
