@@ -101,29 +101,6 @@ describe('DataDrivenComponent', () => {
     componentParent.fetchFrameworkMetaData();
     formService.getFormConfig(formServiceInputParams);
   });
-  it('should fetch framework details when it is not cached', () => {
-    const service = TestBed.get(FrameworkService);
-    const cacheService = TestBed.get(CacheService);
-    const contentService = TestBed.get(ContentService);
-    const formService = TestBed.get(FormService);
-    const formServiceInputParams = {
-            formType: 'textbook',
-            formAction: 'textbook',
-            contentType: 'textbook',
-            framework: 'textbook'
-    };
-    service._frameWorkData$ = mockFrameworkData.success;
-    service._frameworkData$.next({
-      err: null, framework: mockFrameworkData.success.framework,
-      frameworkdata: mockFrameworkData.success.frameworkdata
-    });
-    componentParent.isCachedDataExists = false;
-    fixtureParent.detectChanges();
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockFrameworkData.success));
-    spyOn(componentParent, 'fetchFrameworkMetaData').and.callThrough();
-    componentParent.fetchFrameworkMetaData();
-    formService.getFormConfig(formServiceInputParams);
-  });
   it('should throw error', () => {
     const service = TestBed.get(FrameworkService);
     const cacheService = TestBed.get(CacheService);
