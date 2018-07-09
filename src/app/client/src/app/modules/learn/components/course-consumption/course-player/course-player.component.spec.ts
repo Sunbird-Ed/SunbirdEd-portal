@@ -91,7 +91,7 @@ describe('CoursePlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  fit('should fetch courseHierarchy from courseConsumptionService', () => {
+  it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -106,7 +106,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-  fit('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
+  it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -121,7 +121,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-  fit('should get content state if course is enrolled', () => {
+  it('should get content state if course is enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
