@@ -1,9 +1,8 @@
 import { SearchService } from './../search/search.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { SearchParam } from '@sunbird/core';
 import { ServerResponse, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 @Injectable()

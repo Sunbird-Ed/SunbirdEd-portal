@@ -1,8 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+
+
 import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 
 @Injectable()
@@ -64,20 +67,20 @@ export class CourseBatchService {
   }
   getEnrollToBatchDetails(bathId) {
     if (this._enrollToBatchDetails && bathId === this._enrollToBatchDetails.identifier) {
-      return Observable.of(this._enrollToBatchDetails);
+      return observableOf(this._enrollToBatchDetails);
     } else {
-      return this.getBatchDetails(bathId).map((data) => {
+      return this.getBatchDetails(bathId).pipe(map((data) => {
         return data.result.response;
-      });
+      }));
     }
   }
   getUpdateBatchDetails(bathId) {
     if (this._updateBatchDetails && bathId === this._updateBatchDetails.identifier) {
-      return Observable.of(this._updateBatchDetails);
+      return observableOf(this._updateBatchDetails);
     } else {
-      return this.getBatchDetails(bathId).map((date) => {
+      return this.getBatchDetails(bathId).pipe(map((date) => {
         return date.result.response;
-      });
+      }));
     }
   }
   enrollToCourse(data) {
@@ -117,12 +120,12 @@ export class CourseBatchService {
   }
   getEnrolledBatchDetails(batchId) {
     if (this._enrolledBatchDetails && this._enrolledBatchDetails.identifier === batchId) {
-      return Observable.of(this._enrolledBatchDetails);
+      return observableOf(this._enrolledBatchDetails);
     } else {
-      return this.getBatchDetails(batchId).map((data) => {
+      return this.getBatchDetails(batchId).pipe(map((data) => {
         this._enrolledBatchDetails = data.result.response;
         return data.result.response;
-      });
+      }));
     }
   }
 }

@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
@@ -8,9 +10,7 @@ import { WorkSpace } from './../../../../workspace/classes/workspace';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+import { Subscription ,  Subject } from 'rxjs';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
@@ -183,8 +183,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       filters: {},
       query: query
     };
-    this.courseBatchService.getUserList(requestBody)
-    .takeUntil(this.unsubscribe)
+    this.courseBatchService.getUserList(requestBody).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((res) => {
       const list = this.formatUserList(res);
       if (type) {
@@ -245,8 +245,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.complete();
   }
   getCourseData() {
-    this.courseConsumptionService.getCourseHierarchy(this.courseId)
-    .takeUntil(this.unsubscribe)
+    this.courseConsumptionService.getCourseHierarchy(this.courseId).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((res) => {
       this.courseCreatedBy = res.createdBy;
     },
@@ -281,8 +281,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       'mentors': _.compact(mentors)
     };
 this.disableSubmitBtn = true;
-this.courseBatchService.createBatch(requestBody)
-    .takeUntil(this.unsubscribe)
+this.courseBatchService.createBatch(requestBody).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((response) => {
       if (users && users.length > 0) {
         this.addUserToBatch(response.result.batchId, users);
@@ -306,8 +306,8 @@ this.courseBatchService.createBatch(requestBody)
       userIds: _.compact(users)
     };
     setTimeout(() => {
-      this.courseBatchService.addUsersToBatch(userRequest, batchId)
-      .takeUntil(this.unsubscribe)
+      this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
@@ -347,8 +347,8 @@ this.courseBatchService.createBatch(requestBody)
     });
     this.disableSubmitBtn = true;
     this.showCreateModal = true;
-    this.createBatchUserForm.valueChanges
-    .takeUntil(this.unsubscribe)
+    this.createBatchUserForm.valueChanges.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(val => {
       this.enableButton();
     });

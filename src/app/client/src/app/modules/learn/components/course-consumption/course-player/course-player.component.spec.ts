@@ -7,7 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
-import {} from 'jasmine';
+import { } from 'jasmine';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
 import { Subject } from 'rxjs/Subject';
@@ -23,10 +23,10 @@ describe('CoursePlayerComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const resourceServiceMockData = {
-    messages : {
-      imsg: { m0027: 'Something went wrong'},
+    messages: {
+      imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error'}
+      emsg: { m0005: 'error' }
     },
     frmelmnts: {
       btn: {
@@ -41,13 +41,17 @@ describe('CoursePlayerComponent', () => {
   class ActivatedRouteStub {
     snapshot = {
       data: {
-        telemetry:  { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+        telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
       }
     };
-    paramsMock = {courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
-    queryParamsMock = {contentId: 'do_112270494168555520130'};
-    queryParams =  Observable.of(this.queryParamsMock);
-    params = {first: () => Observable.of(this.paramsMock)};
+    paramsMock = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160' };
+    queryParamsMock = { contentId: 'do_112270494168555520130' };
+    queryParams = Observable.of(this.queryParamsMock);
+    params = {
+      pipe: (first, merge) => {
+        return this.params.first();
+      }, first: () => Observable.of(this.paramsMock)
+    };
     public changeParams(params) {
       this.paramsMock = params;
     }
@@ -71,15 +75,15 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePlayerComponent ],
-      providers: [ CourseConsumptionService, CourseProgressService, CourseBatchService,
+      declarations: [CoursePlayerComponent],
+      providers: [CourseConsumptionService, CourseProgressService, CourseBatchService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-     ],
-      imports: [ SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot() ],
+      ],
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -87,7 +91,7 @@ describe('CoursePlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-   it('should fetch courseHierarchy from courseConsumptionService', () => {
+  fit('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -102,7 +106,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-   it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
+  fit('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -117,7 +121,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-   it('should get content state if course is enrolled', () => {
+  fit('should get content state if course is enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -135,7 +139,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
   });
 
-   it('should not play the content obtained from url if enrolled course and course is flagged', () => {
+  it('should not play the content obtained from url if enrolled course and course is flagged', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -145,7 +149,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').
-    and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result.content));
+      and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(Observable.of(CourseHierarchyGetMockResponseFlagged.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
@@ -178,11 +182,11 @@ describe('CoursePlayerComponent', () => {
     expect(component.enableContentPlayer).toBeTruthy();
     component.ngOnDestroy();
   });
-   it('should not play content if course is not enrolled', () => {
+  it('should not play content if course is not enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -202,7 +206,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178', courseStatus: 'Unlisted'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178', courseStatus: 'Unlisted' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -223,7 +227,7 @@ describe('CoursePlayerComponent', () => {
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser';
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -244,7 +248,7 @@ describe('CoursePlayerComponent', () => {
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser2';
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -265,7 +269,7 @@ describe('CoursePlayerComponent', () => {
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     const permissionService = TestBed.get(PermissionService);
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -288,7 +292,7 @@ describe('CoursePlayerComponent', () => {
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     const permissionService = TestBed.get(PermissionService);
-    activatedRouteStub.changeParams({courseId: 'do_212347136096788480178'});
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -326,7 +330,7 @@ describe('CoursePlayerComponent', () => {
     enrolledBatch.result.response.status = 1;
     component.ngOnDestroy();
   });
-   it('should update createNoteData on recieving a note data from createEventEmitter', () => {
+  it('should update createNoteData on recieving a note data from createEventEmitter', () => {
     component.createEventEmitter(mockNote);
     expect(component.createNoteData).toEqual(mockNote);
   });

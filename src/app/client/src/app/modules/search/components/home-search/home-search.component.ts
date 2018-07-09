@@ -1,3 +1,5 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
    IContents, ICard, UtilService } from '@sunbird/shared';
 import { SearchService, PlayerService } from '@sunbird/core';
@@ -5,7 +7,6 @@ import { Component, OnInit,  NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IHomeQueryParams } from './../../interfaces';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -186,8 +187,7 @@ export class HomeSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    Observable
-      .combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {

@@ -1,10 +1,12 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import {of as observableOf,  BehaviorSubject ,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { UserService } from './../user/user.service';
 import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
-import { Observable } from 'rxjs/Observable';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash';
 
@@ -47,7 +49,7 @@ export class PageApiService {
    const pageData: any = this.cacheService.get('pageApi' + requestParam.name);
     if (pageData && _.isEmpty(requestParam.filters) && !(_.has(requestParam.sort_by, 'lastUpdatedOn') ||
      _.has(requestParam.sort_by, 'createdOn'))) {
-      return Observable.of(pageData);
+      return observableOf(pageData);
     } else {
       const option: any = {
         url: this.config.urlConFig.URLS.PAGE_PREFIX,
@@ -63,10 +65,10 @@ export class PageApiService {
       if (this.userService.contentChannelFilter) {
         option.data.request.filters.channel = this.userService.contentChannelFilter;
       }
-      return this.learnerService.post(option).map((data) => {
+      return this.learnerService.post(option).pipe(map((data) => {
         this.setData(data, requestParam);
         return { sections : data.result.response.sections };
-      });
+      }));
     }
   }
   setData(data, requestParam) {

@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -5,8 +7,8 @@ import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html',
@@ -71,8 +73,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.getAllBatchDetails();
     }
-    this.courseBatchService.updateEvent
-    .takeUntil(this.unsubscribe)
+    this.courseBatchService.updateEvent.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((data) => {
       this.getAllBatchDetails();
     });
@@ -94,8 +96,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       searchParams.filters.enrollmentType = 'open';
     }
-    this.courseBatchService.getAllBatchDetails(searchParams)
-    .takeUntil(this.unsubscribe)
+    this.courseBatchService.getAllBatchDetails(searchParams).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((data: ServerResponse) => {
       if (data.result.response.content && data.result.response.content.length > 0) {
         this.batchList = data.result.response.content;
@@ -110,8 +112,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     });
   }
   getEnrolledCourseBatchDetails() {
-    this.courseBatchService.getEnrolledBatchDetails(this.batchId)
-    .takeUntil(this.unsubscribe)
+    this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((data: ServerResponse) => {
       this.enrolledBatchInfo = data;
       if (this.enrolledBatchInfo.participant) {
@@ -137,8 +139,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         identifier: this.userList
       }
     };
-    this.courseBatchService.getUserDetails(request)
-    .takeUntil(this.unsubscribe)
+    this.courseBatchService.getUserDetails(request).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((res) => {
       _.forEach(res.result.response.content, (user) =>  {
         this.userNames[user.identifier] = user;

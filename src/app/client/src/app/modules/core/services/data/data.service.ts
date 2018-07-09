@@ -1,3 +1,7 @@
+
+import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+
+import {mergeMap} from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -52,13 +56,13 @@ export class DataService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
 
   /**
@@ -72,13 +76,13 @@ export class DataService {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
 
   /**
@@ -92,13 +96,13 @@ export class DataService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
 
   /**
@@ -111,13 +115,13 @@ export class DataService {
       params: requestParam.param,
       body: requestParam.data
     };
-    return this.http.delete(this.baseUrl + requestParam.url, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.delete(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
 
   /**

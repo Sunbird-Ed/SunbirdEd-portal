@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { IConceptData } from './../../interfaces';
 import { ConceptPickerService } from './../../services';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';

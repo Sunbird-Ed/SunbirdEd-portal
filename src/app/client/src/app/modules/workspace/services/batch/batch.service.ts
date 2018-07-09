@@ -2,9 +2,9 @@ import { Injectable, Input } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchService, SearchParam, LearnerService, ContentService, UserService } from '@sunbird/core';
 import { Ibatch } from './../../interfaces/batch';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
+
+
 import * as _ from 'lodash';
 /**
  * Service for batch
