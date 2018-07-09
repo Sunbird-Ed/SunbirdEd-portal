@@ -1,6 +1,6 @@
 import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { INoteData } from '@sunbird/notes';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -16,6 +16,8 @@ import { Subject } from 'rxjs/Subject';
 })
 
 export class DeleteNoteComponent implements OnDestroy {
+
+  @ViewChild('modal') modal;
   /**
    * This variable contains the details of the note to be deleted.
    */
@@ -93,10 +95,12 @@ export class DeleteNoteComponent implements OnDestroy {
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.deleteEventEmitter.emit(this.deleteNote.id);
+        this.modal.approve();
       },
       (err) => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0032);
+        this.modal.approve();
       }
     );
 
