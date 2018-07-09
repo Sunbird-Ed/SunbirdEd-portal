@@ -7,8 +7,7 @@ import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
   PublicCollectionPlayerComponent
 } from './components';
-import { SignupGuard } from './services/signup-guard/signup.guard';
-import { LandingpageGuard } from './services/landingpage-guard/landingpage.guard';
+import { SignupGuard, LandingpageGuard} from './services';
 
 const routes: Routes = [
   {
