@@ -87,7 +87,8 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
-    this.version = (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5);
+    this.version = (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId, components) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
