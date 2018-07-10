@@ -110,7 +110,7 @@
         "left": {"class":  "ui blue left ribbon label"} }
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
