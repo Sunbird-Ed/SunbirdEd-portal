@@ -24,7 +24,7 @@ describe('UserExperienceViewComponent', () => {
   let parentComp: UserExperienceViewComponent;
   let parentFixture: ComponentFixture<UserExperienceViewComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'section': 'address', 'action': 'edit' }])
+    'params': observableOf({ 'section': 'address', 'action': 'edit' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

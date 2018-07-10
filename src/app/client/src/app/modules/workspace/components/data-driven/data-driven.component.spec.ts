@@ -40,7 +40,7 @@ describe('DataDrivenComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'url': observableOf([{ 'path': 'textbook' }]),
+    'url': observableOf({ 'path': 'textbook' }),
     snapshot: {
       params: [
         {

@@ -35,10 +35,10 @@ describe('ContentEditorComponent', () => {
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': observableOf([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032',
               'state': 'draft'
-            }])
+            })
           }
         }
       ],

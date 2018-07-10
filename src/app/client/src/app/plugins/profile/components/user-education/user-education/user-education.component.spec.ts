@@ -20,7 +20,7 @@ describe('UserEducationComponent', () => {
   let parentComp: UserEducationComponent;
   let parentFixture: ComponentFixture<UserEducationComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'section': 'education', 'action': 'edit' }])
+    'params': observableOf({ 'section': 'education', 'action': 'edit' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

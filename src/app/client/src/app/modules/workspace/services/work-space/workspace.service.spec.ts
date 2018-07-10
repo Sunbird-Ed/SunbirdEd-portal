@@ -19,7 +19,7 @@ describe('WorkSpaceService', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
+    'params': observableOf({ pageNumber: '1' }),
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
