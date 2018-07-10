@@ -151,7 +151,7 @@ describe('FlaggedComponent', () => {
   it('should call inview method for visits data', () => {
     component.telemetryImpression = Response.telemetryData;
     spyOn(component, 'inview').and.callThrough();
-    component.inview(Response.event.inview);
+    component.inview(Response.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });

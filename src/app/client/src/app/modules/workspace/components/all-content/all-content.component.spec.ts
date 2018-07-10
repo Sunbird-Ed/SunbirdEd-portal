@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
-
+import { By } from '@angular/platform-browser';
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -138,9 +138,14 @@ describe('AllContentComponent', () => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-      'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
+        'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
       fixture.detectChanges();
     }));
+  it('should set lastUpdated Date by calling the filter', inject([SearchService], (searchService) => {
+    spyOn(searchService , 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
+    fixture.detectChanges();
+    component.fecthAllContent(9, 1, bothParams);
+    const  fromnow = new DateFilterXtimeAgoPipe();
+    expect(fromnow.transform(Response.searchSuccessWithCountTwo.result.content[0].lastSubmittedOn, null)).toEqual('3 months ago');
+  }));
 });
-
-

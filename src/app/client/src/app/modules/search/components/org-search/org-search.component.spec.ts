@@ -67,7 +67,7 @@ describe('OrgSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call search api', () => {
+  it('should call search api and get success', () => {
     const searchService = TestBed.get(SearchService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(searchService, 'orgSearch').and.callFake(() => Observable.of(Response.successData));
@@ -77,6 +77,16 @@ describe('OrgSearchComponent', () => {
     expect(component.totalCount).toBeDefined();
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeFalsy();
+  });
+
+  it('should call search api and get success with empty result', () => {
+    const searchService = TestBed.get(SearchService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(searchService, 'orgSearch').and.callFake(() => Observable.of(Response.emptySuccessData));
+    component.populateOrgSearch();
+    fixture.detectChanges();
+    expect(component.noResult).toEqual(true);
+    expect(component.showLoader).toEqual(false);
   });
 
   it('should throw error when searchService api is not called and check all variables after error', () => {
@@ -91,16 +101,31 @@ describe('OrgSearchComponent', () => {
 
   it('should call navigateToPage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
-      component.pager = Response.pager;
+      component.pager = { ...Response.pager };
       component.pager.totalPages = 0;
       component.navigateToPage(3);
       fixture.detectChanges();
       expect(component.pageNumber).toEqual(1);
       expect(component.pageLimit).toEqual(configService.appConfig.SEARCH.PAGE_LIMIT);
-  }));
+    }));
 
   it('should call download org method to download a csv file', () => {
+    component.searchList = Response.successData.result.response.content;
     component.downloadOrganisation();
     fixture.detectChanges();
+    expect(component.pageNumber).toEqual(1);
+  });
+
+  it('should call navigateToPage method and page number should be same as passed', () => {
+    component.pager = Response.pager;
+    component.navigateToPage(3);
+    expect(component.pageNumber).toEqual(3);
+  });
+
+  it('should call inview method for visits data', () => {
+    spyOn(component, 'inview').and.callThrough();
+    component.inview(Response.event);
+    expect(component.inview).toHaveBeenCalled();
+    expect(component.inviewLogs).toBeDefined();
   });
 });
