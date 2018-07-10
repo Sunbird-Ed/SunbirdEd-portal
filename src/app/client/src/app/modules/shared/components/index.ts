@@ -11,3 +11,4 @@ export * from './card/card.component';
 export * from './collection-player-metadata/collection-player-metadata.component';
 export * from './browser-compatibility/browser-compatibility.component';
 export * from './qr-code-modal/qr-code-modal.component';
+export * from './redirect/redirect.component';
