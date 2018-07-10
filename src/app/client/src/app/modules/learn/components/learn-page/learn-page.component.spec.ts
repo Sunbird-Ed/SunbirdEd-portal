@@ -89,7 +89,6 @@ describe('LearnPageComponent', () => {
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    console.log(component.queryParams);
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
     courseService.initialize();
     fixture.detectChanges();
