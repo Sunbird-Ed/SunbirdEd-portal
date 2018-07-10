@@ -11,7 +11,7 @@ import { NavigationHelperService, ResourceService, ConfigService, ToasterService
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { mockRes } from './generic-editor.component.spec.data';
 
 describe('GenericEditorComponent', () => {
@@ -35,7 +35,7 @@ describe('GenericEditorComponent', () => {
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf([{
               'contentId': 'do_21247940906829414411032'
             }])
           }

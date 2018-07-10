@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import 'rxjs/add/operator/mergeMap';
+
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { AnnouncementService, UserService, CoursesService, LearnerService, FrameworkService, ContentService,
    PlayerService } from '@sunbird/core';

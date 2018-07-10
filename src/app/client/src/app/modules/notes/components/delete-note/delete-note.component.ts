@@ -1,10 +1,12 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { ILoaderMessage } from './../../../shared/interfaces/loader';
 import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { INoteData } from '@sunbird/notes';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component helps in deleting a selected note.
@@ -100,8 +102,8 @@ export class DeleteNoteComponent implements OnInit, OnDestroy {
       noteId: this.deleteNote.id
     };
 
-    this.notesService.remove(requestData)
-    .takeUntil(this.unsubscribe$)
+    this.notesService.remove(requestData).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;

@@ -2,10 +2,9 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } fro
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 /**
  * Service to fetch user details from server
@@ -140,21 +139,6 @@ export class UserService {
       }
     );
   }
-  /**
-  * method to fetch appId and Ekstep_env from server.
-  */
-  // public getAppIdEnv(): void {
-  //   const url = this.config.appConfig.APPID_EKSTEPENV;
-  //   this.http.get(url).subscribe((res: IAppIdEnv) => {
-  //     this._appId = res.appId;
-  //     this._env = res.ekstep_env;
-  //   },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
-
   /**
    * get method to fetch appId.
    */

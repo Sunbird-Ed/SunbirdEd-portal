@@ -1,3 +1,5 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FlagConentplayerComponent } from './flag-conentplayer.component';
 
@@ -7,7 +9,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import * as mockData from './flag-contentplayer.componemt.spec.data';
 const testData = mockData.mockRes;
 describe('FlagConentplayerComponent', () => {
@@ -54,7 +55,7 @@ describe('FlagConentplayerComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
-    spyOn(playerService, 'getContent').and.returnValue(Observable.throw(testData.errorRes));
+    spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
     component.getContent();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
@@ -67,7 +68,7 @@ describe('FlagConentplayerComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
-    spyOn(playerService, 'getContent').and.returnValue(Observable.of(testData.sucessRes));
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(testData.sucessRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     component.getContent();
     fixture.detectChanges();
@@ -85,7 +86,7 @@ describe('FlagConentplayerComponent', () => {
     const requestData = {
       'request': { }
     };
-  spyOn(contentService, 'post').and.callFake(() => Observable.of(testData.sucessRes));
+  spyOn(contentService, 'post').and.callFake(() => observableOf(testData.sucessRes));
   component.discardContentFlag();
   fixture.detectChanges();
   expect(component.showLoader).toBeTruthy();

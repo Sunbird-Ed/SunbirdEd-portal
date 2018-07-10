@@ -53,7 +53,7 @@ import * as testData from './details.component.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import 'rxjs/add/operator/mergeMap';
+
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import services
 import { ResourceService, ConfigService, DateFormatPipe, BrowserCacheTtlService } from '@sunbird/shared';

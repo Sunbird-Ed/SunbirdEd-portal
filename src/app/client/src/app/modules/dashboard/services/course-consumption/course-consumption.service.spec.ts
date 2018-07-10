@@ -1,10 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 // Import NG core testing module
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-// Import rxjs packages
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Observable';
 // Import service(s)
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
@@ -29,7 +27,7 @@ describe('CourseConsumptionService', () => {
   it('should make api call', inject([CourseConsumptionService, DashboardUtilsService, LearnerService], (service: CourseConsumptionService,
     DashboardUtil: DashboardUtilsService, learnerService: LearnerService) => {
     const params = { data: { identifier: 'do_2123250076616048641482', timePeriod: '7d' } };
-    spyOn(learnerService, 'get').and.callFake(() => Observable.of(testData.successData));
+    spyOn(learnerService, 'get').and.callFake(() => observableOf(testData.successData));
     const apiRes = service.getDashboardData(params);
     expect(service).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +9,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, CoreModule } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule, ToasterService } from '@sunbird/shared';
 import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, QueryList } from '@angular/core';
 import { EditUserEducationComponent } from '../../user-education/edit-user-education/edit-user-education.component';
 import { UserEducationComponent } from './user-education.component';
@@ -19,7 +20,7 @@ describe('UserEducationComponent', () => {
   let parentComp: UserEducationComponent;
   let parentFixture: ComponentFixture<UserEducationComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'education', 'action': 'edit' }])
+    'params': observableOf([{ 'section': 'education', 'action': 'edit' }])
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -74,7 +75,7 @@ describe('UserEducationComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
     parentComp.editChild = new QueryList<EditUserEducationComponent>();
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.data));
     parentComp.editEducation();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
@@ -88,7 +89,7 @@ describe('UserEducationComponent', () => {
     parentComp.addChild = component;
     parentComp.addChild.educationForm = new FormGroup({});
     parentComp.addChild.educationForm = component.educationForm;
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.data));
     spyOn(toasterService, 'error').and.callThrough();
     parentComp.addEducation();
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.fmsg.m0076);

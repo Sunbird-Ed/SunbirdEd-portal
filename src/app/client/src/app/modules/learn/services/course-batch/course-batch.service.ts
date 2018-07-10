@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import * as _ from 'lodash';
 
 @Injectable()
 export class CourseBatchService {
@@ -11,17 +12,16 @@ export class CourseBatchService {
   private _updateBatchDetails: any;
   public updateEvent = new EventEmitter();
   private _enrolledBatchDetails: any;
-  constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
+  private defaultUserList: any;
+  constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
+    public configService: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
     return this.batchSearch(searchParams);
   }
-  getUserDetails(searchParams) {
-    return this.getUserList(searchParams);
-  }
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
+      url: this.configService.urlConFig.URLS.BATCH.GET_BATCHS,
       data: {
         request: {
           filters: requestParam.filters,
@@ -32,27 +32,37 @@ export class CourseBatchService {
     };
     return this.learnerService.post(option);
   }
-  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
-    const option = {
-      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
-      data: {
-        request: {
-          filters: requestParam.filters,
-          query: requestParam.query || ''
+  getUserList(requestParam: SearchParam = {}): Observable<ServerResponse> {
+    if (_.isEmpty(requestParam) && this.defaultUserList) {
+      return observableOf(this.defaultUserList);
+    } else {
+      const request = _.cloneDeep(requestParam);
+      const option = {
+        url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
+        data: {
+          request: {
+            filters: requestParam.filters || {},
+            query: requestParam.query || ''
+          }
         }
+      };
+      const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+      if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+        option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
+      } else if (mentorOrg) {
+        option.data.request.filters['organisations.organisationId'] = mentorOrg;
       }
-    };
-    const mentorOrg = this.user.userProfile.roleOrgMap['COURSE_MENTOR'];
-    if (mentorOrg && mentorOrg.includes(this.user.rootOrgId)) {
-      option.data.request.filters['rootOrgId'] = this.user.rootOrgId;
-    } else if (mentorOrg) {
-      option.data.request.filters['organisations.organisationId'] = mentorOrg;
+      return this.learnerService.post(option).pipe(map((data) => {
+        if (_.isEmpty(requestParam)) {
+          this.defaultUserList = data;
+        }
+        return data;
+      }));
     }
-    return this.learnerService.post(option);
   }
   getBatchDetails(bathId) {
     const option = {
-      url: `${this.config.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
     };
     return this.learnerService.get(option);
   }
@@ -64,25 +74,25 @@ export class CourseBatchService {
   }
   getEnrollToBatchDetails(bathId) {
     if (this._enrollToBatchDetails && bathId === this._enrollToBatchDetails.identifier) {
-      return Observable.of(this._enrollToBatchDetails);
+      return observableOf(this._enrollToBatchDetails);
     } else {
-      return this.getBatchDetails(bathId).map((data) => {
+      return this.getBatchDetails(bathId).pipe(map((data) => {
         return data.result.response;
-      });
+      }));
     }
   }
   getUpdateBatchDetails(bathId) {
     if (this._updateBatchDetails && bathId === this._updateBatchDetails.identifier) {
-      return Observable.of(this._updateBatchDetails);
+      return observableOf(this._updateBatchDetails);
     } else {
-      return this.getBatchDetails(bathId).map((date) => {
+      return this.getBatchDetails(bathId).pipe(map((date) => {
         return date.result.response;
-      });
+      }));
     }
   }
   enrollToCourse(data) {
     const options = {
-      url: this.config.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
+      url: this.configService.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
       data: data
     };
     return this.learnerService.post(options);
@@ -90,7 +100,7 @@ export class CourseBatchService {
 
   createBatch(request) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.CREATE,
+      url: this.configService.urlConFig.URLS.BATCH.CREATE,
       data: {
         request: request
       }
@@ -99,7 +109,7 @@ export class CourseBatchService {
   }
   updateBatch(request) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.UPDATE,
+      url: this.configService.urlConFig.URLS.BATCH.UPDATE,
       data: {
         request: request
       }
@@ -108,7 +118,7 @@ export class CourseBatchService {
   }
   addUsersToBatch(request, batchId) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
+      url: this.configService.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
       data: {
         request: request
       }
@@ -117,12 +127,12 @@ export class CourseBatchService {
   }
   getEnrolledBatchDetails(batchId) {
     if (this._enrolledBatchDetails && this._enrolledBatchDetails.identifier === batchId) {
-      return Observable.of(this._enrolledBatchDetails);
+      return observableOf(this._enrolledBatchDetails);
     } else {
-      return this.getBatchDetails(batchId).map((data) => {
+      return this.getBatchDetails(batchId).pipe(map((data) => {
         this._enrolledBatchDetails = data.result.response;
         return data.result.response;
-      });
+      }));
     }
   }
 }

@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {filter} from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
@@ -172,7 +174,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getUrl() {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       const urlSegment = urlAfterRedirects.url.split('/');
       if (_.includes(urlSegment, 'explore')) {
         this.showExploreHeader = true;

@@ -11,15 +11,15 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeFilterComponent } from './home-filter.component';
 describe('HomeFilterComponent', () => {
   let component: HomeFilterComponent;
   let fixture: ComponentFixture<HomeFilterComponent>;
  const fakeActivatedRoute = {
-  'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ Subjects: ['english'] }])
+  'params': observableOf([{ pageNumber: '1' }]),
+  'queryParams':  observableOf([{ Subjects: ['english'] }])
 };
  class RouterStub {
    navigate = jasmine.createSpy('navigate');
