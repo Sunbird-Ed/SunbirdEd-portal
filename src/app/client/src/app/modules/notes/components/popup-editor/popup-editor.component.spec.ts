@@ -42,7 +42,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'create').and.returnValue(observableOf(response.successResponse));
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -58,7 +57,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'create').and.callFake(() => observableThrowError(response.errResponse));
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
 
@@ -73,7 +71,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'update').and.returnValue(observableOf(response.successResponse));
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -91,7 +88,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'update').and.callFake(() => observableThrowError(response.errResponse));
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });
 
@@ -99,5 +95,16 @@ describe('PopupEditorComponent', () => {
     component.clearNote();
     expect(component.noteData.title).toBe('');
     expect(component.noteData.note).toBe('');
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.updateData = response.selectedNote;
+    component.createNote();
+    component.updateNote();
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

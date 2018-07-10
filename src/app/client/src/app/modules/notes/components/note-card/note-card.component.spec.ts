@@ -68,7 +68,6 @@ describe('NoteCardComponent', () => {
     spyOn(noteService, 'search').and.returnValue(observableOf(response.responseSuccess));
     userService.getUserProfile();
     component.getAllNotes();
-    expect(component.showLoader).toBeFalsy();
     expect(component.notesList).toBeDefined();
   });
 
@@ -84,7 +83,6 @@ describe('NoteCardComponent', () => {
     spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.responseFailed));
     userService.getUserProfile();
     component.getAllNotes();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
   });
 
@@ -133,5 +131,14 @@ describe('NoteCardComponent', () => {
     activatedRouteStub.changeSnapshot(undefined);
     component.viewAllNotes();
     expect(route.navigate).toHaveBeenCalledWith(['/learn/course', 'do_212347136096788480178', 'batch', '01250892550857523234', 'notes']);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.getAllNotes();
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

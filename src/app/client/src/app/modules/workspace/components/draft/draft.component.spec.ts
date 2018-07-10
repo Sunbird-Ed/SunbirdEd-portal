@@ -13,7 +13,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
