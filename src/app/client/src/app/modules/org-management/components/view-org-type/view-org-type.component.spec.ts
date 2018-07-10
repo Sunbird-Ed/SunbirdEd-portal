@@ -21,7 +21,7 @@ describe('ViewOrgTypeComponent', () => {
     let component: ViewOrgTypeComponent;
     let fixture: ComponentFixture<ViewOrgTypeComponent>;
     const fakeActivatedRoute = {
-        'params': observableOf([{ 'pageNumber': 1 }]),
+        'params': observableOf({ 'pageNumber': 1 }),
         snapshot: {
             data: {
                 telemetry: {

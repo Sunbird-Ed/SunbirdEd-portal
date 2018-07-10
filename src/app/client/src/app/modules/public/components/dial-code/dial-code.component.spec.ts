@@ -28,8 +28,8 @@ describe('DialCodeComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'params': observableOf([{ dialCode: '61U24C' }]),
-    'queryParams': observableOf([]),
+    'params': observableOf({ dialCode: '61U24C' }),
+    'queryParams': observableOf(),
     snapshot: {
       data: {
         telemetry: {
