@@ -57,7 +57,7 @@ describe('BatchListComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {
@@ -163,7 +163,10 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
+    spyOn(component, 'updateBatch').and.callThrough();
     spyOn(searchService, 'getUserList').and.callFake(() => observableOf(testData.userlist));
+    component.updateBatch();
+    spyOn(component, 'UserList').and.callThrough();
     const req = {
       'filters': {
         'identifier': [
@@ -171,15 +174,66 @@ describe('BatchListComponent', () => {
         ]
       }
     };
-    component.UserList(req).subscribe(
-      apiResponse => {
-        console.log(apiResponse.result.response.count);
-        expect(apiResponse.responseCode).toBe('OK');
-        expect(apiResponse.result.response.content.length).toEqual(1);
-        expect(apiResponse.result.response.count).toEqual(1);
-      }
-    );
+    component.UserList(req);
     expect(component.showLoader).toBeFalsy();
+    expect(component.batchList).toEqual(testData.updateBatchlist);
+  }));
+
+   it('should call  user search api and throws error ', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));
+    userService._userProfile = testData.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
+    component.fetchBatchList();
+    expect(component.batchList).toBeDefined();
+    expect(component.batchList.length).toBeGreaterThan(1);
+    spyOn(component, 'updateBatch').and.callThrough();
+    spyOn(searchService, 'getUserList').and.callFake(() => observableThrowError({}));
+    component.updateBatch();
+    spyOn(component, 'UserList').and.callThrough();
+    const req = {
+      'filters': {
+        'identifier': [
+          '6d4da241-a31b-4041-bbdb-dd3a898b3f8'
+        ]
+      }
+    };
+    component.UserList(req);
+    expect(component.showError).toBeTruthy();
+    expect(component.noResult).toBeFalsy();
+    expect(component.showLoader).toBeFalsy();
+  }));
+
+
+  it('should call  user search api and returns result count zero', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));
+    userService._userProfile = testData.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
+    spyOn(searchService, 'batchSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
+    component.fetchBatchList();
+    expect(component.batchList).toBeDefined();
+    expect(component.batchList.length).toBeGreaterThan(1);
+    fixture.detectChanges();
+    spyOn(component, 'updateBatch').and.callThrough();
+    spyOn(searchService, 'getUserList').and.callFake(() => observableOf(testData.searchUserlistWithZero));
+    component.updateBatch();
+    spyOn(component, 'UserList').and.callThrough();
+    spyOn(toasterService, 'error').and.callThrough();
+    const req = {
+      'filters': {
+        'identifier': [
+          '6d4da241-a31b-4041-bbdb-dd3a898b3f8'
+        ]
+      }
+    };
+    component.UserList(req);
   }));
   it('should call inview method for visits data', () => {
     const userService = TestBed.get(UserService);
@@ -189,7 +243,7 @@ describe('BatchListComponent', () => {
     userService._userProfile = testData.userSuccess.success;
     userService._userProfile.roleOrgMap = roleOrgMap;
     spyOn(component, 'inview').and.callThrough();
-    component.inview(testData.event.inview);
+    component.inview(testData.event);
     fixture.detectChanges();
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();

@@ -34,10 +34,10 @@ describe('CollectionEditorComponent', () => {
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': observableOf([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032',
               'type': 'collection', 'state': 'draft', 'framework': 'framework'
-            }])
+            })
           }
         }
       ],
@@ -87,6 +87,7 @@ describe('CollectionEditorComponent', () => {
     }));
 
   it('test to navigate to drafts', inject([Router], (router) => () => {
+    spyOn(component, 'closeModal').and.callThrough();
     component.closeModal();
     setTimeout(() => {
       component.navigateToWorkSpace();

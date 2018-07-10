@@ -33,7 +33,7 @@ describe('DefaultTemplateComponent', () => {
     }
 };
   const fakeActivatedRoute = {
-    'url': observableOf([{ 'path': 'textbook' }])
+    'url': observableOf({ 'path': 'textbook' })
   };
 
   beforeEach(async(() => {
@@ -65,6 +65,12 @@ describe('DefaultTemplateComponent', () => {
     component.formFieldProperties = mockData.success;
     component.mapMasterCategoryList('');
     expect(component.categoryList).toBeDefined();
+  });
+   it('should call mapMasterCategoryList with key and return empty object ', () => {
+    component.formFieldProperties = mockData.success;
+    component.mapMasterCategoryList('key');
+    expect(component.categoryList).toBeDefined();
+    expect(component.categoryList).toEqual({});
   });
   it('should call applyDependencyRules', () => {
     const range = mockData.formFieldMetaData;

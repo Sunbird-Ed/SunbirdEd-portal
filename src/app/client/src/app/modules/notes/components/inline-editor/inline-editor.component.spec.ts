@@ -42,7 +42,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'create').and.returnValue(observableOf(response.successResponse));
     userService.getUserProfile();
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -58,7 +57,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'create').and.callFake(() => observableThrowError(response.errResponse));
     userService.getUserProfile();
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
 
@@ -72,7 +70,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'update').and.returnValue(observableOf(response.successResponse));
     userService.getUserProfile();
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -89,7 +86,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'update').and.callFake(() => observableThrowError(response.errResponse));
     userService.getUserProfile();
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });
 
@@ -99,4 +95,14 @@ describe('InlineEditorComponent', () => {
     expect(component.noteData.note).toBe('');
   });
 
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    component.createNote();
+    component.updateNote();
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 });

@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -61,5 +61,28 @@ describe('DeleteNoteComponent', () => {
     component.removeNote();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.removeNote();
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
+  it('should dismiss the modal when remove method is called', () => {
+    const notesService = TestBed.get(NotesService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
+    const modal = fixture.componentInstance.modal;
+    component.deleteNote.id = '01250042257192550484';
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'remove').and.returnValue(observableOf(response.deleteSuccess));
+    userService.getUserProfile();
+    component.removeNote();
+    expect(component.modal).toBeDefined();
   });
 });

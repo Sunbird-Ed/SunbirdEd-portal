@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { UpForReviewComponent } from './up-for-review.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -37,8 +37,8 @@ describe('UpForReviewComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-    'queryParams': observableOf([{ subject: ['english'] }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english'] }),
     snapshot: {
       params: [
         {
@@ -125,7 +125,7 @@ describe('UpForReviewComponent', () => {
   it('should call inview method for visits data', () => {
     component.telemetryImpression = Response.telemetryData;
     spyOn(component, 'inview').and.callThrough();
-    component.inview(Response.event.inview);
+    component.inview(Response.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
@@ -140,6 +140,79 @@ describe('UpForReviewComponent', () => {
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
     expect(returnContentType).toEqual(ContentType);
   }));
+  it('should call setpage method and set proper page number', inject([ConfigService, Router],
+    (configService, route) => {
+      const userService = TestBed.get(UserService);
+      const learnerService = TestBed.get(LearnerService);
+      spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+      userService._userProfile = mockroleOrgMap;
+      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      const sortByOption = 'Created On';
+      const queryParams = {subject: [ 'english', 'odia' ], sortType: 'asc', sort_by: 'Created On'};
+      component.queryParams = queryParams;
+      component.pager = Response.pager;
+      component.pager.totalPages = 8;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
+  }));
+
+  it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
+    (configService, route) => {
+       const userService = TestBed.get(UserService);
+      const learnerService = TestBed.get(LearnerService);
+      spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+      userService._userProfile = mockroleOrgMap;
+      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      component.pager = Response.pager;
+      component.pager.totalPages = 0;
+      component.navigateToPage(3);
+      fixture.detectChanges();
+      expect(component.pageNumber).toEqual(1);
+  }));
+
+  it('should open contentplayer  on list click   ', inject([WorkSpaceService, Router],
+    (workSpaceService, route, http) => {
+      const userService = TestBed.get(UserService);
+      const learnerService = TestBed.get(LearnerService);
+      spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+      userService._userProfile = mockroleOrgMap;
+      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      spyOn(component, 'contentClick').and.callThrough();
+      component.contentClick(Response.upforReviewContentData);
+      component.state = 'upForReview';
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
+  }));
+  it('should call getContentType and return contentType of TextBook based on orgrole', inject([SearchService], (searchService) => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const BookReviewer = {
+      userRoles: ['PUBLIC', 'BOOK_REVIEWER']
+    };
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+    userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    spyOn(component, 'getContentType').and.callThrough();
+    const returnContentType = component.getContentType().contentType;
+    const ContentType = ['TextBook'];
+    expect(returnContentType).toEqual(ContentType);
+  }));
+   it('should call getContentType and return all contentType  based on orgrole', inject([SearchService], (searchService) => {
+    const configservice  = TestBed.get(ConfigService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const BookReviewer = {
+      userRoles: ['PUBLIC', 'BOOK_REVIEWER', 'CONTENT_REVIEWER']
+    };
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
+    userService._userProfile = mockroleOrgMap;
+    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    spyOn(component, 'getContentType').and.callThrough();
+    const returnContentType = component.getContentType().contentType;
+    const ContentType = configservice.appConfig.WORKSPACE.contentType;
+    expect(returnContentType).toEqual(ContentType);
+  }));
+
 });
 
 
