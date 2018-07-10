@@ -86,6 +86,7 @@ describe('CollectionEditorComponent', () => {
     }));
 
   it('test to navigate to drafts', inject([Router], (router) => () => {
+    spyOn(component, 'closeModal').and.callThrough();
     component.closeModal();
     setTimeout(() => {
       component.navigateToWorkSpace();
