@@ -141,6 +141,7 @@ function getLocals(req) {
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   return locals;
