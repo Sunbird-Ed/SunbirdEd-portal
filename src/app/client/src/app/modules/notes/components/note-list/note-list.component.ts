@@ -1,7 +1,7 @@
 import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
-import { Component, OnInit, Pipe, PipeTransform, Input } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Input, OnDestroy } from '@angular/core';
 import { InlineEditorComponent } from '../inline-editor/inline-editor.component';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,8 @@ import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 /**
  * This component contains 2 sub components
  * 1)Inline editor: Provides an editor to create and update notes.
@@ -20,7 +22,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './note-list.component.html',
   styles: [' ::ng-deep .notedec ul li { list-style-type: disc; margin-bottom: 10px; }']
 })
-export class NoteListComponent implements OnInit {
+export class NoteListComponent implements OnInit, OnDestroy {
   /**
    * This variable holds the content and course id.
    */
@@ -119,6 +121,8 @@ export class NoteListComponent implements OnInit {
   * telemetryImpression
   */
   telemetryImpression: IImpressionEventInput;
+  public unsubscribe$ = new Subject<void>();
+
   /**
    * The constructor - Constructor for Note List Component.
    *
@@ -213,7 +217,9 @@ export class NoteListComponent implements OnInit {
     };
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
-      this.noteService.search(requestBody).subscribe(
+      this.noteService.search(requestBody)
+      .takeUntil(this.unsubscribe$)
+      .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
           this.notesList = apiResponse.result.response.note;
@@ -306,5 +312,9 @@ export class NoteListComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

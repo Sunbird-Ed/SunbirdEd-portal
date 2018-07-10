@@ -1,10 +1,12 @@
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { INoteData, IdDetails } from '@sunbird/notes';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component provides the editor popup to create and update notes.
@@ -17,7 +19,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
   encapsulation: ViewEncapsulation.None
 })
 
-export class InlineEditorComponent implements OnInit, AfterViewInit {
+export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * This variable holds the content and course id.
    */
@@ -71,12 +73,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
    */
   selectedIndex: number;
   /**
-   * This variable helps in displaying and hiding page loader.
-   * By default it is assigned a value of 'true'. This ensures that
-   * the page loader is displayed the first time the page is loaded.
-   */
-  showLoader = true;
-  /**
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
@@ -89,6 +85,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
    */
   noteService: NotesService;
 
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * The constructor
@@ -163,9 +160,10 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData).subscribe(
+      this.noteService.create(requestData)
+      .takeUntil(this.unsubscribe$)
+      .subscribe(
         (apiResponse: ServerResponse) => {
-          this.showLoader = false;
           const returnObj = {
             note: requestData.request.note,
             userId: requestData.request.userId,
@@ -180,7 +178,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
           this.createEventEmitter.emit(returnObj);
         },
         (err) => {
-          this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0030);
         }
       );
@@ -199,9 +196,10 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
         updatedBy: this.updateData.userId
       }
     };
-    this.noteService.update(requestData).subscribe(
+    this.noteService.update(requestData)
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (apiResponse: ServerResponse) => {
-        this.showLoader = false;
         this.updateData.updatedDate = new Date().toISOString();
         const returnObj = {
           note: this.updateData.note,
@@ -212,9 +210,12 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
         this.updateEventEmitter.emit(returnObj);
       },
       (err) => {
-        this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0034);
       }
     );
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
