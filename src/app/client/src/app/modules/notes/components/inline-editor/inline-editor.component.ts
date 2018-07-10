@@ -166,18 +166,21 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
       this.noteService.create(requestData).subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
-          const returnObj = {
-            note: requestData.request.note,
-            userId: requestData.request.userId,
-            title: requestData.request.title,
-            courseId: requestData.request.courseId,
-            contentId: requestData.request.contentId,
-            createdBy: requestData.request.createdBy,
-            updatedBy: requestData.request.updatedBy,
-            createdDate: new Date().toISOString(),
-            updatedDate: new Date().toISOString()
-          };
-          this.createEventEmitter.emit(returnObj);
+          if (apiResponse.result.id) {
+            const returnObj = {
+              note: requestData.request.note,
+              userId: requestData.request.userId,
+              id: apiResponse.result.id,
+              title: requestData.request.title,
+              courseId: requestData.request.courseId,
+              contentId: requestData.request.contentId,
+              createdBy: requestData.request.createdBy,
+              updatedBy: requestData.request.updatedBy,
+              createdDate: new Date().toISOString(),
+              updatedDate: new Date().toISOString()
+            };
+            this.createEventEmitter.emit(returnObj);
+          }
         },
         (err) => {
           this.showLoader = false;
