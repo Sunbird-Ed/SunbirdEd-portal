@@ -127,7 +127,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         this.fetchParticipantDetails();
         this.initDropDown();
       }, (err) => {
-        console.log(err);
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
@@ -359,6 +358,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
   }
   private reload() {
     setTimeout(() => {
+      this.batchService.updateEvent.emit({ event: 'update' });
       this.router.navigate(['workspace/content/batches/1']);
     }, 1000);
   }

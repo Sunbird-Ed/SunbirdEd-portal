@@ -7,7 +7,6 @@ import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
 import { Subject } from 'rxjs';
 @Component({
   selector: 'app-batch-details',

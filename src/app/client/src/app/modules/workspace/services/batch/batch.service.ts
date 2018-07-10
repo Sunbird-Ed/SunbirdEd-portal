@@ -1,7 +1,7 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
-import { Injectable, Input } from '@angular/core';
+import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchService, SearchParam, LearnerService, UserService } from '@sunbird/core';
 import { Ibatch } from './../../interfaces';
@@ -29,6 +29,9 @@ export class BatchService {
   batchDetails: any;
 
   defaultUserList: any;
+
+  public updateEvent = new EventEmitter();
+
   /**
    * Default method of OrganisationService class
    *
