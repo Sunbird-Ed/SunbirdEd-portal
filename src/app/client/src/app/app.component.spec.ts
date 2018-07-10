@@ -67,7 +67,6 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const input = fixture.debugElement.query(By.css('input'));
-      const el = input.nativeElement;
       component.version = input.nativeElement.value;
       expect(component.version).toEqual(input.nativeElement.value);
     });
