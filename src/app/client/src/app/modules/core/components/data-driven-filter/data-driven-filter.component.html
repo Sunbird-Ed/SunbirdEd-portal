@@ -1,12 +1,14 @@
 <div>
   <div class="ui stackable grid">
-    <div class="twelve wide column">
+    <div class="twelve wide column cursor-pointer-text">
       <sui-accordion [closeOthers]="false">
-        <sui-accordion-panel [isOpen]="accordionDefaultOpen">
-          <div *ngIf ="isShowFilterLabel" title>
-            <i alt="Filter" class="icon filter"></i>
-            {{resourceService.frmelmnts?.lbl?.filters}}
-            <i class="dropdown icon"></i>
+        <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
+          <div *ngIf ="isShowFilterLabel" title class="cursor-pointer-text">
+            <span (click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
+                <i alt="Filter" class="icon filter"></i>
+                {{resourceService.frmelmnts?.lbl?.filters}}
+                <i class="dropdown icon vertical-align-middle "></i>
+            </span>
           </div>
           <div content>
             <div *ngIf="formFieldProperties && formInputData && showSearchedParam" class="twelve wide column content margin-bottom-15">

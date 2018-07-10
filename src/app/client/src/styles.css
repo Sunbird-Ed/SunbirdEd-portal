@@ -2739,3 +2739,7 @@ iframe.iziModal-iframe {
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
+
+.cursor-pointer-text {
+  cursor: text !important;
+}
