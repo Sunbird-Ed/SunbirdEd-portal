@@ -1,3 +1,5 @@
+
+import {first, filter} from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -96,10 +98,11 @@ export class AppComponent implements OnInit {
         this.initializeLogedInsession();
       });
     } else {
-      this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
+        const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
         fingerPrint2.get((deviceId, components) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.initializeAnonymousSession();
+          this.initializeAnonymousSession(slug);
         });
       });
     }
@@ -124,9 +127,9 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  initializeAnonymousSession() {
-    this.orgDetailsService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
-      .first().subscribe((data) => {
+  initializeAnonymousSession(slug) {
+    this.orgDetailsService.getOrgDetails(slug).pipe(
+      first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService();
         this.initTenantService();

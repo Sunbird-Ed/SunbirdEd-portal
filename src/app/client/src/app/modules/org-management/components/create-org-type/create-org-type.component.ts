@@ -157,15 +157,16 @@ export class CreateOrgTypeComponent implements OnInit {
     this.activatedRoute.url.subscribe(url => {
       if (url[0].path === 'update') {
         this.createForm = false;
+        this.pageUri = 'orgType/update/' + this.orgTypeId;
+        this.pageId = 'update-organization-type';
         this.orgTypeService.orgTypeData$.subscribe((orgTypeList) => {
           if (orgTypeList && orgTypeList.orgTypeData) {
             _.find(orgTypeList.orgTypeData.result.response, (orgList) => {
               this.orgTypeId = this.activatedRoute.snapshot.params.orgId;
               if (orgList.id === this.orgTypeId) {
                 this.orgName = new FormControl(orgList.name);
+                return true;
               }
-              this.pageUri = 'orgType/update/' + this.orgTypeId;
-              this.pageId = 'update-organization-type';
             });
           }
         });
@@ -182,7 +183,7 @@ export class CreateOrgTypeComponent implements OnInit {
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        pageid: this.pageId,
         uri: this.pageUri,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }

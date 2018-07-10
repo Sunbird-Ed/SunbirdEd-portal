@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { PermissionService } from './../services';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 /**
  * Service for Route Guards to restrict the access of route
  * based on roles and permission of logged in user.

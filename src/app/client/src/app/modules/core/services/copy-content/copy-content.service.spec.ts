@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { CopyContentService } from './copy-content.service';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule, UserService, ContentService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import * as testData from './copy-content.service.spec.data';
 
 class RouterStub {
@@ -23,7 +24,7 @@ describe('CopyContentService', () => {
     (service: CopyContentService, contentService: ContentService) => {
       const userService = TestBed.get(UserService);
       userService._userProfile = testData.mockRes.userData;
-      spyOn(contentService, 'post').and.callFake(() => Observable.of(testData.mockRes.successResponse));
+      spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.successResponse));
       service.copyContent(testData.mockRes.contentData).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');

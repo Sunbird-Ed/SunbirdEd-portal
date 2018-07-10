@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CourseHierarchyGetMockResponse } from './../course-player/course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -6,7 +8,6 @@ import {SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -67,13 +68,13 @@ const resourceServiceMockData = {
 class ActivatedRouteStub {
   paramsMock = {courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   queryParamsMock = {contentId: 'do_112270494168555520130'};
-  queryParams =  Observable.of(this.queryParamsMock);
-  params = Observable.of({});
+  queryParams =  observableOf(this.queryParamsMock);
+  params = observableOf({});
   firstChild = {
-    params : Observable.of(this.paramsMock)
+    params : observableOf(this.paramsMock)
   };
   public changeFirstChildParams(params) {
-    this.firstChild.params = Observable.of(params);
+    this.firstChild.params = observableOf(params);
   }
   public changeQueryParams(params) {
     this.paramsMock = params;
@@ -113,9 +114,9 @@ describe('CourseConsumptionPageComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(enrolledCourse.courseSuccessEnroll));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(observableOf(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     component.ngOnDestroy();
@@ -129,7 +130,8 @@ describe('CourseConsumptionPageComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(toasterService, 'error');
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.throw(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getCourseHierarchy')
+    .and.returnValue(observableThrowError(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeUndefined();
     expect(component.toasterService.error).toHaveBeenCalled();
@@ -140,10 +142,10 @@ describe('CourseConsumptionPageComponent', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
     const courseBatchService = TestBed.get(CourseBatchService);
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(enrolledCourse.courseSuccessNotEnroll));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(observableOf(enrolledBatch));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(enrolledCourse.courseSuccessNotEnroll));
     courseService.initialize();
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(observableOf(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     expect(component.router.navigate).toHaveBeenCalledWith(['/learn']);
@@ -154,10 +156,10 @@ describe('CourseConsumptionPageComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(enrolledCourse.courseSuccessEnroll));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(observableOf(enrolledBatch));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(observableOf(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     expect(component.batchId).toBeTruthy();
@@ -170,11 +172,11 @@ describe('CourseConsumptionPageComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     const courseBatchService = TestBed.get(CourseBatchService);
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(Observable.of(enrolledBatch));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(observableOf(enrolledBatch));
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     courseService._enrolledCourseData$.next({err: {}, enrolledCourses: null});
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(Observable.of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(observableOf(CourseHierarchyGetMockResponse.result.content));
     spyOn(toasterService, 'error');
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();

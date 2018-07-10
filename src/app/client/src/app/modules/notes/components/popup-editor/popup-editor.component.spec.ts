@@ -1,10 +1,11 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { IdDetails } from './../../interfaces/notes';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { NotesService } from '../../services';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
@@ -37,9 +38,9 @@ describe('PopupEditorComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(component.createEventEmitter, 'emit');
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.getUserProfile();
-    spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
+    spyOn(notesService, 'create').and.returnValue(observableOf(response.successResponse));
     component.createNote();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
@@ -52,9 +53,9 @@ describe('PopupEditorComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
     userService.getUserProfile();
-    spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
+    spyOn(notesService, 'create').and.callFake(() => observableThrowError(response.errResponse));
     component.createNote();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
@@ -65,10 +66,10 @@ describe('PopupEditorComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     component.updateData = response.selectedNote;
     spyOn(component.updateEventEmitter, 'emit');
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.searchSuccess));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.getUserProfile();
-    spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
+    spyOn(notesService, 'update').and.returnValue(observableOf(response.successResponse));
     component.updateNote();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
@@ -82,10 +83,10 @@ describe('PopupEditorComponent', () => {
     component.updateData = response.selectedNote;
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.searchSuccess));
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw({}));
+    spyOn(notesService, 'search').and.callFake(() => observableThrowError(response.searchSuccess));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
     userService.getUserProfile();
-    spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
+    spyOn(notesService, 'update').and.callFake(() => observableThrowError(response.errResponse));
     component.updateNote();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });

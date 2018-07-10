@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { HomeAnnouncementComponent } from './home-announcement.component';
 import { AnnouncementService } from '@sunbird/core';
@@ -15,7 +16,7 @@ const testData = mockData.mockRes;
 describe('HomeAnnouncementComponent', () => {
   let component: HomeAnnouncementComponent;
   let fixture: ComponentFixture<HomeAnnouncementComponent>;
-  const fakeActivatedRoute = { 'params': Observable.from([{ 'pageNumber': 1 }]) };
+  const fakeActivatedRoute = { 'params': observableOf({ 'pageNumber': 1 }) };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -36,20 +37,17 @@ describe('HomeAnnouncementComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
   it('should call getInboxList function of announcement service', inject([HomeAnnouncementService],
     (homeAnnouncementService: HomeAnnouncementService) => {
       const mockRes = testData.successData;
-      spyOn(homeAnnouncementService, 'getInboxData').and.callFake(() => Observable.of(mockRes));
+      spyOn(homeAnnouncementService, 'getInboxData').and.callFake(() => observableOf(mockRes));
       component.populateHomeInboxData(2, 1);
       expect(component.announcementlist).toBeDefined();
       expect(component.showLoader).toBe(false);
     }));
   it('should throw error', inject([HomeAnnouncementService],
     (homeAnnouncementService: HomeAnnouncementService) => {
-      spyOn(homeAnnouncementService, 'getInboxData').and.callFake(() => Observable.throw({}));
+      spyOn(homeAnnouncementService, 'getInboxData').and.callFake(() => observableThrowError({}));
       component.populateHomeInboxData(2, 1);
       fixture.detectChanges();
       expect(component.showLoader).toBe(false);

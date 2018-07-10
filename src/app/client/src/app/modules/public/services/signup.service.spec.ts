@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { SignupService } from './signup.service';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { mockSignupApiResponse } from './signup.service.spec.data';
 import * as _ from 'lodash';
 
@@ -18,7 +19,7 @@ describe('SignupService', () => {
   it('should call learner service and return response', () => {
     const learnerService = TestBed.get(LearnerService);
     const signupService = TestBed.get(SignupService);
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(mockSignupApiResponse.successResponse));
+    spyOn(learnerService, 'post').and.callFake(() => observableOf(mockSignupApiResponse.successResponse));
     signupService.signup(mockSignupApiResponse.returnValue.request).subscribe((apiResponse) => {
     expect(apiResponse.responseCode).toBe('OK');
     });

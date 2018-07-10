@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {first, takeUntil, map, filter} from 'rxjs/operators';
+import { Subscription ,  Observable ,  Subject } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -8,14 +10,11 @@ import { FileUploaderComponent } from './../file-uploader/file-uploader.componen
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
   IImpressionEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 /**
  * This component helps to create and resend announcement
  */
@@ -202,8 +201,8 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       this.showResendLoader = false;
     } else {
-      this.createService.getAnnouncementTypes()
-      .takeUntil(this.unsubscribe)
+      this.createService.getAnnouncementTypes().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.announcementTypes) {
@@ -307,8 +306,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   saveAnnouncement() {
     this.announcementDetails.target = this.recipientsList;
-    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false)
-    .takeUntil(this.unsubscribe)
+    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).pipe(
+    takeUntil(this.unsubscribe))
       .subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
@@ -351,15 +350,15 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges
-    .takeUntil(this.unsubscribe)
-      .map((value) => {
+    this.announcementForm.valueChanges.pipe(
+    takeUntil(this.unsubscribe),
+      map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
         value.description = value.description.trim();
         return value;
-      })
-      .filter((value) => this.announcementForm.valid)
+      }),
+      filter((value) => this.announcementForm.valid))
       .subscribe((value) => {
         this.enableSelectRecipientsBtn();
       });
@@ -428,8 +427,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   getAnnouncementDetails() {
     this.showResendLoader = true;
-    this.createService.resendAnnouncement(this.identifier)
-    .takeUntil(this.unsubscribe)
+    this.createService.resendAnnouncement(this.identifier).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
@@ -452,7 +451,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Initialize form fields
-    this.userDataSubscription = this.user.userData$.first().subscribe(user => {
+    this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(user => {
       if (user && user.userProfile) {
         this.showAnnouncementForm = false;
         this.initializeFormFields();
@@ -504,8 +503,8 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
-    this.fileUpload.uploadEvent
-    .takeUntil(this.unsubscribe)
+    this.fileUpload.uploadEvent.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });

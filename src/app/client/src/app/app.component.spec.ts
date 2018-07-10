@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import {
@@ -7,7 +9,7 @@ import {
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
-import { Observable } from 'rxjs/Observable';
+import { AppComponent } from './app.component';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -52,10 +54,10 @@ describe('AppComponent', () => {
   xit('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.success));
     // userService.initialize(true);
     const tenantService = TestBed.get(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(Observable.of(mockData.tenantSuccess));
+    spyOn(tenantService, 'get').and.returnValue(observableOf(mockData.tenantSuccess));
     spyOn(document, 'querySelector').and.returnValue({
       setAttribute: () => { }
     });

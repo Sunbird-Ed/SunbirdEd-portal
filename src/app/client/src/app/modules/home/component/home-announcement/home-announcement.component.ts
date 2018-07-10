@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { HomeAnnouncementService } from './../../service/index';
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
@@ -7,8 +9,8 @@ import * as _ from 'lodash';
 
 import { IAnnouncementListData } from '@sunbird/announcement';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component displays announcement inbox card on the home page.
@@ -85,8 +87,8 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
       pageNumber: this.pageNumber,
       limit: this.pageLimit
     };
-    this.homeAnnouncementService.getInboxData(option)
-    .takeUntil(this.unsubscribe)
+    this.homeAnnouncementService.getInboxData(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse) => {
         this.showLoader = false;
@@ -117,8 +119,8 @@ export class HomeAnnouncementComponent implements OnInit, OnDestroy {
 	 */
   readAnnouncement(announcementId: string, read: boolean): void {
     if (read === false) {
-      this.announcementService.readAnnouncement({ announcementId: announcementId })
-      .takeUntil(this.unsubscribe)
+      this.announcementService.readAnnouncement({ announcementId: announcementId }).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (response: ServerResponse) => {
           _.each(this.announcementlist.announcements, (key, index) => {

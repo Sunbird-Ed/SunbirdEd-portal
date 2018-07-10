@@ -1,10 +1,11 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { PageApiService, PlayerService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService} from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -188,8 +189,7 @@ export class ResourceComponent implements OnInit {
    *  to get query parameters
    */
   getQueryParams() {
-    Observable
-      .combineLatest(
+    observableCombineLatest(
         this.activatedRoute.params,
         this.activatedRoute.queryParams,
         (params: any, queryParams: any) => {
