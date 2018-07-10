@@ -190,7 +190,7 @@ module.exports = {
     const message = (telemetryData.edata && telemetryData.edata.message) || ''
     const level = 'api_access'
     const edata = telemetry.logEventData('INFO', level, message, telemetryData.params)
-    console.log('generateApiAccessLogEvent: ', telemtryEventConfig)
+    console.log('generateApiAccessLogEvent: ')
     telemetry.log({
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
