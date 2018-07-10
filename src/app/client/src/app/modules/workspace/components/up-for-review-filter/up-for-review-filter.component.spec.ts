@@ -18,8 +18,8 @@ describe('UpforReviewFilterComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-    'queryParams': observableOf([{ subject: ['english', 'odia'] }])
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

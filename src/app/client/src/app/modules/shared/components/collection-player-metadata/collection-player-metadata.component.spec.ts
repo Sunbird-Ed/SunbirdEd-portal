@@ -13,7 +13,7 @@ describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ collectionId: 'LP_FT_TextBook2' }])
+    'params': observableOf({ collectionId: 'LP_FT_TextBook2' })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

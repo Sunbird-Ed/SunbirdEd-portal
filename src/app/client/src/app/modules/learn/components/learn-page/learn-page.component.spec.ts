@@ -30,8 +30,8 @@ describe('LearnPageComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-  'queryParams':  observableOf([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }),
     snapshot: {
       data: {
         telemetry: {

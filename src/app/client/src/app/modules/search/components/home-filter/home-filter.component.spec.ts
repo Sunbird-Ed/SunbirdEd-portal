@@ -18,8 +18,8 @@ describe('HomeFilterComponent', () => {
   let component: HomeFilterComponent;
   let fixture: ComponentFixture<HomeFilterComponent>;
  const fakeActivatedRoute = {
-  'params': observableOf([{ pageNumber: '1' }]),
-  'queryParams':  observableOf([{ Subjects: ['english'] }])
+  'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ Subjects: ['english'] })
 };
  class RouterStub {
    navigate = jasmine.createSpy('navigate');
