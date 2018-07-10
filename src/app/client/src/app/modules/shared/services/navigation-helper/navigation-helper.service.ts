@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
@@ -36,7 +38,7 @@ export class NavigationHelperService {
    * @memberof NavigationHelperService
    */
   private storeUrlHistory(): void {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
       const queryParams = this.activatedRoute.root.children[this.activatedRoute.root.children.length - 1].snapshot.queryParams;
       const url = urlAfterRedirects.url.split('?')[0];
       let history: UrlHistory;

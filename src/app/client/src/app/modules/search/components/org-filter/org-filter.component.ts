@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService } from '@sunbird/core';
 import { OrgTypeService } from '@sunbird/org-management';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-org-filter',
   templateUrl: './org-filter.component.html',

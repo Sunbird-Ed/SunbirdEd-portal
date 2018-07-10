@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService, CoreModule, BadgesService } from '@sunbird/core';
 import { ProfileBadgeComponent } from './profile-badge.component';
@@ -5,7 +7,6 @@ import { mockRes } from './profile-badge.component.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 describe('ProfileBadgeComponent', () => {
   let component: ProfileBadgeComponent;
@@ -30,7 +31,7 @@ describe('ProfileBadgeComponent', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(BadgesService);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
-    spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(mockRes.badgeList));
+    spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(mockRes.badgeList));
     component.ngOnInit();
     expect(component.badgeArray[0]).toEqual(mockRes.badgeList);
   });

@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { FlagReviewerComponent } from './flag-reviewer.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -7,7 +9,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './flag-reviewer.component.spec.data';
@@ -33,8 +34,8 @@ describe('FlagReviewerComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'] }]),
+    'params': observableOf([{ pageNumber: '1' }]),
+    'queryParams': observableOf([{ subject: ['english'] }]),
     snapshot: {
       params: [
         {
@@ -85,10 +86,10 @@ describe('FlagReviewerComponent', () => {
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.flageReviewerContentData).toBeDefined();
@@ -97,10 +98,10 @@ describe('FlagReviewerComponent', () => {
   it('should throw error', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthFlagReviewerContent(9, 1, bothParams);
     expect(component.flageReviewerContentData.length).toBeLessThanOrEqual(0);
@@ -110,10 +111,10 @@ describe('FlagReviewerComponent', () => {
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.flageReviewerContentData).toBeDefined();

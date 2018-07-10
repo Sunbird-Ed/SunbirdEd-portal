@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';
@@ -5,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, ViewChild, QueryList } from '@angular/core';
 import * as _ from 'lodash';
 import {
@@ -23,7 +24,7 @@ describe('UserExperienceViewComponent', () => {
   let parentComp: UserExperienceViewComponent;
   let parentFixture: ComponentFixture<UserExperienceViewComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'address', 'action': 'edit' }])
+    'params': observableOf([{ 'section': 'address', 'action': 'edit' }])
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -80,7 +81,7 @@ describe('UserExperienceViewComponent', () => {
     parentComp.editChild = new QueryList<EditExperienceComponent>();
     component.experienceForm = new FormGroup({});
     const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.data));
     parentComp.editExperience();
   });
   xit('should call addExperience method', () => {
@@ -95,7 +96,7 @@ describe('UserExperienceViewComponent', () => {
     const addChild = parentFixture.componentInstance.addChild;
     parentComp.addChild = component;
     component.experienceForm = new FormGroup({});
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.data));
     parentComp.addExperience();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
@@ -103,7 +104,7 @@ describe('UserExperienceViewComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.data));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.data));
     parentComp.deleteExperience(mockRes.data);
   });
   it('should thorow error on deleteExperience method', () => {
@@ -112,7 +113,7 @@ describe('UserExperienceViewComponent', () => {
     resourceService.messages = mockRes.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
     const invalidData = {};
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(invalidData));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(invalidData));
     parentComp.deleteExperience(invalidData);
   });
   it('should call checkCurrentJob method', () => {

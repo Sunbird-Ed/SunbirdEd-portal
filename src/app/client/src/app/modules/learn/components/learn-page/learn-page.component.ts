@@ -1,4 +1,7 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {combineLatest as observableCombineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+
+import {takeUntil} from 'rxjs/operators';
 import { PageApiService, CoursesService, ICourses, ISort, PlayerService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
@@ -7,10 +10,7 @@ import {
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 
 /**
  * This component contains 2 sub components
@@ -149,8 +149,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
       filters: _.pickBy(this.filters, value => value.length > 0),
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
-    this.pageSectionService.getPageData(option)
-    .takeUntil(this.unsubscribe)
+    this.pageSectionService.getPageData(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse) => {
         this.noResultMessage = {
@@ -282,8 +282,7 @@ export class LearnPageComponent implements OnInit, OnDestroy {
    *  to get query parameters
    */
   getQueryParams() {
-    Observable
-      .combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {
@@ -291,8 +290,8 @@ export class LearnPageComponent implements OnInit, OnDestroy {
           params: params,
           queryParams: queryParams
         };
-      })
-      .takeUntil(this.unsubscribe)
+      }).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
         this.filters = {};
