@@ -1,3 +1,4 @@
+import { ILoaderMessage } from './../../../shared/interfaces/loader';
 import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
@@ -15,7 +16,7 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./delete-note.component.css']
 })
 
-export class DeleteNoteComponent implements OnDestroy {
+export class DeleteNoteComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modal;
   /**
@@ -45,7 +46,7 @@ export class DeleteNoteComponent implements OnDestroy {
    * By default it is assigned a value of 'true'. This ensures that
    * the page loader is displayed the first time the page is loaded.
    */
-  showLoader = true;
+  showLoader = false;
   /**
    * To display toaster(if any) after each API call.
    */
@@ -56,6 +57,8 @@ export class DeleteNoteComponent implements OnDestroy {
   notesService: NotesService;
 
   public unsubscribe$ = new Subject<void>();
+
+  public loaderMessage: ILoaderMessage;
 
   /**
    * Constructor for Delete Note Component
@@ -74,6 +77,12 @@ export class DeleteNoteComponent implements OnDestroy {
     this.notesService = notesService;
   }
 
+  ngOnInit() {
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0116
+    };
+  }
+
   /**
    * This method redirects the user from the modal.
   */
@@ -85,6 +94,8 @@ export class DeleteNoteComponent implements OnDestroy {
    * This method calls the remove API.
   */
   public removeNote() {
+    this.showLoader = true;
+
     const requestData = {
       noteId: this.deleteNote.id
     };
