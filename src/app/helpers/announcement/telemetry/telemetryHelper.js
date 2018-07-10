@@ -8,7 +8,9 @@ const jwt = require('jsonwebtoken')
 const envHelper = require('./../../environmentVariablesHelper')
 const appId = envHelper.APPID
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 telemtryEventConfig['pdata']['id'] = appId
+telemtryEventConfig['pdata']['ver'] = packageObj.version
 let telemetryData = {}
 
 module.exports = {
@@ -188,7 +190,7 @@ module.exports = {
     const message = (telemetryData.edata && telemetryData.edata.message) || ''
     const level = 'api_access'
     const edata = telemetry.logEventData('INFO', level, message, telemetryData.params)
-    console.log('generateApiAccessLogEvent: ')
+    console.log('generateApiAccessLogEvent: ', telemtryEventConfig)
     telemetry.log({
       edata: edata,
       context: telemetry.getContextData(telemetryData.context),
