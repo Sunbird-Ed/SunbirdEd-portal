@@ -21,7 +21,7 @@ describe('OrganizationUploadComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': observableOf([{ 'redirectUrl': '/profile' }]),
+    'data': observableOf({ 'redirectUrl': '/profile' }),
     snapshot: {
       data: {
         telemetry: {

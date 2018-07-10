@@ -14,10 +14,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
-  events = observableOf([{ id: 1, url: '/play', urlAfterRedirects: '/play' }]);
+  events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
 }
 const fakeActivatedRoute = {
-  'params': observableOf([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   snapshot: {
     data: {
       telemetry: {

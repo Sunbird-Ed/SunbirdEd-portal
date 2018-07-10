@@ -34,12 +34,11 @@ describe('ExploreContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '3' }]),
-    'queryParams': observableOf([{
+    'params': observableOf({ pageNumber: '3' }),
+    'queryParams': observableOf({
       sortType: 'desc', sort_by: 'lastUpdatedOn',
       key: 'hello'
-    }
-    ]),
+    }),
     snapshot: {
       params: {
         slug: 'ap'
