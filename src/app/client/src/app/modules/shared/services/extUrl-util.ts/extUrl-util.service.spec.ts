@@ -6,16 +6,19 @@ import { Router } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockResponse } from './extUrl-util.service.mock.data';
+import { CacheService } from 'ng2-cache-service';
+import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 
 class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
 
-describe('ContentUtilsService', () => {
+describe('External Url UtilsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, Ng2IziToastModule],
-            providers: [ExternalUrlPreviewService, ConfigService, ResourceService, ToasterService,
+            providers: [ExternalUrlPreviewService, ConfigService, ResourceService, ToasterService,   CacheService,
+                BrowserCacheTtlService,
                 { provide: Router, useClass: RouterStub }]
         });
     });

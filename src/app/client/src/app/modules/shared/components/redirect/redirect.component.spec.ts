@@ -1,4 +1,8 @@
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import {
+  ResourceService,
+  ConfigService,
+  BrowserCacheTtlService
+} from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RedirectComponent } from './redirect.component';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -6,23 +10,19 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Observable } from 'rxjs/Observable';
-
 import { RouterTestingModule } from '@angular/router/testing';
+import { CacheService } from 'ng2-cache-service';
 
 describe('RedirectComponent', () => {
   let component: RedirectComponent;
   let fixture: ComponentFixture<RedirectComponent>;
   const fakeActivatedRoute = {
-    // 'params': Observable.from([{ }]),
     snapshot: {
-      params: [
-        {
-          pageNumber: '1',
-        }
-      ],
       data: {
         telemetry: {
-          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          env: 'redirect',
+          pageid: 'learn-redirect',
+          type: 'view',
           object: { type: '', ver: '1.0' }
         }
       }
@@ -36,13 +36,20 @@ describe('RedirectComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RedirectComponent],
-      imports: [ RouterTestingModule, HttpClientTestingModule, TelemetryModule.forRoot()],
-      providers: [ResourceService, ConfigService,
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+        TelemetryModule.forRoot()
+      ],
+      providers: [
+        ResourceService,
+        ConfigService,
+        CacheService,
+        BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
