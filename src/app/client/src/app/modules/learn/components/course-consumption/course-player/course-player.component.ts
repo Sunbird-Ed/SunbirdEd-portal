@@ -1,6 +1,5 @@
 
 import { combineLatest as observableCombineLatest, Observable, Subscription, Subject } from 'rxjs';
-
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService } from '@sunbird/core';
