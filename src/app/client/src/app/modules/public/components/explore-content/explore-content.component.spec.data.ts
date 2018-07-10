@@ -128,7 +128,151 @@ export const Response = {
       'channel': 1
     },
     'facets': undefined
-  }
+  },
+  orgDetailsSuccessData: {
+    'dateTime': null,
+    'preferredLanguage': 'English',
+    'approvedBy': null,
+    'channel': 'AP',
+    'description': 'AP',
+    'updatedDate': null,
+    'addressId': '0123166355817267202',
+    'orgType': 'Training',
+    'provider': null,
+    'orgCode': 'AP',
+    'theme': null,
+    'id': '0123166367624478721',
+    'communityId': null,
+    'isApproved': null,
+    'slug': 'ap',
+    'identifier': '0123166367624478721',
+    'thumbnail': null,
+    'orgName': 'AP',
+    'updatedBy': null,
+    'address': {
+      'country': 'India',
+      'updatedBy': null,
+      'city': 'AP',
+      'updatedDate': null,
+      'userId': null,
+      'zipcode': '123456',
+      'addType': null,
+      'createdDate': '2017-08-23 13:29:09:359+0000',
+      'isDeleted': null,
+      'createdBy': '{{user_id}}',
+      'addressLine1': null,
+      'addressLine2': null,
+      'id': '0123166355817267202',
+      'state': 'AP'
+    },
+    'externalId': null,
+    'isRootOrg': true,
+    'rootOrgId': 'ORG_001',
+    'approvedDate': null,
+    'imgUrl': null,
+    'homeUrl': null,
+    'isDefault': null,
+    'contactDetail': null,
+    'createdDate': '2017-08-23 13:29:09:359+0000',
+    'createdBy': '{{user_id}}',
+    'parentOrgId': null,
+    'hashTagId': '0123166367624478721',
+    'noOfMembers': null,
+    'status': null
+  },
+  inviewData:
+  {
+    'inview':
+      [{
+        'id': 0,
+        'data': {
+          'name': 'Untitled lesson plan',
+          'image': `https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content
+          /do_112485064432762880125/artifact/2_1466487176189.thumb.jpg`,
+          'rating': '0',
+          'action': { 'onImage': { 'eventName': 'onImage' } },
+          'ribbon': {
+            'left': { 'class': 'ui blue left ribbon label' },
+            'right': { 'name': 'LessonPlan', 'class': 'ui black right ribbon label' }
+          },
+          'metaData': {
+            'identifier': 'do_112485064432762880125',
+            'mimeType': 'application/vnd.ekstep.content-collection', 'framework': 'NCF', 'contentType': 'LessonPlan'
+          }
+        }
+      },
+      {
+        'id': 1,
+        'data':
+        {
+          'name': 'mp4 post',
+          'description': 'Test_QA',
+          'rating': '0',
+          'action': { 'onImage': { 'eventName': 'onImage' } },
+          'ribbon': {
+            'left': { 'name': 'cert123', 'class': 'ui blue left ribbon label' },
+            'right': { 'name': 'LessonPlan', 'class': 'ui black right ribbon label' }
+          },
+          'metaData': {
+            'identifier': 'do_112460783576416256145',
+            'mimeType': 'application/vnd.ekstep.content-collection', 'framework': 'NCF', 'contentType': 'LessonPlan'
+          }
+        }
+      }]
+  },
+  facetData:
+    [
+      {
+        'values': [
+          {
+            'name': 'grade 7',
+            'count': 8
+          },
+          {
+            'name': 'class 2',
+            'count': 85
+          }
+        ],
+        'name': 'gradeLevel'
+      },
+      {
+        'values': [
+          {
+            'name': 'chemistry',
+            'count': 2
+          },
+          {
+            'name': 'marathi',
+            'count': 9
+          }
+        ],
+        'name': 'subject'
+      },
+      {
+        'values': [
+          {
+            'name': 'nepali',
+            'count': 1
+          },
+          {
+            'name': 'odia',
+            'count': 12
+          }
+        ],
+        'name': 'medium'
+      },
+      {
+        'values': [
+          {
+            'name': 'state (uttar pradesh)',
+            'count': 7
+          },
+          {
+            'name': 'state (tamil nadu)',
+            'count': 5
+          }
+        ],
+        'name': 'board'
+      }
+    ]
 };
-
-
