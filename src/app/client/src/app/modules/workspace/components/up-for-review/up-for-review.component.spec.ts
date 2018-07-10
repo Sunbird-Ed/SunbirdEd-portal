@@ -37,8 +37,8 @@ describe('UpForReviewComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-    'queryParams': observableOf([{ subject: ['english'] }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english'] }),
     snapshot: {
       params: [
         {

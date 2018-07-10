@@ -20,7 +20,7 @@ describe('EditUserSkillsComponent', () => {
   let component: EditUserSkillsComponent;
   let fixture: ComponentFixture<EditUserSkillsComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

@@ -38,7 +38,7 @@ describe('UserProfileComponent', () => {
     };
 
     const fakeActivatedRoute = {
-        'params': observableOf([{ userId: '3' }]),
+        'params': observableOf({ userId: '3' }),
         snapshot: {
             queryParams: {},
             data: {

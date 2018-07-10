@@ -16,7 +16,7 @@ describe('UserSkillsComponent', () => {
   let component: UserSkillsComponent;
   let fixture: ComponentFixture<UserSkillsComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

@@ -30,8 +30,8 @@ describe('LearnPageComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-  'queryParams':  observableOf([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }),
     snapshot: {
       data: {
         telemetry: {
@@ -89,6 +89,7 @@ describe('LearnPageComponent', () => {
   it('should subscribe to course service', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
+    console.log(component.queryParams);
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
     courseService.initialize();
     fixture.detectChanges();

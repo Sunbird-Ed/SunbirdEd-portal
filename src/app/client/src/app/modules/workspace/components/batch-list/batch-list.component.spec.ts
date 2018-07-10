@@ -57,7 +57,7 @@ describe('BatchListComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {

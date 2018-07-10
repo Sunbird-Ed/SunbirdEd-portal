@@ -33,7 +33,7 @@ describe('DefaultTemplateComponent', () => {
     }
 };
   const fakeActivatedRoute = {
-    'url': observableOf([{ 'path': 'textbook' }])
+    'url': observableOf({ 'path': 'textbook' })
   };
 
   beforeEach(async(() => {

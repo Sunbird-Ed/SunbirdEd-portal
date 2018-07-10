@@ -25,7 +25,7 @@ describe('DraftComponent', () => {
   let component: DraftComponent;
   let fixture: ComponentFixture<DraftComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {
