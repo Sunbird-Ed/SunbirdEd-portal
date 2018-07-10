@@ -41,7 +41,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -57,7 +56,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
 
@@ -72,7 +70,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -90,7 +87,6 @@ describe('PopupEditorComponent', () => {
     userService.getUserProfile();
     spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });
 

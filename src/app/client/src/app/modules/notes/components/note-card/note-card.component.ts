@@ -30,12 +30,6 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
    */
   @Input() createNoteData: INoteData;
   /**
-   * This variable helps in displaying and hiding page loader.
-   * By default it is assigned a value of 'true'. This ensures that
-   * the page loader is displayed the first time the page is loaded.
-   */
-  showLoader = true;
-  /**
    * Helps in displaying and hiding create editor.
    */
   showCreateEditor = false;
@@ -175,12 +169,10 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
-          this.showLoader = false;
           this.notesList = apiResponse.result.response.note;
           this.selectedNote = this.notesList[0];
         },
         (err) => {
-          this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0033);
         }
       );

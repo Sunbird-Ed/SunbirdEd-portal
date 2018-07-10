@@ -73,12 +73,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   selectedIndex: number;
   /**
-   * This variable helps in displaying and hiding page loader.
-   * By default it is assigned a value of 'true'. This ensures that
-   * the page loader is displayed the first time the page is loaded.
-   */
-  showLoader = true;
-  /**
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
@@ -170,7 +164,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
-          this.showLoader = false;
           const returnObj = {
             note: requestData.request.note,
             userId: requestData.request.userId,
@@ -185,7 +178,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           this.createEventEmitter.emit(returnObj);
         },
         (err) => {
-          this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.fmsg.m0030);
         }
       );
@@ -208,7 +200,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
-        this.showLoader = false;
         this.updateData.updatedDate = new Date().toISOString();
         const returnObj = {
           note: this.updateData.note,
@@ -219,7 +210,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateEventEmitter.emit(returnObj);
       },
       (err) => {
-        this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0034);
       }
     );

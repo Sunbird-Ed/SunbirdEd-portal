@@ -67,7 +67,6 @@ describe('NoteCardComponent', () => {
     spyOn(noteService, 'search').and.returnValue(Observable.of(response.responseSuccess));
     userService.getUserProfile();
     component.getAllNotes();
-    expect(component.showLoader).toBeFalsy();
     expect(component.notesList).toBeDefined();
   });
 
@@ -83,7 +82,6 @@ describe('NoteCardComponent', () => {
     spyOn(notesService, 'search').and.callFake(() => Observable.throw(response.responseFailed));
     userService.getUserProfile();
     component.getAllNotes();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
   });
 

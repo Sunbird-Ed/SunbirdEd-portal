@@ -41,7 +41,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'create').and.returnValue(Observable.of(response.successResponse));
     userService.getUserProfile();
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.createEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -57,7 +56,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'create').and.callFake(() => Observable.throw(response.errResponse));
     userService.getUserProfile();
     component.createNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
   });
 
@@ -71,7 +69,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'update').and.returnValue(Observable.of(response.successResponse));
     userService.getUserProfile();
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(component.updateEventEmitter.emit).toHaveBeenCalled();
   });
 
@@ -88,7 +85,6 @@ describe('InlineEditorComponent', () => {
     spyOn(notesService, 'update').and.callFake(() => Observable.throw(response.errResponse));
     userService.getUserProfile();
     component.updateNote();
-    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0034);
   });
 
