@@ -139,7 +139,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         identifier: this.userList
       }
     };
-    this.courseBatchService.getUserDetails(request).pipe(
+    this.courseBatchService.getUserList(request).pipe(
     takeUntil(this.unsubscribe))
     .subscribe((res) => {
       _.forEach(res.result.response.content, (user) =>  {

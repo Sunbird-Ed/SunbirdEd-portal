@@ -37,7 +37,7 @@
               <label>Invite-only</label>
             </div>
           </div>
-          <div class="field" *ngIf="courseCreatedBy === userId">
+          <div class="field" *ngIf="courseCreator">
             <div class="ui radio checkbox">
               <input [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
               <label>Open</label>
@@ -51,7 +51,7 @@
             <div class="ui read-only calendar rangestartAdd margin-bottom-10" id="rangestartAdd">
               <div class="ui input left icon">
                 <i class="calendar icon date-calendar"></i>
-                <input [attr.disabled]="batchDetails.status !== 0 ? true : null" [pickerMinDate]='pickerMinDate' suiDatepicker  formControlName="startDate" [pickerMode]="'date'">
+                <input [attr.disabled]="batchDetails.status !== 0 ? true : null" [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate' suiDatepicker  formControlName="startDate" [pickerMode]="'date'">
               </div>
             </div>
             <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
@@ -108,29 +108,29 @@
             <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
           </ng-template>
           <sui-multi-select [isSearchable]="true" formControlName="users" labelField="name" valueField="id" [optionTemplate]="useroptionTemplate"
-            [options]="userList" #userselect class="selection ">
+            [options]="participantList" #userselect class="selection ">
             <sui-select-option *ngFor="let user of userselect.filteredOptions " [value]="user">
             </sui-select-option>
           </sui-multi-select>
         </div> -->
         <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
             <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users"
+            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
                 ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
                 <input id="userSelList">
                 <i class="dropdown icon"></i>
                 <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
                 <div class="menu">
-                    <div class="item" *ngFor="let user of userList" [attr.data-value]="user.id">
+                    <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
                         <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedUsers.length > 0">
+        <div class="one field" *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0">
             <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
-            <a class="ui label margin-top--5" *ngFor="let user of selectedUsers">
+            <a class="ui label margin-top--5" *ngFor="let user of selectedParticipants">
             <img class="ui right spaced avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> 
             {{user.name}}{{user.otherDetail}}
           </a>

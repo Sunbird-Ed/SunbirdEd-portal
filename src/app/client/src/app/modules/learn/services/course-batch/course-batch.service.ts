@@ -1,12 +1,10 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-
 import {map} from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-
-
-import {SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import * as _ from 'lodash';
 
 @Injectable()
 export class CourseBatchService {
@@ -14,17 +12,16 @@ export class CourseBatchService {
   private _updateBatchDetails: any;
   public updateEvent = new EventEmitter();
   private _enrolledBatchDetails: any;
-  constructor(public searchService: SearchService, public user: UserService, public content: ContentService, public config: ConfigService,
+  private defaultUserList: any;
+  constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
+    public configService: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
     return this.batchSearch(searchParams);
   }
-  getUserDetails(searchParams) {
-    return this.getUserList(searchParams);
-  }
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
+      url: this.configService.urlConFig.URLS.BATCH.GET_BATCHS,
       data: {
         request: {
           filters: requestParam.filters,
@@ -35,27 +32,37 @@ export class CourseBatchService {
     };
     return this.learnerService.post(option);
   }
-  getUserList(requestParam: SearchParam): Observable<ServerResponse> {
-    const option = {
-      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
-      data: {
-        request: {
-          filters: requestParam.filters,
-          query: requestParam.query || ''
+  getUserList(requestParam: SearchParam = {}): Observable<ServerResponse> {
+    if (_.isEmpty(requestParam) && this.defaultUserList) {
+      return observableOf(this.defaultUserList);
+    } else {
+      const request = _.cloneDeep(requestParam);
+      const option = {
+        url: this.configService.urlConFig.URLS.ADMIN.USER_SEARCH,
+        data: {
+          request: {
+            filters: requestParam.filters || {},
+            query: requestParam.query || ''
+          }
         }
+      };
+      const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+      if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
+        option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
+      } else if (mentorOrg) {
+        option.data.request.filters['organisations.organisationId'] = mentorOrg;
       }
-    };
-    const mentorOrg = this.user.userProfile.roleOrgMap['COURSE_MENTOR'];
-    if (mentorOrg && mentorOrg.includes(this.user.rootOrgId)) {
-      option.data.request.filters['rootOrgId'] = this.user.rootOrgId;
-    } else if (mentorOrg) {
-      option.data.request.filters['organisations.organisationId'] = mentorOrg;
+      return this.learnerService.post(option).pipe(map((data) => {
+        if (_.isEmpty(requestParam)) {
+          this.defaultUserList = data;
+        }
+        return data;
+      }));
     }
-    return this.learnerService.post(option);
   }
   getBatchDetails(bathId) {
     const option = {
-      url: `${this.config.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
     };
     return this.learnerService.get(option);
   }
@@ -85,7 +92,7 @@ export class CourseBatchService {
   }
   enrollToCourse(data) {
     const options = {
-      url: this.config.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
+      url: this.configService.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
       data: data
     };
     return this.learnerService.post(options);
@@ -93,7 +100,7 @@ export class CourseBatchService {
 
   createBatch(request) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.CREATE,
+      url: this.configService.urlConFig.URLS.BATCH.CREATE,
       data: {
         request: request
       }
@@ -102,7 +109,7 @@ export class CourseBatchService {
   }
   updateBatch(request) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.UPDATE,
+      url: this.configService.urlConFig.URLS.BATCH.UPDATE,
       data: {
         request: request
       }
@@ -111,7 +118,7 @@ export class CourseBatchService {
   }
   addUsersToBatch(request, batchId) {
     const option = {
-      url: this.config.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
+      url: this.configService.urlConFig.URLS.BATCH.ADD_USERS + '/' + batchId,
       data: {
         request: request
       }

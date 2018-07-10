@@ -69,7 +69,7 @@ describe('BatchDetailsComponent', () => {
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(observableOf(userSearch));
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     component.ngOnInit();
     const searchParams: any = {
       filters: {
@@ -115,7 +115,7 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
-    spyOn(courseBatchService, 'getUserDetails').and.returnValue(observableOf(userSearch));
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     const searchParams: any = {
       filters: {
         status: component.batchStatus.toString(),
