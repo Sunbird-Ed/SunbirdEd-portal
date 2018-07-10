@@ -59,7 +59,7 @@ describe('AppComponent', () => {
     spyOn(document, 'querySelector').and.returnValue({
       setAttribute: () => { }
     });
-    // component.ngOnInit();
+    fixture.detectChanges();
     expect(document.title).toBe(mockData.tenantSuccess.result.titleName);
     expect(document.querySelector).toHaveBeenCalled();
   });
