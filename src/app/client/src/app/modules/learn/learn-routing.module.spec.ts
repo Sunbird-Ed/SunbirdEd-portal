@@ -8,14 +8,13 @@ import { TelemetryModule } from '@sunbird/telemetry';
 describe('Router tests', () => {
   let location: Location;
   let router: Router;
-  let fixture;
   const routes = [
     {
       path: 'learn/redirect',
       component: RedirectComponent
     }
   ];
-  //setup
+  // setup
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -29,8 +28,8 @@ describe('Router tests', () => {
     router.initialNavigation();
   });
 
-  it('fakeAsync works',fakeAsync(() => {
-      let promise = new Promise(resolve => {
+  it('fakeAsync works', fakeAsync(() => {
+      const promise = new Promise(resolve => {
         setTimeout(resolve, 10);
       });
       let done = false;

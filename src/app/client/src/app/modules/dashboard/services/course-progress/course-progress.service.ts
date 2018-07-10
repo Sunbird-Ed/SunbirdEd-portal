@@ -2,9 +2,9 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 // Rxjs
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
+
 import * as _ from 'lodash';
 
 /**

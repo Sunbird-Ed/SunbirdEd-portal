@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { UserService, LearnerService, CoursesService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { CourseBatchService } from './../../../services';
@@ -5,8 +7,8 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-enroll-batch',
@@ -49,8 +51,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           }
       };
 
-      this.courseBatchService.getEnrollToBatchDetails(this.batchId)
-      .takeUntil(this.unsubscribe)
+      this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.batchDetails = data;
         if (this.batchDetails.enrollmentType !== 'open') {
@@ -81,8 +83,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
           identifier: _.keys(this.batchDetails.participant)
         }
       };
-      this.courseBatchService.getUserDetails(request)
-      .takeUntil(this.unsubscribe)
+      this.courseBatchService.getUserList(request).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.batchDetails.participantDetails = res.result.response.content;
         this.showEnrollDetails = true;
@@ -103,8 +105,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy {
       }
     };
 this.disableSubmitBtn = true;
-this.courseBatchService.enrollToCourse(request)
-    .takeUntil(this.unsubscribe)
+this.courseBatchService.enrollToCourse(request).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((data) => {
       this.disableSubmitBtn = true;
       this.fetchEnrolledCourseData();
@@ -115,8 +117,8 @@ this.courseBatchService.enrollToCourse(request)
   }
   fetchEnrolledCourseData() {
     setTimeout(() => {
-      this.coursesService.getEnrolledCourses()
-      .takeUntil(this.unsubscribe)
+      this.coursesService.getEnrolledCourses().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(() => {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0036);

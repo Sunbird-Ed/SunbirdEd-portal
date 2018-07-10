@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, UserService, LearnerService } from '@sunbird/core';
@@ -6,7 +8,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { SuiModule } from 'ng2-semantic-ui';
 import { mockProfileVisibilityData } from './profile-visibility.component.spec.data';
-import { Observable } from 'rxjs/Observable';
 
 describe('ProfileVisibilityComponent', () => {
   let component: ProfileVisibilityComponent;
@@ -41,7 +42,7 @@ describe('ProfileVisibilityComponent', () => {
     resourceService.messages = mockProfileVisibilityData.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
     const value = 'private';
-    spyOn(profileService, 'updateProfileFieldVisibility').and.returnValue(Observable.of(mockProfileVisibilityData.success));
+    spyOn(profileService, 'updateProfileFieldVisibility').and.returnValue(observableOf(mockProfileVisibilityData.success));
     spyOn(toasterService, 'success').and.callThrough();
     component.setProfileFieldLabel(value);
     expect(component.visibility).toBeDefined();
@@ -54,8 +55,8 @@ describe('ProfileVisibilityComponent', () => {
     resourceService.messages = mockProfileVisibilityData.resourceBundle.messages;
     const profileService = TestBed.get(ProfileService);
     const value = [];
-    spyOn(profileService, 'updateProfileFieldVisibility').and.returnValue(Observable.throw(mockProfileVisibilityData.Error));
-    spyOn(learnerService, 'post').and.callFake(() => Observable.throw({}));
+    spyOn(profileService, 'updateProfileFieldVisibility').and.returnValue(observableThrowError(mockProfileVisibilityData.Error));
+    spyOn(learnerService, 'post').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.setProfileFieldLabel(value);
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0048);

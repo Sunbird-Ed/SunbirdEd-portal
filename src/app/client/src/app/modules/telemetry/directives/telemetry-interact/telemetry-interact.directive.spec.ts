@@ -5,7 +5,7 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { eventData } from './telemetry-interact.directive.spec.data';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 

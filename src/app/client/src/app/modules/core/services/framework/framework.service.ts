@@ -5,9 +5,8 @@ import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
   Framework, FrameworkCategorie, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { CacheService } from 'ng2-cache-service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class FrameworkService {
   /**

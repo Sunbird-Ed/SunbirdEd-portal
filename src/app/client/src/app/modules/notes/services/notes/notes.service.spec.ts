@@ -1,5 +1,6 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 import { response } from './notes-service.spec.data';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -19,7 +20,7 @@ describe('NotesService', () => {
     const learnerService = TestBed.get(LearnerService);
     const service = TestBed.get(NotesService);
     const param = { request: { userid: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e', courseid: 'do_2123229899264573441612' } };
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(response.userSuccess));
+    spyOn(learnerService, 'post').and.callFake(() => observableOf(response.userSuccess));
     const apiRes = service.search(param);
     expect(learnerService.post).toHaveBeenCalled();
   });
@@ -41,7 +42,7 @@ describe('NotesService', () => {
         id: {}
       }
     };
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(response.userSuccess));
+    spyOn(learnerService, 'post').and.callFake(() => observableOf(response.userSuccess));
     service.create(param);
     expect(learnerService.post).toHaveBeenCalled();
   });
@@ -57,7 +58,7 @@ describe('NotesService', () => {
       updatedBy: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e',
       updatedDate: 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
     } };
-    spyOn(learnerService, 'patch').and.callFake(() => Observable.of(response.userSuccess));
+    spyOn(learnerService, 'patch').and.callFake(() => observableOf(response.userSuccess));
     const apiRes = service.update(param);
     expect(learnerService.patch).toHaveBeenCalled();
   });
@@ -66,7 +67,7 @@ describe('NotesService', () => {
     const learnerService = TestBed.get(LearnerService);
     const service = TestBed.get(NotesService);
     const param = { noteId: '012455264743841792211' };
-    spyOn(learnerService, 'delete').and.callFake(() => Observable.of(response.userSuccess));
+    spyOn(learnerService, 'delete').and.callFake(() => observableOf(response.userSuccess));
     const apiRes = service.remove(param);
     expect(learnerService.delete).toHaveBeenCalled();
   });

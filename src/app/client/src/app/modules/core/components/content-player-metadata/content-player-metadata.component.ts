@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ConceptPickerService } from './../../services';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';

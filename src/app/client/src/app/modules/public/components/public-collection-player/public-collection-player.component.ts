@@ -1,12 +1,14 @@
+
+import {map, catchError, first, mergeMap} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicPlayerService } from './../../services';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlPreviewService, ConfigService} from '@sunbird/shared';
-import { Subscription } from 'rxjs/Subscription';
+  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlPreviewService, ConfigService
+} from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -123,9 +125,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(catchError((error) => {
       return error;
-    });
+    }));
   }
 
   public playContent(data: any): void {
@@ -175,13 +177,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContent(): void {
-    this.subsrciption = this.route.params
-      .first()
-      .flatMap((params) => {
+    this.subsrciption = this.route.params.pipe(
+      first(),
+      mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.setTelemetryData();
         return this.getCollectionHierarchy(params.collectionId);
-      })
+      }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.loader = false;
@@ -204,12 +206,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId)
-      .map((response) => {
+    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+      map((response) => {
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
-      });
+      }));
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToPreviousUrl('/explore/1');

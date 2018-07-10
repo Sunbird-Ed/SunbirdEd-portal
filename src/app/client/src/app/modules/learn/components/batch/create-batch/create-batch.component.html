@@ -13,14 +13,14 @@
   </div>
 
   <div class="scrolling content" [appTelemetryImpression]="telemetryImpression">
-    <form [formGroup]="createBatchUserForm" class="ui form batchAddUserForm">
-      <div class="one field" [ngClass]="createBatchUserForm.controls['name'].invalid && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine ? 'error': ''">
+    <form [formGroup]="createBatchForm" class="ui form batchAddUserForm">
+      <div class="one field" [ngClass]="createBatchForm.controls['name'].invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine ? 'error': ''">
         <div class="required field">
           <label>{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
           <input type="text" name="name" formControlName="name">
         </div>
       </div>
-      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="createBatchUserForm.controls.name.invalid && createBatchUserForm.controls['name'].errors.required && !createBatchUserForm.controls['name'].pristine">
+      <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
         {{resourceService?.messages?.stmsg?.m0114}}
       </div>
       <div class="one field">
@@ -37,7 +37,7 @@
             <label>Invite-only</label>
           </div>
         </div>
-        <div class="field" *ngIf="courseCreatedBy === userId">
+        <div class="field" *ngIf="courseCreator">
           <div class="ui radio checkbox">
             <input type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
             <label>Open</label>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="two fields">
-        <div class="required field" [ngClass]="createBatchUserForm.controls['startDate'].invalid && createBatchUserForm.controls['startDate'].errors.required && !createBatchUserForm.controls['startDate'].pristine ? 'error': ''">
+        <div class="required field" [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
           <div class="ui read-only calendar rangestartAdd margin-bottom-10" id="rangestartAdd">
             <div class="ui input left icon">
@@ -54,7 +54,7 @@
               <input [pickerMinDate]='pickerMinDate' suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
           </div>
-          <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="createBatchUserForm.controls.startDate.invalid && createBatchUserForm.controls['startDate'].errors.required && !createBatchUserForm.controls['startDate'].pristine">
+          <div class="margin-top-0 margin-bottom-10 ui pointing red basic label below" *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
             {{resourceService?.messages?.stmsg?.m0113}}
           </div>
         </div>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <!-- <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
+      <!-- <div *ngIf="createBatchForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <ng-template let-mentor #optionTemplate>
           <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png'}}"> {{mentor.name}}{{mentor.otherDetail}}
@@ -80,22 +80,21 @@
           </sui-select-option>
         </sui-multi-select>
       </div> -->
-      <div class="one field " *ngIf="createBatchUserForm.value.enrollmentType !== 'open'">
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
-              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-              <input id="mentorSelList">
-              <i class="dropdown icon"></i>
-              <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
-              <div class="menu">
-                  <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-                      <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
-                  </div>
-              </div>
+      <div class="one field " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
+        <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+          <input id="mentorSelList">
+          <i class="dropdown icon"></i>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+          <div class="menu">
+            <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
+            </div>
           </div>
+        </div>
       </div>
 
-      <!-- <div *ngIf="createBatchUserForm.value.enrollmentType !== 'open'" class="one field">
+      <!-- <div *ngIf="createBatchForm.value.enrollmentType !== 'open'" class="one field">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
         <ng-template let-user #useroptionTemplate>
           <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png'}}"> {{user.name}}{{user.otherDetail}}
@@ -106,25 +105,24 @@
           </sui-select-option>
         </sui-multi-select>
       </div> -->
-      <div class="one field " *ngIf="createBatchUserForm.value.enrollmentType !== 'open'">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-          <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="users"
-              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-              <input id="userSelList">
-              <i class="dropdown icon"></i>
-              <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
-              <div class="menu">
-                  <div class="item" *ngFor="let user of userList" [attr.data-value]="user.id">
-                      <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
-                  </div>
-              </div>
+      <div class="one field " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
+        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+          <input id="userSelList">
+          <i class="dropdown icon"></i>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+          <div class="menu">
+            <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
+              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
+            </div>
           </div>
+        </div>
       </div>
 
     </form>
   </div>
   <div class="actions">
-    <button class="ui secondary button" (click)="createBatchUserForm.reset()">Clear</button>
+    <button class="ui secondary button" (click)="createBatchForm.reset()">Clear</button>
     <button class="ui primary button" id="submitbutton" [disabled]="disableSubmitBtn" (click)="createBatch()">Create</button>
   </div>
 </sui-modal>

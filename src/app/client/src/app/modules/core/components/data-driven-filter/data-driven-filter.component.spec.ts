@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
@@ -10,8 +12,7 @@ import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService 
 import { FrameworkService, FormService, ContentService, UserService, LearnerService,
    ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
-import { expand } from 'rxjs/operators/expand';
+import { expand } from 'rxjs/operators';
 import * as mockData from './data-driven-filter.component.spec.data';
 
 describe('DataDrivenFilterComponent', () => {
@@ -34,8 +35,8 @@ describe('DataDrivenFilterComponent', () => {
     }
 };
 const fakeActivatedRoute = {
-  'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
+  'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ subject: ['English'] })
 };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -67,7 +68,7 @@ const fakeActivatedRoute = {
     component.formFieldProperties = mockData.mockRes.formConfigData;
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();
@@ -82,7 +83,7 @@ const fakeActivatedRoute = {
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.throw({err: {error: 'SERVER_ERROR'}}));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({err: {error: 'SERVER_ERROR'}}));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();
@@ -156,7 +157,7 @@ const fakeActivatedRoute = {
     component.formFieldProperties = mockData.mockRes.formConfigData;
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();

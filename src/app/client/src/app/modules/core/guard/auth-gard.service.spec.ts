@@ -4,7 +4,7 @@ import { RouterModule, Router, Routes, ActivatedRoute, ActivatedRouteSnapshot, R
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import 'rxjs/add/operator/map';
+
 import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('AuthGardService', () => {

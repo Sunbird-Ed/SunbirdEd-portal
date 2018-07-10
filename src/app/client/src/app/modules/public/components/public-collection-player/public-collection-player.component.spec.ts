@@ -1,5 +1,6 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -18,9 +19,9 @@ describe('PublicCollectionPlayerComponent', () => {
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
   const fakeActivatedRoute = {
-    params: Observable.of({ collectionId: collectionId }),
+    params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': Observable.from([{ language: ['en'] }]),
+    'queryParams': observableOf([{ language: ['en'] }]),
     snapshot: {
       params: {
         collectionId: collectionId
@@ -68,7 +69,7 @@ describe('PublicCollectionPlayerComponent', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(Observable.of(CollectionHierarchyGetMockResponse));
+    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
     expect(component.loader).toBeFalsy();

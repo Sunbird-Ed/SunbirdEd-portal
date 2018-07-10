@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
 import { CoreModule, OrgDetailsService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -33,7 +34,7 @@ describe('LanguageDropdownComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'queryParams': Observable.from([{ language: 'en' }]),
+    'queryParams': observableOf({ language: 'en' }),
     snapshot: {
       params: {
         slug: 'ap'
@@ -66,7 +67,7 @@ describe('LanguageDropdownComponent', () => {
 
   it('On getting channel id', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => Observable.of(Response.orgResponse.result.response.content[0]));
+    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgResponse.result.response.content[0]));
     fixture.detectChanges();
     component.getChannelId();
     expect(component.channelId).toBe('0123166374296453124');

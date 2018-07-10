@@ -1,10 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 // NG core modules
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-// Rxjs packages
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Observable';
 // Services
 import { OrganisationService } from './organization.service';
 import { LearnerService } from '@sunbird/core';
@@ -31,7 +29,7 @@ describe('OrganisationService', () => {
       DashboardUtil: DashboardUtilsService, learnerService: LearnerService) => {
       const params = { data: { identifier: 'do_2123250076616048641482', timePeriod: '7d' }, dataset: 'ORG_CREATION' };
       const mockResponse =  testData.creationSuccessData;
-      spyOn(learnerService, 'get').and.callFake(() => Observable.of(mockResponse));
+      spyOn(learnerService, 'get').and.callFake(() => observableOf(mockResponse));
       service.getDashboardData(params);
       expect(service).toBeTruthy();
       expect(learnerService.get).toHaveBeenCalled();

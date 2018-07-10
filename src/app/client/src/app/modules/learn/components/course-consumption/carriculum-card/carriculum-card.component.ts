@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 @Component({
