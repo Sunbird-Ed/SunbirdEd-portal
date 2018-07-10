@@ -173,7 +173,6 @@ describe('BatchListComponent', () => {
     };
     component.UserList(req).subscribe(
       apiResponse => {
-        console.log(apiResponse.result.response.count);
         expect(apiResponse.responseCode).toBe('OK');
         expect(apiResponse.result.response.content.length).toEqual(1);
         expect(apiResponse.result.response.count).toEqual(1);
