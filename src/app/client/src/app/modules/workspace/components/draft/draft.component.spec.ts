@@ -12,7 +12,6 @@ import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { Observable } from 'rxjs/Observable';
-
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
