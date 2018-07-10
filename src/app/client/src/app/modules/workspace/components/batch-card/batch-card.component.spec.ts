@@ -78,6 +78,9 @@ describe('BatchCardComponent', () => {
     component.batch = Response.successData;
     const batchService = TestBed.get(BatchService);
     batchService.batchDetails = Response.successData;
+    spyOn(batchService, 'setBatchData').and.callThrough();
+    batchService.setBatchData(Response.successData);
+    expect(batchService.setBatchData).toHaveBeenCalledWith(Response.successData);
     expect(route.navigate).toHaveBeenCalledWith(['workspace/content/update/batch', Response.successData.identifier]);
   }));
 });

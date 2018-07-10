@@ -162,9 +162,9 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
-    spyOn(component, 'upDateBatch').and.callThrough();
+    spyOn(component, 'updateBatch').and.callThrough();
     spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(testData.userlist));
-    component.upDateBatch();
+    component.updateBatch();
     spyOn(component, 'UserList').and.callThrough();
     const req = {
       'filters': {
@@ -188,9 +188,9 @@ describe('BatchListComponent', () => {
     component.fetchBatchList();
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
-    spyOn(component, 'upDateBatch').and.callThrough();
+    spyOn(component, 'updateBatch').and.callThrough();
     spyOn(searchService, 'getUserList').and.callFake(() => Observable.throw({}));
-    component.upDateBatch();
+    component.updateBatch();
     spyOn(component, 'UserList').and.callThrough();
     const req = {
       'filters': {
@@ -220,9 +220,9 @@ describe('BatchListComponent', () => {
     expect(component.batchList).toBeDefined();
     expect(component.batchList.length).toBeGreaterThan(1);
     fixture.detectChanges();
-    spyOn(component, 'upDateBatch').and.callThrough();
+    spyOn(component, 'updateBatch').and.callThrough();
     spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(testData.searchUserlistWithZero));
-    component.upDateBatch();
+    component.updateBatch();
     spyOn(component, 'UserList').and.callThrough();
     spyOn(toasterService, 'error').and.callThrough();
     const req = {

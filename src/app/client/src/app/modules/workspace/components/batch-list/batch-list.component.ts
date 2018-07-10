@@ -203,7 +203,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
-          this.upDateBatch();
+          this.updateBatch();
         } else {
           this.showError = false;
           this.noResult = true;
@@ -239,7 +239,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   /**
   * processing batch for userlist to make an api call for userlist .
   */
-  public upDateBatch() {
+  public updateBatch() {
     let userList = [];
     const participants = [];
     const userName = [];
