@@ -22,7 +22,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 const fakeActivatedRoute = {
-  'params': observableOf([{ 'pageNumber': 1 }]),
+  'params': observableOf({ 'pageNumber': 1 }),
   snapshot: {
     params: [
       {

@@ -18,7 +18,7 @@ describe('UserSummaryComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

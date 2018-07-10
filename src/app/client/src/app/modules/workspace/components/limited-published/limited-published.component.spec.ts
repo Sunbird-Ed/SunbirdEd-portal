@@ -28,7 +28,7 @@ describe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
   let fixture: ComponentFixture<LimitedPublishedComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {

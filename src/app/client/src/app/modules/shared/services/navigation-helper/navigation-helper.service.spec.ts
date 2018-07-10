@@ -12,7 +12,7 @@ class RouterStub {
   // ]);
 }
 const fakeActivatedRoute = {
-  'params': observableOf([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   'root': {
     children: [{snapshot: {
       queryParams: {}
