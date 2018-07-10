@@ -23,7 +23,7 @@ describe('CreateOrgTypeComponent', () => {
   let fixture: ComponentFixture<CreateOrgTypeComponent>;
 
   class ActivatedRouteStub {
-    url = observableOf({ path: 'update' });
+    url = observableOf([{ path: 'update' }]);
     snapshot = {
       params: { orgId: '01250975059541196818' },
       data: {
@@ -33,7 +33,7 @@ describe('CreateOrgTypeComponent', () => {
       }
     };
     public changeUrl(params) {
-      this.url = observableOf({ path: params });
+      this.url = observableOf([{ path: params }]);
     }
   }
   class RouterStub {
