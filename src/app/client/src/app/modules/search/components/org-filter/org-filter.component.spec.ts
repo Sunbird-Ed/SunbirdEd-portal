@@ -24,8 +24,8 @@ describe('OrgFilterComponent', () => {
   let parentcomponent: OrgSearchComponent;
   let parentfixture: ComponentFixture<OrgSearchComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([{ pageNumber: '1' }]),
-    'queryParams': observableOf([{ OrgType: ['012352495007170560157'] }])
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ OrgType: ['012352495007170560157'] })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

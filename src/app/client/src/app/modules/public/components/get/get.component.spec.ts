@@ -13,8 +13,8 @@ describe('GetComponent', () => {
   let component: GetComponent;
   let fixture: ComponentFixture<GetComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf([]),
-    'queryParams': observableOf([]),
+    'params': observableOf(),
+    'queryParams': observableOf(),
     snapshot: {
       data: {
         telemetry: {
