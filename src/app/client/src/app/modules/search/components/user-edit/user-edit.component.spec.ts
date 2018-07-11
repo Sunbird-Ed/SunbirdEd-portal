@@ -44,8 +44,8 @@ describe('UserEditComponent', () => {
         }
       }
     },
-    'url': observableOf([{ 'path': 'search/Users/1' }]),
-    'params': observableOf([{ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' }])
+    'url': observableOf({ 'path': 'search/Users/1' }),
+    'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
   };
 
   beforeEach(async(() => {

@@ -14,8 +14,8 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 const fakeActivatedRoute = {
-  'params': observableOf([{ courseId: 'do_1125083286221291521153' }]),
-  'queryParams': observableOf([{}])
+  'params': observableOf({ courseId: 'do_1125083286221291521153' }),
+  'queryParams': observableOf({})
 };
 const resourceServiceMockData = {
   messages : {

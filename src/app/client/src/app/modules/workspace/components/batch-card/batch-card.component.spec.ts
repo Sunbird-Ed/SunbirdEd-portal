@@ -81,8 +81,9 @@ describe('BatchCardComponent', () => {
     spyOn(batchService, 'setBatchData').and.callThrough();
     batchService.setBatchData(Response.successData);
     expect(batchService.setBatchData).toHaveBeenCalledWith(Response.successData);
-    expect(route.navigate).toHaveBeenCalledWith(['workspace/content/update/batch', Response.successData.identifier]);
-  }));
+    expect(route.navigate).toHaveBeenCalledWith(['update/batch', Response.successData.identifier],
+     {relativeTo: component.activatedRoute});
+    }));
 });
 
 
