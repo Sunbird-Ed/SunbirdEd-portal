@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TelemetryImpressionDirective } from './telemetry-impression.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-impression.directive.spec.data';
-import { Observable } from 'rxjs/Observable';
 describe('TelemetryImpressionDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -13,7 +14,7 @@ describe('TelemetryImpressionDirective', () => {
   it('should take input and generate the telemetry impression event', () => {
     const telemetryService = TestBed.get(TelemetryService);
     const directive = new TelemetryImpressionDirective(telemetryService);
-    spyOn(telemetryService, 'impression').and.callFake(() => Observable.of(eventData.inputData));
+    spyOn(telemetryService, 'impression').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryImpression = eventData.inputData;
     directive.ngOnInit();
     expect(directive.appTelemetryImpression).toBeDefined();

@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
@@ -10,7 +12,6 @@ import { EditorService } from './../../services';
 import { ResourceService, SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
 import { mockFrameworkData } from './data-driven.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 
@@ -39,7 +40,7 @@ describe('DataDrivenComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'url': Observable.of([{ 'path': 'textbook' }]),
+    'url': observableOf([{ 'path': 'textbook' }]),
     snapshot: {
       params: [
         {
@@ -126,7 +127,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
@@ -144,7 +145,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
@@ -161,7 +162,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
@@ -178,7 +179,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.returnValue(Observable.of(mockFrameworkData.createCollectionData));
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
@@ -193,7 +194,7 @@ describe('DataDrivenComponent', () => {
   it('should call getFormConfig api', () => {
     const formService = TestBed.get(FormService);
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockFrameworkData.formSuccess));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockFrameworkData.formSuccess));
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
     expect(componentParent.getFormConfig).toHaveBeenCalled();
@@ -235,7 +236,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.callFake(() => Observable.throw({}));
+    spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.createContent();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0078);
@@ -256,7 +257,7 @@ describe('DataDrivenComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     spyOn(componentParent, 'createContent').and.callThrough();
     componentParent.generateData(componentParent.formData.formInputData);
-    spyOn(editorService, 'create').and.callFake(() => Observable.throw({}));
+    spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.createContent();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);

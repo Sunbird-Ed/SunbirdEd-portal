@@ -1,7 +1,8 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicPlayerService } from './../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
-import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
@@ -13,10 +14,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
-  events = Observable.from([{ id: 1, url: '/play', urlAfterRedirects: '/play' }]);
+  events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
 }
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   snapshot: {
     data: {
       telemetry: {
@@ -70,7 +71,7 @@ describe('PublicContentPlayerComponent', () => {
     serverRes.result.result.content.status = 'Live';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(playerService, 'getContent').and.returnValue(Observable.of(serverRes.result));
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
     component.ngOnInit();
     expect(component.playerConfig).toBeTruthy();
   });
@@ -81,7 +82,7 @@ describe('PublicContentPlayerComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(playerService, 'getContent').and.returnValue(Observable.throw(serverRes.failureResult));
+    spyOn(playerService, 'getContent').and.returnValue(observableThrowError(serverRes.failureResult));
     fixture.detectChanges();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();

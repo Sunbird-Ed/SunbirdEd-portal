@@ -1,9 +1,12 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, } from '@sunbird/shared';
 import { UserService, AnnouncementService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+
+
 import * as _ from 'lodash';
 
 @Injectable()
@@ -66,16 +69,16 @@ export class CreateService {
       }
     };
 
-    return this.announcementService.post(option)
-      .map((data: ServerResponse) => {
+    return this.announcementService.post(option).pipe(
+      map((data: ServerResponse) => {
         if (data.result.announcementTypes) {
           this._announcementTypes = data.result.announcementTypes;
         }
         return data;
-      })
-      .catch((err) => {
-        return Observable.throw(err);
-      });
+      }),
+      catchError((err) => {
+        return observableThrowError(err);
+      }), );
   }
 
   /**

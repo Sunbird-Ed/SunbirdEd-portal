@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
@@ -9,8 +11,8 @@ import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 /**
  * This component contains 2 sub components
  * 1)Inline editor: Provides an editor to create and update notes.
@@ -217,8 +219,8 @@ export class NoteListComponent implements OnInit, OnDestroy {
     };
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
-      this.noteService.search(requestBody)
-      .takeUntil(this.unsubscribe$)
+      this.noteService.search(requestBody).pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;

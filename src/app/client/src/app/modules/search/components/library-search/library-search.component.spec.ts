@@ -1,10 +1,11 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -33,8 +34,8 @@ describe('LibrarySearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    'params': observableOf({ pageNumber: '3' }),
+    'queryParams': observableOf({ sortType: 'desc', sort_by : 'lastUpdatedOn'}),
     snapshot: {
       data: {
         telemetry: {
@@ -61,7 +62,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('should subscribe to searchService', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.queryParams = mockQueryParma;
     const filters = {board: ['NCERT'], gradeLevel: ['KG']};
@@ -75,7 +76,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     const filters = {board: ['NCERT'], gradeLevel: ['KG']};
     component.populateContentSearch(filters);
@@ -85,7 +86,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.noResult));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;

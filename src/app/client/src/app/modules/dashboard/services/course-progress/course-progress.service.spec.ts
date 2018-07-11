@@ -1,6 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService, SharedModule } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { TestBed, inject } from '@angular/core/testing';
 import { CourseProgressService } from './course-progress.service';
@@ -17,7 +18,7 @@ describe('CourseProgressService', () => {
   it('should call batch API', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(Observable.of(testData.mockRes.getMyBatchesList));
+    spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.getMyBatchesList));
     const params = {
       data: {
         'request': {
@@ -39,7 +40,7 @@ describe('CourseProgressService', () => {
   it('should call get Dashboard API', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(Observable.of(testData.mockRes.courseProgressData.getBatchDetails));
+    spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.courseProgressData.getBatchDetails));
     const params = {
       data: {
         'period': '7d'
@@ -56,7 +57,7 @@ describe('CourseProgressService', () => {
   it('should call Download API', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(Observable.of(testData.mockRes.downloadDashboardReport.getSuccessData));
+    spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.downloadDashboardReport.getSuccessData));
     const params = {
       data: {
         'period': '7d',

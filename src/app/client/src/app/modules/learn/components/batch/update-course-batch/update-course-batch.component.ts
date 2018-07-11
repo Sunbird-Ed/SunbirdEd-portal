@@ -1,65 +1,65 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 
+import * as moment from 'moment';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html',
   styleUrls: ['./update-course-batch.component.css']
 })
-export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
 
-  @ViewChild('updateBatchModal') updateBatchModal;
+  @ViewChild('updateBatchModal') private updateBatchModal;
   /**
   * batchId
   */
-  batchId: string;
-  showUpdateModal = false;
-  disableSubmitBtn = false;
-  courseId: string;
-  orgIds: Array<string>;
-  selectedUsers: any = [];
-  selectedMentors: any = [];
-  userSearchTime: any;
-  /**
-  * courseCreatedBy
-  */
-  courseCreatedBy: string;
-  /**
-  * userList for mentorlist
-  */
-  userList = [];
+  private batchId: string;
 
+  public showUpdateModal = false;
+
+  public disableSubmitBtn = false;
+
+  private courseId: string;
+
+  public selectedParticipants: any = [];
+
+  public selectedMentors: any = [];
+
+  private userSearchTime: any;
+  /**
+  * courseCreator
+  */
+  public courseCreator = false;
+  /**
+  * participantList for users
+  */
+  public participantList = [];
   /**
   * batchDetails for form
   */
-  batchDetails: any;
+  private batchDetails: any;
   /**
-  * menterList for mentors in the batch
+  * mentorList for mentors in the batch
   */
-  mentorList: Array<any> = [];
-
-  /**
-  * userId for checking the enrollment type.
-  */
-  userId: string;
+  public mentorList: Array<any> = [];
   /**
    * form group for batchAddUserForm
   */
-  batchUpdateForm: FormGroup;
+  public batchUpdateForm: FormGroup;
   /**
   * To navigate to other pages
   */
-  router: Router;
+  public router: Router;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to update batch  component
@@ -84,14 +84,15 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   /**
 	 * telemetryImpression object for update batch page
 	*/
-  telemetryImpression: IImpressionEventInput;
-  pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
-  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+  public telemetryImpression: IImpressionEventInput;
 
+  public pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+  public pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
   public courseConsumptionService: CourseConsumptionService;
+
   public unsubscribe = new Subject<void>();
-  userDataSubscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -119,111 +120,111 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
    * Initialize form fields and getuserlist
   */
   ngOnInit() {
-    this.userDataSubscription = this.userService.userData$.subscribe(userdata => {
-      if (userdata && !userdata.err) {
-        this.userId = userdata.userProfile.userId;
-        this.orgIds = userdata.userProfile.organisationIds;
-        this.getUserList();
-      }
-    });
-    Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
-      (params, parentParams) => { return { ...params, ...parentParams };
-    })
-    .takeUntil(this.unsubscribe)
-    .subscribe((params) => {
-        this.batchId = params.batchId;
-        this.courseId = params.courseId;
-
-        // Create the telemetry impression event for update batch page
-        this.telemetryImpression = {
-          context: {
-            env: this.activatedRoute.snapshot.data.telemetry.env
-          },
-          edata: {
-            type: this.activatedRoute.snapshot.data.telemetry.type,
-            pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-            uri: '/update/batch/' + this.batchId
-          },
-          object: {
-            id: this.batchId,
-            type: this.activatedRoute.snapshot.data.telemetry.object.type,
-            ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-            rollup: {
-              l1: this.courseId,
-              l2: this.batchId
-            }
-          }
-        };
-
-        this.getCourseData();
-        this.getBatchDetails();
-    });
-  }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      $('#users').dropdown({
-        forceSelection: false,
-        fullTextSearch: true,
-        onAdd: () =>  {
+    combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
+      (params, parentParams) => ({ ...params, ...parentParams })).pipe(
+        mergeMap((params) => {
+          this.batchId = params.batchId;
+          this.courseId = params.courseId;
+          this.setTelemetryImpressionData();
+          return this.fetchBatchDetails();
+        }),
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe((data) => {
+        this.showUpdateModal = true;
+        if (data.courseDetails.createdBy === this.userService.userid) {
+          this.courseCreator = true;
         }
-      });
-      $('#mentors').dropdown({
-        fullTextSearch: true,
-        forceSelection: false,
-        onAdd: () =>  {
+        this.batchDetails = data.batchDetails;
+        const userList = this.sortUsers(data.userDetails);
+        this.participantList = userList.participantList;
+        this.mentorList = userList.mentorList;
+        this.initializeUpdateForm();
+        this.fetchParticipantDetails();
+        this.initDropDown();
+      }, (err) => {
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0054);
         }
+        this.redirect();
       });
-      $('#users input.search').on('keyup', (e) =>  {
-        this.getUserListWithQuery($('#users input.search').val(), 'userList');
-      });
-      $('#mentors input.search').on('keyup', (e) => {
-        this.getUserListWithQuery($('#mentors input.search').val(), 'mentorList');
-      });
-    }, 1000);
   }
-  getUserListWithQuery(query, type) {
-    if (this.userSearchTime) {
-      clearTimeout(this.userSearchTime);
-    }
-    this.userSearchTime = setTimeout(() => {
-      this.getUserList(query, type);
-    }, 1000);
+  private fetchBatchDetails() {
+    return combineLatest(
+      this.courseBatchService.getUserList(),
+      this.courseConsumptionService.getCourseHierarchy(this.courseId),
+      this.courseBatchService.getUpdateBatchDetails(this.batchId),
+      (userDetails, courseDetails, batchDetails) => ({ userDetails, courseDetails, batchDetails })
+    );
   }
   /**
-  *  api call to get user list
+  * initializes form fields and apply field level validation
   */
-  getUserList(query: string = '', type?) {
-    const requestBody = {
-      filters: {},
-      query: query
-    };
-    this.courseBatchService.getUserList(requestBody)
-    .takeUntil(this.unsubscribe)
-    .subscribe((res) => {
-      const list = this.formatUserList(res);
-      if (type) {
-        if (type === 'userList') {
-          this.userList = list.userList;
-        } else {
-          this.mentorList = list.mentorList;
-        }
-        this[type] = list[type];
+  private initializeUpdateForm(): void {
+    const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
+    this.batchUpdateForm = new FormGroup({
+      name: new FormControl(this.batchDetails.name, [Validators.required]),
+      description: new FormControl(this.batchDetails.description),
+      enrollmentType: new FormControl(this.batchDetails.enrollmentType, [Validators.required]),
+      startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
+      endDate: new FormControl(endDate),
+      mentors: new FormControl(),
+      users: new FormControl()
+    });
+    this.batchUpdateForm.valueChanges.subscribe(val => {
+      if (this.batchUpdateForm.status === 'VALID') {
+        this.disableSubmitBtn = false;
       } else {
-        this.userList = list.userList;
-        this.mentorList = list.mentorList;
-      }
-
-    },
-    (err) => {
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        this.disableSubmitBtn = true;
       }
     });
   }
-  formatUserList(res) {
-    const userList = [];
+  /**
+  * fetch mentors and participant details
+  */
+  private fetchParticipantDetails() {
+    if (this.batchDetails.participant || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      const request = {
+        filters: {
+          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
+        }
+      };
+      this.courseBatchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
+        .subscribe((res) => {
+          this.processParticipantDetails(res);
+        }, (err) => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+          }
+          this.redirect();
+        });
+    }
+  }
+  private processParticipantDetails(res) {
+    const users = this.sortUsers(res);
+    const participantList = users.participantList;
+    const mentorList = users.mentorList;
+    _.forEach(this.batchDetails.participant, (value, key) => {
+      const user = _.find(participantList, ['id', key]);
+      if (user) {
+        this.selectedParticipants.push(user);
+      }
+    });
+    _.forEach(this.batchDetails.mentors, (value, key) => {
+      const mentor = _.find(mentorList, ['id', value]);
+      if (mentor) {
+        this.selectedMentors.push(mentor);
+      }
+    });
+    this.selectedParticipants = _.uniqBy(this.selectedParticipants, 'id');
+    this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
+  }
+  private sortUsers(res) {
+    const participantList = [];
     const mentorList = [];
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
@@ -239,132 +240,90 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
               mentorList.push(user);
             }
           });
-          userList.push(user);
+          participantList.push(user);
         }
       });
     }
     return {
-      userList: _.uniqBy(userList, 'id'),
+      participantList: _.uniqBy(participantList, 'id'),
       mentorList: _.uniqBy(mentorList, 'id')
     };
   }
-  ngOnDestroy() {
-    if (this.updateBatchModal && this.updateBatchModal.deny) {
-      this.updateBatchModal.deny();
-    }
-    if (this.userDataSubscription) {
-      this.userDataSubscription.unsubscribe();
-    }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+  private initDropDown() {
+    setTimeout(() => {
+      $('#participant').dropdown({
+        forceSelection: false,
+        fullTextSearch: true,
+        onAdd: () => {
+        }
+      });
+      $('#mentors').dropdown({
+        fullTextSearch: true,
+        forceSelection: false,
+        onAdd: () => {
+        }
+      });
+      $('#participant input.search').on('keyup', (e) => {
+        this.getUserListWithQuery($('#participant input.search').val(), 'participant');
+      });
+      $('#mentors input.search').on('keyup', (e) => {
+        this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
+      });
+    }, 0);
   }
-  getBatchDetails() {
-    this.courseBatchService.getUpdateBatchDetails(this.batchId)
-    .takeUntil(this.unsubscribe)
-    .subscribe((data) => {
-      this.batchDetails = data;
-      this.initializeFormFields();
-      this.fetchParticipantsMentorsDetails();
-    }, (err) => {
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0054);
-      }
-      this.redirect();
-    });
+  private getUserListWithQuery(query, type) {
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
   }
   /**
-  * It helps to initialize form fields and apply field level validation
+  *  api call to get user list
   */
-  initializeFormFields(): void {
-    const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
-    this.batchUpdateForm = new FormGroup({
-      name: new FormControl(this.batchDetails.name, [Validators.required]),
-      description: new FormControl(this.batchDetails.description),
-      enrollmentType: new FormControl(this.batchDetails.enrollmentType, [Validators.required]),
-      startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
-      endDate: new FormControl(endDate),
-      mentors: new FormControl(),
-      users: new FormControl()
-    });
-    this.batchUpdateForm.valueChanges.subscribe(val => {
-      this.enableButton();
-    });
-  }
-
-  fetchParticipantsMentorsDetails() {
-    if (this.batchDetails.participant || ( this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
-      const request =  {
-        filters: {
-          identifier: _.union(_.keys(this.batchDetails.participant), this.batchDetails.mentors)
-        }
-      };
-      this.courseBatchService.getUserDetails(request)
-      .takeUntil(this.unsubscribe)
+  private getUserList(query: string = '', type) {
+    const requestBody = {
+      filters: {},
+      query: query
+    };
+    this.courseBatchService.getUserList(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
-        // this.batchDetails.participantDetails = res.result.response.content;
-        this.processParticipantsMentorsDetails(res);
-        this.showUpdateModal = true;
-      }, (err) => {
+        const userList = this.sortUsers(res);
+        if (type === 'participant') {
+          this.participantList = userList.participantList;
+        } else {
+          this.mentorList = userList.mentorList;
+        }
+      },
+      (err) => {
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);
         }
-        this.redirect();
       });
-    } else {
-      this.showUpdateModal = true;
-    }
-  }
-  processParticipantsMentorsDetails(res) {
-    const users = this.formatUserList(res);
-    const userList = users.userList;
-    const mentorList = users.mentorList;
-    _.forEach(this.batchDetails.participant, (value, key) => {
-      if (!_.isUndefined(_.find(userList, ['id', key]))) {
-        this.selectedUsers.push(_.find(userList, ['id', key]));
-      }
-    });
-    this.selectedUsers = _.uniqBy(this.selectedUsers, 'id');
-    _.forEach(this.batchDetails.mentors, (mentorVal, key) => {
-      if (!_.isUndefined(_.find(mentorList, ['id', mentorVal]))) {
-        this.selectedMentors.push(_.find(mentorList, ['id', mentorVal]));
-      }
-    });
-    this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
-  }
-  getCourseData() {
-    this.courseConsumptionService.getCourseHierarchy(this.courseId)
-    .takeUntil(this.unsubscribe)
-    .subscribe((res) => {
-      this.courseCreatedBy = res.createdBy;
-    },
-    (err) => {
-        // this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-    });
   }
 
-  updateBatch() {
-    let users = [];
+  public updateBatch() {
+    this.disableSubmitBtn = true;
+    let participants = [];
     let mentors = [];
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
-      users = $('#users').dropdown('get value') ? $('#users').dropdown('get value').split(',') : [];
+      participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
       mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
     }
-    const startDate = new Date(this.batchUpdateForm.value.startDate.setHours(23, 59, 59, 999));
-    const endDate = this.batchUpdateForm.value.endDate ?
-    new Date(this.batchUpdateForm.value.endDate.setHours(23, 59, 59, 999)) : null;
+    const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
-      'id': this.batchId,
-      'name': this.batchUpdateForm.value.name,
-      'description': this.batchUpdateForm.value.description,
-      'enrollmentType': this.batchUpdateForm.value.enrollmentType,
-      'startDate': startDate,
-      'endDate': endDate,
-      'createdFor': this.orgIds,
-      'mentors': _.compact(mentors)
+      id: this.batchId,
+      name: this.batchUpdateForm.value.name,
+      description: this.batchUpdateForm.value.description,
+      enrollmentType: this.batchUpdateForm.value.enrollmentType,
+      startDate: startDate,
+      endDate: endDate || null,
+      createdFor: this.userService.userProfile.organisationIds,
+      mentors: _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
@@ -373,34 +332,30 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       });
       requestBody['mentors'] = _.concat(_.compact(requestBody['mentors']), selected);
     }
-this.disableSubmitBtn = true;
-this.courseBatchService.updateBatch(requestBody)
-    .takeUntil(this.unsubscribe)
-    .subscribe((response) => {
-      if (users && users.length > 0) {
-        this.updateUserToBatch(this.batchId, users);
-      } else {
+    this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
+      .subscribe((response) => {
+        if (participants && participants.length > 0) {
+          this.updateParticipantsToBatch(this.batchId, participants);
+        } else {
+          this.disableSubmitBtn = false;
+          this.toasterService.success(this.resourceService.messages.smsg.m0033);
+          this.reload();
+        }
+      },
+      (err) => {
         this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0033);
-        this.reload();
-      }
-    },
-    (err) => {
-      this.disableSubmitBtn = false;
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-      }
-    });
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+        }
+      });
   }
-  updateUserToBatch(batchId, users) {
+  private updateParticipantsToBatch(batchId, participants) {
     const userRequest = {
-      userIds: _.compact(users)
+      userIds: _.compact(participants)
     };
-    setTimeout(() => {
-      this.courseBatchService.addUsersToBatch(userRequest, batchId)
-      .takeUntil(this.unsubscribe)
+    this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
@@ -414,72 +369,18 @@ this.courseBatchService.updateBatch(requestBody)
           this.toasterService.error(this.resourceService.messages.fmsg.m0053);
         }
       });
+  }
+  public redirect() {
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+  }
+  private reload() {
+    setTimeout(() => {
+      this.courseBatchService.updateEvent.emit({ event: 'update' });
+      this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
-  redirect() {
-    this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
-  }
-  reload() {
-    this.courseBatchService.updateEvent.emit({event: 'update'});
-    this.router.navigate(['./'], {relativeTo: this.activatedRoute.parent});
-  }
 
-  enableButton() {
-    const data = this.batchUpdateForm ? this.batchUpdateForm.value : '';
-    if (this.batchUpdateForm.status === 'VALID' && (data.name && data.startDate)) {
-      this.disableSubmitBtn = false;
-    } else {
-      this.disableSubmitBtn = true;
-    }
-  }
-  /**
-  *  api call to get user list
-  */
-  // getUserList() {
-  //   const requestBody = {
-  //     filters: {}
-  //   };
-  //   this.courseBatchService.getUserList(requestBody).subscribe((res) => {
-  //     const users = this.formatUserList(res);
-  //     this.userList = users.userList;
-  //     this.mentorList = users.mentorList;
-  //   },
-  //   (err) => {
-  //     if (err.params && err.errorparams.errmsg) {
-  //       this.toasterService.error(err.error.params.errmsg);
-  //     } else {
-  //       this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-  //     }
-  //     this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-  //   });
-  // }
-  // formatUserList(res) {
-  //   const userList = [];
-  //   const mentorList = [];
-  //   if (res.result.response.content && res.result.response.content.length > 0) {
-  //     _.forEach(res.result.response.content, (userData) => {
-  //       if (userData.identifier !== this.userService.userid) {
-  //         const user = {
-  //           id: userData.identifier,
-  //           name: userData.firstName + (userData.lastName ? ' ' + userData.lastName : ''),
-  //           avatar: userData.avatar,
-  //           otherDetail: this.getUserOtherDetail(userData)
-  //         };
-  //         _.forEach(userData.organisations, (userOrgData) => {
-  //           if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
-  //             mentorList.push(user);
-  //           }
-  //         });
-  //         userList.push(user);
-  //       }
-  //     });
-  //     return {
-  //       userList : _.uniqBy(userList, 'id'),
-  //       mentorList : _.uniqBy(mentorList, 'id')
-  //     };
-  //   }
-  // }
-  getUserOtherDetail(userData) {
+  private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';
     }
@@ -489,5 +390,34 @@ this.courseBatchService.updateBatch(requestBody)
     if (!userData.email && userData.phone) {
       return ' (' + userData.phone + ')';
     }
+  }
+  // Create the telemetry impression event for update batch page
+  private setTelemetryImpressionData() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url
+      },
+      object: {
+        id: this.batchId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+        rollup: {
+          l1: this.courseId,
+          l2: this.batchId
+        }
+      }
+    };
+  }
+  ngOnDestroy() {
+    if (this.updateBatchModal && this.updateBatchModal.deny) {
+      this.updateBatchModal.deny();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

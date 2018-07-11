@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { PopupEditorComponent } from './../popup-editor/popup-editor.component';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { NotesService } from '../../services';
@@ -8,8 +10,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService } from 'ng2-semantic-ui';
 import { INoteData, IdDetails } from '@sunbird/notes';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component holds the note card widget.
@@ -165,8 +167,8 @@ export class NoteCardComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
-      this.noteService.search(requestBody)
-      .takeUntil(this.unsubscribe$)
+      this.noteService.search(requestBody).pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.notesList = apiResponse.result.response.note;

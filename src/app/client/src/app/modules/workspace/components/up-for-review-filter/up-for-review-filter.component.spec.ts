@@ -6,8 +6,8 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 describe('UpforReviewFilterComponent', () => {
@@ -18,8 +18,8 @@ describe('UpforReviewFilterComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english', 'odia'] }])
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

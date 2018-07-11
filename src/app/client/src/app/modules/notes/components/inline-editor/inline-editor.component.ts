@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
@@ -5,8 +7,8 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { INoteData, IdDetails } from '@sunbird/notes';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component provides the editor popup to create and update notes.
@@ -160,8 +162,8 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData)
-      .takeUntil(this.unsubscribe$)
+      this.noteService.create(requestData).pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe(
         (apiResponse: ServerResponse) => {
           const returnObj = {
@@ -197,8 +199,8 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedBy: this.updateData.userId
       }
     };
-    this.noteService.update(requestData)
-    .takeUntil(this.unsubscribe$)
+    this.noteService.update(requestData).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.updateData.updatedDate = new Date().toISOString();

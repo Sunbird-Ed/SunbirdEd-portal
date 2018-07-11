@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, OrgDetailsService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -33,12 +34,11 @@ describe('ExploreContentComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{
+    'params': observableOf({ pageNumber: '3' }),
+    'queryParams': observableOf({
       sortType: 'desc', sort_by: 'lastUpdatedOn',
       key: 'hello'
-    }
-    ]),
+    }),
     snapshot: {
       params: {
         slug: 'ap'
@@ -71,8 +71,8 @@ describe('ExploreContentComponent', () => {
     component.queryParams = mockQueryParma;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgManagementService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
     fixture.detectChanges();
@@ -94,8 +94,8 @@ describe('ExploreContentComponent', () => {
     const requestParams = Response.requestParam;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgManagementService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
     fixture.detectChanges();
@@ -109,8 +109,8 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgManagementService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.throw({}));
+    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
     fixture.detectChanges();
@@ -121,8 +121,8 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgManagementService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => Observable.of('123456567'));
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.noResult));
+    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;
@@ -213,7 +213,7 @@ describe('ExploreContentComponent', () => {
   });
   it('should call getChannelId method', () => {
     const orgService = TestBed.get(OrgDetailsService);
-    spyOn(orgService, 'getOrgDetails').and.callFake(() => Observable.of(Response.orgDetailsSuccessData));
+    spyOn(orgService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgDetailsSuccessData));
     spyOn(component, 'setFilters').and.callThrough();
     component.getChannelId();
     expect(component.hashTagId).toEqual(Response.orgDetailsSuccessData.hashTagId);
@@ -223,7 +223,7 @@ describe('ExploreContentComponent', () => {
     const router = TestBed.get(Router);
     const orgService = TestBed.get(OrgDetailsService);
     const response = {};
-    spyOn(orgService, 'getOrgDetails').and.callFake(() => Observable.throw(response));
+    spyOn(orgService, 'getOrgDetails').and.callFake(() => observableThrowError(response));
     spyOn(component, 'getChannelId').and.callThrough();
     component.getChannelId();
     expect(router.navigate).toHaveBeenCalledWith(['']);

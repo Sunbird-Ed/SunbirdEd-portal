@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -5,7 +7,6 @@ import { SearchService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -27,8 +28,8 @@ describe('DialCodeComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'params': Observable.from([{ dialCode: '61U24C' }]),
-    'queryParams': Observable.from([]),
+    'params': observableOf({ dialCode: '61U24C' }),
+    'queryParams': observableOf(),
     snapshot: {
       data: {
         telemetry: {
@@ -61,14 +62,14 @@ describe('DialCodeComponent', () => {
 
   it('should return matching contents for valid dialcode query', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
   it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.noData));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.noData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -76,7 +77,7 @@ describe('DialCodeComponent', () => {
   });
   it('should return appropriate failure message on error throw', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw(new Error('Server error')));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError(new Error('Server error')));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
