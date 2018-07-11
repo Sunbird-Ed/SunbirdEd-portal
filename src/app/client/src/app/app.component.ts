@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
   public config: ConfigService;
   public initApp = false;
   private orgDetails: any;
+  public version: string;
   /**
    * constructor
    */
@@ -88,6 +89,9 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
+    this.version = (<HTMLInputElement>document.getElementById('buildNumber')) &&
+    (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId, components) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
@@ -159,7 +163,7 @@ export class AppComponent implements OnInit {
       config: {
         pdata: {
           id: this.userService.appId,
-          ver: this.config.appConfig.TELEMETRY.VERSION,
+          ver: this.version,
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
@@ -183,7 +187,7 @@ export class AppComponent implements OnInit {
       config: {
         pdata: {
           id: this.userService.appId,
-          ver: this.config.appConfig.TELEMETRY.VERSION,
+          ver: this.version,
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,

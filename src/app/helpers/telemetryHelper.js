@@ -14,8 +14,10 @@ const fs = require('fs')
 const path = require('path')
 const contentURL = envHelper.CONTENT_URL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
+const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 telemtryEventConfig['pdata']['id'] = appId
+telemtryEventConfig['pdata']['ver'] = packageObj.version
 module.exports = {
   /**
    * This function helps to get user spec
