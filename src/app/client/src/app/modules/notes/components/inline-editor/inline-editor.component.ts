@@ -1,5 +1,5 @@
 
-import { takeUntil } from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
@@ -163,26 +163,26 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
       this.noteService.create(requestData).pipe(
-        takeUntil(this.unsubscribe$))
-        .subscribe(
-          (apiResponse: ServerResponse) => {
-            const returnObj = {
-              note: requestData.request.note,
-              userId: requestData.request.userId,
-              title: requestData.request.title,
-              courseId: requestData.request.courseId,
-              contentId: requestData.request.contentId,
-              createdBy: requestData.request.createdBy,
-              updatedBy: requestData.request.updatedBy,
-              createdDate: new Date().toISOString(),
-              updatedDate: new Date().toISOString()
-            };
-            this.createEventEmitter.emit(returnObj);
-          },
-          (err) => {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-          }
-        );
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          const returnObj = {
+            note: requestData.request.note,
+            userId: requestData.request.userId,
+            title: requestData.request.title,
+            courseId: requestData.request.courseId,
+            contentId: requestData.request.contentId,
+            createdBy: requestData.request.createdBy,
+            updatedBy: requestData.request.updatedBy,
+            createdDate: new Date().toISOString(),
+            updatedDate: new Date().toISOString()
+          };
+          this.createEventEmitter.emit(returnObj);
+        },
+        (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0030);
+        }
+      );
     }
   }
 
