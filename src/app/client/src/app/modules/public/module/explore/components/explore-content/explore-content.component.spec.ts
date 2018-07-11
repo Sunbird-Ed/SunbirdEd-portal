@@ -1,4 +1,3 @@
-
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -10,7 +9,7 @@ import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
 import { Response } from './explore-content.component.spec.data';
-import { OrgManagementService } from '../.././../../services';
+import { OrgManagementService } from './../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
