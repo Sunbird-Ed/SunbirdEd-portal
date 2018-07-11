@@ -168,7 +168,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     if (content && content.id) {
       const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
       if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-        this.externalUrlPreviewService.getRedirectUrl(contentDet.model);
+        this.externalUrlPreviewService.generateRedirectUrl(contentDet.model);
       }
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);

@@ -31,7 +31,7 @@ describe('External Url UtilsService', () => {
         inject([Router, ToasterService, ResourceService, ExternalUrlPreviewService], (router, toasterService, resourceService, service) => {
             resourceService.messages = MockResponse.resourceBundle.messages;
             spyOn(toasterService, 'warning').and.callThrough();
-            service.getRedirectUrl(MockResponse.ServerResponse, '9dvdkjlsds2423423', 'do_1125110622654464001294', '293482034290999');
+            service.generateRedirectUrl(MockResponse.ServerResponse, '9dvdkjlsds2423423', 'do_1125110622654464001294', '293482034290999');
             const windowSpy = spyOn(window, 'open');
             window.open('/learn/redirect', '_blank');
             expect(toasterService.warning).toBeDefined();

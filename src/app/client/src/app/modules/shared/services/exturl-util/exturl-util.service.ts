@@ -8,12 +8,12 @@ export class ExternalUrlPreviewService {
     constructor(public configService: ConfigService, public resourceService: ResourceService,
         public toasterService: ToasterService) { }
     /**
-      * getRedirectUrl function is to redirect to the external url link in a new tab
+      * generateRedirectUrl function is to redirect to the external url link in a new tab
       * @param playerconfigMeta Playerconfig data to get artifacturl and contentId of the item in the player
       * @param courseId course id of the enrolled / playing course
       * @param userId  user id of the loggedin user
       */
-    getRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
+    generateRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
         this.toasterService.warning(this.resourceService.messages.imsg.m0034);
         setTimeout(() => {
             const newWindow = window.open('/learn/redirect', '_blank');

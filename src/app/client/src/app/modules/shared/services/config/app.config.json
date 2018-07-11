@@ -194,7 +194,8 @@
         "application/vnd.ekstep.html-archive",
         "application/epub",
         "application/vnd.ekstep.h5p-archive",
-        "video/webm"
+        "video/webm",
+        "text/x-url"
       ],
       "pdf": "application/pdf",
       "mp4": "video/mp4",
@@ -234,7 +235,8 @@
       "application/vnd.ekstep.html-archive",
       "application/epub",
       "application/vnd.ekstep.h5p-archive",
-      "video/webm"
+      "video/webm",
+      "text/x-url"
     ],
     "states": [
       "draft",

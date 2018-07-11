@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RedirectComponent implements OnInit {
   /**
    * To send activatedRoute.snapshot to router navigation
-   * service for redirection to draft  component
+   * service to get the telemetry data
    */
   private activatedRoute: ActivatedRoute;
   /**

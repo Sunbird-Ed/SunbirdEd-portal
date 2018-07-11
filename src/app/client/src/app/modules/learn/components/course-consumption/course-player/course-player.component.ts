@@ -287,7 +287,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     const playContentDetail = this.findContentById(content.id);
     if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.externalUrlPreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
+      this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
       || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
