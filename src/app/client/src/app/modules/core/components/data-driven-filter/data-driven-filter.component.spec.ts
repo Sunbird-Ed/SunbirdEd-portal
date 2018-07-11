@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
@@ -9,8 +9,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, LearnerService,
-   ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
+import {
+  FrameworkService, FormService, ContentService, UserService, LearnerService,
+  ConceptPickerService, SearchService, PermissionService
+} from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { expand } from 'rxjs/operators';
 import * as mockData from './data-driven-filter.component.spec.data';
@@ -24,32 +26,32 @@ describe('DataDrivenFilterComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-        'emsg': {
-            'm0005': 'api failed, please try again'
-        },
-        'stmsg': {
-            'm0018': 'We are fetching content...',
-            'm0008': 'no-results',
-            'm0033': 'You dont have any content'
-       }
+      'emsg': {
+        'm0005': 'api failed, please try again'
+      },
+      'stmsg': {
+        'm0018': 'We are fetching content...',
+        'm0008': 'no-results',
+        'm0033': 'You dont have any content'
+      }
     }
-};
-const fakeActivatedRoute = {
-  'params': observableOf({ pageNumber: '1' }),
-  'queryParams':  observableOf({ subject: ['English'] })
-};
+  };
+  const fakeActivatedRoute = {
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['English'] })
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
-      declarations: [ DataDrivenFilterComponent ],
+      declarations: [DataDrivenFilterComponent],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
         CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        {provide: ResourceService, useValue: resourceBundle}],
-        schemas: [NO_ERRORS_SCHEMA]
+        { provide: ResourceService, useValue: resourceBundle }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -83,7 +85,7 @@ const fakeActivatedRoute = {
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({err: {error: 'SERVER_ERROR'}}));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({ err: { error: 'SERVER_ERROR' } }));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();
@@ -136,7 +138,7 @@ const fakeActivatedRoute = {
   });
   it('should initalize in page search incase of inpage filter is enabled', () => {
     component.filterType = 'course';
-    const emitData =  _.pickBy(component.queryParams);
+    const emitData = _.pickBy(component.queryParams);
     component.applyFilters();
     fixture.detectChanges();
   });
@@ -146,7 +148,7 @@ const fakeActivatedRoute = {
     fixture.detectChanges();
   });
   it('should remove filter selection', () => {
-    component.formInputData = {'subject': ['English']};
+    component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
     fixture.detectChanges();
   });
@@ -164,5 +166,45 @@ const fakeActivatedRoute = {
     spyOn(component.frameworkDataSubscription, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.frameworkDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
+  it('should call resetFilters method', () => {
+    component.ignoreQuery = ['key', 'language'];
+    component.resetFilters();
+    expect(component.refresh).toBeTruthy();
+  });
+  it('should call ngOnChanges method', () => {
+    component.enrichFilters = mockData.mockRes.enrichFilterData;
+    component.formFieldProperties = mockData.mockRes.formData;
+    spyOn(component, 'ngOnChanges').and.callThrough();
+    component.ngOnChanges();
+    expect(component.ngOnChanges).toHaveBeenCalled();
+  });
+  it('should call showField method', () => {
+    const permissionService = TestBed.get(PermissionService);
+    const allowedRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'];
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
+    component.showField(allowedRoles);
+    expect(permissionService.checkRolesPermissions).toHaveBeenCalled();
+  });
+  it('should call showField method and pass else codition', () => {
+    const permissionService = TestBed.get(PermissionService);
+    const allowedRoles = undefined;
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
+    component.showField(allowedRoles);
+    expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
+  });
+  it('should apply filters and pass if condition', () => {
+    const router = TestBed.get(Router);
+    component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
+    component.queryParams = {
+      'concepts': [
+        {
+          identifier: 'AI31',
+          name: '(Artificial) Neural Network'
+        }
+      ]
+    };
+    component.applyFilters();
+    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: component.queryParams });
   });
 });
