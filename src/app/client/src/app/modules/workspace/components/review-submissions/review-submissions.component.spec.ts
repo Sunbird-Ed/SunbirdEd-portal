@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 // Import NG testing module(s)
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +14,6 @@ import {
   UserService, LearnerService, CoursesService, PermissionService,
   SearchService, ContentService
 } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 // Test data
 import * as mockData from './review-submissions.component.spec.data';
 const testData = mockData.mockRes;
@@ -21,7 +22,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 const fakeActivatedRoute = {
-  'params': Observable.from([{ 'pageNumber': 1 }]),
+  'params': observableOf({ 'pageNumber': 1 }),
   snapshot: {
     params: [
       {
@@ -80,7 +81,7 @@ describe('ReviewSubmissionsComponent', () => {
 
   // If search api returns more than one review content
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.fetchReviewContents(9, 1);
     fixture.detectChanges();
     expect(component.reviewContent).toBeDefined();
@@ -89,7 +90,7 @@ describe('ReviewSubmissionsComponent', () => {
 
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     component.fetchReviewContents(9, 1);
     fixture.detectChanges();
     expect(component.reviewContent.length).toBeLessThanOrEqual(0);
@@ -97,7 +98,7 @@ describe('ReviewSubmissionsComponent', () => {
   }));
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
     component.fetchReviewContents(9, 1);
     fixture.detectChanges();
     expect(component.reviewContent).toBeDefined();

@@ -1,8 +1,8 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrgTypeService } from './org-type.service';
-
-import { Observable } from 'rxjs/Observable';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { mockRes } from './org-type.service.spec.data';
@@ -23,7 +23,7 @@ describe('OrgTypeService', () => {
 
   it('should call get org type API and get success', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'get').and.callFake(() => Observable.of(mockRes.orgTypeSuccess));
+    spyOn(learnerService, 'get').and.callFake(() => observableOf(mockRes.orgTypeSuccess));
     const apiRes = orgTypeService.getOrgTypes();
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe('OrgTypeService', () => {
 
   it('should call get org type API and get error', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'get').and.callFake(() => Observable.throw(mockRes.orgTypeError));
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError(mockRes.orgTypeError));
     const apiRes = orgTypeService.getOrgTypes();
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();
@@ -41,7 +41,7 @@ describe('OrgTypeService', () => {
 
   it('should call add org type API and get success', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'post').and.callFake(() => Observable.of(mockRes.orgTypeAddSuccess));
+    spyOn(learnerService, 'post').and.callFake(() => observableOf(mockRes.orgTypeAddSuccess));
     const apiRes = orgTypeService.addOrgType('test');
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.post).toHaveBeenCalled();
@@ -50,7 +50,7 @@ describe('OrgTypeService', () => {
 
   it('should call add org type API and get error', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'post').and.callFake(() => Observable.throw(mockRes.orgTypeAddError));
+    spyOn(learnerService, 'post').and.callFake(() => observableThrowError(mockRes.orgTypeAddError));
     const apiRes = orgTypeService.addOrgType('test');
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.post).toHaveBeenCalled();
@@ -59,7 +59,7 @@ describe('OrgTypeService', () => {
 
   it('should call update org type API and get success', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'patch').and.callFake(() => Observable.of(mockRes.orgTypeUpdateSuccess));
+    spyOn(learnerService, 'patch').and.callFake(() => observableOf(mockRes.orgTypeUpdateSuccess));
     const apiRes = orgTypeService.updateOrgType('test');
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.patch).toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe('OrgTypeService', () => {
 
   it('should call update org type API and get error', inject([OrgTypeService, LearnerService], (orgTypeService: OrgTypeService,
     learnerService: LearnerService) => {
-    spyOn(learnerService, 'patch').and.callFake(() => Observable.throw(mockRes.orgTypeUpdateError));
+    spyOn(learnerService, 'patch').and.callFake(() => observableThrowError(mockRes.orgTypeUpdateError));
     const apiRes = orgTypeService.updateOrgType('test');
     expect(orgTypeService).toBeTruthy();
     expect(learnerService.patch).toHaveBeenCalled();

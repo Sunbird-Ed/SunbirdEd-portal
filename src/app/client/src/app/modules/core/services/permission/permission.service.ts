@@ -2,9 +2,8 @@ import { ConfigService, ServerResponse, ToasterService , ResourceService, IUserD
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { RolesAndPermissions, Roles } from './../../interfaces';
 
 /**

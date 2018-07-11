@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import 'rxjs/add/operator/mergeMap';
+
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import services
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services/index';

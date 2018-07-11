@@ -1,10 +1,12 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -40,8 +42,8 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   getChannelId() {
-    this.orgDetailsService.getOrgDetails(this.slug)
-    .takeUntil(this.unsubscribe)
+    this.orgDetailsService.getOrgDetails(this.slug).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: any) => {
         this.channelId = apiResponse.hashTagId;
@@ -62,8 +64,8 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
         contentType: this.filterEnv,
         framework: ''
       };
-      this.formService.getFormConfig(formServiceInputParams, this.channelId)
-      .takeUntil(this.unsubscribe)
+      this.formService.getFormConfig(formServiceInputParams, this.channelId).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           this.languages = data[0].range;

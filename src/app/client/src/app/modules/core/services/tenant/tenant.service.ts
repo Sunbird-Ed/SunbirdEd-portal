@@ -1,7 +1,6 @@
 import { ITenantData, ITenantInfo } from './interfaces';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable } from 'rxjs';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';

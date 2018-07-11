@@ -1,6 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { CoursesService } from './course.service';
 import { UserService } from './../user/user.service';
 import { LearnerService } from './../learner/learner.service';
@@ -20,7 +21,7 @@ describe('CoursesService', () => {
   }));
   it('should make api call', inject([CoursesService, UserService, LearnerService], (coursesService: CoursesService,
     userService: UserService, learnerService: LearnerService) => {
-    spyOn(learnerService, 'get').and.callFake(() => Observable.of(testData.successData));
+    spyOn(learnerService, 'get').and.callFake(() => observableOf(testData.successData));
     const apiRes = coursesService.getEnrolledCourses();
     expect(coursesService).toBeTruthy();
     expect(learnerService.get).toHaveBeenCalled();

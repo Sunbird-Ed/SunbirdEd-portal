@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
@@ -10,7 +12,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
 } from 'ng2-semantic-ui';
@@ -27,7 +28,7 @@ describe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
   let fixture: ComponentFixture<LimitedPublishedComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {
@@ -85,7 +86,7 @@ describe('LimitedPublishedComponent', () => {
   });
 
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.fetchLimitedPublished(9, 1);
     fixture.detectChanges();
     expect(component.limitedPublishList).toBeDefined();
@@ -96,10 +97,10 @@ describe('LimitedPublishedComponent', () => {
   it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService._userData$.next({ err: null, userProfile: mockUserData.success });
     userService._userProfile = mockUserData.success;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(component, 'search').and.callThrough();
     component.pageNumber = 1;
     component.pageLimit = 1;
@@ -131,7 +132,7 @@ describe('LimitedPublishedComponent', () => {
   }));
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
     component.fetchLimitedPublished(9, 1);
     fixture.detectChanges();
     expect(component.limitedPublishList).toBeDefined();
@@ -141,7 +142,7 @@ describe('LimitedPublishedComponent', () => {
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, http) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
       const params = {
         action: {
@@ -204,7 +205,7 @@ describe('LimitedPublishedComponent', () => {
       fixture.detectChanges();
     }));
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     component.fetchLimitedPublished(9, 1);
     fixture.detectChanges();
     expect(component.limitedPublishList.length).toBeLessThanOrEqual(0);
@@ -230,7 +231,7 @@ describe('LimitedPublishedComponent', () => {
     }));
   it('should call inview method for visits data', () => {
     spyOn(component, 'inview').and.callThrough();
-    component.inview(testData.event.inview);
+    component.inview(testData.event);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });

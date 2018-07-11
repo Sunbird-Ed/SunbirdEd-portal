@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { CoreModule, UserService } from '@sunbird/core';
@@ -6,7 +8,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { mockProfileHeaderData } from './profile-header.component.spec.data';
-import { Observable } from 'rxjs/Observable';
 
 describe('ProfileHeaderComponent', () => {
   let component: ProfileHeaderComponent;
@@ -41,7 +42,7 @@ describe('ProfileHeaderComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockProfileHeaderData.resourceBundle.messages;
     const formData = mockProfileHeaderData.profileResult;
-    spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
+    spyOn(profileService, 'updateAvatar').and.callFake(() => observableOf(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);
     expect(component.updateAvatar).toHaveBeenCalled();
@@ -55,7 +56,7 @@ describe('ProfileHeaderComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockProfileHeaderData.resourceBundle.messages;
     const formData = mockProfileHeaderData.profileResult;
-    spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.of(formData));
+    spyOn(profileService, 'updateAvatar').and.callFake(() => observableOf(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);
     expect(profileService.updateAvatar).not.toHaveBeenCalled();
@@ -69,7 +70,7 @@ describe('ProfileHeaderComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockProfileHeaderData.resourceBundle.messages;
     const formData = mockProfileHeaderData.profileErr;
-    spyOn(profileService, 'updateAvatar').and.callFake(() => Observable.throw(formData));
+    spyOn(profileService, 'updateAvatar').and.callFake(() => observableThrowError(formData));
     spyOn(component, 'updateAvatar').and.callThrough();
     component.updateAvatar(img);
     expect(profileService.updateAvatar).not.toHaveBeenCalled();

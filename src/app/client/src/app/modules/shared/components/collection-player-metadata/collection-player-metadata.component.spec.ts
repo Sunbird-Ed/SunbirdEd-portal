@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,7 +13,7 @@ describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ collectionId: 'LP_FT_TextBook2' }])
+    'params': observableOf({ collectionId: 'LP_FT_TextBook2' })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

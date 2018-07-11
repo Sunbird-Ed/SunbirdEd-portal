@@ -1,12 +1,12 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 // Modules
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
-// Rxjs
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+
+
 // SB service(s) and module(s)
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
@@ -33,7 +33,7 @@ describe('GeoExplorerService', () => {
   it('should make api call to get locations', inject([GeoExplorerService, LearnerService], (service: GeoExplorerService,
     learner: LearnerService) => {
     spyOn(service, 'getLocations').and.callThrough();
-    spyOn(learner, 'get').and.callFake(() => Observable.of(testData.geoLocationSuccess));
+    spyOn(learner, 'get').and.callFake(() => observableOf(testData.geoLocationSuccess));
     service.getLocations({rootOrgId: 'ORG_001'});
     expect(service).toBeTruthy();
     expect(learner.get).toHaveBeenCalled();
@@ -41,7 +41,7 @@ describe('GeoExplorerService', () => {
 
   it('should throw error', inject([GeoExplorerService, LearnerService], (service: GeoExplorerService, learner: LearnerService) => {
     spyOn(service, 'getLocations').and.callThrough();
-    spyOn(learner, 'get').and.callFake(() => Observable.throw({}));
+    spyOn(learner, 'get').and.callFake(() => observableThrowError({}));
     service.getLocations({rootOrgId: 'ORG_001'});
     expect(service).toBeTruthy();
     expect(learner.get).toHaveBeenCalled();

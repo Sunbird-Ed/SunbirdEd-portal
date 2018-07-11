@@ -1,8 +1,9 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService, LearnerService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
@@ -38,8 +39,8 @@ describe('DeleteNoteComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     component.deleteNote.id = '01250042257192550484';
     spyOn(component.deleteEventEmitter, 'emit');
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    spyOn(notesService, 'remove').and.returnValue(Observable.of(response.deleteSuccess));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'remove').and.returnValue(observableOf(response.deleteSuccess));
     userService.getUserProfile();
     component.removeNote();
     expect(component.showLoader).toBeFalsy();
@@ -54,11 +55,34 @@ describe('DeleteNoteComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = response.resourceBundle.messages;
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
-    spyOn(notesService, 'remove').and.callFake(() => Observable.throw(response.deleteFailed));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'remove').and.callFake(() => observableThrowError(response.deleteFailed));
     userService.getUserProfile();
     component.removeNote();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.removeNote();
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
+  it('should dismiss the modal when remove method is called', () => {
+    const notesService = TestBed.get(NotesService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const resourceService = TestBed.get(ResourceService);
+    const modal = fixture.componentInstance.modal;
+    component.deleteNote.id = '01250042257192550484';
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
+    spyOn(notesService, 'remove').and.returnValue(observableOf(response.deleteSuccess));
+    userService.getUserProfile();
+    component.removeNote();
+    expect(component.modal).toBeDefined();
   });
 });

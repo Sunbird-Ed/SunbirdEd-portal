@@ -1,14 +1,14 @@
+
+import {takeUntil, first} from 'rxjs/operators';
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Subject } from 'rxjs';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 
 /**
  * The organization component
@@ -237,8 +237,8 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.orgService.getDashboardData(params)
-    .takeUntil(this.unsubscribe)
+    this.orgService.getDashboardData(params).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (data: DashboardData) => {
         this.blockData = data.numericData;
@@ -360,7 +360,7 @@ export class OrganisationComponent implements OnDestroy {
       this.showLoader = false;
       this.validateIdentifier(this.identifier);
     } else {
-      this.userDataSubscription = this.userService.userData$.first().subscribe(
+      this.userDataSubscription = this.userService.userData$.pipe(first()).subscribe(
         user => {
           if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
             this.getOrgDetails(user.userProfile.organisationIds);
@@ -385,8 +385,8 @@ export class OrganisationComponent implements OnDestroy {
       dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
     };
 
-    this.downloadService.getReport(option)
-    .takeUntil(this.unsubscribe)
+    this.downloadService.getReport(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (data: ServerResponse) => {
         this.showDownloadSuccessModal = true;
@@ -407,8 +407,8 @@ export class OrganisationComponent implements OnDestroy {
    */
   getOrgDetails(orgIds: string[]) {
     if (orgIds && orgIds.length) {
-      this.searchService.getOrganisationDetails({ orgid: orgIds })
-      .takeUntil(this.unsubscribe)
+      this.searchService.getOrganisationDetails({ orgid: orgIds }).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.response.content) {

@@ -1,6 +1,8 @@
+
+import {mergeMap, first, map, catchError} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
@@ -8,7 +10,6 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
   ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
-import { Subscription } from 'rxjs/Subscription';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
@@ -117,7 +118,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).map((content) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
       this.telemetryContentImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env
@@ -147,10 +148,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
       };
       this.triggerContentImpression = true;
       return content;
-    }).catch((error) => {
+    }), catchError((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
-    });
+    }), );
   }
 
   public playContent(data: any): void {
@@ -189,13 +190,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContent(): void {
-    this.subscription = this.route.params
-      .first()
-      .flatMap((params) => {
+    this.subscription = this.route.params.pipe(
+      first(),
+      mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
-      })
+      }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.setTelemetryData();
@@ -251,15 +252,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
       option.params = { mode: 'edit' };
     }
-    return this.playerService.getCollectionHierarchy(collectionId, option)
-      .map((response) => {
+    return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
+      map((response) => {
         this.collectionData = response.result.content;
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
-      });
+      }));
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToResource('/resources');

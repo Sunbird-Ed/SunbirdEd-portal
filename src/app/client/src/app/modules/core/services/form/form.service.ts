@@ -1,8 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 @Injectable()
 export class FormService {
   /**
@@ -47,9 +49,9 @@ export class FormService {
         }
       }
     };
-    return this.content.post(channelOptions).map(
+    return this.content.post(channelOptions).pipe(map(
       (formConfig: ServerResponse) => {
         return formConfig.result.form.data.fields;
-      });
+      }));
   }
 }

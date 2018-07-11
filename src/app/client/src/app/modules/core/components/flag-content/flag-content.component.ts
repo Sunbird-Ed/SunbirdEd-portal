@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -6,8 +8,8 @@ import {
   IUserProfile, ILoaderMessage
 } from '@sunbird/shared';
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 /**
  * The delete component deletes the announcement
  * which is requested by the logged in user have announcement
@@ -115,8 +117,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.contentData && this.playerService.contentData.identifier === this.identifier) {
       this.contentData = this.playerService.contentData;
     } else {
-      this.playerService.getContent(this.identifier)
-      .takeUntil(this.unsubscribe)
+      this.playerService.getContent(this.identifier).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(response => {
         this.contentData = response.result.content;
       });
@@ -134,8 +136,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       url: `${this.config.urlConFig.URLS.CONTENT.FLAG}/${this.identifier}`,
       data: { 'request': requestData }
     };
-    this.contentService.post(option)
-    .takeUntil(this.unsubscribe)
+    this.contentService.post(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.showLoader = false;
       this.modal.deny();
@@ -176,8 +178,8 @@ export class FlagContentComponent implements OnInit, OnDestroy {
     if (this.playerService.collectionData && this.playerService.collectionData.identifier === this.identifier) {
       this.contentData = this.playerService.collectionData;
     } else {
-      this.playerService.getCollectionHierarchy(this.identifier)
-      .takeUntil(this.unsubscribe)
+      this.playerService.getCollectionHierarchy(this.identifier).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(response => {
         this.contentData = response.result.content;
       });

@@ -1,6 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+
+import {map, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { SearchParam } from './../../interfaces/search';
@@ -23,23 +26,23 @@ export class OrgDetailsService {
       }
     };
 
-    return this.contentService.post(option)
-      .flatMap((data: ServerResponse) => {
+    return this.contentService.post(option).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.result.response.count > 0) {
-          return Observable.of(data.result.response.content[0].hashTagId);
+          return observableOf(data.result.response.content[0].hashTagId);
         } else {
           option.data.request.filters.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-          return this.contentService.post(option)
-            .map((responseData: ServerResponse) => {
+          return this.contentService.post(option).pipe(
+            map((responseData: ServerResponse) => {
               try {
                 return responseData.result.response.content[0].hashTagId;
               } catch (error) {
                 this.toasterService.error(this.resourceService.messages.emsg.m0005);
                 this.router.navigate(['']);
               }
-            });
+            }));
         }
-      });
+      }));
   }
   getOrgDetails(slug?: string): Observable<ServerResponse> {
     const option = {
@@ -51,24 +54,24 @@ export class OrgDetailsService {
       }
     };
     if (this.orgDetails) {
-      return Observable.of(this.orgDetails);
+      return observableOf(this.orgDetails);
     } else {
-      return this.contentService.post(option).flatMap((data: ServerResponse) => {
+      return this.contentService.post(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
-          return Observable.of(data.result.response.content[0]);
+          return observableOf(data.result.response.content[0]);
         } else {
           option.data.request.filters.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-          return this.contentService.post(option).flatMap((responseData: ServerResponse) => {
+          return this.contentService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
             if (responseData.result.response.count > 0) {
               this.orgDetails = responseData.result.response.content[0];
-              return Observable.of(responseData.result.response.content[0]);
+              return observableOf(responseData.result.response.content[0]);
             } else {
-              Observable.throw(responseData);
+              observableThrowError(responseData);
             }
-          });
+          }));
         }
-      });
+      }));
     }
   }
 }
