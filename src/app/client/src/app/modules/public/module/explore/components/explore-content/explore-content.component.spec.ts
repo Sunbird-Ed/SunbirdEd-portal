@@ -2,14 +2,13 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService, OrgDetailsService } from '@sunbird/core';
+import { CoreModule, LearnerService, CoursesService, SearchService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
 import { Response } from './explore-content.component.spec.data';
-import { OrgManagementService } from '../../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -53,7 +52,7 @@ describe('ExploreContentComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [ConfigService, SearchService, LearnerService, OrgManagementService,
+      providers: [ConfigService, SearchService, LearnerService, OrgDetailsService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -69,7 +68,7 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     component.queryParams = mockQueryParma;
     const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
@@ -92,7 +91,7 @@ describe('ExploreContentComponent', () => {
     };
     const requestParams = Response.requestParam;
     const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
@@ -107,7 +106,7 @@ describe('ExploreContentComponent', () => {
   it('should throw error when searchService api throw error ', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
@@ -119,7 +118,7 @@ describe('ExploreContentComponent', () => {
   it('when count is 0 should show no result found', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
