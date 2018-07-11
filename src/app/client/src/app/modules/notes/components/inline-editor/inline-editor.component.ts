@@ -166,23 +166,18 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this.unsubscribe$))
         .subscribe(
           (apiResponse: ServerResponse) => {
-            if (apiResponse.result.id) {
-              const returnObj = {
-                note: requestData.request.note,
-                userId: requestData.request.userId,
-                id: apiResponse.result.id,
-                title: requestData.request.title,
-                courseId: requestData.request.courseId,
-                contentId: requestData.request.contentId,
-                createdBy: requestData.request.createdBy,
-                updatedBy: requestData.request.updatedBy,
-                createdDate: new Date().toISOString(),
-                updatedDate: new Date().toISOString()
-              };
-              this.createEventEmitter.emit(returnObj);
-            } else {
-              this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-            }
+            const returnObj = {
+              note: requestData.request.note,
+              userId: requestData.request.userId,
+              title: requestData.request.title,
+              courseId: requestData.request.courseId,
+              contentId: requestData.request.contentId,
+              createdBy: requestData.request.createdBy,
+              updatedBy: requestData.request.updatedBy,
+              createdDate: new Date().toISOString(),
+              updatedDate: new Date().toISOString()
+            };
+            this.createEventEmitter.emit(returnObj);
           },
           (err) => {
             this.toasterService.error(this.resourceService.messages.fmsg.m0030);
@@ -204,22 +199,22 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
     this.noteService.update(requestData).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          this.updateData.updatedDate = new Date().toISOString();
-          const returnObj = {
-            note: this.updateData.note,
-            title: this.updateData.title,
-            updatedDate: new Date().toISOString(),
-            id: requestData.noteId
-          };
-          this.updateEventEmitter.emit(returnObj);
-        },
-        (err) => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0034);
-        }
-      );
+    takeUntil(this.unsubscribe$))
+    .subscribe(
+      (apiResponse: ServerResponse) => {
+        this.updateData.updatedDate = new Date().toISOString();
+        const returnObj = {
+          note: this.updateData.note,
+          title: this.updateData.title,
+          updatedDate: new Date().toISOString(),
+          id: requestData.noteId
+        };
+        this.updateEventEmitter.emit(returnObj);
+      },
+      (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0034);
+      }
+    );
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
