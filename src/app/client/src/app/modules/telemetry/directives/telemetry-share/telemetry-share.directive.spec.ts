@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TelemetryShareDirective } from './telemetry-share.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-share.directive.spec.data';
 import { ActivatedRoute, Data } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -39,7 +40,7 @@ const fakeActivatedRoute = {
     const telemetryService = TestBed.get(TelemetryService);
     const activatedRoute = TestBed.get(ActivatedRoute);
     const directive = new TelemetryShareDirective(telemetryService, activatedRoute);
-    spyOn(telemetryService, 'share').and.callFake(() => Observable.of(eventData.inputData));
+    spyOn(telemetryService, 'share').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryShare = eventData.inputData;
     directive.ngOnInit();
     expect(directive.appTelemetryShare).toBeDefined();

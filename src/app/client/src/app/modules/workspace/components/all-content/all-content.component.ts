@@ -1,3 +1,5 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
@@ -10,7 +12,6 @@ import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-all-content',
@@ -181,7 +182,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
   ngOnInit() {
     this.filterType = this.config.appConfig.allmycontent.filterType;
     this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
-    Observable.combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {

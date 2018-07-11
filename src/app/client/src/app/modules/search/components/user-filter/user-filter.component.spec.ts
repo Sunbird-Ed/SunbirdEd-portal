@@ -11,7 +11,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFilterComponent } from './user-filter.component';
 
@@ -20,8 +20,8 @@ describe('UserFilterComponent', () => {
   let component: UserFilterComponent;
   let fixture: ComponentFixture<UserFilterComponent>;
  const fakeActivatedRoute = {
-  'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ Grades: ['Grade 2'] }])
+  'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ Grades: ['Grade 2'] })
 };
  class RouterStub {
    navigate = jasmine.createSpy('navigate');

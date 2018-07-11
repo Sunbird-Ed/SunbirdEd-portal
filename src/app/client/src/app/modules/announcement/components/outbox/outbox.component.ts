@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -5,8 +7,8 @@ import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * The announcement outbox component displays all
@@ -156,8 +158,8 @@ export class OutboxComponent implements OnInit, OnDestroy {
       limit: this.pageLimit
     };
 
-    this.announcementService.getOutboxData(option)
-    .takeUntil(this.unsubscribe)
+    this.announcementService.getOutboxData(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
@@ -215,15 +217,15 @@ export class OutboxComponent implements OnInit, OnDestroy {
 	 */
   ngOnInit() {
 
-    this.activatedRoute.params
-    .takeUntil(this.unsubscribe)
+    this.activatedRoute.params.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateOutboxData(this.config.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
 
-    this.announcementService.announcementDeleteEvent
-    .takeUntil(this.unsubscribe)
+    this.announcementService.announcementDeleteEvent.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(data => {
       _.each(this.outboxData.announcements, (key, index) => {
         if (data && data === key.id) {

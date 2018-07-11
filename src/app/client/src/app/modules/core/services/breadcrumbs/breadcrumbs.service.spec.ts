@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BreadcrumbsComponent } from '@sunbird/core';
 import { TestBed, inject, ComponentFixture, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { } from 'jasmine';
 import { BreadcrumbsService } from './breadcrumbs.service';
 

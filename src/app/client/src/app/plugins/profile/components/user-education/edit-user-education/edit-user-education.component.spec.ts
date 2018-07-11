@@ -4,7 +4,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ResourceService, SharedModule, WindowScrollService } from '@sunbird/shared';
 import { EditUserEducationComponent } from './edit-user-education.component';
 import { response } from './edit-user-education.component.spec.data';

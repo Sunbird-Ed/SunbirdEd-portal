@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { UserSearchService } from './../../services/user-search/user-search.service';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -12,7 +14,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-profile.component.spec.data';
@@ -37,7 +38,7 @@ describe('UserProfileComponent', () => {
     };
 
     const fakeActivatedRoute = {
-        'params': Observable.from([{ userId: '3' }]),
+        'params': observableOf({ userId: '3' }),
         snapshot: {
             queryParams: {},
             data: {
@@ -72,7 +73,7 @@ describe('UserProfileComponent', () => {
         const searchService = TestBed.get(UserSearchService);
         const learnerService = TestBed.get(LearnerService);
         const resourceService = TestBed.get(ResourceService);
-        spyOn(searchService, 'getUserById').and.callFake(() => Observable.of(Response.successData));
+        spyOn(searchService, 'getUserById').and.callFake(() => observableOf(Response.successData));
         component.populateUserProfile();
         fixture.detectChanges();
         expect(component.userDetails).toBeDefined();
@@ -84,7 +85,7 @@ describe('UserProfileComponent', () => {
         const toasterService = TestBed.get(ToasterService);
         const resourceService = TestBed.get(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
-        spyOn(searchService, 'getUserById').and.callFake(() => Observable.throw(Response.errorData));
+        spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError(Response.errorData));
         spyOn(toasterService, 'error').and.callThrough();
         fixture.detectChanges();
         component.populateUserProfile();
@@ -126,7 +127,7 @@ describe('UserProfileComponent', () => {
 
     it('should call populateBadgeDescription', () => {
         const badgesService = TestBed.get(BadgesService);
-        spyOn(badgesService, 'getDetailedBadgeAssertions').and.callFake(() => Observable.of(true));
+        spyOn(badgesService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(true));
         fixture.detectChanges();
         component.userDetails = Response.successData.result.response;
         component.populateBadgeDescription();
@@ -145,7 +146,7 @@ describe('UserProfileComponent', () => {
         const resourceService = TestBed.get(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'success').and.callThrough();
-        spyOn(learnerService, 'post').and.callFake(() => Observable.of(Response.skillSuccess));
+        spyOn(learnerService, 'post').and.callFake(() => observableOf(Response.skillSuccess));
         fixture.detectChanges();
         component.userDetails = Response.userProfile.result.response;
         component.submitEndorsement('test');
@@ -159,7 +160,7 @@ describe('UserProfileComponent', () => {
         const resourceService = TestBed.get(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'error').and.callThrough();
-        spyOn(learnerService, 'post').and.callFake(() => Observable.throw(Response.skillError));
+        spyOn(learnerService, 'post').and.callFake(() => observableThrowError(Response.skillError));
         fixture.detectChanges();
         component.userDetails = Response.userProfile.result.response;
         component.submitEndorsement('test');

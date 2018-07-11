@@ -1,10 +1,11 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -30,8 +31,8 @@ describe('HomeSearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'] }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english'] }),
     snapshot: {
       data: {
         telemetry: {
@@ -67,7 +68,7 @@ describe('HomeSearchComponent', () => {
   it('should call search api', () => {
     const searchService = TestBed.get(SearchService);
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
     component.populateCompositeSearch();
     fixture.detectChanges();
     expect(component.searchList).toBeDefined();
@@ -78,7 +79,7 @@ describe('HomeSearchComponent', () => {
   it('should call search api', () => {
     const searchService = TestBed.get(SearchService);
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(Response.successDataWithNoCount));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successDataWithNoCount));
     component.populateCompositeSearch();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -87,7 +88,7 @@ describe('HomeSearchComponent', () => {
   it('should throw error when searchService api is not called', () => {
     const searchService = TestBed.get(SearchService);
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     component.populateCompositeSearch();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

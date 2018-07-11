@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DeleteComponent } from './../../../announcement/components/delete/delete.component';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
@@ -11,7 +13,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService, Confi
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Test data
@@ -23,7 +24,7 @@ describe('DraftComponent', () => {
   let component: DraftComponent;
   let fixture: ComponentFixture<DraftComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {
@@ -80,7 +81,7 @@ describe('DraftComponent', () => {
   });
 
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.fetchDrafts(9, 1);
     fixture.detectChanges();
     expect(component.draftList).toBeDefined();
@@ -89,7 +90,7 @@ describe('DraftComponent', () => {
 
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'delete').and.callThrough();
@@ -114,7 +115,7 @@ describe('DraftComponent', () => {
 
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     component.fetchDrafts(9, 1);
     fixture.detectChanges();
     expect(component.draftList.length).toBeLessThanOrEqual(0);
@@ -150,7 +151,7 @@ describe('DraftComponent', () => {
     }));
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountZero));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
     component.fetchDrafts(9, 1);
     fixture.detectChanges();
     expect(component.draftList).toBeDefined();

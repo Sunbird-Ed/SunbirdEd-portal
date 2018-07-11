@@ -1,8 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { DataService } from '../../../core/services/data/data.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+
 import {  IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
@@ -44,7 +47,7 @@ export class HomeAnnouncementService  extends DataService {
   getInboxData(requestParam: IAnnouncementSericeParam) {
     const InboxData: any = this.cacheService.get('HomeAnnouncementInboxData');
    if (InboxData) {
-     return Observable.of(InboxData);
+     return observableOf(InboxData);
    } else {
      const option = {
        url: this.config.urlConFig.URLS.ANNOUNCEMENT.INBOX_LIST,
@@ -55,10 +58,10 @@ export class HomeAnnouncementService  extends DataService {
          }
        }
      };
-     return this.post(option).map((data) => {
+     return this.post(option).pipe(map((data) => {
         this.setData(data, requestParam);
        return { announcements: data.result.announcements };
-     });
+     }));
    }
  }
 
