@@ -32,7 +32,6 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
     public configService: ConfigService, public resourceService: ResourceService) { }
 
   ngOnInit() {
-    console.log('language init');
     this.getChannelId();
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
