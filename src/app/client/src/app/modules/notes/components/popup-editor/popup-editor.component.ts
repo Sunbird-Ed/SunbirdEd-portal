@@ -199,22 +199,22 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
     this.noteService.update(requestData).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.updateData.updatedDate = new Date().toISOString();
-        const returnObj = {
-          note: this.updateData.note,
-          title: this.updateData.title,
-          updatedDate: new Date().toISOString(),
-          id: requestData.noteId
-        };
-        this.updateEventEmitter.emit(returnObj);
-      },
-      (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0034);
-      }
-    );
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.updateData.updatedDate = new Date().toISOString();
+          const returnObj = {
+            note: this.updateData.note,
+            title: this.updateData.title,
+            updatedDate: new Date().toISOString(),
+            id: requestData.noteId
+          };
+          this.updateEventEmitter.emit(returnObj);
+        },
+        (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0034);
+        }
+      );
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
