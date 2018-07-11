@@ -1,4 +1,4 @@
-import { Subscription, Observable } from 'rxjs/Subscription';
+import { Subscription, Observable } from 'rxjs';
 import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
