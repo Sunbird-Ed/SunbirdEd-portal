@@ -1,11 +1,12 @@
+
+import {from as observableFrom,  Observable } from 'rxjs';
 import { SortByComponent } from './sort-by.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import 'rxjs/add/observable/from';
+
 
 describe('SortByComponent', () => {
   let component: SortByComponent;
@@ -14,7 +15,7 @@ describe('SortByComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'queryParams': Observable.from([{ sortType: 'asc', sort_by: 'createdOn' }])
+    'queryParams': observableFrom([{ sortType: 'asc', sort_by: 'createdOn' }])
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({

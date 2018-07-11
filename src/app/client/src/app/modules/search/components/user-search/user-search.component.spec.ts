@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { UserFilterComponent } from './../user-filter/user-filter.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +14,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
@@ -41,8 +42,8 @@ describe('UserSearchComponent', () => {
     'roles': ['BOOK_CREATOR'],
   };
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ OrgType: ['012352495007170560157'] }),
     snapshot: {
       data: {
         telemetry: {
@@ -77,7 +78,7 @@ describe('UserSearchComponent', () => {
     const searchService = TestBed.get(SearchService);
     const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'userSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.successData));
     component.populateUserSearch();
     expect(component.searchList).toBeDefined();
     expect(component.noResult).toBeFalsy();
@@ -89,7 +90,7 @@ describe('UserSearchComponent', () => {
     const searchService = TestBed.get(SearchService);
     const learnerService = TestBed.get(LearnerService);
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'userSearch').and.callFake(() => Observable.of(Response.emptySuccessData));
+    spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.emptySuccessData));
     fixture.detectChanges();
     component.populateUserSearch();
     expect(component.noResult).toEqual(true);
@@ -102,9 +103,9 @@ describe('UserSearchComponent', () => {
     component.queryParams = mockQueryParma;
     component.searchList = Response.successData.result.response.content;
     component.userProfile = {orgRoleMap: [], rootOrgAdmin: true};
-    spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(Response.orgDetailsSearch));
+    spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(Response.orgDetailsSearch));
     component.queryParams = mockQueryParma;
-    spyOn(searchService, 'userSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'userSearch').and.callFake(() => observableThrowError({}));
     component.populateOrgNameAndSetRoles();
     component.populateUserSearch();
     fixture.detectChanges();

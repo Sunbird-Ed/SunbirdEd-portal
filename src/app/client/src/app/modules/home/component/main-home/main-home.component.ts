@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CoursesService, UserService, PlayerService } from '@sunbird/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService, UtilService} from '@sunbird/shared';
 import {  IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';

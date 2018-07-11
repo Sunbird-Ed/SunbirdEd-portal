@@ -1,3 +1,7 @@
+
+import { of as observableOf,
+  throwError as observableThrowError,  Observable } from 'rxjs';
+import { getUserList, updateBatchDetails, getUserDetails } from './../update-course-batch/update-course-batch.component.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
@@ -8,12 +12,12 @@ import {CoreModule} from '@sunbird/core';
 import { CreateBatchComponent } from './create-batch.component';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mockResponse } from './create-batch.component.data';
+import { LearnModule, UpdateCourseBatchComponent, CourseBatchService,
+  CourseProgressService, CourseConsumptionService} from '@sunbird/learn';
 
 
 class RouterStub {
@@ -23,7 +27,9 @@ class RouterStub {
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' }
+    stmsg: { m0009: 'error' },
+    smsg: {m0033 : 'success'},
+    fmsg: {m0052: 'error'}
   },
   frmelmnts: {
     btn: {
@@ -36,10 +42,9 @@ const resourceServiceMockData = {
     }
   }
 };
-
 const fakeActivatedRoute = {
-  'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]),
-  'parent': { 'params': Observable.from([{ 'courseId': 'do_1125083286221291521153' }]) },
+  'params': observableOf([{ 'courseId': 'do_1125083286221291521153' }]),
+  'parent': { 'params': observableOf([{ 'courseId': 'do_1125083286221291521153' }]) },
   'snapshot': {
       params: [
         {
@@ -59,10 +64,10 @@ describe('CreateBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateBatchComponent],
+      declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
-        HttpClientTestingModule],
+        HttpClientTestingModule, LearnModule],
       providers: [CourseBatchService, ToasterService, ResourceService, UserService, CourseConsumptionService,
         CourseProgressService, TelemetryService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -73,69 +78,64 @@ describe('CreateBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateBatchComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
-
-  it('should disable the button on click of submit button in create batch', fakeAsync(() => {
+  it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
     const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const userService = TestBed.get(UserService);
-    resourceService.messages = mockResponse.resourceBundle.messages;
+    resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(component, 'getUserList');
-    spyOn(component, 'createBatch');
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('#submitbutton'));
-    button.triggerEventHandler('click', null);
-    tick(1000);
-    expect(component.createBatch).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toEqual(true);
-  }));
-
-  it('should enable the submit button which was disabled during click of createBatch function on api error', fakeAsync(() => {
+    expect(component.participantList.length).toBe(3);
+    expect(component.mentorList.length).toBe(1);
+    expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
+    expect(component.courseCreator).toBeDefined();
+    expect(component.createBatchForm).toBeDefined();
+    expect(component.showCreateModal).toBeTruthy();
+  });
+  it('should create batch and show success message if api return success', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const userService = TestBed.get(UserService);
-    resourceService.messages = mockResponse.resourceBundle.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(component, 'getUserList');
-    spyOn(component, 'createBatch').and.callThrough();
-    spyOn(toasterService, 'error');
-    spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.throw(mockResponse.errorResponse));
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    component.createBatchUserForm.value.startDate = new Date();
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('#submitbutton'));
-    button.triggerEventHandler('click', null);
-    tick(1000);
-    expect(component.createBatch).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toEqual(false);
-    expect(toasterService.error).toHaveBeenCalled();
-  }));
-
-  it('should enable the submit button which was disabled during click of createBatch function on success response', fakeAsync(() => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const userService = TestBed.get(UserService);
-    resourceService.messages = mockResponse.resourceBundle.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    spyOn(component, 'getUserList');
-    spyOn(component, 'createBatch').and.callThrough();
+    userService._userProfile = { organisationIds: [] };
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    spyOn(courseBatchService, 'createBatch').and.returnValue(observableOf(updateBatchDetails));
     spyOn(toasterService, 'success');
-    spyOn(courseBatchService, 'createBatch').and.callFake(() => Observable.of(mockResponse.returnValue));
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    component.createBatchUserForm.value.startDate = new Date();
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('#submitbutton'));
-    button.triggerEventHandler('click', null);
-    tick(1000);
-    expect(component.createBatch).toHaveBeenCalled();
-    expect(component.disableSubmitBtn).toEqual(false);
-    expect(toasterService.success).toHaveBeenCalled();
-  }));
-
+    component.createBatchForm.value.startDate = new Date();
+    component.createBatch();
+    expect(component.createBatchForm).toBeDefined();
+    expect(component.showCreateModal).toBeTruthy();
+    expect(toasterService.success).toHaveBeenCalledWith('success');
+  });
+  it('should create batch and show error message if api fails', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const toasterService = TestBed.get(ToasterService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.
+    returnValue(observableOf({createdBy: 'b2479136-8608-41c0-b3b1-283f38c338ed'}));
+    spyOn(courseBatchService, 'createBatch').and.returnValue(observableThrowError(updateBatchDetails));
+    spyOn(toasterService, 'error');
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    fixture.detectChanges();
+    component.createBatchForm.value.startDate = new Date();
+    component.createBatch();
+    expect(component.createBatchForm).toBeDefined();
+    expect(component.showCreateModal).toBeTruthy();
+    expect(toasterService.error).toHaveBeenCalledWith('error');
+  });
 });

@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { FlagContentComponent , AuthGuard} from '@sunbird/core';
+import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 const telemetryEnv = 'course';
 const objectType = 'course';
@@ -48,13 +48,16 @@ const routes: Routes = [
           },
           {
             path: 'create/batch', component: CreateBatchComponent, canActivate: [AuthGuard],
-            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' } ,  roles: 'coursebacthesRole' }
+            data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' }, roles: 'coursebacthesRole' }
           }
         ]
       },
       {
-        path: ':courseId/dashboard', component: CourseProgressComponent,
-        data: { telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } } }
+        path: ':courseId/dashboard', component: CourseProgressComponent, canActivate: [AuthGuard],
+        data: {
+          roles: 'coursebacthesRole',
+          telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
+        }
       },
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,

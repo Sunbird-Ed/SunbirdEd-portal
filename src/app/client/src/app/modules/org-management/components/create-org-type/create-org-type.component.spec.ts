@@ -1,9 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { mockRes } from './create-org-type.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,7 +23,7 @@ describe('CreateOrgTypeComponent', () => {
   let fixture: ComponentFixture<CreateOrgTypeComponent>;
 
   class ActivatedRouteStub {
-    url = Observable.of([{ path: 'update' }]);
+    url = observableOf([{ path: 'update' }]);
     snapshot = {
       params: { orgId: '01250975059541196818' },
       data: {
@@ -33,7 +33,7 @@ describe('CreateOrgTypeComponent', () => {
       }
     };
     public changeUrl(params) {
-      this.url = Observable.of([{ path: params }]);
+      this.url = observableOf([{ path: params }]);
     }
   }
   class RouterStub {
@@ -66,7 +66,7 @@ describe('CreateOrgTypeComponent', () => {
       const resourceService = TestBed.get(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
-      spyOn(orgTypeService, 'addOrgType').and.callFake(() => Observable.of(mockRes.orgTypeAddSuccess));
+      spyOn(orgTypeService, 'addOrgType').and.callFake(() => observableOf(mockRes.orgTypeAddSuccess));
       spyOn(toasterService, 'success').and.callThrough();
       component.addOrgType();
       fixture.detectChanges();
@@ -78,7 +78,7 @@ describe('CreateOrgTypeComponent', () => {
       const resourceService = TestBed.get(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
-      spyOn(orgTypeService, 'addOrgType').and.callFake(() => Observable.throw(mockRes.orgTypeAddError));
+      spyOn(orgTypeService, 'addOrgType').and.callFake(() => observableThrowError(mockRes.orgTypeAddError));
       spyOn(toasterService, 'error').and.callThrough();
       component.addOrgType();
       fixture.detectChanges();
@@ -91,7 +91,7 @@ describe('CreateOrgTypeComponent', () => {
       component.orgName = new FormControl('test');
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
-      spyOn(orgTypeService, 'updateOrgType').and.callFake(() => Observable.of(mockRes.orgTypeUpdateSuccess));
+      spyOn(orgTypeService, 'updateOrgType').and.callFake(() => observableOf(mockRes.orgTypeUpdateSuccess));
       spyOn(toasterService, 'success').and.callThrough();
       component.updateOrgType();
       fixture.detectChanges();
@@ -104,7 +104,7 @@ describe('CreateOrgTypeComponent', () => {
       component.orgName = new FormControl('test');
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
-      spyOn(orgTypeService, 'updateOrgType').and.callFake(() => Observable.throw(mockRes.orgTypeUpdateError));
+      spyOn(orgTypeService, 'updateOrgType').and.callFake(() => observableThrowError(mockRes.orgTypeUpdateError));
       spyOn(toasterService, 'error').and.callThrough();
       component.updateOrgType();
       fixture.detectChanges();

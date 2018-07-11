@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,6 @@ import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
   CreateService, IGeoLocationDetails, FileUploaderComponent
 } from '@sunbird/announcement';
-import { Observable } from 'rxjs/Observable';
 import { mockRes } from './create.component.spec.data';
 
 

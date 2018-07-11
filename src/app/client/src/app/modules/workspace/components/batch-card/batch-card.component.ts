@@ -21,7 +21,7 @@ export class BatchCardComponent {
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
   */
-  private activatedRoute: ActivatedRoute;
+  public activatedRoute: ActivatedRoute;
   /**
     * Reference for WorkSpaceService
   */
@@ -55,7 +55,7 @@ export class BatchCardComponent {
   }
   public onAction(batchdata) {
     this.batchService.setBatchData(batchdata);
-    this.route.navigate(['workspace/content/update/batch', batchdata.identifier]);
+    this.route.navigate(['update/batch', batchdata.identifier], {relativeTo: this.activatedRoute});
   }
 
 }

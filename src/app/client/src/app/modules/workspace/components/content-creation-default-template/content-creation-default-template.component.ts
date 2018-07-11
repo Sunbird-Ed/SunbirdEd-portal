@@ -183,7 +183,7 @@ export class DefaultTemplateComponent implements OnInit {
     } else {
       names = keys;
     }
-    _.filter(range, (res) => {
+    _.forEach(range, (res) => {
       _.forEach(names, (value, key) => {
         if (res.name === value) {
           filteredAssociations.push(res);

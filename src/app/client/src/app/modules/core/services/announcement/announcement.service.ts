@@ -1,8 +1,10 @@
+
+import {map} from 'rxjs/operators';
 import { DataService } from './../data/data.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
 import { IAnnouncementDetails, IAnnouncementSericeParam } from '@sunbird/announcement';
 import { ConfigService } from '@sunbird/shared';
 
@@ -141,10 +143,10 @@ export class AnnouncementService extends DataService {
         }
       }
     };
-    return this.delete(option).map(data => {
+    return this.delete(option).pipe(map(data => {
       this.announcementDeleteEvent.emit(requestParam.announcementId);
       return data;
-    });
+    }));
   }
 
   /**

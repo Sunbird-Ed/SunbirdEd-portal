@@ -1,10 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 // Rxjs
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
+
 import * as _ from 'lodash';
 
 /**
@@ -47,10 +49,10 @@ export class UserSearchService {
       }
     };
 
-    return this.learnerService.post(option).map(data => {
+    return this.learnerService.post(option).pipe(map(data => {
       this.userDeleteEvent.emit(requestParam.userId);
       return data;
-    });
+    }));
   }
 
   updateRoles(requestParam) {

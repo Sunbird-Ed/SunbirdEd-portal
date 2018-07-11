@@ -3,7 +3,7 @@ import { LearnerService } from '@sunbird/core';
 import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { DashboardParams } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /**
  * Service to download dashboard report
