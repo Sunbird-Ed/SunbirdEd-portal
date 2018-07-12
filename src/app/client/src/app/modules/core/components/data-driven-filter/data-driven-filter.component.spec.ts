@@ -175,25 +175,25 @@ describe('DataDrivenFilterComponent', () => {
   it('should call ngOnChanges method', () => {
     component.enrichFilters = mockData.mockRes.enrichFilterData;
     component.formFieldProperties = mockData.mockRes.formData;
-    spyOn(component, 'ngOnChanges').and.callThrough();
+    spyOn(component, 'generateRange').and.callThrough();
     component.ngOnChanges();
-    expect(component.ngOnChanges).toHaveBeenCalled();
+    expect(component.generateRange).toHaveBeenCalled();
   });
-  it('should call showField method', () => {
+  it('should not call permission service if allowedRoles are present', () => {
     const permissionService = TestBed.get(PermissionService);
     const allowedRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'];
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
     component.showField(allowedRoles);
     expect(permissionService.checkRolesPermissions).toHaveBeenCalled();
   });
-  it('should call showField method and pass else codition', () => {
+  it('should not call permission service if allowedRoles are empty', () => {
     const permissionService = TestBed.get(PermissionService);
     const allowedRoles = undefined;
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
     component.showField(allowedRoles);
     expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
   });
-  it('should apply filters and pass if condition', () => {
+  it('should apply filters and key should have concepts', () => {
     const router = TestBed.get(Router);
     component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
     component.queryParams = {
