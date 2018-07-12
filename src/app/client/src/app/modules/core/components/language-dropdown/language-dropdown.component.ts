@@ -1,12 +1,12 @@
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
   languages: any;
+  orgDetailsUnsubscribe: Subscription;
   selectedLanguage: string;
   queryParam: any;
   channelId: any;
@@ -40,7 +41,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   getChannelId() {
-    this.orgDetailsService.orgDetails$.subscribe(((data) => {
+    this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
       if (data && !data.err) {
         this.channelId = data.orgDetails.hashTagId;
         this.getLanguage();
@@ -89,6 +90,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.orgDetailsUnsubscribe.unsubscribe();
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
