@@ -3,7 +3,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, UtilService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,7 +48,7 @@ describe('LibrarySearchComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [LibrarySearchComponent],
-      providers: [ConfigService, SearchService, LearnerService,
+      providers: [ConfigService, SearchService, LearnerService, UtilService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -94,5 +94,27 @@ describe('LibrarySearchComponent', () => {
     component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+  });
+  it('should call getDataForCard Method to pass the data in Card ', () => {
+    const searchService = TestBed.get(SearchService);
+    const utilService = TestBed.get(UtilService);
+    const config = TestBed.get(ConfigService);
+    const constantData = config.appConfig.LibrarySearch.constantData;
+    const metaData = config.appConfig.LibrarySearch.metaData;
+    const dynamicFields = config.appConfig.LibrarySearch.dynamicFields;
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(component, 'populateContentSearch').and.callThrough();
+    spyOn(utilService, 'getDataForCard').and.callThrough();
+    component.queryParams = mockQueryParma;
+    const filters = {board: ['NCERT'], gradeLevel: ['KG']};
+    component.populateContentSearch(filters);
+    const searchList = utilService.getDataForCard(Response.successData.result.content, constantData, dynamicFields, metaData);
+    fixture.detectChanges();
+    expect(utilService.getDataForCard).toHaveBeenCalled();
+    expect(utilService.getDataForCard).toHaveBeenCalledWith(Response.successData.result.content, constantData, dynamicFields, metaData);
+    expect(component.searchList).toEqual(searchList);
+    expect(component.totalCount).toEqual(Response.successData.result.count);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeFalsy();
   });
 });

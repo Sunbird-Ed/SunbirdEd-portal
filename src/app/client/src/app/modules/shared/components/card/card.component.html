@@ -7,7 +7,7 @@
     <div class="ui image" >
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image">
-        <img src="{{data.ribbon.left.image }}" class="ui spaced avatar image">
+        <img src="{{data.ribbon.left.image }}" class="ui small avatar image margin-right-none">
       </a>
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
