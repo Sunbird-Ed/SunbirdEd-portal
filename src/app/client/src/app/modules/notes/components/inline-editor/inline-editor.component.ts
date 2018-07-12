@@ -178,6 +178,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
             updatedDate: new Date().toISOString()
           };
           this.createEventEmitter.emit(returnObj);
+          this.toasterService.success(this.resourceService.messages.smsg.m0009);
         },
         (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0030);
@@ -210,6 +211,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           id: requestData.noteId
         };
         this.updateEventEmitter.emit(returnObj);
+        this.toasterService.success(this.resourceService.messages.smsg.m0013);
       },
       (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0034);
