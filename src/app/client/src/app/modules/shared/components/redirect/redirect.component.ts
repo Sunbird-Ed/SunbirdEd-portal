@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 /**
- * Redirectcomponent is called when the content played is of mimeType text/x-url
- * and when the route learn/redirect is called this component is invoked
+ * Redirectcomponent is invoked when
+ * the route learn/redirect is called
  */
 export class RedirectComponent implements OnInit {
   /**
-   * To send activatedRoute.snapshot to router navigation
-   * service to get the telemetry data
+   * To get the values of telemetry data
+   * from activatedRoute
    */
   private activatedRoute: ActivatedRoute;
   /**
@@ -27,7 +27,7 @@ export class RedirectComponent implements OnInit {
     this.router = router;
   }
   /**
-   * oninit the window opens a new window tab with the redirectUrl values in the url
+   * oninit the component opens new window tab with the redirectUrl values in the url
    */
   ngOnInit() {
     this.telemetryImpression = {
@@ -42,7 +42,7 @@ export class RedirectComponent implements OnInit {
     };
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
-    }, 3000);
+    }, 1000);
   }
 
   /**

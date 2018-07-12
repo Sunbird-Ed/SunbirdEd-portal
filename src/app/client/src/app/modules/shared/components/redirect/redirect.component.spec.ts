@@ -58,17 +58,21 @@ describe('RedirectComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call window.open() in same tab', () => {
+  it('should call window.open() in new tab', () => {
+    const redirectUrl = 'https://www.dailymotion.com/video/xlshwn#&contentId=do_112544609019969536177';
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
     }, 500);
     expect(component).toBeTruthy();
-    expect(window.open).toBeDefined();
+    const windowSpy = spyOn(window, 'open');
+    expect(windowSpy).toHaveBeenCalledWith(redirectUrl);
   });
 
   it('test goback function', () => {
     component.goBack();
     window.close();
     expect(component.goBack).toBeDefined();
+    expect(component.goBack).toHaveBeenCalled();
   });
 });
+

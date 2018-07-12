@@ -122,7 +122,7 @@ describe('PublicCollectionPlayerComponent', () => {
     };
     spyOn(component, 'OnPlayContent').and.callThrough();
     spyOn(component, 'playContent').and.callThrough();
-    component.OnPlayContent(content, true);
+    component.OnPlayContent(content);
     expect(component.OnPlayContent).toHaveBeenCalledWith(content);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });

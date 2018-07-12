@@ -34,6 +34,7 @@ describe('External Url UtilsService', () => {
             service.generateRedirectUrl(MockResponse.ServerResponse, '9dvdkjlsds2423423', 'do_1125110622654464001294', '293482034290999');
             const windowSpy = spyOn(window, 'open');
             window.open('/learn/redirect', '_blank');
+            expect(windowSpy).toHaveBeenCalled();
             expect(toasterService.warning).toBeDefined();
             expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
             expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
