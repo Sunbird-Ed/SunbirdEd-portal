@@ -69,7 +69,6 @@ describe('ExploreContentComponent', () => {
     component.queryParams = mockQueryParma;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
@@ -92,7 +91,6 @@ describe('ExploreContentComponent', () => {
     const requestParams = Response.requestParam;
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.populateContentSearch();
@@ -107,7 +105,6 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     component.populateContentSearch();
@@ -119,7 +116,6 @@ describe('ExploreContentComponent', () => {
     component.slug = '123456567';
     const searchService = TestBed.get(SearchService);
     const orgManagementService = TestBed.get(OrgDetailsService);
-    spyOn(orgManagementService, 'getChannel').and.callFake(() => observableOf('123456567'));
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
