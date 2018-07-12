@@ -154,11 +154,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     });
   }
 
-  public OnPlayContent(content: { title: string, id: string }, isCalledFromClick) {
+  public OnPlayContent(content: { title: string, id: string }, isCalledFromOnPlay) {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-      if (!isCalledFromClick) {
+      if (!isCalledFromOnPlay) {
         const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
         if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
           this.externalUrlPreviewService.generateRedirectUrl(contentDet.model);
