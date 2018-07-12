@@ -154,22 +154,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     });
   }
 
-  public OnPlayContent(content: { title: string, id: string }) {
+  public OnPlayContent(content: { title: string, id: string }, isCalledFromClick) {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
-        this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
-    } else {
-      throw new Error(`unbale to play collection content for ${this.collectionId}`);
-    }
-  }
-
-  public playContentOnClick(content: { title: string, id: string }) {
-    if (content && content.id) {
-      const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
-      if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-        this.externalUrlPreviewService.generateRedirectUrl(contentDet.model);
+      if (!isCalledFromClick) {
+        const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
+        if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+          this.externalUrlPreviewService.generateRedirectUrl(contentDet.model);
+        }
       }
+        this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }
@@ -191,7 +186,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
-              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
             }

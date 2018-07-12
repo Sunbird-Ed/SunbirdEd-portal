@@ -23,7 +23,6 @@ const routes: Routes = [
   {
     path: 'redirect', component: RedirectComponent,
     data: {
-      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Redirect', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn-redirect', type: 'view' }
     }
   },
