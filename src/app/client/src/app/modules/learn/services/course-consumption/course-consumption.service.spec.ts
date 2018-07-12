@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 const fakeActivatedRoute = {
-  'params': observableOf([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   'root': {
     children: [{snapshot: {
       queryParams: {}

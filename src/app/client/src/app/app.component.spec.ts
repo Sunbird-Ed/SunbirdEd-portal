@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ConfigService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import {
@@ -14,13 +14,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { RouterTestingModule } from '@angular/router/testing';
+
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot(),
-      RouterTestingModule],
+        RouterTestingModule],
       declarations: [
         AppComponent
       ],
@@ -39,7 +40,7 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     // fixture = TestBed.createComponent(AppComponent);
-   // component = fixture.componentInstance;
+    // component = fixture.componentInstance;
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
@@ -54,8 +55,17 @@ describe('AppComponent', () => {
     spyOn(document, 'querySelector').and.returnValue({
       setAttribute: () => { }
     });
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(document.title).toBe(mockData.tenantSuccess.result.titleName);
     expect(document.querySelector).toHaveBeenCalled();
   });
+  it('should set the version number', async(() => {
+    spyOn(document, 'getElementById').and.callFake(() => {
+      return {
+        value: '1.9.0.1'
+      };
+    });
+    component.ngOnInit();
+    expect(component.version).toEqual('1.9.0');
+  }));
 });
