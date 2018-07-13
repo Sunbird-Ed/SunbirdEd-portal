@@ -107,10 +107,10 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} }
+        "left": {"class":  "ui circular label  card-badges-image"} }
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
