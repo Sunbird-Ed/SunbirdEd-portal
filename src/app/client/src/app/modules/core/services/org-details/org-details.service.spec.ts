@@ -25,9 +25,9 @@ describe('OrgDetailsService', () => {
     const service = TestBed.get(OrgDetailsService);
     const contentService = TestBed.get(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.successData));
-    service.getChannel('ap').subscribe(
+    service.getOrgDetails('ap').subscribe(
       apiResponse => {
-        expect(apiResponse).toBe('0123166367624478721');
+        expect(apiResponse).toBe(serverRes.successData.result.response.content[0]);
       }
     );
   });

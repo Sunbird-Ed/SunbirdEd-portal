@@ -29,35 +29,35 @@ export const response = {
   },
 
   errResponse: {
-      'id': 'api.note.create',
-      'ver': 'v1',
-      'ts': '2018-03-14 14:15:58:029+0000',
-      'params': {
-        'resmsgid': null,
-        'msgid': '11544302-c459-2ef0-9a28-ef0ec1c5e4c3',
-        'err': 'UNAUTHORIZE_USER',
-        'status': 'UNAUTHORIZE_USER',
-        'errmsg': 'You are not authorized.'
-      },
-      'responseCode': 'UNAUTHORIZED',
-      'result': {}
+    'id': 'api.note.create',
+    'ver': 'v1',
+    'ts': '2018-03-14 14:15:58:029+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': '11544302-c459-2ef0-9a28-ef0ec1c5e4c3',
+      'err': 'UNAUTHORIZE_USER',
+      'status': 'UNAUTHORIZE_USER',
+      'errmsg': 'You are not authorized.'
+    },
+    'responseCode': 'UNAUTHORIZED',
+    'result': {}
   },
 
   successResponse: {
-      'id': 'api.note.create',
-      'ver': 'v1',
-      'ts': '2018-03-14 14:19:52:961+0000',
-      'params': {
-        'resmsgid': null,
-        'msgid': 'd5f11a5b-dbfb-4a19-9c28-82748b8c023d',
-        'err': null,
-        'status': 'success',
-        'errmsg': null
-      },
-      'responseCode': 'OK',
-      'result': {
-        'id': '0124603402014720000'
-      }
+    'id': 'api.note.create',
+    'ver': 'v1',
+    'ts': '2018-03-14 14:19:52:961+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': 'd5f11a5b-dbfb-4a19-9c28-82748b8c023d',
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'id': '0124603402014720000'
+    }
   },
 
   selectedNote: {
@@ -148,11 +148,16 @@ export const response = {
   resourceBundle: {
     'messages': {
       'fmsg': {
-          'm0030': 'Creating note is failed, please try again later...',
-          'm0034': 'Updating note is failed, please try again later...',
-          'm0033': 'Fetching note is failed, please try again later...'
+        'm0030': 'Creating note is failed, please try again later...',
+        'm0034': 'Updating note is failed, please try again later...',
+        'm0033': 'Fetching note is failed, please try again later...',
+
+      },
+      'smsg': {
+        'm0009': 'Note created successfully...',
+        'm0013': 'Note updated successfully...'
       }
-  }
+    }
   }
 
 };
