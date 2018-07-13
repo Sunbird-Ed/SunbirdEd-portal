@@ -105,7 +105,7 @@ describe('DialCodeComponent', () => {
     component.getEvent(item);
     expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier]);
   });
-  fit('should call getDataForCard Method to pass the data in Card ', () => {
+  it('should call getDataForCard Method to pass the data in Card ', () => {
     const searchService = TestBed.get(SearchService);
     const utilService = TestBed.get(UtilService);
     const config = TestBed.get(ConfigService);
