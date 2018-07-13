@@ -20,3 +20,10 @@
     display: flex;
     margin: -.875em -.5em -.875em 0;
 }
+
+.ui.circular.label.card-badges-image{
+    left: 10px;
+    position: absolute;
+    top: 9px;
+}
+
