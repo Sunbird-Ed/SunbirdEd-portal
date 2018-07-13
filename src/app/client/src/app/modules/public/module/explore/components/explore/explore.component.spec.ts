@@ -1,7 +1,7 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService, ICaraouselData, IAction } from '@sunbird/shared';
-import { PageApiService, PlayerService, LearnerService, CoreModule } from '@sunbird/core';
+import { PageApiService, PlayerService, LearnerService, CoreModule, OrgDetailsService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
@@ -37,6 +37,9 @@ describe('ExploreComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }),
     snapshot: {
+      params: {
+        slug: 'ap'
+      },
       data: {
         telemetry: {
           env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'
@@ -52,7 +55,7 @@ describe('ExploreComponent', () => {
       declarations: [ExploreComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
-      { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -66,6 +69,7 @@ describe('ExploreComponent', () => {
 
   it('should subscribe to service', () => {
     const pageSectionService = TestBed.get(PageApiService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
@@ -78,6 +82,7 @@ describe('ExploreComponent', () => {
 
   it('should subscribe to service and no contents', () => {
     const pageSectionService = TestBed.get(PageApiService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
     component.populatePageData();
@@ -91,6 +96,7 @@ describe('ExploreComponent', () => {
   it('should subscribe to service and contents to be undefined', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
@@ -103,6 +109,7 @@ describe('ExploreComponent', () => {
   it('should get error', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
+    const orgManagementService = TestBed.get(OrgDetailsService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const toasterService = TestBed.get(ToasterService);

@@ -56,6 +56,7 @@ export class ExploreComponent implements OnInit {
   sortingOptions: Array<ISort>;
   contents: any;
   hashTagId: string;
+  slug = '';
   /**
    * The "constructor"
    *
@@ -131,6 +132,7 @@ export class ExploreComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.slug = this.activatedRoute.snapshot.params.slug;
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getQueryParams();
@@ -177,7 +179,7 @@ export class ExploreComponent implements OnInit {
   }
 
   getChannelId() {
-    this.orgDetailsService.getOrgDetails().subscribe(
+    this.orgDetailsService.getOrgDetails(this.slug).subscribe(
         (apiResponse: any) => {
             this.hashTagId = apiResponse.hashTagId;
         },
