@@ -250,11 +250,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
    * Updating notes list after creating/updating a note.
    */
   createEventEmitter(data) {
-    // if (data.id) {
+    if (data.id) {
       this.notesList.unshift(data);
       this.setSelectedNote(this.notesList[0], 0);
       this.showCreateEditor = false;
-    // }
+    }
   }
 
   updateEventEmitter(data) {
