@@ -41,7 +41,7 @@
         <ng-template #showLoginBtn>
             <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10">
-                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
+                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button  appTelemetryInteract 
                     [telemetryInteractObject]="telemetryInteractObject" 
                     [telemetryInteractEdata]="signUpInteractEdata" *ngIf="enableSignup && router.isActive('', true)" 
@@ -55,7 +55,7 @@
                 <div class="ui secondary right pointing dropdown" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
+                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                         <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
                         [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
