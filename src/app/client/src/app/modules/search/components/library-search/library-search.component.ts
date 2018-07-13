@@ -159,7 +159,7 @@ export class LibrarySearchComponent implements OnInit {
         const metaData = this.config.appConfig.LibrarySearch.metaData;
         const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
         this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
-        } else {
+      } else {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
