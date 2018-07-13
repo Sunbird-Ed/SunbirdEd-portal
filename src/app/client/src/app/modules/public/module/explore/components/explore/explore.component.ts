@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
-import { PageApiService, PlayerService, ISort } from '@sunbird/core';
+import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage,
    ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
@@ -26,6 +26,8 @@ export class ExploreComponent implements OnInit {
   * To call get resource data.
   */
   private pageSectionService: PageApiService;
+
+  public orgDetailsService: OrgDetailsService;
   /**
    * This variable hepls to show and hide page loader.
    * It is kept true by default as at first when we comes
@@ -53,6 +55,7 @@ export class ExploreComponent implements OnInit {
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
   contents: any;
+  hashTagId: string;
   /**
    * The "constructor"
    *
@@ -61,10 +64,12 @@ export class ExploreComponent implements OnInit {
    */
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
-    public utilService: UtilService, public navigationHelperService: NavigationHelperService) {
+    public utilService: UtilService, public navigationHelperService: NavigationHelperService,
+    orgDetailsService: OrgDetailsService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
+    this.orgDetailsService = orgDetailsService;
     this.config = config;
     this.router = router;
     this.router.onSameUrlNavigation = 'reload';
@@ -129,6 +134,7 @@ export class ExploreComponent implements OnInit {
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getQueryParams();
+    this.getChannelId();
   }
 
   playContent(event) {
@@ -169,5 +175,16 @@ export class ExploreComponent implements OnInit {
         this.populatePageData();
       });
   }
+
+  getChannelId() {
+    this.orgDetailsService.getOrgDetails().subscribe(
+        (apiResponse: any) => {
+            this.hashTagId = apiResponse.hashTagId;
+        },
+        err => {
+            this.router.navigate(['']);
+        }
+    );
+}
 
 }

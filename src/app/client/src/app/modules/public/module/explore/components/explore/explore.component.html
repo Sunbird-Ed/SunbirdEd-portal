@@ -4,7 +4,7 @@
     <div class=" ui grid">
       <div class="eleven wide column">
         <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [enrichFilters]="facets" [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true></app-data-driven-filter>
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
       </div>
     </div>
     <div *ngFor="let section of caraouselData">
