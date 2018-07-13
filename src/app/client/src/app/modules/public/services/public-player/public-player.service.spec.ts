@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { CoreModule, ContentService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './public-player.service';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { serverRes } from './public-player.service.spec.data';
 import { UUID } from 'angular2-uuid';
@@ -19,7 +20,7 @@ describe('PublicPlayerService', () => {
   it('should return content details', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(Observable.of(serverRes.successResult));
+    spyOn(contentService, 'get').and.returnValue(observableOf(serverRes.successResult));
     playerService.getContent();
     playerService.getContent(serverRes.successResult.result.content.identifier).subscribe((data) => {
       expect(data).toBeTruthy();

@@ -1,3 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {mergeMap, map} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ContentService, UserService, CollectionHierarchyAPI } from '@sunbird/core';
 import { Injectable } from '@angular/core';
@@ -6,7 +10,6 @@ import {
   ContentDetails, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { UUID } from 'angular2-uuid';
 
 @Injectable()
@@ -30,13 +33,13 @@ export class PublicPlayerService {
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
   getConfigByContent(id: string): Observable<PlayerConfig> {
-    return this.getContent(id)
-      .flatMap((contentDetails) => {
-        return Observable.of(this.getConfig({
+    return this.getContent(id).pipe(
+      mergeMap((contentDetails) => {
+        return observableOf(this.getConfig({
           contentId: contentDetails.result.content.identifier,
           contentData: contentDetails.result.content
         }));
-      });
+      }));
   }
 
   /**
@@ -49,10 +52,10 @@ export class PublicPlayerService {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { fields: this.configService.urlConFig.params.contentGet }
     };
-    return this.contentService.get(req).map((response: ServerResponse) => {
+    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
       this.contentData = response.result.content;
       return response;
-    });
+    }));
   }
   /**
    * returns player config details.
@@ -75,9 +78,9 @@ export class PublicPlayerService {
     const req = {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
     };
-    return this.contentService.get(req).map((response: ServerResponse) => {
+    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
       this.collectionData = response.result.content;
       return response;
-    });
+    }));
   }
 }

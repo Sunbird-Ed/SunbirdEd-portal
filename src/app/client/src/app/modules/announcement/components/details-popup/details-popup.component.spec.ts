@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './details-popup.component.spec.data';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { TelemetryModule } from '@sunbird/telemetry';
 // Modules
@@ -20,7 +21,7 @@ describe('DetailsPopupComponent', () => {
   let component: DetailsPopupComponent;
   let fixture: ComponentFixture<DetailsPopupComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' }]),
+    'params': observableOf({ 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' }),
     snapshot: {
       data: {
           telemetry: {
@@ -60,11 +61,11 @@ describe('DetailsPopupComponent', () => {
   it('should call get announcement by id api and get success response', inject([AnnouncementService, ActivatedRoute,
     ResourceService, ToasterService, HttpClient],
     (announcementService, activatedRoute, resourceService, toasterService, http) => {
-      spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.of(testData.mockRes.getAnnByIdSuccess));
+      spyOn(announcementService, 'getAnnouncementById').and.callFake(() => observableOf(testData.mockRes.getAnnByIdSuccess));
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(toasterService, 'success').and.callThrough();
-      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
       http.get().subscribe(
         data => {
           resourceService.messages = data.messages;
@@ -93,13 +94,13 @@ describe('DetailsPopupComponent', () => {
   it('should call get announcement by id api and get error response',
     inject([AnnouncementService, ToasterService, ResourceService, HttpClient, RouterNavigationService],
       (announcementService, toasterService, resourceService, http, routerNavigationService) => {
-        spyOn(announcementService, 'getAnnouncementById').and.callFake(() => Observable.throw(testData.mockRes.getAnnByIdError));
+        spyOn(announcementService, 'getAnnouncementById').and.callFake(() => observableThrowError(testData.mockRes.getAnnByIdError));
         spyOn(component, 'getDetails').and.callThrough();
         const param = { data: { 'request': { 'announcementId': '' } } };
         spyOn(resourceService, 'getResource').and.callThrough();
         spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
         spyOn(toasterService, 'error').and.callThrough();
-        spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+        spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
         http.get().subscribe(
           data => {
             resourceService.messages = data.messages;
@@ -117,6 +118,14 @@ describe('DetailsPopupComponent', () => {
         );
         expect(component.showLoader).toBe(false);
       }));
+
+      it('should unsubscribe from all observable subscriptions', () => {
+        component.getDetails('92ca4110-19df-11e8-8773-d9334313c305');
+        component.ngOnInit();
+        spyOn(component.unsubscribe, 'complete');
+        component.ngOnDestroy();
+        expect(component.unsubscribe.complete).toHaveBeenCalled();
+      });
 });
 
 

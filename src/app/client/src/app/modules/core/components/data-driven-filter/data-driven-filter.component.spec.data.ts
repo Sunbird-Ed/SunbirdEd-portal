@@ -1,6 +1,644 @@
 export const mockRes = {
     // tslint:disable-next-line:max-line-length
-    frameworkData: { 'err': null, 'framework': 'NCF', 'frameworkdata': [{ 'identifier': 'ncf_board', 'code': 'board', 'terms': [{ 'associations': [{ 'identifier': 'ncf_gradelevel_kindergarten', 'code': 'kindergarten', 'name': 'KG', 'description': 'KG', 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade1', 'code': 'grade1', 'name': 'Class 1', 'description': 'Class 1', 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade2', 'code': 'grade2', 'name': 'Class 2 ', 'description': 'Class 2 ', 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade4', 'code': 'grade4', 'name': 'Class 4', 'description': 'Class 4', 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade3', 'code': 'grade3', 'name': 'Class 3', 'description': 'Class 3', 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade5', 'code': 'grade5', 'name': 'Class 5', 'description': 'Class 5', 'category': 'gradelevel', 'status': 'Live' }], 'identifier': 'ncf_board_ncert', 'code': 'ncert', 'name': 'NCERT', 'description': '', 'index': 1, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_cbse', 'code': 'cbse', 'name': 'CBSE', 'description': '', 'index': 2, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_icse', 'code': 'icse', 'name': 'ICSE', 'description': '', 'index': 3, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_upboard', 'code': 'upboard', 'name': 'State (Uttar Pradesh)', 'description': 'State (Uttar Pradesh)', 'index': 4, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_apboard', 'code': 'apboard', 'name': 'State (Andhra Pradesh)', 'description': 'State (Andhra Pradesh)', 'index': 5, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_tnboard', 'code': 'tnboard', 'name': 'State (Tamil Nadu)', 'description': 'State (Tamil Nadu)', 'index': 6, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_ncte', 'code': 'ncte', 'name': 'NCTE', 'description': '', 'index': 7, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_mscert', 'code': 'mscert', 'name': 'State (Maharashtra)', 'description': 'State (Maharashtra)', 'index': 8, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_bser', 'code': 'bser', 'name': 'State (Rajasthan)', 'description': 'State (Rajasthan)', 'index': 9, 'category': 'board', 'status': 'Live' }, { 'identifier': 'ncf_board_others', 'code': 'others', 'name': 'Other', 'description': 'Other', 'index': 10, 'category': 'board', 'status': 'Live' }], 'name': 'Curriculum', 'description': '', 'index': 1, 'status': 'Live' }, { 'identifier': 'ncf_gradelevel', 'code': 'gradeLevel', 'terms': [{ 'identifier': 'ncf_gradelevel_kindergarten', 'code': 'kindergarten', 'name': 'KG', 'description': 'KG', 'index': 1, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade1', 'code': 'grade1', 'name': 'Class 1', 'description': 'Class 1', 'index': 2, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade2', 'code': 'grade2', 'name': 'Class 2 ', 'description': 'Class 2 ', 'index': 3, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade3', 'code': 'grade3', 'name': 'Class 3', 'description': 'Class 3', 'index': 4, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade4', 'code': 'grade4', 'name': 'Class 4', 'description': 'Class 4', 'index': 5, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade5', 'code': 'grade5', 'name': 'Class 5', 'description': 'Class 5', 'index': 6, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade6', 'code': 'grade6', 'name': 'Class 6', 'description': 'Class 6', 'index': 7, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade7', 'code': 'grade7', 'name': 'Class 7', 'description': 'Class 7', 'index': 8, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade8', 'code': 'grade8', 'name': 'Class 8', 'description': 'Class 8', 'index': 9, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade9', 'code': 'grade9', 'name': 'Class 9', 'description': 'Class 9', 'index': 10, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade10', 'code': 'grade10', 'name': 'Class 10', 'description': 'Class 10', 'index': 11, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade11', 'code': 'grade11', 'name': 'Class 11', 'description': 'Class 11', 'index': 12, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_grade12', 'code': 'grade12', 'name': 'Class 12', 'description': 'Class 12', 'index': 13, 'category': 'gradelevel', 'status': 'Live' }, { 'identifier': 'ncf_gradelevel_others', 'code': 'others', 'name': 'Other', 'description': '', 'index': 14, 'category': 'gradeLevel', 'status': 'Live' }], 'name': 'Class', 'description': '', 'index': 2, 'status': 'Live' }, { 'identifier': 'ncf_subject', 'code': 'subject', 'terms': [{ 'identifier': 'ncf_subject_mathematics', 'code': 'mathematics', 'name': 'Mathematics', 'description': '', 'index': 1, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_english', 'code': 'english', 'name': 'English', 'description': '', 'index': 2, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_tamil', 'code': 'tamil', 'name': 'Tamil', 'description': '', 'index': 3, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_telugu', 'code': 'telugu', 'name': 'Telugu', 'description': '', 'index': 4, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_geography', 'code': 'geography', 'name': 'Geography', 'description': '', 'index': 5, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_urdu', 'code': 'urdu', 'name': 'Urdu', 'description': '', 'index': 6, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_kannada', 'code': 'kannada', 'name': 'Kannada', 'description': '', 'index': 7, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_assamese', 'code': 'assamese', 'name': 'Assamese', 'description': '', 'index': 8, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_physics', 'code': 'physics', 'name': 'Physics', 'description': '', 'index': 9, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_chemistry', 'code': 'chemistry', 'name': 'Chemistry', 'description': '', 'index': 10, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_hindi', 'code': 'hindi', 'name': 'Hindi', 'description': '', 'index': 11, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_marathi', 'code': 'marathi', 'name': 'Marathi', 'description': '', 'index': 12, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_environmentalstudies', 'code': 'environmentalstudies', 'name': 'EvS', 'description': 'EvS', 'index': 13, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_politicalscience', 'code': 'politicalscience', 'name': 'Political Science', 'description': '', 'index': 14, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_bengali', 'code': 'bengali', 'name': 'Bengali', 'description': '', 'index': 15, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_history', 'code': 'history', 'name': 'History', 'description': '', 'index': 16, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_gujarati', 'code': 'gujarati', 'name': 'Gujarati', 'description': '', 'index': 17, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_biology', 'code': 'biology', 'name': 'Biology', 'description': '', 'index': 18, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_oriya', 'code': 'oriya', 'name': 'Odia', 'description': 'Odia', 'index': 19, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_punjabi', 'code': 'punjabi', 'name': 'Punjabi', 'description': '', 'index': 20, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_nepali', 'code': 'nepali', 'name': 'Nepali', 'description': '', 'index': 21, 'category': 'subject', 'status': 'Live' }, { 'identifier': 'ncf_subject_malayalam', 'code': 'malayalam', 'name': 'Malayalam', 'description': '', 'index': 22, 'category': 'subject', 'status': 'Live' }], 'name': 'Subject', 'description': '', 'index': 3, 'status': 'Live' }, { 'identifier': 'ncf_medium', 'code': 'medium', 'terms': [{ 'identifier': 'ncf_medium_english', 'code': 'english', 'name': 'English', 'description': '', 'index': 1, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_hindi', 'code': 'hindi', 'name': 'Hindi', 'description': '', 'index': 2, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_oriya', 'code': 'oriya', 'name': 'Odia', 'description': 'Odia', 'index': 3, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_telugu', 'code': 'telugu', 'name': 'Telugu', 'description': '', 'index': 4, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_kannada', 'code': 'kannada', 'name': 'Kannada', 'description': '', 'index': 5, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_marathi', 'code': 'marathi', 'name': 'Marathi', 'description': '', 'index': 6, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_assamese', 'code': 'assamese', 'name': 'Assamese', 'description': '', 'index': 7, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_bengali', 'code': 'bengali', 'name': 'Bengali', 'description': '', 'index': 8, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_gujarati', 'code': 'gujarati', 'name': 'Gujarati', 'description': '', 'index': 9, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_urdu', 'code': 'urdu', 'name': 'Urdu', 'description': '', 'index': 10, 'category': 'medium', 'status': 'Live' }, { 'identifier': 'ncf_medium_other', 'code': 'other', 'name': 'Other', 'description': '', 'index': 11, 'category': 'medium', 'status': 'Live' }], 'name': 'Medium', 'description': '', 'index': 4, 'status': 'Live' }, { 'identifier': 'xyz', 'name': 'Concepts', 'code': 'concepts', 'description': '', 'index': 5, 'status': 'Live', 'domains': [{ 'identifier': 'numeracy', 'name': 'Numeracy', 'objectType': 'Domain', 'children': [{ 'identifier': 'D5', 'name': 'Data Handling', 'objectType': 'Dimension', 'children': [] }, { 'identifier': 'D1', 'name': 'Geometry', 'objectType': 'Dimension', 'children': [] }, { 'identifier': 'testDimension1', 'name': 'Measurement', 'objectType': 'Dimension', 'children': [] }, { 'identifier': 'D4', 'name': 'Measurement', 'objectType': 'Dimension', 'children': [] }, { 'identifier': 'D2', 'name': 'Number sense', 'objectType': 'Dimension', 'children': [{ 'identifier': 'C6', 'name': 'Counting', 'objectType': 'Concept', 'children': [{ 'identifier': 'C49', 'name': 'Counting objects', 'objectType': 'Concept', 'children': [{ 'identifier': 'C211', 'name': 'Count to 20', 'objectType': 'Concept', 'children': [{ 'identifier': 'C455', 'name': 'Learner does not know the order of numbers.', 'objectType': 'Concept', 'children': [] }, { 'identifier': 'C456', 'name': 'Learner is not able to count till a specified number within a given set.', 'objectType': 'Concept', 'children': [] }, { 'identifier': 'C451', 'name': 'Learner is not able to match the number of objects and its numeral values.', 'objectType': 'Concept', 'children': [] }, { 'identifier': 'C460', 'name': 'Learner skips all even numbers while counting.', 'objectType': 'Concept', 'children': [] }] }] }] }, { 'identifier': 'C8', 'name': 'Place value', 'objectType': 'Concept', 'children': [{ 'identifier': 'C71', 'name': 'Expand a number with respect to place values', 'objectType': 'Concept', 'children': [] }] }] }] }] }] },
-    // tslint:disable-next-line:max-line-length
-    formConfigData: [{ 'code': 'concept', 'name': 'Concepts', 'label': 'Concepts', 'description': 'concept', 'editable': true, 'inputType': 'select ', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 5 }, { 'code': 'board', 'name': 'Board', 'label': 'Board', 'description': 'Education Board (Like MP Board, NCERT, etc)', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 1 }, { 'code': 'medium', 'name': 'Medium', 'label': 'Medium', 'description': 'Medium of instruction', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 4 }, { 'code': 'subject', 'name': 'Subject', 'label': 'Subject', 'description': 'Subject of the Content to use to teach', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 2 }]
+    frameworkData: {
+        'err': null,
+        'framework': 'NCF',
+        'frameworkdata': [
+            {
+                'identifier': 'ncf_board',
+                'code': 'board',
+                'terms': [
+                    {
+                        'associations': [
+                            {
+                                'identifier': 'ncf_gradelevel_kindergarten',
+                                'code': 'kindergarten',
+                                'name': 'KG',
+                                'description': 'KG',
+                                'category': 'gradelevel',
+                                'status': 'Live'
+                            },
+                            {
+                                'identifier': 'ncf_gradelevel_grade5',
+                                'code': 'grade5',
+                                'name': 'Class 5',
+                                'description': 'Class 5',
+                                'category': 'gradelevel',
+                                'status': 'Live'
+                            }
+                        ],
+                        'identifier': 'ncf_board_ncert',
+                        'code': 'ncert',
+                        'name': 'NCERT',
+                        'description': '',
+                        'index': 1,
+                        'category': 'board',
+                        'status': 'Live'
+                    },
+                    {
+                        'identifier': 'ncf_board_cbse',
+                        'code': 'cbse',
+                        'name': 'CBSE',
+                        'description': '',
+                        'index': 2,
+                        'category': 'board',
+                        'status': 'Live'
+                    },
+                    {
+                        'identifier': 'ncf_board_others',
+                        'code': 'others',
+                        'name': 'Other',
+                        'description': 'Other',
+                        'index': 10,
+                        'category': 'board',
+                        'status': 'Live'
+                    }
+                ],
+                'name': 'Curriculum',
+                'description': '',
+                'index': 1,
+                'status': 'Live'
+            },
+            {
+                'identifier': 'ncf_gradelevel',
+                'code': 'gradeLevel',
+                'terms': [
+                    {
+                        'identifier': 'ncf_gradelevel_kindergarten',
+                        'code': 'kindergarten',
+                        'name': 'KG',
+                        'description': 'KG',
+                        'index': 1,
+                        'category': 'gradelevel',
+                        'status': 'Live'
+                    },
+                    {
+                        'identifier': 'ncf_gradelevel_others',
+                        'code': 'others',
+                        'name': 'Other',
+                        'description': '',
+                        'index': 14,
+                        'category': 'gradeLevel',
+                        'status': 'Live'
+                    }
+                ],
+                'name': 'Class',
+                'description': '',
+                'index': 2,
+                'status': 'Live'
+            },
+            {
+                'identifier': 'xyz',
+                'name': 'Concepts',
+                'code': 'concepts',
+                'description': '',
+                'index': 5,
+                'status': 'Live',
+                'domains': [
+                    {
+                        'identifier': 'numeracy',
+                        'name': 'Numeracy',
+                        'objectType': 'Domain',
+                        'children': [
+                            {
+                                'identifier': 'D5',
+                                'name': 'Data Handling',
+                                'objectType': 'Dimension',
+                                'children': []
+                            },
+                            {
+                                'identifier': 'D1',
+                                'name': 'Geometry',
+                                'objectType': 'Dimension',
+                                'children': []
+                            },
+                            {
+                                'identifier': 'testDimension1',
+                                'name': 'Measurement',
+                                'objectType': 'Dimension',
+                                'children': []
+                            },
+                            {
+                                'identifier': 'D4',
+                                'name': 'Measurement',
+                                'objectType': 'Dimension',
+                                'children': []
+                            },
+                            {
+                                'identifier': 'D2',
+                                'name': 'Number sense',
+                                'objectType': 'Dimension',
+                                'children': [
+                                    {
+                                        'identifier': 'C6',
+                                        'name': 'Counting',
+                                        'objectType': 'Concept',
+                                        'children': [
+                                            {
+                                                'identifier': 'C49',
+                                                'name': 'Counting objects',
+                                                'objectType': 'Concept',
+                                                'children': [
+                                                    {
+                                                        'identifier': 'C211',
+                                                        'name': 'Count to 20',
+                                                        'objectType': 'Concept',
+                                                        'children': [
+                                                            {
+                                                                'identifier': 'C455',
+                                                                'name': 'Learner does not know the order of numbers.',
+                                                                'objectType': 'Concept',
+                                                                'children': []
+                                                            },
+                                                            {
+                                                                'identifier': 'C456',
+                                                                'name': 'Learner.',
+                                                                'objectType': 'Concept',
+                                                                'children': []
+                                                            },
+                                                            {
+                                                                'identifier': 'C451',
+                                                                'name': 'Learner.',
+                                                                'objectType': 'Concept',
+                                                                'children': []
+                                                            },
+                                                            {
+                                                                'identifier': 'C460',
+                                                                'name': 'Learner skips all even numbers while counting.',
+                                                                'objectType': 'Concept',
+                                                                'children': []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        'identifier': 'C8',
+                                        'name': 'Place value',
+                                        'objectType': 'Concept',
+                                        'children': [
+                                            {
+                                                'identifier': 'C71',
+                                                'name': 'Expand a number with respect to place values',
+                                                'objectType': 'Concept',
+                                                'children': []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    formConfigData: [
+        {
+            'code': 'concept',
+            'name': 'Concepts',
+            'label': 'Concepts',
+            'description': 'concept',
+            'editable': true,
+            'inputType': 'select ',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 5,
+            'allowedRoles': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION']
+        },
+        {
+            // tslint:disable-next-line:max-line-length
+            'code': 'board', 'name': 'Board', 'label': 'Board', 'description': 'Education Board (Like MP Board, NCERT, etc)', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 1,
+            'allowedRoles': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION']
+        },
+        {
+            // tslint:disable-next-line:max-line-length
+            'code': 'medium', 'name': 'Medium', 'label': 'Medium', 'description': 'Medium of instruction', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 4,
+            'allowedRoles': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION']
+        },
+        {
+            // tslint:disable-next-line:max-line-length
+            'code': 'subject', 'name': 'Subject', 'label': 'Subject', 'description': 'Subject of the Content to use to teach', 'editable': true, 'inputType': 'select', 'required': false, 'displayProperty': 'Editable', 'visible': true, 'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 2,
+            'allowedRoles': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION']
+        }],
+    formData: [
+        {
+            'code': 'concepts',
+            'dataType': 'text',
+            'name': 'Concepts',
+            'label': 'Concepts',
+            'description': 'concept',
+            'editable': true,
+            'inputType': 'Concept',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 6
+        },
+        {
+            'code': 'contentType',
+            'dataType': 'text',
+            'name': 'Content Types',
+            'label': 'Content Types',
+            'description': 'Content Types',
+            'editable': true,
+            'inputType': 'select',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'range': [
+                {
+                    'name': 'TextBook'
+                },
+                {
+                    'name': 'Collection'
+                },
+                {
+                    'name': 'LessonPlan'
+                },
+                {
+                    'name': 'Resource'
+                }
+            ],
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 5
+        },
+        {
+            'code': 'board',
+            'dataType': 'text',
+            'name': 'Board',
+            'label': 'Board',
+            'description': 'Education Board (Like MP Board, NCERT, etc)',
+            'editable': true,
+            'inputType': 'select',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 1
+        },
+        {
+            'code': 'gradeLevel',
+            'dataType': 'text',
+            'name': 'Class',
+            'label': 'Class',
+            'description': 'Grade',
+            'editable': true,
+            'inputType': 'select',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 2
+        },
+        {
+            'code': 'medium',
+            'dataType': 'text',
+            'name': 'Medium',
+            'label': 'Medium',
+            'description': 'Medium of instruction',
+            'editable': true,
+            'inputType': 'select',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 4
+        },
+        {
+            'code': 'subject',
+            'dataType': 'text',
+            'name': 'Subject',
+            'label': 'Subject',
+            'description': 'Subject of the Content to use to teach',
+            'editable': true,
+            'inputType': 'select',
+            'required': false,
+            'displayProperty': 'Editable',
+            'visible': true,
+            'renderingHints': {
+                'semanticColumnWidth': 'four'
+            },
+            'index': 3
+        }
+    ],
+    enrichFilterData: {
+        'gradeLevel': [
+            {
+                'name': 'grade 9',
+                'count': 7
+            },
+            {
+                'name': 'kindergarten',
+                'count': 268
+            },
+            {
+                'name': 'other',
+                'count': 161
+            },
+            {
+                'name': 'class 10',
+                'count': 5
+            },
+            {
+                'name': 'class 11',
+                'count': 8
+            },
+            {
+                'name': 'class 12',
+                'count': 6
+            },
+            {
+                'name': 'grade 1',
+                'count': 485
+            },
+            {
+                'name': 'english',
+                'count': 1
+            },
+            {
+                'name': 'grade 2',
+                'count': 273
+            },
+            {
+                'name': 'grade 3',
+                'count': 168
+            },
+            {
+                'name': 'grade 4',
+                'count': 151
+            },
+            {
+                'name': 'grade 5',
+                'count': 143
+            },
+            {
+                'name': 'kg',
+                'count': 94
+            },
+            {
+                'name': 'grade 11',
+                'count': 7
+            },
+            {
+                'name': 'grade 6',
+                'count': 13
+            },
+            {
+                'name': 'grade 10',
+                'count': 7
+            },
+            {
+                'name': 'grade 7',
+                'count': 8
+            },
+            {
+                'name': 'grade 8',
+                'count': 14
+            },
+            {
+                'name': 'grade 12',
+                'count': 8
+            },
+            {
+                'name': 'class 1',
+                'count': 178
+            },
+            {
+                'name': 'class 3',
+                'count': 33
+            },
+            {
+                'name': 'class 2',
+                'count': 85
+            },
+            {
+                'name': 'class 5',
+                'count': 32
+            },
+            {
+                'name': 'class 4',
+                'count': 23
+            },
+            {
+                'name': 'class 7',
+                'count': 6
+            },
+            {
+                'name': 'class 6',
+                'count': 7
+            },
+            {
+                'name': 'class 9',
+                'count': 5
+            },
+            {
+                'name': 'class 8',
+                'count': 9
+            }
+        ],
+        'subject': [
+            {
+                'name': 'chemistry',
+                'count': 2
+            },
+            {
+                'name': 'biology',
+                'count': 5
+            },
+            {
+                'name': 'mathematics',
+                'count': 83
+            },
+            {
+                'name': 'maths',
+                'count': 2
+            },
+            {
+                'name': 'punjabi',
+                'count': 2
+            },
+            {
+                'name': 'gujarati',
+                'count': 8
+            },
+            {
+                'name': 'kannada',
+                'count': 6
+            },
+            {
+                'name': 'history',
+                'count': 1
+            },
+            {
+                'name': 'assamese',
+                'count': 13
+            },
+            {
+                'name': 'literacy',
+                'count': 80
+            },
+            {
+                'name': 'marathi',
+                'count': 9
+            },
+            {
+                'name': 'tamil',
+                'count': 7
+            },
+            {
+                'name': 'malayalam',
+                'count': 1
+            },
+            {
+                'name': 'geography',
+                'count': 10
+            },
+            {
+                'name': 'physics',
+                'count': 3
+            },
+            {
+                'name': 'english',
+                'count': 127
+            },
+            {
+                'name': 'hindi',
+                'count': 29
+            },
+            {
+                'name': 'bengali',
+                'count': 25
+            },
+            {
+                'name': 'urdu',
+                'count': 6
+            },
+            {
+                'name': 'numeracy',
+                'count': 1
+            },
+            {
+                'name': 'telugu',
+                'count': 4
+            },
+            {
+                'name': 'nepali',
+                'count': 2
+            },
+            {
+                'name': 'oriya',
+                'count': 2
+            }
+        ],
+        'medium': [
+            {
+                'name': '',
+                'count': 147
+            },
+            {
+                'name': 'gujarati',
+                'count': 2
+            },
+            {
+                'name': 'kannada',
+                'count': 4
+            },
+            {
+                'name': 'assamese',
+                'count': 2
+            },
+            {
+                'name': 'marathi',
+                'count': 18
+            },
+            {
+                'name': 'tamil',
+                'count': 3
+            },
+            {
+                'name': 'malayalam',
+                'count': 1
+            },
+            {
+                'name': 'english',
+                'count': 103
+            },
+            {
+                'name': 'hindi',
+                'count': 37
+            },
+            {
+                'name': 'bengali',
+                'count': 10
+            },
+            {
+                'name': 'telugu',
+                'count': 8
+            },
+            {
+                'name': 'nepali',
+                'count': 1
+            },
+            {
+                'name': 'odia',
+                'count': 12
+            }
+        ],
+        'board': [
+            {
+                'name': 'state (uttar pradesh)',
+                'count': 7
+            },
+            {
+                'name': 'up board',
+                'count': 5
+            },
+            {
+                'name': 'mscert',
+                'count': 3
+            },
+            {
+                'name': 'tn board',
+                'count': 1
+            },
+            {
+                'name': 'state (andhra pradesh)',
+                'count': 9
+            },
+            {
+                'name': 'state (maharashtra)',
+                'count': 10
+            },
+            {
+                'name': 'icse',
+                'count': 24
+            },
+            {
+                'name': 'ncert',
+                'count': 104
+            },
+            {
+                'name': 'cbse',
+                'count': 69
+            },
+            {
+                'name': 'state (tamil nadu)',
+                'count': 5
+            }
+        ]
+    }
 };

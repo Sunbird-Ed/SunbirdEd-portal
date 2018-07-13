@@ -1,10 +1,16 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {mergeMap} from 'rxjs/operators';
+import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
 import { ConfigService } from './../config/config.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
+import { CacheService } from 'ng2-cache-service';
+import * as _ from 'lodash';
 /**
  * Service to fetch resource bundle
  */
@@ -38,7 +44,8 @@ export class ResourceService {
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http LearnerService reference
    */
-  constructor(config: ConfigService, http: HttpClient) {
+  constructor(config: ConfigService, http: HttpClient,
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
       this.config = config;
@@ -58,30 +65,42 @@ export class ResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en'): void {
-    const option = {
-      url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
-    };
-    this.get(option).subscribe(
-      (data: ServerResponse) => {
-        this.messages = data.result.messages;
-        this.frmelmnts = data.result.frmelmnts;
-      },
-      (err: ServerResponse) => {
-      }
-    );
+    const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
+    if (resourcebundles) {
+      this.messages = resourcebundles.messages;
+      this.frmelmnts = resourcebundles.frmelmnts;
+    } else {
+      const option = {
+        url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
+      };
+      this.get(option).subscribe(
+        (data: ServerResponse) => {
+          this.messages = data.result.messages;
+          this.frmelmnts = data.result.frmelmnts;
+          this.cacheService.set('resourcebundles' + language, {
+            messages: data.result.messages,
+            frmelmnts: data.result.frmelmnts
+          }, {
+              maxAge: this.browserCacheTtlService.browserCacheTtl
+            });
+        },
+        (err: ServerResponse) => {
+        }
+      );
+    }
   }
   get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
   private getHeader(): HttpOptions['headers'] {
     return {

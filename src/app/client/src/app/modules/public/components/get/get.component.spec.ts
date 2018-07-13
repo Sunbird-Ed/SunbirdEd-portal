@@ -4,7 +4,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetComponent } from './get.component';
@@ -13,8 +13,8 @@ describe('GetComponent', () => {
   let component: GetComponent;
   let fixture: ComponentFixture<GetComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([]),
-    'queryParams': Observable.from([]),
+    'params': observableOf(),
+    'queryParams': observableOf(),
     snapshot: {
       data: {
         telemetry: {

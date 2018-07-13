@@ -1,9 +1,13 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+
+import {takeUntil} from 'rxjs/operators';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';
+
+import { Subject } from 'rxjs';
 
 /**
  * The Geo-explorer component.
@@ -18,8 +22,9 @@ import * as _ from 'lodash';
 /**
  * @class GeoExplorerComponent
  */
-export class GeoExplorerComponent implements OnInit {
+export class GeoExplorerComponent implements OnInit, OnDestroy {
 
+  public unsubscribe = new Subject<void>();
   /**
    * To receive config from child component
    *
@@ -140,7 +145,10 @@ export class GeoExplorerComponent implements OnInit {
     } else {
       const params = { rootOrgId: this.rootOrgId };
       // Make api call to get location(s)
-      this.geo.getLocations(params).subscribe(
+
+      this.geo.getLocations(params).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.response) {
             this.locationList = (data.result.response);
@@ -179,5 +187,10 @@ export class GeoExplorerComponent implements OnInit {
   ngOnInit() {
     this.rootOrgId = this.user.rootOrgId;
     this.validateAdaptor();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

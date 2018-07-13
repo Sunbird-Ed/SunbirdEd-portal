@@ -86,24 +86,40 @@ export const mockRes = {
         }
     },
     orgTypeUpdateError: {
-        'id': 'api.org.type.update',
-        'ver': 'v1',
-        'ts': '2018-03-26 11:41:56:854+0000',
-        'params': {
-            'resmsgid': null,
-            'msgid': 'd57f267b-065d-19d4-a46b-54e85fe78e4f',
-            'err': 'ORG_TYPE_MANDATORY',
-            'status': 'ORG_TYPE_MANDATORY',
-            'errmsg': 'Org Type name is mandatory.'
-        },
-        'responseCode': 'CLIENT_ERROR',
-        'result': {}
+        'error': {
+            'id': 'api.org.type.update',
+            'ver': 'v1',
+            'ts': '2018-03-26 11:41:56:854+0000',
+            'params': {
+                'resmsgid': null,
+                'msgid': 'd57f267b-065d-19d4-a46b-54e85fe78e4f',
+                'err': 'ORG_TYPE_MANDATORY',
+                'status': 'ORG_TYPE_MANDATORY',
+                'errmsg': 'Org Type name is mandatory.'
+            },
+            'responseCode': 'CLIENT_ERROR',
+            'result': {}
+        }
     },
     resourceBundle: {
         'messages': {
             'smsg': {
                 'm0035': 'Org type added successfully',
+                'm0037': 'updated successfully',
             }
+        }
+    },
+    getOrgType: {
+        'id': 'api.org.type.list', 'ver': 'v1', 'ts': '2018-07-03 09:46:16:716+0000',
+        'params': {
+            'resmsgid': null, 'msgid': 'ddcd491b-449e-4183-a2d4-90064cef886f',
+            'err': null, 'status': 'success', 'errmsg': null
+        }, 'responseCode': 'OK',
+        'result': {
+            'response': [
+                { 'name': 'afsdfsdfsdfsfsdf234213414fsdfsdfs s fdsfsdfdsfa', 'id': '0123702215064698881' },
+                { 'name': 'tete', 'id': '01250975059541196818' },
+                { 'name': 'hg23', 'id': '0123503695639674880' }]
         }
     }
 };

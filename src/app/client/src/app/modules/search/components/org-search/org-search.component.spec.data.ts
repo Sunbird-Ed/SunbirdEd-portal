@@ -709,6 +709,15 @@ export const Response = {
             }
         }
     },
+    emptySuccessData: {
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'count': 0,
+                'content': []
+            }
+        }
+    },
     successDataWithNoCount: {
         'id': 'api.v1.search',
         'responseCode': 'OK',
@@ -719,5 +728,85 @@ export const Response = {
     pager: {
         'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
         'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
+    },
+    event: {
+        'inview': [
+            {
+                'id': 0,
+                'data': {
+                    'dateTime': null,
+                    'preferredLanguage': null,
+                    'approvedBy': null,
+                    'channel': null,
+                    'description': null,
+                    'updatedDate': null,
+                    'addressId': null,
+                    'orgType': null,
+                    'provider': null,
+                    'orgCode': null,
+                    'theme': null,
+                    'id': '012297350073647104421',
+                    'communityId': null,
+                    'isApproved': null,
+                    'slug': null,
+                    'identifier': '012297350073647104421',
+                    'thumbnail': null,
+                    'orgName': null,
+                    'updatedBy': null,
+                    'externalId': null,
+                    'isRootOrg': null,
+                    'rootOrgId': null,
+                    'approvedDate': null,
+                    'imgUrl': null,
+                    'homeUrl': null,
+                    'isDefault': null,
+                    'contactDetail': null,
+                    'createdDate': null,
+                    'createdBy': null,
+                    'parentOrgId': null,
+                    'hashTagId': null,
+                    'noOfMembers': null,
+                    'status': null
+                }
+            },
+            {
+                'id': 1,
+                'data': {
+                    'dateTime': null,
+                    'preferredLanguage': null,
+                    'approvedBy': null,
+                    'channel': null,
+                    'description': null,
+                    'updatedDate': null,
+                    'addressId': null,
+                    'orgType': null,
+                    'provider': null,
+                    'orgCode': null,
+                    'theme': null,
+                    'id': '012297347765010432407',
+                    'communityId': null,
+                    'isApproved': null,
+                    'slug': null,
+                    'identifier': '012297347765010432407',
+                    'thumbnail': null,
+                    'orgName': null,
+                    'updatedBy': null,
+                    'externalId': null,
+                    'isRootOrg': null,
+                    'rootOrgId': null,
+                    'approvedDate': null,
+                    'imgUrl': null,
+                    'homeUrl': null,
+                    'isDefault': null,
+                    'contactDetail': null,
+                    'createdDate': null,
+                    'createdBy': null,
+                    'parentOrgId': null,
+                    'hashTagId': null,
+                    'noOfMembers': null,
+                    'status': null
+                }
+            }
+        ]
     }
 };

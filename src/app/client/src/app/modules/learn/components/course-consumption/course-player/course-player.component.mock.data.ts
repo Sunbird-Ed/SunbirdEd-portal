@@ -1924,7 +1924,7 @@ export const CourseHierarchyGetMockResponse = {
           ],
           'idealScreenDensity': 'hdpi',
           'framework': 'NCF',
-          'createdBy': '398',
+          'createdBy': 'testUser',
           'compatibilityLevel': 1,
           'name': 'Math for dummies',
           'usedByContent': [],

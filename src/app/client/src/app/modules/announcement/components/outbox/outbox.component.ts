@@ -1,10 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
+
+import {takeUntil} from 'rxjs/operators';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ConfigService, PaginationService, ToasterService, DateFormatPipe, ServerResponse } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+
+import { Subject } from 'rxjs';
+
 /**
  * The announcement outbox component displays all
  * the announcement which is created by the logged in user
@@ -15,7 +20,8 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInte
   templateUrl: './outbox.component.html',
   styleUrls: ['./outbox.component.css']
 })
-export class OutboxComponent implements OnInit {
+export class OutboxComponent implements OnInit, OnDestroy {
+  public unsubscribe = new Subject<void>();
   /**
 	 * inviewLogs
 	*/
@@ -152,7 +158,9 @@ export class OutboxComponent implements OnInit {
       limit: this.pageLimit
     };
 
-    this.announcementService.getOutboxData(option).subscribe(
+    this.announcementService.getOutboxData(option).pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.outboxData = apiResponse.result;
         this.showLoader = false;
@@ -208,18 +216,24 @@ export class OutboxComponent implements OnInit {
 	 *
 	 */
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+
+    this.activatedRoute.params.pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.populateOutboxData(this.config.appConfig.ANNOUNCEMENT.OUTBOX.PAGE_LIMIT, this.pageNumber);
     });
 
-    this.announcementService.announcementDeleteEvent.subscribe(data => {
+    this.announcementService.announcementDeleteEvent.pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(data => {
       _.each(this.outboxData.announcements, (key, index) => {
         if (data && data === key.id) {
           this.outboxData.announcements[index].status = 'cancelled';
         }
       });
     });
+
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -259,5 +273,10 @@ export class OutboxComponent implements OnInit {
       type: 'announcement',
       ver: '1.0'
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

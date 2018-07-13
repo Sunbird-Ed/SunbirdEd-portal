@@ -1,8 +1,8 @@
 import {Inject, Injectable, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
+
+
 import { ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
@@ -100,8 +100,10 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
-      } else if (state === 'review') {
+      } else if (state === 'review' ) {
         this.route.navigate(['workspace/content/review/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }
@@ -121,6 +123,8 @@ export class WorkSpaceService {
         this.route.navigate(['workspace/content/upForReview/content', content.identifier]);
       } else if (state === 'flagged') {
         this.route.navigate(['workspace/content/flag/content', content.identifier]);
+      } else if (state === 'flagreviewer') {
+         this.route.navigate(['workspace/content/flagreviewer/content', content.identifier]);
       }
     }
   }

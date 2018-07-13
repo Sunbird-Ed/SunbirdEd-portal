@@ -1,8 +1,8 @@
 {
-  "endpoint": "data/v1/telemetry",
+  "endpoint": "v1/telemetry",
   "pdata": {
     "id": "portal-backend",
-    "ver": "0.0.1"
+    "pid": "sunbird-portal"
   },
   "default_username": "public",
   "default_userid": "public",

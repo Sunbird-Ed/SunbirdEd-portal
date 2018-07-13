@@ -38,7 +38,11 @@ const routes: Routes = [
       { path: 'flag', component: FlagContentComponent }
     ]
   }, {
-    path: 'play/content/:contentId/note', component: NoteListComponent
+    path: 'play/content/:contentId/note', component: NoteListComponent, data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: 'library', ver: '1.0' }
+      }
+    }
   }, {
     path: 'play/content/:contentId/:contentStatus', component: ContentPlayerComponent,
     data: {

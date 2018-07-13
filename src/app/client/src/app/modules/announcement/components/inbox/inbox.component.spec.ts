@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './inbox.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails, InboxComponent } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -16,6 +17,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { NgInviewModule } from 'angular-inport';
 import { AnnouncementService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
 import {
     SharedModule, ResourceService, PaginationService, ToasterService,
     ConfigService, DateFormatPipe, ServerResponse
@@ -25,7 +27,7 @@ describe('InboxComponent', () => {
     let component: InboxComponent;
     let fixture: ComponentFixture<InboxComponent>;
     const fakeActivatedRoute = {
-        'params': Observable.from([{ 'pageNumber': 1 }]),
+        'params': observableOf({ 'pageNumber': 1 }),
         snapshot: {
             data: {
                 telemetry: {
@@ -45,7 +47,7 @@ describe('InboxComponent', () => {
                 SuiModule, RouterTestingModule, NgInviewModule,
                 SharedModule.forRoot(), TelemetryModule.forRoot()],
             providers: [HttpClientModule, AnnouncementService, ConfigService, HttpClient,
-                PaginationService, ToasterService, ResourceService, DateFormatPipe,
+                PaginationService, ToasterService, ResourceService, CacheService, DateFormatPipe,
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
                 { provide: RouterOutlet, useValue: fakeActivatedRoute }
@@ -65,9 +67,9 @@ describe('InboxComponent', () => {
     });
 
     it('should call inbox api and get success response', inject([AnnouncementService], (announcementService) => {
-        spyOn(announcementService, 'getInboxData').and.callFake(() => Observable.of(testData.mockRes.inBoxSuccess));
+        spyOn(announcementService, 'getInboxData').and.callFake(() => observableOf(testData.mockRes.inBoxSuccess));
         spyOn(announcementService, 'receivedAnnouncement').and.callFake(() =>
-            Observable.of({ announcementId: '6f6932b0-db3e-11e7-b902-bf7fe7f2023a' }));
+            observableOf({ announcementId: '6f6932b0-db3e-11e7-b902-bf7fe7f2023a' }));
         component.populateInboxData(5, 1);
         const params = { pageNumber: 2, limit: 1 };
         announcementService.getInboxData(params).subscribe(
@@ -90,11 +92,11 @@ describe('InboxComponent', () => {
     it('should call inbox api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
         HttpClient, ConfigService],
         (announcementService, toasterService, resourceService, http, configService) => {
-            spyOn(announcementService, 'getInboxData').and.callFake(() => Observable.throw(testData.mockRes.inboxError));
+            spyOn(announcementService, 'getInboxData').and.callFake(() => observableThrowError(testData.mockRes.inboxError));
             spyOn(component, 'populateInboxData').and.callThrough();
             spyOn(resourceService, 'getResource').and.callThrough();
             spyOn(toasterService, 'error').and.callThrough();
-            spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+            spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
             http.get().subscribe(
                 data => {
                     resourceService.messages = data.messages;
@@ -140,7 +142,7 @@ describe('InboxComponent', () => {
         (announcementService, configService) => {
             component.inboxData = testData.mockRes.inBoxSuccess.result;
             spyOn(announcementService, 'readAnnouncement').and.callFake(() =>
-                Observable.of({ announcementId: '6f6932b0-db3e-11e7-b902-bf7fe7f2023a' }));
+                observableOf({ announcementId: '6f6932b0-db3e-11e7-b902-bf7fe7f2023a' }));
             component.readAnnouncement('6f6932b0-db3e-11e7-b902-bf7fe7f2023a', false);
             announcementService.readAnnouncement().subscribe(
                 receivedResponse => { }
@@ -150,5 +152,14 @@ describe('InboxComponent', () => {
             expect(component.pageLimit).toBe(configService.appConfig.ANNOUNCEMENT.INBOX.PAGE_LIMIT);
             expect(component.inboxData.count).toBe(1173);
         }));
+
+        it('should unsubscribe from all observable subscriptions', () => {
+            component.populateInboxData(5, 1);
+            component.readAnnouncement('6f6932b0-db3e-11e7-b902-bf7fe7f2023a', false);
+            component.ngOnInit();
+            spyOn(component.unsubscribe, 'complete');
+            component.ngOnDestroy();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+          });
 });
 

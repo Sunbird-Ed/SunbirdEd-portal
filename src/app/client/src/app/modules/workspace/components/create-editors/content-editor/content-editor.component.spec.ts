@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { ContentEditorComponent } from './content-editor.component';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -6,10 +8,9 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -28,16 +29,16 @@ describe('ContentEditorComponent', () => {
       declarations: [ContentEditorComponent],
       imports: [HttpClientTestingModule, Ng2IziToastModule, CoreModule.forRoot()],
       providers: [
-        EditorService, UserService, ContentService,
+        EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
         NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032',
               'state': 'draft'
-            }])
+            })
           }
         }
       ],
@@ -54,11 +55,11 @@ describe('ContentEditorComponent', () => {
   it('should call userservice, call open editor', inject([EditorService, UserService, Router, ToasterService,
     ResourceService, TenantService], (editorService, userService, router, toasterService, resourceService, tenantService) => {
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
-      tenantService._tenantData$.next({ err: null, userProfile: mockRes.tenantMockData });
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData.result });
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.successResult));
       component.getContentData();
       const rspData = mockRes.successResult.result.content;
       component.checkContentAccess(rspData, mockRes.validateModal);
@@ -70,7 +71,7 @@ describe('ContentEditorComponent', () => {
       resourceService.messages = mockRes.resourceBundle.messages;
       userService._userData$.next({ err: null, userProfile: mockRes.userMockData });
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.errorResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.errorResult));
       spyOn(toasterService, 'error').and.callThrough();
       component.getContentData();
       const rspData = mockRes.errorResult.result.content;

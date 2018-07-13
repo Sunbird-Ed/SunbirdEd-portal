@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData

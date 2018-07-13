@@ -1,17 +1,17 @@
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
+import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
+import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService } from './../../services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-data-driven-filter',
   templateUrl: './data-driven-filter.component.html',
   styleUrls: ['./data-driven-filter.component.css']
 })
-export class DataDrivenFilterComponent implements OnInit {
+export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterEnv: string;
   @Input() redirectUrl: string;
   @Input() accordionDefaultOpen: boolean;
@@ -19,6 +19,8 @@ export class DataDrivenFilterComponent implements OnInit {
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
+  @Input() enrichFilters: object;
+  @Output() filters = new EventEmitter();
 
   /**
  * To get url, app configs
@@ -42,6 +44,7 @@ export class DataDrivenFilterComponent implements OnInit {
   public formService: FormService;
 
   public formFieldProperties: any;
+  public filtersDetails: any;
 
   public categoryMasterList: any;
 
@@ -68,6 +71,7 @@ export class DataDrivenFilterComponent implements OnInit {
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
+  frameworkDataSubscription: Subscription;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -85,7 +89,8 @@ export class DataDrivenFilterComponent implements OnInit {
     formService: FormService,
     toasterService: ToasterService,
     public conceptPickerService: ConceptPickerService,
-    permissionService: PermissionService
+    permissionService: PermissionService,
+    private browserCacheTtlService: BrowserCacheTtlService
 
   ) {
     this.configService = configService;
@@ -138,8 +143,9 @@ export class DataDrivenFilterComponent implements OnInit {
     if (this.isCachedDataExists) {
       const data: any | null = this._cacheService.get(this.filterEnv + this.formAction);
       this.formFieldProperties = data;
+      this.createFacets();
     } else {
-      this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+      this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
           this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
           this.framework = frameworkData.framework;
@@ -153,9 +159,9 @@ export class DataDrivenFilterComponent implements OnInit {
             (data: ServerResponse) => {
               this.formFieldProperties = data;
               _.forEach(this.formFieldProperties, (formFieldCategory) => {
-                if (formFieldCategory && formFieldCategory.allowedUsers) {
-                  const userRoles = formFieldCategory.allowedUsers.filter(element => this.userRoles.includes(element));
-                  if (!this.showField(formFieldCategory.allowedUsers)) {
+                if (formFieldCategory && formFieldCategory.allowedRoles) {
+                  const userRoles = formFieldCategory.allowedRoles.filter(element => this.userRoles.includes(element));
+                  if (!this.showField(formFieldCategory.allowedRoles)) {
                     this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
                   }
                 }
@@ -189,9 +195,17 @@ export class DataDrivenFilterComponent implements OnInit {
     this.formFieldProperties = _.sortBy(_.uniqBy(this.formFieldProperties, 'code'), 'index');
     this._cacheService.set(this.filterEnv + this.formAction, this.formFieldProperties,
       {
-        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+        maxAge: this.browserCacheTtlService.browserCacheTtl
       });
+    this.createFacets();
+  }
+  createFacets() {
+    this.filtersDetails = _.cloneDeep(this.formFieldProperties);
+    const filterArray = [];
+    _.forEach(this.filtersDetails, (value) => {
+      filterArray.push(value.code);
+    });
+    this.filters.emit(filterArray);
   }
 
   resetFilters() {
@@ -245,11 +259,54 @@ export class DataDrivenFilterComponent implements OnInit {
     }
   }
 
-  showField(allowedUsers) {
-    if (allowedUsers) {
-      return this.permissionService.checkRolesPermissions(allowedUsers);
+  showField(allowedRoles) {
+    if (allowedRoles) {
+      return this.permissionService.checkRolesPermissions(allowedRoles);
     } else {
       return true;
+    }
+  }
+  ngOnChanges() {
+    const enrichedArray = [];
+    if (this.enrichFilters) {
+      _.forIn(this.formFieldProperties, (value, key) => {
+        if (this.enrichFilters[value.code]) {
+          const enrichedObj = {};
+          enrichedObj['code'] = value.code;
+          enrichedObj['range'] = this.generateRange(this.enrichFilters[value.code]);
+          enrichedObj['name'] = value.name;
+          enrichedObj['inputType'] = value.inputType;
+          enrichedObj['renderingHints'] = value.renderingHints;
+          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
+          enrichedArray.push(enrichedObj);
+        } else {
+          const enrichedObj = {};
+          enrichedObj['code'] = value.code;
+          enrichedObj['range'] = [];
+          enrichedObj['name'] = value.name;
+          enrichedObj['inputType'] = value.inputType;
+          enrichedObj['renderingHints'] = value.renderingHints;
+          enrichedObj['renderingHints']['semanticColumnWidth'] = value.renderingHints.semanticColumnWidth;
+          enrichedArray.push(enrichedObj);
+        }
+      });
+    }
+    this.filtersDetails = enrichedArray;
+  }
+  generateRange(enrichedRange) {
+    const rangeArray = [];
+    _.forEach(enrichedRange, (value) => {
+      if (value && value.name !== '') {
+        const rangeObj = _.find(enrichedRange, { name: value.name });
+        rangeArray.push(rangeObj);
+      }
+    });
+    return _.compact(rangeArray);
+  }
+
+  ngOnDestroy() {
+    if (this.frameworkDataSubscription) {
+      this.frameworkDataSubscription.unsubscribe();
     }
   }
 }

@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './outbox.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { IAnnouncementListData, IPagination, IAnnouncementDetails } from '@sunbird/announcement';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -26,7 +27,7 @@ describe('OutboxComponent', () => {
     let component: OutboxComponent;
     let fixture: ComponentFixture<OutboxComponent>;
     const fakeActivatedRoute = {
-        'params': Observable.from([{ 'pageNumber': 1 }]),
+        'params': observableOf({ 'pageNumber': 1 }),
         snapshot: {
             params: [
                 {
@@ -72,7 +73,7 @@ describe('OutboxComponent', () => {
     });
 
     it('should call outbox api and get success response', inject([AnnouncementService], (announcementService) => {
-        spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.of(testData.mockRes.outBoxSuccess));
+        spyOn(announcementService, 'getOutboxData').and.callFake(() => observableOf(testData.mockRes.outBoxSuccess));
         component.populateOutboxData(5, 1);
         const params = { pageNumber: 2, limit: 1 };
         announcementService.getOutboxData(params).subscribe(
@@ -92,11 +93,11 @@ describe('OutboxComponent', () => {
     it('should call outbox api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
         HttpClient, ConfigService],
         (announcementService, toasterService, resourceService, http, configService) => {
-            spyOn(announcementService, 'getOutboxData').and.callFake(() => Observable.throw(testData.mockRes.outboxError));
+            spyOn(announcementService, 'getOutboxData').and.callFake(() => observableThrowError(testData.mockRes.outboxError));
             spyOn(component, 'populateOutboxData').and.callThrough();
             spyOn(resourceService, 'getResource').and.callThrough();
             spyOn(toasterService, 'error').and.callThrough();
-            spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+            spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
             http.get().subscribe(
                 data => {
                     resourceService.messages = data.messages;
@@ -143,11 +144,19 @@ describe('OutboxComponent', () => {
             component.outboxData = testData.mockRes.outBoxSuccess.result;
             announcementService.announcementDeleteEvent.emit();
             spyOn(announcementService, 'announcementDeleteEvent').and.callFake(() =>
-                Observable.of('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43'));
+                observableOf('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43'));
             announcementService.announcementDeleteEvent().subscribe(
                 data => {
                     expect(data).toEqual('1f1a50f0-e4a3-11e7-b47d-4ddf97f76f43');
                 }
             );
         }));
+
+    it('should unsubscribe from all observable subscriptions', () => {
+            component.populateOutboxData(5, 1);
+            component.ngOnInit();
+            spyOn(component.unsubscribe, 'complete');
+            component.ngOnDestroy();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+          });
 });

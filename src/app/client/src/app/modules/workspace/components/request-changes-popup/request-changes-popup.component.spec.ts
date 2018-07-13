@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
@@ -7,8 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, CoreModule } from '@sunbird/core';
-import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { RequestChangesPopupComponent } from './request-changes-popup.component';
 
 describe('RequestChangesPopupComponent', () => {
@@ -31,7 +32,7 @@ describe('RequestChangesPopupComponent', () => {
   };
 
   const fakeActivatedRoute = {
-    parent: { params: Observable.of({ contentId: 'do_112485749070602240134' }) },
+    parent: { params: observableOf({ contentId: 'do_112485749070602240134' }) },
     snapshot: { parent: { url: [{ path: 'do_112485749070602240134', }], } }
   };
 
@@ -61,7 +62,7 @@ describe('RequestChangesPopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule.forRoot()],
       declarations: [RequestChangesPopupComponent],
-      providers: [ToasterService,
+      providers: [ToasterService, NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -93,7 +94,7 @@ describe('RequestChangesPopupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(contentService, 'post').and.callFake(() => Observable.of(successResponse));
+    spyOn(contentService, 'post').and.callFake(() => observableOf(successResponse));
     spyOn(toasterService, 'success').and.callThrough();
     fixture.detectChanges();
     component.submitRequestChanges();
@@ -105,7 +106,7 @@ describe('RequestChangesPopupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(contentService, 'post').and.callFake(() => Observable.throw(errorResponse));
+    spyOn(contentService, 'post').and.callFake(() => observableThrowError(errorResponse));
     spyOn(toasterService, 'error').and.callThrough();
     fixture.detectChanges();
     component.submitRequestChanges();

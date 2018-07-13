@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { Ng2IzitoastService } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
@@ -39,7 +40,7 @@ describe('MainHeaderComponent', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
     expect(component.userProfile).toBeTruthy();
@@ -48,7 +49,7 @@ describe('MainHeaderComponent', () => {
   it('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
-    spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
+    spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
     expect(component.logo).toEqual(mockUserData.tenantSuccess.result.logo);
@@ -65,7 +66,7 @@ describe('MainHeaderComponent', () => {
   it('Should update the logo on initialization', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
-    spyOn(service, 'get').and.returnValue(Observable.of(mockUserData.tenantSuccess));
+    spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
     fixture.detectChanges();
@@ -77,5 +78,13 @@ describe('MainHeaderComponent', () => {
     component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
     component.onEnter('test');
     expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.userDataSubscription, 'unsubscribe');
+    spyOn(component.tenantDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+    expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
   });
 });

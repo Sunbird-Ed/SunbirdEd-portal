@@ -1,10 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
+
+
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 /**
@@ -78,11 +80,11 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option)
-      .map((data: ServerResponse) => {
+    return this.content.post(option).pipe(
+      map((data: ServerResponse) => {
         this._searchedContentList = data.result;
         return data;
-      });
+      }));
   }
   /**
    * Get searched content list
@@ -106,11 +108,11 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option)
-      .map((data: ServerResponse) => {
+    return this.content.post(option).pipe(
+      map((data: ServerResponse) => {
         this._searchedOrganisationList = data.result.response;
         return data;
-      });
+      }));
   }
   /**
    * Get searched organization list
@@ -215,7 +217,8 @@ export class SearchService {
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
-          softConstraints: requestParam.softConstraints || { badgeAssertions: 1 }
+          softConstraints: requestParam.softConstraints || { badgeAssertions: 1 },
+          facets: requestParam.facets && requestParam.facets
         }
       }
     };

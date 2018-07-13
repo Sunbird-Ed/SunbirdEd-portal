@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormService, ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
 import { mockFormData } from './form.mock.spec.data';
 
   describe('FormService', () => {
@@ -20,7 +21,7 @@ import { mockFormData } from './form.mock.spec.data';
       const type = 'textbook';
       const action = 'textbook';
       const framework = 'textbook';
-      spyOn(contentService, 'post').and.returnValue(Observable.of(mockFormData.success));
+      spyOn(contentService, 'post').and.returnValue(observableOf(mockFormData.success));
       service.getFormConfig(type, action, content, framework);
       expect(service).toBeTruthy();
     });
@@ -31,7 +32,7 @@ import { mockFormData } from './form.mock.spec.data';
       const type = 'textbook';
       const action = 'textbook';
       const framework = 'textbook';
-      spyOn(contentService, 'post').and.returnValue(Observable.of(mockFormData.error));
+      spyOn(contentService, 'post').and.returnValue(observableOf(mockFormData.error));
       service.getFormConfig(type, action, content, framework);
       expect(service).toBeTruthy();
     });

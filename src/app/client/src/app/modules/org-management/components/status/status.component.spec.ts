@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -19,7 +20,7 @@ describe('StatusComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    'data': observableOf({ 'redirectUrl': '/profile' }),
     snapshot: {
       data: {
         telemetry: {
@@ -59,7 +60,7 @@ describe('StatusComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(mockRes.successResponse));
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponse));
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
     component.statusResponse = mockRes.successResponse.result.response[0];
@@ -69,7 +70,7 @@ describe('StatusComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(mockRes.failureResponse));
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.failureResponse));
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
     component.statusResponse = mockRes.successResponse.result.response[0];
@@ -80,7 +81,7 @@ describe('StatusComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => Observable.of(mockRes.errorResponse));
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.errorResponse));
     const processId = '1234';
     component.getBulkUploadStatus(processId);
     const errMsg = mockRes.resourceBundle.messages.fmsg;
