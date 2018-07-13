@@ -102,8 +102,8 @@ describe('StatusComponent', () => {
   it('should unsubscribe from all observable subscriptions', () => {
     const processId = '012465880638177280660';
     component.getBulkUploadStatus(processId);
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

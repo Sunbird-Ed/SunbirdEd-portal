@@ -74,7 +74,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
    */
   public orgTypeService: OrgTypeService;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
 
   /**
@@ -109,7 +109,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
 	 */
   addOrgType(): void {
     this.orgTypeService.addOrgType(this.orgName.value)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0035);
@@ -132,7 +132,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   updateOrgType(): void {
     const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
     this.orgTypeService.updateOrgType(param)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
@@ -218,8 +218,8 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

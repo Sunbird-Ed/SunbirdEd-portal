@@ -68,7 +68,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   orgUploadInteractEdata: IInteractEventEdata;
   downloadSampleOrgCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   constructor(orgManagementService: OrgManagementService, activatedRoute: ActivatedRoute, toasterService: ToasterService,
     config: ConfigService, resourceService: ResourceService, public userService: UserService, private router: Router) {
     this.activatedRoute = activatedRoute;
@@ -161,7 +161,7 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
       formData.append('org', file[0]);
       const fd = formData;
       this.orgManagementService.bulkOrgUpload(fd)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
@@ -180,8 +180,8 @@ export class OrganizationUploadComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   setInteractEventData() {
     this.orgUploadInteractEdata = {

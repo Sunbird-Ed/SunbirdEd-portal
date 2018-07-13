@@ -66,7 +66,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   checkStatusInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   /**
 * Constructor to create injected service(s) object
@@ -124,7 +124,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   getBulkUploadStatus(processId) {
     this.showLoader = true;
     this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
@@ -145,8 +145,8 @@ export class StatusComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   setInteractEventData() {
     this.checkStatusInteractEdata = {

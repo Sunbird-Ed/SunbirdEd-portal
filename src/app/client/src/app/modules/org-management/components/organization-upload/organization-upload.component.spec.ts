@@ -120,8 +120,8 @@ describe('OrganizationUploadComponent', () => {
   it('should unsubscribe from all observable subscriptions', () => {
     component.uploadOrg(mockRes.validfile);
     component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });
