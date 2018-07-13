@@ -117,4 +117,19 @@ describe('PopupEditorComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it('Should throw error message when create apiResponse fails to return the note id', () => {
+    const notesService = TestBed.get(NotesService);
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = response.resourceBundle.messages;
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(learnerService, 'get').and.callFake(() => observableThrowError({}));
+    spyOn(notesService, 'create').and.callFake(() => observableThrowError(response.errResponse));
+    userService.getUserProfile();
+    component.createNote();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0030);
+  });
 });

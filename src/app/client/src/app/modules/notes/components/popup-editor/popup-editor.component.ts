@@ -1,5 +1,5 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
@@ -163,27 +163,18 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
       this.noteService.create(requestData).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          const returnObj = {
-            note: requestData.request.note,
-            userId: requestData.request.userId,
-            title: requestData.request.title,
-            courseId: requestData.request.courseId,
-            contentId: requestData.request.contentId,
-            createdBy: requestData.request.createdBy,
-            updatedBy: requestData.request.updatedBy,
-            createdDate: new Date().toISOString(),
-            updatedDate: new Date().toISOString()
-          };
-          this.createEventEmitter.emit(returnObj);
-          this.toasterService.success(this.resourceService.messages.smsg.m0009);
-        },
-        (err) => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-        }
-      );
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (data: INoteData) => {
+            if (data.id) {
+              this.createEventEmitter.emit(data);
+              this.toasterService.success(this.resourceService.messages.smsg.m0009);
+            }
+          },
+          (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0030);
+          }
+        );
     }
   }
 
@@ -200,23 +191,17 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
     this.noteService.update(requestData).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.updateData.updatedDate = new Date().toISOString();
-        const returnObj = {
-          note: this.updateData.note,
-          title: this.updateData.title,
-          updatedDate: new Date().toISOString(),
-          id: requestData.noteId
-        };
-        this.updateEventEmitter.emit(returnObj);
-        this.toasterService.success(this.resourceService.messages.smsg.m0013);
-      },
-      (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0034);
-      }
-    );
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data: INoteData) => {
+          this.updateData.updatedDate = new Date().toISOString();
+          this.updateEventEmitter.emit(data);
+          this.toasterService.success(this.resourceService.messages.smsg.m0013);
+        },
+        (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0034);
+        }
+      );
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
