@@ -63,7 +63,7 @@ gulp.task('clean:client:install', (done) => {
 })
 
 gulp.task('client:install', (cb) => {
-  exec('npm install  --prefix ./client', function (err, stdout, stderr) {
+  exec('npm install  --prefix ./client', { maxBuffer: Infinity }, function (err, stdout, stderr) {
     console.log(stdout)
     console.log(stderr)
     cb(err)
