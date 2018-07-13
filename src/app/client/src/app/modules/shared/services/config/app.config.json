@@ -62,12 +62,12 @@
           "onImage": {"eventName": "onImage" }
         },
         "ribbon": {"right":{"class": "ui black right ribbon label"},
-        "left": {"class":  "ui blue left ribbon label"} },
+        "left": {"class":  "ui circular label  card-badges-image"} },
         "telemetryInteractEdata": {"id":"dial-code-view-card","type":"click","pageid":"dial-code"},
         "telemetryObjectType":"public"
        },
      "metaData": {"metaData": ["identifier", "mimeType", "framework", "contentType"]},
-     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.name": "badgeAssertions[0].badgeClassName"}
+     "dynamicFields": {"ribbon.right.name": "contentType", "ribbon.left.image": "badgeAssertions[0].badgeClassImage"}
   },
   "HomeSearch": {
     "constantData":{
