@@ -44,7 +44,20 @@ export class NotesService {
       data: request
     };
     return this.learnerService.post(option).pipe(map(data => {
-      return data;
+      const returnObj = {
+        note: request.request.note,
+        userId: request.request.userId,
+        id: data.result.id,
+        title: request.request.title,
+        courseId: request.request.courseId,
+        contentId: request.request.contentId,
+        createdBy: request.request.createdBy,
+        updatedBy: request.request.updatedBy,
+        createdDate: new Date().toISOString(),
+        updatedDate: new Date().toISOString()
+      };
+
+      return returnObj;
     }));
   }
   /**
@@ -56,7 +69,14 @@ export class NotesService {
       data: request
     };
     return this.learnerService.patch(option).pipe(map(data => {
-      return data;
+      const returnObj = {
+        note: request.request.note,
+        title: request.request.title,
+        updatedDate: new Date().toISOString(),
+        id: request.noteId
+      };
+
+      return returnObj;
     }));
   }
   /**

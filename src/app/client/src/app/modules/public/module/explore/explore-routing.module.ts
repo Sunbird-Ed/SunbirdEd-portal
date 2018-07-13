@@ -11,7 +11,7 @@ const routes: Routes = [
     },
     {
         path: '', component: ExploreContentComponent
-      },
+    },
   ];
   @NgModule({
     imports: [RouterModule.forChild(routes)],

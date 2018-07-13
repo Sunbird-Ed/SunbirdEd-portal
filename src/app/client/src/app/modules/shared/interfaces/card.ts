@@ -7,7 +7,7 @@ export interface ICard {
     progress?: number;
     ribbon?: {
         right?: { class: string, name: string }
-        left?: { class: string, name: string }
+        left?: { class: string, name: string , image: string }
     };
     rating?: number;
     metaData?: any;

@@ -1,5 +1,5 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ResourceService, ToasterService, FilterPipe, ServerResponse, RouterNavigationService } from '@sunbird/shared';
 import { NotesService } from '../../services';
 import { UserService, ContentService } from '@sunbird/core';
@@ -220,18 +220,18 @@ export class NoteListComponent implements OnInit, OnDestroy {
 
     if (requestBody.request.filters.contentId || requestBody.request.filters.courseId) {
       this.noteService.search(requestBody).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          this.notesList = apiResponse.result.response.note;
-          this.selectedNote = this.notesList[0];
-        },
-        (err) => {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0033);
-        }
-      );
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.notesList = apiResponse.result.response.note;
+            this.selectedNote = this.notesList[0];
+          },
+          (err) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0033);
+          }
+        );
     }
   }
 
@@ -250,9 +250,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
    * Updating notes list after creating/updating a note.
    */
   createEventEmitter(data) {
-    this.notesList.unshift(data);
-    this.setSelectedNote(this.notesList[0], 0);
-    this.showCreateEditor = false;
+    if (data.id) {
+      this.notesList.unshift(data);
+      this.setSelectedNote(this.notesList[0], 0);
+      this.showCreateEditor = false;
+    }
   }
 
   updateEventEmitter(data) {
@@ -276,6 +278,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
     } else {
       this.setSelectedNote(this.notesList[this.selectedIndex - 1], this.selectedIndex - 1);
     }
+    this.showDelete = false;
   }
 
   /**

@@ -1,9 +1,8 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
-import { CoreModule, OrgDetailsService } from '@sunbird/core';
+import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
+import { CoreModule, OrgDetailsService, ContentService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -67,9 +66,11 @@ describe('LanguageDropdownComponent', () => {
 
   it('On getting channel id', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake(() => observableOf(Response.orgResponse.result.response.content[0]));
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.callFake(() => observableOf(Response.orgResponse));
+    component.orgDetailsService.getOrgDetails('ap').subscribe((data) => {
+    });
     fixture.detectChanges();
-    component.getChannelId();
     expect(component.channelId).toBe('0123166374296453124');
   });
 
