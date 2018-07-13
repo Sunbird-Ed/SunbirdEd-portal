@@ -70,10 +70,10 @@ gulp.task('client:install', (cb) => {
   })
 })
 
-// To build anglar code and rename index file
+// To build angular code and rename index file
 
 gulp.task('client:dist', (cb) => {
-  exec('npm run build --prefix ./client ', function (err, stdout, stderr) {
+  exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
     console.log(stdout)
     console.log(stderr)
     cb(err)
