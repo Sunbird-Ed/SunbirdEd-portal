@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {takeUntil} from 'rxjs/operators';
+import { Subscription ,  Subject } from 'rxjs';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, BadgesService } from '@sunbird/core';
@@ -6,8 +8,6 @@ import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-content-badge',
   templateUrl: './content-badge.component.html',
@@ -64,8 +64,8 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
         }
       }
     };
-    this.badgeService.getAllBadgeList(req)
-    .takeUntil(this.unsubscribe)
+    this.badgeService.getAllBadgeList(req).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((response) => {
       this.allBadgeList = _.differenceBy(response.result.badges, this.data, 'badgeId');
     }, (err) => {
@@ -87,8 +87,8 @@ export class ContentBadgeComponent implements OnInit, OnDestroy {
       'recipientId': this.contentId,
       'recipientType': 'content'
     };
-    this.contentBadgeService.addBadge(req)
-    .takeUntil(this.unsubscribe)
+    this.contentBadgeService.addBadge(req).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((response) => {
       if (this.data === undefined) {
         this.data = [];

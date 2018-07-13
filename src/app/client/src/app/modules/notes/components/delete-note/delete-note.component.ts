@@ -1,7 +1,12 @@
+
+import {takeUntil} from 'rxjs/operators';
+import { ILoaderMessage } from './../../../shared/interfaces/loader';
 import { NotesService } from '../../services';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
 import { INoteData } from '@sunbird/notes';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component helps in deleting a selected note.
@@ -13,7 +18,9 @@ import { INoteData } from '@sunbird/notes';
   styleUrls: ['./delete-note.component.css']
 })
 
-export class DeleteNoteComponent {
+export class DeleteNoteComponent implements OnInit, OnDestroy {
+
+  @ViewChild('modal') modal;
   /**
    * This variable contains the details of the note to be deleted.
    */
@@ -41,7 +48,7 @@ export class DeleteNoteComponent {
    * By default it is assigned a value of 'true'. This ensures that
    * the page loader is displayed the first time the page is loaded.
    */
-  showLoader = true;
+  showLoader = false;
   /**
    * To display toaster(if any) after each API call.
    */
@@ -50,6 +57,10 @@ export class DeleteNoteComponent {
    * To remove the selected note.
    */
   notesService: NotesService;
+
+  public unsubscribe$ = new Subject<void>();
+
+  public loaderMessage: ILoaderMessage;
 
   /**
    * Constructor for Delete Note Component
@@ -68,6 +79,12 @@ export class DeleteNoteComponent {
     this.notesService = notesService;
   }
 
+  ngOnInit() {
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0116
+    };
+  }
+
   /**
    * This method redirects the user from the modal.
   */
@@ -79,20 +96,30 @@ export class DeleteNoteComponent {
    * This method calls the remove API.
   */
   public removeNote() {
+    this.showLoader = true;
+
     const requestData = {
       noteId: this.deleteNote.id
     };
 
-    this.notesService.remove(requestData).subscribe(
+    this.notesService.remove(requestData).pipe(
+    takeUntil(this.unsubscribe$))
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.deleteEventEmitter.emit(this.deleteNote.id);
+        this.modal.approve();
       },
       (err) => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0032);
+        this.modal.approve();
       }
     );
 
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

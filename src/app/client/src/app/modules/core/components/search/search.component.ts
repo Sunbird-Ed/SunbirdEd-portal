@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { SearchService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -99,8 +101,8 @@ export class SearchComponent implements OnInit {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
     });
-    this.route.events
-      .filter(e => e instanceof NavigationEnd).subscribe((params: any) => {
+    this.route.events.pipe(
+      filter(e => e instanceof NavigationEnd)).subscribe((params: any) => {
         const currUrl = this.route.url.split('?');
         this.value = currUrl[0].split('/', 3);
         const  searchEnabledStates = this.config.dropDownConfig.FILTER.SEARCH.searchEnabled;

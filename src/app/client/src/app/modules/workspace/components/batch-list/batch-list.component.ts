@@ -7,11 +7,12 @@ import {
   ResourceService, ILoaderMessage, INoResultMessage
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
-import { WorkSpaceService } from '../../services';
+import { WorkSpaceService, BatchService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * The batch list component
 */
@@ -137,6 +138,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     * @param {ConfigService} config Reference of ConfigService
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
+    private batchService: BatchService,
     public workSpaceService: WorkSpaceService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
@@ -178,8 +180,17 @@ export class BatchListComponent extends WorkSpace implements OnInit {
         visits: this.inviewLogs
       }
     };
+    this.batchService.updateEvent
+      .subscribe((data) => {
+        console.log('update event in list');
+        this.fetchBatchList();
+    });
   }
-
+  changeBatchStatus() {
+    this.pageNumber = 1;
+    this.route.navigate(['workspace/content/batches', 1]);
+    this.fetchBatchList();
+  }
   /**
     * This method sets the make an api call to get all batch with page No and offset
   */
@@ -203,7 +214,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
           this.batchList = data.result.response.content;
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
-          this.upDateBatch();
+          this.updateBatch();
         } else {
           this.showError = false;
           this.noResult = true;
@@ -239,7 +250,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   /**
   * processing batch for userlist to make an api call for userlist .
   */
-  public upDateBatch() {
+  public updateBatch() {
     let userList = [];
     const participants = [];
     const userName = [];

@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -9,8 +11,8 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * The course consumption dashboard component
@@ -153,8 +155,8 @@ export class CourseConsumptionComponent implements OnDestroy {
     this.route = route;
     // init the default impression event
     this.initTelemetryImpressionEvent();
-    this.activatedRoute.params
-    .takeUntil(this.unsubscribe)
+    this.activatedRoute.params.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(params => {
 
       if (params.id && params.timePeriod) {
@@ -194,8 +196,8 @@ export class CourseConsumptionComponent implements OnDestroy {
         timePeriod: this.timePeriod
       }
     };
-    this.consumptionService.getDashboardData(params)
-    .takeUntil(this.unsubscribe)
+    this.consumptionService.getDashboardData(params).pipe(
+    takeUntil(this.unsubscribe))
       .subscribe((data: DashboardData) => {
         this.blockData = data.numericData;
         this.graphData = this.rendererService.visualizer(data, this.chartType);
@@ -247,8 +249,8 @@ export class CourseConsumptionComponent implements OnDestroy {
     } else {
       // Make search api call
       const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-      this.searchService.searchContentByUserId(searchParams)
-      .takeUntil(this.unsubscribe)
+      this.searchService.searchContentByUserId(searchParams).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.count && data.result.content) {

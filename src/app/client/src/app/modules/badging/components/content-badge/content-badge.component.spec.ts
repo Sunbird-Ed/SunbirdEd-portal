@@ -1,9 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentBadgeComponent } from './content-badge.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { UserService, BadgesService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { mockResponse } from './content-badge.component.spec.data';
@@ -17,7 +18,7 @@ describe('ContentBadgeComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ collectionId: 'Test_Textbook2_8907797' }])
+    'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -41,7 +42,7 @@ describe('ContentBadgeComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    spyOn(badgeService, 'getAllBadgeList').and.callFake(() => Observable.of(mockResponse.badgeSuccessResponse));
+    spyOn(badgeService, 'getAllBadgeList').and.callFake(() => observableOf(mockResponse.badgeSuccessResponse));
     expect(component.contentId).toBe(fakeActivatedRoute.params['collectionId']);
     fixture.detectChanges();
   });
@@ -53,7 +54,7 @@ describe('ContentBadgeComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     component.allBadgeList = mockResponse.badgeSuccessResponse.result.badges;
-    spyOn(badgeService, 'addBadge').and.callFake(() => Observable.of(mockResponse.returnValue));
+    spyOn(badgeService, 'addBadge').and.callFake(() => observableOf(mockResponse.returnValue));
     spyOn(toasterService, 'success').and.callThrough();
     component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0044);

@@ -1,6 +1,6 @@
 import { ContentService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 
 /**

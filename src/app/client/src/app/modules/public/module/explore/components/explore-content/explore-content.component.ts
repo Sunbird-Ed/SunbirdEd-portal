@@ -1,15 +1,15 @@
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
+import { SearchService, CoursesService, PlayerService, ISort,
     OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
     selector: 'app-explore-content',
@@ -243,8 +243,7 @@ export class ExploreContentComponent implements OnInit {
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
-        Observable
-            .combineLatest(
+        observableCombineLatest(
                 this.activatedRoute.params,
                 this.activatedRoute.queryParams,
                 (params: any, queryParams: any) => {

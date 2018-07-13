@@ -1,172 +1,186 @@
-import { Ibatch } from './../../interfaces/batch';
-import { UpdateBatchComponent } from './update-batch.component';
 
-// Import NG testing module(s)
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { Ibatch } from './../../interfaces';
+import { WorkspaceModule } from '@sunbird/workspace';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2IziToastModule } from 'ng2-izitoast';
-import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
-// Import services
-import { SharedModule, PaginationService, ToasterService, ResourceService, RouterNavigationService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
-import { WorkSpaceService, BatchService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
-// Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { Response } from './update-batch.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
+import {CoreModule} from '@sunbird/core';
+import { By } from '@angular/platform-browser';
+import { TelemetryService } from '@sunbird/telemetry';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {getUserList, updateBatchDetails, getUserDetails} from './update-batch.component.spec.data';
+import { BatchService } from '../../services';
+import { UpdateBatchComponent } from './update-batch.component';
 
-describe('UpdateBatchComponent', () => {
-  let component: UpdateBatchComponent;
-  let fixture: ComponentFixture<UpdateBatchComponent>;
-  const resourceBundle = {
-    'messages': {
-      'fmsg': {
-        'm0054': 'Fetching batch list  failed, please try again',
-        'm0055': 'Updating batchlist is failed',
-        'm0056': 'Fetching user list  failed, please try again'
-      },
-      'stmsg': {
-        'm0108': 'We are fetching batchlist...',
-        'm0008': 'no-results',
-        'm0020': 'You dont have any batch list...'
-      },
-      'smsg': {
-        'm0006': 'Content deleted successfully...'
-      }
+class RouterStub {
+  navigate = jasmine.createSpy('navigate');
+}
+
+const resourceServiceMockData = {
+  messages: {
+    imsg: { m0027: 'Something went wrong' },
+    stmsg: { m0009: 'error' },
+    fmsg: {m0054 : 'error', m0056: 'error', m0052: 'error'},
+    smsg: {m0033: 'success'}
+  },
+  frmelmnts: {
+    btn: {
+      tryagain: 'tryagain',
+      close: 'close'
+    },
+    lbl: {
+      description: 'description',
+      createnewbatch: ''
     }
-  };
-  const roleOrgMap = {
-
-    'ORG_MODERATOR': ['01232002070124134414'],
-    'COURSE_MENTOR': ['01232002070124134414'],
-    'CONTENT_CREATOR': ['01232002070124134414'],
-    'COURSE_CREATOR': ['01232002070124134414'],
-    'ANNOUNCEMENT_SENDER': ['01232002070124134414'],
-    'CONTENT_REVIEWER': ['01232002070124134414']
-  };
-  const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 1 }]),
-    snapshot: {
+  }
+};
+const fakeActivatedRoute = {
+  'params': observableOf({ 'courseId': 'do_1125083286221291521153' }),
+  'parent': { 'params': observableOf({ 'courseId': 'do_1125083286221291521153' }) },
+  'snapshot': {
       params: [
         {
-          pageNumber: '1',
+          courseId: 'do_1125083286221291521153',
         }
       ],
       data: {
         telemetry: {
-          env: 'workspace', pageid: 'batch-edit', type: 'detail',
-          object: { type: 'batch', ver: '1.0' }
+          object: {}
         }
       }
     }
-  };
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
+};
+
+describe('UpdateBatchComponent', () => {
+  let component: UpdateBatchComponent;
+  let fixture: ComponentFixture<UpdateBatchComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UpdateBatchComponent],
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, Ng2IziToastModule,
-         RouterTestingModule, SharedModule.forRoot(),
-        TelemetryModule.forRoot()],
-      providers: [PaginationService, WorkSpaceService, UserService,
-        SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService, ResourceService, ToasterService,
-        RouterNavigationService, BatchService,
-        { provide: ResourceService, useValue: resourceBundle },
-        { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
-    })
-      .compileComponents();
+      declarations: [],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [SharedModule.forRoot(), CoreModule.forRoot(), SuiModule, RouterTestingModule,
+        HttpClientTestingModule, WorkspaceModule],
+      providers: [ToasterService, ResourceService, UserService, TelemetryService, { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+    });
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateBatchComponent);
     component = fixture.componentInstance;
   });
-  it('should call  batch search api with id and returns result count more than 1', inject([BatchService], (batchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = Response.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.of(Response.batchlistSucessData));
-    fixture.detectChanges();
-    component.getBatchDetails();
-    expect(component.batchData).toBeDefined();
-  }));
-  it('should throw error', inject([BatchService, ToasterService, ResourceService], (batchService, toasterService, resourceService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = Response.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(batchService, 'getBatchDetailsById').and.callFake(() => Observable.throw({}));
-    fixture.detectChanges();
-    expect(component.batchData).toBeUndefined();
-  }));
 
-  it('Should load user list', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = Response.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(searchService, 'getUserList').and.callFake(() => Observable.of(Response.uselistSucessData));
+  it('should fetch batch details and show update Form model', () => {
+    const batchService = TestBed.get(BatchService);
+    spyOn(batchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     fixture.detectChanges();
-  }));
-  it('Should clear form on clearForm call', inject([SearchService], (searchService) => {
+    expect(component.participantList.length).toBe(3);
+    expect(component.mentorList.length).toBe(1);
+    expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
+    expect(component.batchUpdateForm).toBeDefined();
+    expect(component.showUpdateModal).toBeTruthy();
+    expect(component.selectedParticipants.length).toBe(2);
+    expect(component.selectedMentors.length).toBe(7);
+  });
+  it('should navigate to parent page if fetching batch details fails', () => {
+    const batchService = TestBed.get(BatchService);
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
     const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = Response.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap;
-    component.ngOnInit();
-    component.clearForm();
-    component.batchAddUserForm.reset();
-  }));
-
-  it('should call redirectTobatches method ', inject([Router],
-    (route) => {
-      const userService = TestBed.get(UserService);
-      const learnerService = TestBed.get(LearnerService);
-      spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-      userService._userProfile = Response.userSuccess.success;
-      userService._userProfile.roleOrgMap = roleOrgMap;
-      component.redirectTobatches();
-      fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
-    }));
-  it('should call update  batch  api  and return sucess response', inject([BatchService], (batchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.userSuccess.success));
-    userService._userProfile = Response.userSuccess.success;
-    userService._userProfile.roleOrgMap = roleOrgMap;
-    spyOn(batchService, 'updateBatchDetails').and.callFake(() => Observable.of(Response.updateBatchDetails.request));
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(batchService, 'getUserList').and.returnValue(observableOf(getUserList));
+    spyOn(batchService, 'getBatchDetails').and.returnValue(observableThrowError(updateBatchDetails));
+    spyOn(toasterService, 'error');
     fixture.detectChanges();
-    const requestParam = {
-      'name': 'Test 12345',
-      'description': 'test',
-      'enrollmentType': 'invite-only',
-      'startDate': '2018-04-19',
-      'endDate': '2018-04-25',
-      'createdFor': [
-        '0123653943740170242',
-        'ORG_001'
-      ],
-      'id': '0124858459476131840',
-      'mentors': [
-        '8454cb21-3ce9-4e30-85b5-fade097880d8'
-      ]
-    };
-    component.updateBatchDetails(requestParam, component.batchAddUserForm);
-  }));
+    expect(toasterService.error).toHaveBeenCalledWith('error');
+    expect(component.router.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
+  });
+  it('should navigate to parent page if fetching user details fails', () => {
+    const batchService = TestBed.get(BatchService);
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(batchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableThrowError(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(toasterService, 'error');
+    fixture.detectChanges();
+    expect(component.participantList.length).toBe(3);
+    expect(component.mentorList.length).toBe(1);
+    expect(component.mentorList[0].id).toBe('b2479136-8608-41c0-b3b1-283f38c338ed');
+    expect(toasterService.error).toHaveBeenCalledWith('error');
+    expect(component.router.navigate).toHaveBeenCalledWith(['workspace/content/batches/1']);
+  });
+  it('should update batch and show success message if api return success', () => {
+    const batchService = TestBed.get(BatchService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(batchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(batchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(toasterService, 'success');
+    fixture.detectChanges();
+    component.updateBatch();
+    expect(toasterService.success).toHaveBeenCalledWith('success');
+  });
+  it('should update batch and show error message if api fails', () => {
+    const batchService = TestBed.get(BatchService);
+    const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
+    const userService = TestBed.get(UserService);
+    userService._userProfile = { organisationIds: [] };
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(batchService, 'getUserList').and.callFake((request) => {
+      if (request) {
+        return observableOf(getUserDetails);
+      } else {
+        return observableOf(getUserList);
+      }
+    });
+    spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(batchService, 'updateBatch').and.returnValue(observableThrowError(updateBatchDetails));
+    spyOn(toasterService, 'error');
+    fixture.detectChanges();
+    component.updateBatch();
+    expect(toasterService.error).toHaveBeenCalledWith('error');
+  });
 });
-
-

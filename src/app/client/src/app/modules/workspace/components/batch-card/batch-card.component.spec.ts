@@ -14,7 +14,7 @@ import { SharedModule, PaginationService, ToasterService, ResourceService } from
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService, BatchService} from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { Response } from './batch-card.component.spec.data';
 // import batch card comoponet
 // Import Module
@@ -40,7 +40,7 @@ describe('BatchCardComponent', () => {
       }
     }
   };
- const fakeActivatedRoute = { 'params': Observable.from([{ 'batchId': '0124858228063600641' }]) };
+ const fakeActivatedRoute = { 'params': of([{ 'batchId': '0124858228063600641' }]) };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -73,12 +73,17 @@ describe('BatchCardComponent', () => {
   });
   it('should set batchDetails', inject([Router],
     (route) => {
+    spyOn(component, 'onAction').and.callThrough();
     component.onAction(Response.successData);
     component.batch = Response.successData;
     const batchService = TestBed.get(BatchService);
     batchService.batchDetails = Response.successData;
-    expect(route.navigate).toHaveBeenCalledWith(['workspace/content/update/batch', Response.successData.identifier]);
-  }));
+    spyOn(batchService, 'setBatchData').and.callThrough();
+    batchService.setBatchData(Response.successData);
+    expect(batchService.setBatchData).toHaveBeenCalledWith(Response.successData);
+    expect(route.navigate).toHaveBeenCalledWith(['update/batch', Response.successData.identifier],
+     {relativeTo: component.activatedRoute});
+    }));
 });
 
 
