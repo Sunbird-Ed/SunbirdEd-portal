@@ -6,6 +6,8 @@ import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component helps to display the success/failure response given by the api based on the process id entered
@@ -64,6 +66,8 @@ export class StatusComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   checkStatusInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  public unsubscribe$ = new Subject<void>();
+
   /**
 * Constructor to create injected service(s) object
 *
@@ -119,7 +123,9 @@ export class StatusComponent implements OnInit, OnDestroy {
  */
   getBulkUploadStatus(processId) {
     this.showLoader = true;
-    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId).subscribe(
+    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId)
+    .takeUntil(this.unsubscribe$)
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         this.statusResponse = apiResponse.result.response[0];
@@ -139,6 +145,8 @@ export class StatusComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   setInteractEventData() {
     this.checkStatusInteractEdata = {
