@@ -1,7 +1,7 @@
 <div class="ui grid" *ngIf="!showExploreHeader">
     <div class="center aligned twelve column row" [class.header-height-before-login]="!userService.userid">
         <div class="one wide tablet computer only column"></div>
-        <div class="two wide tablet computer only column" [class.padding-top-5]="!userService.userid" [class.padding-top-15]="userService.userid">
+        <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
                     alt={{tenantName}} src="{{logo}}">
