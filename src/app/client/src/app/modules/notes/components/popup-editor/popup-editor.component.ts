@@ -1,5 +1,5 @@
 
-import { takeUntil } from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges, ViewEncapsulation, OnDestroy } from '@angular/core';

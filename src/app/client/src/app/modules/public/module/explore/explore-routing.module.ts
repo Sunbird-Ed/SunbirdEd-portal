@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExploreContentComponent } from './components';
+import { ExploreContentComponent, ExploreComponent } from './components';
 const routes: Routes = [
     {
       path: ':pageNumber', component: ExploreContentComponent, data: {
@@ -10,8 +10,8 @@ const routes: Routes = [
       }
     },
     {
-        path: '', component: ExploreContentComponent
-    },
+        path: '', component: ExploreComponent
+      },
   ];
   @NgModule({
     imports: [RouterModule.forChild(routes)],
