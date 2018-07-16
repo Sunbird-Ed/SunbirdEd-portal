@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -23,6 +23,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
+  @ViewChild('modal') modal;
   pageId: string;
   /**
   * telemetryImpression
@@ -76,6 +77,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
 
   public unsubscribe$ = new Subject<void>();
 
+  disableApproveBtn = false;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -113,6 +115,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.toasterService.success(this.resourceService.messages.smsg.m0035);
+          this.modal.deny();
           this.redirect();
         },
         err => {
@@ -136,6 +139,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
+          this.modal.deny();
           this.redirect();
         },
         err => {
