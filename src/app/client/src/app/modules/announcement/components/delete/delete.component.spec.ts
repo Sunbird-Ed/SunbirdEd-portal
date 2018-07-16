@@ -54,6 +54,7 @@ describe('DeleteComponent', () => {
       spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => observableOf(testData.mockRes.deleteSuccess));
       spyOn(component, 'deleteAnnouncement').and.callThrough();
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
+      const modal = fixture.componentInstance.modal;
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'success').and.callThrough();
@@ -72,6 +73,7 @@ describe('DeleteComponent', () => {
         }
       );
       fixture.detectChanges();
+      expect(component.modal).toBeDefined();
     }));
 
   it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService,

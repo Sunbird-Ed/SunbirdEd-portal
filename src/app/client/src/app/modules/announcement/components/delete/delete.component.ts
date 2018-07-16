@@ -1,6 +1,6 @@
 
 import {takeUntil} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -18,6 +18,8 @@ import { Subject } from 'rxjs';
   styleUrls: ['./delete.component.css']
 })
 export class DeleteComponent implements OnInit, OnDestroy {
+
+  @ViewChild('modal') modal;
 
   public unsubscribe = new Subject<void>();
   /**
@@ -91,6 +93,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
+        this.modal.approve();
       },
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
