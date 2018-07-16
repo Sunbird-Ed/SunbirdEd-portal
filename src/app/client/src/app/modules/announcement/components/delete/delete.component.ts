@@ -57,6 +57,8 @@ export class DeleteComponent implements OnInit, OnDestroy {
    */
   public routerNavigationService: RouterNavigationService;
 
+  disableApproveBtn = false;
+
   /**
 	 * Constructor to create injected service(s) object
 	 *
