@@ -6,7 +6,7 @@ import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 /**
@@ -123,8 +123,8 @@ export class StatusComponent implements OnInit, OnDestroy {
  */
   getBulkUploadStatus(processId) {
     this.showLoader = true;
-    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId)
-    .takeUntil(this.unsubscribe$)
+    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;

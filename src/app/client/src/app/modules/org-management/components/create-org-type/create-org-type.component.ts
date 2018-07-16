@@ -6,8 +6,8 @@ import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * This component helps to display the creation/updation popup.
@@ -108,18 +108,18 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
    * with proper messaga.
 	 */
   addOrgType(): void {
-    this.orgTypeService.addOrgType(this.orgName.value)
-    .takeUntil(this.unsubscribe$)
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0035);
-        this.redirect();
-      },
-      err => {
-        this.toasterService.error(err.error.params.errmsg);
-        this.redirect();
-      }
-    );
+    this.orgTypeService.addOrgType(this.orgName.value).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0035);
+          this.redirect();
+        },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          this.redirect();
+        }
+      );
   }
 
   /**
@@ -131,18 +131,18 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy {
 	 */
   updateOrgType(): void {
     const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
-    this.orgTypeService.updateOrgType(param)
-    .takeUntil(this.unsubscribe$)
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
-        this.redirect();
-      },
-      err => {
-        this.toasterService.error(err.error.params.errmsg);
-        this.redirect();
-      }
-    );
+    this.orgTypeService.updateOrgType(param).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
+          this.redirect();
+        },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          this.redirect();
+        }
+      );
   }
 
   /**

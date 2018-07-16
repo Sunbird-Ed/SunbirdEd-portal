@@ -6,7 +6,7 @@ import { OrgManagementService } from '../../services/org-management/org-manageme
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 /**
@@ -214,8 +214,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       formData.append('organisationId', data.organisationId);
       const fd = formData;
       this.fileName = file[0].name;
-      this.orgManagementService.bulkUserUpload(fd)
-      .takeUntil(this.unsubscribe$)
+      this.orgManagementService.bulkUserUpload(fd).pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
