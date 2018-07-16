@@ -1,8 +1,7 @@
-
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +11,7 @@ import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from './dial-code.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import * as _ from 'lodash';
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
   let fixture: ComponentFixture<DialCodeComponent>;
@@ -46,7 +46,7 @@ describe('DialCodeComponent', () => {
       imports: [HttpClientTestingModule, CoreModule.forRoot(), SharedModule.forRoot(), TelemetryModule.forRoot(),  Ng2IziToastModule],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService,
+      providers: [SearchService, UtilService, ConfigService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -104,5 +104,23 @@ describe('DialCodeComponent', () => {
     item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
     component.getEvent(item);
     expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier]);
+  });
+  it('should call getDataForCard Method to pass the data in Card ', () => {
+    const searchService = TestBed.get(SearchService);
+    const utilService = TestBed.get(UtilService);
+    const config = TestBed.get(ConfigService);
+    const constantData = config.appConfig.GetPage.constantData;
+    const metaData = config.appConfig.GetPage.metaData;
+    const dynamicFields = config.appConfig.GetPage.dynamicFields;
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(component, 'searchDialCode').and.callThrough();
+    spyOn(utilService, 'getDataForCard').and.callThrough();
+    component.searchDialCode();
+    const searchResults = utilService.getDataForCard(Response.successData.result.content, constantData, dynamicFields, metaData);
+    fixture.detectChanges();
+    expect(utilService.getDataForCard).toHaveBeenCalled();
+    expect(utilService.getDataForCard).toHaveBeenCalledWith(Response.successData.result.content, constantData, dynamicFields, metaData);
+    expect(component.searchResults).toEqual(searchResults);
+    expect(component.showLoader).toBeFalsy();
   });
 });

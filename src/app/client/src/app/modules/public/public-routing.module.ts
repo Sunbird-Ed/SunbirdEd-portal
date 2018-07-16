@@ -7,7 +7,7 @@ import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
   PublicCollectionPlayerComponent
 } from './components';
-import { SignupGuard, LandingpageGuard} from './services';
+import { SignupGuard, LandingpageGuard } from './services';
 
 const routes: Routes = [
   {
@@ -62,11 +62,6 @@ const routes: Routes = [
   },
   {
     path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: '**',
-    component: LandingPageComponent,
-    canActivate: [LandingpageGuard]
   }
 ];
 @NgModule({
@@ -74,4 +69,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class PublicRoutingModule { }
-

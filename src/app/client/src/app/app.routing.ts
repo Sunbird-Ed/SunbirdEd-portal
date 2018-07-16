@@ -1,27 +1,18 @@
 import { NgModule } from '@angular/core';
+import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErrorPageComponent } from '@sunbird/core';
-
 const appRoutes: Routes = [
+  {
+    path: '',
+    loadChildren: './private/private.module#PrivateModule', canLoad: [AuthGuard] // load private module only if logged in
+  },
   {
     path: 'error',
     component: ErrorPageComponent
   },
   {
-    path: 'learn',
-    loadChildren: 'app/modules/learn/learn.module#LearnModule'
-  },
-  {
-    path: 'resources',
-    loadChildren: 'app/modules/resource/resource.module#ResourceModule'
-  },
-  {
-    path: 'search',
-    loadChildren: 'app/modules/search/search.module#SearchModule'
-  },
-  {
-    path: 'workspace',
-    loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+    path: '**',
+    redirectTo: ''
   }
 ];
 

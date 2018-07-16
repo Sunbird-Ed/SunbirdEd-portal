@@ -6,6 +6,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
+import { ExploreComponent } from './components/explore/explore.component';
 
 
 @NgModule({
@@ -17,6 +18,6 @@ import { NgInviewModule } from 'angular-inport';
     NgInviewModule,
     ExploreRoutingModule
   ],
-  declarations: [ ExploreContentComponent]
+  declarations: [ ExploreContentComponent, ExploreComponent]
 })
 export class ExploreModule { }

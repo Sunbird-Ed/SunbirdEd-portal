@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
+import { PublicDataService } from './../public-data/public-data.service';
 
 @Injectable()
 export class OrgDetailsService {
@@ -17,7 +18,7 @@ export class OrgDetailsService {
 
   constructor(public configService: ConfigService,
     public contentService: ContentService, public router: Router, public toasterService: ToasterService,
-    public resourceService: ResourceService, public learnerService: LearnerService) {
+    public resourceService: ResourceService, public learnerService: LearnerService, public publicDataService: PublicDataService) {
   }
 
   getOrgDetails(slug?: string): Observable<ServerResponse> {
@@ -32,7 +33,7 @@ export class OrgDetailsService {
     if (this.orgDetails) {
       return observableOf(this.orgDetails);
     } else {
-      return this.contentService.post(option).pipe(mergeMap((data: ServerResponse) => {
+      return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
           this.setOrgDetailsToRequestHeaders();
@@ -40,7 +41,7 @@ export class OrgDetailsService {
           return observableOf(data.result.response.content[0]);
         } else {
           option.data.request.filters.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-          return this.contentService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
+          return this.publicDataService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
             if (responseData.result.response.count > 0) {
               this.orgDetails = responseData.result.response.content[0];
               this.setOrgDetailsToRequestHeaders();
@@ -63,6 +64,8 @@ export class OrgDetailsService {
     this.learnerService.channelId = this.orgDetails.channel;
     this.contentService.rootOrgId = this.orgDetails.rootOrgId;
     this.contentService.channelId = this.orgDetails.channel;
+    this.publicDataService.rootOrgId = this.orgDetails.rootOrgId;
+    this.publicDataService.channelId = this.orgDetails.channel;
   }
 }
 

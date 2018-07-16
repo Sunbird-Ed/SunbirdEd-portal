@@ -13,6 +13,7 @@ import {
 import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash';
 import { environment } from '@sunbird/environment';
+import { PublicDataService } from './../public-data/public-data.service';
 /**
  * helper services to fetch content details and preparing content player config
  */
@@ -27,7 +28,8 @@ export class PlayerService {
    */
   collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService) {
+    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService
+    , public publicDataService: PublicDataService) {
   }
 
   /**
@@ -65,7 +67,7 @@ export class PlayerService {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { ...param, ...option.params }
     };
-    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.contentData = response.result.content;
       return response;
     }));
@@ -123,7 +125,7 @@ export class PlayerService {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: option.params
     };
-    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.collectionData = response.result.content;
       return response;
     }));
