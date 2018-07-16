@@ -1,8 +1,8 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FrameworkService, ContentService, UserService, CoreModule } from '@sunbird/core';
+import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './framework.mock.spec.data';
@@ -12,7 +12,7 @@ describe('FrameworkService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SharedModule.forRoot(), CoreModule.forRoot()],
-      providers: [FrameworkService, ContentService, UserService, CacheService]
+      providers: [FrameworkService, PublicDataService, UserService, CacheService]
     });
   });
 
@@ -28,10 +28,10 @@ describe('FrameworkService', () => {
     expect(service.getFramework).toHaveBeenCalled();
   });
 
-  xit('should fetch framework details', () => {
+  it('should fetch framework details', () => {
     const service = TestBed.get(FrameworkService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(observableOf(mockFrameworkData.frameworkSuccess));
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableOf(mockFrameworkData.frameworkSuccess));
     service.isApiCall = true;
     service.getFrameworkCategories();
     service.frameworkData$.subscribe(frameworkData => {
@@ -41,8 +41,8 @@ describe('FrameworkService', () => {
 
   it('should emit error on getFramework api failure', () => {
     const service = TestBed.get(FrameworkService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
     service.isApiCall = true;
     service.getFrameworkCategories();
     service.frameworkData$.subscribe(frameworkData => {
@@ -51,8 +51,8 @@ describe('FrameworkService', () => {
   });
   it('should emit error on getFrameworkCategories api failure', () => {
     const service = TestBed.get(FrameworkService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableThrowError(mockFrameworkData.error));
     service.isApiCall = true;
     service.defaultFramework = 'NCF';
     service.getFrameworkCategories();
