@@ -6,6 +6,7 @@ import { Observable ,  BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
+import { PublicDataService } from './../public-data/public-data.service';
 /**
  * Service to fetch user details from server
  *
@@ -79,15 +80,21 @@ export class UserService {
   public rootOrgName: string;
 
   /**
+   * Reference of public data service.
+   */
+  public publicDataService: PublicDataService;
+
+  /**
   * constructor
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
   constructor(config: ConfigService, learner: LearnerService,
-    private http: HttpClient, contentService: ContentService) {
+    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
+    this.publicDataService = publicDataService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
@@ -218,6 +225,8 @@ export class UserService {
     this.learnerService.channelId = this._channel;
     this.contentService.rootOrgId = this._rootOrgId;
     this.contentService.channelId = this._channel;
+    this.publicDataService.rootOrgId = this._rootOrgId;
+    this.publicDataService.channelId = this._channel;
   }
   get contentChannelFilter() {
     return this._contentChannelFilter;
@@ -239,7 +248,7 @@ export class UserService {
         }
       }
     };
-    this.contentService.post(option).subscribe
+    this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
         _.forEach(data.result.response.content, (orgData) => {
           this.orgNames.push(orgData.orgName);

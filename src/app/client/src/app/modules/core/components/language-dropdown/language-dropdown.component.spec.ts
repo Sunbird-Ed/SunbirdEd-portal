@@ -2,7 +2,7 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
-import { CoreModule, OrgDetailsService, ContentService } from '@sunbird/core';
+import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -66,8 +66,8 @@ describe('LanguageDropdownComponent', () => {
 
   it('On getting channel id', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    const contentService = TestBed.get(ContentService);
-    spyOn(contentService, 'post').and.callFake(() => observableOf(Response.orgResponse));
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf(Response.orgResponse));
     component.orgDetailsService.getOrgDetails('ap').subscribe((data) => {
     });
     fixture.detectChanges();

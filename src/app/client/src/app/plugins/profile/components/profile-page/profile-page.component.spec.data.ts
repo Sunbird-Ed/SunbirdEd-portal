@@ -187,6 +187,22 @@ export const mockProfilePageData = {
             ]
         }
     },
+    zeroData: {
+              'id': 'api.v1.search',
+                'ver': '1.0',
+                'ts': '2018-04-18T09:54:51.318Z',
+                'params': {
+                    'resmsgid': '899c6d60-42ee-11e8-9525-3b7922bb1423',
+                    'msgid': '899122c0-42ee-11e8-8610-f51744d7b4c5',
+                    'status': 'successful',
+                    'err': null,
+                    'errmsg': null
+                },
+                'responseCode': 'OK',
+                'result': {
+                    'count': 0
+                }
+            },
     event: {
         'inview': [
             {

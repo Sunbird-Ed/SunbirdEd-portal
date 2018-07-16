@@ -5,10 +5,9 @@ import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs';
-
-
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
+import { PublicDataService } from './../public-data/public-data.service';
 /**
  * Service to search content
  */
@@ -38,6 +37,11 @@ export class SearchService {
    * Reference of learner service
    */
   public learnerService: LearnerService;
+
+  /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
   /**
    * Default method of OrganisationService class
    *
@@ -47,11 +51,12 @@ export class SearchService {
    * @param {LearnerService} config learner service reference
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
-    learnerService: LearnerService) {
+    learnerService: LearnerService, publicDataService: PublicDataService) {
     this.user = user;
     this.content = content;
     this.config = config;
     this.learnerService = learnerService;
+    this.publicDataService = publicDataService;
   }
   /**
    * Search content by user id.
@@ -108,7 +113,7 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option).pipe(
+    return this.publicDataService.post(option).pipe(
       map((data: ServerResponse) => {
         this._searchedOrganisationList = data.result.response;
         return data;
@@ -177,7 +182,7 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option);
+    return this.publicDataService.post(option);
   }
   /**
    * Course Search.
@@ -233,7 +238,7 @@ export class SearchService {
         'Resource'
       ];
     }
-    return this.content.post(option);
+    return this.publicDataService.post(option);
   }
   /**
   * Batch Search.
