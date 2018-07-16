@@ -6,19 +6,15 @@ import { UserService } from './../user/user.service';
 import { IPageSection } from './../../interfaces/index';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
-import { LearnerService } from './../learner/learner.service';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash';
+import { PublicDataService } from './../public-data/public-data.service';
 
 /**
 *  Service for page API calls.
 */
 @Injectable()
 export class PageApiService {
-  /**
-  *  To do learner service api call.
-  */
-  private learnerService: LearnerService;
   /**
   *  To get url, app configs.
   */
@@ -32,15 +28,20 @@ export class PageApiService {
    */
   public readonly pageData$: Observable<any> = this._pageData$.asObservable();
   /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
+  /**
   * the "constructor"
   *
   * @param {LearnerService} learnerService Reference of LearnerService.
   * @param {ConfigService} config Reference of ConfigService
   */
-  constructor(config: ConfigService, learnerService: LearnerService, public userService: UserService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService ) {
+  constructor(config: ConfigService, public userService: UserService,
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    publicDataService: PublicDataService ) {
     this.config = config;
-    this.learnerService = learnerService;
+    this.publicDataService = publicDataService;
   }
   /**
    *  api call for get page data.
@@ -65,7 +66,7 @@ export class PageApiService {
       if (this.userService.contentChannelFilter) {
         option.data.request.filters.channel = this.userService.contentChannelFilter;
       }
-      return this.learnerService.post(option).pipe(map((data) => {
+      return this.publicDataService.post(option).pipe(map((data) => {
         this.setData(data, requestParam);
         return { sections : data.result.response.sections };
       }));

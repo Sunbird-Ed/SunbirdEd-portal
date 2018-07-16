@@ -8,6 +8,7 @@
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
+    "PUBLIC_PREFIX": "/api/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
     "TENANT_PREFIX": "/v1/tenant",
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
