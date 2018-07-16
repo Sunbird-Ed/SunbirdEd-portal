@@ -1,10 +1,12 @@
 <div class="ui grid" [appTelemetryImpression]="telemetryImpression">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <p class="segmentCardSubDesc"> {{resourceService.frmelmnts?.lbl?.redirectMsg}} </p>
-        <div class="segmentCardSubDesc">
-            <span>{{resourceService.frmelmnts?.lbl?.goback}}</span>
-            <a (click)="goBack()" class="cursor-pointer">click here</a>
+        <div class="segmentCardSubDesc ui huge message">
+            <p class="segmentCardSubDesc"> {{resourceService.frmelmnts?.lbl?.redirectMsg}} {{resourceService.instance}}, {{resourceService.frmelmnts?.lbl?.redirectWaitMsg}} </p>
+            <p class="segmentCardSubDesc">
+                <span>{{resourceService.frmelmnts?.lbl?.goback}}</span>
+                <a (click)="goBack()" class="cursor-pointer">click here</a>
+            </p>
         </div>
     </div>
     <div class="one wide column"></div>

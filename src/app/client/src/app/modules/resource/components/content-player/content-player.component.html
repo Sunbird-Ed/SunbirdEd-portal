@@ -43,6 +43,13 @@
                     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                         <div class="ui text centered inline loader margin-top-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
                     </div>
+                    <div class="ui warning message click-notify-xurl" *ngIf="showMsg">
+                        <div class="" >
+                            <div class="column twelve wide">
+                                <p>{{resourceService.messages.imsg.m0036}}</p>
+                            </div>
+                        </div>
+                    </div>
                     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
                     <div class="twelve wide column contentMetaSection">

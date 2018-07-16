@@ -1,3 +1,4 @@
+import { ToasterService } from '../../services/';
 import { ResourceService } from '../../services';
 import { Component, OnInit, Input } from '@angular/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
@@ -22,7 +23,8 @@ export class RedirectComponent implements OnInit {
    * telemetryImpression
    */
   telemetryImpression: IImpressionEventInput;
-  constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute, public router: Router) {
+  constructor(public resourceService: ResourceService, activatedRoute: ActivatedRoute, public router: Router,
+     public toasterService: ToasterService) {
     this.activatedRoute = activatedRoute;
     this.router = router;
   }
@@ -40,9 +42,10 @@ export class RedirectComponent implements OnInit {
         uri: window.redirectUrl
       }
     };
+    this.toasterService.warning(this.resourceService.messages.imsg.m0034);
     setTimeout(() => {
       window.open(window.redirectUrl, '_self');
-    }, 1000);
+    }, 1500);
   }
 
   /**

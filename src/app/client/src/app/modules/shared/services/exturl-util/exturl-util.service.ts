@@ -5,8 +5,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ExternalUrlPreviewService {
-    constructor(public configService: ConfigService, public resourceService: ResourceService,
-        public toasterService: ToasterService) { }
+    constructor(public configService: ConfigService) { }
     /**
       * generateRedirectUrl function is to redirect to the external url link in a new tab
       * @param playerconfigMeta Playerconfig data to get artifacturl and contentId of the item in the player
@@ -14,7 +13,6 @@ export class ExternalUrlPreviewService {
       * @param userId  user id of the loggedin user
       */
     generateRedirectUrl(playerconfigMeta: any, userId?: string, courseId?: string, batchId?: string) {
-        this.toasterService.warning(this.resourceService.messages.imsg.m0034);
         setTimeout(() => {
             const newWindow = window.open('/learn/redirect', '_blank');
             newWindow.redirectUrl = playerconfigMeta.artifactUrl + (courseId !== undefined ? '#&courseId=' + courseId : '')

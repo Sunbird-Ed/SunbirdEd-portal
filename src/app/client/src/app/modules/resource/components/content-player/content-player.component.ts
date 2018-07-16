@@ -19,6 +19,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
+  showMsg = false;
   /**
 	 * telemetryImpression
 	*/
@@ -77,7 +78,8 @@ export class ContentPlayerComponent implements OnInit {
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    private configService: ConfigService) {
   }
   /**
    *
@@ -140,6 +142,11 @@ export class ContentPlayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+            setTimeout(() => {
+              this.showMsg = true;
+            }, 8000);
+          }
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');

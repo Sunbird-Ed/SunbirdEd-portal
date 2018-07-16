@@ -1,17 +1,18 @@
 import {
   ResourceService,
   ConfigService,
-  BrowserCacheTtlService
-} from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+  BrowserCacheTtlService,
+  ToasterService } from '@sunbird/shared';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { RedirectComponent } from './redirect.component';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-
+import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CacheService } from 'ng2-cache-service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('RedirectComponent', () => {
   let component: RedirectComponent;
@@ -28,7 +29,14 @@ describe('RedirectComponent', () => {
       }
     }
   };
-
+ const resourceBundle = {
+        'messages': {
+            'imsg': {
+                'm0034': 'As the content is from an external source, it will be opened in a new tab.'
+            },
+            'stmsg': { 'm0009': 'Unable to play, please try again or close' }
+        }
+    };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -38,41 +46,45 @@ describe('RedirectComponent', () => {
       declarations: [RedirectComponent],
       imports: [
         RouterTestingModule,
-        HttpClientTestingModule,
+        HttpClientTestingModule, Ng2IziToastModule,
         TelemetryModule.forRoot()
       ],
       providers: [
         ResourceService,
         ConfigService,
         CacheService,
+         ToasterService,
         BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RedirectComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should call window.open() in new tab', () => {
-    const redirectUrl = 'https://www.dailymotion.com/video/xlshwn#&contentId=do_112544609019969536177';
-    setTimeout(() => {
-      window.open(window.redirectUrl, '_self');
-    }, 500);
-    expect(component).toBeTruthy();
-    const windowSpy = spyOn(window, 'open');
-    expect(windowSpy).toHaveBeenCalledWith(redirectUrl);
-  });
+  it('should call window.open() in same tab', inject(
+    [Router, ToasterService, ResourceService],
+    (router, toasterService, resourceService, service) => {
+      resourceService.messages = resourceBundle.messages;
+      spyOn(toasterService, 'warning').and.callThrough();
+      const windowSpy = spyOn(window, 'open');
+      component.ngOnInit();
+      expect(toasterService.warning).toBeDefined();
+      expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
+      expect(component).toBeTruthy();
+      expect(window.open).toBeDefined();
+    }
+  ));
 
   it('test goback function', () => {
     component.goBack();
     window.close();
     expect(component.goBack).toBeDefined();
-    expect(component.goBack).toHaveBeenCalled();
   });
 });
 

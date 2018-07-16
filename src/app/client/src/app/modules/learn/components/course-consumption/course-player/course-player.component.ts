@@ -22,6 +22,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
 
+  contentCheck = false;
   public courseInteractObject: IInteractEventObject;
 
   public contentInteractObject: IInteractEventObject;
@@ -112,6 +113,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   prevPlaylistItem: any;
 
   noContentToPlay = 'No content to play';
+
+  showMsg = false;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -226,7 +229,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
         if (content) {
-          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') },
+           queryParams.resumeCourseClicked);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
           this.closeContentPlayer();
@@ -241,7 +245,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       return node.model.identifier === id;
     });
   }
-  private OnPlayContent(content: { title: string, id: string }) {
+  private OnPlayContent(content: { title: string, id: string }, resumeClickCheck ?: boolean) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
       || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
@@ -249,7 +253,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
       this.setContentNavigators();
-      this.playContent(content);
+      this.playContent(content, resumeClickCheck);
     } else {
       console.log('content not playable');
     }
@@ -259,7 +263,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.prevPlaylistItem = this.contentDetails[index - 1];
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
-  private playContent(data: any): void {
+  private playContent(data: any, resumeClickCheck ?: boolean): void {
     this.enableContentPlayer = false;
     this.loader = true;
     const options: any = { courseId: this.courseId };
@@ -271,6 +275,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.setContentInteractData(config);
         this.loader = false;
         this.playerConfig = config;
+          if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && resumeClickCheck) ||
+          (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.contentCheck))) {
+            setTimeout(() => {
+              this.showMsg = true;
+            }, 8000);
+          }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
@@ -287,6 +297,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     const playContentDetail = this.findContentById(content.id);
     if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+      this.showMsg = false;
+      this.contentCheck = true;
       this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
     }
     if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
