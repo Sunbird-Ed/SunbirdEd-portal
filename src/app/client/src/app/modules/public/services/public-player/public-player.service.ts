@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 
 import {mergeMap, map} from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ContentService, UserService, CollectionHierarchyAPI } from '@sunbird/core';
+import { UserService, CollectionHierarchyAPI, PublicDataService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
   ConfigService, IUserData, ResourceService, ServerResponse,
@@ -22,8 +22,9 @@ export class PublicPlayerService {
    * stores collection/course details
    */
   collectionData: ContentData;
-  constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService, public router: Router) {
+  constructor(public userService: UserService,
+    public configService: ConfigService, public router: Router,
+    public publicDataService: PublicDataService) {
   }
 
   /**
@@ -52,7 +53,7 @@ export class PublicPlayerService {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { fields: this.configService.urlConFig.params.contentGet }
     };
-    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.contentData = response.result.content;
       return response;
     }));
@@ -78,7 +79,7 @@ export class PublicPlayerService {
     const req = {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`
     };
-    return this.contentService.get(req).pipe(map((response: ServerResponse) => {
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       this.collectionData = response.result.content;
       return response;
     }));
