@@ -1,8 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToasterService, SharedModule, ResourceService } from '@sunbird/shared';
 import { CoreModule, UserService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { ProfileService, UserSummaryComponent } from '@sunbird/profile';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -17,7 +18,7 @@ describe('UserSummaryComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -64,7 +65,7 @@ describe('UserSummaryComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
     const route = TestBed.get(Router);
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.successResponse));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.successResponse));
     const editedSummary = 'newSummary';
     component.editDetails(editedSummary);
     fixture.detectChanges();

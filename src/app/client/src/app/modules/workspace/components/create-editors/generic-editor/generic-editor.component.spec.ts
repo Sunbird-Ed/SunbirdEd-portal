@@ -7,11 +7,11 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile, BrowserCacheTtlService } from '@sunbird/shared';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { mockRes } from './generic-editor.component.spec.data';
 
 describe('GenericEditorComponent', () => {
@@ -31,13 +31,13 @@ describe('GenericEditorComponent', () => {
       providers: [
         UserService, LearnerService, ContentService,
         ResourceService, ToasterService, ConfigService,
-        NavigationHelperService,
+        NavigationHelperService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032'
-            }])
+            })
           }
         }
       ],

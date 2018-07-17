@@ -142,6 +142,7 @@ function getLocals(req) {
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
   locals.buildNumber = envHelper.BUILD_NUMBER
+  locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   return locals;
 }
 
@@ -476,7 +477,7 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
+  pdata: { id: appId, ver: packageObj.version },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemtryEventConfig.endpoint,

@@ -13,7 +13,7 @@
       </div>
       <br/>
       <br/>
-      <button appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'delete-announcement-yes',type:'click',pageid:'delete-announcement'}" class="ui basic button announcement-button btn-width-26 announcement-button-text" (click)="modal.approve('done'); deleteAnnouncement();">
+      <button appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'delete-announcement-yes',type:'click',pageid:'delete-announcement'}" class="ui basic button announcement-button btn-width-26 announcement-button-text" (click)="disableApproveBtn=true; deleteAnnouncement();" [disabled]="disableApproveBtn">
       {{resourceService?.frmelmnts?.btn?.yes}} </button>
       <button appTelemetryInteract [telemetryInteractObject]="{id:'',type:'announcement',ver:'1.0'}" [telemetryInteractEdata]="{id:'delete-announcement-no',type:'click',pageid:'delete-announcement'}" class="ui button primary announcement-button btn-width-26 close" (click)="modal.deny(); redirect();"> {{resourceService?.frmelmnts?.btn?.no}} </button>
     </div>

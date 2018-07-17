@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +19,6 @@ import {
 } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService } from './../../services';
-import { Observable } from 'rxjs/Observable';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
@@ -43,8 +44,8 @@ describe('CourseProgressComponent', () => {
   };
 
   const fakeActivatedRoute = {
-    'params': Observable.from([{ contentId: 'do_112470675618004992181' }]),
-    'queryParams': Observable.from([{ batchIdentifier: '0124963192947507200', timePeriod: '7d' }]),
+    'params': observableOf({ contentId: 'do_112470675618004992181' }),
+    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       data: {
         telemetry: {
@@ -78,7 +79,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchRes));
+      spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchRes));
       component.populateBatchData();
       expect(component.batchlist).toBeDefined();
       expect(component.batchlist.length).toEqual(2);
@@ -88,7 +89,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchResZero));
+      spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchResZero));
       component.populateBatchData();
       expect(component.batchlist).toBeDefined();
       expect(component.batchlist.length).toEqual(0);
@@ -98,7 +99,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getBatches').and.returnValue(Observable.of(testData.mockUserData.getBatchResOne));
+      spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchResOne));
       component.populateBatchData();
       expect(component.batchlist).toBeDefined();
       expect(component.batchlist.length).toEqual(1);
@@ -109,7 +110,7 @@ describe('CourseProgressComponent', () => {
       resourceService.messages = resourceBundle.messages;
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getBatches').and.callFake(() => Observable.throw({}));
+      spyOn(courseService, 'getBatches').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.populateBatchData();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
@@ -133,7 +134,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
+      spyOn(courseService, 'getDashboardData').and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
       component.populateCourseDashboardData();
       expect(component.dashboarData).toBeDefined();
       expect(component.showLoader).toEqual(false);
@@ -143,7 +144,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.callFake(() => Observable.throw(testData.mockUserData.dashboardError));
+      spyOn(courseService, 'getDashboardData').and.callFake(() => observableThrowError(testData.mockUserData.dashboardError));
       spyOn(toasterService, 'error').and.callThrough();
       component.populateCourseDashboardData();
       expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
@@ -154,7 +155,7 @@ describe('CourseProgressComponent', () => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
-        .and.returnValue(Observable.of(testData.mockUserData.populateCourseDashboardDataRes));
+        .and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
       component.downloadReport();
       expect(component.showDownloadModal).toEqual(true);
     }));
@@ -163,7 +164,7 @@ describe('CourseProgressComponent', () => {
     (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
-      spyOn(courseService, 'downloadDashboardData').and.callFake(() => Observable.throw({}));
+      spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport();
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);

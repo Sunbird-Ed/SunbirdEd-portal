@@ -1,5 +1,9 @@
+
+import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {mergeMap} from 'rxjs/operators';
+import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
 import { ConfigService } from './../config/config.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -41,7 +45,7 @@ export class ResourceService {
    * @param {HttpClient} http LearnerService reference
    */
   constructor(config: ConfigService, http: HttpClient,
-    private cacheService: CacheService) {
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
       this.config = config;
@@ -77,8 +81,7 @@ export class ResourceService {
             messages: data.result.messages,
             frmelmnts: data.result.frmelmnts
           }, {
-              maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes *
-              this.config.appConfig.cacheServiceConfig.setTimeInSeconds
+              maxAge: this.browserCacheTtlService.browserCacheTtl
             });
         },
         (err: ServerResponse) => {
@@ -91,13 +94,13 @@ export class ResourceService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-      .flatMap((data: ServerResponse) => {
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
-          return Observable.throw(data);
+          return observableThrowError(data);
         }
-        return Observable.of(data);
-      });
+        return observableOf(data);
+      }));
   }
   private getHeader(): HttpOptions['headers'] {
     return {

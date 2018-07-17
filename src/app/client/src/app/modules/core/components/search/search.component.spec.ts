@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { Observable } from 'rxjs';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,7 +9,7 @@ import { SearchComponent } from './search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
-import 'rxjs/add/operator/filter';
+
 import { CacheService } from 'ng2-cache-service';
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -33,7 +33,7 @@ describe('SearchComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SearchComponent ],
       imports: [SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService,
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService,
         { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {
           subscribe: (fn: (value: Params) => void) => fn({

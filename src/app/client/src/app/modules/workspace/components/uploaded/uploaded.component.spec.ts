@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 // Import NG testing module(s)
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -10,7 +12,6 @@ import { SharedModule, PaginationService, ToasterService, ResourceService } from
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -23,7 +24,7 @@ describe('UploadedComponent', () => {
   let component: UploadedComponent;
   let fixture: ComponentFixture<UploadedComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 1 }]),
+    'params': observableOf({ 'pageNumber': 1 }),
     snapshot: {
       params: [
         {
@@ -76,7 +77,7 @@ describe('UploadedComponent', () => {
   });
 
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.fetchUploaded(9, 1);
     fixture.detectChanges();
     expect(component.uploaded).toBeDefined();
@@ -85,7 +86,7 @@ describe('UploadedComponent', () => {
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
     (workSpaceService, activatedRoute, http) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(testData.deleteSuccess));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(testData.deleteSuccess));
       spyOn(component, 'contentClick').and.callThrough();
       const params = {
         action: {
@@ -108,7 +109,7 @@ describe('UploadedComponent', () => {
 
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'compositeSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     component.fetchUploaded(9, 1);
     fixture.detectChanges();
     expect(component.uploaded.length).toBeLessThanOrEqual(0);

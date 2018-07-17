@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-dial-code',
@@ -71,7 +71,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
    * to store search results
    */
   searchResults: Array<any>;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
@@ -118,8 +118,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         'dialcodes': this.dialCode
       }
     };
-    this.searchService.compositeSearch(searchParams)
-    .takeUntil(this.unsubscribe)
+    this.searchService.compositeSearch(searchParams).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
@@ -170,7 +170,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { CollectionEditorComponent } from './collection-editor.component';
 import { Component, OnInit, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -7,7 +8,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { Injectable } from '@angular/core';
 
 import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+   IUserData, IUserProfile , BrowserCacheTtlService} from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, CoreModule, TenantService } from '@sunbird/core';
 import { mockRes } from './collection-editor.component.spec.data';
@@ -29,14 +30,14 @@ describe('CollectionEditorComponent', () => {
       providers: [
         EditorService, UserService, ContentService,
         ResourceService, ToasterService, ConfigService, LearnerService,
-        NavigationHelperService,
+        NavigationHelperService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
-            'params': Observable.from([{
+            'params': observableOf({
               'contentId': 'do_21247940906829414411032',
               'type': 'collection', 'state': 'draft', 'framework': 'framework'
-            }])
+            })
           }
         }
       ],
@@ -57,7 +58,7 @@ describe('CollectionEditorComponent', () => {
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.successResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.successResult));
       component.openCollectionEditor();
       const rspData = mockRes.successResult.result.content;
       component.validateRequest(rspData, mockRes.validateModal);
@@ -77,7 +78,7 @@ describe('CollectionEditorComponent', () => {
       component.tenantService.tenantData = mockRes.tenantMockData.result;
       component.tenantService.tenantData.logo = mockRes.tenantMockData.result.logo;
       fixture.detectChanges();
-      spyOn(editorService, 'getById').and.returnValue(Observable.of(mockRes.errorResult));
+      spyOn(editorService, 'getById').and.returnValue(observableOf(mockRes.errorResult));
       spyOn(toasterService, 'error').and.callThrough();
       component.openCollectionEditor();
       const rspData = mockRes.errorResult.result.content;
@@ -86,6 +87,7 @@ describe('CollectionEditorComponent', () => {
     }));
 
   it('test to navigate to drafts', inject([Router], (router) => () => {
+    spyOn(component, 'closeModal').and.callThrough();
     component.closeModal();
     setTimeout(() => {
       component.navigateToWorkSpace();

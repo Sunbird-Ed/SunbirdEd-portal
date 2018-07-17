@@ -1,10 +1,11 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, UtilService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -33,8 +34,8 @@ describe('LibrarySearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '3' }]),
-    'queryParams': Observable.from([{ sortType: 'desc', sort_by : 'lastUpdatedOn'}]),
+    'params': observableOf({ pageNumber: '3' }),
+    'queryParams': observableOf({ sortType: 'desc', sort_by : 'lastUpdatedOn'}),
     snapshot: {
       data: {
         telemetry: {
@@ -47,7 +48,7 @@ describe('LibrarySearchComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [LibrarySearchComponent],
-      providers: [ConfigService, SearchService, LearnerService,
+      providers: [ConfigService, SearchService, LearnerService, UtilService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -61,7 +62,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('should subscribe to searchService', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.content;
     component.queryParams = mockQueryParma;
     const filters = {board: ['NCERT'], gradeLevel: ['KG']};
@@ -75,7 +76,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
     component.queryParams = mockQueryParma;
     const filters = {board: ['NCERT'], gradeLevel: ['KG']};
     component.populateContentSearch(filters);
@@ -85,7 +86,7 @@ describe('LibrarySearchComponent', () => {
   });
   it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => Observable.of(Response.noResult));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noResult));
     component.searchList = Response.noResult.result.content;
     component.totalCount = Response.noResult.result.count;
     component.queryParams = mockQueryParma;
@@ -93,5 +94,27 @@ describe('LibrarySearchComponent', () => {
     component.populateContentSearch(filters);
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
+  });
+  it('should call getDataForCard Method to pass the data in Card ', () => {
+    const searchService = TestBed.get(SearchService);
+    const utilService = TestBed.get(UtilService);
+    const config = TestBed.get(ConfigService);
+    const constantData = config.appConfig.LibrarySearch.constantData;
+    const metaData = config.appConfig.LibrarySearch.metaData;
+    const dynamicFields = config.appConfig.LibrarySearch.dynamicFields;
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(component, 'populateContentSearch').and.callThrough();
+    spyOn(utilService, 'getDataForCard').and.callThrough();
+    component.queryParams = mockQueryParma;
+    const filters = {board: ['NCERT'], gradeLevel: ['KG']};
+    component.populateContentSearch(filters);
+    const searchList = utilService.getDataForCard(Response.successData.result.content, constantData, dynamicFields, metaData);
+    fixture.detectChanges();
+    expect(utilService.getDataForCard).toHaveBeenCalled();
+    expect(utilService.getDataForCard).toHaveBeenCalledWith(Response.successData.result.content, constantData, dynamicFields, metaData);
+    expect(component.searchList).toEqual(searchList);
+    expect(component.totalCount).toEqual(Response.successData.result.count);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeFalsy();
   });
 });

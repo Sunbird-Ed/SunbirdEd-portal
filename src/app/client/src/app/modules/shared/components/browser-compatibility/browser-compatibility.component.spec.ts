@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Observable } from 'rxjs/Observable';
 
 import { BrowserCompatibilityComponent } from './browser-compatibility.component';
 
@@ -50,7 +51,7 @@ xdescribe('BrowserCompatibilityComponent', () => {
 
   it('should call showCompatibilityModal method and modal will not display if it is chrome browser', () => {
     const deviceDetectorService = TestBed.get(DeviceDetectorService);
-    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(Observable.of(mockDeviceDetector));
+    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(observableOf(mockDeviceDetector));
     component.ngOnInit();
     expect(component.deviceInfo).toBe('chrome');
   });
@@ -58,7 +59,7 @@ xdescribe('BrowserCompatibilityComponent', () => {
   it('should call showCompatibilityModal method and modal will display if the browser is other than chrome', () => {
       const mockDevice = {};
       const deviceDetectorService = TestBed.get(DeviceDetectorService);
-      spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(Observable.of(mockDevice));
+      spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue(observableOf(mockDevice));
       component.ngOnInit();
       expect(component.deviceInfo).not.toBe('chrome');
     });

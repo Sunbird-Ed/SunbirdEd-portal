@@ -1,17 +1,20 @@
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
+import { SearchService, CoursesService, PlayerService, ISort,
     OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+// import { IImpressionEventInput } from '@sunbird/telemetry';
+
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
@@ -118,6 +121,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public filterType: any;
 
     public redirectUrl: string;
+    public facetArray: Array<string>;
+    public facets: any;
     sortingOptions: Array<ISort>;
     public unsubscribe = new Subject<void>();
     /**
@@ -159,7 +164,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 2, channel: 1 }
+            softConstraints: { badgeAssertions: 2, channel: 1 },
+            facets: this.facetArray
         };
         this.searchService.contentSearch(requestParams)
         .takeUntil(this.unsubscribe)
@@ -170,6 +176,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     this.noResult = false;
                     this.searchList = apiResponse.result.content;
                     this.totalCount = apiResponse.result.count;
+                    this.facets = apiResponse.result.facets;
+                    this.processFilterData();
                     this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
                     const constantData = this.config.appConfig.LibrarySearch.constantData;
                     const metaData = this.config.appConfig.LibrarySearch.metaData;
@@ -244,17 +252,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
-        Observable
-            .combineLatest(
-            this.activatedRoute.params,
-            this.activatedRoute.queryParams,
-            (params: any, queryParams: any) => {
-                return {
-                    params: params,
-                    queryParams: queryParams
-                };
-            })
-            .takeUntil(this.unsubscribe)
+        observableCombineLatest(
+                this.activatedRoute.params,
+                this.activatedRoute.queryParams,
+                (params: any, queryParams: any) => {
+                    return {
+                        params: params,
+                        queryParams: queryParams
+                    };
+                })
+                .takeUntil(this.unsubscribe)
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -333,5 +340,19 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+    filterData(event) {
+        this.facetArray = event;
+    }
+    processFilterData() {
+        const facetObj = {};
+        _.forEach(this.facets, (value) => {
+            if (value) {
+                let data = {};
+                data = value.values;
+                facetObj[value.name] = data;
+                this.facets = facetObj;
+            }
+        });
     }
 }

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -5,7 +7,6 @@ import { OrganizationUploadComponent } from './organization-upload.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -20,7 +21,7 @@ describe('OrganizationUploadComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    'data': observableOf({ 'redirectUrl': '/profile' }),
     snapshot: {
       data: {
         telemetry: {
@@ -95,14 +96,14 @@ describe('OrganizationUploadComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(mockRes.successResponse));
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableOf(mockRes.successResponse));
     component.uploadOrg(mockRes.validfile);
   });
   it('should call uploadOrg method and return error response', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => Observable.of(mockRes.errorResponse));
+    spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableOf(mockRes.errorResponse));
     component.uploadOrg(mockRes.invalidfile);
     expect(component.showLoader).toBe(false);
   });
@@ -115,5 +116,12 @@ describe('OrganizationUploadComponent', () => {
     const modal = fixture.componentInstance.modal;
     component.ngOnDestroy();
     expect(component.modal).toBeDefined();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.uploadOrg(mockRes.validfile);
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

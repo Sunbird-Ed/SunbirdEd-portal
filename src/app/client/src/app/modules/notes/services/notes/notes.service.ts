@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { LearnerService } from '@sunbird/core';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
@@ -41,9 +43,22 @@ export class NotesService {
       url: `${this.config.urlConFig.URLS.NOTES.CREATE}`,
       data: request
     };
-    return this.learnerService.post(option).map(data => {
-      return data;
-    });
+    return this.learnerService.post(option).pipe(map(data => {
+      const returnObj = {
+        note: request.request.note,
+        userId: request.request.userId,
+        id: data.result.id,
+        title: request.request.title,
+        courseId: request.request.courseId,
+        contentId: request.request.contentId,
+        createdBy: request.request.createdBy,
+        updatedBy: request.request.updatedBy,
+        createdDate: new Date().toISOString(),
+        updatedDate: new Date().toISOString()
+      };
+
+      return returnObj;
+    }));
   }
   /**
    * API call to update an existing note.
@@ -53,9 +68,16 @@ export class NotesService {
       url: `${this.config.urlConFig.URLS.NOTES.UPDATE + '/'}${request.noteId}`,
       data: request
     };
-    return this.learnerService.patch(option).map(data => {
-      return data;
-    });
+    return this.learnerService.patch(option).pipe(map(data => {
+      const returnObj = {
+        note: request.request.note,
+        title: request.request.title,
+        updatedDate: new Date().toISOString(),
+        id: request.noteId
+      };
+
+      return returnObj;
+    }));
   }
   /**
    * API call to remove an existing note.

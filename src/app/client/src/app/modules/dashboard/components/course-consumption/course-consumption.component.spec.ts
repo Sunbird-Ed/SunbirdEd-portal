@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 // NG core testing module(s)
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
@@ -6,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 // SB components and service
 import { DashboardUtilsService, LineChartService, CourseConsumptionService, RendererService } from './../../services';
@@ -23,7 +24,7 @@ describe('CourseConsumptionComponent', () => {
   let router: Router;
 
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
+    'params': observableOf({ 'id': 1, 'timePeriod': '7d' }),
     snapshot: {
       data: {
         telemetry: {
@@ -67,7 +68,7 @@ describe('CourseConsumptionComponent', () => {
   });
 
   it('should call search api and returns result count 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccess));
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccess));
     component.getMyContent();
     fixture.detectChanges();
     expect(component.myCoursesList).toBeDefined();
@@ -78,7 +79,7 @@ describe('CourseConsumptionComponent', () => {
 
   // When search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableThrowError({}));
     component.getMyContent();
     fixture.detectChanges();
     expect(component.blockData.length).toBeLessThanOrEqual(0);
@@ -88,7 +89,7 @@ describe('CourseConsumptionComponent', () => {
   // If search api returns more than one course
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     component.isMultipleCourses = false;
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     component.getMyContent();
     fixture.detectChanges();
     expect(component.myCoursesList).toBeDefined();
@@ -98,7 +99,7 @@ describe('CourseConsumptionComponent', () => {
 
   it('should call validateIdentifier method when counet is more than 1 ', inject([SearchService], (searchService) => {
     component.isMultipleCourses = false;
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
+    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(component, 'validateIdentifier').and.callThrough();
     component.getMyContent();
     component.validateIdentifier(testData.searchSuccessWithCountTwo.result.content[0].identifier);
@@ -112,7 +113,7 @@ describe('CourseConsumptionComponent', () => {
   // When course consumption api's return response
   it('should call dashboard api and return valid response', inject([CourseConsumptionService],
     (courseConsumptionService) => {
-      spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => Observable.of(testData.consumptionData));
+      spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => observableOf(testData.consumptionData));
       component.getDashboardData('7d', 'do_2123250076616048641482');
       fixture.detectChanges();
       expect(component.blockData.length).toBeGreaterThan(1);
@@ -121,7 +122,7 @@ describe('CourseConsumptionComponent', () => {
     }));
 
   it('should call dashboard api and return error', inject([CourseConsumptionService], (courseConsumptionService) => {
-    spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => Observable.throw({}));
+    spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => observableThrowError({}));
     component.getDashboardData('', 'do_2123250076616048641482');
     fixture.detectChanges();
     expect(component.blockData.length).toEqual(0);

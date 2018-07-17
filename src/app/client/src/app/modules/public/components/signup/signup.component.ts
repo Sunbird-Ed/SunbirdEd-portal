@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { SignupService } from '../../services/signup.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-signup',
@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   */
   showLoader = false;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public signupService: SignupService, public toasterService: ToasterService) {
@@ -77,8 +77,8 @@ export class SignupComponent implements OnInit, OnDestroy {
    */
   onSubmitForm() {
     this.showLoader = true;
-    this.signupService.signup(this.signUpForm.value)
-    .takeUntil(this.unsubscribe)
+    this.signupService.signup(this.signUpForm.value).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(res => {
       this.modal.approve();
       this.showLoader = false;
@@ -92,8 +92,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

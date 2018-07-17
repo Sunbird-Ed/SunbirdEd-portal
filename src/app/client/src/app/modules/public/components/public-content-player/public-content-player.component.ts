@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -52,7 +52,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
 
   public showFooter: Boolean = false;
   contentData: ContentData;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -93,8 +93,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.playerService.getContent(this.contentId)
-    .takeUntil(this.unsubscribe)
+    this.playerService.getContent(this.contentId).pipe(
+    takeUntil(this.unsubscribe$))
     .subscribe(
       (response) => {
         const contentDetails = {
@@ -135,7 +135,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
