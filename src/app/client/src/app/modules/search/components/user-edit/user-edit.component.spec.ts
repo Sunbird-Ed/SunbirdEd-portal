@@ -163,7 +163,7 @@ describe('UserEditComponent', () => {
     expect(component.redirect).toHaveBeenCalled();
     expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0028);
   });
-  it('should call updateRoles and make api call and return error', () => {
+  it('should call updateRoles method and make api call and return error', () => {
     const userSearchService = TestBed.get(UserSearchService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableThrowError(Response.rolesFailureData));
@@ -175,5 +175,11 @@ describe('UserEditComponent', () => {
     component.updateRoles(roles);
     expect(component.redirect).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+  });
+  it('should call ngOnInit method to get all roles', () => {
+    const permissionService = TestBed.get(PermissionService);
+    permissionService.permissionAvailable$.next('success');
+    component.ngOnInit();
+    expect(component.allRoles['role']).not.toContain('PUBLIC');
   });
 });
