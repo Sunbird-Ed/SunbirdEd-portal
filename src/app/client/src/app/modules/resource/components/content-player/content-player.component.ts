@@ -145,7 +145,7 @@ export class ContentPlayerComponent implements OnInit {
           if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
             setTimeout(() => {
               this.showMsg = true;
-            }, 8000);
+            }, 5000);
           }
           this.setTelemetryData();
           this.showPlayer = true;

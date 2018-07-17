@@ -279,7 +279,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.contentCheck))) {
             setTimeout(() => {
               this.showMsg = true;
-            }, 8000);
+            }, 5000);
           }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
