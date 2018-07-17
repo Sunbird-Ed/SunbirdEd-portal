@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
@@ -14,7 +15,7 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from 
   templateUrl: './view-org-type.component.html',
   styleUrls: ['./view-org-type.component.css']
 })
-export class ViewOrgTypeComponent implements OnInit {
+export class ViewOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   /**
@@ -59,6 +60,8 @@ export class ViewOrgTypeComponent implements OnInit {
    * To call OrgType Service for getting the listing
    */
   public orgTypeService: OrgTypeService;
+  orgTypeSubscription: Subscription;
+  orgUpdateSubscription: Subscription;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -90,7 +93,7 @@ export class ViewOrgTypeComponent implements OnInit {
 	 */
   populateOrgType(): void {
     this.orgTypeService.getOrgTypes();
-    this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
+    this.orgTypeSubscription = this.orgTypeService.orgTypeData$.subscribe((apiResponse) => {
       if (apiResponse && apiResponse.orgTypeData) {
         this.orgTypes = { ...apiResponse.orgTypeData.result.response };
         this.orgTypes = _.sortBy(this.orgTypes, (orgTypeList) => orgTypeList.name.toLowerCase());
@@ -116,7 +119,7 @@ export class ViewOrgTypeComponent implements OnInit {
     this.setInteractEventData();
 
     // Update event
-    this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
+    this.orgUpdateSubscription = this.orgTypeService.orgTypeUpdateEvent.subscribe(data => {
       _.each(this.orgTypes, (key, index) => {
         if (data && data.id === key.id) {
           this.orgTypes[index].name = data.name;
@@ -148,6 +151,16 @@ export class ViewOrgTypeComponent implements OnInit {
       type: 'click',
       pageid: 'view-organization-type'
     };
+  }
+
+  ngOnDestroy() {
+    if (this.orgTypeSubscription) {
+      this.orgTypeSubscription.unsubscribe();
+    }
+
+    if (this.orgUpdateSubscription) {
+      this.orgUpdateSubscription.unsubscribe();
+    }
   }
 }
 
