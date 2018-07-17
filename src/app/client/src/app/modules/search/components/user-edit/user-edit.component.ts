@@ -211,6 +211,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });
     });
+    _.remove(this.allRoles, {role: 'PUBLIC'});
   }
   settelemetryData() {
     this.telemetryImpression = {
