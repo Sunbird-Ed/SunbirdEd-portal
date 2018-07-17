@@ -39,6 +39,11 @@ export class CoursesService {
    * Read only observable Containing enrolled courses.
    */
   public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
+
+  /**
+   * Notification message for external content onclick of Resume course button
+   */
+  callExtContentMsg = false;
   /**
   * the "constructor"
   *
@@ -77,6 +82,10 @@ export class CoursesService {
   public initialize() {
     this.getEnrolledCourses().subscribe((date) => {
     });
+  }
+
+  public extContentMsg(isExtContent: boolean) {
+    this.callExtContentMsg = isExtContent;
   }
 }
 

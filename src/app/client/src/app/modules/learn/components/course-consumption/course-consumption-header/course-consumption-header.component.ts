@@ -49,7 +49,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
 
   }
 
@@ -105,12 +105,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
 
-  resumeCourse(resumeCourseClicked ?: boolean) {
+  resumeCourse() {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.lastPlayedContentId, 'resumeCourseClicked': resumeCourseClicked },
+      queryParams: { 'contentId': this.lastPlayedContentId },
       relativeTo: this.activatedRoute
     };
     this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    this.coursesService.extContentMsg(true);
   }
 
   flagCourse() {
