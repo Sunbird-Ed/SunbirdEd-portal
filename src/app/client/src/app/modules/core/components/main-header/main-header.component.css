@@ -5,3 +5,9 @@
 .anon-consumption-sec-menu {
     border-bottom: 2px solid rgba(34,36,38,.15);   
 }
+
+.ui.grid>.header-height-before-login {
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+}

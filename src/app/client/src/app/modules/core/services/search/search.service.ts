@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
@@ -212,13 +212,13 @@ export class SearchService {
    *
    * @param {SearchParam} requestParam api request data
   */
-  contentSearch(requestParam: SearchParam): Observable<ServerResponse> {
+  contentSearch(requestParam: SearchParam, addDefaultContentTypesInRequest: boolean = true):
+    Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.SEARCH,
       data: {
         request: {
           filters: requestParam.filters,
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
@@ -227,10 +227,13 @@ export class SearchService {
         }
       }
     };
+    if (requestParam['pageNumber'] && requestParam['limit']) {
+      option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
+    }
     if (this.user.contentChannelFilter) {
       option.data.request.filters.channel = this.user.contentChannelFilter;
     }
-    if (!option.data.request.filters.contentType) {
+    if (!option.data.request.filters.contentType && addDefaultContentTypesInRequest) {
       option.data.request.filters.contentType = [
         'Collection',
         'TextBook',
