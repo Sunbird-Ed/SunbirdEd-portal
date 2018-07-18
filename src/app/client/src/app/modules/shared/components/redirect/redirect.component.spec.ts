@@ -67,7 +67,7 @@ describe('RedirectComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call window.open() in same tab', inject(
+  it('should display the toaster messsage', inject(
     [Router, ToasterService, ResourceService],
     (router, toasterService, resourceService, service) => {
       resourceService.messages = resourceBundle.messages;
@@ -78,7 +78,7 @@ describe('RedirectComponent', () => {
     }
   ));
 
-  it('should show the toaster messsage', inject(
+  it('should call window.open() in same tab', inject(
     [Router, ToasterService, ResourceService],
     (router, toasterService, resourceService, service) => {
       const windowSpy = spyOn(window, 'open');
