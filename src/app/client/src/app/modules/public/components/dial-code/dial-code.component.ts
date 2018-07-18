@@ -110,12 +110,13 @@ export class DialCodeComponent implements OnInit {
   }
   public searchDialCode() {
     this.showLoader = true;
-    const searchParams: SearchParam = {
+    const requestParams = {
       filters: {
         'dialcodes': this.dialCode
       }
     };
-    this.searchService.compositeSearch(searchParams).subscribe(
+
+    this.searchService.contentSearch(requestParams, false).subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
