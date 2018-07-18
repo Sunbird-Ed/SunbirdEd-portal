@@ -9,6 +9,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
+import { RedirectComponent } from './../shared/components/redirect/redirect.component';
+
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -17,6 +19,13 @@ const routes: Routes = [
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view' }
+    }
+  },
+  {
+    path: 'redirect', component: RedirectComponent,
+    data: {
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Redirect', url: '' }],
+      telemetry: { env: telemetryEnv, pageid: 'learn-redirect', type: 'view' }
     }
   },
   {

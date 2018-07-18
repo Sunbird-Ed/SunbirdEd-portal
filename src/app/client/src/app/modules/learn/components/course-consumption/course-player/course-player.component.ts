@@ -7,7 +7,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig, ConfigService,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
@@ -15,6 +15,7 @@ import {
   IInteractEventInput, IImpressionEventInput, IEndEventInput,
   IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
+
 
 @Component({
   selector: 'app-course-player',
@@ -127,7 +128,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService) {
+    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
+    public externalUrlPreviewService: ExternalUrlPreviewService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -279,15 +281,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
 }
   public navigateToContent(content: { title: string, id: string }): void {
-  const navigationExtras: NavigationExtras = {
-    queryParams: { 'contentId': content.id },
-    relativeTo: this.activatedRoute
-  };
-  if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-  || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
-  || this.courseHierarchy.createdBy === this.userService.userid) {
-  this.router.navigate([], navigationExtras);
-}
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'contentId': content.id },
+      relativeTo: this.activatedRoute
+    };
+    const playContentDetail = this.findContentById(content.id);
+    if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+      this.externalUrlPreviewService.getRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
+    }
+    if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseHierarchy.createdBy === this.userService.userid) {
+      this.router.navigate([], navigationExtras);
+    }
   }
   public contentProgressEvent(event) {
   if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {

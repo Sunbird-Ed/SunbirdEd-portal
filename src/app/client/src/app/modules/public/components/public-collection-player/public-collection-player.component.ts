@@ -7,7 +7,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService, ExternalUrlPreviewService, ConfigService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
@@ -85,7 +85,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService) {
+    public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
+    public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -159,6 +160,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       this.navigateToContent(content.id);
       this.playContent(content);
         this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
+    } else {
+      throw new Error(`unbale to play collection content for ${this.collectionId}`);
+    }
+  }
+
+  public playContentOnClick(content: { title: string, id: string }) {
+    if (content && content.id) {
+      const contentDet = this.findContentById( this.collectionTreeNodes, content.id);
+      if (contentDet.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+        this.externalUrlPreviewService.getRedirectUrl(contentDet.model);
+      }
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
     }
