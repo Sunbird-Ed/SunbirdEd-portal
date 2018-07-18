@@ -32,7 +32,7 @@ describe('RedirectComponent', () => {
  const resourceBundle = {
         'messages': {
             'imsg': {
-                'm0034': 'As the content is from an external source, it will be opened in a new tab.'
+                'm0034': 'As the content is from an external source, it will be opened in a while.'
             },
             'stmsg': { 'm0009': 'Unable to play, please try again or close' }
         }
