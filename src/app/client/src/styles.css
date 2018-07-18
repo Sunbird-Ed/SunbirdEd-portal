@@ -2739,3 +2739,19 @@ iframe.iziModal-iframe {
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+
+.inline-block-content {
+  display:inline-block !important;
+}
+
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+.margin-left-auto {
+  margin-left: auto;
+}
