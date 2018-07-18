@@ -19,7 +19,6 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   styleUrls: ['./content-player.component.css']
 })
 export class ContentPlayerComponent implements OnInit {
-  showMsg = false;
   /**
 	 * telemetryImpression
 	*/
@@ -73,6 +72,9 @@ export class ContentPlayerComponent implements OnInit {
    * This variable holds the details of the note created
    */
   createNoteData: INoteData;
+
+  showExtContentMsg = false;
+
   closeUrl: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -144,7 +146,7 @@ export class ContentPlayerComponent implements OnInit {
           this.contentData = response.result.content;
           if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
             setTimeout(() => {
-              this.showMsg = true;
+              this.showExtContentMsg = true;
             }, 5000);
           }
           this.setTelemetryData();

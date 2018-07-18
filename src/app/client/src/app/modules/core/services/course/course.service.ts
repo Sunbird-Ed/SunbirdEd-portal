@@ -43,7 +43,7 @@ export class CoursesService {
   /**
    * Notification message for external content onclick of Resume course button
    */
-  callExtContentMsg = false;
+  showExtContentMsg = false;
   /**
   * the "constructor"
   *
@@ -84,8 +84,8 @@ export class CoursesService {
     });
   }
 
-  public extContentMsg(isExtContent: boolean) {
-    this.callExtContentMsg = isExtContent;
+  public setExtContentMsg(isExtContent: boolean) {
+    this.showExtContentMsg = isExtContent ? isExtContent : false;
   }
 }
 

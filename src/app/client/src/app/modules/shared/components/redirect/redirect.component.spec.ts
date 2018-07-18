@@ -72,12 +72,19 @@ describe('RedirectComponent', () => {
     (router, toasterService, resourceService, service) => {
       resourceService.messages = resourceBundle.messages;
       spyOn(toasterService, 'warning').and.callThrough();
-      const windowSpy = spyOn(window, 'open');
       component.ngOnInit();
       expect(toasterService.warning).toBeDefined();
       expect(toasterService.warning).toHaveBeenCalledWith(resourceService.messages.imsg.m0034);
-      expect(component).toBeTruthy();
-      expect(window.open).toBeDefined();
+    }
+  ));
+
+  it('should show the toaster messsage', inject(
+    [Router, ToasterService, ResourceService],
+    (router, toasterService, resourceService, service) => {
+      const windowSpy = spyOn(window, 'open');
+      window.open('/learn/redirect', '_blank');
+      expect(windowSpy).toHaveBeenCalled();
+      expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
     }
   ));
 

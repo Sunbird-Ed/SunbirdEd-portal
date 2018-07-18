@@ -230,10 +230,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
-        const showExtContentMsg = this.coursesService.callExtContentMsg;
+        const isExtContentMsg = this.coursesService.showExtContentMsg;
         if (content) {
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier')},
-          showExtContentMsg);
+          isExtContentMsg);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
           this.closeContentPlayer();

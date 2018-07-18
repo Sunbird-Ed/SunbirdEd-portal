@@ -35,7 +35,7 @@
                         <button appTelemetryInteract 
                         [telemetryInteractEdata]="resumeIntractEdata" 
                         [telemetryInteractObject]="courseInteractObject"
-                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
+                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse(true)">
                             {{resourceService?.frmelmnts?.btn?.resumecourse}}
                             <i class="caret right icon"></i>
                         </button>

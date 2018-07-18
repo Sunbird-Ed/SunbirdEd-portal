@@ -48,12 +48,15 @@ export class PublicContentPlayerComponent implements OnInit {
   selectedLanguage: string;
   queryParams: any;
 
+  showExtContentMsg = false;
+
   public showFooter: Boolean = false;
   contentData: ContentData;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
-    public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService
+    public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
+    private configService: ConfigService
   ) {
   }
   /**
@@ -98,6 +101,11 @@ export class PublicContentPlayerComponent implements OnInit {
         };
         this.playerConfig = this.playerService.getConfig(contentDetails);
         this.contentData = response.result.content;
+             if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+          }
         this.showPlayer = true;
         this.windowScrollService.smoothScroll('content-player');
       },
