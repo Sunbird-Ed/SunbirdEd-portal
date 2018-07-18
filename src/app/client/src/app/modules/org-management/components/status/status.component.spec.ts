@@ -106,4 +106,17 @@ describe('StatusComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should call getBulkUploadStatus method and pass else condition if processId contains only whiteSpaces', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    const orgManagementService = TestBed.get(OrgManagementService);
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.errorResponse));
+    const processId = '  ';
+    spyOn(toasterService, 'error').and.callThrough();
+    component.statusForm.value.processId = '   ';
+    component.getBulkUploadStatus(processId);
+    expect(toasterService.error).toHaveBeenCalledWith(mockRes.resourceBundle.messages.stmsg.m0006);
+    expect(component.showLoader).toBeFalsy();
+  });
 });

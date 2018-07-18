@@ -123,19 +123,24 @@ export class StatusComponent implements OnInit, OnDestroy {
  */
   getBulkUploadStatus(processId) {
     this.showLoader = true;
-    this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.statusResponse = apiResponse.result.response[0];
-        this.processId = this.statusResponse.processId;
-        this.toasterService.success(this.resourceService.messages.smsg.m0032);
-      }, err => {
-        this.showLoader = false;
-        const errMsg = err.error.params.errmsg ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
-        this.toasterService.error(errMsg);
-      });
+    if (!(/^\s+$/.test(this.statusForm.value.processId))) {
+      this.orgManagementService.getBulkUploadStatus(this.statusForm.value.processId.trim()).pipe(
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (apiResponse: ServerResponse) => {
+            this.showLoader = false;
+            this.statusResponse = apiResponse.result.response[0];
+            this.processId = this.statusResponse.processId;
+            this.toasterService.success(this.resourceService.messages.smsg.m0032);
+          }, err => {
+            this.showLoader = false;
+            const errMsg = err.error.params.errmsg ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
+            this.toasterService.error(errMsg);
+          });
+    } else {
+      this.toasterService.error(this.resourceService.messages.stmsg.m0006);
+      this.showLoader = false;
+    }
   }
   /**
  * This method helps to get the status result from the api
