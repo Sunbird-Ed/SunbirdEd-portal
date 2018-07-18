@@ -9,11 +9,9 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-// import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-// import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
     selector: 'app-explore-content',
@@ -124,7 +122,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public facetArray: Array<string>;
     public facets: any;
     sortingOptions: Array<ISort>;
-    public unsubscribe = new Subject<void>();
+    public unsubscribe$ = new Subject<void>();
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -167,8 +165,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
             softConstraints: { badgeAssertions: 2, channel: 1 },
             facets: this.facetArray
         };
-        this.searchService.contentSearch(requestParams)
-        .takeUntil(this.unsubscribe)
+        this.searchService.contentSearch(requestParams).pipe(
+        takeUntil(this.unsubscribe$))
         .subscribe(
             (apiResponse: ServerResponse) => {
                 if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
@@ -222,8 +220,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     getChannelId() {
-        this.orgDetailsService.getOrgDetails(this.slug)
-        .takeUntil(this.unsubscribe)
+        this.orgDetailsService.getOrgDetails(this.slug).pipe(
+        takeUntil(this.unsubscribe$))
         .subscribe(
             (apiResponse: any) => {
                 this.hashTagId = apiResponse.hashTagId;
@@ -260,8 +258,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                         params: params,
                         queryParams: queryParams
                     };
-                })
-                .takeUntil(this.unsubscribe)
+                }).pipe(
+                takeUntil(this.unsubscribe$))
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -338,8 +336,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
     ngOnDestroy() {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
     filterData(event) {
         this.facetArray = event;
