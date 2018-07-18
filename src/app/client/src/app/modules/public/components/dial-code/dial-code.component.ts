@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-dial-code',
   templateUrl: './dial-code.component.html',
   styleUrls: ['./dial-code.component.css']
 })
-export class DialCodeComponent implements OnInit {
+export class DialCodeComponent implements OnInit, OnDestroy {
   inviewLogs: any = [];
   /**
 	 * telemetryImpression
@@ -70,6 +71,8 @@ export class DialCodeComponent implements OnInit {
    * to store search results
    */
   searchResults: Array<any>;
+  public unsubscribe$ = new Subject<void>();
+
 
   constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
     searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
@@ -110,12 +113,14 @@ export class DialCodeComponent implements OnInit {
   }
   public searchDialCode() {
     this.showLoader = true;
-    const searchParams: SearchParam = {
+    const requestParams = {
       filters: {
         'dialcodes': this.dialCode
       }
     };
-    this.searchService.compositeSearch(searchParams).subscribe(
+    this.searchService.contentSearch(requestParams, false).pipe(
+    takeUntil(this.unsubscribe$))
+    .subscribe(
       (apiResponse: ServerResponse) => {
         this.showLoader = false;
         if (apiResponse.result.content && apiResponse.result.content.length > 0) {
@@ -163,5 +168,9 @@ export class DialCodeComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
