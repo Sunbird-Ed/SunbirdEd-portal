@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SignupService } from '../../services/signup.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   /**
 	 * telemetryImpression
@@ -32,6 +33,8 @@ export class SignupComponent implements OnInit {
   * Boolean value to either show/hide app loader
   */
   showLoader = false;
+
+  public unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public signupService: SignupService, public toasterService: ToasterService) {
@@ -74,7 +77,9 @@ export class SignupComponent implements OnInit {
    */
   onSubmitForm() {
     this.showLoader = true;
-    this.signupService.signup(this.signUpForm.value).subscribe(res => {
+    this.signupService.signup(this.signUpForm.value).pipe(
+    takeUntil(this.unsubscribe$))
+    .subscribe(res => {
       this.modal.approve();
       this.showLoader = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0039);
@@ -84,6 +89,11 @@ export class SignupComponent implements OnInit {
         this.showLoader = false;
         this.toasterService.error(err.error.params.errmsg);
       });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
