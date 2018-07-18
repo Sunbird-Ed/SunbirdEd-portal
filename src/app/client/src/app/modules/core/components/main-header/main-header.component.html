@@ -1,16 +1,16 @@
 <div class="ui grid" *ngIf="!showExploreHeader">
-    <div class="center aligned twelve column row">
+    <div class="center aligned twelve column row" [class.header-height-before-login]="!userService.userid">
         <div class="one wide tablet computer only column"></div>
-        <div class="two wide tablet computer only column padding-top-15">
+        <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <div class="two wide mobile only column padding-left-25">
+        <div class="two wide mobile only column padding-left-25 padding-top-5">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
         <div class="six wide column padding-top-1rem" *ngIf="userService.userid">
@@ -109,7 +109,7 @@
         <!--mobile header view code starts-->
         <div class="center aligned twelve wide mobile only column padding-none">
             <div class="ui grid margin-none">
-                <div class="three wide column padding-10">
+                <div class="three wide column padding-left-10 padding-top-5">
                     <a (click)="navigateToHome()">
                         <img class="image centered header-logo-before-login"
                             alt={{tenantName}} src="{{logo}}">
@@ -118,7 +118,7 @@
                 <div class="three wide column"></div>
                 <div class="six wide column">
                     <a href="/home" class="sunblogin">
-                        <p class="ui item right-float padding-top-10">{{resourceService.frmelmnts?.btn?.login}}</p>
+                        <p class="ui item right-float">{{resourceService.frmelmnts?.btn?.login}}</p>
                     </a>
                 </div>
             </div>
