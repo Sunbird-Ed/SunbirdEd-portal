@@ -113,12 +113,12 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   public searchDialCode() {
     this.showLoader = true;
-    const searchParams: SearchParam = {
+    const requestParams = {
       filters: {
         'dialcodes': this.dialCode
       }
     };
-    this.searchService.compositeSearch(searchParams).pipe(
+    this.searchService.contentSearch(requestParams, false).pipe(
     takeUntil(this.unsubscribe$))
     .subscribe(
       (apiResponse: ServerResponse) => {

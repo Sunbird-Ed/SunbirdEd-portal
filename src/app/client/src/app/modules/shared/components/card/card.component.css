@@ -20,6 +20,9 @@
     display: flex;
     margin: -.875em -.5em -.875em 0;
 }
+.ui.cards>.card {
+    margin: .875em .5em .875em 0.1em;
+}
 
 .ui.circular.label.card-badges-image{
     left: 10px;
