@@ -25,7 +25,11 @@
           </div>
         </div>
         <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
-
+          <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
+            <div class="column twelve wide">
+              <p>{{resourceService.messages.imsg.m0036}}</p>
+            </div>
+          </div>
           <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
           <div class="twelve wide column contentMetaSection">
