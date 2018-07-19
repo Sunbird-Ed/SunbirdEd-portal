@@ -1,12 +1,6 @@
 .breadcrumb-bg-color {
     background-color: #fff;
   }
-.ui.breadcrumb.breadcrumb-align,
-.ui.breadcrumb.breadcrumb-align:last-child,
-.ui.breadcrumb.breadcrumb-align:first-child {
-    margin-left: 10px;
-    line-height: 1.5;
-}
 .ui.breadcrumb a.breadcrumb-font {
     color: #007AFF;
     font-family: 'sunbirdboldfont';

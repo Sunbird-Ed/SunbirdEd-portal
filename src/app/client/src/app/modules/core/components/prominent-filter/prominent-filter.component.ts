@@ -72,7 +72,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   contentTypes: any;
   frameworkDataSubscription: Subscription;
   /**
-   * 
+   *
     * Constructor to create injected service(s) object
     Default method of Draft Component class
     * @param {Router} route Reference of Router

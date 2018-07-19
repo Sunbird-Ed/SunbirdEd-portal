@@ -97,4 +97,10 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.getContent();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 });

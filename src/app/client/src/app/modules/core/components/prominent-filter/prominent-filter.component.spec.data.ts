@@ -235,7 +235,7 @@ export const Response = {
             'code': 'subject', 'name': 'Subject', 'label': 'Subject',
              'description': 'Subject of the Content to use to teach',
               'editable': true, 'inputType': 'select', 'required': false,
-              'displayProperty': 'Editable', 'visible': true, 
+              'displayProperty': 'Editable', 'visible': true,
               'renderingHints': { 'semanticColumnWidth': 'four' }, 'index': 2,
             'allowedRoles': ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION']
         }],

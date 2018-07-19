@@ -6,6 +6,8 @@ import { OrgManagementService } from '../../services/org-management/org-manageme
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This component helps to upload bulk users data (csv file)
@@ -83,6 +85,7 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   userUploadInteractEdata: IInteractEventEdata;
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  public unsubscribe$ = new Subject<void>();
   /**
 * Constructor to create injected service(s) object
 *
@@ -211,7 +214,9 @@ export class UserUploadComponent implements OnInit, OnDestroy {
       formData.append('organisationId', data.organisationId);
       const fd = formData;
       this.fileName = file[0].name;
-      this.orgManagementService.bulkUserUpload(fd).subscribe(
+      this.orgManagementService.bulkUserUpload(fd).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
         (apiResponse: ServerResponse) => {
           this.showLoader = false;
           this.processId = apiResponse.result.processId;
@@ -235,6 +240,8 @@ export class UserUploadComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {
