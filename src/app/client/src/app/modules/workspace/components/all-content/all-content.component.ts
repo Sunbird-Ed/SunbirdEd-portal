@@ -247,7 +247,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
-      query: bothParams.queryParams.query,
+      query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
     this.search(searchParams).subscribe(
