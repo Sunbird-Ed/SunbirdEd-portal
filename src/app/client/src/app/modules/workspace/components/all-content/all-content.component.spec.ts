@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
-
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -140,6 +140,24 @@ describe('AllContentComponent', () => {
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
       'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF']);
       fixture.detectChanges();
+  }));
+  it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
+    (modalService, workSpaceService, activatedRoute, http) => {
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(Response.deleteSuccess));
+      spyOn(component, 'deleteConfirmModal').and.callThrough();
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'delete').and.callThrough();
+      const DeleteParam = {
+        contentIds: ['do_2124645735080755201259']
+      };
+      component.deleteConfirmModal('do_2124645735080755201259');
+      expect(component.deleteConfirmModal).toHaveBeenCalledWith('do_2124645735080755201259');
+      workSpaceService.deleteContent(DeleteParam).subscribe(
+        apiResponse => {
+          expect(apiResponse.responseCode).toBe('OK');
+          expect(apiResponse.params.status).toBe('successful');
+        }
+      );
     }));
 });
 

@@ -12,12 +12,15 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 @Component({
   selector: 'app-all-content',
   templateUrl: './all-content.component.html',
   styleUrls: ['./all-content.component.css']
 })
 export class AllContentComponent extends WorkSpace implements OnInit {
+  @ViewChild('modalTemplate')
+  public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
      * state for content editior
     */
@@ -128,6 +131,10 @@ export class AllContentComponent extends WorkSpace implements OnInit {
 	*/
   inviewLogs = [];
   /**
+* value typed
+*/
+  query: string;
+  /**
   * Contains returned object of the pagination service
   * which is needed to show the pagination on all content view
   */
@@ -162,7 +169,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService) {
+    config: ConfigService, public modalService: SuiModalService) {
     super(searchService, workSpaceService);
     this.paginationService = paginationService;
     this.route = route;
@@ -195,6 +202,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
           this.pageNumber = Number(bothParams.params.pageNumber);
         }
         this.queryParams = bothParams.queryParams;
+        this.query = this.queryParams['query'];
         this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
     this.telemetryImpression = {
@@ -224,7 +232,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
-    const preStatus = ['Draft', 'FlagDraft'];
+    const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
@@ -239,7 +247,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
-      query: bothParams.queryParams.query,
+      query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
     this.search(searchParams).subscribe(
@@ -267,6 +275,45 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       }
     );
   }
+  keyup(event) {
+    this.query = event;
+    this.queryParams = _.cloneDeep(this.queryParams);
+    if (this.query.length > 0) {
+      this.queryParams['query'] = this.query;
+    } else {
+      delete this.queryParams['query'];
+    }
+    setTimeout(() => {
+      this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
+    }, 1000);
+  }
+  public deleteConfirmModal(contentIds) {
+    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
+    config.isClosable = true;
+    config.size = 'mini';
+    this.modalService
+      .open(config)
+      .onApprove(result => {
+        this.showLoader = true;
+        this.loaderMessage = {
+          'loaderMessage': this.resourceService.messages.stmsg.m0034,
+        };
+        this.delete(contentIds).subscribe(
+          (data: ServerResponse) => {
+            this.showLoader = false;
+            this.allContent = this.removeAllMyContent(this.allContent, contentIds);
+            this.toasterService.success(this.resourceService.messages.smsg.m0006);
+          },
+          (err: ServerResponse) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
+          }
+        );
+      })
+      .onDeny(result => {
+      });
+  }
+
   /**
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number
@@ -306,9 +353,10 @@ export class AllContentComponent extends WorkSpace implements OnInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+  removeAllMyContent(contentList, requestData) {
+    return contentList.filter((content) => {
+      return requestData.indexOf(content.identifier) === -1;
+    });
+  }
 }
-
-
-
-
 
