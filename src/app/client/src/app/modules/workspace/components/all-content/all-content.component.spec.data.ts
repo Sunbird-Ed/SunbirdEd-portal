@@ -1745,5 +1745,13 @@ export const Response = {
       }
     ],
     'direction': 'up'
+  },
+  deleteSuccess: {
+    'id': 'api.content.retire",', 'ver': '1.0', 'ts': '2018-03-21T13:22:47.263Z"',
+    'params': {
+      'resmsgid': '8ab1aff0-16e6-11e8-b881-f9ecfdfe4059', 'msgid': null, 'status': 'successful', 'err': '', 'errmsg': ''
+    },
+    'responseCode': 'OK',
+    'result': []
   }
 };
