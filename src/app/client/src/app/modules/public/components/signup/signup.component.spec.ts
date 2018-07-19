@@ -146,4 +146,11 @@ describe('SignupComponent', () => {
     component.onSubmitForm();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.signUpForm = new FormGroup({});
+    component.onSubmitForm();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 });

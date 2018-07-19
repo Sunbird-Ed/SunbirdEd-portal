@@ -122,4 +122,11 @@ describe('ExploreComponent', () => {
     expect(component.noResult).toBeTruthy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0004);
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 });
