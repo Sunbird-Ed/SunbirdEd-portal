@@ -83,7 +83,7 @@
         "STATUS": "data/v1/upload/status"
       },
       "DELETE_USER": "user/v1/block",
-      "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
+      "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"
     },
     "BADGE": {
       "GET": "org/v1/badges/list",
