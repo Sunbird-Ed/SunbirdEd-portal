@@ -35,15 +35,24 @@ describe('AssignBadgesContentComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should get collectionId from activated route, should get user data', () => {
+  it('should initialize the component expected calls for setInteractEventData and  getAllBadgeList ', () => {
     const userService = TestBed.get(UserService);
     const badgeService = TestBed.get(BadgesService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    spyOn(badgeService, 'getAllBadgeList').and.callFake(() => observableOf(mockResponse.badgeSuccessResponse));
-    expect(component.contentId).toBe(fakeActivatedRoute.params['collectionId']);
-    fixture.detectChanges();
+    component.contentId = fakeActivatedRoute.params['collectionId'];
+    spyOn(component, 'getBadgeDetails').and.callThrough();
+    spyOn(component, 'setInteractEventData').and.callThrough();
+    spyOn(badgeService, 'getAllBadgeList').and.callFake(() => observableOf(mockResponse.badgeSearchData));
+    component.ngOnInit();
+    expect(component.userProfile).toBeDefined();
+    expect(component.contentId).toBe('Test_Textbook2_8907797');
+    expect(component.setInteractEventData).toHaveBeenCalled();
+    expect(component.getBadgeDetails).toHaveBeenCalled();
+    expect(component.badgeService.getAllBadgeList).toHaveBeenCalledWith(mockResponse.badgeSearchRequestData);
+    expect(component.allBadgeList).toBeDefined();
+    expect(component.allBadgeList.length).toBeGreaterThanOrEqual(2);
   });
   it('should call assign method and make service call, should return success response', () => {
     const userService = TestBed.get(UserService);
@@ -54,21 +63,28 @@ describe('AssignBadgesContentComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
     component.allBadgeList = mockResponse.badgeSuccessResponse.result.badges;
     spyOn(badgeService, 'addBadge').and.callFake(() => observableOf(mockResponse.returnValue));
+    spyOn(component, 'assignBadge').and.callThrough();
     spyOn(toasterService, 'success').and.callThrough();
+    spyOn(component.contentBadgeService, 'setAssignBadge').and.callThrough();
     component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
+    component.contentBadgeService.setAssignBadge(mockResponse.setbadgesData);
+    expect(component.assignBadge).toHaveBeenCalledWith(mockResponse.badgeSuccessResponse.result.badges);
+    expect(component.data.length).toBeLessThanOrEqual(1);
+    expect(component.contentBadgeService.setAssignBadge).toHaveBeenCalledWith(mockResponse.setbadgesData);
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0044);
   });
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
-  });
-
-  it('makes expected calls for setInteractEventData ', () => {
-    spyOn(component, 'setInteractEventData');
-    component.ngOnInit();
-    expect(component.setInteractEventData).toHaveBeenCalled();
+  it('should call assign method and make service call, should throw error', () => {
+    const userService = TestBed.get(UserService);
+    const badgeService = TestBed.get(ContentBadgeService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = mockResponse.resourceBundle.messages;
+    const toasterService = TestBed.get(ToasterService);
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    spyOn(badgeService, 'addBadge').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
+    toasterService.error(resourceService.messages.fmsg.m0079);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0079);
   });
   it('should call assign method and make service call, should emit the event', () => {
     const userService = TestBed.get(UserService);
@@ -84,19 +100,17 @@ describe('AssignBadgesContentComponent', () => {
     component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0044);
   });
-
-  it('should call assign method and make service call, should throw error', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(ContentBadgeService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = mockResponse.resourceBundle.messages;
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
-    spyOn(badgeService, 'addBadge').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.callThrough();
-    component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
-    toasterService.error(resourceService.messages.fmsg.m0079);
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0079);
+  it('should call setBadge and return the badges  ', () => {
+    spyOn(component, 'setBadge').and.callThrough();
+    component.setBadge(mockResponse.setbadgesData);
+    expect(component.setBadge).toHaveBeenCalledWith(mockResponse.setbadgesData);
+    expect(component.badge).toBe(mockResponse.setbadgesData);
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });
 

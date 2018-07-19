@@ -75,9 +75,6 @@ export class AssignBadgesContentComponent implements OnInit, OnDestroy {
       }
     });
   }
-  public getBadge(Badge) {
-    return this.badge;
-  }
   public setBadge(Badge) {
     this.badge = Badge;
   }

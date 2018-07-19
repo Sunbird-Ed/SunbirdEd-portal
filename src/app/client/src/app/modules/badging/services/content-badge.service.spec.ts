@@ -24,7 +24,7 @@ describe('ContentBadgeService', () => {
     });
     expect(service).toBeTruthy();
   });
-  fit('should emit the event  ', () => {
+  it('should emit the event  ', () => {
     const service = TestBed.get(ContentBadgeService);
     spyOn(service.badges, 'emit').and.returnValue(mockResponse.emitData);
     service.setAssignBadge(mockResponse.emitData);

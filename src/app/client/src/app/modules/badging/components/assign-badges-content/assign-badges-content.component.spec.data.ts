@@ -1,7 +1,13 @@
 export const mockResponse = {
     userMockData: {
-        'roles': [
-            'public'
+        'userRoles': [
+            'PUBLIC',
+            'ANNOUNCEMENT_SENDER',
+            'BOOK_CREATOR',
+            'COURSE_MENTOR',
+            'FLAG_REVIEWER',
+            'CONTENT_CREATOR',
+            'TEACHER_BADGE_ISSUER'
         ],
         'rootOrg': {
             'dateTime': null,
@@ -145,5 +151,94 @@ export const mockResponse = {
             'issuerId': 'issuerslug-2',
             'status': 'active'
         }
-    ]
+    ],
+    badgeSearchData: {
+        'id': 'api.issuer.badge.search',
+        'ver': 'v1',
+        'ts': '2018-07-19 06:12:54:035+0000',
+        'params': {
+          'resmsgid': null,
+          'msgid': '74099b0e-f858-b3fe-379e-99dca7f098fc',
+          'err': null,
+          'status': 'success',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'badges': [
+            {
+              'image': '',
+              'badgeId': 'official',
+              'criteria': 'http://localhost:8000/public/badges/official/criteria',
+              'roles': [
+                'COURSE_MENTOR'
+              ],
+              'description': 'something',
+              'type': 'content',
+              'rootOrgId': 'ORG_001',
+              'issuerId': 'swarn-2',
+              'createdDate': '2018-03-21T10:16:33.631893Z',
+              'recipientCount': 125,
+              'subtype': 'award',
+              'issuerIdUrl': 'http://localhost:8000/public/issuers/swarn-2',
+              'name': 'OFFICIAL',
+              'badgeIdUrl': 'http://localhost:8000/public/badges/official'
+            },
+            {
+              'image': '',
+              'badgeId': 'something',
+              'criteria': 'http://localhost:8000/public/badges/something/criteria',
+              'roles': [
+                'COURSE_MENTOR'
+              ],
+              'description': 'something',
+              'type': 'content',
+              'rootOrgId': 'ORG_001',
+              'issuerId': 'swarn-2',
+              'createdDate': '2018-03-20T10:11:18.447140Z',
+              'recipientCount': 43,
+              'subtype': 'award',
+              'issuerIdUrl': 'http://localhost:8000/public/issuers/swarn-2',
+              'name': 'something',
+              'badgeIdUrl': 'http://localhost:8000/public/badges/something'
+            }
+          ]
+        }
+    },
+    badgeSearchRequestData: {
+        'request': {
+          'filters': {
+            'issuerList': [],
+            'rootOrgId': 'ORG_001',
+            'roles': [
+              'PUBLIC',
+              'ANNOUNCEMENT_SENDER',
+              'BOOK_CREATOR',
+              'COURSE_MENTOR',
+              'FLAG_REVIEWER',
+              'CONTENT_CREATOR',
+              'TEACHER_BADGE_ISSUER'
+            ],
+            'type': 'content'
+          }
+        }
+    },
+    setbadgesData: {
+        'image': 'https://sunbirddev.blob.core.windows.net/badgr/uploads/badges/issuer_badgeclass_ba684c5c-5490-4c16-a091-759f1e689723',
+        'badgeId': 'official',
+        'criteria': 'http://localhost:8000/public/badges/official/criteria',
+        'roles': [
+          'COURSE_MENTOR'
+        ],
+        'description': 'something',
+        'type': 'content',
+        'rootOrgId': 'ORG_001',
+        'issuerId': 'swarn-2',
+        'createdDate': '2018-03-21T10:16:33.631893Z',
+        'recipientCount': 124,
+        'subtype': 'award',
+        'issuerIdUrl': 'http://localhost:8000/public/issuers/swarn-2',
+        'name': 'OFFICIAL',
+        'badgeIdUrl': 'http://localhost:8000/public/badges/official'
+      }
 };
