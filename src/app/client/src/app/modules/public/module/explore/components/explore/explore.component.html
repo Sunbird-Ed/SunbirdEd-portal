@@ -2,9 +2,9 @@
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class=" ui grid">
-      <div class="eleven wide column">
-        <app-data-driven-filter *ngIf="filterType" [filterEnv]="filterType" [enrichFilters]="facets" [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
-       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-data-driven-filter>
+      <div class="twelve wide column">
+        <app-prominent-filter *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
+       [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-prominent-filter>
       </div>
     </div>
     <div *ngFor="let section of caraouselData">
