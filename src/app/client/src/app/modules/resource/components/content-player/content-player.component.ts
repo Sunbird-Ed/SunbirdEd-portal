@@ -26,6 +26,7 @@ export class ContentPlayerComponent implements OnInit {
   closeIntractEdata: IInteractEventEdata;
   objectInteract: IInteractEventObject;
   sharelinkModal: boolean;
+  public badgeData: Array<object>;
   /**
    * contains link that can be shared
    */
@@ -144,6 +145,7 @@ export class ContentPlayerComponent implements OnInit {
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
+          this.badgeData = _.get(response, 'result.content.badgeAssertions');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();

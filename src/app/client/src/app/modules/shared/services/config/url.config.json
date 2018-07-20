@@ -3,7 +3,7 @@
     "userReadParam": {
       "fields": "completeness,missingFields,lastLoginTime"
     },
-    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license"
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions"
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
@@ -83,7 +83,7 @@
         "STATUS": "data/v1/upload/status"
       },
       "DELETE_USER": "user/v1/block",
-      "UPDATE_USER_ORG_ROLES": "org/v1/role/assign"
+      "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"
     },
     "BADGE": {
       "GET": "org/v1/badges/list",

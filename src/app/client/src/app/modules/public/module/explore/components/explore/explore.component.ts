@@ -86,7 +86,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.noResult = false;
     const option = {
       source: 'web',
-      name: 'Resource',
+      name: 'Explore',
       filters: _.pickBy(this.filters, value => value.length > 0),
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
