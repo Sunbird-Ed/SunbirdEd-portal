@@ -25,8 +25,8 @@ var envHelper = require('./helpers/environmentVariablesHelper.js')
 
 //credentials for cdn provider
 var cdnServiceCredentials = {
-  accountName: argv.accountName || "sunbirddev",
-  accessKey: argv.accessKey || "zl8q5yA4fxG5PAha2rc6rRWQ8vQlKMGKb79YlQN1br7EOOD8jmVhBOlTP3J7KqKTj3J2TxkJArQR8IrXV551Fg==",
+  accountName: argv.accountName,
+  accessKey: argv.accessKey,
   cdnServiceProvider: argv.provider || 'azure'
 }
 
