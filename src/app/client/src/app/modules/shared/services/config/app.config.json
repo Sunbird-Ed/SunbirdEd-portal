@@ -194,7 +194,8 @@
         "application/vnd.ekstep.html-archive",
         "application/epub",
         "application/vnd.ekstep.h5p-archive",
-        "video/webm"
+        "video/webm",
+        "text/x-url"
       ],
       "pdf": "application/pdf",
       "mp4": "video/mp4",
@@ -203,7 +204,8 @@
       "html": "application/vnd.ekstep.html-archive",
       "ePub": "application/epub",
       "h5p": "application/vnd.ekstep.h5p-archive",
-      "webm": "video/webm"
+      "webm": "video/webm",
+      "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true"
   },
@@ -233,7 +235,8 @@
       "application/vnd.ekstep.html-archive",
       "application/epub",
       "application/vnd.ekstep.h5p-archive",
-      "video/webm"
+      "video/webm",
+      "text/x-url"
     ],
     "states": [
       "draft",

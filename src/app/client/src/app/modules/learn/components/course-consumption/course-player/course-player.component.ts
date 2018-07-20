@@ -1,13 +1,12 @@
-
 import { combineLatest as observableCombineLatest, Observable, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig, ConfigService,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
@@ -76,6 +75,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   queryParamSubscription: Subscription;
 
   updateContentsStateSubscription: Subscription;
+
+  istrustedClickXurl = false;
   /**
    * To show/hide the note popup editor
    */
@@ -114,6 +115,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   noContentToPlay = 'No content to play';
 
+  showExtContentMsg = false;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -127,7 +130,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
-    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService) {
+    private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -220,15 +224,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
 }
   private subscribeToQueryParam() {
-  this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
-    if (queryParams.contentId) {
-      const content = this.findContentById(queryParams.contentId);
-      if (content) {
-        this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
+      if (queryParams.contentId) {
+        const content = this.findContentById(queryParams.contentId);
+        const isExtContentMsg = this.coursesService.showExtContentMsg;
+        if (content) {
+          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier')},
+          isExtContentMsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
+          this.closeContentPlayer();
+        }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
         this.closeContentPlayer();
       }
+    });
+  }
+  private findContentById(id: string) {
+    return this.treeModel.first((node) => {
+      return node.model.identifier === id;
+    });
+  }
+  private OnPlayContent(content: { title: string, id: string }, showExtContentMsg ?: boolean) {
+    if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
+      this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
+      || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseHierarchy.createdBy === this.userService.userid)) {
+      this.contentId = content.id;
+      this.setTelemetryContentImpression();
+      this.setContentNavigators();
+      this.playContent(content, showExtContentMsg);
     } else {
       this.closeContentPlayer();
     }
@@ -253,16 +279,37 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 }
   private setContentNavigators() {
-  const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
-  this.prevPlaylistItem = this.contentDetails[index - 1];
-  this.nextPlaylistItem = this.contentDetails[index + 1];
-}
-  private playContent(data: any): void {
-  this.enableContentPlayer = false;
-  this.loader = true;
-  const options: any = { courseId: this.courseId };
-  if (this.batchId) {
-    options.batchHashTagId = this.enrolledBatchInfo.hashTagId;
+    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+    this.prevPlaylistItem = this.contentDetails[index - 1];
+    this.nextPlaylistItem = this.contentDetails[index + 1];
+  }
+  private playContent(data: any, showExtContentMsg ?: boolean): void {
+    this.enableContentPlayer = false;
+    this.loader = true;
+    const options: any = { courseId: this.courseId };
+    if (this.batchId) {
+      options.batchHashTagId = this.enrolledBatchInfo.hashTagId;
+    }
+    this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id, options)
+      .subscribe((config) => {
+        this.setContentInteractData(config);
+        this.loader = false;
+        this.playerConfig = config;
+          if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
+          || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)
+        ) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+          }
+        this.enableContentPlayer = true;
+        this.contentTitle = data.title;
+        this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
+        this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
+      }, (err) => {
+        this.loader = false;
+        this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+      });
   }
     this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id, options)
     .subscribe((config) => {
@@ -279,15 +326,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
 }
   public navigateToContent(content: { title: string, id: string }): void {
-  const navigationExtras: NavigationExtras = {
-    queryParams: { 'contentId': content.id },
-    relativeTo: this.activatedRoute
-  };
-  if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
-  || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
-  || this.courseHierarchy.createdBy === this.userService.userid) {
-  this.router.navigate([], navigationExtras);
-}
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'contentId': content.id },
+      relativeTo: this.activatedRoute
+    };
+    const playContentDetail = this.findContentById(content.id);
+    if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+      this.showExtContentMsg = false;
+      this.istrustedClickXurl = true;
+      this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
+    }
+    if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status > 0)
+      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+      || this.courseHierarchy.createdBy === this.userService.userid) {
+      this.router.navigate([], navigationExtras);
+    }
   }
   public contentProgressEvent(event) {
   if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
