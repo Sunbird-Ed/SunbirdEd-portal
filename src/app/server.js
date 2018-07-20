@@ -382,7 +382,6 @@ app.get('/health', healthService.createAndValidateRequestBody, healthService.che
 
 
 app.all('/:tenantName', function (req, res) {
-  console.log("cmgninside")
   tenantId = req.params.tenantName
   if (_.isString(tenantId)) {
     tenantId = _.lowerCase(tenantId)
