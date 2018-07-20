@@ -55,19 +55,17 @@
                 <i class="ui large blue flag outline icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.report}}
               </a>
-              <a (click)="onShareLink();sharelinkModal=true;" class="padding-right-10 blue-text-color-sunbird">
+              <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="padding-right-10 blue-text-color-sunbird">
                 <i class="cursor-pointer large blue share alternate icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.share}}
               </a>
               <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
-                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 blue-text-color-sunbird "
-                title="Copy content">
+                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 blue-text-color-sunbird ">
                 <i class="ui large blue clone outline icon "></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </span>
               <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-                [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 blue-text-color-sunbird "
-                title="Copy content">
+                [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="ui mouse-pointer content-font margin-left-10 blue-text-color-sunbird ">
                 <i class="ui large blue clone outline icon blue-text-color-sunbird "></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </span>
