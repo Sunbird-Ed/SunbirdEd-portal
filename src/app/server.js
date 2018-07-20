@@ -46,6 +46,9 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
+const tenantCdnUrl = envHelper.TENANT_CDN_URL;
+const tenantsContainerName = envHelper.TENANTS_CONTAINER_NAME || 'tenants';
+
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -379,18 +382,47 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.all('/:tenantName', function (req, res) {
+  console.log("cmgninside")
   tenantId = req.params.tenantName
   if (_.isString(tenantId)) {
     tenantId = _.lowerCase(tenantId)
   }
-  if (tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
-  } else if (defaultTenant && fs.existsSync(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))
+
+  if (tenantId) {
+    renderTenantPage(tenantId,res)
+  } else if (defaultTenant) {
+    renderTenantPage(tenantId,res)
   } else {
     res.redirect('/')
   }
 })
+
+// renders tenant page from cdn or from local files
+function renderTenantPage (tenantId,res) {
+  try{
+    const tenantIndexFileNames = JSON.parse(fs.readFileSync(path.join(__dirname, 'tenant-index-versions.json')))
+    if(tenantCdnUrl){
+      const tentantIndexFileName = tenantIndexFileNames && tenantIndexFileNames[tenantId];
+      if(tentantIndexFileName){
+        request(tenantCdnUrl + '/' + tenantsContainerName + '/' + tenantId + '/' +  tentantIndexFileName , function (error, response, body) {
+          if(error || !body){
+            res.redirect('/')
+          }else{
+            res.send(body)
+          }
+        });
+      }else{
+        res.redirect('/')
+      }
+    }else if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
+        res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
+    }else{
+      res.redirect('/')
+    }
+  }catch(e){
+    return res.redirect('/')
+  }
+}
 
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
