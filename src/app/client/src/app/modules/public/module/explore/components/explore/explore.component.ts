@@ -60,6 +60,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   contents: any;
   hashTagId: string;
   slug = '';
+  isSearchable = false;
   public unsubscribe$ = new Subject<void>();
   /**
    * The "constructor"
@@ -158,6 +159,16 @@ export class ExploreComponent implements OnInit, OnDestroy {
     }
   }
 
+  compareObjects(a, b) {
+    if (a !== undefined) {
+        a = _.omit(a, ['language']);
+    }
+    if (b !== undefined) {
+        b = _.omit(b, ['language']);
+    }
+    return _.isEqual(a, b);
+}
+
   getQueryParams() {
     observableCombineLatest(
       this.activatedRoute.params,
@@ -171,6 +182,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$))
       .subscribe(bothParams => {
         this.filters = {};
+        this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
         this.queryParams = { ...bothParams.queryParams };
         _.forIn(this.queryParams, (value, key) => {
           if (key !== 'sort_by' && key !== 'sortType') {
@@ -181,7 +193,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
         }
-        this.populatePageData();
+        if ( !this.isSearchable) {
+          this.populatePageData();
+      }
+        
       });
   }
 
