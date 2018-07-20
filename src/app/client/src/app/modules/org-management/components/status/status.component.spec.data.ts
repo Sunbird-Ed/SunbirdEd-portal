@@ -130,6 +130,9 @@ export const mockRes = {
             },
             'fmsg': {
                 'm0051': 'Something went wrong, please try again later...'
+            },
+            'stmsg': {
+                'm0006': 'No results found'
             }
         }
     }
