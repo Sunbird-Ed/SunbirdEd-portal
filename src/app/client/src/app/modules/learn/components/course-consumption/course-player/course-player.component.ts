@@ -228,7 +228,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
-        const isExtContentMsg = this.coursesService.showExtContentMsg;
+        const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
         if (content) {
           this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier')},
           isExtContentMsg);
@@ -278,13 +278,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.setContentInteractData(config);
         this.loader = false;
         this.playerConfig = config;
-        //   if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
-        //   || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)
-        // ) {
-        //     setTimeout(() => {
-        //       this.showExtContentMsg = true;
-        //     }, 5000);
-        //   }
+        if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
+          || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+        } else {
+          this.showExtContentMsg = false;
+        }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
@@ -292,7 +293,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-      });
+     });
   }
 
   public navigateToContent(content: { title: string, id: string }): void {
@@ -442,5 +443,4 @@ ngOnDestroy() {
     pageid: 'course-consumption'
   };
 }
-
 }
