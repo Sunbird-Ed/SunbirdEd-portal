@@ -7,6 +7,7 @@ interface NodeModule {
 interface Window {
   config: any;
   context: any;
+  redirectUrl: any;
 }
 
 declare module '*.json' {

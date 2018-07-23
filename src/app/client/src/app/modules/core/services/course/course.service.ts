@@ -37,6 +37,11 @@ export class CoursesService {
    * Read only observable Containing enrolled courses.
    */
   public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
+
+  /**
+   * Notification message for external content onclick of Resume course button
+   */
+  showExtContentMsg = false;
   /**
   * the "constructor"
   *
@@ -76,11 +81,15 @@ export class CoursesService {
     this.getEnrolledCourses().subscribe((date) => {
     });
   }
+
   public updateCourseProgress(courseId, batchId, Progress) {
     const index = _.findIndex(this.enrolledCourses, {courseId: courseId, batchId: batchId });
     if (this.enrolledCourses[index]) {
       this.enrolledCourses[index].progress = Progress;
       this._enrolledCourseData$.next({ err: null, enrolledCourses: this.enrolledCourses });
     }
+  }
+  public setExtContentMsg(isExtContent: boolean) {
+    this.showExtContentMsg = isExtContent ? isExtContent : false;
   }
 }
