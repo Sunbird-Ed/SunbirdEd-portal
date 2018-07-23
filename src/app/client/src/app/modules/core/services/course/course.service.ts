@@ -78,10 +78,8 @@ export class CoursesService {
   }
   public updateCourseProgress(courseId, batchId, Progress) {
     const index = _.findIndex(this.enrolledCourses, {courseId: courseId, batchId: batchId });
-    console.log('--------', index, this.enrolledCourses[index]);
     if (this.enrolledCourses[index]) {
       this.enrolledCourses[index].progress = Progress;
-      console.log(this.enrolledCourses[index]);
       this._enrolledCourseData$.next({ err: null, enrolledCourses: this.enrolledCourses });
     }
   }

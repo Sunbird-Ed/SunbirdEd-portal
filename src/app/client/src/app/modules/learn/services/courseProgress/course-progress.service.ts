@@ -139,7 +139,6 @@ export class CourseProgressService {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
-            console.log('>>>>>>>>>>>>>>', this.courseProgress[courseId_batchId].completedCount);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount );
             return this.courseProgress[courseId_batchId];
           }));
