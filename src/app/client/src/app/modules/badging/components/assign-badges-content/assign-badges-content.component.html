@@ -1,0 +1,32 @@
+<div class="ui grid">
+  <div class="six wide column"></div>
+<div class="six wide column margin-top-0 padding-top-none text-align-right" *ngIf="allBadgeList && allBadgeList.length > 0">
+  <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
+  <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" 
+  [telemetryInteractEdata]="badgeInteractEdata" class="ui small basic primary compact button margin-left-10 margin-top-10" 
+  *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
+</div>
+</div>
+<sui-modal [isClosable]="true" [size]="'small'" (dismissed)="showBadgeAssingModel=false" *ngIf="showBadgeAssingModel" #modal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <h4>{{resourceService?.frmelmnts?.lbl?.markas}} '{{badge.name | uppercase}}'</h4>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="description">
+      <h1 class="ui header">
+        <div class="sub header primary-text-color-sunbird">
+          {{resourceService?.frmelmnts?.lbl?.badgeassignconfirmation}}
+        </div>
+      </h1>
+
+    </div>
+  </div>
+  <div class="actions">
+    <div appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" [telemetryInteractEdata]="cancelBadgeInteractEdata" class="ui basic blue small compact button left floated" (click)="showBadgeAssingModel=false;">{{resourceService?.frmelmnts?.btn?.cancel}}</div>
+    <div appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'badge',ver:'1.0'}" [telemetryInteractEdata]="assignBadgeInteractEdata" class="ui small primary compact button " (click)="assignBadge(badge)">{{resourceService?.frmelmnts?.btn?.yesiamsure}}</div>
+  </div>
+</sui-modal>

@@ -11,7 +11,7 @@ import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from './dial-code.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-import * as _ from 'lodash';
+
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
   let fixture: ComponentFixture<DialCodeComponent>;
@@ -62,14 +62,14 @@ describe('DialCodeComponent', () => {
 
   it('should return matching contents for valid dialcode query', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
   });
   it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.noData));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -77,7 +77,7 @@ describe('DialCodeComponent', () => {
   });
   it('should return appropriate failure message on error throw', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError(new Error('Server error')));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError(new Error('Server error')));
     component.searchDialCode();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -105,6 +105,12 @@ describe('DialCodeComponent', () => {
     component.getEvent(item);
     expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier]);
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
   it('should call getDataForCard Method to pass the data in Card ', () => {
     const searchService = TestBed.get(SearchService);
     const utilService = TestBed.get(UtilService);
@@ -112,7 +118,7 @@ describe('DialCodeComponent', () => {
     const constantData = config.appConfig.GetPage.constantData;
     const metaData = config.appConfig.GetPage.metaData;
     const dynamicFields = config.appConfig.GetPage.dynamicFields;
-    spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     spyOn(component, 'searchDialCode').and.callThrough();
     spyOn(utilService, 'getDataForCard').and.callThrough();
     component.searchDialCode();

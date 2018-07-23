@@ -24,4 +24,10 @@ describe('ContentBadgeService', () => {
     });
     expect(service).toBeTruthy();
   });
+  it('should emit the event  ', () => {
+    const service = TestBed.get(ContentBadgeService);
+    spyOn(service.badges, 'emit').and.returnValue(mockResponse.emitData);
+    service.setAssignBadge(mockResponse.emitData);
+    expect(service.badges.emit).toHaveBeenCalledWith(mockResponse.emitData);
+  });
 });

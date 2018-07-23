@@ -6,7 +6,7 @@
         <div class="one wide column"></div>
         <div class="ten wide column padding-top-none">
             <div class="ui grid">
-                <div class="eight wide column padding-top-none">
+                <div class="nine wide column padding-top-none">
                     <div class="courseStructureHeaderText courseStructureSectionHeading">{{courseHierarchy.name}}</div>
                     <br>
                     <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="courseHeader-rating ui star rating course-header-divider" [isReadonly]="true"
@@ -27,7 +27,7 @@
                     </span>
                     <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">{{resourceService?.messages?.imsg?.m0001}}</h6>
                 </div>
-                <div class="four wide column">
+                <div class="three wide column">
                     <div *ngIf="enrolledCourse" class="margin-top-Negative30">
                         <span>
                             <p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
@@ -35,7 +35,7 @@
                         <button appTelemetryInteract 
                         [telemetryInteractEdata]="resumeIntractEdata" 
                         [telemetryInteractObject]="courseInteractObject"
-                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse()">
+                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse(true)">
                             {{resourceService?.frmelmnts?.btn?.resumecourse}}
                             <i class="caret right icon"></i>
                         </button>

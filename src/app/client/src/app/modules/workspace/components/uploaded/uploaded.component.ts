@@ -184,7 +184,7 @@ export class UploadedComponent extends WorkSpace implements OnInit {
         createdBy: this.userService.userid,
         contentType: this.config.appConfig.WORKSPACE.contentType,
         mimeType: ['application/pdf', 'video/x-youtube', 'application/vnd.ekstep.html-archive',
-          'application/epub', 'application/vnd.ekstep.h5p-archive', 'video/mp4', 'video/webm'],
+          'application/epub', 'application/vnd.ekstep.h5p-archive', 'video/mp4', 'video/webm', 'text/x-url'],
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
@@ -6,6 +6,8 @@ import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * This component helps to display the creation/updation popup.
@@ -17,10 +19,11 @@ import { IInteractEventInput, IImpressionEventInput, IInteractEventObject, IInte
   templateUrl: './create-org-type.component.html',
   styleUrls: ['./create-org-type.component.css']
 })
-export class CreateOrgTypeComponent implements OnInit {
+export class CreateOrgTypeComponent implements OnInit, OnDestroy {
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
+  @ViewChild('modal') modal;
   pageId: string;
   /**
   * telemetryImpression
@@ -72,6 +75,9 @@ export class CreateOrgTypeComponent implements OnInit {
    */
   public orgTypeService: OrgTypeService;
 
+  public unsubscribe$ = new Subject<void>();
+
+  disableApproveBtn = false;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -104,16 +110,19 @@ export class CreateOrgTypeComponent implements OnInit {
    * with proper messaga.
 	 */
   addOrgType(): void {
-    this.orgTypeService.addOrgType(this.orgName.value).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0035);
-        this.redirect();
-      },
-      err => {
-        this.toasterService.error(err.error.params.errmsg);
-        this.redirect();
-      }
-    );
+    this.orgTypeService.addOrgType(this.orgName.value).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0035);
+          this.modal.deny();
+          this.redirect();
+        },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          this.redirect();
+        }
+      );
   }
 
   /**
@@ -125,16 +134,19 @@ export class CreateOrgTypeComponent implements OnInit {
 	 */
   updateOrgType(): void {
     const param = { 'id': this.orgTypeId, 'name': this.orgName.value };
-    this.orgTypeService.updateOrgType(param).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
-        this.redirect();
-      },
-      err => {
-        this.toasterService.error(err.error.params.errmsg);
-        this.redirect();
-      }
-    );
+    this.orgTypeService.updateOrgType(param).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.toasterService.success(this.orgName.value + ' ' + this.resourceService.messages.smsg.m0037);
+          this.modal.deny();
+          this.redirect();
+        },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          this.redirect();
+        }
+      );
   }
 
   /**
@@ -207,6 +219,11 @@ export class CreateOrgTypeComponent implements OnInit {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

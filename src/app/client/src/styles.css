@@ -1144,15 +1144,6 @@ i.large.icon.limitedPublishingLinkIcon {
   max-height: 40px;
   width: auto;
   height: auto;
-  position: absolute;
-  transform: translateY(15%);  
-}
-
-@media only screen and (min-width: 320px) and (max-width:768px){
-  .header-logo-before-login {
-    max-width: 60px;
-    max-height: 30px;  
-  }
 }
 
 .blue-text-color-sunbird {
@@ -1524,7 +1515,7 @@ span.fancytree-title {
   /* box-shadow: 0 8px 6px -8px @tertiary-color;*/
   padding-top: 1em;
   padding-bottom: 1em;
-  padding-left: 0.3em;
+  padding-left: 0;
 }
 .popular-section > .card-section-header {
   font-weight: bold;
@@ -2738,4 +2729,24 @@ iframe.iziModal-iframe {
 }
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
+}
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+
+.inline-block-content {
+  display:inline-block !important;
+}
+
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.cursor-text {
+  cursor: text !important;
 }
