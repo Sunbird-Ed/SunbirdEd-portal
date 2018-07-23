@@ -99,7 +99,11 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.state = params['state'];
       this.framework = params['framework'];
     });
-    this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
+    try {
+      this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
+    } catch (error) {
+      this.extContWhitelistedDomains = 'youtube.com,youtu.be';
+    }
   }
 
   ngAfterViewInit() {
