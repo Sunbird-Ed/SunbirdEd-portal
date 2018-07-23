@@ -63,6 +63,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private buildNumber: string;
 
   public logo: string;
+
+  public extContWhitelistedDomains: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -96,8 +98,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.contentId = params['contentId'];
       this.state = params['state'];
       this.framework = params['framework'];
-
     });
+    this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
   }
 
   ngAfterViewInit() {
@@ -176,7 +178,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       build_number: this.buildNumber,
       headerLogo: this.logo,
       loadingImage: '',
-      extContWhitelistedDomains: (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value,
+      extContWhitelistedDomains: this.extContWhitelistedDomains,
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
         ver: '1.4',
