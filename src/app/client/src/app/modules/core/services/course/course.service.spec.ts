@@ -37,6 +37,5 @@ describe('CoursesService', () => {
       coursesService['enrolledCourses'] = testData.apiResonseData.result.courses;
       coursesService.updateCourseProgress(courseId, batchId, progress);
       expect(coursesService.enrolledCourseData$).toBeDefined();
-      expect( coursesService.updateCourseProgress).toHaveBeenCalled();
   }));
 });
