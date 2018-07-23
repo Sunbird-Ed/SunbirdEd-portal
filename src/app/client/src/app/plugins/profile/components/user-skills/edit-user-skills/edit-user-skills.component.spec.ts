@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './../../../services';
@@ -5,7 +7,6 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule,
@@ -19,7 +20,7 @@ describe('EditUserSkillsComponent', () => {
   let component: EditUserSkillsComponent;
   let fixture: ComponentFixture<EditUserSkillsComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -58,7 +59,7 @@ describe('EditUserSkillsComponent', () => {
     const profileService = TestBed.get(ProfileService);
     const router = TestBed.get(Router);
     const addedSkill = ['java', 'angular'];
-    spyOn(profileService, 'add').and.callFake(() => Observable.of(mockRes.response));
+    spyOn(profileService, 'add').and.callFake(() => observableOf(mockRes.response));
     component.addSkill();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });

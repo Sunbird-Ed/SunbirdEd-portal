@@ -8,8 +8,8 @@ const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 
 // To download editors
-const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/content-editor-iframe-3.4.0.zip'
-const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/collection-editor-iframe-3.4.0.zip'
+const contentEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-3.5.0.zip'
+const collectionEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/collection-editor-iframe-3.5.0.zip'
 const genericEditor = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-qa/artefacts/editor/generic-editor-iframe-3.4.0.zip'
 const editorsDestPath = 'client/src/thirdparty/editors/'
 const telemetryLibrary = 'https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/telemetry-1.0.min.js'
@@ -63,17 +63,17 @@ gulp.task('clean:client:install', (done) => {
 })
 
 gulp.task('client:install', (cb) => {
-  exec('npm install  --prefix ./client', function (err, stdout, stderr) {
+  exec('npm install  --prefix ./client', { maxBuffer: Infinity }, function (err, stdout, stderr) {
     console.log(stdout)
     console.log(stderr)
     cb(err)
   })
 })
 
-// To build anglar code and rename index file
+// To build angular code and rename index file
 
 gulp.task('client:dist', (cb) => {
-  exec('npm run build --prefix ./client ', function (err, stdout, stderr) {
+  exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
     console.log(stdout)
     console.log(stderr)
     cb(err)

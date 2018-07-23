@@ -1,17 +1,17 @@
-import { UserSearchService } from './../../services/user-search/user-search.service';
+
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { UserSearchService } from './../../services';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage, RouterNavigationService
+  ConfigService, ToasterService, RouterNavigationService
 } from '@sunbird/shared';
-import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions  } from '@sunbird/core';
+import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { UserEditComponent } from './user-edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-edit.component.spec.data';
@@ -31,20 +31,10 @@ describe('UserEditComponent', () => {
         'm0005': 'deleting user is failed'
       },
       'smsg': {
+        'm0028': 'Updated successfully',
         'm0029': 'deleted sucessfully'
       }
     }
-  };
-  const fakeActivatedRoute = {
-    snapshot: {
-      data: {
-        telemetry: {
-          env: 'profile', pageid: 'use-search', type: 'view', subtype: 'paginate'
-        }
-      }
-    },
-    'url': Observable.of([{ 'path': 'search/Users/1' }]),
-    'params': Observable.from([{ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' }])
   };
 
   beforeEach(async(() => {
@@ -95,7 +85,6 @@ describe('UserEditComponent', () => {
   });
   it('should call search api for populateOrgName', () => {
     const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
     const options = {
       orgid: [
         '0123164136298905609',
@@ -114,31 +103,83 @@ describe('UserEditComponent', () => {
   });
   it('should call search api', () => {
     const searchService = TestBed.get(UserSearchService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(searchService, 'getUserById').and.returnValue(Observable.of(Response.successData));
+    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
-    fixture.detectChanges();
     expect(component.userDetails).toBeDefined();
   });
   it('should throw error when searchService api is not called', () => {
     const searchService = TestBed.get(UserSearchService);
-    spyOn(searchService, 'getUserById').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError({}));
     component.populateUserDetails();
-    fixture.detectChanges();
     expect(component.userDetails).toBeUndefined();
   });
   it('should call UserSearchService api for deleteUser', () => {
     const searchService = TestBed.get(UserSearchService);
-    const learnerService = TestBed.get(LearnerService);
-    const option = { userId: '6d4da241-a31b-4041-bbdb-dd3a898b3f85'};
+    const option = { userId: '6d4da241-a31b-4041-bbdb-dd3a898b3f85' };
     searchService.deleteUser(option.userId).subscribe(
-        apiResponse => {
-          expect(apiResponse.responseCode).toBe('OK');
-          expect(apiResponse.params.status).toBe('successful');
-        }
+      apiResponse => {
+        expect(apiResponse.responseCode).toBe('OK');
+        expect(apiResponse.params.status).toBe('successful');
+      }
     );
-    fixture.detectChanges();
+  });
+  it('should call editRoles method', () => {
+    component.selectedOrgUserRoles = ['CONTENT_CREATOR', 'BOOK_CREATOR'];
+    const roles = ['CONTENT_CREATOR', 'BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
+    const event = {
+      target: { checked: true }
+    };
+    component.editRoles('CONTENT_CREATOR', roles, event);
+    expect(component.selectedOrgUserRolesNew).not.toBeUndefined();
+  });
+  it('should call editRoles method when already assigned role is checked', () => {
+    const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
+    const event = {
+      target: { checked: true }
+    };
+    component.editRoles('CONTENT_CREATOR', roles, event);
+    expect(component.selectedOrgUserRolesNew).toEqual(['CONTENT_CREATOR']);
+  });
+  it('should call editRoles method when event checked is false', () => {
+    const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
+    const event = {
+      target: { checked: false }
+    };
+    component.editRoles('CONTENT_CREATOR', roles, event);
+    expect(component.selectedOrgUserRolesNew).not.toEqual('CONTENT_CREATOR');
+  });
+  it('should call updateRoles and make api call', () => {
+    const userSearchService = TestBed.get(UserSearchService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(userSearchService, 'updateRoles').and.callFake(() => observableOf(Response.rolesSuccessData));
+    const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
+    component.allRoles = [];
+    spyOn(component, 'redirect');
+    spyOn(toasterService, 'success').and.callThrough();
+    component.selectedOrgUserRolesNew = ['CONTENT_CREATOR'];
+    component.updateRoles(roles);
+    expect(component.redirect).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0028);
+  });
+  it('should call updateRoles method and make api call and return error', () => {
+    const userSearchService = TestBed.get(UserSearchService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(userSearchService, 'updateRoles').and.callFake(() => observableThrowError(Response.rolesFailureData));
+    const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
+    component.allRoles = [];
+    spyOn(component, 'redirect');
+    spyOn(toasterService, 'error').and.callThrough();
+    component.selectedOrgUserRolesNew = ['CONTENT_CREATOR'];
+    component.updateRoles(roles);
+    expect(component.redirect).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+  });
+  it('should call ngOnInit method to get all roles', () => {
+    const permissionService = TestBed.get(PermissionService);
+    permissionService.permissionAvailable$.next('success');
+    component.ngOnInit();
+    expect(component.allRoles['role']).not.toContain('PUBLIC');
   });
 });

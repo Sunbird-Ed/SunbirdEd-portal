@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,10 +10,9 @@ import { EditorService } from './../../services';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
 import { DefaultTemplateComponent } from './content-creation-default-template.component';
 import { mockData } from './content-creation-default-template.component.spec.data';
-import { expand } from 'rxjs/operators/expand';
+import { expand } from 'rxjs/operators';
 
 describe('DefaultTemplateComponent', () => {
   let component: DefaultTemplateComponent;
@@ -32,7 +33,7 @@ describe('DefaultTemplateComponent', () => {
     }
 };
   const fakeActivatedRoute = {
-    'url': Observable.of([{ 'path': 'textbook' }])
+    'url': observableOf({ 'path': 'textbook' })
   };
 
   beforeEach(async(() => {
@@ -64,6 +65,12 @@ describe('DefaultTemplateComponent', () => {
     component.formFieldProperties = mockData.success;
     component.mapMasterCategoryList('');
     expect(component.categoryList).toBeDefined();
+  });
+   it('should call mapMasterCategoryList with key and return empty object ', () => {
+    component.formFieldProperties = mockData.success;
+    component.mapMasterCategoryList('key');
+    expect(component.categoryList).toBeDefined();
+    expect(component.categoryList).toEqual({});
   });
   it('should call applyDependencyRules', () => {
     const range = mockData.formFieldMetaData;

@@ -1,12 +1,13 @@
+
+import { map } from 'rxjs/operators';
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
+import { PublicDataService } from './../public-data/public-data.service';
 /**
  * Service to search content
  */
@@ -36,6 +37,11 @@ export class SearchService {
    * Reference of learner service
    */
   public learnerService: LearnerService;
+
+  /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
   /**
    * Default method of OrganisationService class
    *
@@ -45,11 +51,12 @@ export class SearchService {
    * @param {LearnerService} config learner service reference
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
-    learnerService: LearnerService) {
+    learnerService: LearnerService, publicDataService: PublicDataService) {
     this.user = user;
     this.content = content;
     this.config = config;
     this.learnerService = learnerService;
+    this.publicDataService = publicDataService;
   }
   /**
    * Search content by user id.
@@ -78,11 +85,11 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option)
-      .map((data: ServerResponse) => {
+    return this.content.post(option).pipe(
+      map((data: ServerResponse) => {
         this._searchedContentList = data.result;
         return data;
-      });
+      }));
   }
   /**
    * Get searched content list
@@ -106,11 +113,11 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option)
-      .map((data: ServerResponse) => {
+    return this.publicDataService.post(option).pipe(
+      map((data: ServerResponse) => {
         this._searchedOrganisationList = data.result.response;
         return data;
-      });
+      }));
   }
   /**
    * Get searched organization list
@@ -175,7 +182,7 @@ export class SearchService {
         }
       }
     };
-    return this.content.post(option);
+    return this.publicDataService.post(option);
   }
   /**
    * Course Search.
@@ -205,13 +212,13 @@ export class SearchService {
    *
    * @param {SearchParam} requestParam api request data
   */
-  contentSearch(requestParam: SearchParam): Observable<ServerResponse> {
+  contentSearch(requestParam: SearchParam, addDefaultContentTypesInRequest: boolean = true):
+    Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.SEARCH,
       data: {
         request: {
           filters: requestParam.filters,
-          offset: (requestParam.pageNumber - 1) * requestParam.limit,
           limit: requestParam.limit,
           query: requestParam.query,
           sort_by: requestParam.sort_by,
@@ -220,10 +227,13 @@ export class SearchService {
         }
       }
     };
+    if (requestParam['pageNumber'] && requestParam['limit']) {
+      option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
+    }
     if (this.user.contentChannelFilter) {
       option.data.request.filters.channel = this.user.contentChannelFilter;
     }
-    if (!option.data.request.filters.contentType) {
+    if (!option.data.request.filters.contentType && addDefaultContentTypesInRequest) {
       option.data.request.filters.contentType = [
         'Collection',
         'TextBook',
@@ -231,7 +241,7 @@ export class SearchService {
         'Resource'
       ];
     }
-    return this.content.post(option);
+    return this.publicDataService.post(option);
   }
   /**
   * Batch Search.

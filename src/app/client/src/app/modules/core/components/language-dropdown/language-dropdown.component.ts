@@ -1,10 +1,12 @@
+
+import { takeUntil, first } from 'rxjs/operators';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormService, FrameworkService, OrgDetailsService } from './../../services';
 import { ConfigService, ResourceService, ToasterService, ServerResponse, Framework } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -14,9 +16,9 @@ import { Subject } from 'rxjs/Subject';
 export class LanguageDropdownComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
   languages: any;
+  orgDetailsUnsubscribe: Subscription;
   selectedLanguage: string;
   queryParam: any;
-  slug: string;
   channelId: any;
   public isCachedDataExists: boolean;
   formType = 'content';
@@ -31,7 +33,6 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
     public configService: ConfigService, public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.slug = this.activatedRoute.snapshot.params.slug;
     this.getChannelId();
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
@@ -40,14 +41,14 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   getChannelId() {
-    this.orgDetailsService.getOrgDetails(this.slug)
-    .takeUntil(this.unsubscribe)
-    .subscribe(
-      (apiResponse: any) => {
-        this.channelId = apiResponse.hashTagId;
+    this.orgDetailsUnsubscribe = this.orgDetailsService.orgDetails$.subscribe(((data) => {
+      if (data && !data.err) {
+        this.channelId = data.orgDetails.hashTagId;
         this.getLanguage();
-      },
-    );
+      } else if (data && data.err) {
+        // error
+      }
+    }));
   }
 
   getLanguage() {
@@ -62,22 +63,22 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
         contentType: this.filterEnv,
         framework: ''
       };
-      this.formService.getFormConfig(formServiceInputParams, this.channelId)
-      .takeUntil(this.unsubscribe)
-      .subscribe(
-        (data: ServerResponse) => {
-          this.languages = data[0].range;
-          this._cacheService.set(this.filterEnv + this.formAction, data,
-            {
-              maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-              this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-            });
-        },
-        (err: ServerResponse) => {
-          this.languages = [{ 'value': 'en', 'name': 'English' }];
-          this.onLanguageChange('en');
-        }
-      );
+      this.formService.getFormConfig(formServiceInputParams, this.channelId).pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe(
+          (data: ServerResponse) => {
+            this.languages = data[0].range;
+            this._cacheService.set(this.filterEnv + this.formAction, data,
+              {
+                maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+                  this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
+              });
+          },
+          (err: ServerResponse) => {
+            this.languages = [{ 'value': 'en', 'name': 'English' }];
+            this.onLanguageChange('en');
+          }
+        );
     }
   }
 
@@ -89,6 +90,7 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.orgDetailsUnsubscribe.unsubscribe();
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

@@ -1,23 +1,25 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html',
   styleUrls: ['./public-content-player.component.css']
 })
-export class PublicContentPlayerComponent implements OnInit {
+export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   /**
 	 * telemetryImpression
 	*/
@@ -50,6 +52,7 @@ export class PublicContentPlayerComponent implements OnInit {
 
   public showFooter: Boolean = false;
   contentData: ContentData;
+  public unsubscribe$ = new Subject<void>();
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -90,7 +93,9 @@ export class PublicContentPlayerComponent implements OnInit {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.playerService.getContent(this.contentId).subscribe(
+    this.playerService.getContent(this.contentId).pipe(
+    takeUntil(this.unsubscribe$))
+    .subscribe(
       (response) => {
         const contentDetails = {
           contentId: this.contentId,
@@ -127,5 +132,10 @@ export class PublicContentPlayerComponent implements OnInit {
     if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

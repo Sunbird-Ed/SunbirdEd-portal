@@ -17,7 +17,11 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Announcements', url: '' }]
     },
     children: [
-      { path: 'delete/:announcementId', component: DeleteComponent },
+      { path: 'delete/:announcementId', component: DeleteComponent, data: {
+        telemetry: {
+          env: telemetryEnv
+        }
+      } },
       {
         path: 'view/:announcementId', component: DetailsPopupComponent, data: {
           telemetry: {
@@ -65,7 +69,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class AnnouncementRoutingModule { }

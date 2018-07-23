@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, UserService, SearchService, PlayerService } from '@sunbird/core';
 import { ProfileService, ProfilePageComponent } from '@sunbird/profile';
@@ -7,7 +9,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule } from '@sunbird/shared';
 import { mockProfilePageData } from './profile-page.component.spec.data';
-import { Observable } from 'rxjs/Observable';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 
@@ -18,7 +19,7 @@ describe('ProfilePageComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ contentId: 'd0_33567325' }]),
+    'params': observableOf({ contentId: 'd0_33567325' }),
     'root': {
       children: [{
         snapshot: {
@@ -114,16 +115,25 @@ describe('ProfilePageComponent', () => {
       contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
       params: { lastUpdatedOn: 'desc' }
     };
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(Observable.of(mockProfilePageData.success));
+    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(mockProfilePageData.success));
     component.getMyContent();
     expect(component.contributions).toBeDefined();
   });
   it('should not call user searchService searchContentByUserId', () => {
     const searchService = TestBed.get(SearchService);
     const response = mockProfilePageData.success.result;
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(Observable.of(mockProfilePageData.success));
+    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(mockProfilePageData.success));
     component.getMyContent();
     expect(component.contributions).toBeDefined();
+  });
+  it('should not call user searchService searchContentByUserId when count is zero', () => {
+    const searchService = TestBed.get(SearchService);
+   searchService._searchedContentList = mockProfilePageData.zeroData.result;
+    const response = searchService.searchedContentList;
+   component.getMyContent();
+    expect(response.count).toEqual(0);
+    expect(component.contributions).toBeDefined();
+    expect(component.contributions).toEqual([]);
   });
   it('should call player service', () => {
     const playerService = TestBed.get(PlayerService);

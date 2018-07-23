@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
@@ -137,7 +139,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     try {
       const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
-      (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
+        (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
       this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
     } catch {
       console.log('error while fetching enableSignup');
@@ -172,9 +174,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getUrl() {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
-      const urlSegment = urlAfterRedirects.url.split('/');
-      if (_.includes(urlSegment, 'explore')) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
         this.showExploreHeader = false;

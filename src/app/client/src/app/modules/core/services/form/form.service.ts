@@ -1,14 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { PublicDataService } from './../public-data/public-data.service';
 @Injectable()
 export class FormService {
-  /**
-   * Reference of content service.
-   */
-  public content: ContentService;
   /**
    * Reference of user service.
    */
@@ -19,14 +17,19 @@ export class FormService {
   public configService: ConfigService;
 
   /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
+
+  /**
    * Default method of OrganisationService class
    *
-   * @param {ContentService} content content service reference
+   * @param {PublicDataService} publicDataService content service reference
    */
-  constructor(content: ContentService, userService: UserService, configService: ConfigService) {
-    this.content = content;
+  constructor(userService: UserService, configService: ConfigService, publicDataService: PublicDataService) {
     this.userService = userService;
     this.configService  = configService ;
+    this.publicDataService = publicDataService;
   }
 
   /**
@@ -47,9 +50,9 @@ export class FormService {
         }
       }
     };
-    return this.content.post(channelOptions).map(
+    return this.publicDataService.post(channelOptions).pipe(map(
       (formConfig: ServerResponse) => {
         return formConfig.result.form.data.fields;
-      });
+      }));
   }
 }

@@ -1,3 +1,5 @@
+
+import { combineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +11,6 @@ import {
 import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
@@ -164,7 +165,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit {
   }
 
   ngOnInit() {
-    Observable.combineLatest(
+    combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {

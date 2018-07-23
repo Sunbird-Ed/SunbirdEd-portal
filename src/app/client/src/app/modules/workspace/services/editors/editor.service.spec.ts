@@ -1,7 +1,7 @@
 
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EditorService } from './editor.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';

@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import {takeUntil} from 'rxjs/operators';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * The delete component deletes the announcement
@@ -16,6 +18,8 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./delete.component.css']
 })
 export class DeleteComponent implements OnInit, OnDestroy {
+
+  @ViewChild('modal') modal;
 
   public unsubscribe = new Subject<void>();
   /**
@@ -53,6 +57,8 @@ export class DeleteComponent implements OnInit, OnDestroy {
    */
   public routerNavigationService: RouterNavigationService;
 
+  disableApproveBtn = false;
+
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -83,12 +89,13 @@ export class DeleteComponent implements OnInit, OnDestroy {
 	 */
   deleteAnnouncement(): void {
     const option = { announcementId: this.announcementId };
-    this.announcementService.deleteAnnouncement(option)
-    .takeUntil(this.unsubscribe)
+    this.announcementService.deleteAnnouncement(option).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.moo41);
         this.redirect();
+        this.modal.approve();
       },
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -111,13 +118,13 @@ export class DeleteComponent implements OnInit, OnDestroy {
    * activated route
 	 */
   ngOnInit() {
-    this.activatedRoute.params
-    .takeUntil(this.unsubscribe)
+    this.activatedRoute.params.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(params => {
       this.announcementId = params.announcementId;
     });
-    this.activatedRoute.parent.params
-    .takeUntil(this.unsubscribe)
+    this.activatedRoute.parent.params.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((params) => {
       this.pageNumber = Number(params.pageNumber);
     });

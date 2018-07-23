@@ -1,10 +1,14 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { NotesService } from '../../services';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse } from '@sunbird/shared';
 import { NgModel } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { INoteData, IdDetails } from '@sunbird/notes';
+
+import { Subject } from 'rxjs';
 
 /**
  * This component provides the editor popup to create and update notes.
@@ -17,7 +21,7 @@ import { INoteData, IdDetails } from '@sunbird/notes';
   encapsulation: ViewEncapsulation.None
 })
 
-export class InlineEditorComponent implements OnInit, AfterViewInit {
+export class InlineEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * This variable holds the content and course id.
    */
@@ -71,12 +75,6 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
    */
   selectedIndex: number;
   /**
-   * This variable helps in displaying and hiding page loader.
-   * By default it is assigned a value of 'true'. This ensures that
-   * the page loader is displayed the first time the page is loaded.
-   */
-  showLoader = true;
-  /**
    * To display toaster(if any) after each API call.
    */
   private toasterService: ToasterService;
@@ -89,6 +87,7 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
    */
   noteService: NotesService;
 
+  public unsubscribe$ = new Subject<void>();
 
   /**
    * The constructor
@@ -163,27 +162,19 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
           updatedBy: this.userService.userid
         }
       };
-      this.noteService.create(requestData).subscribe(
-        (apiResponse: ServerResponse) => {
-          this.showLoader = false;
-          const returnObj = {
-            note: requestData.request.note,
-            userId: requestData.request.userId,
-            title: requestData.request.title,
-            courseId: requestData.request.courseId,
-            contentId: requestData.request.contentId,
-            createdBy: requestData.request.createdBy,
-            updatedBy: requestData.request.updatedBy,
-            createdDate: new Date().toISOString(),
-            updatedDate: new Date().toISOString()
-          };
-          this.createEventEmitter.emit(returnObj);
-        },
-        (err) => {
-          this.showLoader = false;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0030);
-        }
-      );
+      this.noteService.create(requestData).pipe(
+        takeUntil(this.unsubscribe$))
+        .subscribe(
+          (data: INoteData) => {
+            if (data.id) {
+              this.createEventEmitter.emit(data);
+              this.toasterService.success(this.resourceService.messages.smsg.m0009);
+            }
+          },
+          (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0030);
+          }
+        );
     }
   }
 
@@ -199,22 +190,21 @@ export class InlineEditorComponent implements OnInit, AfterViewInit {
         updatedBy: this.updateData.userId
       }
     };
-    this.noteService.update(requestData).subscribe(
-      (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.updateData.updatedDate = new Date().toISOString();
-        const returnObj = {
-          note: this.updateData.note,
-          title: this.updateData.title,
-          updatedDate: new Date().toISOString(),
-          id: requestData.noteId
-        };
-        this.updateEventEmitter.emit(returnObj);
-      },
-      (err) => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0034);
-      }
-    );
+    this.noteService.update(requestData).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data: INoteData) => {
+          this.updateData.updatedDate = new Date().toISOString();
+          this.updateEventEmitter.emit(data);
+          this.toasterService.success(this.resourceService.messages.smsg.m0013);
+        },
+        (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0034);
+        }
+      );
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

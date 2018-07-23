@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
@@ -11,7 +13,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { OrgFilterComponent } from './org-filter.component';
@@ -23,8 +24,8 @@ describe('OrgFilterComponent', () => {
   let parentcomponent: OrgSearchComponent;
   let parentfixture: ComponentFixture<OrgSearchComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ OrgType: ['012352495007170560157'] }])
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ OrgType: ['012352495007170560157'] })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -59,7 +60,7 @@ describe('OrgFilterComponent', () => {
   it('should take input of query param ', inject([ConfigService, OrgTypeService, Router],
     (configService, orgTypeService, route) => {
       component.queryParams = { OrgType: '0123462652405350403' };
-      spyOn(orgTypeService, 'getOrgTypes').and.callFake(() => Observable.of(Response.successData));
+      spyOn(orgTypeService, 'getOrgTypes').and.callFake(() => observableOf(Response.successData));
       fixture.detectChanges();
   }));
 

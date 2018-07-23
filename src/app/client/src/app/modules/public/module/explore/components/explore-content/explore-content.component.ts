@@ -1,22 +1,24 @@
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
+import { SearchService, CoursesService, PlayerService, ISort,
     OrgDetailsService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
     styleUrls: ['./explore-content.component.css']
 })
-export class ExploreContentComponent implements OnInit {
+export class ExploreContentComponent implements OnInit, OnDestroy {
     inviewLogs: any = [];
     /**
        * telemetryImpression
@@ -120,6 +122,7 @@ export class ExploreContentComponent implements OnInit {
     public facetArray: Array<string>;
     public facets: any;
     sortingOptions: Array<ISort>;
+    public unsubscribe$ = new Subject<void>();
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -162,7 +165,9 @@ export class ExploreContentComponent implements OnInit {
             softConstraints: { badgeAssertions: 2, channel: 1 },
             facets: this.facetArray
         };
-        this.searchService.contentSearch(requestParams).subscribe(
+        this.searchService.contentSearch(requestParams).pipe(
+        takeUntil(this.unsubscribe$))
+        .subscribe(
             (apiResponse: ServerResponse) => {
                 if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
                     this.showLoader = false;
@@ -215,7 +220,9 @@ export class ExploreContentComponent implements OnInit {
     }
 
     getChannelId() {
-        this.orgDetailsService.getOrgDetails(this.slug).subscribe(
+        this.orgDetailsService.getOrgDetails(this.slug).pipe(
+        takeUntil(this.unsubscribe$))
+        .subscribe(
             (apiResponse: any) => {
                 this.hashTagId = apiResponse.hashTagId;
                 this.setFilters();
@@ -243,8 +250,7 @@ export class ExploreContentComponent implements OnInit {
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
-        Observable
-            .combineLatest(
+        observableCombineLatest(
                 this.activatedRoute.params,
                 this.activatedRoute.queryParams,
                 (params: any, queryParams: any) => {
@@ -252,7 +258,8 @@ export class ExploreContentComponent implements OnInit {
                         params: params,
                         queryParams: queryParams
                     };
-                })
+                }).pipe(
+                takeUntil(this.unsubscribe$))
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -327,6 +334,10 @@ export class ExploreContentComponent implements OnInit {
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
     filterData(event) {
         this.facetArray = event;

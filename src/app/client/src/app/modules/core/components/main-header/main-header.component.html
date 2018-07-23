@@ -1,16 +1,16 @@
 <div class="ui grid" *ngIf="!showExploreHeader">
-    <div class="center aligned twelve column row">
+    <div class="center aligned twelve column row" [class.header-height-before-login]="!userService.userid">
         <div class="one wide tablet computer only column"></div>
-        <div class="two wide tablet computer only column padding-top-15">
+        <div class="two wide tablet computer only column" [class.padding-top-15]="userService.userid">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
-        <div class="two wide mobile only column padding-left-25">
+        <div class="two wide mobile only column padding-left-25 padding-top-5">
             <a (click)="navigateToHome()">
                 <img [class.header-logo-before-login]="!userService.userid" [class.header-logo]="userService.userid" class="image centered"
-                    alt={{tenantName}} src="{{logo}} ">
+                    alt={{tenantName}} src="{{logo}}">
             </a>
         </div>
         <div class="six wide column padding-top-1rem" *ngIf="userService.userid">
@@ -41,7 +41,7 @@
         <ng-template #showLoginBtn>
             <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10">
-                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
+                    <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button  appTelemetryInteract 
                     [telemetryInteractObject]="telemetryInteractObject" 
                     [telemetryInteractEdata]="signUpInteractEdata" *ngIf="enableSignup && router.isActive('', true)" 
@@ -55,7 +55,7 @@
                 <div class="ui secondary right pointing dropdown" suiDropdown>
                     <i class="large bars icon"></i>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
+                        <div class="item text-upper-case" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</div>
                         <div class="item" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
                         [telemetryInteractEdata]="signUpInteractEdata" *ngIf="router.isActive('', true) && enableSignup" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</div>
                         <div class="item">
@@ -109,7 +109,7 @@
         <!--mobile header view code starts-->
         <div class="center aligned twelve wide mobile only column padding-none">
             <div class="ui grid margin-none">
-                <div class="three wide column padding-10">
+                <div class="three wide column padding-left-10 padding-top-5">
                     <a (click)="navigateToHome()">
                         <img class="image centered header-logo-before-login"
                             alt={{tenantName}} src="{{logo}}">
@@ -118,7 +118,7 @@
                 <div class="three wide column"></div>
                 <div class="six wide column">
                     <a href="/home" class="sunblogin">
-                        <p class="ui item right-float padding-top-10">{{resourceService.frmelmnts?.btn?.login}}</p>
+                        <p class="ui item right-float">{{resourceService.frmelmnts?.btn?.login}}</p>
                     </a>
                 </div>
             </div>
