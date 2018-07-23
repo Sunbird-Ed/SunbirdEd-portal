@@ -1,7 +1,8 @@
 import { combineLatest as observableCombineLatest, Observable, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService,
+   CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
@@ -258,26 +259,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.closeContentPlayer();
     }
-  });
 }
-  private findContentById(id: string) {
-  return this.treeModel.first((node) => {
-    return node.model.identifier === id;
-  });
-}
-  private OnPlayContent(content: { title: string, id: string }) {
-  if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
-    this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
-    || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
-    || this.courseHierarchy.createdBy === this.userService.userid)) {
-    this.contentId = content.id;
-    this.setTelemetryContentImpression();
-    this.setContentNavigators();
-    this.playContent(content);
-  } else {
-    console.log('content not playable');
-  }
-}
+
   private setContentNavigators() {
     const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
     this.prevPlaylistItem = this.contentDetails[index - 1];
@@ -295,13 +278,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.setContentInteractData(config);
         this.loader = false;
         this.playerConfig = config;
-          if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
-          || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)
-        ) {
-            setTimeout(() => {
-              this.showExtContentMsg = true;
-            }, 5000);
-          }
+        //   if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
+        //   || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)
+        // ) {
+        //     setTimeout(() => {
+        //       this.showExtContentMsg = true;
+        //     }, 5000);
+        //   }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
         this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
@@ -311,20 +294,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
-    this.getConfigByContentSubscription = this.courseConsumptionService.getConfigByContent(data.id, options)
-    .subscribe((config) => {
-      this.setContentInteractData(config);
-      this.loader = false;
-      this.playerConfig = config;
-      this.enableContentPlayer = true;
-      this.contentTitle = data.title;
-      this.breadcrumbsService.setBreadcrumbs([{ label: this.contentTitle, url: '' }]);
-      this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
-    }, (err) => {
-      this.loader = false;
-      this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-    });
-}
+
   public navigateToContent(content: { title: string, id: string }): void {
     const navigationExtras: NavigationExtras = {
       queryParams: { 'contentId': content.id },
