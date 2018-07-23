@@ -196,7 +196,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
         if ( !this.isSearchable) {
           this.populatePageData();
       }
-        
       });
   }
 
