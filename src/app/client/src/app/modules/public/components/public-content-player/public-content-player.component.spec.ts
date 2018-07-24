@@ -111,11 +111,8 @@ describe('PublicContentPlayerComponent', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
     component.ngOnInit();
-    childcomponent.data = component.badgeData;
     expect(component.badgeData).toBeDefined();
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
-    expect(childcomponent.data).toBeDefined();
-    expect(childcomponent.data).toEqual(component.badgeData);
   });
 });
