@@ -1,4 +1,3 @@
-import { ContentBadgeComponent , ContentBadgeService} from '@sunbird/badge';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicPlayerService } from './../../services';
@@ -45,15 +44,13 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
-  let childcomponent: ContentBadgeComponent;
-  let childfixture: ComponentFixture<ContentBadgeComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
       TelemetryModule.forRoot()],
-      declarations: [PublicContentPlayerComponent, ContentBadgeComponent],
+      declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService, ContentBadgeService,
+      providers: [PublicPlayerService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -63,8 +60,6 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
-    childfixture = TestBed.createComponent(ContentBadgeComponent);
-    childcomponent = childfixture.componentInstance;
   });
 
   it('should config content player if content status is "Live"', () => {
