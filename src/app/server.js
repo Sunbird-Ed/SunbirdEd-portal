@@ -32,8 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = 'ap'
-const portal = this
+const defaultTenant = envHelper.DEFAULT_TENANT
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
@@ -383,9 +382,6 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
 app.use(express.static(path.join(__dirname, '/')))
-
-//shifted to bottom
-// app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
 
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
