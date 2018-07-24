@@ -58,7 +58,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   public loader: Boolean = true;
 
   public showFooter: Boolean = false;
-
+  public badgeData: Array<object>;
   private subsrciption: Subscription;
   public closeCollectionPlayerInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
@@ -198,6 +198,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       map((response) => {
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
+        this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
       }));
   }

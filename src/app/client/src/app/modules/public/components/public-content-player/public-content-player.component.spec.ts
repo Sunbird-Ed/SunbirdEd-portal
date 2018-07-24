@@ -1,4 +1,4 @@
-
+import { ContentBadgeComponent , ContentBadgeService} from '@sunbird/badge';
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicPlayerService } from './../../services';
@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { By } from '@angular/platform-browser';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -44,14 +45,15 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
-
+  let childcomponent: ContentBadgeComponent;
+  let childfixture: ComponentFixture<ContentBadgeComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
       TelemetryModule.forRoot()],
-      declarations: [PublicContentPlayerComponent],
+      declarations: [PublicContentPlayerComponent, ContentBadgeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, ContentBadgeService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -61,6 +63,8 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    childfixture = TestBed.createComponent(ContentBadgeComponent);
+    childcomponent = childfixture.componentInstance;
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -102,5 +106,16 @@ describe('PublicContentPlayerComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('sets the badges data  after making api call and pass input to content-badges component', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
+    component.ngOnInit();
+    childcomponent.data = component.badgeData;
+    expect(component.badgeData).toBeDefined();
+    expect(component.showPlayer).toBeTruthy();
+    expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
+    expect(childcomponent.data).toBeDefined();
+    expect(childcomponent.data).toEqual(component.badgeData);
   });
 });

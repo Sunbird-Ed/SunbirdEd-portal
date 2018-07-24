@@ -19,8 +19,12 @@
                 </div>
               </div>
             </div>
-            <div class="row margin-auto padding-top-none">
-              <div class="twelve wide column"></div>
+            <div class="row padding-top-none" *ngIf="showPlayer">
+              <div  class="twelve wide column">
+                <div class="player-badge-alignment">
+                  <app-content-badge [data]="badgeData" ></app-content-badge>
+                </div>
+              </div>
             </div>
           </div>
         </div>
