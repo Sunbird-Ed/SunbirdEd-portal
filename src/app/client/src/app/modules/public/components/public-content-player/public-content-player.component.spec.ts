@@ -1,4 +1,3 @@
-
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicPlayerService } from './../../services';
@@ -11,6 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { By } from '@angular/platform-browser';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -44,7 +44,6 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
@@ -102,5 +101,13 @@ describe('PublicContentPlayerComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('sets the badges data  after making api call and pass input to content-badges component', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
+    component.ngOnInit();
+    expect(component.badgeData).toBeDefined();
+    expect(component.showPlayer).toBeTruthy();
+    expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
 });
