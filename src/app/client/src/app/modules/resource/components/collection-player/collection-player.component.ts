@@ -255,12 +255,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
     return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
       map((response) => {
         this.collectionData = response.result.content;
-
-        if (this.collectionData && this.collectionData.gradeLevel) {
-          if (this.collectionData.gradeLevel.length && typeof(this.collectionData.gradeLevel) !== 'string') {
-            this.collectionData.gradeLevel = this.collectionData.gradeLevel.join(', ');
-          }
-        }
         this.contentType = _.get(response, 'result.content.contentType');
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
