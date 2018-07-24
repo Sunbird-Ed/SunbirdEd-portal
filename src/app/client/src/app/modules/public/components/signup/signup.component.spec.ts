@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,7 +10,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SignupService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { mockSignUpResponse } from './signup.component.spec.data';
-import { Observable } from 'rxjs/Observable';
 import { CoreModule, LearnerService } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -129,7 +130,7 @@ describe('SignupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockSignUpResponse.resourceBundle.messages;
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'signup').and.callFake(() => Observable.of(mockSignUpResponse.successResponse));
+    spyOn(signupService, 'signup').and.callFake(() => observableOf(mockSignUpResponse.successResponse));
     spyOn(toasterService, 'success').and.callThrough();
     component.onSubmitForm();
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0039);
@@ -141,8 +142,15 @@ describe('SignupComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = mockSignUpResponse.resourceBundle.messages;
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'signup').and.callFake(() => Observable.of(mockSignUpResponse.failureResponse));
+    spyOn(signupService, 'signup').and.callFake(() => observableOf(mockSignUpResponse.failureResponse));
     component.onSubmitForm();
     expect(component.showLoader).toBeFalsy();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.signUpForm = new FormGroup({});
+    component.onSubmitForm();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

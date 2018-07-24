@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, IAction } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -29,8 +30,8 @@ describe('CourseSearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['english'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['english'], sortType: 'desc', sort_by : 'lastUpdatedOn' }),
     snapshot: {
       data: {
         telemetry: {
@@ -76,7 +77,7 @@ describe('CourseSearchComponent', () => {
   });
   it('should subscribe to searchService', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
      component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
@@ -87,7 +88,7 @@ describe('CourseSearchComponent', () => {
   });
   it('should show resume button if enrolled course and other courses have same identifier ', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
     component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
@@ -98,7 +99,7 @@ describe('CourseSearchComponent', () => {
   });
   it('should subscribe to searchService when enrolled courses are not present', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.successData));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.successData));
     component.searchList = Response.successData.result.course;
     component.populateCourseSearch();
     fixture.detectChanges();
@@ -110,7 +111,7 @@ describe('CourseSearchComponent', () => {
   });
   it('should throw error when searchService api throw error ', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableThrowError({}));
     component.populateCourseSearch();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
@@ -118,7 +119,7 @@ describe('CourseSearchComponent', () => {
   });
   it('when count is 0 should show no result found', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.callFake(() => Observable.of(Response.noResult));
+    spyOn(searchService, 'courseSearch').and.callFake(() => observableOf(Response.noResult));
     // component.enrolledCourses = Response.enrolledCourses.enrolledCourses;
     // component.searchList = Response.noResult.result.course;
     component.totalCount = Response.noResult.result.count;
@@ -142,7 +143,7 @@ describe('CourseSearchComponent', () => {
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
-    spyOn(playerService, 'playContent').and.callFake(() => Observable.of(event.data.metaData));
+    spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });

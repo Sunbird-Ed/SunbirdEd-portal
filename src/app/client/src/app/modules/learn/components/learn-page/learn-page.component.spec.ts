@@ -1,10 +1,11 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService} from '@sunbird/shared';
 import { PageApiService, LearnerService, CoursesService, UserService, CoreModule, PlayerService} from '@sunbird/core';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
@@ -29,8 +30,8 @@ describe('LearnPageComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }]),
+    'params': observableOf({ pageNumber: '1' }),
+  'queryParams':  observableOf({ subject: ['English'], sortType: 'desc', sort_by : 'lastUpdatedOn' }),
     snapshot: {
       data: {
         telemetry: {
@@ -65,7 +66,7 @@ describe('LearnPageComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.filters = { board: ['NCERT'], subject: [] };
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData));
     component.populatePageData();
     fixture.detectChanges();
      expect(component.showLoader).toBeFalsy();
@@ -79,7 +80,7 @@ describe('LearnPageComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.filters = { board: ['NCERT'], subject: [] };
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.noData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.noData));
     component.populatePageData();
     fixture.detectChanges();
      expect(component.showLoader).toBeFalsy();
@@ -99,7 +100,7 @@ describe('LearnPageComponent', () => {
   it('should take else path when enrolledCourses length is 0 ', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(Response.noCourses));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(Response.noCourses));
     courseService.getEnrolledCourses();
     fixture.detectChanges();
     component.populateEnrolledCourse();
@@ -119,6 +120,12 @@ describe('LearnPageComponent', () => {
     component.populateEnrolledCourse();
     expect(component.showLoader).toBeTruthy();
   });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
   it('should call inview method for visits data', () => {
     spyOn(component, 'prepareVisits').and.callThrough();
     component.prepareVisits(Response.event);
@@ -134,7 +141,7 @@ describe('LearnPageComponent', () => {
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
-    spyOn(playerService, 'playContent').and.callFake(() => Observable.of(event.data.metaData));
+    spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });
@@ -148,9 +155,8 @@ describe('LearnPageComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.filters = { board: ['NCERT'], subject: [] };
     component.enrolledCourses = Response.sameIdentifier.enrolledCourses;
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.throw({}));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    component.caraouselData = Response.successData.result.response.sections;
     component.populatePageData();
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();

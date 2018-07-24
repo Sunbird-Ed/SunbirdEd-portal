@@ -8,4 +8,5 @@ export * from './window-scroll/window-scroll.service';
 export * from './navigation-helper/navigation-helper.service';
 export * from './content-utils/content-utils.service';
 export * from './util/util.service';
-
+export * from './browser-cache-ttl/browser-cache-ttl.service';
+export * from './exturl-util/exturl-util.service';

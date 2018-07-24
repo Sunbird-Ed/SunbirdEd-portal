@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ServerResponse, ConfigService, ToasterService, ICaraouselData, IAction } from '@sunbird/shared';
 import { PageApiService, PlayerService, LearnerService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import * as _ from 'lodash';
@@ -31,8 +32,8 @@ describe('ResourceComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'params': Observable.from([{ pageNumber: '1' }]),
-    'queryParams': Observable.from([{ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }]),
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['English'], sortType: 'desc', sort_by: 'lastUpdatedOn' }),
     snapshot: {
       data: {
         telemetry: {
@@ -63,7 +64,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.successData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.successData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -74,7 +75,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service and no contents', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.secondData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.secondData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -85,7 +86,7 @@ describe('ResourceComponent', () => {
   it('should subscribe to service and contents to be undefined', () => {
     const pageSectionService = TestBed.get(PageApiService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.of(Response.thirdData));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableOf(Response.thirdData.result.response));
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
     expect(component.queryParams.sortType).toBe('desc');
@@ -99,7 +100,7 @@ describe('ResourceComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const toasterService = TestBed.get(ToasterService);
-    spyOn(pageSectionService, 'getPageData').and.callFake(() => Observable.throw(Response.error));
+    spyOn(pageSectionService, 'getPageData').and.callFake(() => observableThrowError(Response.error));
     spyOn(toasterService, 'error').and.callThrough();
     component.populatePageData();
     expect(component.queryParams.sortType).toString();
@@ -111,7 +112,7 @@ describe('ResourceComponent', () => {
   it('should call playcontent', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { identifier: '0122838911932661768' } } };
-    spyOn(playerService, 'playContent').and.callFake(() => Observable.of(event.data.metaData));
+    spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event);
     expect(playerService.playContent).toHaveBeenCalled();
   });

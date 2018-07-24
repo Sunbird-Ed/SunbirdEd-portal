@@ -1,3 +1,5 @@
+
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
@@ -6,12 +8,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
-import { FrameworkService, FormService, ContentService, UserService, LearnerService,
-   ConceptPickerService, SearchService, PermissionService } from '@sunbird/core';
+import { ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
+import {
+  FrameworkService, FormService, ContentService, UserService, LearnerService,
+  ConceptPickerService, SearchService, PermissionService
+} from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { Observable } from 'rxjs/Observable';
-import { expand } from 'rxjs/operators/expand';
+import { expand } from 'rxjs/operators';
 import * as mockData from './data-driven-filter.component.spec.data';
 
 describe('DataDrivenFilterComponent', () => {
@@ -23,32 +26,32 @@ describe('DataDrivenFilterComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-        'emsg': {
-            'm0005': 'api failed, please try again'
-        },
-        'stmsg': {
-            'm0018': 'We are fetching content...',
-            'm0008': 'no-results',
-            'm0033': 'You dont have any content'
-       }
+      'emsg': {
+        'm0005': 'api failed, please try again'
+      },
+      'stmsg': {
+        'm0018': 'We are fetching content...',
+        'm0008': 'no-results',
+        'm0033': 'You dont have any content'
+      }
     }
-};
-const fakeActivatedRoute = {
-  'params': Observable.from([{ pageNumber: '1' }]),
-  'queryParams':  Observable.from([{ subject: ['English'] }])
-};
+  };
+  const fakeActivatedRoute = {
+    'params': observableOf({ pageNumber: '1' }),
+    'queryParams': observableOf({ subject: ['English'] })
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
-      declarations: [ DataDrivenFilterComponent ],
+      declarations: [DataDrivenFilterComponent],
       providers: [FrameworkService, FormService, UserService, ConfigService, ToasterService, LearnerService, ContentService,
-        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService,
+        CacheService, ResourceService, ConceptPickerService, SearchService, PermissionService, BrowserCacheTtlService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        {provide: ResourceService, useValue: resourceBundle}],
-        schemas: [NO_ERRORS_SCHEMA]
+        { provide: ResourceService, useValue: resourceBundle }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -67,7 +70,7 @@ const fakeActivatedRoute = {
     component.formFieldProperties = mockData.mockRes.formConfigData;
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.of(mockData.mockRes.formConfigData));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();
@@ -82,7 +85,7 @@ const fakeActivatedRoute = {
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
-    spyOn(formService, 'getFormConfig').and.returnValue(Observable.throw({err: {error: 'SERVER_ERROR'}}));
+    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({ err: { error: 'SERVER_ERROR' } }));
     frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
     component.fetchFilterMetaData();
     fixture.detectChanges();
@@ -101,6 +104,8 @@ const fakeActivatedRoute = {
     component.fetchFilterMetaData();
     fixture.detectChanges();
     expect(component.formFieldProperties).toEqual(mockData.mockRes.formConfigData);
+    expect(component.filtersDetails).toBeDefined();
+    expect(component.filtersDetails).toEqual(component.formFieldProperties);
   });
   it('should return proper error object if framework service returns error', () => {
     const frameworkService = TestBed.get(FrameworkService);
@@ -133,7 +138,7 @@ const fakeActivatedRoute = {
   });
   it('should initalize in page search incase of inpage filter is enabled', () => {
     component.filterType = 'course';
-    const emitData =  _.pickBy(component.queryParams);
+    const emitData = _.pickBy(component.queryParams);
     component.applyFilters();
     fixture.detectChanges();
   });
@@ -143,8 +148,63 @@ const fakeActivatedRoute = {
     fixture.detectChanges();
   });
   it('should remove filter selection', () => {
-    component.formInputData = {'subject': ['English']};
+    component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
     fixture.detectChanges();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    const formService = TestBed.get(FormService);
+    const cacheService = TestBed.get(CacheService);
+    component.formFieldProperties = mockData.mockRes.formConfigData;
+    spyOn(cacheService, 'exists').and.returnValue(false);
+    spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.mockRes.formConfigData));
+    frameworkService._frameworkData$.next({ frameworkdata: mockData.mockRes.frameworkData });
+    component.fetchFilterMetaData();
+    fixture.detectChanges();
+    spyOn(component.frameworkDataSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.frameworkDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
+  it('should call resetFilters method', () => {
+    component.ignoreQuery = ['key', 'language'];
+    component.resetFilters();
+    expect(component.refresh).toBeTruthy();
+  });
+  it('should call ngOnChanges method', () => {
+    component.enrichFilters = mockData.mockRes.enrichFilterData;
+    component.formFieldProperties = mockData.mockRes.formData;
+    spyOn(component, 'generateRange').and.callThrough();
+    component.ngOnChanges();
+    expect(component.generateRange).toHaveBeenCalled();
+  });
+  it('should not call permission service if allowedRoles are present', () => {
+    const permissionService = TestBed.get(PermissionService);
+    const allowedRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION'];
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
+    component.showField(allowedRoles);
+    expect(permissionService.checkRolesPermissions).toHaveBeenCalled();
+  });
+  it('should not call permission service if allowedRoles are empty', () => {
+    const permissionService = TestBed.get(PermissionService);
+    const allowedRoles = undefined;
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue('');
+    component.showField(allowedRoles);
+    expect(permissionService.checkRolesPermissions).not.toHaveBeenCalled();
+  });
+  it('should apply filters and key should have concepts', () => {
+    const router = TestBed.get(Router);
+    component.formInputData = { 'subject': ['English'], 'medium': ['English'] };
+    component.queryParams = {
+      'concepts': [
+        {
+          identifier: 'AI31',
+          name: '(Artificial) Neural Network'
+        }
+      ]
+    };
+    component.applyFilters();
+    expect(router.navigate).toHaveBeenCalledWith([undefined], { queryParams: component.queryParams });
   });
 });

@@ -1,5 +1,6 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,7 +10,7 @@ import { PublicPlayerService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse } from './public-collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('PublicCollectionPlayerComponent', () => {
@@ -18,9 +19,9 @@ describe('PublicCollectionPlayerComponent', () => {
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
   const fakeActivatedRoute = {
-    params: Observable.of({ collectionId: collectionId }),
+    params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': Observable.from([{ language: ['en'] }]),
+    'queryParams': observableOf({ language: ['en'] }),
     snapshot: {
       params: {
         collectionId: collectionId
@@ -68,7 +69,7 @@ describe('PublicCollectionPlayerComponent', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(Observable.of(CollectionHierarchyGetMockResponse));
+    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
     expect(component.loader).toBeFalsy();
@@ -116,14 +117,18 @@ describe('PublicCollectionPlayerComponent', () => {
   it('should call onPlayContent method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    const content = {
-      id: 'do_112474267785674752118',
-      title: 'Test'
+    const content = { id: 'do_112474267785674752118', title: 'Test' };
+    component.collectionTreeNodes = collectionTree;
+    const playContentDetails = {
+      model : {
+        mimeType : 'text/x-url',
+        channel: '505c7c48ac6dc1edc9b08f21db5a571d'
+      }
     };
     spyOn(component, 'OnPlayContent').and.callThrough();
     spyOn(component, 'playContent').and.callThrough();
-    component.OnPlayContent(content);
-    expect(component.OnPlayContent).toHaveBeenCalledWith(content);
+    component.OnPlayContent(content, true);
+    expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
 });

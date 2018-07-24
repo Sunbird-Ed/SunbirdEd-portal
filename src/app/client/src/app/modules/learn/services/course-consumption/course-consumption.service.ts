@@ -1,7 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, ContentService, } from '@sunbird/core';
 import {ServerResponse} from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 @Injectable()
@@ -13,20 +16,20 @@ export class CourseConsumptionService {
 
   getCourseHierarchy(courseId) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
-      return Observable.of(this.courseHierarchy);
+      return observableOf(this.courseHierarchy);
     } else {
-      return this.playerService.getCollectionHierarchy(courseId).map((response: ServerResponse) => {
+      return this.playerService.getCollectionHierarchy(courseId).pipe(map((response: ServerResponse) => {
         this.courseHierarchy = response.result.content;
         return response.result.content;
-      });
+      }));
     }
   }
 
   getConfigByContent(contentId, options) {
     return this.playerService.getConfigByContent(contentId, options);
   }
-  getContentStatus(req) {
-    return this.courseProgressService.getContentsState(req);
+  getContentState(req) {
+    return this.courseProgressService.getContentState(req);
   }
   updateContentsState(req) {
     return this.courseProgressService.updateContentsState(req);

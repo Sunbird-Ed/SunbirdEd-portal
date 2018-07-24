@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { LearnerService, CoreModule } from '@sunbird/core';
 import { OrgManagementService } from '@sunbird/org-management';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService, SharedModule } from '@sunbird/shared';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -20,7 +21,7 @@ describe('UserUploadComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   const fakeActivatedRoute = {
-    'data': Observable.from([{ 'redirectUrl': '/profile' }]),
+    'data': observableOf({ 'redirectUrl': '/profile' }),
     snapshot: {
       data: {
         telemetry: {
@@ -43,7 +44,7 @@ describe('UserUploadComponent', () => {
         't0037': 'Password: Unique or common password given by organization',
         't0038': `All other columns are optional. These columns include information about the user such as:`,
         't0039': 'Phone',
-        't0040': `Role: User's role on DIKSHA. Examples for this column:
+        't0040': `Role: User's role on sunbird. Examples for this column:
         CONTENT_CREATOR, CONTENT_REVIEWER, FLAG_REVIEWER, COURSE_MENTOR, ORG_ADMIN, SYSTEM_ADMINISTRATION, COURSE_ADMIN, COURSE_CREATOR`,
         't0041': `Grade: Classes taught by the user`,
         't0042': `Location: User's place of location of the user`,
@@ -59,7 +60,12 @@ describe('UserUploadComponent', () => {
         't0065': 'If user is not passing organisationId but passing OrgProvider, then user should pass OrgExternalId',
         't0066': 'ExternalId: Identity of user in an external system. If user is passing externalId then they have to pass Provider.',
         't0067': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
-        If user is passing ExternalId then they have to pass Provider.`
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0068': `Provider: Provider is an organisation, who is providing an (external) ID to a user in sunbird.
+        If user is passing ExternalId then they have to pass Provider.`,
+        't0069': `ExternalIds: An array of external IDs (represented as a JSON string) that a user has.
+         Format: "[{"id":"someId","idType": "someIdType","provider":"someProvider", "operation": "ADD"}]".
+         Supported operations on an external ID are ADD, EDIT and REMOVE.`
       }
     }
   };
@@ -117,7 +123,7 @@ describe('UserUploadComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(mockRes.successResponse));
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableOf(mockRes.successResponse));
     component.uploadUsersCSV(mockRes.validfile);
   });
   it('should not call uploadUsersCSV method', () => {
@@ -133,12 +139,18 @@ describe('UserUploadComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const orgManagementService = TestBed.get(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => Observable.of(mockRes.errorResponse));
+    spyOn(orgManagementService, 'bulkUserUpload').and.callFake(() => observableOf(mockRes.errorResponse));
     component.uploadUsersCSV(mockRes.errorfile);
   });
   it('should recognize viewchild', () => {
     const modal = fixture.componentInstance.modal;
     component.ngOnDestroy();
     expect(component.modal).toBeDefined();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.uploadUsersCSV(mockRes.validfile);
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

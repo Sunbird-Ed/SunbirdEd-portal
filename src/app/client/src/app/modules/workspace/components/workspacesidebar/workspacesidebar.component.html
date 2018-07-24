@@ -32,6 +32,10 @@
     [routerLink]="['upForReview',1]" appPermission [permission]='upForReviewRole'>
     {{resourceService?.frmelmnts?.snav?.upForReview}}
   </a>
+  <a class="item" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/flagreviewer')"
+    [routerLink]="['flagreviewer',1]" appPermission [permission]='flagReviewer'>
+    {{resourceService?.frmelmnts?.snav?.flagReviewer}}
+  </a>
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['batches',1]"
     [class.active]="router.isActive('/workspace/content/batches')">
     {{resourceService?.frmelmnts?.lnk?.coursebacthes}}

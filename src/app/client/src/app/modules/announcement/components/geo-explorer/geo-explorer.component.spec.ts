@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ToasterService } from '@sunbird/shared';
@@ -10,10 +12,8 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { GeoExplorerComponent } from './geo-explorer.component';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { GeoExplorerService } from './../../services/geo-explorer/geo-explorer.service';
-// Rxjs
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/catch';
+
+
 // Test data
 import * as mockData from './geo-explorer.component.spec.data';
 import { Ng2IziToastModule } from 'ng2-izitoast';
@@ -56,7 +56,7 @@ describe('GeoExplorerComponent', () => {
   it('should return location list', inject([GeoExplorerService, LearnerService], (geoService, learnerService) => {
     component.rootOrgId = 'ORG_001';
     component.locationList = [];
-    spyOn(geoService, 'getLocations').and.callFake(() => Observable.of(testData.locationSuccessData));
+    spyOn(geoService, 'getLocations').and.callFake(() => observableOf(testData.locationSuccessData));
     component.initializeServiceAdopter();
     fixture.detectChanges();
     expect(component.locationList).not.toBeUndefined();
@@ -67,7 +67,7 @@ describe('GeoExplorerComponent', () => {
   it('should return location list', inject([GeoExplorerService, LearnerService], (geoService, learnerService) => {
     component.rootOrgId = 'ORG_001';
     component.locationList = [];
-    spyOn(geoService, 'getLocations').and.callFake(() => Observable.throw({}));
+    spyOn(geoService, 'getLocations').and.callFake(() => observableThrowError({}));
     component.initializeServiceAdopter();
     fixture.detectChanges();
     expect(component.locationList).not.toBeUndefined();
@@ -126,5 +126,13 @@ describe('GeoExplorerComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.showError).toEqual(true);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.initializeServiceAdopter();
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

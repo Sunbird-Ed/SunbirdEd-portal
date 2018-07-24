@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ToasterService, SharedModule, IBasicInfo } from '@sunbird/shared';
 import { UserService, CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserAdditionalInfoComponent } from './user-additional-info.component';
 import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
@@ -18,7 +19,7 @@ describe('UserAdditionalInfoComponent', () => {
   let parentComp: UserAdditionalInfoComponent;
   let parentFixture: ComponentFixture<UserAdditionalInfoComponent>;
   class FakeActivatedRoute {
-    params =  Observable.of([{ 'section': 'additionalInfo', 'action': 'edit' }]);
+    params =  observableOf([{ 'section': 'additionalInfo', 'action': 'edit' }]);
     changeParams(params) {
       this.params = params;
     }
@@ -116,7 +117,7 @@ describe('UserAdditionalInfoComponent', () => {
     };
     parentComp.editChild.basicInfoForm = new FormGroup({});
     parentComp.editChild.basicInfoForm = component.basicInfoForm;
-    spyOn(profileService, 'updateProfile').and.callFake(() => Observable.of(mockRes.response));
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableOf(mockRes.response));
     parentComp.editBasicInfo();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });

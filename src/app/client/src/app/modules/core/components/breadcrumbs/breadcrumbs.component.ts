@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {takeUntil, filter} from 'rxjs/operators';
+import { Subscription ,  Subject } from 'rxjs';
 import { BreadcrumbsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy, OnChanges, ChangeDetectorRef } from '@angular/core';
@@ -15,7 +17,7 @@ import * as _ from 'lodash';
     templateUrl: './breadcrumbs.component.html',
     styleUrls: ['./breadcrumbs.component.css']
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
     /**
      * This variable stores the data passed from routing module
@@ -40,6 +42,8 @@ export class BreadcrumbsComponent implements OnInit {
      */
     breadcrumbsService: BreadcrumbsService;
 
+    public unsubscribe = new Subject<void>();
+
 
     /**
      * The constructor
@@ -63,7 +67,7 @@ export class BreadcrumbsComponent implements OnInit {
          * The breadcrumb data is gathered from router and by looping through each
          * child component.
          */
-        this.router.events.filter(event => event instanceof NavigationEnd)
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(event => {
                 this.breadCrumbsData = [];
                 let currentRoute = this.activatedRoute.root;
@@ -80,11 +84,14 @@ export class BreadcrumbsComponent implements OnInit {
                 }
 
             });
+
         /**
          * The breadcrumb service helps in passing dynamic breadcrumbs from
          * a selected component.
          */
-        this.breadcrumbsService.dynamicBreadcrumbs.subscribe(data => {
+        this.breadcrumbsService.dynamicBreadcrumbs.pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe(data => {
             if (data.length > 0) {
             data.forEach(breadcrumb => {
             this.breadCrumbsData.push(breadcrumb);
@@ -93,7 +100,6 @@ export class BreadcrumbsComponent implements OnInit {
             this.cdr.detectChanges();
         }
         );
-
     }
 
     /**
@@ -102,6 +108,11 @@ export class BreadcrumbsComponent implements OnInit {
      */
     openLink(url) {
         this.router.navigateByUrl(url);
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
 

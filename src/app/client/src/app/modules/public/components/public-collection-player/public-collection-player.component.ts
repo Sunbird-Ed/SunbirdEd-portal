@@ -1,13 +1,14 @@
+
+import {map, catchError, first, mergeMap} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicPlayerService } from './../../services';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ResourceService
+  ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService
 } from '@sunbird/shared';
-import { Subscription } from 'rxjs/Subscription';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -84,7 +85,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService) {
+    public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
+    public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -123,9 +125,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).catch((error) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(catchError((error) => {
       return error;
-    });
+    }));
   }
 
   public playContent(data: any): void {
@@ -153,10 +155,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
     });
   }
 
-  public OnPlayContent(content: { title: string, id: string }) {
+  public OnPlayContent(content: { title: string, id: string }, isClicked?: boolean) {
     if (content && content.id) {
       this.navigateToContent(content.id);
       this.playContent(content);
+      if (!isClicked) {
+        const playContentDetails = this.findContentById( this.collectionTreeNodes, content.id);
+        if (playContentDetails.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+          this.externalUrlPreviewService.generateRedirectUrl(playContentDetails.model);
+        }
+      }
         this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
     } else {
       throw new Error(`unbale to play collection content for ${this.collectionId}`);
@@ -164,13 +172,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContent(): void {
-    this.subsrciption = this.route.params
-      .first()
-      .flatMap((params) => {
+    this.subsrciption = this.route.params.pipe(
+      first(),
+      mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.setTelemetryData();
         return this.getCollectionHierarchy(params.collectionId);
-      })
+      }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.loader = false;
@@ -179,7 +187,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             if (content) {
-              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
+              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
             } else {
               // show toaster error
             }
@@ -193,12 +201,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
-    return this.playerService.getCollectionHierarchy(collectionId)
-      .map((response) => {
+    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+      map((response) => {
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         return { data: response.result.content };
-      });
+      }));
   }
   closeCollectionPlayer() {
     this.navigationHelperService.navigateToPreviousUrl('/explore/1');

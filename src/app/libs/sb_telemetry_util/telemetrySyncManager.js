@@ -96,17 +96,26 @@ telemetrySyncManager.prototype.sync = function (events, callback) {
     const options = this.getHttpOption(events)
 
     request(options, function (err, res, body) {
-      if (body && body.params && _.toLower(body.params.status) === 'successful') {
-        callback(null, body)
-      } else if (_.get(body, 'params.err') === 'VALIDATION_ERROR') {
-        callback(null, body)
+      
+      if (res && res.statusCode === 200) {
+        callback(null, body);
+        return;
+      }
+      if(res &&  _.includes([503, 502, 429, 401], res.statusCode)) {
+        callback(new Error('Error while syncing telemetry with code: '+res.statusCode), null);
+        return;
       } else {
-        console.log('Telemetry sync failed, due to ', err)
-        callback(new Error('sync failed'), null, options.body.events)
+        try {
+          console.log('Error while syncing telemetry', JSON.stringify(body));  
+        } catch (error) {
+          console.log('Error while syncing telemetry', body);
+        }
+        callback(null, body);
+        return;
       }
     })
   } else {
-    callback(null, null)
+    return callback(null, null);
   }
 }
 

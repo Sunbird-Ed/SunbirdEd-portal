@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import {SharedModule} from '@sunbird/shared';
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 const fakeActivatedRoute = {
-  'params': Observable.from([{ contentId: 'd0_33567325' }]),
+  'params': observableOf({ contentId: 'd0_33567325' }),
   'root': {
     children: [{snapshot: {
       queryParams: {}

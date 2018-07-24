@@ -68,6 +68,10 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   public showModal: boolean;
 
+  private buildNumber: string;
+
+  public logo: string;
+
   /**
   * Default method of classs ContentEditorComponent
   *
@@ -98,6 +102,11 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.tenantService = tenantService;
+    try {
+      this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
+    } catch (error) {
+      this.buildNumber = '1.0';
+    }
   }
 
 
@@ -138,13 +147,13 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit() {
     /**
-    * Launch the generic editor after window load
+    * Fetch header logo and launch the content editor after window load
     */
     jQuery.fn.iziModal = iziModal;
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/content-editor/index.html',
+      iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
 
       navigateArrows: false,
       fullscreen: true,
@@ -160,9 +169,15 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         });
       }
     });
-    this.getContentData();
+    this.tenantService.tenantData$.subscribe((data) => {
+      if (data && !data.err) {
+        this.logo = data.tenantData.logo;
+        this.getContentData();
+      } else if (data && data.err) {
+        this.getContentData();
+      }
+    });
   }
-
 
   ngOnDestroy() {
     this.setRenderer();
@@ -201,7 +216,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       modalId: 'contentEditor',
       apislug: '/action',
       alertOnUnload: true,
-      headerLogo: this.tenantService.tenantData.logo,
+      build_number: this.buildNumber,
+      headerLogo: this.logo,
       aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
         this.userService.env + '/', 'https://ekstep-public-' +
         this.userService.env + '.s3-ap-south-1.amazonaws.com/'],
@@ -231,7 +247,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       localDispatcherEndpoint: '/content-editor/telemetry',
       showHelp: false,
       previewConfig: {
-        repos: ['/content-plugins/renderer'],
+        repos: ['/sunbird-plugins/renderer'],
         plugins: [{
           id: 'org.sunbird.player.endpage',
           ver: 1.0,

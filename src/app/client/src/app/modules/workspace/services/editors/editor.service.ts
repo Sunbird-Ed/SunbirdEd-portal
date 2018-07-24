@@ -1,6 +1,6 @@
-import { ContentService } from '@sunbird/core';
+import { ContentService, PublicDataService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 
 /**
@@ -18,9 +18,14 @@ export class EditorService {
      */
     public config: ConfigService;
     /**
-     * reference of lerner service.
+     * reference of content service.
      */
     public contentService: ContentService;
+
+    /**
+     * reference of lerner service.
+     */
+    public publicDataService: PublicDataService;
 
 
     /**
@@ -28,10 +33,12 @@ export class EditorService {
      * @param {ConfigService} config ConfigService reference
      * @param {HttpClient} http HttpClient reference
      */
-    constructor(config: ConfigService, contentService: ContentService) {
+    constructor(config: ConfigService, contentService: ContentService,
+        publicDataService: PublicDataService) {
         this.config = config;
         this.contentService = contentService;
         this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
+        this.publicDataService = publicDataService;
     }
 
     /**
@@ -54,7 +61,7 @@ export class EditorService {
         const option = {
             url : this.config.urlConFig.URLS.CONTENT.GET + '/' + req.contentId + '?fields=' + qs.fields + '&mode=' + qs.mode
         };
-        return this.contentService.get(option);
+        return this.publicDataService.get(option);
       }
 }
 

@@ -1809,5 +1809,68 @@ export const Response = {
             uri: '',
             visits: []
         }
+    },
+     upforReviewContentData: {
+        'code': '2e51aad8-659d-4497-a5ed-c1b10a534bcb',
+        'subject': 'Mathematics',
+        'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
+        'description': 'Angular 5 routing tutorial description',
+        'language': [
+            'English'
+        ],
+        'mimeType': 'video/x-youtube',
+        'medium': 'English',
+        'idealScreenSize': 'normal',
+        'createdOn': '2018-05-21T09:02:36.298+0000',
+        'objectType': 'Content',
+        'gradeLevel': [
+            'KG'
+        ],
+        'appIcon': '',
+        'appId': 'dev.sunbird.portal',
+        'contentDisposition': 'online',
+        'lastUpdatedOn': '2018-05-21T09:06:17.575+0000',
+        'contentEncoding': 'identity',
+        'artifactUrl': 'https://www.youtube.com/watch?v=tUCa3JcFILI',
+        'SYS_INTERNAL_LAST_UPDATED_ON': '2018-05-21T09:03:48.860+0000',
+        'contentType': 'Resource',
+        'identifier': 'do_1125083103747932161150',
+        'lastUpdatedBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+        'createdFor': [
+            '0123673542904299520',
+            '0123673689120112640',
+            'ORG_001'
+        ],
+        'creator': 'Sunil Pandith',
+        'audience': [
+            'Learner'
+        ],
+        'IL_SYS_NODE_TYPE': 'DATA_NODE',
+        'os': [
+            'All'
+        ],
+        'visibility': 'Default',
+        'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
+        'mediaType': 'content',
+        'osId': 'org.ekstep.quiz.app',
+        'graph_id': 'domain',
+        'nodeType': 'DATA_NODE',
+        'versionKey': '1526893577575',
+        'idealScreenDensity': 'hdpi',
+        'license': 'Standard YouTube License',
+        'framework': 'NCF',
+        'concepts': [
+            'do_112300246933831680110'
+        ],
+        'lastSubmittedOn': '2018-05-21T09:06:17.383+0000',
+        'createdBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
+        'compatibilityLevel': 1,
+        'IL_FUNC_OBJECT_TYPE': 'Content',
+        'name': 'Angular 5 routing tutorial',
+        'IL_UNIQUE_ID': 'do_1125083103747932161150',
+        'board': 'NCERT',
+        'status': 'Review',
+        'resourceType': 'Learn',
+        'node_id': 29215
     }
 };

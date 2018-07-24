@@ -1,0 +1,69 @@
+<div class="ui grid" *ngIf="flageReviewerContentData.length > 0 && !showLoader">
+  <div class="ten wide column">
+    <app-data-driven-filter  [filterEnv]="filterType" [redirectUrl]="redirectUrl" [accordionDefaultOpen]=false
+      [isShowFilterLabel]=true></app-data-driven-filter>
+  </div>
+  <div class="two wide column">
+    <app-sort-by [sortingOptions]="sortByOption" [url]="redirectUrl"></app-sort-by>
+  </div>
+</div>
+<div class="twelve wide column margin-top-20" *ngIf="showLoader ">
+    <app-loader [data]="loaderMessage"></app-loader>
+  </div>
+<div *ngIf="noResult && !showLoader">
+  <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+<table class="ui upForReviewTable table" *ngIf="flageReviewerContentData.length > 0 && !showLoader && !noResult">
+  <thead>
+    <tr>
+      <th class="six wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contentCaps}}
+      </th>
+      <th class="four wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.authorCaps}}
+      </th>
+      <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.statusCaps}}
+      </th>
+    </tr>
+  </thead>
+  <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="upForReviewContentData">
+    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of flageReviewerContentData;let i = index;" [id]="i" [data]="content" (click)="contentClick(content)"
+     appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion: '1.0'}" [telemetryInteractEdata]="{id:'flagReviewer-filter',type:'click',pageid:'FlaggedReview'}">
+      <td>
+        <h5 class="ui image header">
+          <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
+          <div class="content ">
+            <div class="UpReviewHeader">{{content.name | slice:0:40}}
+              <i *ngIf="content.name.length > 40">...</i>
+            </div>
+            <div class="UpReviewSubHeader">{{content.contentType}}
+            </div>
+          </div>
+        </h5>
+      </td>
+      <td>
+        <h5 class="ui image header">
+          <div class="content">
+            <div class="UpReviewHeader">{{content.creator}}</div>
+            <div class="UpReviewSubHeader">{{resourceService?.frmelmnts?.lbl?.pendingSince}}: {{content.lastUpdatedOn | fromNow }}
+            </div>
+          </div>
+        </h5>
+      </td>
+     <td class="UpForReviewStatusOrange" *ngIf ="content.status"> {{resourceService?.frmelmnts?.lbl?.flagReview}}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="ui grid">
+  <div class="two wide column"></div>
+  <div class="ten wide column">
+    <div class="padding-bottom-10" *ngIf="flageReviewerContentData && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+      <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length ">
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+      </div>
+    </div>
+  </div>
+</div>

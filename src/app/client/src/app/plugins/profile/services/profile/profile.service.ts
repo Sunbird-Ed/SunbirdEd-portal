@@ -1,3 +1,5 @@
+
+import {mergeMap, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { UserService, PermissionService, LearnerService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
@@ -9,12 +11,12 @@ export class ProfileService {
    * This method is used to update profile picture of the user
    */
   public updateAvatar(file) {
-    return this.uploadMedia(file).flatMap(results => {
+    return this.uploadMedia(file).pipe(mergeMap(results => {
       const req = {
         avatar: results.result.url
       };
       return this.updateProfile(req);
-    });
+    }));
   }
   /**
    * This method invokes learner service to update user profile
@@ -25,14 +27,14 @@ export class ProfileService {
       url: this.configService.urlConFig.URLS.USER.UPDATE_USER_PROFILE,
       data: data
     };
-    return this.learnerService.patch(options).map(
+    return this.learnerService.patch(options).pipe(map(
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
         }, this.configService.appConfig.timeOutConfig.setTime);
         return res;
       }
-    );
+    ));
   }
   /**
    * This method is used to update user profile visibility
@@ -74,13 +76,13 @@ export class ProfileService {
       url: this.configService.urlConFig.URLS.USER.ADD_SKILLS,
       data: data
     };
-    return this.learnerService.post(options).map(
+    return this.learnerService.post(options).pipe(map(
       (res: ServerResponse) => {
         setTimeout(() => {
           this.userService.getUserProfile();
         }, this.configService.appConfig.timeOutConfig.setTime);
         return res;
-      });
+      }));
   }
   /**
    * This method invokes learner service to get user respective skills

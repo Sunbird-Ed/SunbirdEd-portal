@@ -1,6 +1,7 @@
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
@@ -39,6 +40,11 @@ export class CoursesService {
    * Read only observable Containing enrolled courses.
    */
   public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
+
+  /**
+   * Notification message for external content onclick of Resume course button
+   */
+  showExtContentMsg = false;
   /**
   * the "constructor"
   *
@@ -61,15 +67,15 @@ export class CoursesService {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid
     };
-    return this.learnerService.get(option).map(
+    return this.learnerService.get(option).pipe(map(
       (apiResponse: ServerResponse) => {
         this._enrolledCourseData$.next({ err: null, enrolledCourses: apiResponse.result.courses });
         return apiResponse;
-      }).catch((err) => {
+      }), catchError((err) => {
         this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
         return err;
       }
-    );
+    ), );
   }
   /**
    *  call enroll course api and subscribe. Behavior subject will emit enrolled course data
@@ -77,6 +83,10 @@ export class CoursesService {
   public initialize() {
     this.getEnrolledCourses().subscribe((date) => {
     });
+  }
+
+  public setExtContentMsg(isExtContent: boolean) {
+    this.showExtContentMsg = isExtContent ? isExtContent : false;
   }
 }
 

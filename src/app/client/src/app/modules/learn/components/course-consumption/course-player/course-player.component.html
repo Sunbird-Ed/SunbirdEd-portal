@@ -73,6 +73,11 @@
                                             </h5>
                                         </div>
                                     </div>
+                                    <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">                                    
+                                        <div class="column twelve wide">
+                                            <p>{{resourceService.messages.imsg.m0036}}</p>
+                                        </div>                                    
+                                    </div>
                                     <div class="ui grid">
                                         <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
                                             <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
@@ -82,11 +87,9 @@
                             </div>
                             <div class="ui row padding-top-none">
                                 <div class="three wide column ">
-                                    <button class="ui blue button left floated  fluid  tocbutton" (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
-                                        <div class="toc-left-nav-btn-content">
-                                            <h4 class=" font-white">{{resourceService.frmelmnts.btn.previous}}</h4>
-                                            <p class=" font-white text-ellipsis">{{prevPlaylistItem?.title || noContentToPlay}}</p>
-                                        </div>
+                                    <button class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
+                                            <span class="header">{{resourceService.frmelmnts.btn.previous}}</span> <br />
+                                            <span class="font-white description text-ellipsis" title="{{prevPlaylistItem?.title || noContentToPlay}}">{{prevPlaylistItem?.title || noContentToPlay}}</span>
                                     </button>
                                 </div>
                                 <div class="two wide column "></div>
@@ -102,12 +105,9 @@
                                 </div>
                                 <div class="two wide column "></div>
                                 <div class="three wide column ">
-                                    <button class="ui blue button right floated  fluid" (click)="navigateToContent(nextPlaylistItem)" [disabled]="nextPlaylistItem === undefined">
-                                        <div class="toc-right-nav-btn-content">
-                                            <h4 class=" font-white">{{resourceService.frmelmnts.btn.next}}
-                                            </h4>
-                                            <p class=" font-white text-ellipsis">{{nextPlaylistItem?.title || noContentToPlay}}</p>
-                                        </div>
+                                    <button class="ui blue button right floated fluid toc-right-nav-btn-content" (click)="navigateToContent(nextPlaylistItem)" [disabled]="nextPlaylistItem === undefined">
+                                        <span class="header">{{resourceService.frmelmnts.btn.next}}</span><br />
+                                        <span class="font-white description text-ellipsis" title="{{nextPlaylistItem?.title || noContentToPlay}}">{{nextPlaylistItem?.title || noContentToPlay}}</span>
                                     </button>
                                 </div>
                             </div>

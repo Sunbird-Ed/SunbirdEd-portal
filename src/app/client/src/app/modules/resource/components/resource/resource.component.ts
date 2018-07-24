@@ -1,10 +1,11 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { PageApiService, PlayerService, ISort } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, INoResultMessage, ConfigService, UtilService} from '@sunbird/shared';
 import { ICaraouselData, IAction } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -97,11 +98,11 @@ export class ResourceComponent implements OnInit {
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType  }
     };
     this.pageSectionService.getPageData(option).subscribe(
-      (apiResponse: ServerResponse) => {
-        if (apiResponse) {
+      (apiResponse) => {
+        if (apiResponse && apiResponse.sections ) {
           let noResultCounter = 0;
           this.showLoader = false;
-          this.caraouselData = apiResponse.result.response.sections;
+          this.caraouselData = apiResponse.sections;
           _.forEach(this.caraouselData, (value, index) => {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
                 const constantData = this.config.appConfig.Library.constantData;
@@ -188,8 +189,7 @@ export class ResourceComponent implements OnInit {
    *  to get query parameters
    */
   getQueryParams() {
-    Observable
-      .combineLatest(
+    observableCombineLatest(
         this.activatedRoute.params,
         this.activatedRoute.queryParams,
         (params: any, queryParams: any) => {

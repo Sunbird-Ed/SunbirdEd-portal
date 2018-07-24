@@ -392,7 +392,7 @@ export const mockRes = {
                         'homeUrl': null,
                         'isDefault': null,
                         'contactDetail':
-                            '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                         'createdDate': null,
                         'createdBy': null,
                         'parentOrgId': null,
@@ -497,7 +497,7 @@ export const mockRes = {
                     'profileSummary': 'asdd',
                     'tcUpdatedDate': null,
                     'avatar':
-                        'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                     'userName': 'ntptest102',
                     'rootOrgId': 'ORG_001',
                     'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -935,7 +935,7 @@ export const mockRes = {
                         'homeUrl': null,
                         'isDefault': null,
                         'contactDetail':
-                            '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
+                        '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'}]',
                         'createdDate': null,
                         'createdBy': null,
                         'parentOrgId': null,
@@ -1040,7 +1040,7 @@ export const mockRes = {
                     'profileSummary': 'asdd',
                     'tcUpdatedDate': null,
                     'avatar':
-                        'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
+                    'https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png',
                     'userName': 'ntptest102',
                     'rootOrgId': 'ORG_001',
                     'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -1131,7 +1131,7 @@ export const mockRes = {
     userlist: {
         'id': 'api.user.search',
         'ver': 'v1',
-        'ts': '2018-04-22 06:41:39:687+0000',
+        'ts': '2018-07-03 09:05:24:123+0000',
         'params': {
             'resmsgid': null,
             'msgid': null,
@@ -1150,14 +1150,15 @@ export const mockRes = {
                         'tcStatus': null,
                         'education': [],
                         'gender': null,
-                        'regOrgId': '0123653943740170242',
                         'subject': [],
                         'roles': [
                             'public'
                         ],
+                        'channel': null,
                         'language': [],
-                        'updatedDate': null,
+                        'updatedDate': '2018-05-28 08:27:08:739+0000',
                         'skills': [],
+                        'badgeAssertions': [],
                         'isDeleted': null,
                         'organisations': [
                             {
@@ -1182,20 +1183,45 @@ export const mockRes = {
                                 'orgLeftDate': null
                             }
                         ],
-                        'provider': null,
                         'countryCode': '+91',
                         'id': '97255811-5486-4f01-bad1-36138d0f5b8a',
                         'tempPassword': null,
                         'email': 'us********@testss.com',
+                        'phoneverified': null,
                         'identifier': '97255811-5486-4f01-bad1-36138d0f5b8a',
                         'thumbnail': null,
                         'address': [],
-                        'jobProfile': [],
+                        'jobProfile': [
+                            {
+                                'jobName': 'sse',
+                                'orgName': 'comp',
+                                'role': 'sse',
+                                'updatedBy': null,
+                                'endDate': null,
+                                'isVerified': null,
+                                'subject': [
+                                    'Hindi'
+                                ],
+                                'joiningDate': '2018-05-01',
+                                'updatedDate': null,
+                                'isCurrentJob': true,
+                                'verifiedBy': null,
+                                'userId': '97255811-5486-4f01-bad1-36138d0f5b8a',
+                                'boardName': null,
+                                'orgId': null,
+                                'addressId': null,
+                                'createdDate': '2018-05-28 08:27:08:746+0000',
+                                'isDeleted': null,
+                                'createdBy': '97255811-5486-4f01-bad1-36138d0f5b8a',
+                                'verifiedDate': null,
+                                'isRejected': null,
+                                'id': '01251325407320473610'
+                            }
+                        ],
                         'profileSummary': null,
                         'tcUpdatedDate': null,
                         'avatar': null,
                         'rootOrgId': 'ORG_001',
-                        'badges': [],
                         'emailVerified': null,
                         'firstName': 'Mentor Second',
                         'lastLoginTime': null,
@@ -1285,6 +1311,30 @@ export const mockRes = {
             subtype: 'scroll',
             uri: '',
             visits: []
+        }
+    },
+    updateBatchlist: [
+        {identifier: 'do_2124339707713126401772',
+        name: 'Test_Collection_19_mar_2018_20001',
+        label: 0, userName: undefined},
+        {identifier: 'do_2124339707713126401772', name: 'Untitled Course', label: 0, userName: undefined}
+    ],
+    searchUserlistWithZero: {
+        'id': 'api.user.search',
+        'ver': 'v1',
+        'ts': '2018-07-03 09:05:24:123+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': null,
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'count': 0,
+            }
         }
     }
 };

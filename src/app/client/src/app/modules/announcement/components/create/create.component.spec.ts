@@ -1,3 +1,4 @@
+import { Subscription ,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, NgForm, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +14,6 @@ import {
   DetailsComponent, GeoExplorerComponent, CreateComponent, GeoExplorerService,
   CreateService, IGeoLocationDetails, FileUploaderComponent
 } from '@sunbird/announcement';
-import { Observable } from 'rxjs/Observable';
 import { mockRes } from './create.component.spec.data';
 
 
@@ -193,5 +193,13 @@ describe('CreateComponent', () => {
     spyOn(component.userDataSubscription, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.userDataSubscription.unsubscribe).toHaveBeenCalled();
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.setAnnouncementTypes();
+    component.getAnnouncementDetails();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

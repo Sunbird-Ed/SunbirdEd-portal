@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import * as testData from './delete.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 
 // Modules
@@ -20,8 +21,8 @@ describe('DeleteComponent', () => {
   let component: DeleteComponent;
   let fixture: ComponentFixture<DeleteComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'pageNumber': 10 }]),
-    'parent': { 'params': Observable.from([{ 'pageNumber': 10 }]) }
+    'params': observableOf({ 'pageNumber': 10 }),
+    'parent': { 'params': observableOf({ 'pageNumber': 10 }) }
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -47,20 +48,17 @@ describe('DeleteComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call delete api and get success response', inject([AnnouncementService, ActivatedRoute,
     ResourceService, ToasterService, HttpClient, RouterNavigationService],
     (announcementService, activatedRoute, resourceService, toasterService, http, routerNavigationService) => {
-      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.of(testData.mockRes.deleteSuccess));
+      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => observableOf(testData.mockRes.deleteSuccess));
       spyOn(component, 'deleteAnnouncement').and.callThrough();
       const params = { data: { 'request': { 'announcementId': 'fa355310-0b09-11e8-93d1-2970a259a0ba' } } };
+      const modal = fixture.componentInstance.modal;
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'success').and.callThrough();
-      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
       http.get().subscribe(
         data => {
           resourceService.messages = data.messages;
@@ -75,18 +73,19 @@ describe('DeleteComponent', () => {
         }
       );
       fixture.detectChanges();
+      expect(component.modal).toBeDefined();
     }));
 
   it('should call delete api and get error response', inject([AnnouncementService, ToasterService, ResourceService,
     HttpClient, RouterNavigationService],
     (announcementService, toasterService, resourceService, http, routerNavigationService) => {
-      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => Observable.throw(testData.mockRes.deleteError));
+      spyOn(announcementService, 'deleteAnnouncement').and.callFake(() => observableThrowError(testData.mockRes.deleteError));
       spyOn(component, 'deleteAnnouncement').and.callThrough();
       const param = { data: { 'request': { 'announcementId': '' } } };
       spyOn(resourceService, 'getResource').and.callThrough();
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(toasterService, 'error').and.callThrough();
-      spyOn(http, 'get').and.callFake(() => Observable.of(testData.mockRes.resourceBundle));
+      spyOn(http, 'get').and.callFake(() => observableOf(testData.mockRes.resourceBundle));
       http.get().subscribe(
         data => {
           resourceService.messages = data.messages;
@@ -111,4 +110,12 @@ describe('DeleteComponent', () => {
     expect(component).toBeTruthy();
     expect(component.pageNumber).toEqual(10);
   }));
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.deleteAnnouncement();
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
 });

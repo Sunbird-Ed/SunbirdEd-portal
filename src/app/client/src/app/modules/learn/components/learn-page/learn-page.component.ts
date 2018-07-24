@@ -1,12 +1,15 @@
+
+import {combineLatest as observableCombineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+
+import {takeUntil} from 'rxjs/operators';
 import { PageApiService, CoursesService, ICourses, ISort, PlayerService } from '@sunbird/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, IContents, IAction, ConfigService,
   UtilService, INoResultMessage
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -19,7 +22,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   templateUrl: './learn-page.component.html',
   styleUrls: ['./learn-page.component.css']
 })
-export class LearnPageComponent implements OnInit {
+export class LearnPageComponent implements OnInit, OnDestroy {
   /**
   * inviewLogs
   */
@@ -82,6 +85,8 @@ export class LearnPageComponent implements OnInit {
   public queryParams: any = {};
   sortingOptions: Array<ISort>;
   content: any;
+  public unsubscribe = new Subject<void>();
+  courseDataSubscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
    * @param {ResourceService} resourceService Reference of ResourceService
@@ -106,7 +111,7 @@ export class LearnPageComponent implements OnInit {
      */
   populateEnrolledCourse() {
     this.showLoader = true;
-    this.coursesService.enrolledCourseData$.subscribe(
+    this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(
       data => {
         if (data && !data.err) {
           if (data.enrolledCourses.length > 0) {
@@ -144,16 +149,18 @@ export class LearnPageComponent implements OnInit {
       filters: _.pickBy(this.filters, value => value.length > 0),
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType }
     };
-    this.pageSectionService.getPageData(option).subscribe(
-      (apiResponse: ServerResponse) => {
+    this.pageSectionService.getPageData(option).pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(
+      (apiResponse) => {
         this.noResultMessage = {
           'message': this.resourceService.messages.stmsg.m0007,
           'messageText': this.resourceService.messages.stmsg.m0006
         };
         let noResultCounter = 0;
-        if (apiResponse && apiResponse.result.response.sections.length > 0) {
+        if (apiResponse && apiResponse.sections) {
           this.showLoader = false;
-          const sections = this.processActionObject(apiResponse.result.response.sections);
+          const sections = this.processActionObject(apiResponse.sections);
           this.caraouselData = this.caraouselData.concat(sections);
           if (this.caraouselData.length > 0) {
             _.forIn(this.caraouselData, (value, key) => {
@@ -275,8 +282,7 @@ export class LearnPageComponent implements OnInit {
    *  to get query parameters
    */
   getQueryParams() {
-    Observable
-      .combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {
@@ -284,7 +290,8 @@ export class LearnPageComponent implements OnInit {
           params: params,
           queryParams: queryParams
         };
-      })
+      }).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(bothParams => {
         this.queryParams = { ...bothParams.queryParams };
         this.filters = {};
@@ -306,5 +313,12 @@ export class LearnPageComponent implements OnInit {
       event.data.metaData.contentType = 'Course';
     }
     this.playerService.playContent(event.data.metaData);
+  }
+  ngOnDestroy() {
+    if (this.courseDataSubscription) {
+      this.courseDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

@@ -2,9 +2,9 @@ import { BreadcrumbsService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Type } from '@angular/core';
-import 'rxjs/add/operator/filter';
+
 import { IBreadcrumb } from '../../interfaces';
 
 const data = { data: {breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }]} };
@@ -78,5 +78,11 @@ describe('BreadcrumbsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component.breadCrumbsData).toEqual([]);
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

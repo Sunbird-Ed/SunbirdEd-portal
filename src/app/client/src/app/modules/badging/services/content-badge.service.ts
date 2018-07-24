@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 @Injectable()
 export class ContentBadgeService {
+  /**
+   * An event emitter to emit dynamic data passed from a component.
+   */
+  badges: EventEmitter<any> = new EventEmitter();
   /**
    * reference of config service.
    */
@@ -28,5 +32,7 @@ export class ContentBadgeService {
     };
     return this.learner.post(option);
   }
-
+  public setAssignBadge(badges) {
+    this.badges.emit(badges);
+  }
 }

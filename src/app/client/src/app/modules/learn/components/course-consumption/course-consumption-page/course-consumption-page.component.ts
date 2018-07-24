@@ -1,9 +1,12 @@
+
+import {combineLatest as observableCombineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+
+import {map, mergeMap, filter} from 'rxjs/operators';
 import { ResourceService } from '@sunbird/shared';
 import { ToasterService } from './../../../../shared/services/toaster/toaster.service';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, BreadcrumbsService } from '@sunbird/core';
 @Component({
@@ -19,6 +22,9 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   showError = false;
   courseHierarchy: any;
   eventSubscription: any;
+  courseDataSubscription: Subscription;
+  public unsubscribe = new Subject<void>();
+
   enrolledBatchInfo: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     private coursesService: CoursesService, public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -26,23 +32,23 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.subscription = Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.firstChild.params,
+    this.subscription = observableCombineLatest(this.activatedRoute.params, this.activatedRoute.firstChild.params,
       (params, firstChildParams) => {
         return { ...params, ...firstChildParams };
-      }).flatMap( (params) => {
+      }).pipe(mergeMap( (params) => {
         this.batchId = params.batchId;
         this.courseId = params.courseId;
         if (this.batchId) {
-          return Observable.combineLatest(this.courseConsumptionService.getCourseHierarchy(params.courseId),
+          return observableCombineLatest(this.courseConsumptionService.getCourseHierarchy(params.courseId),
           this.getEnrolledCourseBatchDetails(), (courseHierarchy, enrolledBatchDetails) => {
            return { courseHierarchy, enrolledBatchDetails };
          });
         } else {
-          return this.courseConsumptionService.getCourseHierarchy(params.courseId).map((courseHierarchy) => {
+          return this.courseConsumptionService.getCourseHierarchy(params.courseId).pipe(map((courseHierarchy) => {
             return { courseHierarchy };
-          });
+          }));
         }
-      }).subscribe((data) => {
+      })).subscribe((data) => {
         this.processCourseHierarchy(data.courseHierarchy);
         this.showLoader = false;
       }, (err) => {
@@ -52,7 +58,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.router.navigate([`/learn`]);
       });
 
-    this.eventSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+    this.eventSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       if (this.courseHierarchy) {
         if (this.batchId) {
           this.breadcrumbsService.setBreadcrumbs([{
@@ -78,14 +84,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       }
   }
   private getEnrolledCourseBatchDetails() {
-    return this.courseBatchService.getEnrolledBatchDetails(this.batchId).map((data) => {
+    return this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(map((data) => {
       this.enrolledBatchInfo = data;
       this.processBatch();
       return data;
-    });
+    }));
   }
   private processBatch() {
-    this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
+    this.courseDataSubscription = this.coursesService.enrolledCourseData$.subscribe(enrolledCourses => {
       if (enrolledCourses && !enrolledCourses.err) {
           const enrollCourse: any = _.find(enrolledCourses.enrolledCourses, {'batchId': this.batchId});
           if (enrollCourse === undefined) {
@@ -103,5 +109,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     if (this.eventSubscription) {
       this.eventSubscription.unsubscribe();
     }
+    if (this.courseDataSubscription) {
+      this.courseDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

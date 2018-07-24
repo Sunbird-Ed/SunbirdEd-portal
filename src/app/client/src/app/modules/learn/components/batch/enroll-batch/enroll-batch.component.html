@@ -40,11 +40,11 @@
                             <div class="ui grid batch-date">
                                 <div class="six wide column  start-date">
                                     <label>{{resourceService.frmelmnts.lbl.startdate}}</label>
-                                    <span class="padding-left-10">{{batchDetails.startDate }}</span>
+                                    <span class="padding-left-10">{{batchDetails.startDate | dateFormat}}</span>
                                 </div>
                                 <div class="six wide column  end-date">
                                     <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
-                                    <span class="padding-left-10">{{batchDetails.endDate }}</span>
+                                    <span *ngIf="batchDetails.endDate" class="padding-left-10">{{batchDetails.endDate | dateFormat}}</span>
                                 </div>
                             </div>
                             <div *ngIf="batchDetails.participantDetails && batchDetails.participantDetails.length" >

@@ -1,6 +1,7 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -24,7 +25,7 @@ describe('OrganisationComponent', () => {
   let fixture: ComponentFixture<OrganisationComponent>;
 
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'id': 1, 'timePeriod': '7d' }]),
+    'params': observableOf({ 'id': 1, 'timePeriod': '7d' }),
     snapshot: {
       data: {
         telemetry: {
@@ -78,7 +79,7 @@ describe('OrganisationComponent', () => {
   // If user is a member of more than one organization
   it('should call search api to get details of more than 1 org', inject([OrganisationService, SearchService, UserService],
     (organisationService, searchService, userService) => {
-      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgsDetailsSuccess));
+      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(testData.orgsDetailsSuccess));
       component.getOrgDetails(['01229679766115942443', '0123150108807004166']);
       expect(component.showLoader).toBe(false);
       expect(component.myOrganizations.length).not.toBeUndefined();
@@ -88,13 +89,13 @@ describe('OrganisationComponent', () => {
   // If user is member of only one organization
   it('should call search api to get details of only org details', inject([OrganisationService, SearchService, UserService],
     (organisationService, searchService, userService) => {
-      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgDetailsSuccess));
+      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(testData.orgDetailsSuccess));
       component.getOrgDetails(['01229679766115942443']);
       expect(component.myOrganizations.length).not.toBeUndefined();
       expect(component.myOrganizations.length).toEqual(1);
     }));
     it('should call validateIdentifier method when  org details 1 ', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgDetailsSuccess));
+    spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(testData.orgDetailsSuccess));
     spyOn(component, 'validateIdentifier').and.callThrough();
     component.getOrgDetails(['01229679766115942443']);
     component.validateIdentifier(testData.orgDetailsSuccess.result.response.content[0].identifier);
@@ -106,7 +107,7 @@ describe('OrganisationComponent', () => {
   // When search api throws error
   it('should throw error while getting org details', inject([OrganisationService, SearchService, UserService],
     (organisationService, searchService, userService) => {
-      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.throw({}));
+      spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableThrowError({}));
       component.getOrgDetails(['01229679766115942443']);
       expect(component.showLoader).toBe(false);
       expect(component.myOrganizations.length).toEqual(0);
@@ -115,7 +116,7 @@ describe('OrganisationComponent', () => {
   // When Org creation APIs return success response
   it('should call creation api', inject([OrganisationService, SearchService],
     (organisationService, searchService) => {
-      spyOn(organisationService, 'getDashboardData').and.callFake(() => Observable.of(testData.dashboardSuccessData));
+      spyOn(organisationService, 'getDashboardData').and.callFake(() => observableOf(testData.dashboardSuccessData));
       component.getDashboardData('7d', 'do_2123250076616048641482');
       fixture.detectChanges();
       expect(component.showDashboard).toBe(true);
@@ -127,7 +128,7 @@ describe('OrganisationComponent', () => {
   // When Org creation APIs throw's error
   it('should throw error - while getting org creation data', inject([OrganisationService], (organisationService) => {
     component.blockData = [];
-    spyOn(organisationService, 'getDashboardData').and.callFake(() => Observable.throw({}));
+    spyOn(organisationService, 'getDashboardData').and.callFake(() => observableThrowError({}));
     spyOn(component, 'setError').and.callThrough();
     component.getDashboardData('7d', 'do_2123250076616048641482');
     fixture.detectChanges();
@@ -227,7 +228,7 @@ describe('OrganisationComponent', () => {
     component.datasetType = 'creation';
     component.identifier = 'do_123';
     component.timePeriod = '7d';
-    spyOn(downloadService, 'getReport').and.callFake(() => Observable.of(testData.dashboardSuccessData));
+    spyOn(downloadService, 'getReport').and.callFake(() => observableOf(testData.dashboardSuccessData));
     component.downloadReport();
     fixture.detectChanges();
     expect(component.showDownloadSuccessModal).toEqual(true);
@@ -238,7 +239,7 @@ describe('OrganisationComponent', () => {
     component.datasetType = 'creation';
     component.identifier = 'do_123';
     component.timePeriod = '7d';
-    spyOn(downloadService, 'getReport').and.callFake(() => Observable.throw({}));
+    spyOn(downloadService, 'getReport').and.callFake(() => observableThrowError({}));
     component.downloadReport();
     fixture.detectChanges();
     expect(component.disabledClass).toEqual(false);

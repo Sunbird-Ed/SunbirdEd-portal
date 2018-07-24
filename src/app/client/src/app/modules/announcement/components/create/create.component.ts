@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import {first, takeUntil, map, filter} from 'rxjs/operators';
+import { Subscription ,  Observable ,  Subject } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService, FileUploadService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -8,7 +10,6 @@ import { FileUploaderComponent } from './../file-uploader/file-uploader.componen
 import { CreateService } from './../../services';
 import { UserService } from '@sunbird/core';
 import { IGeoLocationDetails, IAnnouncementDetails, IAttachementType } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import {
   IEndEventInput, IStartEventInput, IInteractEventInput,
@@ -23,6 +24,9 @@ import {
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit, OnDestroy {
+
+  public unsubscribe = new Subject<void>();
+
   @ViewChild('successModal') successModal;
   @ViewChild('cancelModal') cancelModal;
   /**
@@ -42,6 +46,8 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   announcementForm: FormGroup;
   userDataSubscription: Subscription;
+  subscription: Subscription;
+  testSubscription: Subscription;
   /**
    * Contains reference of FormBuilder
    */
@@ -195,7 +201,9 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       this.showResendLoader = false;
     } else {
-      this.createService.getAnnouncementTypes().subscribe(
+      this.createService.getAnnouncementTypes().pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(
         (data: ServerResponse) => {
           if (data.result.announcementTypes) {
             _.each(data.result.announcementTypes, (key) => {
@@ -298,8 +306,9 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   saveAnnouncement() {
     this.announcementDetails.target = this.recipientsList;
-    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).
-      subscribe(
+    this.createService.saveAnnouncement(this.announcementDetails, this.identifier ? true : false).pipe(
+    takeUntil(this.unsubscribe))
+      .subscribe(
         (res: ServerResponse) => {
           this.modalName = 'success';
         },
@@ -341,14 +350,15 @@ export class CreateComponent implements OnInit, OnDestroy {
    * Set meta data modified flag to true when user enter new value
    */
   onFormValueChanges(): void {
-    this.announcementForm.valueChanges
-      .map((value) => {
+    this.announcementForm.valueChanges.pipe(
+    takeUntil(this.unsubscribe),
+      map((value) => {
         value.title = value.title.trim();
         value.from = value.from.trim();
         value.description = value.description.trim();
         return value;
-      })
-      .filter((value) => this.announcementForm.valid)
+      }),
+      filter((value) => this.announcementForm.valid))
       .subscribe((value) => {
         this.enableSelectRecipientsBtn();
       });
@@ -417,7 +427,9 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   getAnnouncementDetails() {
     this.showResendLoader = true;
-    this.createService.resendAnnouncement(this.identifier).subscribe(
+    this.createService.resendAnnouncement(this.identifier).pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(
       (res: ServerResponse) => {
         this.setResendFormValues(res.result.announcement ? res.result.announcement : []);
         this.enableSelectRecipientsBtn();
@@ -439,7 +451,7 @@ export class CreateComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // Initialize form fields
-    this.userDataSubscription = this.user.userData$.first().subscribe(user => {
+    this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(user => {
       if (user && user.userProfile) {
         this.showAnnouncementForm = false;
         this.initializeFormFields();
@@ -491,7 +503,9 @@ export class CreateComponent implements OnInit, OnDestroy {
           this.activatedRoute.snapshot.data.telemetry.uri + this.stepNumber
       }
     };
-    this.fileUpload.uploadEvent.subscribe(uploadData => {
+    this.fileUpload.uploadEvent.pipe(
+    takeUntil(this.unsubscribe))
+    .subscribe(uploadData => {
       this.enableSelectRecipientsBtn();
     });
     this.setInteractEventData();
@@ -509,6 +523,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
   setInteractEventData() {
     this.confirmAnnouncementInteractEdata = {

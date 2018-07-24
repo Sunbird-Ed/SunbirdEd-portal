@@ -32,7 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAUULT_TENANT
+const defaultTenant = envHelper.DEFAULT_TENANT
 const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
@@ -45,6 +45,7 @@ const ejs = require('ejs');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
+let defaultTenantIndexStatus = 'false';
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -135,9 +136,14 @@ function getLocals(req) {
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.ekstepEnv = envHelper.EKSTEP_ENV
-  locals.defaultTenant = envHelper.DEFAUULT_TENANT
+  locals.defaultTenant = envHelper.DEFAULT_TENANT
   locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
+  locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
+  locals.enableSignup = envHelper.ENABLE_SIGNUP;
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
+  locals.buildNumber = envHelper.BUILD_NUMBER
+  locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   return locals;
 }
 
@@ -260,6 +266,14 @@ app.post('/learner/content/v1/media/upload',
     }
   }))
 
+app.post('/learner/user/v1/create', function(req, res, next){
+  if(envHelper.ENABLE_SIGNUP === 'false'){
+    res.sendStatus(403);
+  } else{
+    next();
+  }
+});
+
 app.all('/learner/*',
   proxyUtils.verifyToken(),
   permissionsHelper.checkPermission(),
@@ -277,22 +291,44 @@ app.all('/learner/*',
     }
   }))
 
-
 app.all('/content/data/v1/telemetry',
-  proxy(envHelper.content_Service_Local_BaseUrl, {
+  proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
-      return require('url').parse(envHelper.content_Service_Local_BaseUrl + '/v1/telemetry').path
+      return require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemtryEventConfig.endpoint).path
+    }
+  }))
+
+app.all('/action/data/v3/telemetry',
+  proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemtryEventConfig.endpoint).path
     }
   }))
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
 
+// middleware to add CORS headers
+function addCorsHeaders(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
+                                              'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+  } else {
+    next()
+  };
+}
+
 // tenant Api's
-app.get('/v1/tenant/info', tenantHelper.getInfo)
-app.get('/v1/tenant/info/:tenantId', tenantHelper.getInfo)
+app.get('/v1/tenant/info', addCorsHeaders, tenantHelper.getInfo)
+app.get('/v1/tenant/info/:tenantId', addCorsHeaders, tenantHelper.getInfo)
 
 // proxy urls
 require('./proxy/contentEditorProxy.js')(app, keycloak)
@@ -429,8 +465,9 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
 
 portal.server = app.listen(port, function () {
   if(envHelper.PORTAL_CDN_URL){
-    request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs?version=' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
+    request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
   }
+  defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState();
   console.log('app running on port ' + port)
 })
 
@@ -441,11 +478,11 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
+  pdata: { id: appId, ver: packageObj.version },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemtryEventConfig.endpoint,
-  host: contentURL,
+  host: envHelper.TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 }
 

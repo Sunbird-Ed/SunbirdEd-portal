@@ -250,6 +250,9 @@
 .padding-bottom-10 {
   padding-bottom: 10px!important;
 }
+.padding-bottom-20 {
+  padding-bottom: 20px!important;
+}
 .padding-bottom-none {
   padding-bottom: 0px!important;
 }
@@ -1133,17 +1136,14 @@ i.large.icon.limitedPublishingLinkIcon {
   max-height: 80px;
   width: auto;
   height: auto;
-  top: 14%;
-  left: 10%;
   position: absolute;
 }
 .header-logo-before-login {
   display: block;
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 90px;
+  max-height: 40px;
   width: auto;
   height: auto;
-  left: 10%;
 }
 
 .blue-text-color-sunbird {
@@ -1515,7 +1515,7 @@ span.fancytree-title {
   /* box-shadow: 0 8px 6px -8px @tertiary-color;*/
   padding-top: 1em;
   padding-bottom: 1em;
-  padding-left: 0.3em;
+  padding-left: 0;
 }
 .popular-section > .card-section-header {
   font-weight: bold;
@@ -2734,4 +2734,32 @@ iframe.iziModal-iframe {
   white-space: nowrap;
   overflow: hidden; 
   text-overflow:ellipsis 
+}
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+
+.inline-block-content {
+  display:inline-block !important;
+}
+
+.player-badge-alignment {
+  display:flex;
+  flex-direction: row;
+}
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.cursor-text {
+  cursor: text !important;
+}
+
+.ui.button .header {
+  font-weight: 600;
+  width: 100%;
+  display: inline-block;
+  font-size: 1.4em;
+  line-height: 1.35;
 }
