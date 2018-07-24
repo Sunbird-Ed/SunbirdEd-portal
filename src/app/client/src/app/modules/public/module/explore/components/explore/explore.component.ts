@@ -62,6 +62,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   slug = '';
   isSearchable = false;
   public unsubscribe$ = new Subject<void>();
+  telemetryImpression: IImpressionEventInput;
+  inviewLogs = [];
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
   /**
    * The "constructor"
    *
@@ -144,6 +148,43 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getQueryParams();
     this.getChannelId();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'explore-page'
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: 'explore-page'
+    };
+  }
+
+  prepareVisits(event) {
+    _.forEach(event, (inview, index) => {
+      if (inview.metaData.identifier) {
+        this.inviewLogs.push({
+          objid: inview.metaData.identifier,
+          objtype: inview.metaData.contentType,
+          index: index,
+          section: inview.section,
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
   playContent(event) {
