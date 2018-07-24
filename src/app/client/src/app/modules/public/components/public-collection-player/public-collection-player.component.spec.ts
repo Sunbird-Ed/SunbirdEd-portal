@@ -10,7 +10,7 @@ import { PublicPlayerService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse } from './public-collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('PublicCollectionPlayerComponent', () => {
@@ -117,14 +117,18 @@ describe('PublicCollectionPlayerComponent', () => {
   it('should call onPlayContent method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    const content = {
-      id: 'do_112474267785674752118',
-      title: 'Test'
+    const content = { id: 'do_112474267785674752118', title: 'Test' };
+    component.collectionTreeNodes = collectionTree;
+    const playContentDetails = {
+      model : {
+        mimeType : 'text/x-url',
+        channel: '505c7c48ac6dc1edc9b08f21db5a571d'
+      }
     };
     spyOn(component, 'OnPlayContent').and.callThrough();
     spyOn(component, 'playContent').and.callThrough();
-    component.OnPlayContent(content);
-    expect(component.OnPlayContent).toHaveBeenCalledWith(content);
+    component.OnPlayContent(content, true);
+    expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
 });
