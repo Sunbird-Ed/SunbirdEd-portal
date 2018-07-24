@@ -23,7 +23,7 @@
     "gulp-download": "0.0.1",
     "gulp-gzip": "1.4.2",
     "gulp-karma": "0.0.5",
-    "gulp-rename": "*",
+    "gulp-rename": "1.2.2",
     "gulp-rimraf": "0.2.2",
     "gulp-sequence": "1.0.0",
     "jasmine-core": "^2.6.1",
@@ -68,7 +68,7 @@
     "gulp-util": "^3.0.8",
     "rev-del": "^1.0.5",
     "rmdir": "^1.2.0",
-    "gulp-string-replace": "*"
+    "gulp-string-replace": "1.1.1"
   },
   "engines": {
     "node": ">=0.10.0"
