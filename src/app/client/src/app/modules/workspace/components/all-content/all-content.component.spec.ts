@@ -144,7 +144,7 @@ describe('AllContentComponent', () => {
   }));
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {
-      spyOn(workSpaceService, 'deleteContent').and.callFake(() => Observable.of(Response.deleteSuccess));
+      spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(Response.deleteSuccess));
       spyOn(component, 'deleteConfirmModal').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'delete').and.callThrough();
