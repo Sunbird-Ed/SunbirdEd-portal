@@ -31,11 +31,12 @@ describe('CoursesService', () => {
   }));
   it('should call updateCourseProgress', inject([CoursesService, UserService, LearnerService], (coursesService: CoursesService,
     userService: UserService, learnerService: LearnerService) => {
-      const courseId = 'do_112481468925796352148';
-      const batchId = '01248152624895590442';
+      const courseId = 'do_1125083286221291521153';
+      const batchId = '01250836468775321655';
       const progress = 2;
       coursesService['enrolledCourses'] = testData.apiResonseData.result.courses;
       coursesService.updateCourseProgress(courseId, batchId, progress);
       expect(coursesService.enrolledCourseData$).toBeDefined();
+      expect(coursesService['enrolledCourses'][0].progress).toEqual(2);
   }));
 });
