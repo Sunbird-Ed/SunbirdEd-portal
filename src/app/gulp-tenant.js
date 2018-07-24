@@ -19,7 +19,8 @@ var async = require("async");
 var rmdir = require('rmdir');
 var deployAzureCdn = require('gulp-deploy-azure-cdn');
 var gutil = require('gulp-util');
-var envHelper = require('./helpers/environmentVariablesHelper.js')
+var rename = require('gulp-rename');
+var htmlstringreplace = require('gulp-string-replace');
 
 
 //credentials for cdn provider
@@ -29,8 +30,8 @@ var cdnServiceCredentials = {
   cdnServiceProvider: argv.provider || 'azure'
 }
 
-var containerName = envHelper.TENANTS_CONTAINER_NAME || 'tenants';
-var cdnurl = (argv.cdnurl || envHelper.TENANT_CDN_URL) + '/' + containerName;
+var containerName = 'tenants';
+var cdnurl = argv.cdnurl + '/' + containerName;
 var particularTenants = argv.tenant || '';
 
 //name if the output folder from which cdn file push done
@@ -41,11 +42,21 @@ var cloudUrls = {}
 var paths = {}
 
 //folder from which files are read and build is prepared
-var sourceFolder = 'tenant'
+var sourceFolderPath = argv.tenantpath || 'tenant'
+
+if(!argv.accountName || !argv.accessKey){
+  console.log("-------- Error -------- Please Provide CDN Provider Credentials")
+  return true;
+}
+
+if(!argv.cdnurl){
+  console.log("-------- Error -------- CDN URL Missing")
+  return true;
+}
 
 //first step of the build function which loops tenant folder (source) and creates build in series
 gulp.task('production', () =>{
-  fs.readdir(sourceFolder, (err, files) => {
+  fs.readdir(sourceFolderPath, (err, files) => {
 
     //check for arguments and run only for those tenants mentioned in the arguments
     if(particularTenants && particularTenants.length){
@@ -53,9 +64,9 @@ gulp.task('production', () =>{
     }
 
     async.eachSeries(files, function (foldername, next) {
-      if(fs.lstatSync(sourceFolder + '/' + foldername).isDirectory()){
+      if(fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
         recomputeStaticVariables(foldername)
-        runSequence('clean','build','revision:rename', 'revision:updateReferences','upload-app-to-cdn', function(){
+        runSequence('clean','build','revision:rename', 'revision:updateReferences','renameindex','replaceindexText','deletindexfile','upload-app-to-cdn', function(){
           //remove rev-manifest.json after every tenant build which is loacated in respective tenant folder
           fs.unlink(sourceTenantFolderPath + '/rev-manifest.json',function(){
             next()
@@ -65,9 +76,9 @@ gulp.task('production', () =>{
         next()
       }
     },function(){
-      console.log('all files done');
+      console.log('all files processing done');
       rmdir(distFolderName,function(err,done){
-        console.log("dist folder deleted")
+        console.log("minified folder deleted")
       });
     });
   })
@@ -76,7 +87,7 @@ gulp.task('production', () =>{
 //set all static paths before starting build
 function recomputeStaticVariables (foldername) {
   tenantName = foldername;
-  sourceTenantFolderPath = sourceFolder + '/' + tenantName;
+  sourceTenantFolderPath = sourceFolderPath + '/' + tenantName;
   distBaseUrl = distFolderName + '/' + tenantName
   cdnTargetFolder = cdnurl +  '/' + tenantName;
 
@@ -111,7 +122,7 @@ gulp.task('fonts', function() {
 // minify image files
 gulp.task('images', function () {
   return gulp.src(sourceTenantFolderPath + '/images/**/*')
-    // .pipe(imagemin())
+    .pipe(imagemin())
     .pipe(gulp.dest(distBaseUrl + '/images'))
 });
 
@@ -169,19 +180,33 @@ gulp.task('revision:rename', () =>{
 //reference changes in all files
 gulp.task('revision:updateReferences', () =>{
   var manifest = JSON.parse(fs.readFileSync(sourceTenantFolderPath + '/rev-manifest.json'))
-  var versionsObj = {}
-  if (fs.existsSync('tenant-index-versions.json')) {
-    versionsObj = JSON.parse(fs.readFileSync('tenant-index-versions.json'))
-  }
-  
-  versionsObj[tenantName] = manifest['index.html'];
-  //storing version number helps in fetching proper index page while serving tenant pages
-  fs.writeFile("tenant-index-versions.json", JSON.stringify(versionsObj), (error) => { /* handle error */ });
   return gulp.src([sourceTenantFolderPath + '/rev-manifest.json',paths.dist + '/**/*.{html,json,css,js}'])
      .pipe(collect())
      .pipe(gulp.dest(paths.dist))
 });
 
+//renaming index.html hashed file to index.html 
+gulp.task('renameindex', function() {
+    var manifest = JSON.parse(fs.readFileSync(sourceTenantFolderPath + '/rev-manifest.json'))
+    // 'dist/*.html'
+    return gulp.src( paths.dist + '/' + manifest['index.html'] )
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest(paths.dist))
+});
+
+// delete hashed index.html file
+gulp.task('deletindexfile', function() {
+  var manifest = JSON.parse(fs.readFileSync(sourceTenantFolderPath + '/rev-manifest.json'))
+  return fs.unlink(distFolderName + '/' + tenantName + '/' + manifest['index.html'],function(){
+  })
+});
+
+gulp.task('replaceindexText', function() {
+  var manifest = JSON.parse(fs.readFileSync(sourceTenantFolderPath + '/rev-manifest.json'))
+  return gulp.src([paths.distHtml])
+    .pipe(htmlstringreplace(manifest['index.html'], 'index.html'))
+    .pipe(gulp.dest(paths.dist))
+});
 
 //upload to cdn
 gulp.task('upload-app-to-cdn', function () {
@@ -198,10 +223,12 @@ gulp.task('upload-app-to-cdn', function () {
             // cacheControl: 'public, max-age=31530000', // cache in browser
             cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
         },
-        testRun: true // test run - means no blobs will be actually deleted or uploaded, see log messages for details
+        testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
     })).on('error', function(err){
       console.log("err while uploading files to cdn service ",err)
     });
+  }else{
+    console.log("CDN Service Provider Not Supported")
   }
 });
 

@@ -4,33 +4,33 @@ const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 let envVariables = {
-  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
+  LEARNER_URL: env.sunbird_learner_player_url || 'https://dev.open-sunbird.org/api/',
+  CONTENT_URL: env.sunbird_content_player_url || 'https://dev.open-sunbird.org/api/',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://dev.open-sunbird.org',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://dev.open-sunbird.org/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
-  DEFAULT_TENANT: env.sunbird_default_tenant,
+  DEFAULT_TENANT: env.sunbird_default_tenant || 'sunbird',
   EKSTEP_ENV: env.ekstep_env || 'qa',
   PORTAL_PORT: env.sunbird_port || 3000,
-  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
+  TENANT_CDN_URL: env.tenant_cdn_url || '',
+  PORTAL_API_AUTH_TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs',
   PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
-  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
+  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://dev.open-sunbird.org/api/echo/',
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   PORTAL_TITLE_NAME: env.sunbird_portal_title_name || 'Sunbird',
-  // PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
-  PORTAL_CDN_URL: '',
+  PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
   PORTAL_THEME: env.sunbird_theme || 'default',
   PORTAL_DEFAULT_LANGUAGE: env.sunbird_portal_default_language || 'en',
   PORTAL_PRIMARY_BUNDLE_LANGUAGE: env.sunbird_portal_primary_bundle_language || 'en',
   CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
+  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://dev.open-sunbird.org/api/',
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
   KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
   CACHE_STORE: env.sunbird_cache_store || 'memory',
@@ -43,8 +43,7 @@ let envVariables = {
   ENABLE_SIGNUP: env.sunbird_enable_signup || 'true',
   BUILD_NUMBER: env.build_number || packageObj.version+'.'+packageObj.buildNumber,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
-  PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
-  SUNBIRD_EXTCONT_WHITELISTED_DOMAINS: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be'
+  PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
