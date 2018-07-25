@@ -46,6 +46,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
+const { frameworkAPI } = require('ext-framework-server/api');
+const frameworkConfig = require('./framework.config.js')
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -401,11 +403,20 @@ require('./helpers/shareUrlHelper.js')(app)
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
+// bootstrap extensible framework
+console.log('[Extensible framework]: Bootstraping...')
+const subApp = express()
+subApp.use(bodyParser.json({ limit: '50mb' }))
+app.use('/plugin', subApp)
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(() => {
+  runApp(port)
+}).catch((error) => {
+  console.log('[Extensible framework]: Bootstrap failed!', error)
+  // if framework fails, do not stop the portal
+  runApp(port)
+})
 
 // redirect to home if nothing found
-app.all('*', function (req, res) {
-  res.redirect('/')
-})
 
 /*
  * Method called after successful authentication and it will log the telemetry for CP_SESSION_START and updates the login time
@@ -456,24 +467,27 @@ keycloak.deauthenticated = function (request) {
   }
 }
 
-
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   console.error('please set environment variable sunbird_environment, ' +
     'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
   process.exit(1)
 }
 
-portal.server = app.listen(port, function () {
-  if(envHelper.PORTAL_CDN_URL){
-    request(envHelper.PORTAL_CDN_URL + 'index_'+packageObj.version+'.'+packageObj.buildNumber+'.ejs' ).pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')));
-  }
-  defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState();
-  console.log('app running on port ' + port)
-})
+function runApp (port) {
+  app.all('*', function (req, res) {
+    res.redirect('/')
+  })
 
-
+  portal.server = app.listen(port, function () {
+    if (envHelper.PORTAL_CDN_URL) {
+      request(envHelper.PORTAL_CDN_URL + 'index_' + packageObj.version + '.' + packageObj.buildNumber + '.ejs').pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
+    }
+    defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState()
+    console.log('app running on port ' + port)
+  })
+}
 exports.close = function () {
-  portal.server.close()
+  portal.server && portal.server.close()
 }
 
 // Telemetry initialization
@@ -491,3 +505,6 @@ telemetry.init(telemetryConfig)
 
 
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+})

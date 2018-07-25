@@ -1,0 +1,27 @@
+{
+  "name": "form-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist && cp -R db ./dist",
+    "build-prod": "rm -rf ./dist && tsc -p ./tsconfig.prod.json && cp package.json ./dist && cp -R db ./dist",
+    "test": "echo 'go to '../test' folder to execute test cases!'"
+  },
+  "dependencies": {
+    "joi": "^13.4.0",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "standard": "^10.0.3",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.1",
+    "typescript-eslint-parser": "^13.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
