@@ -237,7 +237,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.closeContentPlayer();
         }
       } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
         this.closeContentPlayer();
       }
     });
