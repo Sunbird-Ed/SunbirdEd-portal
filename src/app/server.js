@@ -46,7 +46,6 @@ const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
 const tenantCdnUrl = envHelper.TENANT_CDN_URL;
-const tenantsContainerName = 'tenants';
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -157,18 +156,7 @@ function indexPage(req, res) {
       _.forIn(getLocals(req), function (value, key) {
         res.locals[key] = value
       })
-      // if (envHelper.PORTAL_CDN_URL) {
-      //   request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
-      //     if (error || response.statusCode !== 200) {
-      //       console.log('error while fetching index.ejs from CDN', error)
-      //       res.render(path.join(__dirname, 'dist', 'index.ejs'))
-      //     } else {
-      //       res.send(ejs.render(body, getLocals(req)))
-      //     }
-      //   });
-      // } else {
-        res.render(path.join(__dirname, 'dist', 'index.ejs'))
-      //}
+      res.render(path.join(__dirname, 'dist', 'index.ejs'))
     }
   }
 }
@@ -401,18 +389,18 @@ app.all('/:tenantName', function (req, res) {
 function renderTenantPage (res) {
   try{
     if(tenantCdnUrl){
-      request(tenantCdnUrl + '/' + tenantsContainerName + '/' + tenantId + '/' +  'index.html' , function (error, response, body) {
+      request(tenantCdnUrl + tenantId + '/' +  'index.html' , function (error, response, body) {
         if(error || !body || response.statusCode !== 200){
-            checkForFallbackOption(res)
+            loadTenantFromLocal(res)
         }else{
           res.send(body)
         }
       });
     }else {
-      checkForFallbackOption(res)
+      loadTenantFromLocal(res)
     }
   }catch(e){
-    checkForFallbackOption(res)
+    loadTenantFromLocal(res)
   }
 }
 
@@ -423,7 +411,7 @@ if (defaultTenant) {
 }
 
 //in fallback option check always for localtenant folder and redirect to / if not exists
-function checkForFallbackOption (res) {
+function loadTenantFromLocal (res) {
   if(tenantId){
     if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
       res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
