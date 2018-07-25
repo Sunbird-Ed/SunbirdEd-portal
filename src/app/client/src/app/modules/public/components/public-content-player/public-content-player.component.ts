@@ -55,6 +55,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   public showFooter: Boolean = false;
   contentData: ContentData;
   public unsubscribe$ = new Subject<void>();
+  public badgeData: Array<object>;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
@@ -113,6 +114,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
           }
         this.showPlayer = true;
         this.windowScrollService.smoothScroll('content-player');
+        this.badgeData = _.get(response, 'result.content.badgeAssertions');
       },
       (err) => {
         this.showError = true;
