@@ -149,13 +149,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
   playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
     if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
+      this.router.navigate(['play/collection', event.data.metaData.identifier]);
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
+      this.router.navigate(['play/content', event.data.metaData.identifier]);
     }
   }
 

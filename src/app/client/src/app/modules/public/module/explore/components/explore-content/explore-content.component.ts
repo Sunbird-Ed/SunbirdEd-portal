@@ -273,7 +273,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
                     });
-                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType', 'language']);
+                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType']);
                 }
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();
@@ -309,13 +309,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     public playContent(event) {
         this.navigationHelperService.storeResourceCloseUrl();
         if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-            this.route.navigate(['play/collection', event.data.metaData.identifier], {
-                queryParams: _.pick(this.queryParams, ['language'])
-            });
+            this.route.navigate(['play/collection', event.data.metaData.identifier]);
         } else {
-            this.route.navigate(['play/content', event.data.metaData.identifier], {
-                queryParams: _.pick(this.queryParams, ['language'])
-            });
+            this.route.navigate(['play/content', event.data.metaData.identifier]);
         }
     }
     inview(event) {

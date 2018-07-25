@@ -28,7 +28,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   logo: string;
   key: string;
   queryParam: any = {};
-  queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
   /**
@@ -112,10 +111,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
-      if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
-        this.queryParamLanguage = this.queryParam['language'];
-        this.resourceService.getResource(this.queryParam['language']);
-      }
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -161,7 +156,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   onEnter(key) {
     this.key = key;
     this.queryParam = {};
-    this.queryParam['language'] = this.queryParamLanguage;
     this.queryParam['key'] = this.key;
     if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;

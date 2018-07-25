@@ -236,7 +236,7 @@ describe('ExploreContentComponent', () => {
       }
     };
     component.playContent(event);
-    expect(router.navigate).toHaveBeenCalledWith(['play/collection', event.data.metaData.identifier], { queryParams: {} });
+    expect(router.navigate).toHaveBeenCalledWith(['play/collection', event.data.metaData.identifier]);
   });
   it('should open content player if mimeType is not collection', () => {
     const router = TestBed.get(Router);
@@ -247,7 +247,7 @@ describe('ExploreContentComponent', () => {
       }
     };
     component.playContent(event);
-    expect(router.navigate).toHaveBeenCalledWith(['play/content', event.data.metaData.identifier], { queryParams: {} });
+    expect(router.navigate).toHaveBeenCalledWith(['play/content', event.data.metaData.identifier]);
   });
   it('should call inview method', () => {
     component.telemetryImpression = {

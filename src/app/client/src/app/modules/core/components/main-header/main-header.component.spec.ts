@@ -74,10 +74,9 @@ describe('MainHeaderComponent', () => {
   });
 
   it('All query param should be removed except key and language', () => {
-    component.queryParamLanguage = 'en';
-    component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
+    component.queryParam = {  'board': 'NCERT', 'medium': 'English' };
     component.onEnter('test');
-    expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
+    expect(component.queryParam).toEqual({  'key': 'test' });
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
