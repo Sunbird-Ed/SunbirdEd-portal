@@ -5,11 +5,11 @@ import {
    AnnouncementInboxCardComponent,
   PageSectionComponent, NoResultComponent, AppLoaderComponent, PlayerComponent,
   CollectionTreeComponent, FancyTreeComponent, CardComponent, ShareLinkComponent, CollectionPlayerMetadataComponent,
-  BrowserCompatibilityComponent, QrCodeModalComponent, CustomMultiSelectComponent
+  BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent, CustomMultiSelectComponent
 } from './components';
 import {
   ConfigService, ResourceService, FileUploadService, ToasterService, WindowScrollService, BrowserCacheTtlService,
-  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService
+  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService
 } from './services';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
@@ -34,11 +34,11 @@ import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
     DateFormatPipe, PageSectionComponent, NoResultComponent, DateFilterXtimeAgoPipe,
     CollectionTreeComponent, FancyTreeComponent, PlayerComponent, CardComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe,
-     CustomMultiSelectComponent],
+    RedirectComponent, CustomMultiSelectComponent],
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, NoResultComponent, CollectionTreeComponent, FancyTreeComponent,
     PlayerComponent, CardComponent, FilterPipe, ShareLinkComponent, CollectionPlayerMetadataComponent, BrowserCompatibilityComponent,
-    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, CustomMultiSelectComponent]
+    QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent, CustomMultiSelectComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
@@ -46,7 +46,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, FileUploadService, ToasterService, Ng2IzitoastService, PaginationService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService]
+        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService]
     };
   }
 }
