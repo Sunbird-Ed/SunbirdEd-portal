@@ -7,8 +7,8 @@ before_script:
     - cd src/app/client/
     - npm install
     - ng lint
-    - cd ./../
-    - npm install
+    - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && cd ./../'
+    - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && npm install'
 script:
-    - npm run test-with-coverage
+    - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && npm run test-with-coverage || npm run test-coverage'
 
