@@ -14,6 +14,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { mockUserData } from './../../../../core/services/user/user.mock.spec.data';
 import { mockPermissionRes } from './../../../../core/services/permission/permission.mock.spec.data';
+import { CoursesService } from './../../../../core/services/course/course.service';
 
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
@@ -72,8 +73,8 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursePlayerComponent],
-      providers: [CourseConsumptionService, CourseProgressService, CourseBatchService,
+      declarations: [ CoursePlayerComponent ],
+      providers: [ CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],

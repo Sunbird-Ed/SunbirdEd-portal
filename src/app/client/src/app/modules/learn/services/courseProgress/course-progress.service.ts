@@ -1,14 +1,10 @@
-
-import {of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
-
+import {of as observableOf } from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import {
   ConfigService, ServerResponse, CourseStates, CourseProgressData, CourseProgress, ContentList, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { ContentService, UserService } from '@sunbird/core';
-import { CacheService } from 'ng2-cache-service';
-import { DatePipe } from '@angular/common';
+import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -35,7 +31,7 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService) {
+    userService: UserService, public coursesService: CoursesService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;
@@ -143,6 +139,7 @@ export class CourseProgressService {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
+            this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount );
             return this.courseProgress[courseId_batchId];
           }));
       } else {

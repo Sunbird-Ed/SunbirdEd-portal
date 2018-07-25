@@ -72,4 +72,14 @@ describe('GenericEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content']);
   }));
+
+  it('should set the extContWhitelistedDomains variable', async(() => {
+    spyOn(document, 'getElementById').and.callFake(() => {
+      return {
+        value: 'youtube.com'
+      };
+    });
+    component.ngOnInit();
+    expect(component.extContWhitelistedDomains).toEqual('youtube.com');
+  }));
 });

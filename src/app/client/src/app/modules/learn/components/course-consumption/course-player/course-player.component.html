@@ -73,6 +73,11 @@
                                             </h5>
                                         </div>
                                     </div>
+                                    <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">                                    
+                                        <div class="column twelve wide">
+                                            <p>{{resourceService.messages.imsg.m0036}}</p>
+                                        </div>                                    
+                                    </div>
                                     <div class="ui grid">
                                         <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
                                             <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig]="playerConfig"></app-player>
