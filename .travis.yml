@@ -7,6 +7,8 @@ before_script:
     - cd src/app/client/
     - npm install
     - ng lint
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cd ./../; fi'
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then  npm install; fi'
 script:
-    - ng test --watch=false
-
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then  npm run test-with-coverage; fi'
+    - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run test-coverage; fi'
