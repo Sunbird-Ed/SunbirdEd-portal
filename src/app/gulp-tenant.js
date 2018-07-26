@@ -45,13 +45,13 @@ var paths = {}
 var sourceFolderPath = argv.tenantpath || 'tenant'
 
 if(!argv.accountName || !argv.accessKey){
-  console.log("-------- Error -------- Please Provide CDN Provider Credentials")
-  return true;
+  console.log("<-------- Error --------> Please Provide CDN Provider Credentials <-------- Error -------->")
+  return;
 }
 
 if(!argv.cdnurl){
-  console.log("-------- Error -------- CDN URL Missing")
-  return true;
+  console.log("<-------- Error --------> CDN URL Missing <-------- Error -------->")
+  return;
 }
 
 //first step of the build function which loops tenant folder (source) and creates build in series
@@ -76,10 +76,9 @@ gulp.task('production', () =>{
         next()
       }
     },function(){
-      console.log('all files processing done');
-      // rmdir(distFolderName,function(err,done){
-      //   console.log("minified folder deleted")
-      // });
+      console.log('Success! - All files processing done and pushed to CDN Provider');
+      rmdir(distFolderName,function(err,done){
+      });
     });
   })
 })
@@ -225,10 +224,10 @@ gulp.task('upload-app-to-cdn', function () {
         },
         testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
     })).on('error', function(err){
-      console.log("err while uploading files to cdn service ",err)
+      console.log("<-------- Error --------> err while uploading files to cdn service ",err)
     });
   }else{
-    console.log("CDN Service Provider Not Supported")
+    console.log("<-------- Error --------> CDN Service Provider Provided in args Not Supported <-------- Error -------->")
   }
 });
 
