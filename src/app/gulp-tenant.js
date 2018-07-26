@@ -30,7 +30,7 @@ var cdnServiceCredentials = {
   cdnServiceProvider: argv.provider || 'azure'
 }
 
-var containerName = 'tenants';
+var containerName = argv.containerName || 'tenants';
 var cdnurl = argv.cdnurl + '/' + containerName;
 var particularTenants = argv.tenant || '';
 
@@ -77,9 +77,9 @@ gulp.task('production', () =>{
       }
     },function(){
       console.log('all files processing done');
-      rmdir(distFolderName,function(err,done){
-        console.log("minified folder deleted")
-      });
+      // rmdir(distFolderName,function(err,done){
+      //   console.log("minified folder deleted")
+      // });
     });
   })
 })

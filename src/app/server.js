@@ -144,7 +144,7 @@ function getLocals(req) {
 }
 
 function indexPage(req, res) {
-  if(defaultTenant){
+  if(defaultTenant && defaultTenant !== 'sunbird' && req.path === '/' ){
     tenantId = defaultTenant
     renderTenantPage(res)
   }else{
@@ -390,7 +390,7 @@ app.all('/:tenantName', function (req, res) {
 function renderTenantPage (res) {
   try{
     if(tenantCdnUrl){
-      request(tenantCdnUrl + tenantId + '/' +  'index.html' , function (error, response, body) {
+      request(tenantCdnUrl + '/' + tenantId + '/' +  'index.html' , function (error, response, body) {
         if(error || !body || response.statusCode !== 200){
             loadTenantFromLocal(res)
         }else{

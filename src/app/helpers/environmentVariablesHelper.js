@@ -23,7 +23,7 @@ let envVariables = {
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   PORTAL_TITLE_NAME: env.sunbird_portal_title_name || 'Sunbird',
-  PORTAL_CDN_URL: env.sunbird_portal_cdn_url ? env.sunbird_portal_cdn_url + '/player/' : '',
+  PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
   PORTAL_THEME: env.sunbird_theme || 'default',
   PORTAL_DEFAULT_LANGUAGE: env.sunbird_portal_default_language || 'en',
   PORTAL_PRIMARY_BUNDLE_LANGUAGE: env.sunbird_portal_primary_bundle_language || 'en',
@@ -44,7 +44,7 @@ let envVariables = {
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   SUNBIRD_EXTCONT_WHITELISTED_DOMAINS: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
-  TENANT_CDN_URL: env.sunbird_portal_cdn_url ? env.sunbird_portal_cdn_url + '/tenants/' : ''
+  TENANT_CDN_URL: env.sunbird_tenant_cdn_url || ''
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
