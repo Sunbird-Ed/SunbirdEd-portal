@@ -10,6 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ExploreContentComponent } from './explore-content.component';
 import { Response } from './explore-content.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { PublicPlayerService } from './../../../../services';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
@@ -55,7 +56,7 @@ describe('ExploreContentComponent', () => {
       providers: [ConfigService, SearchService, LearnerService, OrgDetailsService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -227,27 +228,19 @@ describe('ExploreContentComponent', () => {
     expect(component.filterType).toEqual('explore');
     expect(component.redirectUrl).toEqual('/explore/1');
   });
-  it('should open collection player if mimeType is collection', () => {
+  it('should call playContent method in Public player service when triggered with appropriate arguments', () => {
     const router = TestBed.get(Router);
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    component.queryParams = {};
     const event = {
       data: {
         metaData:
           { mimeType: 'application/vnd.ekstep.content-collection', identifier: '1234' }
       }
     };
+    spyOn(publicPlayerService, 'playContent').and.callThrough();
     component.playContent(event);
-    expect(router.navigate).toHaveBeenCalledWith(['play/collection', event.data.metaData.identifier]);
-  });
-  it('should open content player if mimeType is not collection', () => {
-    const router = TestBed.get(Router);
-    const event = {
-      data: {
-        metaData:
-          { mimeType: '', identifier: '1234' }
-      }
-    };
-    component.playContent(event);
-    expect(router.navigate).toHaveBeenCalledWith(['play/content', event.data.metaData.identifier]);
+    expect(publicPlayerService.playContent).toHaveBeenCalledWith(event, {});
   });
   it('should call inview method', () => {
     component.telemetryImpression = {
