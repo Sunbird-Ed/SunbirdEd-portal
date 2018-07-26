@@ -34,10 +34,14 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getChannelId();
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this.queryParam = { ...queryParams };
-      this.selectedLanguage = this.queryParam['language'] || 'en';
-    });
+   this.isCachedDataExists = this._cacheService.exists('portalLanguage');
+   if (this.isCachedDataExists) {
+     const data: any | null = this._cacheService.get('portalLanguage');
+     this.selectedLanguage = data;
+     this.resourceService.getResource(this.selectedLanguage);
+   } else {
+    this.selectedLanguage = 'en';
+   }
   }
 
   getChannelId() {
@@ -83,10 +87,12 @@ export class LanguageDropdownComponent implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event) {
-    this.queryParam['language'] = event;
-    this.router.navigate([this.redirectUrl], {
-      queryParams: this.queryParam
+   this._cacheService.set('portalLanguage' , event,
+    {
+      maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
+        this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
     });
+    this.resourceService.getResource(event);
   }
 
   ngOnDestroy() {

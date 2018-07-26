@@ -279,7 +279,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
                     });
-                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType', 'language']);
+                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType']);
                 }
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();

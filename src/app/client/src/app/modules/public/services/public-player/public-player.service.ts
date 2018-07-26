@@ -89,13 +89,9 @@ export class PublicPlayerService {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        this.router.navigate(['play/collection', event.data.metaData.identifier], {
-          queryParams: _.pick(queryParams, ['language'])
-        });
+        this.router.navigate(['play/collection', event.data.metaData.identifier]);
       } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier], {
-          queryParams: _.pick(queryParams, ['language'])
-        });
+        this.router.navigate(['play/content', event.data.metaData.identifier]);
       }
     }, 0);
   }

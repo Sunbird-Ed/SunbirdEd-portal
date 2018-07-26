@@ -188,9 +188,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  playContent(event) {
+  public playContent(event) {
     this.publicPlayerService.playContent(event, this.queryParams);
-  }
+}
 
   compareObjects(a, b) {
     if (a !== undefined) {
