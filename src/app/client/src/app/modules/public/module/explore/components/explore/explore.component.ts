@@ -1,5 +1,6 @@
 import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
+import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, INoResultMessage,
@@ -75,7 +76,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
-    orgDetailsService: OrgDetailsService) {
+    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -188,18 +189,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    this.navigationHelperService.storeResourceCloseUrl();
-    setTimeout(() => {
-      if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        this.router.navigate(['play/collection', event.data.metaData.identifier], {
-          queryParams: _.pick(this.queryParams, ['language'])
-        });
-      } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier], {
-          queryParams: _.pick(this.queryParams, ['language'])
-        });
-      }
-    }, 0);
+    this.publicPlayerService.playContent(event, this.queryParams);
   }
 
   compareObjects(a, b) {
