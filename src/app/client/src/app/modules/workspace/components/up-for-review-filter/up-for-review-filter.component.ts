@@ -11,7 +11,7 @@ import * as _ from 'lodash';
       display: none;
        }
       .ui.inline.dropdown.search-dropdown {
-       margin-left: -5px;
+       margin-left: 5px;
        box-sizing: border-box;
        }
       .popup-content{
