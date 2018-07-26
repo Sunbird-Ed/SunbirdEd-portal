@@ -1,5 +1,6 @@
 import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
+import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, INoResultMessage,
@@ -62,6 +63,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   slug = '';
   isSearchable = false;
   public unsubscribe$ = new Subject<void>();
+  telemetryImpression: IImpressionEventInput;
+  inviewLogs = [];
+  filterIntractEdata: IInteractEventEdata;
+  sortIntractEdata: IInteractEventEdata;
   /**
    * The "constructor"
    *
@@ -71,7 +76,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   constructor(pageSectionService: PageApiService, toasterService: ToasterService, private playerService: PlayerService,
     resourceService: ResourceService, config: ConfigService, private activatedRoute: ActivatedRoute, router: Router,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
-    orgDetailsService: OrgDetailsService) {
+    orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService) {
     this.pageSectionService = pageSectionService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -144,30 +149,58 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getQueryParams();
     this.getChannelId();
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype
+      }
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.sortIntractEdata = {
+      id: 'sort',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
+  prepareVisits(event) {
+    _.forEach(event, (inview, index) => {
+      if (inview.metaData.identifier) {
+        this.inviewLogs.push({
+          objid: inview.metaData.identifier,
+          objtype: inview.metaData.contentType,
+          index: index,
+          section: inview.section,
+        });
+      }
+    });
+    this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
   playContent(event) {
-    this.navigationHelperService.storeResourceCloseUrl();
-    if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
-    } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
-    }
+    this.publicPlayerService.playContent(event, this.queryParams);
   }
 
   compareObjects(a, b) {
     if (a !== undefined) {
-        a = _.omit(a, ['language']);
+      a = _.omit(a, ['language']);
     }
     if (b !== undefined) {
-        b = _.omit(b, ['language']);
+      b = _.omit(b, ['language']);
     }
     return _.isEqual(a, b);
-}
+  }
 
   getQueryParams() {
     observableCombineLatest(
@@ -179,7 +212,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
           queryParams: queryParams
         };
       }).pipe(
-      takeUntil(this.unsubscribe$))
+        takeUntil(this.unsubscribe$))
       .subscribe(bothParams => {
         this.filters = {};
         this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
@@ -193,23 +226,23 @@ export class ExploreComponent implements OnInit, OnDestroy {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
         }
-        if ( !this.isSearchable) {
+        if (!this.isSearchable) {
           this.populatePageData();
-      }
+        }
       });
   }
 
   getChannelId() {
     this.orgDetailsService.getOrgDetails(this.slug).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (apiResponse: any) => {
-        this.hashTagId = apiResponse.hashTagId;
-      },
-      err => {
-        this.router.navigate(['']);
-      }
-    );
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: any) => {
+          this.hashTagId = apiResponse.hashTagId;
+        },
+        err => {
+          this.router.navigate(['']);
+        }
+      );
   }
 
   ngOnDestroy() {
