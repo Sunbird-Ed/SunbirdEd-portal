@@ -108,6 +108,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
     }
     this.getUrl();
+    if (!this.userService.loggedIn) {
+     this.getCacheLanguage();
+    }
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
@@ -138,6 +141,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
     } catch {
       console.log('error while fetching enableSignup');
+    }
+  }
+
+  getCacheLanguage() {
+    const isCachedDataExists = this.cacheService.exists('portalLanguage');
+    if (isCachedDataExists) {
+      const data: any | null = this.cacheService.get('portalLanguage');
+      this.resourceService.getResource(data);
     }
   }
   navigateToWorkspace() {
