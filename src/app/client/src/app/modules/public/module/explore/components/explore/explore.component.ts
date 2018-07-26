@@ -162,12 +162,12 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.filterIntractEdata = {
       id: 'filter',
       type: 'click',
-      pageid: 'explore-page'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.sortIntractEdata = {
       id: 'sort',
       type: 'click',
-      pageid: 'explore-page'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
 
@@ -189,26 +189,28 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
-    if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
-    } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier], {
-        queryParams: _.pick(this.queryParams, ['language'])
-      });
-    }
+    setTimeout(() => {
+      if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', event.data.metaData.identifier], {
+          queryParams: _.pick(this.queryParams, ['language'])
+        });
+      } else {
+        this.router.navigate(['play/content', event.data.metaData.identifier], {
+          queryParams: _.pick(this.queryParams, ['language'])
+        });
+      }
+    }, 0);
   }
 
   compareObjects(a, b) {
     if (a !== undefined) {
-        a = _.omit(a, ['language']);
+      a = _.omit(a, ['language']);
     }
     if (b !== undefined) {
-        b = _.omit(b, ['language']);
+      b = _.omit(b, ['language']);
     }
     return _.isEqual(a, b);
-}
+  }
 
   getQueryParams() {
     observableCombineLatest(
@@ -220,7 +222,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
           queryParams: queryParams
         };
       }).pipe(
-      takeUntil(this.unsubscribe$))
+        takeUntil(this.unsubscribe$))
       .subscribe(bothParams => {
         this.filters = {};
         this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
@@ -234,23 +236,23 @@ export class ExploreComponent implements OnInit, OnDestroy {
         if (this.queryParams.sort_by && this.queryParams.sortType) {
           this.queryParams.sortType = this.queryParams.sortType.toString();
         }
-        if ( !this.isSearchable) {
+        if (!this.isSearchable) {
           this.populatePageData();
-      }
+        }
       });
   }
 
   getChannelId() {
     this.orgDetailsService.getOrgDetails(this.slug).pipe(
-    takeUntil(this.unsubscribe$))
-    .subscribe(
-      (apiResponse: any) => {
-        this.hashTagId = apiResponse.hashTagId;
-      },
-      err => {
-        this.router.navigate(['']);
-      }
-    );
+      takeUntil(this.unsubscribe$))
+      .subscribe(
+        (apiResponse: any) => {
+          this.hashTagId = apiResponse.hashTagId;
+        },
+        err => {
+          this.router.navigate(['']);
+        }
+      );
   }
 
   ngOnDestroy() {
