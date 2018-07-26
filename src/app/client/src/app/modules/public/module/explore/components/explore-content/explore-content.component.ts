@@ -185,7 +185,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                         const constantData = this.config.appConfig.LibrarySearch.constantData;
                         const metaData = this.config.appConfig.LibrarySearch.metaData;
                         const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
-                        this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
+                        this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
+                             constantData, dynamicFields, metaData);
                     } else {
                         this.noResult = true;
                         this.showLoader = false;
