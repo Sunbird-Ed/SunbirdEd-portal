@@ -17,9 +17,9 @@
                     <!-- <span class="ui mouse-pointer content-font">
                 <i class="large blue share alternate icon"></i>&nbsp;
             </span> -->
-                    <span *ngIf="enrolledCourse && courseStatus !== 'Unlisted'" (click)="flagCourse()">
+                    <!-- <span *ngIf="enrolledCourse && courseStatus !== 'Unlisted'" (click)="flagCourse()">
                         <i class="ui large blue flag outline icon"></i>
-                    </span>
+                    </span> -->
                     <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
                         (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
                         title="Copy content">

@@ -6,12 +6,13 @@ import { Ng2IzitoastService } from 'ng2-izitoast';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
-import { ConfigService, ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, SharedModule, BrowserCacheTtlService  } from '@sunbird/shared';
 import { UserService, LearnerService, PermissionService, TenantService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { WebExtensionModule } from 'sunbird-web-extension';
 import { TelemetryModule} from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -23,7 +24,7 @@ describe('MainHeaderComponent', () => {
         TelemetryModule.forRoot(), RouterTestingModule, WebExtensionModule.forRoot()],
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ToasterService, TenantService,
+      providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         ResourceService, PermissionService,
         UserService, ConfigService,
         LearnerService]
@@ -74,11 +75,29 @@ describe('MainHeaderComponent', () => {
   });
 
   it('All query param should be removed except key and language', () => {
-    component.queryParamLanguage = 'en';
-    component.queryParam = { 'language': 'en', 'board': 'NCERT', 'medium': 'English' };
+    component.queryParam = {  'board': 'NCERT', 'medium': 'English' };
     component.onEnter('test');
-    expect(component.queryParam).toEqual({ 'language': 'en', 'key': 'test' });
+    expect(component.queryParam).toEqual({  'key': 'test' });
   });
+
+  it('Should call getCacheLanguage if user is not login and cache exits', () => {
+    const userService = TestBed.get(UserService);
+    const cacheService = TestBed.get(CacheService);
+    cacheService.set('portalLanguage', 'hi', { maxAge: 10 * 60 });
+    userService._authenticated = false;
+    component.ngOnInit();
+    expect(cacheService.exists('portalLanguage')).toEqual(true);
+  });
+
+  it('Should call getCacheLanguage if user is not login and cache not exits', () => {
+    const userService = TestBed.get(UserService);
+    const cacheService = TestBed.get(CacheService);
+    cacheService.set('portalLanguage', null );
+    userService._authenticated = false;
+    component.ngOnInit();
+    expect(cacheService.exists('portalLanguage')).toEqual(false);
+  });
+
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
     spyOn(component.userDataSubscription, 'unsubscribe');

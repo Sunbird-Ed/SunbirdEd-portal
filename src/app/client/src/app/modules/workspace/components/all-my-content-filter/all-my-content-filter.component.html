@@ -1,0 +1,65 @@
+<div class="ui grid">
+    <div class="seven wide column padding-top-none">
+      <div class="ui fluid icon input left action" id="search-input-container">
+        <div class="searchfilterinput ui search">
+          <div class="searchicon ui icon input ">
+            <input class="upForReviewSearchBox" type="text" name="filter_search" 
+              [(ngModel)]="query" (keyup)="keyup(query)"
+              placeholder="{{resourceService?.frmelmnts?.prmpt?.searchContent}}"
+              title="Search" autocomplete="off" spellcheck="false" dir="auto" />
+            <i class="circular search link icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="one wide column"></div>
+    <div class="two wide column padding-top-10" id="showFilterButton">
+      <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
+        {{resourceService?.frmelmnts?.lbl?.showFilters}}
+        <i class="dropdown icon"></i>
+      </span>
+    </div>
+    <div class="two wide column padding-top-5">
+      <div class="twelve wide column">
+        <div class="field">
+          <div class="content dropdown-content">
+           <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
+            <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
+              <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
+              valueField="field"
+          labelField="name"  #selectSort>
+                <sui-select-option *ngFor="let option of selectSort.filteredOptions" [value]="option" >
+                </sui-select-option>
+              </sui-select>
+            </div>
+            <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
+              class="link" (click)="applySorting(sortByOption)">
+            </i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template let-popup #popupTemplate>
+    <div class="popup-content">
+        <app-data-driven-filter [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType" [redirectUrl]="redirectUrl"
+        [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
+      </div>
+  </ng-template>
+  <div class="ui grid">
+      <div class="twelve wide column content" *ngIf='queryParams != undefined'>
+          <span *ngFor="let value of label">
+            <span class="padded chip padding-right-5" *ngIf='queryParams[value.id] && queryParams[value.id].length > 0'>
+              {{value.name}}:
+              <span *ngFor="let item of queryParams[value.id] ">
+                <a class="ui label margin-top--5">
+                  {{item}}
+                  <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
+                </a>
+              </span>
+            </span>
+          </span>
+      </div>
+  </div>
+    
