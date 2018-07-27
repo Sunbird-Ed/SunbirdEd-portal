@@ -144,9 +144,6 @@ export class SearchService {
       }
     };
     const objectType = requestParam && requestParam.filters && requestParam.filters.objectType;
-    if ((!objectType || objectType === 'Content' || objectType.includes('Content')) && this.user.contentChannelFilter) {
-      option.data.request.filters.channel = this.user.contentChannelFilter;
-    }
     return this.content.post(option);
   }
   /**
@@ -202,9 +199,6 @@ export class SearchService {
         }
       }
     };
-    if (this.user.contentChannelFilter) {
-      option.data.request.filters.channel = this.user.contentChannelFilter;
-    }
     return this.content.post(option);
   }
   /**
@@ -230,9 +224,7 @@ export class SearchService {
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
-    if (this.user.contentChannelFilter) {
-      option.data.request.filters.channel = this.user.contentChannelFilter;
-    }
+
     if (!option.data.request.filters.contentType && addDefaultContentTypesInRequest) {
       option.data.request.filters.contentType = [
         'Collection',
