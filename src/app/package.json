@@ -58,7 +58,7 @@
     "gulp-url-prefixer": "0.0.6",
     "rev-del": "^1.0.5",
     "rmdir": "^1.2.0",
-    "gulp-string-replace": "1.1.1",
+    "gulp-string-replace": "1.1.1"
   },
   "engines": {
     "node": ">=0.10.0"
