@@ -342,7 +342,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  fit('should not display error message if content id is not available in queryparams', () => {
+  it('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
