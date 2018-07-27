@@ -62,8 +62,9 @@ gulp.task('production', () =>{
       }
     },function(){
       console.log('Success! - All files processing done and pushed to CDN Provider');
-      // rmdir(distFolderName,function(err,done){
-      // });
+      //delete dist folder after build complete and pushed to cdn
+      rmdir(distFolderName,function(err,done){
+      });
     });
   })
 })
