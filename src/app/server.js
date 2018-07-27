@@ -46,6 +46,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
+const tenantCdnUrl = envHelper.TENANT_CDN_URL;
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
   memoryStore = new session.MemoryStore()
@@ -99,14 +100,9 @@ app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], function (req, res)
   res.sendStatus(404);
 })
 
-app.use(express.static(path.join(__dirname, '/')))
-app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
+
 // this line should be above middleware please don't change
 app.get('/public/service/orgs', publicServicehelper.getOrgs)
-
-if (defaultTenant) {
-  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
-}
 
 app.get('/assets/images/*', function (req, res, next) {
   res.setHeader("Cache-Control", "public, max-age=" + oneDayMS);
@@ -147,6 +143,15 @@ function getLocals(req) {
 }
 
 function indexPage(req, res) {
+  if(defaultTenant && req.path === '/'){
+    tenantId = defaultTenant
+    renderTenantPage(req,res)
+  }else{
+    renderDefaultIndexPage(req,res)
+  }
+}
+
+function renderDefaultIndexPage(req,res){
   const mobileDetect = new MobileDetect(req.headers['user-agent']);
   if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
     && mobileDetect.os() === 'AndroidOS') {
@@ -156,20 +161,10 @@ function indexPage(req, res) {
     _.forIn(getLocals(req), function (value, key) {
       res.locals[key] = value
     })
-    // if (envHelper.PORTAL_CDN_URL) {
-    //   request(envHelper.PORTAL_CDN_URL + 'index.ejs?version=' + packageObj.version+'.'+packageObj.buildNumber, function (error, response, body) {
-    //     if (error || response.statusCode !== 200) {
-    //       console.log('error while fetching index.ejs from CDN', error)
-    //       res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    //     } else {
-    //       res.send(ejs.render(body, getLocals(req)))
-    //     }
-    //   });
-    // } else {
-      res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    //}
+    res.render(path.join(__dirname, 'dist', 'index.ejs'))
   }
 }
+
 app.get('/get/envData', function (req, res) {
   res.status(200)
   res.send({ appId: appId, ekstep_env: ekstepEnv })
@@ -378,19 +373,59 @@ app.get('/v1/user/session/start/:deviceId', function (req, res) {
 // healthcheck
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
 
+app.use(express.static(path.join(__dirname, '/')))
+
 app.all('/:tenantName', function (req, res) {
   tenantId = req.params.tenantName
   if (_.isString(tenantId)) {
     tenantId = _.lowerCase(tenantId)
   }
-  if (tenantId && fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
-  } else if (defaultTenant && fs.existsSync(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))) {
-    res.sendFile(path.join(__dirname, 'tenant', defaultTenant, 'index.html'))
+  if (tenantId) {
+    renderTenantPage(req,res)
+  } else if (defaultTenant) {
+    renderTenantPage(req,res)
   } else {
     res.redirect('/')
   }
 })
+
+// renders tenant page from cdn or from local files based on tenantCdnUrl exists
+function renderTenantPage (req,res) {
+  try{
+    if(tenantCdnUrl){
+      request(tenantCdnUrl + '/' + tenantId + '/' +  'index.html' , function (error, response, body) {
+        if(error || !body || response.statusCode !== 200){
+            loadTenantFromLocal(req,res)
+        }else{
+          res.send(body)
+        }
+      });
+    }else {
+      loadTenantFromLocal(req,res)
+    }
+  }catch(e){
+    loadTenantFromLocal(req,res)
+  }
+}
+
+app.use(express.static(path.join(__dirname, 'tenant', tenantId)))
+
+if (defaultTenant) {
+  app.use(express.static(path.join(__dirname, 'tenant', defaultTenant)))
+}
+
+//in fallback option check always for localtenant folder and redirect to / if not exists
+function loadTenantFromLocal (req,res) {
+  if(tenantId){
+    if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
+      res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
+    }else{
+      renderDefaultIndexPage(req,res)
+    }
+  }else{
+    renderDefaultIndexPage(req,res)
+  }
+}
 
 // Handle content share request
 require('./helpers/shareUrlHelper.js')(app)
