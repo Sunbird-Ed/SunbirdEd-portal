@@ -10,7 +10,11 @@ const routes: Routes = [
       }
     },
     {
-        path: '', component: ExploreComponent
+        path: '', component: ExploreComponent, data: {
+          telemetry: {
+            env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
+          }
+        }
       },
   ];
   @NgModule({

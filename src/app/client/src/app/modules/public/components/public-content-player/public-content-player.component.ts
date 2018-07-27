@@ -44,10 +44,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    * contain error message
    */
   errorMessage: string;
-  /**
-   * contain contentData
-   */
-  selectedLanguage: string;
   queryParams: any;
 
   showExtContentMsg = false;
@@ -134,7 +130,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/explore/1');
+    this.navigationHelperService.navigateToResource('/explore');
   }
 
   deviceDetector() {

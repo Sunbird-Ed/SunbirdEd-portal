@@ -14,6 +14,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './explore.component';
 import {} from 'jasmine';
+import { PublicPlayerService } from './../../../../services';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
@@ -55,7 +56,7 @@ describe('ExploreComponent', () => {
       declarations: [ExploreComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
-      { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService],
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }, OrgDetailsService, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
