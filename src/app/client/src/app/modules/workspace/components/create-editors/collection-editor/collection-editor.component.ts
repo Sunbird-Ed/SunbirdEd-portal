@@ -3,8 +3,10 @@ import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/co
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+  IUserData, IUserProfile
+} from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services';
@@ -84,6 +86,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    * Show Modal for loader
    */
   public showModal: boolean;
+  public listener;
   /**
   * Default method of classs CollectionEditorComponent
   *
@@ -111,7 +114,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.config = config;
-    this.tenantService =  tenantService;
+    this.tenantService = tenantService;
     // buildNumber
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
@@ -121,6 +124,14 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
+    window.location.hash = 'no';
+    this.listener = (event) => {
+      if (event.state) {
+        this.toasterService.warning(this.resourceService.messages.imsg.m0037);
+        window.location.hash = 'no';
+      }
+    };
+    window.addEventListener('popstate', this.listener, false);
     /**
      * Call User service to get user data
      */
@@ -309,7 +320,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
   navigateToWorkSpace() {
     if (document.getElementById('collectionEditor')) {
-       document.getElementById('collectionEditor').remove();
+      document.getElementById('collectionEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     this.showModal = false;
@@ -319,6 +330,8 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
+    window.removeEventListener('popstate', this.listener, false);
+    window.location.reload();
   }
   /**
    *Validate the request

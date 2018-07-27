@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
-import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+  IUserData, IUserProfile
+} from '@sunbird/shared';
 import { UserService, PermissionService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
@@ -71,6 +72,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private buildNumber: string;
 
   public logo: string;
+  public listener;
 
   /**
   * Default method of classs ContentEditorComponent
@@ -108,9 +110,15 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.buildNumber = '1.0';
     }
   }
-
-
   ngOnInit() {
+    window.location.hash = 'no';
+    this.listener = (event) => {
+      if (event.state) {
+        this.toasterService.warning(this.resourceService.messages.imsg.m0037);
+        window.location.hash = 'no';
+      }
+    };
+    window.addEventListener('popstate', this.listener, true);
     /**
     * Call User service to get user data
     */
@@ -126,10 +134,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.type = params['type'];
       this.framework = params['framework'];
     });
-
     this.setRenderer();
   }
-
   setRenderer() {
     this.renderer.listen('window', 'editor:metadata:edit', () => {
       this.closeModal();
@@ -154,7 +160,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       title: '',
       iframe: true,
       iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
-
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -184,6 +189,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
+    window.removeEventListener('popstate', this.listener, false);
+    window.location.reload();
   }
   /**
    * Launch the content editor in Iframe Modal window
@@ -328,14 +335,14 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   closeModal() {
     this.showModal = true;
-     setTimeout(() => {
+    setTimeout(() => {
       this.navigateToWorkSpace();
-     }, 1000);
+    }, 1000);
   }
 
   navigateToWorkSpace() {
     if (document.getElementById('contentEditor')) {
-       document.getElementById('contentEditor').remove();
+      document.getElementById('contentEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     this.showModal = false;
