@@ -342,7 +342,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  it('should not display error message if content id is not available in queryparams', () => {
+  fit('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -352,5 +352,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
     expect(toasterService.error).not.toHaveBeenCalled();
+    expect(component.courseStatus).toEqual('Unlisted');
   });
 });
