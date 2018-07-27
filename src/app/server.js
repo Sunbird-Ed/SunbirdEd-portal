@@ -144,21 +144,25 @@ function getLocals(req) {
 }
 
 function indexPage(req, res) {
-  if(defaultTenant && defaultTenant !== 'sunbird' && req.path === '/' ){
+  if(defaultTenant && req.path === '/'){
     tenantId = defaultTenant
-    renderTenantPage(res)
+    renderTenantPage(req,res)
   }else{
-    const mobileDetect = new MobileDetect(req.headers['user-agent']);
-    if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
-      && mobileDetect.os() === 'AndroidOS') {
-      res.redirect(envHelper.ANDROID_APP_URL)
-    } else {
-      res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
-      _.forIn(getLocals(req), function (value, key) {
-        res.locals[key] = value
-      })
-      res.render(path.join(__dirname, 'dist', 'index.ejs'))
-    }
+    renderDefaultIndexPage(req,res)
+  }
+}
+
+function renderDefaultIndexPage(req,res){
+  const mobileDetect = new MobileDetect(req.headers['user-agent']);
+  if ((req.path === '/get' || req.path === '/' + req.params.slug + '/get')
+    && mobileDetect.os() === 'AndroidOS') {
+    res.redirect(envHelper.ANDROID_APP_URL)
+  } else {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+    _.forIn(getLocals(req), function (value, key) {
+      res.locals[key] = value
+    })
+    res.render(path.join(__dirname, 'dist', 'index.ejs'))
   }
 }
 
@@ -378,30 +382,30 @@ app.all('/:tenantName', function (req, res) {
     tenantId = _.lowerCase(tenantId)
   }
   if (tenantId) {
-    renderTenantPage(res)
+    renderTenantPage(req,res)
   } else if (defaultTenant) {
-    renderTenantPage(res)
+    renderTenantPage(req,res)
   } else {
     res.redirect('/')
   }
 })
 
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
-function renderTenantPage (res) {
+function renderTenantPage (req,res) {
   try{
     if(tenantCdnUrl){
       request(tenantCdnUrl + '/' + tenantId + '/' +  'index.html' , function (error, response, body) {
         if(error || !body || response.statusCode !== 200){
-            loadTenantFromLocal(res)
+            loadTenantFromLocal(req,res)
         }else{
           res.send(body)
         }
       });
     }else {
-      loadTenantFromLocal(res)
+      loadTenantFromLocal(req,res)
     }
   }catch(e){
-    loadTenantFromLocal(res)
+    loadTenantFromLocal(req,res)
   }
 }
 
@@ -412,15 +416,15 @@ if (defaultTenant) {
 }
 
 //in fallback option check always for localtenant folder and redirect to / if not exists
-function loadTenantFromLocal (res) {
+function loadTenantFromLocal (req,res) {
   if(tenantId){
     if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))){
       res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
     }else{
-      res.redirect('/')
+      renderDefaultIndexPage(req,res)
     }
   }else{
-    res.redirect('/')
+    renderDefaultIndexPage(req,res)
   }
 }
 

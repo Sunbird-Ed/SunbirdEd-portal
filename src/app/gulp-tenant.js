@@ -42,33 +42,6 @@ if(!argv.cdnurl){
   return;
 }
 
-//first step of the build function which loops tenant folder (source) and creates build in series
-gulp.task('production', () =>{
-  fs.readdir(sourceFolderPath, (err, files) => {
-
-    //check for arguments and run only for those tenants mentioned in the arguments
-    if(particularTenants && particularTenants.length){
-      files = particularTenants.split(',');
-    }
-
-    async.eachSeries(files, function (foldername, next) {
-      if(fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
-        recomputeStaticVariables(foldername)
-        runSequence('clean','copyfolder','html:dist','css:dist','revision:rename','revision:updateReferences','renameindex','replaceindexText','deletindexfile','deletemanifest','upload-app-to-cdn', function(){
-          next()
-        }) 
-      }else{
-        next()
-      }
-    },function(){
-      console.log('Success! - All files processing done and pushed to CDN Provider');
-      //delete dist folder after build complete and pushed to cdn
-      rmdir(distFolderName,function(err,done){
-      });
-    });
-  })
-})
-
 //set all static paths before starting build
 function recomputeStaticVariables (foldername) {
   tenantName = foldername;
@@ -91,12 +64,12 @@ gulp.task('clean', function () {
 });
 
 //copy the source tenant folder to dest folder
-gulp.task('copyfolder',function(){
+gulp.task('copyFolder',function(){
   return gulp.src(paths.src).pipe(gulp.dest(paths.dist));
 })
 
 //reference html files changes
-gulp.task('html:dist', function () {
+gulp.task('prefixCdnUrlForHtmlFiles', function () {
   return gulp.src(paths.distHTML)
     .pipe(urlPrefixer.html({
       prefix: cdnTargetFolder,
@@ -106,7 +79,7 @@ gulp.task('html:dist', function () {
 });
 
 // //css reference changes
-gulp.task('css:dist', function() {
+gulp.task('prefixCdnUrlForCssFiles', function() {
   return gulp.src(paths.distCSS)
   .pipe(urlPrefixer.css({
     prefix: cdnTargetFolder
@@ -115,7 +88,7 @@ gulp.task('css:dist', function() {
 });
 
 // file names renaming
-gulp.task('revision:rename', () =>{
+gulp.task('fileVersioning', () =>{
   return gulp.src([paths.dist+'/**/*'])
   .pipe(rev())
   .pipe(gulp.dest(paths.dist))
@@ -125,14 +98,14 @@ gulp.task('revision:rename', () =>{
 });
 
 //reference changes in all files
-gulp.task('revision:updateReferences', () =>{
+gulp.task('updateAssetsReferences', () =>{
   return gulp.src([distBaseUrl + '/rev-manifest.json',paths.dist + '/**/*.{html,json,css,js}'])
      .pipe(collect())
      .pipe(gulp.dest(paths.dist))
 });
 
 //renaming index.html hashed file to index.html 
-gulp.task('renameindex', function() {
+gulp.task('renameIndexFile', function() {
     var manifest = JSON.parse(fs.readFileSync(distBaseUrl + '/rev-manifest.json'))
     // 'dist/*.html'
     return gulp.src( paths.dist + '/' + manifest['index.html'] )
@@ -141,20 +114,20 @@ gulp.task('renameindex', function() {
 });
 
 // delete hashed index.html file
-gulp.task('deletindexfile', function() {
+gulp.task('deletIndexFile', function() {
   var manifest = JSON.parse(fs.readFileSync(distBaseUrl + '/rev-manifest.json'))
   return fs.unlink(distFolderName + '/' + tenantName + '/' + manifest['index.html'],function(){
   })
 });
 
 //remove rev-manifest.json after every tenant build which is loacated in respective tenant dist folder
-gulp.task('deletemanifest', function() {
+gulp.task('deleteManifest', function() {
   return fs.unlink(paths.dist + '/rev-manifest.json',function(){
   })
 });
 
 //remove file name versoning string in index.html file
-gulp.task('replaceindexText', function() {
+gulp.task('replaceindexPageText', function() {
   var manifest = JSON.parse(fs.readFileSync(distBaseUrl + '/rev-manifest.json'))
   return gulp.src([paths.distHtml])
     .pipe(htmlstringreplace(manifest['index.html'], 'index.html'))
@@ -162,7 +135,7 @@ gulp.task('replaceindexText', function() {
 });
 
 //upload to cdn store
-gulp.task('upload-app-to-cdn', function () {
+gulp.task('uploadAppToCdn', function () {
   if(cdnServiceCredentials.cdnServiceProvider == 'azure'){
     return gulp.src([distFolderName + '/' + tenantName + '/**/*'], {
     }).pipe(deployAzureCdn({
@@ -184,4 +157,46 @@ gulp.task('upload-app-to-cdn', function () {
     console.log("<-------- Error --------> CDN Service Provider Provided in args Not Supported <-------- Error -------->")
   }
 });
+
+
+//first step of the build function which loops tenant folder (source) and creates build in series
+gulp.task('pushTenantsToCDN', () =>{
+
+  if(!fs.existsSync(sourceFolderPath)){
+    console.warn("<-----------Warning----------->","specified tenant folder not found")
+    return;
+  }
+
+  fs.readdir(sourceFolderPath, (err, files) => {
+
+    //check for arguments and run only for those tenants mentioned in the arguments
+    if(particularTenants && particularTenants.length){
+      files = particularTenants.split(',');
+    }
+
+    if(files && files.length){
+      async.eachSeries(files, function (foldername, next) {
+        if(fs.existsSync(sourceFolderPath + '/' + foldername) && fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
+          recomputeStaticVariables(foldername)
+          runSequence('clean','copyFolder','prefixCdnUrlForHtmlFiles','prefixCdnUrlForCssFiles','fileVersioning','updateAssetsReferences','renameIndexFile','replaceindexPageText','deletIndexFile','deleteManifest','uploadAppToCdn', function(){
+            next()
+          }) 
+        }else{
+          console.warn("<-----------Warning----------->",foldername + " folder not found")
+          next()
+        }
+      },function(){
+        console.warn('Success! - All files processing done and pushed to CDN Provider');
+        // delete dist folder once build && pushing to cdn is completed.
+        rmdir(distFolderName,function(err,done){
+        });
+      });
+    }else{
+      console.warn("<-----------Warning----------->","no tenants found in specified folder " + sourceFolderPath)
+    }
+
+  })
+
+})
+
 

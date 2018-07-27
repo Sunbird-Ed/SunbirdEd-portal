@@ -71,7 +71,7 @@
     "resource-bundles": "node helpers/resourceBundles/build.js",
     "deploy": "gulp deploy",
     "test-with-coverage": "cd client && npm run test-coverage && cat ./coverage/lcov.info | codacy-coverage",
-    "tenants-push-cdn": "gulp production --gulpfile gulp-tenant.js"
+    "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js"
   },
   "dependencies": {
     "async": "^2.5.0",
