@@ -240,7 +240,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         contentType: ['Collection']
       };
     }
-    
+
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 
