@@ -52,7 +52,7 @@ describe('ContentBadgeComponent', () => {
   it('should show badgeClassImage while passing badgeData', () => {
     component.data = mockResponse.badgeData;
     fixture.detectChanges();
-    const badgesElm = fixture.nativeElement.querySelector('div .avatar');
+    const badgesElm = fixture.nativeElement.querySelector('div .mini');
     expect(component.data).toBeDefined();
     expect(component.data.length).toBeGreaterThanOrEqual(1);
     component.data.forEach((data) => {

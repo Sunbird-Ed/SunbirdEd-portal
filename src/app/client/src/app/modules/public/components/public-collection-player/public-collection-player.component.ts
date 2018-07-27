@@ -23,7 +23,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  selectedLanguage: string;
   queryParams: any;
   public collectionData: object;
 
@@ -210,7 +209,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy {
       }));
   }
   closeCollectionPlayer() {
-    this.navigationHelperService.navigateToPreviousUrl('/explore/1');
+    this.navigationHelperService.navigateToPreviousUrl('/explore');
   }
   closeContentPlayer() {
     this.showPlayer = false;

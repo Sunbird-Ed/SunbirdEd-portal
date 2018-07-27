@@ -7,7 +7,7 @@ import { UserService, CollectionHierarchyAPI, PublicDataService } from '@sunbird
 import { Injectable } from '@angular/core';
 import {
   ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails, PlayerConfig, ContentData
+  ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
 import { UUID } from 'angular2-uuid';
@@ -24,7 +24,7 @@ export class PublicPlayerService {
   collectionData: ContentData;
   constructor(public userService: UserService,
     public configService: ConfigService, public router: Router,
-    public publicDataService: PublicDataService) {
+    public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
   }
 
   /**
@@ -83,5 +83,16 @@ export class PublicPlayerService {
       this.collectionData = response.result.content;
       return response;
     }));
+  }
+
+  public playContent(event, queryParams) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', event.data.metaData.identifier]);
+      } else {
+        this.router.navigate(['play/content', event.data.metaData.identifier]);
+      }
+    }, 0);
   }
 }
