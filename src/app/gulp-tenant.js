@@ -32,10 +32,10 @@ var paths = {}
 //folder from which files are read and build is prepared
 var sourceFolderPath = argv.tenantpath || 'tenant'
 
-if(!argv.accountName || !argv.accessKey){
-  console.log("<-------- Error --------> Please Provide CDN Provider Credentials <-------- Error -------->")
-  return;
-}
+// if(!argv.accountName || !argv.accessKey){
+//   console.log("<-------- Error --------> Please Provide CDN Provider Credentials <-------- Error -------->")
+//   return;
+// }
 
 if(!argv.cdnurl){
   console.log("<-------- Error --------> CDN URL Missing <-------- Error -------->")
@@ -137,6 +137,9 @@ gulp.task('replaceindexPageText', function() {
 //upload to cdn store
 gulp.task('uploadAppToCdn', function () {
   if(cdnServiceCredentials.cdnServiceProvider == 'azure'){
+    if(!cdnServiceCredentials.accountName || cdnServiceCredentials.accessKey){
+      return;
+    }
     return gulp.src([distFolderName + '/' + tenantName + '/**/*'], {
     }).pipe(deployAzureCdn({
         containerName: containerName, // container name in blob
@@ -145,10 +148,6 @@ gulp.task('uploadAppToCdn', function () {
         zip: true, // gzip files if they become smaller after zipping, content-encoding header will change if file is zipped
         deleteExistingBlobs: true, // true means recursively deleting anything under folder
         concurrentUploadThreads: 10, // number of concurrent uploads, choose best for your network condition
-        metadata: {
-            // cacheControl: 'public, max-age=31530000', // cache in browser
-            cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
-        },
         testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
     })).on('error', function(err){
       console.log("<-------- Error --------> err while uploading files to cdn service ",err)
@@ -187,9 +186,13 @@ gulp.task('pushTenantsToCDN', () =>{
         }
       },function(){
         console.warn('Success! - All files processing done and pushed to CDN Provider');
-        // delete dist folder once build && pushing to cdn is completed.
-        rmdir(distFolderName,function(err,done){
-        });
+        
+        if(cdnServiceCredentials.accountName && cdnServiceCredentials.accessKey){
+          // delete dist folder once build && pushing to cdn is completed.
+          rmdir(distFolderName,function(err,done){
+          });
+        }
+        return;
       });
     }else{
       console.warn("<-----------Warning----------->","no tenants found in specified folder " + sourceFolderPath)
