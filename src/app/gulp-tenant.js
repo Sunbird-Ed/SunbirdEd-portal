@@ -54,19 +54,16 @@ gulp.task('production', () =>{
     async.eachSeries(files, function (foldername, next) {
       if(fs.lstatSync(sourceFolderPath + '/' + foldername).isDirectory()){
         recomputeStaticVariables(foldername)
-        runSequence('clean','copyfolder','html:dist','css:dist','revision:rename','revision:updateReferences','renameindex','replaceindexText','deletindexfile','upload-app-to-cdn', function(){
-          //remove rev-manifest.json after every tenant build which is loacated in respective tenant dist folder
-          fs.unlink(paths.dist + '/rev-manifest.json',function(){
-            next()
-          })
+        runSequence('clean','copyfolder','html:dist','css:dist','revision:rename','revision:updateReferences','renameindex','replaceindexText','deletindexfile','deletemanifest','upload-app-to-cdn', function(){
+          next()
         }) 
       }else{
         next()
       }
     },function(){
       console.log('Success! - All files processing done and pushed to CDN Provider');
-      rmdir(distFolderName,function(err,done){
-      });
+      // rmdir(distFolderName,function(err,done){
+      // });
     });
   })
 })
@@ -111,7 +108,7 @@ gulp.task('html:dist', function () {
 gulp.task('css:dist', function() {
   return gulp.src(paths.distCSS)
   .pipe(urlPrefixer.css({
-    prefix: cdnurl
+    prefix: cdnTargetFolder
   }))
   .pipe(gulp.dest(paths.dist));
 });
@@ -149,6 +146,12 @@ gulp.task('deletindexfile', function() {
   })
 });
 
+//remove rev-manifest.json after every tenant build which is loacated in respective tenant dist folder
+gulp.task('deletemanifest', function() {
+  return fs.unlink(paths.dist + '/rev-manifest.json',function(){
+  })
+});
+
 //remove file name versoning string in index.html file
 gulp.task('replaceindexText', function() {
   var manifest = JSON.parse(fs.readFileSync(distBaseUrl + '/rev-manifest.json'))
@@ -172,7 +175,7 @@ gulp.task('upload-app-to-cdn', function () {
             // cacheControl: 'public, max-age=31530000', // cache in browser
             cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
         },
-        testRun: true // test run - means no blobs will be actually deleted or uploaded, see log messages for details
+        testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
     })).on('error', function(err){
       console.log("<-------- Error --------> err while uploading files to cdn service ",err)
     });
