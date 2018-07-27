@@ -63,9 +63,6 @@ export class PageApiService {
           }
         }
       };
-      if (this.userService.contentChannelFilter) {
-        option.data.request.filters.channel = this.userService.contentChannelFilter;
-      }
       return this.publicDataService.post(option).pipe(map((data) => {
         this.setData(data, requestParam);
         return { sections : data.result.response.sections };
