@@ -251,13 +251,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         contentType: ['Collection']
       };
     }
-    if (this.userService.contentChannelFilter) {
-      window.config.searchCriteria = {
-        filters: {
-          channel: this.userService.contentChannelFilter
-        }
-      };
-    }
+
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 

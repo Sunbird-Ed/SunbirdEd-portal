@@ -7,7 +7,7 @@ const async = require('async')
 const _ = require('lodash')
 const telemetryHelper = require('./telemetryHelper')
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAULT_TENANT
+const defaultTenant = envHelper.DEFAULT_CHANNEL
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, './telemetryEventConfig.json')))
 telemtryEventConfig['pdata']['id'] = appId
 const successResponseStatusCode = 200
@@ -17,12 +17,12 @@ module.exports = {
   getImagePath: function (baseUrl, tenantId, image, callback) {
     fs.stat(path.join(__dirname, '../tenant', tenantId, image), function (err, stat) {
       if (err) {
-        if (envHelper.DEFAULT_TENANT && _.isString(envHelper.DEFAULT_TENANT)) {
-          fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_TENANT, image), function (error, stat) {
+        if (envHelper.DEFAULT_CHANNEL && _.isString(envHelper.DEFAULT_CHANNEL)) {
+          fs.stat(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL, image), function (error, stat) {
             if (error) {
               callback(null, null)
             } else {
-              callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_TENANT + '/' + image)
+              callback(null, baseUrl + '/tenant/' + envHelper.DEFAULT_CHANNEL + '/' + image)
             }
           })
         } else {
@@ -34,7 +34,7 @@ module.exports = {
     })
   },
   getInfo: function (req, res) {
-    let tenantId = req.params.tenantId || envHelper.DEFAULT_TENANT
+    let tenantId = req.params.tenantId || envHelper.DEFAULT_CHANNEL
     let host = req.hostname
     let headerHost = req.headers.host.split(':')
     let port = headerHost[1] || ''
@@ -84,7 +84,7 @@ module.exports = {
       uri: 'tenant/info',
       type: type,
       userId: userId,
-      channel: envHelper.DEFAULT_TENANT
+      channel: envHelper.DEFAULT_CHANNEL
     }
     telemetryHelper.logAPIAccessEvent(telemetryData)
     res.status(successResponseStatusCode)
@@ -107,7 +107,7 @@ module.exports = {
   getDefaultTenantIndexState:  function() {
     
     if(!defaultTenant){
-      console.log('default_tenant env not set');
+      console.log('DEFAULT_CHANNEL env not set');
       return false;
     }
 
@@ -115,7 +115,7 @@ module.exports = {
       var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
       return stats.isFile()
     } catch(e) {
-      console.log('default_tenant_index_file_stats_error ', e)
+      console.log('DEFAULT_CHANNEL_index_file_stats_error ', e)
       return false;
     }
     
