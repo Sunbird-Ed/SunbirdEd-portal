@@ -29,11 +29,11 @@
                                         [maximum]="5"></sui-rating>&nbsp;&nbsp;
                                     <app-content-badge [data]="badgeData" class="margin-left-20"></app-content-badge>
                                     <span class="margin-left-auto">
-
-                                        <a routerLink="flag" class="padding-right-10 blue-text-color-sunbird">
+                                        <!-- Temporarily disable flagging-->
+                                        <!-- <a routerLink="flag" class="padding-right-10 blue-text-color-sunbird">
                                             <i class="ui large blue flag outline icon"></i>
                                             {{resourceService?.frmelmnts?.lbl?.report}}
-                                        </a>
+                                        </a> -->
                                         <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="padding-right-10 blue-text-color-sunbird">
                                             <i class="cursor-pointer large blue share alternate icon"></i>
                                             {{resourceService?.frmelmnts?.lbl?.share}}
