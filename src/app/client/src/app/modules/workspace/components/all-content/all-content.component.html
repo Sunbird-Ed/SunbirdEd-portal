@@ -1,24 +1,4 @@
-<div class="ui grid" *ngIf="allContent.length > 0 && !showLoader">
-    <div class="seven wide column padding-top-none">
-      <div class="ui fluid icon input left action" id="search-input-container">
-        <div class="searchfilterinput ui search">
-          <div class="searchicon ui icon input ">
-            <input class="upForReviewSearchBox" type="text" name="filter_search" [(ngModel)]="query" (keyup)="keyup(query)" placeholder="{{resourceService?.frmelmnts?.prmpt?.searchContent}}"
-              title="Search" autocomplete="off" spellcheck="false" dir="auto" />
-            <i class="circular search link icon"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="ui grid">
-    <div class="nine wide column">
-      <app-data-driven-filter [filterEnv]="filterType" [redirectUrl]="redirectUrl" [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-    </div>
-    <div class="three wide column">
-      <app-sort-by [sortingOptions]="sortingOptions" [url]="redirectUrl"></app-sort-by>
-    </div>
-  </div>
+  <app-all-my-content-filter ></app-all-my-content-filter>
   <div class="twelve wide column margin-top-20" *ngIf="showLoader ">
     <app-loader [data]="loaderMessage"></app-loader>
   </div>
