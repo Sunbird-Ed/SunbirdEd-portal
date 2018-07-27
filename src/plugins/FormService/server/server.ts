@@ -1,4 +1,4 @@
-import { Manifest, BaseServer } from 'ext-framework-server/models';
+import { Manifest, BaseServer } from '@project-sunbird/ext-framework-server/models';
 import { Request, Response } from 'express';
 import { FormResponse } from './models';
 import * as _ from 'lodash';

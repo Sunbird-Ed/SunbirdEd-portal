@@ -1,0 +1,50 @@
+{
+  "type": "cassandra",
+  "config": {
+    "replication": {
+      "class": "SimpleStrategy",
+      "replication_factor": 1
+    }
+  },
+  "keyspace_name": "form_service",
+  "column_families": [
+    {
+      "table_name": "form_data",
+      "fields": {
+        "type": {
+          "type": "varchar"
+        },
+        "subtype": {
+          "type": "varchar",
+          "default": "*"
+        },
+        "action": {
+          "type": "varchar"
+        },
+        "component": {
+          "type": "varchar",
+          "default": "*"
+        },
+        "root_org": {
+          "type": "varchar",
+          "default": "*"
+        },
+        "framework": {
+          "type": "varchar",
+          "default": "*"
+        },
+        "data": {
+          "type": "varchar"
+        },
+        "created": {
+          "type": "timestamp",
+          "default": {"$db_function": "toTimestamp(now())"}
+        },
+        "last_modified": {
+          "type": "timestamp"
+        }
+      },
+      "key": [ ["root_org", "framework", "type", "subtype", "action", "component"] ]
+    }
+  ]
+}

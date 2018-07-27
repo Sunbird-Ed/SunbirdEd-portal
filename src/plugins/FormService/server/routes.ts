@@ -1,6 +1,6 @@
-import { IRouter } from 'ext-framework-server/interfaces';
-import { Manifest } from 'ext-framework-server/models/Manifest';
-import { frameworkAPI } from 'ext-framework-server/api';
+import { IRouter } from '@project-sunbird/ext-framework-server/interfaces';
+import { Manifest } from '@project-sunbird/ext-framework-server/models/Manifest';
+import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
 import { Server } from './server';
 import { RequestValidator } from './RequestValidator';
 

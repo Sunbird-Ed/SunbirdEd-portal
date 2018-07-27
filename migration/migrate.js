@@ -1,6 +1,6 @@
 const cassandra = require('cassandra-driver');
-const source_client = new cassandra.Client({ contactPoints: [process.env.sunbird_cassandra_urls || '127.0.0.1'], keyspace: 'sunbird' });
-const dest_client = new cassandra.Client({ contactPoints: [process.env.sunbird_cassandra_urls || '127.0.0.1'], keyspace: 'dlyjp_form_service' });
+const envHelper = require('../src/app/helpers/environmentVariablesHelper.js')
+const client = new cassandra.Client({ contactPoints: envHelper.PORTAL_CASSANDRA_URLS });
 
 let transformed_data = [];
 let dest_obj = {
@@ -14,10 +14,13 @@ let dest_obj = {
   last_modified: undefined,
   data: undefined
 }
+//create keyspace
+
+
 const query = 'SELECT * FROM sunbird.tenant_preference';
-source_client.execute(query)
+client.execute(query)
   .then(result => {
-    console.log('result.rows.length', result.rows.length);
+    console.log('no. of records to migrate:', result.rows.length);
     result.rows.forEach((row) => {
       let temp = Object.assign({}, dest_obj);
       temp.root_org = row.orgid;
@@ -36,7 +39,7 @@ source_client.execute(query)
           try {
             row.data = JSON.parse(row.data);
           } catch (e) {
-            console.log('JSON parse error! :', row.orgid);
+            console.log('JSON parse error! :', row.orgid, row.data);
           }
         if (typeof row.data === "object") {
           Object.keys(row.data).forEach((key) => {
@@ -56,21 +59,33 @@ source_client.execute(query)
       }
     })
   })
-  .then(_ => {
-    transformed_data.forEach(data => {
+  .then(async _ => {
+    // create keyspace if not exist
+    await client.execute('CREATE KEYSPACE IF NOT EXISTS dlyjp_form_service WITH REPLICATION = { \'class\' : \'SimpleStrategy\', \'replication_factor\' : 1 }')
+    // create table if not exist
+    await client.execute(`CREATE TABLE IF NOT EXISTS dlyjp_form_service.form_data (
+      root_org text,
+      framework text,
+      type text,
+      subtype text,
+      action text,
+      component text,
+      created timestamp,
+      data text,
+      last_modified timestamp,
+      PRIMARY KEY ((root_org, framework, type, subtype, action, component)))   
+    `);
+
+    for(const data of transformed_data) {
       let query = "INSERT INTO dlyjp_form_service.form_data(root_org, framework, type, subtype, action, component, created, last_modified, data) values(?,?,?,?,?,?,?,?,?)"
-      dest_client.execute(query, [data.root_org, data.framework, data.type, data.subtype, data.action, data.component, data.created, data.last_modified, JSON.stringify(data.data) ]);
-    });
-  })
-  .then(_ => {
-    // log the output
-    transformed_data.forEach(data => {
-      console.log('data: \n', data);
-    })
-    console.log('transformed_data.length', transformed_data.length);
+      await client.execute(query, [data.root_org, data.framework, data.type, data.subtype, data.action, data.component, data.created, data.last_modified, JSON.stringify(data.data)], { prepare: true });
+    }
+    console.log('no. of records migrated after denorm:', transformed_data.length);
+    process.exit(1);
   })
   .catch(error => {
     console.log(error);
+    process.exit(1);
   })
 
 process.on('unhandledRejection', (reason, p) => {

@@ -15,7 +15,6 @@
 src/app/dist/thirdparty/editors/
 src/app/app_dist
 /extensible-framework
-**/dist
 **/node_modules
 /src/app/client/coverage
 /src/app/client/documentation

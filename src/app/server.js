@@ -46,7 +46,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const MobileDetect = require('mobile-detect');
 let memoryStore = null
 let defaultTenantIndexStatus = 'false';
-const { frameworkAPI } = require('ext-framework-server/api');
+const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js')
 
 if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
