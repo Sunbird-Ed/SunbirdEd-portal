@@ -82,4 +82,9 @@ describe('GenericEditorComponent', () => {
     component.ngOnInit();
     expect(component.extContWhitelistedDomains).toEqual('youtube.com');
   }));
+  it('should listen to the browser back button event', () => {
+    component.ngOnInit();
+    spyOn(window, 'addEventListener').and.callThrough();
+    expect(window.location.hash).toEqual('#no');
+  });
 });
