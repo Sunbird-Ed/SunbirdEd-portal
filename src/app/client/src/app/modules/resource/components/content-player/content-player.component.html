@@ -25,7 +25,7 @@
 
                             <div class="twelve wide column">
                                 <div class="player-badge-alignment">
-                                    <sui-rating class="courseHeader-rating ui star rating course-header-divider padding-top-5" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
+                                    <sui-rating  [ngClass] ="{'course-header-divider': badgeData}" class="courseHeader-rating ui star rating padding-top-5" [isReadonly]="true" [ngModel]="contentData.me_averageRating || 0"
                                         [maximum]="5"></sui-rating>&nbsp;&nbsp;
                                     <app-content-badge [data]="badgeData" class="margin-left-20"></app-content-badge>
                                     <span class="margin-left-auto">

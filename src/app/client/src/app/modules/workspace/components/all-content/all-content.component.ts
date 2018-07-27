@@ -276,18 +276,6 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       }
     );
   }
-  keyup(event) {
-    this.query = event;
-    this.queryParams = _.cloneDeep(this.queryParams);
-    if (this.query.length > 0) {
-      this.queryParams['query'] = this.query;
-    } else {
-      delete this.queryParams['query'];
-    }
-    setTimeout(() => {
-      this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
-    }, 1000);
-  }
   public deleteConfirmModal(contentIds) {
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
     config.isClosable = true;
@@ -303,6 +291,9 @@ export class AllContentComponent extends WorkSpace implements OnInit {
           (data: ServerResponse) => {
             this.showLoader = false;
             this.allContent = this.removeAllMyContent(this.allContent, contentIds);
+            if (this.allContent.length === 0) {
+              this.ngOnInit();
+            }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
           },
           (err: ServerResponse) => {
