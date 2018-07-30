@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 
 import {mergeMap, map} from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserService, CollectionHierarchyAPI, PublicDataService } from '@sunbird/core';
+import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
   ConfigService, IUserData, ResourceService, ServerResponse,
@@ -22,7 +22,7 @@ export class PublicPlayerService {
    * stores collection/course details
    */
   collectionData: ContentData;
-  constructor(public userService: UserService,
+  constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
   }
@@ -68,7 +68,7 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
-    configuration.context.channel = 'in.ekstep';
+    configuration.context.channel = this.orgDetailsService.orgDetails ?  this.orgDetailsService.orgDetails.channel : 'in.ekstep';
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
