@@ -260,16 +260,10 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           webLink: ''
         },
         showEndPage: false
-      }
+      },
+      pluginsRepoUrl: '/api/plugins/v1/search'
     };
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
-    if (this.userService.contentChannelFilter) {
-      window.config.searchCriteria = {
-        filters: {
-          channel: this.userService.contentChannelFilter
-        }
-      };
-    }
   }
 
   /**
