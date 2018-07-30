@@ -1,16 +1,13 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {mergeMap, map} from 'rxjs/operators';
+import { of as observableOf, Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails, PlayerConfig, ContentData, NavigationHelperService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class PublicPlayerService {
@@ -68,7 +65,7 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
-    configuration.context.channel = this.orgDetailsService.orgDetails ?  this.orgDetailsService.orgDetails.channel : 'in.ekstep';
+    configuration.context.channel = this.orgDetailsService.orgDetails ? this.orgDetailsService.orgDetails.hashTagId : 'in.ekstep';
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
@@ -85,7 +82,7 @@ export class PublicPlayerService {
     }));
   }
 
-  public playContent(event, queryParams) {
+  public playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {

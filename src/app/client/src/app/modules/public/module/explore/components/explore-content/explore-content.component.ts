@@ -186,7 +186,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                         const metaData = this.config.appConfig.LibrarySearch.metaData;
                         const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
                         this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
-                             constantData, dynamicFields, metaData);
+                            constantData, dynamicFields, metaData);
                     } else {
                         this.noResult = true;
                         this.showLoader = false;
@@ -323,7 +323,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.publicPlayerService.playContent(event, this.queryParams);
+        this.publicPlayerService.playContent(event);
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {

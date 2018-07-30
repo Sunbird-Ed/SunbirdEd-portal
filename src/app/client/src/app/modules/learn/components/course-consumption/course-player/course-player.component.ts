@@ -1,19 +1,19 @@
-import { combineLatest as observableCombineLatest, Observable, Subscription, Subject } from 'rxjs';
+import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, UserService, BreadcrumbsService, PermissionService,
-   CoursesService } from '@sunbird/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService
+} from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig, ConfigService,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ExternalUrlPreviewService
+  WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
+  ToasterService, ResourceService, ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
+import { INoteData } from '@sunbird/notes';
 import {
-  IInteractEventInput, IImpressionEventInput, IEndEventInput,
-  IStartEventInput, IInteractEventObject, IInteractEventEdata
+  IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 
 @Component({
@@ -148,90 +148,89 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseStatus = params.courseStatus;
         this.setTelemetryCourseImpression();
         if (this.batchId) {
-          return observableCombineLatest(
+          return combineLatest(
             this.courseConsumptionService.getCourseHierarchy(params.courseId),
             this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-            (courseHierarchy, enrolledBatchDetails) => ({ courseHierarchy, enrolledBatchDetails })
-          );
+          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
         } else {
           return this.courseConsumptionService.getCourseHierarchy(params.courseId)
             .pipe(map((courseHierarchy) => ({ courseHierarchy })));
         }
       })).subscribe((response: any) => {
-      this.courseHierarchy = response.courseHierarchy;
-      this.courseInteractObject = {
-        id: this.courseHierarchy.identifier,
-        type: 'Course',
-        ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-      };
-      if (this.courseHierarchy.status === 'Flagged') {
-        this.flaggedCourse = true;
-      }
-      if (this.batchId) {
-        this.enrolledBatchInfo = response.enrolledBatchDetails;
-        this.enrolledCourse = true;
-        this.setTelemetryStartEndData();
-        this.parseChildContent();
-        if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
-          this.getContentState();
-          this.subscribeToQueryParam();
+        this.courseHierarchy = response.courseHierarchy;
+        this.courseInteractObject = {
+          id: this.courseHierarchy.identifier,
+          type: 'Course',
+          ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
+        };
+        if (this.courseHierarchy.status === 'Flagged') {
+          this.flaggedCourse = true;
         }
-      } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
-        || this.courseHierarchy.createdBy === this.userService.userid) {
-        this.parseChildContent();
-        this.subscribeToQueryParam();
-      } else {
-        this.parseChildContent();
-      }
-      this.collectionTreeNodes = { data: this.courseHierarchy };
-      this.loader = false;
-    }, (error) => {
-      this.loader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-    });
+        if (this.batchId) {
+          this.enrolledBatchInfo = response.enrolledBatchDetails;
+          this.enrolledCourse = true;
+          this.setTelemetryStartEndData();
+          this.parseChildContent();
+          if (this.enrolledBatchInfo.status > 0 && this.contentIds.length > 0) {
+            this.getContentState();
+            this.subscribeToQueryParam();
+          }
+        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
+          || this.courseHierarchy.createdBy === this.userService.userid) {
+          this.parseChildContent();
+          this.subscribeToQueryParam();
+        } else {
+          this.parseChildContent();
+        }
+        this.collectionTreeNodes = { data: this.courseHierarchy };
+        this.loader = false;
+      }, (error) => {
+        this.loader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
+      });
   }
   private parseChildContent() {
-  const model = new TreeModel();
-  const mimeTypeCount = {};
-  this.treeModel = model.parse(this.courseHierarchy);
-  this.treeModel.walk((node) => {
-    if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
-      if (mimeTypeCount[node.model.mimeType]) {
-        mimeTypeCount[node.model.mimeType] += 1;
-      } else {
-        mimeTypeCount[node.model.mimeType] = 1;
+    const model = new TreeModel();
+    const mimeTypeCount = {};
+    this.treeModel = model.parse(this.courseHierarchy);
+    this.treeModel.walk((node) => {
+      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+        if (mimeTypeCount[node.model.mimeType]) {
+          mimeTypeCount[node.model.mimeType] += 1;
+        } else {
+          mimeTypeCount[node.model.mimeType] = 1;
+        }
+        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+        this.contentIds.push(node.model.identifier);
       }
-      this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
-      this.contentIds.push(node.model.identifier);
-    }
-  });
-  _.forEach(mimeTypeCount, (value, key) => {
-    this.curriculum.push({ mimeType: key, count: value });
-  });
-}
-  private getContentState() {
-  const req = {
-    userId: this.userService.userid,
-    courseId: this.courseId,
-    contentIds: this.contentIds,
-    batchId: this.batchId
-  };
-  this.courseConsumptionService.getContentState(req).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((res) => {
-      this.contentStatus = res.content;
-    }, (err) => {
-      console.log(err, 'content read api failed');
     });
-}
+    _.forEach(mimeTypeCount, (value, key) => {
+      this.curriculum.push({ mimeType: key, count: value });
+    });
+  }
+  private getContentState() {
+    const req = {
+      userId: this.userService.userid,
+      courseId: this.courseId,
+      contentIds: this.contentIds,
+      batchId: this.batchId
+    };
+    this.courseConsumptionService.getContentState(req).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.contentStatus = res.content;
+      }, (err) => {
+        console.log(err, 'content read api failed');
+      });
+  }
   private subscribeToQueryParam() {
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.contentId) {
         const content = this.findContentById(queryParams.contentId);
         const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
         if (content) {
-          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier')},
-          isExtContentMsg);
+          this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') },
+            isExtContentMsg);
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
           this.closeContentPlayer();
@@ -246,7 +245,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       return node.model.identifier === id;
     });
   }
-  private OnPlayContent(content: { title: string, id: string }, showExtContentMsg ?: boolean) {
+  private OnPlayContent(content: { title: string, id: string }, showExtContentMsg?: boolean) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
       || this.permissionService.checkRolesPermissions(['COURSE_MENTOR', 'CONTENT_REVIEWER'])
@@ -258,14 +257,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.closeContentPlayer();
     }
-}
+  }
 
   private setContentNavigators() {
     const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
     this.prevPlaylistItem = this.contentDetails[index - 1];
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
-  private playContent(data: any, showExtContentMsg ?: boolean): void {
+  private playContent(data: any, showExtContentMsg?: boolean): void {
     this.enableContentPlayer = false;
     this.loader = true;
     const options: any = { courseId: this.courseId };
@@ -279,9 +278,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.playerConfig = config;
         if ((config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && !(this.istrustedClickXurl))
           || (config.metadata.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl && showExtContentMsg)) {
-            setTimeout(() => {
-              this.showExtContentMsg = true;
-            }, 5000);
+          setTimeout(() => {
+            this.showExtContentMsg = true;
+          }, 5000);
         } else {
           this.showExtContentMsg = false;
         }
@@ -292,7 +291,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-     });
+      });
   }
 
   public navigateToContent(content: { title: string, id: string }): void {
@@ -313,133 +312,133 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
   public contentProgressEvent(event) {
-  if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
-    const eid = event.detail.telemetryData.eid;
-    const request: any = {
-      userId: this.userService.userid,
-      contentId: this.contentId,
-      courseId: this.courseId,
-      batchId: this.batchId,
-      status: eid === 'END' ? 2 : 1
-    };
-    this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
-      .subscribe((updatedRes) => {
-        this.contentStatus = updatedRes.content;
-      }, (err) => {
-        console.log('updating content status failed', err);
-      });
+    if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
+      const eid = event.detail.telemetryData.eid;
+      const request: any = {
+        userId: this.userService.userid,
+        contentId: this.contentId,
+        courseId: this.courseId,
+        batchId: this.batchId,
+        status: eid === 'END' ? 2 : 1
+      };
+      this.updateContentsStateSubscription = this.courseConsumptionService.updateContentsState(request)
+        .subscribe((updatedRes) => {
+          this.contentStatus = updatedRes.content;
+        }, (err) => {
+          console.log('updating content status failed', err);
+        });
+    }
   }
-}
   public closeContentPlayer() {
-  this.cdr.detectChanges();
-  if (this.enableContentPlayer === true) {
-    const navigationExtras: NavigationExtras = {
-      relativeTo: this.activatedRoute
-    };
-    this.enableContentPlayer = false;
-    this.router.navigate([], navigationExtras);
+    this.cdr.detectChanges();
+    if (this.enableContentPlayer === true) {
+      const navigationExtras: NavigationExtras = {
+        relativeTo: this.activatedRoute
+      };
+      this.enableContentPlayer = false;
+      this.router.navigate([], navigationExtras);
+    }
   }
-}
   public createEventEmitter(data) {
-  this.createNoteData = data;
-}
-ngOnDestroy() {
-  if (this.activatedRouteSubscription) {
-    this.activatedRouteSubscription.unsubscribe();
+    this.createNoteData = data;
   }
-  if (this.getConfigByContentSubscription) {
-    this.getConfigByContentSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.activatedRouteSubscription) {
+      this.activatedRouteSubscription.unsubscribe();
+    }
+    if (this.getConfigByContentSubscription) {
+      this.getConfigByContentSubscription.unsubscribe();
+    }
+    if (this.queryParamSubscription) {
+      this.queryParamSubscription.unsubscribe();
+    }
+    if (this.updateContentsStateSubscription) {
+      this.updateContentsStateSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
-  if (this.queryParamSubscription) {
-    this.queryParamSubscription.unsubscribe();
-  }
-  if (this.updateContentsStateSubscription) {
-    this.updateContentsStateSubscription.unsubscribe();
-  }
-  this.unsubscribe.next();
-  this.unsubscribe.complete();
-}
   private setTelemetryStartEndData() {
-  this.telemetryCourseStart = {
-    context: {
-      env: this.activatedRoute.snapshot.data.telemetry.env
-    },
-    object: {
-      id: this.courseId,
-      type: this.activatedRoute.snapshot.data.telemetry.object.type,
-      ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-    },
-    edata: {
-      type: this.activatedRoute.snapshot.data.telemetry.type,
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-      mode: 'play'
-    }
-  };
-  this.telemetryCourseEndEvent = {
-    object: {
-      id: this.courseId,
-      type: this.activatedRoute.snapshot.data.telemetry.object.type,
-      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
-    },
-    context: {
-      env: this.activatedRoute.snapshot.data.telemetry.env
-    },
-    edata: {
-      type: this.activatedRoute.snapshot.data.telemetry.type,
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-      mode: 'play'
-    }
-  };
-}
-  private setTelemetryCourseImpression() {
-  this.telemetryCourseImpression = {
-    context: {
-      env: this.activatedRoute.snapshot.data.telemetry.env
-    },
-    edata: {
-      type: this.activatedRoute.snapshot.data.telemetry.type,
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-      uri: this.router.url,
-    },
-    object: {
-      id: this.courseId,
-      type: 'course',
-      ver: '1.0'
-    }
-  };
-}
-  private setTelemetryContentImpression() {
-  this.telemetryContentImpression = {
-    context: {
-      env: this.activatedRoute.snapshot.data.telemetry.env
-    },
-    edata: {
-      type: this.activatedRoute.snapshot.data.telemetry.type,
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-      uri: this.router.url,
-    },
-    object: {
-      id: this.contentId,
-      type: 'content',
-      ver: '1.0',
-      rollup: {
-        l1: this.courseId,
-        l2: this.contentId
+    this.telemetryCourseStart = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play'
       }
-    }
-  };
-}
+    };
+    this.telemetryCourseEndEvent = {
+      object: {
+        id: this.courseId,
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'play'
+      }
+    };
+  }
+  private setTelemetryCourseImpression() {
+    this.telemetryCourseImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      },
+      object: {
+        id: this.courseId,
+        type: 'course',
+        ver: '1.0'
+      }
+    };
+  }
+  private setTelemetryContentImpression() {
+    this.telemetryContentImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      },
+      object: {
+        id: this.contentId,
+        type: 'content',
+        ver: '1.0',
+        rollup: {
+          l1: this.courseId,
+          l2: this.contentId
+        }
+      }
+    };
+  }
   private setContentInteractData(config) {
-  this.contentInteractObject = {
-    id: config.metadata.identifier,
-    type: config.metadata.contentType || config.metadata.resourceType || 'content',
-    ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
-    rollup: { l1: this.courseId }
-  };
-  this.closeContentIntractEdata = {
-    id: 'content-close',
-    type: 'click',
-    pageid: 'course-consumption'
-  };
-}
+    this.contentInteractObject = {
+      id: config.metadata.identifier,
+      type: config.metadata.contentType || config.metadata.resourceType || 'content',
+      ver: config.metadata.pkgVersion ? config.metadata.pkgVersion.toString() : '1.0',
+      rollup: { l1: this.courseId }
+    };
+    this.closeContentIntractEdata = {
+      id: 'content-close',
+      type: 'click',
+      pageid: 'course-consumption'
+    };
+  }
 }
