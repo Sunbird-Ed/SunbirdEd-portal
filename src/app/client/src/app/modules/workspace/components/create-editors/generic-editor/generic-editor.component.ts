@@ -8,6 +8,7 @@ import {
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
+import { WorkSpaceService } from '../../../services';
 
 @Component({
   selector: 'app-generic-editor',
@@ -77,7 +78,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
     activatedRoute: ActivatedRoute, tenantService: TenantService,
     public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
-    resourceService: ResourceService) {
+    resourceService: ResourceService, private workspaceService: WorkSpaceService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -92,13 +93,14 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   ngOnInit() {
     window.location.hash = 'no';
-    this.listener = (event) => {
-      if (event.state) {
-        this.toasterService.warning(this.resourceService.messages.imsg.m0037);
-        window.location.hash = 'no';
-      }
-    };
-    window.addEventListener('popstate', this.listener, false);
+    this.workspaceService.toggleWarning(false);
+    // this.listener = (event) => {
+    //   if (event.state) {
+    //     this.toasterService.warning(this.resourceService.messages.imsg.m0037);
+    //     window.location.hash = 'no';
+    //   }
+    // };
+    // window.addEventListener('popstate', this.listener, false);
     /**
      * Call User service to get user data
      */
@@ -262,7 +264,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    window.removeEventListener('popstate', this.listener, false);
-    window.location.reload();
+    this.workspaceService.toggleWarning(false);
+    // window.removeEventListener('popstate', this.listener, false);
+    // window.location.reload();
   }
 }

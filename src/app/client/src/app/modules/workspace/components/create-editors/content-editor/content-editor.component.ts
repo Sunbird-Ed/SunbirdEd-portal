@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import * as _ from 'lodash';
 import * as iziModal from 'izimodal/js/iziModal';
 import {
@@ -9,6 +9,7 @@ import { UserService, PermissionService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
+import { WorkSpaceService } from '../../../services';
 
 @Component({
   selector: 'app-content-editor',
@@ -95,7 +96,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     userService: UserService, public _zone: NgZone,
     private renderer: Renderer2,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -112,13 +113,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   ngOnInit() {
     window.location.hash = 'no';
-    this.listener = (event) => {
-      if (event.state) {
-        this.toasterService.warning(this.resourceService.messages.imsg.m0037);
-        window.location.hash = 'no';
-      }
-    };
-    window.addEventListener('popstate', this.listener, true);
+    this.workspaceService.toggleWarning(true);
     /**
     * Call User service to get user data
     */
@@ -189,8 +184,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    window.removeEventListener('popstate', this.listener, false);
-    window.location.reload();
+    this.workspaceService.toggleWarning(false);
+    // document.removeEventListener('popstate', this.listener);
+    // window.location.hash = '';
   }
   /**
    * Launch the content editor in Iframe Modal window

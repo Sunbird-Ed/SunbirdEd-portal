@@ -1,5 +1,5 @@
 
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
@@ -9,7 +9,7 @@ import {
 } from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EditorService } from './../../../services';
+import { EditorService, WorkSpaceService } from './../../../services';
 import { state } from './../../../classes/state';
 import { environment } from '@sunbird/environment';
 
@@ -86,7 +86,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
    * Show Modal for loader
    */
   public showModal: boolean;
-  public listener;
   /**
   * Default method of classs CollectionEditorComponent
   *
@@ -106,7 +105,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     public _zone: NgZone,
     config: ConfigService,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
@@ -125,13 +124,15 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnInit() {
     window.location.hash = 'no';
-    this.listener = (event) => {
-      if (event.state) {
-        this.toasterService.warning(this.resourceService.messages.imsg.m0037);
-        window.location.hash = 'no';
-      }
-    };
-    window.addEventListener('popstate', this.listener, false);
+    this.workspaceService.toggleWarning(true);
+    // window.location.hash = 'no';
+    // this.listener = function(event) {
+    //   if (event.state) {
+    //     this.toasterService.warning(this.resourceService.messages.imsg.m0037);
+    //     window.location.hash = 'no';
+    //   }
+    // }.bind(this);
+    // window.addEventListener('popstate', this.listener, false);
     /**
      * Call User service to get user data
      */
@@ -324,8 +325,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    window.removeEventListener('popstate', this.listener, false);
-    window.location.reload();
+    this.workspaceService.toggleWarning(false);
+    // window.location.reload();
+    // window.location.href = this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
   }
   /**
    *Validate the request
@@ -367,7 +369,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
     }
-
     if (status.toLowerCase() === 'review') {
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'draft';
