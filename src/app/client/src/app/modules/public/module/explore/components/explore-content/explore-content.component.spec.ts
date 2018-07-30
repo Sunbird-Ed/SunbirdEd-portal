@@ -240,7 +240,7 @@ describe('ExploreContentComponent', () => {
     };
     spyOn(publicPlayerService, 'playContent').and.callThrough();
     component.playContent(event);
-    expect(publicPlayerService.playContent).toHaveBeenCalledWith(event, {});
+    expect(publicPlayerService.playContent).toHaveBeenCalledWith(event);
   });
   it('should call inview method', () => {
     component.telemetryImpression = {
