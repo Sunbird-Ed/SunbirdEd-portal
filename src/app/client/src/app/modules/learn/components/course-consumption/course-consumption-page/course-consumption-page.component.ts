@@ -1,4 +1,3 @@
-
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
 import { ResourceService } from '@sunbird/shared';
