@@ -97,4 +97,9 @@ describe('CollectionEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
   }));
+  it('should listen to the browser back button event', () => {
+    component.ngOnInit();
+    spyOn(window, 'addEventListener').and.callThrough();
+    expect(window.location.hash).toEqual('#no');
+  });
 });
