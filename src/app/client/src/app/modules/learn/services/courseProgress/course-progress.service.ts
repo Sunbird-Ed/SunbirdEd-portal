@@ -1,9 +1,7 @@
-import {of as observableOf } from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import { of as observableOf } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import {
-  ConfigService, ServerResponse, CourseStates, CourseProgressData, CourseProgress, ContentList, IUserData, IUserProfile
-} from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -130,7 +128,7 @@ export class CourseProgressService {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
     if (courseProgress && req.contentId && req.status) {
-      const index = _.findIndex(courseProgress.content, {'contentId': req.contentId });
+      const index = _.findIndex(courseProgress.content, { 'contentId': req.contentId });
       if (index !== -1 && req.status >= courseProgress.content[index].status
         && courseProgress.content[index].status !== 2) {
         courseProgress.content[index].status = req.status;
@@ -139,7 +137,7 @@ export class CourseProgressService {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
-            this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount );
+            this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);
             return this.courseProgress[courseId_batchId];
           }));
       } else {
@@ -170,9 +168,7 @@ export class CourseProgressService {
         }
       }
     };
-    return this.contentService.patch(channelOptions).pipe(map(
-      (updateCourseStatesData: ServerResponse) => {
-        return updateCourseStatesData;
-      }));
+    return this.contentService.patch(channelOptions)
+      .pipe(map((updateCourseStatesData: ServerResponse) => ({ updateCourseStatesData })));
   }
 }

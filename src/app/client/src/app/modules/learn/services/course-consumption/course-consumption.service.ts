@@ -1,10 +1,9 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
+import { of as observableOf } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, } from '@sunbird/core';
-import {ServerResponse} from '@sunbird/shared';
+import { PlayerService } from '@sunbird/core';
+import { ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 
 @Injectable()

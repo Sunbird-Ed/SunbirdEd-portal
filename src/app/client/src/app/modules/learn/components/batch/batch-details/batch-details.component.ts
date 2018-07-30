@@ -1,12 +1,12 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CourseBatchService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 @Component({
   selector: 'app-batch-details',
@@ -36,8 +36,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Upcoming', value: 0 }
   ];
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
-  public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
-  public router: Router, public activatedRoute: ActivatedRoute) {
+    public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
+    public router: Router, public activatedRoute: ActivatedRoute) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
@@ -73,10 +73,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       this.getAllBatchDetails();
     }
     this.courseBatchService.updateEvent.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((data) => {
-      this.getAllBatchDetails();
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        this.getAllBatchDetails();
+      });
   }
   getAllBatchDetails() {
     this.showBatchList = false;
@@ -96,69 +96,69 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       searchParams.filters.enrollmentType = 'open';
     }
     this.courseBatchService.getAllBatchDetails(searchParams).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((data: ServerResponse) => {
-      if (data.result.response.content && data.result.response.content.length > 0) {
-        this.batchList = data.result.response.content;
-        this.fetchUserDetails();
-      } else {
-        this.showBatchList = true;
-      }
-    },
-    (err: ServerResponse) => {
-      this.showError = true;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe((data: ServerResponse) => {
+        if (data.result.response.content && data.result.response.content.length > 0) {
+          this.batchList = data.result.response.content;
+          this.fetchUserDetails();
+        } else {
+          this.showBatchList = true;
+        }
+      },
+        (err: ServerResponse) => {
+          this.showError = true;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        });
   }
   getEnrolledCourseBatchDetails() {
     this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((data: ServerResponse) => {
-      this.enrolledBatchInfo = data;
-      if (this.enrolledBatchInfo.participant) {
-        const participant = [];
-        _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
-          participant.push(key);
-        });
-        this.enrolledBatchInfo.participant = participant;
-      } else {
-        this.enrolledBatchInfo.participant = [];
-      }
-    }, () => {
-      // handle error
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe((data: ServerResponse) => {
+        this.enrolledBatchInfo = data;
+        if (this.enrolledBatchInfo.participant) {
+          const participant = [];
+          _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+            participant.push(key);
+          });
+          this.enrolledBatchInfo.participant = participant;
+        } else {
+          this.enrolledBatchInfo.participant = [];
+        }
+      }, () => {
+        // handle error
+      });
   }
   fetchUserDetails() {
     _.forEach(this.batchList, (val) => {
       this.userList.push(val.createdBy);
     });
     this.userList = _.compact(_.uniq(this.userList));
-    const request =  {
+    const request = {
       filters: {
         identifier: this.userList
       }
     };
     this.courseBatchService.getUserList(request).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((res) => {
-      _.forEach(res.result.response.content, (user) =>  {
-        this.userNames[user.identifier] = user;
+      takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        _.forEach(res.result.response.content, (user) => {
+          this.userNames[user.identifier] = user;
+        });
+        this.showBatchList = true;
+      }, (err) => {
+        this.showError = true;
       });
-      this.showBatchList = true;
-    }, (err) => {
-      this.showError = true;
-    });
   }
   batchUpdate(batch) {
     this.courseBatchService.setUpdateBatchDetails(batch);
-    this.router.navigate(['update/batch', batch.identifier], {relativeTo: this.activatedRoute} );
+    this.router.navigate(['update/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   createBatch() {
-    this.router.navigate(['create/batch'], {relativeTo: this.activatedRoute});
+    this.router.navigate(['create/batch'], { relativeTo: this.activatedRoute });
   }
   enrollBatch(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['enroll/batch', batch.identifier], {relativeTo: this.activatedRoute});
+    this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
   ngOnDestroy() {
     this.unsubscribe.next();

@@ -1,8 +1,8 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';

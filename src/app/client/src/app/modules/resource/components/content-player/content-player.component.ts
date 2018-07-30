@@ -1,12 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentService, UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
+import { UserService, PlayerService, CopyContentService, PermissionService, BreadcrumbsService } from '@sunbird/core';
 import * as _ from 'lodash';
-import { PopupEditorComponent, NoteCardComponent, INoteData } from '@sunbird/notes';
+import { INoteData } from '@sunbird/notes';
 import {
-  ConfigService, IUserData, ResourceService, ToasterService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
+  ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
+  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -23,9 +23,13 @@ export class ContentPlayerComponent implements OnInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+
   closeIntractEdata: IInteractEventEdata;
+
   objectInteract: IInteractEventObject;
+
   sharelinkModal: boolean;
+
   public badgeData: Array<object>;
   /**
    * contains link that can be shared
@@ -134,7 +138,7 @@ export class ContentPlayerComponent implements OnInit {
   getContent() {
     const option: any = {};
     if (this.contentStatus && this.contentStatus === 'Unlisted') {
-      option.params = {mode: 'edit'};
+      option.params = { mode: 'edit' };
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
@@ -202,9 +206,9 @@ export class ContentPlayerComponent implements OnInit {
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);
-     this.setTelemetryShareData(this.contentData);
+    this.setTelemetryShareData(this.contentData);
   }
-    setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,

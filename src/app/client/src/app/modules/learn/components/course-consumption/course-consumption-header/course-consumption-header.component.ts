@@ -1,15 +1,16 @@
 
-import {combineLatest as observableCombineLatest,  Observable ,  Subject } from 'rxjs';
-
-import {takeUntil} from 'rxjs/operators';
+import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
-import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
-import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
-   ExternalUrlPreviewService } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import {
+  ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
+  ExternalUrlPreviewService
+} from '@sunbird/shared';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -17,6 +18,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   styleUrls: ['./course-consumption-header.component.css']
 })
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+
   sharelinkModal: boolean;
   /**
    * contains link that can be shared
@@ -59,47 +61,47 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       (params, queryParams) => {
         return { ...params, ...queryParams };
       }).subscribe((params) => {
-      this.courseId = params.courseId;
-      this.batchId = params.batchId;
-      this.courseStatus = params.courseStatus;
-      this.contentId = params.contentId;
-      this.resumeIntractEdata = {
-        id: 'course-resume',
-        type: 'click',
-        pageid: 'course-consumption'
-      };
-      this.courseInteractObject = {
-        id: this.courseHierarchy.identifier,
-        type: 'Course',
-        ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0',
-      };
-      if (this.courseHierarchy.status === 'Flagged') {
-        this.flaggedCourse = true;
-      }
-      if (this.batchId) {
-        this.enrolledCourse = true;
-      }
-    });
+        this.courseId = params.courseId;
+        this.batchId = params.batchId;
+        this.courseStatus = params.courseStatus;
+        this.contentId = params.contentId;
+        this.resumeIntractEdata = {
+          id: 'course-resume',
+          type: 'click',
+          pageid: 'course-consumption'
+        };
+        this.courseInteractObject = {
+          id: this.courseHierarchy.identifier,
+          type: 'Course',
+          ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0',
+        };
+        if (this.courseHierarchy.status === 'Flagged') {
+          this.flaggedCourse = true;
+        }
+        if (this.batchId) {
+          this.enrolledCourse = true;
+        }
+      });
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe((courseProgressData) => {
-      this.enrolledCourse = true;
-      this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
-      this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-      if (!this.flaggedCourse && this.onPageLoadResume &&
-        !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-        this.onPageLoadResume = false;
-        this.showResumeCourse = false;
-        this.resumeCourse();
-      } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-        this.onPageLoadResume = false;
-        this.showResumeCourse = false;
-      } else {
-        this.onPageLoadResume = false;
-      }
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe((courseProgressData) => {
+        this.enrolledCourse = true;
+        this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
+        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+        if (!this.flaggedCourse && this.onPageLoadResume &&
+          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+          this.onPageLoadResume = false;
+          this.showResumeCourse = false;
+          this.resumeCourse();
+        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+          this.onPageLoadResume = false;
+          this.showResumeCourse = false;
+        } else {
+          this.onPageLoadResume = false;
+        }
+      });
   }
 
   showDashboard() {
@@ -125,22 +127,22 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
     this.copyContentService.copyContent(contentData).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (response) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0042);
-        this.showCopyLoader = false;
-      },
-      (err) => {
-        this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0008);
-      });
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (response) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0042);
+          this.showCopyLoader = false;
+        },
+        (err) => {
+          this.showCopyLoader = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0008);
+        });
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.courseId, this.courseHierarchy.mimeType);
     this.setTelemetryShareData(this.courseHierarchy);
   }
-   setTelemetryShareData(param) {
+  setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
       type: param.contentType,
