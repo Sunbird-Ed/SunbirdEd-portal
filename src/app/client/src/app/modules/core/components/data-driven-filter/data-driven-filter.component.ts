@@ -173,15 +173,8 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
                   if (!this.showField(formFieldCategory.allowedRoles)) {
                     this.formFieldProperties.splice(this.formFieldProperties.indexOf(formFieldCategory), 1);
                   }
-                }
-                if (formFieldCategory && formFieldCategory.code === 'contentType') {
-                  if (_.indexOf(this.loggedInUserRoles, 'CONTENT_REVIEWER') !== -1 &&
-                  _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
-                      const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
-                      const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
-                      if (rangeTextBookIndex === -1) {
-                        this.formFieldProperties[contentTypeIndex].range.push({name: 'TextBook' });
-                      }
+                  if (formServiceInputParams.contentType === 'upforreview') {
+                    this.updateFormFields(formFieldCategory);
                   }
                 }
               });
@@ -195,6 +188,19 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           // this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
+    }
+  }
+
+  updateFormFields (formFieldCategory) {
+    if (formFieldCategory && formFieldCategory.code === 'contentType') {
+      if (_.indexOf(this.loggedInUserRoles, 'CONTENT_REVIEWER') !== -1 &&
+      _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
+          const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
+          const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
+          if (rangeTextBookIndex === -1) {
+            this.formFieldProperties[contentTypeIndex].range.push({name: 'TextBook' });
+          }
+      }
     }
   }
 
