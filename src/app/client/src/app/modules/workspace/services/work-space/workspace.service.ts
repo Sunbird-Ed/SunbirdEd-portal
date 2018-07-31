@@ -3,8 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 
-import { ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService, ToasterService,
-  ResourceService } from '@sunbird/shared';
+import {
+  ConfigService, ServerResponse, ICard, IUserData, NavigationHelperService,
+  ResourceService
+} from '@sunbird/shared';
 import { ContentService } from '@sunbird/core';
 import { IDeleteParam } from '../../interfaces/delteparam';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,7 +32,7 @@ export class WorkSpaceService {
   */
   private activatedRoute: ActivatedRoute;
   public listener;
-  public showWarning = false;
+  public showWarning;
 
   /**
     * Constructor - default method of WorkSpaceService class
@@ -41,8 +43,7 @@ export class WorkSpaceService {
   */
   constructor(config: ConfigService, content: ContentService,
     activatedRoute: ActivatedRoute,
-    route: Router, public navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-  private resourceService: ResourceService) {
+    route: Router, public navigationHelperService: NavigationHelperService, private resourceService: ResourceService) {
     this.content = content;
     this.config = config;
     this.route = route;
@@ -161,21 +162,20 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
-  toggleWarning(value) {
-    window.location.hash = 'no';
-    this.showWarning = value;
-    if (this.showWarning === true) {
-      console.log('inside if', this.showWarning);
+  toggleWarning() {
+    this.showWarning = sessionStorage.getItem('inEditor');
+    if (this.showWarning === 'true') {
       this.listener = function (event) {
+        window.location.hash = 'no';
         if (event.state) {
-          this.toasterService.warning(this.resourceService.messages.imsg.m0037);
+          alert(this.resourceService.messages.imsg.m0037);
           window.location.hash = 'no';
         }
       }.bind(this);
       window.addEventListener('popstate', this.listener, false);
     } else {
-      window.removeEventListener('popstate', this.listener);
       window.location.hash = '';
+      window.removeEventListener('popstate', this.listener);
     }
   }
 }

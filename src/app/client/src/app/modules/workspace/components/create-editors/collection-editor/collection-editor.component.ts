@@ -105,7 +105,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     public _zone: NgZone,
     config: ConfigService,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService) {
+    public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
@@ -123,16 +123,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
+    sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';
-    this.workspaceService.toggleWarning(true);
-    // window.location.hash = 'no';
-    // this.listener = function(event) {
-    //   if (event.state) {
-    //     this.toasterService.warning(this.resourceService.messages.imsg.m0037);
-    //     window.location.hash = 'no';
-    //   }
-    // }.bind(this);
-    // window.addEventListener('popstate', this.listener, false);
+    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -322,12 +315,12 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnDestroy() {
+    window.location.hash = '';
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
-    this.workspaceService.toggleWarning(false);
-    // window.location.reload();
-    // window.location.href = this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
   /**
    *Validate the request

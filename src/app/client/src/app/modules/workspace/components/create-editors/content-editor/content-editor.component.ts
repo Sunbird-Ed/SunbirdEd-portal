@@ -96,7 +96,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     userService: UserService, public _zone: NgZone,
     private renderer: Renderer2,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
+    public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService
   ) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -112,8 +112,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnInit() {
+    sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';
-    this.workspaceService.toggleWarning(true);
+    this.workspaceService.toggleWarning();
     /**
     * Call User service to get user data
     */
@@ -184,9 +185,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('contentEditor')) {
       document.getElementById('contentEditor').remove();
     }
-    this.workspaceService.toggleWarning(false);
-    // document.removeEventListener('popstate', this.listener);
-    // window.location.hash = '';
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
   /**
    * Launch the content editor in Iframe Modal window

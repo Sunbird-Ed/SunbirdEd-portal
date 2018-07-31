@@ -78,7 +78,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
     activatedRoute: ActivatedRoute, tenantService: TenantService,
     public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
-    resourceService: ResourceService, private workspaceService: WorkSpaceService) {
+    resourceService: ResourceService, public workspaceService: WorkSpaceService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -92,15 +92,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnInit() {
+    sessionStorage.setItem('inEditor', 'true');
     window.location.hash = 'no';
-    this.workspaceService.toggleWarning(false);
-    // this.listener = (event) => {
-    //   if (event.state) {
-    //     this.toasterService.warning(this.resourceService.messages.imsg.m0037);
-    //     window.location.hash = 'no';
-    //   }
-    // };
-    // window.addEventListener('popstate', this.listener, false);
+    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -264,8 +258,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
-    this.workspaceService.toggleWarning(false);
-    // window.removeEventListener('popstate', this.listener, false);
-    // window.location.reload();
+    window.location.hash = '';
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
 }
