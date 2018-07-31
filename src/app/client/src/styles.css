@@ -2751,11 +2751,16 @@ iframe.iziModal-iframe {
 .margin-left-auto {
   margin-left: auto;
 }
-
 .cursor-text {
   cursor: text !important;
 }
-
+.vertical-align-bottom {
+  vertical-align: bottom !important;
+}
+.filter-title {
+    font-family: 'sunbirdboldfont';
+    font-size: 0.98em;
+}
 .ui.button .header {
   font-weight: 600;
   width: 100%;
