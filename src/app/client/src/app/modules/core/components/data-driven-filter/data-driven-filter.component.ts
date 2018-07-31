@@ -1,6 +1,8 @@
 import { Subscription, Observable } from 'rxjs';
-import { ConfigService, ResourceService, Framework, ToasterService, ServerResponse,
-  BrowserCacheTtlService, IUserData } from '@sunbird/shared';
+import {
+  ConfigService, ResourceService, Framework, ToasterService, ServerResponse,
+  BrowserCacheTtlService, IUserData
+} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from './../../services';
@@ -116,9 +118,11 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
     this.userService.userData$.subscribe(
-     (user: IUserData) => {
-       this.loggedInUserRoles = user.userProfile.userRoles;
-    });
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.loggedInUserRoles = user.userProfile.userRoles;
+        }
+      });
   }
 
   getQueryParams() {
@@ -191,15 +195,15 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  updateFormFields (formFieldCategory) {
+  updateFormFields(formFieldCategory) {
     if (formFieldCategory && formFieldCategory.code === 'contentType') {
       if (_.indexOf(this.loggedInUserRoles, 'CONTENT_REVIEWER') !== -1 &&
-      _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
-          const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
-          const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
-          if (rangeTextBookIndex === -1) {
-            this.formFieldProperties[contentTypeIndex].range.push({name: 'TextBook' });
-          }
+        _.indexOf(this.loggedInUserRoles, 'BOOK_REVIEWER') !== -1) {
+        const contentTypeIndex = _.findIndex(this.formFieldProperties, { code: 'contentType' });
+        const rangeTextBookIndex = _.findIndex(this.formFieldProperties[contentTypeIndex].range, { name: 'TextBook' });
+        if (rangeTextBookIndex === -1) {
+          this.formFieldProperties[contentTypeIndex].range.push({ name: 'TextBook' });
+        }
       }
     }
   }
