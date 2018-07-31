@@ -1,15 +1,14 @@
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { Subscription, Observable, Subject, combineLatest } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -111,12 +110,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       (params, parentParams) => ({ ...params, ...parentParams }))
       .pipe(
-      mergeMap((params) => {
-        this.batchId = params.batchId;
-        this.setTelemetryImpressionData();
-        return this.fetchBatchDetails();
-      }),
-      takeUntil(this.unsubscribe))
+        mergeMap((params) => {
+          this.batchId = params.batchId;
+          this.setTelemetryImpressionData();
+          return this.fetchBatchDetails();
+        }),
+        takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
@@ -279,13 +278,13 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
           this.mentorList = userList.mentorList;
         }
       },
-      (err) => {
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        }
-      });
+        (err) => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+          }
+        });
   }
 
   public updateBatch() {
@@ -325,14 +324,14 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
           this.reload();
         }
       },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-        }
-      });
+        (err) => {
+          this.disableSubmitBtn = false;
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+          }
+        });
   }
   private updateParticipantsToBatch(batchId, participants) {
     const userRequest = {
@@ -344,14 +343,14 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.params && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0053);
-        }
-      });
+        (err) => {
+          this.disableSubmitBtn = false;
+          if (err.params && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0053);
+          }
+        });
   }
   public redirect() {
     this.router.navigate(['workspace/content/batches/1']);

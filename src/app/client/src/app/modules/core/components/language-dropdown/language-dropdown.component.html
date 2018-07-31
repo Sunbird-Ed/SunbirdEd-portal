@@ -1,6 +1,6 @@
 <div class="ui dropdown width-100">
-  <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection width-100"
-    labelField="name" valueField="value">
+  <sui-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" class="selection width-100" labelField="name"
+    valueField="value">
     <sui-select-option *ngFor="let option of languages" [value]="option"></sui-select-option>
   </sui-select>
 </div>

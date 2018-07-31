@@ -1,5 +1,5 @@
 
-import {first, filter} from 'rxjs/operators';
+import { first, filter } from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -9,7 +9,6 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, ConceptPickerService, OrgDetailsService
 } from '@sunbird/core';
-import { Ng2IziToastModule } from 'ng2-izitoast';
 import * as _ from 'lodash';
 /**
  * main app component
@@ -90,10 +89,10 @@ export class AppComponent implements OnInit {
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
     this.version = (<HTMLInputElement>document.getElementById('buildNumber')) &&
-    (<HTMLInputElement>document.getElementById('buildNumber')).value ?
-    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
+      (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+      (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     if (this.userService.loggedIn) {
-      fingerPrint2.get((deviceId, components) => {
+      fingerPrint2.get((deviceId) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
         this.conceptPickerService.initialize();
         this.initializeLogedInsession();
@@ -101,7 +100,7 @@ export class AppComponent implements OnInit {
     } else {
       this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
         const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
-        fingerPrint2.get((deviceId, components) => {
+        fingerPrint2.get((deviceId) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.initializeAnonymousSession(slug);
         });
@@ -195,7 +194,7 @@ export class AppComponent implements OnInit {
         host: '',
         uid: 'anonymous',
         sid: this.userService.anonymousSid,
-        channel: this.orgDetails.channel,
+        channel: this.orgDetails.hashTagId,
         env: 'home',
         enableValidation: environment.enableTelemetryValidation
       }

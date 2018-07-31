@@ -200,6 +200,7 @@ app.all('/:slug/get/dial/:dialCode', function (req, res) { res.redirect('/get/di
 app.all('/get', indexPage)
 app.all('/:slug/get', function (req, res) { res.redirect('/get') })
 app.all('/:slug/explore/*', indexPage)
+app.all('/:slug/explore', indexPage)
 app.all('/explore', indexPage)
 app.all('/explore/*', indexPage)
 app.all(['/groups', '/groups/*'], keycloak.protect(), indexPage)

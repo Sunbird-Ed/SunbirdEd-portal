@@ -5,11 +5,10 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-
 import * as moment from 'moment';
-import { Observable, Subscription, Subject, combineLatest } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html',
@@ -20,10 +19,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
   @ViewChild('createBatchModel') private createBatchModel;
 
   private userSearchTime: any;
-  /**
-  * batchId
-  */
-  private batchId: string;
 
   showCreateModal = false;
 
@@ -122,23 +117,23 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       this.showCreateModal = true;
       return this.fetchBatchDetails();
     }),
-    takeUntil(this.unsubscribe))
-    .subscribe((data) => {
-      if (data.courseDetails.createdBy === this.userService.userid) {
-        this.courseCreator = true;
-      }
-      const userList = this.sortUsers(data.userDetails);
-      this.participantList = userList.participantList;
-      this.mentorList = userList.mentorList;
-      this.initDropDown();
-    }, (err) => {
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-      }
-      this.redirect();
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        if (data.courseDetails.createdBy === this.userService.userid) {
+          this.courseCreator = true;
+        }
+        const userList = this.sortUsers(data.userDetails);
+        this.participantList = userList.participantList;
+        this.mentorList = userList.mentorList;
+        this.initDropDown();
+      }, (err) => {
+        if (err.error && err.error.params.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        }
+        this.redirect();
+      });
   }
 
   private fetchBatchDetails() {
@@ -227,14 +222,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
           this.reload();
         }
       },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-        }
-      });
+        (err) => {
+          this.disableSubmitBtn = false;
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+          }
+        });
   }
   private addParticipantToBatch(batchId, participants) {
     const userRequest = {
@@ -246,14 +241,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
       },
-      (err) => {
-        this.disableSubmitBtn = false;
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0053);
-        }
-      });
+        (err) => {
+          this.disableSubmitBtn = false;
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0053);
+          }
+        });
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
@@ -324,13 +319,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
           this.mentorList = list.mentorList;
         }
       },
-      (err) => {
-        if (err.error && err.error.params.errmsg) {
-          this.toasterService.error(err.error.params.errmsg);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-        }
-      });
+        (err) => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+          }
+        });
   }
   private setTelemetryImpressionData() {
     this.telemetryImpression = {

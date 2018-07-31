@@ -1,4 +1,4 @@
-import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
@@ -12,7 +12,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
@@ -186,7 +186,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
                         const metaData = this.config.appConfig.LibrarySearch.metaData;
                         const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
                         this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
-                             constantData, dynamicFields, metaData);
+                            constantData, dynamicFields, metaData);
                     } else {
                         this.noResult = true;
                         this.showLoader = false;
@@ -323,7 +323,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy {
     }
 
     public playContent(event) {
-        this.publicPlayerService.playContent(event, this.queryParams);
+        this.publicPlayerService.playContent(event);
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {

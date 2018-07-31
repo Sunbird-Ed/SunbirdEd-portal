@@ -1,6 +1,5 @@
 
-import { of as observableOf, throwError as observableThrowError ,  Observable } from 'rxjs';
-
+import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
