@@ -78,4 +78,10 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
+  it('should get session item and listen to browser back button', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(window, 'addEventListener').and.callThrough();
+    workSpaceService.toggleWarning();
+    expect(window.location.hash).toEqual('');
+  });
 });
