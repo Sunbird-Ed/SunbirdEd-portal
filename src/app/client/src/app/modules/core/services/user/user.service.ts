@@ -1,8 +1,8 @@
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
@@ -67,7 +67,6 @@ export class UserService {
   private _env: string;
   private _authenticated: boolean;
   public anonymousSid: string;
-  private _contentChannelFilter: string;
   /**
    * Reference of content service.
    */
@@ -203,22 +202,11 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
-    this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
     this.rootOrgName = this._userProfile.rootOrg.orgName;
-  }
-  setContentChannelFilter() {
-    try {
-      const contentChannelFilter = (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
-      if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
-        this._contentChannelFilter = this.channel;
-      }
-    } catch (error) {
-      console.log('unable to set content channel filter');
-    }
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -227,9 +215,6 @@ export class UserService {
     this.contentService.channelId = this._channel;
     this.publicDataService.rootOrgId = this._rootOrgId;
     this.publicDataService.channelId = this._channel;
-  }
-  get contentChannelFilter() {
-    return this._contentChannelFilter;
   }
 
   /**

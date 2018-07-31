@@ -1,14 +1,13 @@
 
-import {mergeMap, first, map, catchError} from 'rxjs/operators';
+import { mergeMap, first, map, catchError } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, ContentService, PermissionService, CopyContentService } from '@sunbird/core';
-import { Observable ,  Subscription } from 'rxjs';
+import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService } from '@sunbird/core';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
-  WindowScrollService, RouterNavigationService, ILoaderMessage, PlayerConfig,
-  ICollectionTreeOptions, NavigationHelperService, ToasterService, ResourceService, ContentData,
-  ContentUtilsServiceService, ITelemetryShare
+  WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
+  ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -22,7 +21,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+
   telemetryContentImpression: IImpressionEventInput;
+
   private route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
@@ -32,8 +33,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   public collectionStatus: string;
 
   private contentId: string;
-
-  private contentService: ContentService;
 
   public collectionTreeNodes: any;
 
@@ -50,29 +49,40 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
   private router: Router;
 
   public loader: Boolean = true;
+
   public triggerContentImpression = false;
+
   public showCopyLoader: Boolean = false;
   /**
 	 * telemetryShareData
 	*/
   telemetryShareData: Array<ITelemetryShare>;
+
   objectInteract: IInteractEventObject;
+
   objectContentInteract: IInteractEventObject;
+
   collectionInteractObject: IInteractEventObject;
+
   closeIntractEdata: IInteractEventEdata;
+
   closeContentIntractEdata: IInteractEventEdata;
+
   private subscription: Subscription;
 
-  private subsrciption: Subscription;
   public contentType: string;
+
   public mimeType: string;
+
   public sharelinkModal: boolean;
+
   public badgeData: Array<object>;
-  private closeUrl: any;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
+
   public collectionData: any;
 
   public collectionTreeOptions: ICollectionTreeOptions = {
@@ -95,12 +105,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
    */
   shareLink: string;
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PlayerService,
+  constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService) {
-    this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -143,7 +152,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy {
         id: content.metadata.identifier,
         type: content.metadata.contentType || content.metadata.resourceType || 'content',
         ver: content.metadata.pkgVersion ? content.metadata.pkgVersion.toString() : '1.0',
-        rollup: {l1: this.collectionId}
+        rollup: { l1: this.collectionId }
         // rollup: this.collectionInteractObject
       };
       this.triggerContentImpression = true;

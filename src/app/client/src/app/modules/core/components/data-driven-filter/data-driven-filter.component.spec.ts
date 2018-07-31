@@ -40,6 +40,9 @@ describe('DataDrivenFilterComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ subject: ['English'] })
   };
+  const mockUserRoles = {
+   userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
+   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, Ng2IziToastModule, SuiModule],
@@ -148,6 +151,8 @@ describe('DataDrivenFilterComponent', () => {
     fixture.detectChanges();
   });
   it('should remove filter selection', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
     component.formInputData = { 'subject': ['English'] };
     component.removeFilterSelection('subject', 'English');
     fixture.detectChanges();
@@ -156,6 +161,9 @@ describe('DataDrivenFilterComponent', () => {
     const frameworkService = TestBed.get(FrameworkService);
     const formService = TestBed.get(FormService);
     const cacheService = TestBed.get(CacheService);
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: mockData.mockRes.userProfile });
+    userService.getUserProfile();
     component.formFieldProperties = mockData.mockRes.formConfigData;
     spyOn(cacheService, 'exists').and.returnValue(false);
     spyOn(component, 'getFormConfig').and.returnValue(component.formFieldProperties);

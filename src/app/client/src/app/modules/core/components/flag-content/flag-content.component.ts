@@ -1,5 +1,5 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ContentService, PlayerService, UserService } from './../../services';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -118,10 +118,10 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       this.contentData = this.playerService.contentData;
     } else {
       this.playerService.getContent(this.identifier).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(response => {
-        this.contentData = response.result.content;
-      });
+        takeUntil(this.unsubscribe))
+        .subscribe(response => {
+          this.contentData = response.result.content;
+        });
     }
   }
   /**
@@ -137,15 +137,15 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       data: { 'request': requestData }
     };
     this.contentService.post(option).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(response => {
-      this.showLoader = false;
-      this.modal.deny();
-      this.redirect();
-    }, (err) => {
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0050);
-    });
+      takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        this.showLoader = false;
+        this.modal.deny();
+        this.redirect();
+      }, (err) => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0050);
+      });
   }
   /**
    * This method use to create request Data for api call
@@ -179,10 +179,10 @@ export class FlagContentComponent implements OnInit, OnDestroy {
       this.contentData = this.playerService.collectionData;
     } else {
       this.playerService.getCollectionHierarchy(this.identifier).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(response => {
-        this.contentData = response.result.content;
-      });
+        takeUntil(this.unsubscribe))
+        .subscribe(response => {
+          this.contentData = response.result.content;
+        });
     }
   }
   /**
@@ -195,7 +195,7 @@ export class FlagContentComponent implements OnInit, OnDestroy {
         this.identifier = params.contentId;
         this.getContentData();
       } else {
-        this.identifier = params.collectionId ?  params.collectionId :  params.courseId;
+        this.identifier = params.collectionId ? params.collectionId : params.courseId;
         this.getCollectionHierarchy();
       }
     });

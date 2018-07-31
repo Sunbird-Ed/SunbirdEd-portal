@@ -1,8 +1,8 @@
-import { ConfigService, ServerResponse, ToasterService , ResourceService, IUserData} from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService, IUserData } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import * as _ from 'lodash';
 import { RolesAndPermissions, Roles } from './../../interfaces';
 
@@ -112,10 +112,10 @@ export class PermissionService {
    * @param {ServerResponse} data ConfigService reference
    */
   private setCurrentRoleActions(): void {
-    this.userService.userData$.subscribe( (user: IUserData) => {
+    this.userService.userData$.subscribe((user: IUserData) => {
       if (user && !user.err) {
         this.userRoles = user.userProfile.userRoles;
-        _.forEach(this.userRoles,  (role) => {
+        _.forEach(this.userRoles, (role) => {
           const roleActions = _.filter(this.rolesAndPermissions, { role: role });
           if (_.isArray(roleActions) && roleActions.length > 0) {
             this.userRoleActions = _.concat(this.userRoleActions, _.map(roleActions[0].actions, 'id'));

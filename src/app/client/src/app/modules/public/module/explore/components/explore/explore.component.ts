@@ -1,15 +1,15 @@
-import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  ResourceService, ServerResponse, ToasterService, INoResultMessage,
+  ResourceService, ToasterService, INoResultMessage,
   ConfigService, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { ICaraouselData, IAction } from '@sunbird/shared';
+import { ICaraouselData } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 @Component({
@@ -189,8 +189,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.publicPlayerService.playContent(event, this.queryParams);
-}
+    this.publicPlayerService.playContent(event);
+  }
 
   compareObjects(a, b) {
     if (a !== undefined) {

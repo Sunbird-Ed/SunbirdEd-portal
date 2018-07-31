@@ -109,7 +109,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
     this.getUrl();
     if (!this.userService.loggedIn) {
-     this.getCacheLanguage();
+      this.getCacheLanguage();
     }
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
