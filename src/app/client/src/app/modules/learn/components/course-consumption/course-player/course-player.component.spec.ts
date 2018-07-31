@@ -73,8 +73,8 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePlayerComponent ],
-      providers: [ CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
+      declarations: [CoursePlayerComponent],
+      providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
