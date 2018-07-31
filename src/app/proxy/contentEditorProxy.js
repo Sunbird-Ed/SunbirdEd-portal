@@ -15,6 +15,7 @@ module.exports = function (app) {
   }
 
   app.use('/api/plugins/v1/search', proxy(contentServiceBaseUrl, {
+    preserveHostHdr: true,
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
