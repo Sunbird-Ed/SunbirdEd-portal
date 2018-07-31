@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as  iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+  IUserData, IUserProfile
+} from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@sunbird/environment';
+import { WorkSpaceService } from '../../../services';
 
 @Component({
   selector: 'app-generic-editor',
@@ -70,14 +73,18 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
    * service for redirection to draft  component
   */
   private activatedRoute: ActivatedRoute;
+  public listener;
 
   constructor(userService: UserService, router: Router, public _zone: NgZone,
     activatedRoute: ActivatedRoute, tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, toasterService: ToasterService,
+    resourceService: ResourceService, public workspaceService: WorkSpaceService) {
     this.userService = userService;
     this.router = router;
     this.activatedRoute = activatedRoute;
     this.tenantService = tenantService;
+    this.toasterService = toasterService;
+    this.resourceService = resourceService;
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
     } catch (error) {
@@ -85,6 +92,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnInit() {
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -236,7 +246,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   navigateToWorkSpace() {
     if (document.getElementById('collectionEditor')) {
-       document.getElementById('collectionEditor').remove();
+      document.getElementById('collectionEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('workspace/content/uploaded/1');
     this.showModal = false;
@@ -248,5 +258,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     if (document.getElementById('genericEditor')) {
       document.getElementById('genericEditor').remove();
     }
+    window.location.hash = '';
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
 }
