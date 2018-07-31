@@ -14,12 +14,12 @@ module.exports = function (app) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path
   }
 
-  app.use('/api/plugins/v1/search', proxy(contentServiceBaseUrl, {
+  app.use('/plugins/v1/search', proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyHeaders.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/api/', '')
+      originalUrl = originalUrl.replace('/', '')
       return require('url').parse(contentServiceBaseUrl + originalUrl).path
     }
   }))
