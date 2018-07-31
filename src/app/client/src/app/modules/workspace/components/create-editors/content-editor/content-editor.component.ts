@@ -253,7 +253,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
         repos: ['/sunbird-plugins/renderer'],
         plugins: [{
           id: 'org.sunbird.player.endpage',
-          ver: 1.0,
+          ver: 1.1,
           type: 'plugin'
         }],
         splash: {
