@@ -92,9 +92,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnInit() {
-    sessionStorage.setItem('inEditor', 'true');
-    window.location.hash = 'no';
-    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -108,6 +105,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.contentId = params['contentId'];
       this.state = params['state'];
       this.framework = params['framework'];
+      sessionStorage.setItem('inEditor', 'true');
+      window.location.hash = 'no';
+      this.workspaceService.toggleWarning('');
     });
     try {
       this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
@@ -260,6 +260,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     window.location.hash = '';
     sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning();
+    this.workspaceService.toggleWarning('');
   }
 }

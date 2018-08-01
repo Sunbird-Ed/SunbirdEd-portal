@@ -162,16 +162,20 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
-  toggleWarning() {
+  toggleWarning(type) {
     this.showWarning = sessionStorage.getItem('inEditor');
     if (this.showWarning === 'true') {
-      this.listener = function (event) {
+      this.listener = (event) => {
         window.location.hash = 'no';
         if (event.state) {
-          alert(this.resourceService.messages.imsg.m0037);
+          if (type !== '' && type !== undefined) {
+            alert(this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0039);
+          } else {
+            alert(this.resourceService.messages.imsg.m0037);
+          }
           window.location.hash = 'no';
         }
-      }.bind(this);
+      };
       window.addEventListener('popstate', this.listener, false);
     } else {
       window.location.hash = '';
