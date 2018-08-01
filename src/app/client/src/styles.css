@@ -2733,7 +2733,9 @@ iframe.iziModal-iframe {
 .text-ellipsis { 
   white-space: nowrap;
   overflow: hidden; 
-  text-overflow:ellipsis 
+  text-overflow:ellipsis; 
+  display: block;
+  line-height:1.4em;
 }
 .player-badge-alignment {
   display:flex;
