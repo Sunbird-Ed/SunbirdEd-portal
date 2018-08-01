@@ -65,7 +65,7 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
-    configuration.context.channel = this.orgDetailsService.orgDetails.hashTagId;
+    configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
