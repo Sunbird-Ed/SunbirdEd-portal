@@ -1,7 +1,7 @@
 <div class="two wide column">
   <div class="field">
     <div class="content dropdown-content">
-      <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}&nbsp;</span>
+      <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:</span>
       <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
         <sui-select class="inline" (selectedOptionChange)="applySorting()" [(ngModel)]="sortByOption" [options]="sortingOptions"
           valueField="field" labelField="name" #selectSort>
