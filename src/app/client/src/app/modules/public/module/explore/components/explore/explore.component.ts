@@ -106,9 +106,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
             this.caraouselData = apiResponse.sections;
             _.forEach(this.caraouselData, (value, index) => {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
-                const constantData = this.config.appConfig.Library.constantData;
-                const metaData = this.config.appConfig.Library.metaData;
-                const dynamicFields = this.config.appConfig.Library.dynamicFields;
+                const constantData = this.config.appConfig.ExplorePage.constantData;
+                const metaData = this.config.appConfig.ExplorePage.metaData;
+                const dynamicFields = this.config.appConfig.ExplorePage.dynamicFields;
                 this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
                   constantData, dynamicFields, metaData);
               }
