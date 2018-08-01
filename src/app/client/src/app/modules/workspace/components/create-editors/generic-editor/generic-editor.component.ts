@@ -260,6 +260,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     window.location.hash = '';
     sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning('');
+    this.workspaceService.toggleWarning();
   }
 }
