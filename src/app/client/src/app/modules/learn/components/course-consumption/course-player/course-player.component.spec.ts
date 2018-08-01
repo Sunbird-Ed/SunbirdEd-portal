@@ -6,7 +6,7 @@ import { INoteData } from '@sunbird/notes';
 import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
-import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
 import { } from 'jasmine';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
@@ -73,8 +73,8 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePlayerComponent ],
-      providers: [ CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
+      declarations: [CoursePlayerComponent],
+      providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
@@ -341,5 +341,17 @@ describe('CoursePlayerComponent', () => {
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
+  it('should not display error message if content id is not available in queryparams', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const toasterService = TestBed.get(ToasterService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    activatedRouteStub.queryParams = of({});
+    activatedRouteStub.changeParams({ courseStatus: 'Unlisted' });
+    spyOn(toasterService, 'error').and.callThrough();
+    component.ngOnInit();
+    expect(toasterService.error).not.toHaveBeenCalled();
+    expect(component.courseStatus).toEqual('Unlisted');
   });
 });

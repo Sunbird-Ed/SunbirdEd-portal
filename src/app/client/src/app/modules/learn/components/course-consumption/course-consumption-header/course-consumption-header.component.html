@@ -14,12 +14,6 @@
                     <a (click)="onShareLink();sharelinkModal=true;">
                         <i class="cursor-pointer large blue share alternate icon"></i>
                     </a>
-                    <!-- <span class="ui mouse-pointer content-font">
-                <i class="large blue share alternate icon"></i>&nbsp;
-            </span> -->
-                    <span *ngIf="enrolledCourse && courseStatus !== 'Unlisted'" (click)="flagCourse()">
-                        <i class="ui large blue flag outline icon"></i>
-                    </span>
                     <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
                         (click)="copyContent(courseHierarchy)" class="ui mouse-pointer content-font margin-left-10 ng-isolate-scope"
                         title="Copy content">
@@ -32,10 +26,9 @@
                         <span>
                             <p class="text-align-center">{{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%</p>
                         </span>
-                        <button appTelemetryInteract 
-                        [telemetryInteractEdata]="resumeIntractEdata" 
-                        [telemetryInteractObject]="courseInteractObject"
-                        class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse" (click)="resumeCourse(true)">
+                        <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata" [telemetryInteractObject]="courseInteractObject"
+                            class="fluid blue right floated  ui button courseHeaderButton margin-top-0" [disabled]="showResumeCourse"
+                            (click)="resumeCourse(true)">
                             {{resourceService?.frmelmnts?.btn?.resumecourse}}
                             <i class="caret right icon"></i>
                         </button>
@@ -48,9 +41,9 @@
         </div>
         <div class="one wide column "></div>
     </div>
-  </div>
-  <div class="ui grid progress-bar-margin" *ngIf="enrolledCourse">
-      <div class="twelve wide column padding-none ">
+</div>
+<div class="ui grid progress-bar-margin" *ngIf="enrolledCourse">
+    <div class="twelve wide column padding-none ">
         <sui-progress class="ui tiny progress orange" [value]="progress" [maximum]="100"></sui-progress>
     </div>
 </div>

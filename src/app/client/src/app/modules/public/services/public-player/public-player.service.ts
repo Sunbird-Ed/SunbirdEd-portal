@@ -1,16 +1,13 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {mergeMap, map} from 'rxjs/operators';
+import { of as observableOf, Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserService, CollectionHierarchyAPI, PublicDataService } from '@sunbird/core';
+import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, IUserData, ResourceService, ServerResponse,
-  ContentDetails, PlayerConfig, ContentData
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash';
-import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class PublicPlayerService {
@@ -22,9 +19,9 @@ export class PublicPlayerService {
    * stores collection/course details
    */
   collectionData: ContentData;
-  constructor(public userService: UserService,
+  constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
-    public publicDataService: PublicDataService) {
+    public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
   }
 
   /**
@@ -68,7 +65,7 @@ export class PublicPlayerService {
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
-    configuration.context.channel = 'in.ekstep';
+    configuration.context.channel = this.orgDetailsService.orgDetails.hashTagId;
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
@@ -83,5 +80,16 @@ export class PublicPlayerService {
       this.collectionData = response.result.content;
       return response;
     }));
+  }
+
+  public playContent(event) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => {
+      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', event.data.metaData.identifier]);
+      } else {
+        this.router.navigate(['play/content', event.data.metaData.identifier]);
+      }
+    }, 0);
   }
 }

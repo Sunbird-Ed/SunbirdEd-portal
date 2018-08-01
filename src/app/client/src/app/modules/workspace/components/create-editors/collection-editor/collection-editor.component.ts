@@ -1,13 +1,15 @@
 
-import { Component, OnInit, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as  iziModal from 'izimodal/js/iziModal';
-import {NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
-   IUserData, IUserProfile } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, ConfigService, ToasterService, ServerResponse,
+  IUserData, IUserProfile
+} from '@sunbird/shared';
 import { UserService, TenantService } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EditorService } from './../../../services';
+import { EditorService, WorkSpaceService } from './../../../services';
 import { state } from './../../../classes/state';
 import { environment } from '@sunbird/environment';
 
@@ -103,7 +105,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     public _zone: NgZone,
     config: ConfigService,
     tenantService: TenantService,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.route = route;
@@ -111,7 +113,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
     this.activatedRoute = activatedRoute;
     this.userService = userService;
     this.config = config;
-    this.tenantService =  tenantService;
+    this.tenantService = tenantService;
     // buildNumber
     try {
       this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')).value;
@@ -121,6 +123,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -240,13 +245,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
         contentType: ['Collection']
       };
     }
-    if (this.userService.contentChannelFilter) {
-      window.config.searchCriteria = {
-        filters: {
-          channel: this.userService.contentChannelFilter
-        }
-      };
-    }
+
     window.config.editorConfig.publishMode = false;
     window.config.editorConfig.isFlagReviewer = false;
 
@@ -309,16 +308,19 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
   navigateToWorkSpace() {
     if (document.getElementById('collectionEditor')) {
-       document.getElementById('collectionEditor').remove();
+      document.getElementById('collectionEditor').remove();
     }
     this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     this.showModal = false;
   }
 
   ngOnDestroy() {
+    window.location.hash = '';
     if (document.getElementById('collectionEditor')) {
       document.getElementById('collectionEditor').remove();
     }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workspaceService.toggleWarning();
   }
   /**
    *Validate the request
@@ -360,7 +362,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       window.config.editorConfig.mode = 'Edit';
       window.config.editorConfig.contentStatus = 'draft';
     }
-
     if (status.toLowerCase() === 'review') {
       window.config.editorConfig.mode = 'Read';
       window.config.editorConfig.contentStatus = 'draft';

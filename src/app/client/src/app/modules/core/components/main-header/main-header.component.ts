@@ -28,7 +28,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   logo: string;
   key: string;
   queryParam: any = {};
-  queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
   /**
@@ -109,13 +108,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
     }
     this.getUrl();
+    if (!this.userService.loggedIn) {
+      this.getCacheLanguage();
+    }
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
-      if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
-        this.queryParamLanguage = this.queryParam['language'];
-        this.resourceService.getResource(this.queryParam['language']);
-      }
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -145,6 +143,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       console.log('error while fetching enableSignup');
     }
   }
+
+  getCacheLanguage() {
+    const isCachedDataExists = this.cacheService.exists('portalLanguage');
+    if (isCachedDataExists) {
+      const data: any | null = this.cacheService.get('portalLanguage');
+      this.resourceService.getResource(data);
+    }
+  }
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
@@ -161,7 +167,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   onEnter(key) {
     this.key = key;
     this.queryParam = {};
-    this.queryParam['language'] = this.queryParamLanguage;
     this.queryParam['key'] = this.key;
     if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;

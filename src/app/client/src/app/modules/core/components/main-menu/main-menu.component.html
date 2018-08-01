@@ -1,15 +1,13 @@
 <div class="ui secondary pointing menu" *ngIf="userService.userid">
-	<a class="item"  [class.active]="router.isActive('/search/All') || router.isActive('/home')"  routerLink="/home" >
+	<a class="item" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
 		{{resourceService?.frmelmnts?.tab?.home}}
-	    </a>
-	<a class="item"  [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"  routerLink="/learn" >
-	    {{resourceService?.frmelmnts?.tab?.courses}}
-	    </a>
-	<a class="item"   [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"  routerLink="/resources" >
+	</a>
+	<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" routerLink="/learn">
+		{{resourceService?.frmelmnts?.tab?.courses}}
+	</a>
+	<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')" routerLink="/resources">
 		{{resourceService?.frmelmnts?.tab?.resources}}
-	    </a>
-	<!-- <a class="item" [class.active]="router.isActive('/groups')"  routerLink="/groups" >
-		{{resourceService?.frmelmnts?.tab?.community}}
-	    </a> -->
+	</a>
+
 	<extension-point name="header-menu-item"></extension-point>
 </div>

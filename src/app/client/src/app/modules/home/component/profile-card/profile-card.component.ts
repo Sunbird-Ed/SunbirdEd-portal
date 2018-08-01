@@ -1,4 +1,4 @@
-import {  ResourceService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 import { Component, Input } from '@angular/core';
 import { ProfileCard } from './../../interfaces/index';
 /**
@@ -11,19 +11,19 @@ import { ProfileCard } from './../../interfaces/index';
   styleUrls: ['./profile-card.component.css']
 })
 export class ProfileCardComponent {
-    /**
-     * To call resource service which helps to use language constant.
-     */
- public resourceService: ResourceService;
-    /**
-     * This is used to render the userProfile values in the view.
-     */
-   @Input() profile: ProfileCard;
-   /**
-   * inject service(s)
-   * @param {ResourceService} resourceService Reference of ResourceService.
-  */
+  /**
+   * To call resource service which helps to use language constant.
+   */
+  public resourceService: ResourceService;
+  /**
+   * This is used to render the userProfile values in the view.
+   */
+  @Input() profile: ProfileCard;
+  /**
+  * inject service(s)
+  * @param {ResourceService} resourceService Reference of ResourceService.
+ */
   constructor(resourceService: ResourceService) {
-       this.resourceService = resourceService;
-     }
+    this.resourceService = resourceService;
+  }
 }

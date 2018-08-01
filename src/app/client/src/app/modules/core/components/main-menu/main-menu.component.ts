@@ -1,7 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
 import { UserService } from '../../services';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 /**
  * Main menu component

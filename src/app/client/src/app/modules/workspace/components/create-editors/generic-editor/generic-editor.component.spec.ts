@@ -13,6 +13,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, of as observableOf } from 'rxjs';
 import { mockRes } from './generic-editor.component.spec.data';
+import { WorkSpaceService } from '../../../services';
 
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
@@ -31,7 +32,7 @@ describe('GenericEditorComponent', () => {
       providers: [
         UserService, LearnerService, ContentService,
         ResourceService, ToasterService, ConfigService,
-        NavigationHelperService, BrowserCacheTtlService,
+        NavigationHelperService, BrowserCacheTtlService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
@@ -82,4 +83,9 @@ describe('GenericEditorComponent', () => {
     component.ngOnInit();
     expect(component.extContWhitelistedDomains).toEqual('youtube.com');
   }));
+  it('should listen to the browser back button event', () => {
+    spyOn(sessionStorage, 'setItem').and.callThrough();
+    component.ngOnInit();
+    expect(window.location.hash).toEqual('#no');
+  });
 });
