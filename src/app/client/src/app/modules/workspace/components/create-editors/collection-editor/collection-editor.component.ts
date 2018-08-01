@@ -123,9 +123,6 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
-    sessionStorage.setItem('inEditor', 'true');
-    window.location.hash = 'no';
-    this.workspaceService.toggleWarning();
     /**
      * Call User service to get user data
      */
@@ -144,6 +141,9 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       this.type = params['type'];
       this.framework = params['framework'];
     });
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workspaceService.toggleWarning(this.type);
   }
 
   ngAfterViewInit() {
