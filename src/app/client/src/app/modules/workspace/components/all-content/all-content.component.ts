@@ -228,7 +228,7 @@ export class AllContentComponent extends WorkSpace implements OnInit {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
       this.sort = {
-        [sort_by]: sortType
+        [sort_by]: _.toString(sortType)
       };
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
