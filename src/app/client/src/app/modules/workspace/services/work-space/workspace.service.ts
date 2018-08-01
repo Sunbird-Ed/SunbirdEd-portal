@@ -162,17 +162,15 @@ export class WorkSpaceService {
     });
     return <ICard[]>list;
   }
-  toggleWarning(type) {
+  toggleWarning(type?: string) {
     this.showWarning = sessionStorage.getItem('inEditor');
     if (this.showWarning === 'true') {
       this.listener = (event) => {
         window.location.hash = 'no';
         if (event.state) {
-          if (type !== '' && type !== undefined) {
-            alert(this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0039);
-          } else {
-            alert(this.resourceService.messages.imsg.m0037);
-          }
+          const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0039
+            : this.resourceService.messages.imsg.m0037;
+          alert(alertMsg);
           window.location.hash = 'no';
         }
       };

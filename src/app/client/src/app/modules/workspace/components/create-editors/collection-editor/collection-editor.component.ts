@@ -320,7 +320,7 @@ export class CollectionEditorComponent implements OnInit, AfterViewInit, OnDestr
       document.getElementById('collectionEditor').remove();
     }
     sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning('');
+    this.workspaceService.toggleWarning();
   }
   /**
    *Validate the request

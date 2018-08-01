@@ -186,7 +186,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       document.getElementById('contentEditor').remove();
     }
     sessionStorage.setItem('inEditor', 'false');
-    this.workspaceService.toggleWarning('');
+    this.workspaceService.toggleWarning();
   }
   /**
    * Launch the content editor in Iframe Modal window

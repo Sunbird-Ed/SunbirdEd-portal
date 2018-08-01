@@ -107,7 +107,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.framework = params['framework'];
       sessionStorage.setItem('inEditor', 'true');
       window.location.hash = 'no';
-      this.workspaceService.toggleWarning('');
+      this.workspaceService.toggleWarning();
     });
     try {
       this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
