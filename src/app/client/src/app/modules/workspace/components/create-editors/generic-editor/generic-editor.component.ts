@@ -219,6 +219,9 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           bgImage: 'assets/icons/splacebackground_1.png',
           webLink: ''
         },
+        "overlay": {
+          "enableUserSwitcher": false
+        },
         showEndPage: false
       }
 
