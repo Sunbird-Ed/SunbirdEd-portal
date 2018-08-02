@@ -263,7 +263,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           webLink: ''
         },
         "overlay": {
-          "enableUserSwitcher": false
+          "showUser": false
         },
         showEndPage: false
       },
