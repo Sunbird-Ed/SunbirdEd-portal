@@ -73,10 +73,16 @@ function renderTenantPage(req, res) {
 //in fallback option check always for local tenant folder and redirect to / if not exists
 function loadTenantFromLocal(req, res) {
     if (tenantId) {
-        if (fs.existsSync(path.join(__dirname, '../tenant', tenantId, 'index.html'))) {
-            res.sendFile(path.join(__dirname, '../tenant', tenantId, 'index.html'))
+        if (fs.existsSync(path.join(__dirname, 'tenant', tenantId, 'index.html'))) {
+            res.sendFile(path.join(__dirname, 'tenant', tenantId, 'index.html'))
         } else {
-            renderDefaultIndexPage(req, res)
+            // renderDefaultIndexPage only if there is no local default tenant else redirect
+            if (defaultTenant && req.path === '/') {
+                renderDefaultIndexPage(req, res)
+            } else {
+                //this will be executed only if user is typed invalid tenant in url
+                res.redirect('/')
+            }
         }
     } else {
         renderDefaultIndexPage(req, res)
@@ -88,9 +94,11 @@ module.exports = (app, keycloak) => {
         '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*'], indexPage)
 
     app.all('/:slug/get', (req, res) => res.redirect('/get'))
+
     app.all('/:slug/get/dial/:dialCode', (req, res) => res.redirect('/get/dial/:dialCode'))
 
     app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+
     app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
     app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',

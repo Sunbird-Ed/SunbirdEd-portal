@@ -112,9 +112,6 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   ngOnInit() {
-    sessionStorage.setItem('inEditor', 'true');
-    window.location.hash = 'no';
-    this.workspaceService.toggleWarning();
     /**
     * Call User service to get user data
     */
@@ -130,6 +127,9 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.type = params['type'];
       this.framework = params['framework'];
     });
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workspaceService.toggleWarning(this.type);
     this.setRenderer();
   }
   setRenderer() {

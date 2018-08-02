@@ -58,24 +58,30 @@ describe('UpforReviewFilterComponent', () => {
      fixture.detectChanges();
      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
   }));
-  it('should call keydown method and naviagate with search query after 1s', fakeAsync(() => {
+  it('should call handleSearch method and naviagate with search query after 1s', fakeAsync(() => {
       const route = TestBed.get(Router);
-      inputEl.triggerEventHandler('keydown', {});
-      spyOn(component, 'keyup').and.callThrough();
-      component.keyup('text');
+      component.query = 'text';
+      spyOn(component, 'handleSearch').and.callThrough();
+      component.handleSearch();
       const queryParams = {subject: [ 'english', 'odia' ], query: 'text'};
       tick(1000);
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
       fixture.detectChanges();
   }));
-  it('should call keydown method when key is empty and remove key from queryparam', fakeAsync(() => {
+  it('should call handleSearch method when key is empty and remove key from queryparam', fakeAsync(() => {
       const route = TestBed.get(Router);
-      inputEl.triggerEventHandler('keydown', {});
-      spyOn(component, 'keyup').and.callThrough();
-      component.keyup('');
+      spyOn(component, 'handleSearch').and.callThrough();
+      component.query = '';
+      component.handleSearch();
       const queryParams = {subject: [ 'english', 'odia' ]};
       tick(1000);
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview', 1], {queryParams: queryParams});
-      fixture.detectChanges();
   }));
+  it('should call keyup method sets the modelChanged value', () => {
+    const route = TestBed.get(Router);
+    inputEl.triggerEventHandler('keydown', {});
+    spyOn(component, 'keyup').and.callThrough();
+    component.keyup('text');
+    expect(component.query).toBe('text');
+  });
 });
