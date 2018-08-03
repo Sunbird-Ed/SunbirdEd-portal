@@ -1,14 +1,78 @@
 const express = require('express')
 const fs = require('fs')
+const request = require('request');
+const compression = require('compression')
 const MobileDetect = require('mobile-detect');
+const _ = require('lodash')
+const path = require('path')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const tenantHelper = require('../helpers/tenantHelper.js')
 const defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState();
 const tenantCdnUrl = envHelper.TENANT_CDN_URL;
 const defaultTenant = envHelper.DEFAULT_CHANNEL
+const oneDayMS = 86400000;
 let tenantId = ''
-const _ = require('lodash')
-const path = require('path')
+
+module.exports = (app, keycloak) => {
+
+    app.set('view engine', 'ejs')
+
+    app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
+
+    app.use(express.static(path.join(__dirname, '../')))
+
+    app.use(express.static(path.join(__dirname, '../tenant', tenantId)))
+
+    if (defaultTenant) {
+        app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
+    }
+
+    app.get(['/dist/*.js', '/dist/*.css', '/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg'],
+        compression(), (req, res, next) => {
+            res.setHeader("Cache-Control", "public, max-age=" + oneDayMS * 30);
+            res.setHeader("Expires", new Date(Date.now() + oneDayMS * 30).toUTCString());
+            next();
+        });
+
+    app.all(['/server.js', '/helpers/*.js', '/helpers/**/*.js'], (req, res) => res.sendStatus(404))
+
+    app.get('/assets/images/*', (req, res, next) => {
+        res.setHeader("Cache-Control", "public, max-age=" + oneDayMS);
+        res.setHeader("Expires", new Date(Date.now() + oneDayMS).toUTCString());
+        next();
+    });
+
+    app.all(['/', '/signup', '/get', '/get/dial/:dialCode', '/explore',
+        '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*'], indexPage)
+
+    app.all('/:slug/get', (req, res) => res.redirect('/get'))
+
+    app.all('/:slug/get/dial/:dialCode', (req, res) => res.redirect('/get/dial/:dialCode'))
+
+    app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+
+    app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
+
+    app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
+        '/orgType', '/orgType/*', '/dashboard', '/dashboard/*', '/orgDashboard', '/orgDashboard/*',
+        '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
+        '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
+
+    app.all('/:tenantName', (req, res) => {
+        tenantId = req.params.tenantName
+        if (_.isString(tenantId)) {
+            tenantId = _.lowerCase(tenantId)
+        }
+        if (tenantId) {
+            renderTenantPage(req, res)
+        } else if (defaultTenant) {
+            renderTenantPage(req, res)
+        } else {
+            res.redirect('/')
+        }
+    })
+
+}
 
 function getLocals(req) {
     var locals = {};
@@ -86,45 +150,5 @@ function loadTenantFromLocal(req, res) {
         }
     } else {
         renderDefaultIndexPage(req, res)
-    }
-}
-module.exports = (app, keycloak) => {
-
-    app.all(['/', '/signup', '/get', '/get/dial/:dialCode', '/explore',
-        '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*'], indexPage)
-
-    app.all('/:slug/get', (req, res) => res.redirect('/get'))
-
-    app.all('/:slug/get/dial/:dialCode', (req, res) => res.redirect('/get/dial/:dialCode'))
-
-    app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
-
-    app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
-
-    app.all(['/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-        '/orgType', '/orgType/*', '/dashboard', '/dashboard/*', '/orgDashboard', '/orgDashboard/*',
-        '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-        '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage)
-
-    app.use(express.static(path.join(__dirname, '/')))
-
-    app.all('/:tenantName', (req, res) => {
-        tenantId = req.params.tenantName
-        if (_.isString(tenantId)) {
-            tenantId = _.lowerCase(tenantId)
-        }
-        if (tenantId) {
-            renderTenantPage(req, res)
-        } else if (defaultTenant) {
-            renderTenantPage(req, res)
-        } else {
-            res.redirect('/')
-        }
-    })
-
-    app.use(express.static(path.join(__dirname, '../tenant', tenantId)))
-
-    if (defaultTenant) {
-        app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
     }
 }
