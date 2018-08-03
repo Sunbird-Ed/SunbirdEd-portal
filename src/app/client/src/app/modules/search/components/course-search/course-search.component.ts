@@ -122,7 +122,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
   courseDataSubscription: Subscription;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
 
   /**
@@ -183,7 +183,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     };
 
     this.searchService.courseSearch(requestParams)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.course) {
@@ -280,7 +280,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
           queryParams: queryParams
         };
       })
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -363,7 +363,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     if (this.courseDataSubscription) {
       this.courseDataSubscription.unsubscribe();
     }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

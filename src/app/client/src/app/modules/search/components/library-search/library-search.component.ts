@@ -109,7 +109,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
 
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -150,7 +150,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
       sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType}
     };
     this.searchService.contentSearch(requestParams)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.content) {
@@ -212,7 +212,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
           queryParams: queryParams
         };
       })
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -286,7 +286,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

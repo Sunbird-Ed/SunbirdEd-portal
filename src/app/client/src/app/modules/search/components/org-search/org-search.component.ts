@@ -96,7 +96,7 @@ export class OrgSearchComponent implements OnInit, OnDestroy {
   closeIntractEdata: IInteractEventEdata;
   orgDownLoadIntractEdata: IInteractEventEdata;
   filterIntractEdata: IInteractEventEdata;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   /**
 	 * telemetryImpression
 	*/
@@ -137,7 +137,7 @@ export class OrgSearchComponent implements OnInit, OnDestroy {
       query: this.queryParams.key
     };
     this.searchService.orgSearch(searchParams)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
@@ -216,7 +216,7 @@ export class OrgSearchComponent implements OnInit, OnDestroy {
         queryParams: queryParams
       };
     })
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(bothParams => {
       if (bothParams.params.pageNumber) {
         this.pageNumber = Number(bothParams.params.pageNumber);
@@ -276,7 +276,7 @@ export class OrgSearchComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

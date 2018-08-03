@@ -1,6 +1,4 @@
-
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-
 import { UserSearchService } from './../../services/user-search/user-search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -104,13 +102,5 @@ describe('UserDeleteComponent', () => {
         }
     );
     fixture.detectChanges();
-  });
-  xit('should unsubscribe from all observable subscriptions', () => {
-    const modal = fixture.componentInstance.modal;
-    component.ngOnInit();
-    component.setUserDetails();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 });

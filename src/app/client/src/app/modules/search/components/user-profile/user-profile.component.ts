@@ -110,7 +110,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 	*/
   telemetryImpression: IImpressionEventInput;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   userDataSubscription: Subscription;
   /**
@@ -161,7 +161,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.showLoader = true;
     const option = { userId: this.userId };
     this.userSearchService.getUserById(option)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.userDetails = apiResponse.result.response;
@@ -208,7 +208,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       data: requestBody
     };
     this.learnerService.post(option)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(response => {
       _.each(this.userDetails.skills, (skill) => {
         if (skill.skillName === skillName) {
@@ -245,7 +245,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       };
       this.userDetails.badgeArray = [];
       this.badgesService.getDetailedBadgeAssertions(req, this.userDetails.badgeAssertions)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe((detailedAssertion) => {
         if (detailedAssertion) {
           this.userDetails.badgeArray.push(detailedAssertion);
@@ -310,7 +310,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

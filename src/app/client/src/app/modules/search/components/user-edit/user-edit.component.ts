@@ -31,7 +31,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   selectedOrgName: string;
   selectedOrgId: string;
   selectedOrgUserRoles: Array<string>;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   selectedOrgUserRolesNew: any = [];
 
   /**
@@ -117,7 +117,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     // Calling Org search API
     this.searchService.getOrganisationDetails({ orgid: orgArray })
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (orgApiResponse: any) => {
         // Setting Org Name
@@ -136,7 +136,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.userSearchService.userDetailsObject.id !== this.userId) {
       const option = { userId: this.userId };
       this.userSearchService.getUserById(option)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
@@ -182,7 +182,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       });
       const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
       this.userSearchService.updateRoles(option)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.toasterService.success(this.resourceService.messages.smsg.m0028);
@@ -252,8 +252,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     this.permissionSubscription.unsubscribe();
   }
 }

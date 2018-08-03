@@ -105,7 +105,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
   userProfile: any;
   inviewLogs: any = [];
   userDataSubscription: Subscription;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -150,7 +150,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
       query: this.queryParams.key
     };
     this.searchService.userSearch(searchParams)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
@@ -192,7 +192,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     // Calling Org search API
     orgArray = _.uniq(orgArray);
     this.searchService.getOrganisationDetails({ orgid: orgArray })
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (orgApiResponse: any) => {
         // Setting Org Name
@@ -315,7 +315,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     };
 
     this.userSearchService.userDeleteEvent
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(data => {
       _.each(this.searchList, (key, index) => {
         if (data && data === key.id) {
@@ -372,7 +372,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

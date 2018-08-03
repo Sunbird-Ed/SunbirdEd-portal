@@ -157,8 +157,8 @@ describe('CourseSearchComponent', () => {
     component.populateEnrolledCourse();
     component.populateCourseSearch();
     component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });

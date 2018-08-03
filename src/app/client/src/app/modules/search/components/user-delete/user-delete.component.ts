@@ -59,7 +59,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
    */
   public routerNavigationService: RouterNavigationService;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   /**
 	 * Constructor to create injected service(s) object
@@ -92,7 +92,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   deleteUser(): void {
     const option = { userId: this.userId };
     this.userSearchService.deleteUser(option)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0029);
@@ -119,7 +119,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
       this.userSearchService.userDetailsObject.id !== this.userId) {
       const option = { userId: this.userId };
       this.userSearchService.getUserById(option)
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(
         (apiResponse: ServerResponse) => {
           this.userDetails = apiResponse.result.response;
@@ -146,8 +146,8 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.modal.deny();
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

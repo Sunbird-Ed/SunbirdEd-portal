@@ -99,7 +99,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
    */
   queryParams: IHomeQueryParams;
 
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   /**
      * Constructor to create injected service(s) object
      * @param {SearchService} searchService Reference of SearchService
@@ -141,7 +141,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
       query: this.queryParams.key
     };
     this.searchService.compositeSearch(searchParams)
-    .takeUntil(this.unsubscribe)
+    .takeUntil(this.unsubscribe$)
     .subscribe(
       (apiResponse: ServerResponse) => {
         if (apiResponse.result.count && apiResponse.result.content.length > 0) {
@@ -201,7 +201,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
           queryParams: queryParams
         };
       })
-      .takeUntil(this.unsubscribe)
+      .takeUntil(this.unsubscribe$)
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -260,7 +260,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

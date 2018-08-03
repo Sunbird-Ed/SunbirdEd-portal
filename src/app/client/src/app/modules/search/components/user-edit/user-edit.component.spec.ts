@@ -182,10 +182,4 @@ describe('UserEditComponent', () => {
     component.ngOnInit();
     expect(component.allRoles['role']).not.toContain('PUBLIC');
   });
-  xit('should unsubscribe from all observable subscriptions', () => {
-    component.populateUserDetails();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
-  });
 });
