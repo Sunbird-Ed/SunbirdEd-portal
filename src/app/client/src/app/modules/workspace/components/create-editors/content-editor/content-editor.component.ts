@@ -262,8 +262,8 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
           bgImage: 'assets/icons/splacebackground_1.png',
           webLink: ''
         },
-        "overlay": {
-          "showUser": false
+        'overlay': {
+          'showUser': false
         },
         showEndPage: false
       },

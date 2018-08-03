@@ -319,12 +319,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       description: this.batchUpdateForm.value.description,
       enrollmentType: this.batchUpdateForm.value.enrollmentType,
       startDate: startDate,
+      endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
-    if (endDate) {
-      requestBody['endDate'] = endDate;
-    }
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
       _.forEach(this.selectedMentors, (value) => {
