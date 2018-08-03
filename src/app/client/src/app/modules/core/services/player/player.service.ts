@@ -1,13 +1,12 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {mergeMap, map} from 'rxjs/operators';
+import { of as observableOf, Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, IUserData, ResourceService, ServerResponse,
+  ConfigService, IUserData, ServerResponse,
   ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
@@ -28,8 +27,8 @@ export class PlayerService {
    */
   collectionData: ContentData;
   constructor(public userService: UserService, public contentService: ContentService,
-    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService
-    , public publicDataService: PublicDataService) {
+    public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
+    public publicDataService: PublicDataService) {
   }
 
   /**
@@ -143,13 +142,9 @@ export class PlayerService {
           this.router.navigate(['/learn/course', content.identifier]);
         }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
-
         this.router.navigate(['/resources/play/content', content.identifier]);
-
       } else {
-
         this.router.navigate(['/resources/play/content', content.identifier]);
-
       }
     }, 0);
   }

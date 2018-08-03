@@ -1,7 +1,7 @@
 <div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column">
-    <div class=" ui grid">
+    <div class="ui grid margin-bottom-0">
       <div class="twelve wide column">
         <app-prominent-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" *ngIf="filterType" [filterEnv]="filterType"  [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"></app-prominent-filter>

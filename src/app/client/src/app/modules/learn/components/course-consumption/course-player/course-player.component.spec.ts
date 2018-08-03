@@ -73,8 +73,8 @@ describe('CoursePlayerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoursePlayerComponent ],
-      providers: [ CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
+      declarations: [CoursePlayerComponent],
+      providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
@@ -342,7 +342,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
-  fit('should not display error message if content id is not available in queryparams', () => {
+  it('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);

@@ -1,17 +1,16 @@
 
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {combineLatest,  Subscription ,  Observable ,  Subject } from 'rxjs';
+import {combineLatest, Subject } from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
-
 import * as moment from 'moment';
-import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { mergeMap } from 'rxjs/operators';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html',
@@ -321,10 +320,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       description: this.batchUpdateForm.value.description,
       enrollmentType: this.batchUpdateForm.value.enrollmentType,
       startDate: startDate,
-      endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
+    if (endDate) {
+      requestBody['endDate'] = endDate;
+    }
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       const selected = [];
       _.forEach(this.selectedMentors, (value) => {

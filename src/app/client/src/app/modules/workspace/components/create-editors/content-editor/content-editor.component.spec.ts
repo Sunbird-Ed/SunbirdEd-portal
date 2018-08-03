@@ -13,8 +13,7 @@ import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, TenantService, CoreModule } from '@sunbird/core';
 import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
-
-
+import { WorkSpaceService } from '../../../services';
 
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
@@ -31,7 +30,7 @@ describe('ContentEditorComponent', () => {
       providers: [
         EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
-        NavigationHelperService,
+        NavigationHelperService, WorkSpaceService,
         { provide: Router, useClass: RouterStub },
         {
           provide: ActivatedRoute, useValue: {
@@ -91,5 +90,9 @@ describe('ContentEditorComponent', () => {
     expect(component.navigateToWorkSpace).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['workspace/content/draft/1']);
   }));
-
+  it('should listen to the browser back button event', () => {
+    spyOn(sessionStorage, 'setItem').and.callThrough();
+    component.ngOnInit();
+    expect(window.location.hash).toEqual('#no');
+  });
 });

@@ -1,15 +1,15 @@
-import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import { PageApiService, PlayerService, ISort, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  ResourceService, ServerResponse, ToasterService, INoResultMessage,
+  ResourceService, ToasterService, INoResultMessage,
   ConfigService, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { ICaraouselData, IAction } from '@sunbird/shared';
+import { ICaraouselData } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 @Component({
@@ -106,9 +106,9 @@ export class ExploreComponent implements OnInit, OnDestroy {
             this.caraouselData = apiResponse.sections;
             _.forEach(this.caraouselData, (value, index) => {
               if (this.caraouselData[index].contents && this.caraouselData[index].contents.length > 0) {
-                const constantData = this.config.appConfig.Library.constantData;
-                const metaData = this.config.appConfig.Library.metaData;
-                const dynamicFields = this.config.appConfig.Library.dynamicFields;
+                const constantData = this.config.appConfig.ExplorePage.constantData;
+                const metaData = this.config.appConfig.ExplorePage.metaData;
+                const dynamicFields = this.config.appConfig.ExplorePage.dynamicFields;
                 this.caraouselData[index].contents = this.utilService.getDataForCard(this.caraouselData[index].contents,
                   constantData, dynamicFields, metaData);
               }
@@ -189,8 +189,8 @@ export class ExploreComponent implements OnInit, OnDestroy {
   }
 
   public playContent(event) {
-    this.publicPlayerService.playContent(event, this.queryParams);
-}
+    this.publicPlayerService.playContent(event);
+  }
 
   compareObjects(a, b) {
     if (a !== undefined) {

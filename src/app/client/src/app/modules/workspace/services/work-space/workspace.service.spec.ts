@@ -78,4 +78,16 @@ describe('WorkSpaceService', () => {
       workSpaceService.navigateToContent(testData.upforReviewContentData, 'upForReview');
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
+  it('should get session item and show respective alert message based on content type', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(window, 'addEventListener').and.callThrough();
+    workSpaceService.toggleWarning('TextBook');
+    expect(window.location.hash).toEqual('');
+  });
+  it('should get session item and show alert message if content type is not present', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(window, 'addEventListener').and.callThrough();
+    workSpaceService.toggleWarning();
+    expect(window.location.hash).toEqual('');
+  });
 });
