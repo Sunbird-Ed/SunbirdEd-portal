@@ -104,6 +104,8 @@ export class ProfilePageComponent implements OnInit {
     const response = this.searchService.searchedContentList;
     if (response && response.count) {
       this.contributions = response.content;
+    } else if (response && response.count === 0) {
+      this.contributions = [];
     } else {
       // Make search api call
       const searchParams = {

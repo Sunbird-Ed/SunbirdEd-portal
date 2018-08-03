@@ -42,7 +42,7 @@ export class PageSectionComponent implements OnInit {
     const pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     if (id && pageid) {
       this.cardIntractEdata = {
-        id: id + '-card',
+        id: 'content-card',
         type: 'click',
         pageid: pageid
       };

@@ -1,12 +1,10 @@
+import {of as observableOf } from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import {
   ConfigService, ServerResponse, CourseStates, CourseProgressData, CourseProgress, ContentList, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { ContentService, UserService } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
-import { CacheService } from 'ng2-cache-service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DatePipe } from '@angular/common';
+import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -33,7 +31,7 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService) {
+    userService: UserService, public coursesService: CoursesService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;
@@ -47,7 +45,7 @@ export class CourseProgressService {
     const courseProgress = this.courseProgress[courseId_batchId];
     if (courseProgress) {
       this.courseProgressData.emit(courseProgress);
-      return Observable.of(courseProgress);
+      return observableOf(courseProgress);
     } else {
       const channelOptions = {
         url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_READ,
@@ -59,14 +57,14 @@ export class CourseProgressService {
           }
         }
       };
-      return this.contentService.post(channelOptions).map((res: ServerResponse) => {
+      return this.contentService.post(channelOptions).pipe(map((res: ServerResponse) => {
         this.processContent(req, res, courseId_batchId);
         this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
         return this.courseProgress[courseId_batchId];
-      }).catch((err) => {
+      }), catchError((err) => {
         this.courseProgressData.emit({ lastPlayedContentId: req.contentIds[0] });
         return err;
-      });
+      }), );
 
     }
   }
@@ -136,19 +134,20 @@ export class CourseProgressService {
       if (index !== -1 && req.status >= courseProgress.content[index].status
         && courseProgress.content[index].status !== 2) {
         courseProgress.content[index].status = req.status;
-        return this.updateContentStateToServer(courseProgress.content[index])
-          .map((res: ServerResponse) => {
+        return this.updateContentStateToServer(courseProgress.content[index]).pipe(
+          map((res: ServerResponse) => {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
+            this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount );
             return this.courseProgress[courseId_batchId];
-          });
+          }));
       } else {
         console.log('contentId/courseId not matched or status is 2', req);
-        return Observable.of(this.courseProgress[courseId_batchId]);
+        return observableOf(this.courseProgress[courseId_batchId]);
       }
     } else {
-      return Observable.of(this.courseProgress[courseId_batchId]);
+      return observableOf(this.courseProgress[courseId_batchId]);
     }
   }
   /**
@@ -171,9 +170,9 @@ export class CourseProgressService {
         }
       }
     };
-    return this.contentService.patch(channelOptions).map(
+    return this.contentService.patch(channelOptions).pipe(map(
       (updateCourseStatesData: ServerResponse) => {
         return updateCourseStatesData;
-      });
+      }));
   }
 }

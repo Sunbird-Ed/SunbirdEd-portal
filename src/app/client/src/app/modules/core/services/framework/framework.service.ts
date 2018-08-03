@@ -1,25 +1,18 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
-import { ContentService } from './../content/content.service';
 import {
   ConfigService, ToasterService, ResourceService, ServerResponse,
   Framework, FrameworkCategorie, IUserData, IUserProfile
 } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { CacheService } from 'ng2-cache-service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { PublicDataService } from './../public-data/public-data.service';
 @Injectable()
 export class FrameworkService {
   /**
    * Reference of user service.
    */
   public userService: UserService;
-
-  /**
-   * Reference of content service.
-   */
-  public content: ContentService;
-
   /**
    * Reference of config service
    */
@@ -58,18 +51,23 @@ export class FrameworkService {
    */
   public hashTagId: any;
   /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
+
+  /**
      * Default method of OrganisationService class
      *
      * @param {UserService} user user service reference
      * @param {ContentService} content content service reference
      * @param {ConfigService} config config service reference
      */
-  constructor(userService: UserService, content: ContentService, configService: ConfigService,
+  constructor(userService: UserService, configService: ConfigService,
     private _cacheService: CacheService,
-    public toasterService: ToasterService, public resourceService: ResourceService) {
+    public toasterService: ToasterService, public resourceService: ResourceService, publicDataService: PublicDataService) {
     this.userService = userService;
-    this.content = content;
     this.configService = configService;
+    this.publicDataService = publicDataService;
   }
 
   public initialize(hashTagId?: string) {
@@ -98,7 +96,7 @@ export class FrameworkService {
     const channelOptions = {
       url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + this.hashTagId
     };
-    this.content.get(channelOptions).subscribe(
+    this.publicDataService.get(channelOptions).subscribe(
       (data: ServerResponse) => {
         this.defaultFramework = data.result.channel.defaultFramework;
         // this._frameworkData$.next({ err: null, framework: this.defaultFramework, frameworkdata: null });
@@ -119,7 +117,7 @@ export class FrameworkService {
     const frameworkOptions = {
       url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + this.defaultFramework
     };
-    this.content.get(frameworkOptions).subscribe(
+    this.publicDataService.get(frameworkOptions).subscribe(
       (frameworkData: ServerResponse) => {
         this.isApiCall = false;
         this._frameworkData = frameworkData.result.framework.categories;

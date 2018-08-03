@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
@@ -8,8 +10,6 @@ import { CollectionTreeComponent, AppLoaderComponent, PlayerComponent, FancyTree
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
-import { inject } from '@angular/core/src/render3';
 import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -20,8 +20,8 @@ describe('CollectionPlayerComponent', () => {
   const contentId = 'domain_44689';
 
   const fakeActivatedRoute = {
-    params: Observable.of({ id: collectionId }),
-    queryParams: Observable.of({ contentId: contentId }),
+    params: observableOf({ id: collectionId }),
+    queryParams: observableOf({ contentId: contentId }),
     snapshot: {
       data: {
         telemetry: {
@@ -81,7 +81,7 @@ describe('CollectionPlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(playerService, 'getCollectionHierarchy').and
-      .returnValue(Observable.of(CollectionHierarchyGetMockResponse));
+      .returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
     expect(component.loader).toBeFalsy();

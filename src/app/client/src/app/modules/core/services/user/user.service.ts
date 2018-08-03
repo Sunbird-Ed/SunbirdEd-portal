@@ -2,11 +2,11 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } fro
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
+import { PublicDataService } from './../public-data/public-data.service';
 /**
  * Service to fetch user details from server
  *
@@ -67,7 +67,6 @@ export class UserService {
   private _env: string;
   private _authenticated: boolean;
   public anonymousSid: string;
-  private _contentChannelFilter: string;
   /**
    * Reference of content service.
    */
@@ -80,15 +79,21 @@ export class UserService {
   public rootOrgName: string;
 
   /**
+   * Reference of public data service.
+   */
+  public publicDataService: PublicDataService;
+
+  /**
   * constructor
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
   constructor(config: ConfigService, learner: LearnerService,
-    private http: HttpClient, contentService: ContentService) {
+    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
+    this.publicDataService = publicDataService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
@@ -140,21 +145,6 @@ export class UserService {
       }
     );
   }
-  /**
-  * method to fetch appId and Ekstep_env from server.
-  */
-  // public getAppIdEnv(): void {
-  //   const url = this.config.appConfig.APPID_EKSTEPENV;
-  //   this.http.get(url).subscribe((res: IAppIdEnv) => {
-  //     this._appId = res.appId;
-  //     this._env = res.ekstep_env;
-  //   },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
-
   /**
    * get method to fetch appId.
    */
@@ -212,31 +202,19 @@ export class UserService {
     this._userid = this._userProfile.userId;
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
-    this.setContentChannelFilter();
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
     this.rootOrgName = this._userProfile.rootOrg.orgName;
   }
-  setContentChannelFilter() {
-    try {
-      const contentChannelFilter = (<HTMLInputElement>document.getElementById('contentChannelFilter')).value;
-      if (contentChannelFilter && contentChannelFilter.toLowerCase() === 'self') {
-        this._contentChannelFilter = this.channel;
-      }
-    } catch (error) {
-      console.log('unable to set content channel filter');
-    }
-  }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
     this.learnerService.channelId = this._channel;
     this.contentService.rootOrgId = this._rootOrgId;
     this.contentService.channelId = this._channel;
-  }
-  get contentChannelFilter() {
-    return this._contentChannelFilter;
+    this.publicDataService.rootOrgId = this._rootOrgId;
+    this.publicDataService.channelId = this._channel;
   }
 
   /**
@@ -255,7 +233,7 @@ export class UserService {
         }
       }
     };
-    this.contentService.post(option).subscribe
+    this.publicDataService.post(option).subscribe
       ((data: ServerResponse) => {
         _.forEach(data.result.response.content, (orgData) => {
           this.orgNames.push(orgData.orgName);

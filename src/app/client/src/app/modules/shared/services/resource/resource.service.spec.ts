@@ -1,19 +1,20 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ResourceService } from './resource.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import {mockRes} from './resource.service.spec.data';
-import { Observable } from 'rxjs/Observable';
 describe('ResourceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [ResourceService, ConfigService, CacheService]
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     });
   });
 
-  it('should be created', inject([ResourceService, CacheService], (service: ResourceService, cacheService: CacheService) => {
+ it('should be created', inject([ResourceService, CacheService], (service: ResourceService, cacheService: CacheService) => {
     expect(service).toBeTruthy();
   }));
   it('should call get resource method   when resourcebundle is not cached',
@@ -21,8 +22,8 @@ describe('ResourceService', () => {
     (resourceService: ResourceService , cacheService: CacheService, http ) => {
     cacheService.set('resourcebundlesen', null , { maxAge: 10 * 60});
     spyOn(resourceService, 'initialize').and.callThrough();
-    spyOn(resourceService, 'get').and.callFake(() => Observable.of(mockRes.resourceData));
-    spyOn(http, 'get').and.callFake(() => Observable.of(mockRes.resourceData));
+    spyOn(resourceService, 'get').and.callFake(() => observableOf(mockRes.resourceData));
+    spyOn(http, 'get').and.callFake(() => observableOf(mockRes.resourceData));
     spyOn(resourceService, 'getResource').and.callThrough();
     resourceService.getResource();
     expect(resourceService.frmelmnts).toBeDefined();

@@ -22,12 +22,16 @@
     </div>
   </div>
   <div *ngIf="metaData.gradeLevel" class="three wide column">
-    <div class="ui list">
+    <div class="ui list">  
       <div class="item">
-        <div class="content">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
-          <div class="description padding-top-1rem">{{metaData.gradeLevel}}</div>
-        </div>
+          <div class="content">
+            <div class="header">{{resourceService?.frmelmnts?.lbl?.class}}</div>
+            <div class="description padding-top-1rem">
+              <span class="inline-block-content" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
+                {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
+              </span>
+            </div>
+          </div>
       </div>
     </div>
   </div>

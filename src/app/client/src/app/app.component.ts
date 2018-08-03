@@ -1,3 +1,5 @@
+
+import {first, filter} from 'rxjs/operators';
 import { environment } from '@sunbird/environment';
 import { ITelemetryContext } from '@sunbird/telemetry';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -57,6 +59,7 @@ export class AppComponent implements OnInit {
   public config: ConfigService;
   public initApp = false;
   private orgDetails: any;
+  public version: string;
   /**
    * constructor
    */
@@ -86,6 +89,9 @@ export class AppComponent implements OnInit {
     const fingerPrint2 = new Fingerprint2();
     this.resourceService.initialize();
     this.navigationHelperService.initialize();
+    this.version = (<HTMLInputElement>document.getElementById('buildNumber')) &&
+    (<HTMLInputElement>document.getElementById('buildNumber')).value ?
+    (<HTMLInputElement>document.getElementById('buildNumber')).value.slice(0, 5) : '1.0';
     if (this.userService.loggedIn) {
       fingerPrint2.get((deviceId, components) => {
         (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
@@ -93,10 +99,11 @@ export class AppComponent implements OnInit {
         this.initializeLogedInsession();
       });
     } else {
-      this.router.events.filter(event => event instanceof NavigationEnd).first().subscribe((urlAfterRedirects: NavigationEnd) => {
+      this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
+        const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
         fingerPrint2.get((deviceId, components) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.initializeAnonymousSession();
+          this.initializeAnonymousSession(slug);
         });
       });
     }
@@ -121,9 +128,9 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  initializeAnonymousSession() {
-    this.orgDetailsService.getOrgDetails(_.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug'))
-      .first().subscribe((data) => {
+  initializeAnonymousSession(slug) {
+    this.orgDetailsService.getOrgDetails(slug).pipe(
+      first()).subscribe((data) => {
         this.orgDetails = data;
         this.initTelemetryService();
         this.initTenantService();
@@ -156,7 +163,7 @@ export class AppComponent implements OnInit {
       config: {
         pdata: {
           id: this.userService.appId,
-          ver: this.config.appConfig.TELEMETRY.VERSION,
+          ver: this.version,
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
@@ -180,7 +187,7 @@ export class AppComponent implements OnInit {
       config: {
         pdata: {
           id: this.userService.appId,
-          ver: this.config.appConfig.TELEMETRY.VERSION,
+          ver: this.version,
           pid: this.config.appConfig.TELEMETRY.PID
         },
         endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,

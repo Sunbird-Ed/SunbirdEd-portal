@@ -29,12 +29,22 @@
     <div class="one wide column"></div>
     <div class="ten wide column">
       <span class="ui HomeAccordianHeading left floated header">{{collectionTitle}}</span>
-      <h5 appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata" class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
+      <h5 appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
+        class="ui right floated basic icon circular button margin-auto mouse-pointer" (click)="closeCollectionPlayer()">
         <i class="ui remove icon"></i>
       </h5>
     </div>
     <div class="one wide column"></div>
     <div class="one wide column"></div>
+    <div class="one wide column"></div>
+  </div>
+  <div class="row padding-top-none" *ngIf="!loader">
+    <div class="one wide column"></div>
+    <div  class="ten wide column">
+      <div class="player-badge-alignment">
+        <app-content-badge [data]="badgeData" ></app-content-badge>
+      </div>
+    </div>
     <div class="one wide column"></div>
   </div>
   <div class="row">

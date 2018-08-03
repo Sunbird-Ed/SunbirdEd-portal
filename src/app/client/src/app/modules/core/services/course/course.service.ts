@@ -1,16 +1,18 @@
+import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { IEnrolledCourses } from './../../interfaces';
+import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
+import * as _ from 'lodash';
 /**
  *  Service for course API calls.
  */
 @Injectable()
 export class CoursesService {
+  private enrolledCourses: Array<ICourses>;
   /**
    * To get details about user profile.
    */
@@ -19,10 +21,6 @@ export class CoursesService {
    *  To do learner service api call.
    */
   private learnerService: LearnerService;
-  /**
-   *  To get url, app configs.
-   */
-  private contentService: ContentService;
   /**
    *  To get url, app configs.
    */
@@ -39,6 +37,11 @@ export class CoursesService {
    * Read only observable Containing enrolled courses.
    */
   public readonly enrolledCourseData$: Observable<IEnrolledCourses> = this._enrolledCourseData$.asObservable();
+
+  /**
+   * Notification message for external content onclick of Resume course button
+   */
+  showExtContentMsg = false;
   /**
   * the "constructor"
   *
@@ -52,7 +55,6 @@ export class CoursesService {
     this.userService = userService;
     this.learnerService = learnerService;
     this.userid = this.userService.userid;
-    this.contentService = contentService;
   }
   /**
    *  api call for enrolled courses.
@@ -61,15 +63,16 @@ export class CoursesService {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid
     };
-    return this.learnerService.get(option).map(
-      (apiResponse: ServerResponse) => {
-        this._enrolledCourseData$.next({ err: null, enrolledCourses: apiResponse.result.courses });
+    return this.learnerService.get(option).pipe(
+      map((apiResponse: ServerResponse) => {
+        this.enrolledCourses = apiResponse.result.courses;
+        this._enrolledCourseData$.next({ err: null, enrolledCourses: this.enrolledCourses });
         return apiResponse;
-      }).catch((err) => {
+      }),
+      catchError((err) => {
         this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
         return err;
-      }
-    );
+      }));
   }
   /**
    *  call enroll course api and subscribe. Behavior subject will emit enrolled course data
@@ -78,5 +81,15 @@ export class CoursesService {
     this.getEnrolledCourses().subscribe((date) => {
     });
   }
-}
 
+  public updateCourseProgress(courseId, batchId, Progress) {
+    const index = _.findIndex(this.enrolledCourses, {courseId: courseId, batchId: batchId });
+    if (this.enrolledCourses[index]) {
+      this.enrolledCourses[index].progress = Progress;
+      this._enrolledCourseData$.next({ err: null, enrolledCourses: this.enrolledCourses });
+    }
+  }
+  public setExtContentMsg(isExtContent: boolean) {
+    this.showExtContentMsg = isExtContent ? isExtContent : false;
+  }
+}

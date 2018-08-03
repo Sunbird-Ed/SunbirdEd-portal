@@ -6,7 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, CoreModule } from '@sunbird/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, SharedModule } from '@sunbird/shared';
 import { EditUserSkillsComponent } from '../../user-skills/edit-user-skills/edit-user-skills.component';
@@ -16,7 +16,7 @@ describe('UserSkillsComponent', () => {
   let component: UserSkillsComponent;
   let fixture: ComponentFixture<UserSkillsComponent>;
   const fakeActivatedRoute = {
-    'params': Observable.from([{ 'section': 'skills', 'action': 'add' }])
+    'params': observableOf({ 'section': 'skills', 'action': 'add' })
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');

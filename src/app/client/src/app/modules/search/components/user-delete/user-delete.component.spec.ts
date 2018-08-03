@@ -1,4 +1,6 @@
 
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+
 import { UserSearchService } from './../../services/user-search/user-search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +14,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-delete.component.spec.data';
@@ -37,8 +38,8 @@ describe('UserDeleteComponent', () => {
     }
   };
   const fakeActivatedRoute = {
-    'url': Observable.of([{ 'path': 'search/Users/1' }]),
-    'params': Observable.from([{ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' }])
+    'url': observableOf({ 'path': 'search/Users/1' }),
+    'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
   };
 
   beforeEach(async(() => {
@@ -88,7 +89,7 @@ describe('UserDeleteComponent', () => {
   });
   it('should throw error when searchService api is not called', () => {
     const searchService = TestBed.get(UserSearchService);
-    spyOn(searchService, 'getUserById').and.callFake(() => Observable.throw({}));
+    spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
   });
   it('should call UserSearchService api for deleteUser', () => {

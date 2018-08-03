@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnnouncementService } from '@sunbird/core';
@@ -5,8 +7,8 @@ import { ResourceService, ToasterService, RouterNavigationService, ServerRespons
 import * as _ from 'lodash';
 import { IAnnouncementDetails } from '@sunbird/announcement';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 /**
  * The details popup component checks for the announcement details object
  * present in announcement service. If object is undefined it calls API with
@@ -105,8 +107,8 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
     if (this.announcementService.announcementDetailsObject === undefined ||
       this.announcementService.announcementDetailsObject.id !== announcementId) {
       const option = { announcementId: this.announcementId };
-      this.announcementService.getAnnouncementById(option)
-      .takeUntil(this.unsubscribe).subscribe(
+      this.announcementService.getAnnouncementById(option).pipe(
+      takeUntil(this.unsubscribe)).subscribe(
         (apiResponse: ServerResponse) => {
           this.announcementDetails = apiResponse.result;
           if (apiResponse.result.announcement) {
@@ -131,8 +133,8 @@ export class DetailsPopupComponent implements OnInit, OnDestroy {
    * of a particular announcement
 	 */
   ngOnInit() {
-    this.activatedRoute.params
-    .takeUntil(this.unsubscribe)
+    this.activatedRoute.params.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(params => {
       this.announcementId = params.announcementId;
     });

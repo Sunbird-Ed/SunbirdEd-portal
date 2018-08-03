@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { UserService, PermissionService, TenantService } from './../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
@@ -26,7 +28,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   logo: string;
   key: string;
   queryParam: any = {};
-  queryParamLanguage: string;
   showExploreHeader = false;
   showQrmodal = false;
   /**
@@ -107,13 +108,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
     }
     this.getUrl();
+    if (!this.userService.loggedIn) {
+     this.getCacheLanguage();
+    }
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
-      if (this.queryParam['language'] && this.queryParam['language'] !== this.queryParamLanguage) {
-        this.queryParamLanguage = this.queryParam['language'];
-        this.resourceService.getResource(this.queryParam['language']);
-      }
     });
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -137,10 +137,18 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     try {
       const enableSignupButton: string = (<HTMLInputElement>document.getElementById('enableSignup')) ?
-      (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
+        (<HTMLInputElement>document.getElementById('enableSignup')).value : 'true';
       this.enableSignup = (enableSignupButton.toLowerCase() === 'true');
     } catch {
       console.log('error while fetching enableSignup');
+    }
+  }
+
+  getCacheLanguage() {
+    const isCachedDataExists = this.cacheService.exists('portalLanguage');
+    if (isCachedDataExists) {
+      const data: any | null = this.cacheService.get('portalLanguage');
+      this.resourceService.getResource(data);
     }
   }
   navigateToWorkspace() {
@@ -159,7 +167,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   onEnter(key) {
     this.key = key;
     this.queryParam = {};
-    this.queryParam['language'] = this.queryParamLanguage;
     this.queryParam['key'] = this.key;
     if (this.key && this.key.length > 0) {
       this.queryParam['key'] = this.key;
@@ -172,9 +179,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getUrl() {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((urlAfterRedirects: NavigationEnd) => {
-      const urlSegment = urlAfterRedirects.url.split('/');
-      if (_.includes(urlSegment, 'explore')) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+      if (_.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
         this.showExploreHeader = false;

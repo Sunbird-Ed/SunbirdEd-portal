@@ -26,6 +26,7 @@ export class ContentPlayerComponent implements OnInit {
   closeIntractEdata: IInteractEventEdata;
   objectInteract: IInteractEventObject;
   sharelinkModal: boolean;
+  public badgeData: Array<object>;
   /**
    * contains link that can be shared
    */
@@ -72,12 +73,16 @@ export class ContentPlayerComponent implements OnInit {
    * This variable holds the details of the note created
    */
   createNoteData: INoteData;
+
+  showExtContentMsg = false;
+
   closeUrl: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public breadcrumbsService: BreadcrumbsService,
+    private configService: ConfigService) {
   }
   /**
    *
@@ -140,10 +145,16 @@ export class ContentPlayerComponent implements OnInit {
           };
           this.playerConfig = this.playerService.getConfig(contentDetails);
           this.contentData = response.result.content;
+          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+          }
           this.setTelemetryData();
           this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
+          this.badgeData = _.get(response, 'result.content.badgeAssertions');
         } else {
           this.toasterService.warning(this.resourceService.messages.imsg.m0027);
           this.close();

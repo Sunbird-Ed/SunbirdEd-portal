@@ -1,10 +1,9 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { IorgTypeData } from './../../interfaces';
 
 /**
@@ -82,10 +81,10 @@ export class OrgTypeService {
         }
       }
     };
-    return this.learner.post(option).map(data => {
+    return this.learner.post(option).pipe(map(data => {
       this.getOrgTypes();
       return data;
-    });
+    }));
   }
 
   /**
@@ -98,10 +97,10 @@ export class OrgTypeService {
         'request': orgDetails
       }
     };
-    return this.learner.patch(option).map(data => {
+    return this.learner.patch(option).pipe(map(data => {
       this.orgTypeUpdateEvent.emit(orgDetails);
       return data;
-    });
+    }));
   }
 }
 

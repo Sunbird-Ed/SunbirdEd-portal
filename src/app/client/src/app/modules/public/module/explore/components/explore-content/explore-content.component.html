@@ -1,0 +1,58 @@
+<div [appTelemetryImpression]="telemetryImpression" class=" ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+        <div class="ui stackable grid padding-top-10">
+            <div class="twelve wide column" *ngIf="hashTagId">
+                <app-data-driven-filter appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata" *ngIf="filterType" [filterEnv]="filterType" [enrichFilters]="facets" [ignoreQuery]="['key', 'language']" [redirectUrl]="redirectUrl"
+         [accordionDefaultOpen]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [showSearchedParam]=true (filters)="filterData($event)"></app-data-driven-filter>
+            </div>
+        </div>
+  
+        <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult && this.queryParams.key">
+            <div class="ui left floated header margin-auto ">
+                <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResultsFor | interpolate:'{searchString}':this.queryParams.key}} 
+                </p>
+            </div>
+            
+        </div>
+        <div in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList" *ngIf="!showLoader && !noResult" class="ui stackable four column grid dynamic-section-card ">
+            <div in-view-item [id]="i" [data]="content" class="column padding-top-5 padding-bottom-5 padding-left-10" *ngFor="let content of searchList;let i = index;">
+                <app-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
+                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'content',ver:'1.0'}"
+                (clickEvent)="playContent($event)" [data]="content"></app-card>
+            </div>
+        </div>
+        <div *ngIf="noResult && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
+        </div>
+        <div class="ui grid">
+            <div class="two wide column tablet computer only column"></div>
+            <div class="ten wide tablet computer only column padding-top-none">
+                <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+                    <div class="ui pagination menu margin-top-10 right-floated padding-top-none " *ngIf="pager.pages.length">
+                        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
+                        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
+                        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+                        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
+                        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide mobile only column padding-top-none">
+              <div class="padding-bottom-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+                  <div class="ui pagination menu margin-top-10 padding-top-none " *ngIf="pager.pages.length">
+                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">{{resourceService.frmelmnts?.lbl?.first}}</a>
+                      <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">{{resourceService.frmelmnts?.lbl?.previous}}</a>
+                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">{{resourceService.frmelmnts?.lbl?.next}}</a>
+                      <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">{{resourceService.frmelmnts?.lbl?.last}}</a>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="twelve wide column padding-top-10" *ngIf="showLoader">
+            <app-loader [data]='loaderMessage'></app-loader>
+        </div>
+    </div>
+    <div class="one wide column"></div>
+  </div>
+  

@@ -1,13 +1,15 @@
+
+import {combineLatest as observableCombineLatest,  Observable ,  Subject } from 'rxjs';
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CollectionHierarchyAPI, ContentService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
-import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
+   ExternalUrlPreviewService } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -47,12 +49,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
-    private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService) {
+    private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
 
   }
 
   ngOnInit() {
-    Observable.combineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
+    observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
       }).subscribe((params) => {
@@ -79,8 +82,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     });
   }
   ngAfterViewInit() {
-    this.courseProgressService.courseProgressData
-    .takeUntil(this.unsubscribe)
+    this.courseProgressService.courseProgressData.pipe(
+    takeUntil(this.unsubscribe))
     .subscribe((courseProgressData) => {
       this.enrolledCourse = true;
       this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
@@ -103,12 +106,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
 
-  resumeCourse() {
+  resumeCourse(showExtUrlMsg?: boolean) {
     const navigationExtras: NavigationExtras = {
       queryParams: { 'contentId': this.lastPlayedContentId },
       relativeTo: this.activatedRoute
     };
     this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 
   flagCourse() {
@@ -120,8 +124,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    */
   copyContent(contentData: ContentData) {
     this.showCopyLoader = true;
-    this.copyContentService.copyContent(contentData)
-    .takeUntil(this.unsubscribe)
+    this.copyContentService.copyContent(contentData).pipe(
+    takeUntil(this.unsubscribe))
     .subscribe(
       (response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);

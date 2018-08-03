@@ -1,23 +1,25 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentService, UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   ConfigService, IUserData, ResourceService, ToasterService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html',
   styleUrls: ['./public-content-player.component.css']
 })
-export class PublicContentPlayerComponent implements OnInit {
+export class PublicContentPlayerComponent implements OnInit, OnDestroy {
   /**
 	 * telemetryImpression
 	*/
@@ -42,18 +44,19 @@ export class PublicContentPlayerComponent implements OnInit {
    * contain error message
    */
   errorMessage: string;
-  /**
-   * contain contentData
-   */
-  selectedLanguage: string;
   queryParams: any;
+
+  showExtContentMsg = false;
 
   public showFooter: Boolean = false;
   contentData: ContentData;
+  public unsubscribe$ = new Subject<void>();
+  public badgeData: Array<object>;
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
-    public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService
+    public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
+    private configService: ConfigService
   ) {
   }
   /**
@@ -90,7 +93,9 @@ export class PublicContentPlayerComponent implements OnInit {
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.playerService.getContent(this.contentId).subscribe(
+    this.playerService.getContent(this.contentId).pipe(
+    takeUntil(this.unsubscribe$))
+    .subscribe(
       (response) => {
         const contentDetails = {
           contentId: this.contentId,
@@ -98,8 +103,14 @@ export class PublicContentPlayerComponent implements OnInit {
         };
         this.playerConfig = this.playerService.getConfig(contentDetails);
         this.contentData = response.result.content;
+             if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+            setTimeout(() => {
+              this.showExtContentMsg = true;
+            }, 5000);
+          }
         this.showPlayer = true;
         this.windowScrollService.smoothScroll('content-player');
+        this.badgeData = _.get(response, 'result.content.badgeAssertions');
       },
       (err) => {
         this.showError = true;
@@ -119,7 +130,7 @@ export class PublicContentPlayerComponent implements OnInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/explore/1');
+    this.navigationHelperService.navigateToResource('/explore');
   }
 
   deviceDetector() {
@@ -127,5 +138,10 @@ export class PublicContentPlayerComponent implements OnInit {
     if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

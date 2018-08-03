@@ -63,6 +63,8 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
   private buildNumber: string;
 
   public logo: string;
+
+  public extContWhitelistedDomains: string;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to draft  component
@@ -96,8 +98,12 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       this.contentId = params['contentId'];
       this.state = params['state'];
       this.framework = params['framework'];
-
     });
+    try {
+      this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value;
+    } catch (error) {
+      this.extContWhitelistedDomains = 'youtube.com,youtu.be';
+    }
   }
 
   ngAfterViewInit() {
@@ -176,6 +182,7 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       build_number: this.buildNumber,
       headerLogo: this.logo,
       loadingImage: '',
+      extContWhitelistedDomains: this.extContWhitelistedDomains,
       plugins: [{
         id: 'org.ekstep.sunbirdcommonheader',
         ver: '1.4',
@@ -207,13 +214,6 @@ export class GenericEditorComponent implements OnInit, AfterViewInit, OnDestroy 
 
     };
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
-    if (this.userService.contentChannelFilter) {
-      window.config.searchCriteria = {
-        filters: {
-          channel: this.userService.contentChannelFilter
-        }
-      };
-    }
   }
   /**
   * Re directed to the workspace on close of modal

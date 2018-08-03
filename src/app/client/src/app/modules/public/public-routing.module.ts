@@ -5,10 +5,9 @@ import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
-  PublicCollectionPlayerComponent, ExploreContentComponent
+  PublicCollectionPlayerComponent
 } from './components';
-import { SignupGuard } from './signup.guard';
-import { LandingpageGuard } from './landingpage.guard';
+import { SignupGuard, LandingpageGuard } from './services';
 
 const routes: Routes = [
   {
@@ -59,23 +58,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'explore/:pageNumber', component: ExploreContentComponent, data: {
-      telemetry: {
-        env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
-      }
-    }
+    path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {
-    path: ':slug/explore/:pageNumber', component: ExploreContentComponent, data: {
-      telemetry: {
-        env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
-      }
-    }
-  },
-  {
-    path: '**',
-    component: LandingPageComponent,
-    canActivate: [LandingpageGuard]
+    path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
   }
 ];
 @NgModule({
@@ -83,4 +69,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class PublicRoutingModule { }
-

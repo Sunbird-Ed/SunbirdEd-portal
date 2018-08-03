@@ -1,22 +1,27 @@
+import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
 import {
     ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ILoaderMessage, UtilService, ICard, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, CoursesService, PlayerService, ICourses, SearchParam, ISort,
-    OrgDetailsService } from '@sunbird/core';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { PublicPlayerService } from './../../../../services';
+import {
+    SearchService, CoursesService, PlayerService, ISort,
+    OrgDetailsService
+} from '@sunbird/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'app-explore-content',
     templateUrl: './explore-content.component.html',
     styleUrls: ['./explore-content.component.css']
 })
-export class ExploreContentComponent implements OnInit {
+export class ExploreContentComponent implements OnInit, OnDestroy {
     inviewLogs: any = [];
     /**
        * telemetryImpression
@@ -117,7 +122,12 @@ export class ExploreContentComponent implements OnInit {
     public filterType: any;
 
     public redirectUrl: string;
+    public facetArray: Array<string>;
+    public facets: any;
     sortingOptions: Array<ISort>;
+    public unsubscribe$ = new Subject<void>();
+    cardIntractEdata: IInteractEventEdata;
+    filterIntractEdata: IInteractEventEdata;
     /**
        * Constructor to create injected service(s) object
        * Default method of Draft Component class
@@ -134,7 +144,7 @@ export class ExploreContentComponent implements OnInit {
         activatedRoute: ActivatedRoute, paginationService: PaginationService,
         resourceService: ResourceService, toasterService: ToasterService,
         config: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
-        public navigationHelperService: NavigationHelperService) {
+        public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService) {
         this.searchService = searchService;
         this.route = route;
         this.activatedRoute = activatedRoute;
@@ -157,38 +167,44 @@ export class ExploreContentComponent implements OnInit {
             limit: this.pageLimit,
             pageNumber: this.pageNumber,
             query: this.queryParams.key,
-            softConstraints: { badgeAssertions: 2, channel: 1 }
+            softConstraints: { badgeAssertions: 2, channel: 1 },
+            facets: this.facetArray
         };
-        this.searchService.contentSearch(requestParams).subscribe(
-            (apiResponse: ServerResponse) => {
-                if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
+        this.searchService.contentSearch(requestParams).pipe(
+            takeUntil(this.unsubscribe$))
+            .subscribe(
+                (apiResponse: ServerResponse) => {
+                    if (apiResponse.result.count && apiResponse.result.content && apiResponse.result.content.length > 0) {
+                        this.showLoader = false;
+                        this.noResult = false;
+                        this.searchList = apiResponse.result.content;
+                        this.totalCount = apiResponse.result.count;
+                        this.facets = apiResponse.result.facets;
+                        this.processFilterData();
+                        this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
+                        const constantData = this.config.appConfig.LibrarySearch.constantData;
+                        const metaData = this.config.appConfig.LibrarySearch.metaData;
+                        const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
+                        this.searchList = this.utilService.getDataForCard(apiResponse.result.content,
+                             constantData, dynamicFields, metaData);
+                    } else {
+                        this.noResult = true;
+                        this.showLoader = false;
+                        this.noResultMessage = {
+                            'message': this.resourceService.messages.stmsg.m0007,
+                            'messageText': this.resourceService.messages.stmsg.m0006
+                        };
+                    }
+                },
+                err => {
                     this.showLoader = false;
-                    this.noResult = false;
-                    this.searchList = apiResponse.result.content;
-                    this.totalCount = apiResponse.result.count;
-                    this.pager = this.paginationService.getPager(apiResponse.result.count, this.pageNumber, this.pageLimit);
-                    const constantData = this.config.appConfig.LibrarySearch.constantData;
-                    const metaData = this.config.appConfig.LibrarySearch.metaData;
-                    const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
-                    this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
-                } else {
                     this.noResult = true;
-                    this.showLoader = false;
                     this.noResultMessage = {
-                        'message': this.resourceService.messages.stmsg.m0007,
-                        'messageText': this.resourceService.messages.stmsg.m0006
+                        'messageText': this.resourceService.messages.fmsg.m0077
                     };
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
                 }
-            },
-            err => {
-                this.showLoader = false;
-                this.noResult = true;
-                this.noResultMessage = {
-                    'messageText': this.resourceService.messages.fmsg.m0077
-                };
-                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-            }
-        );
+            );
     }
     /**
     * This method helps to navigate to different pages.
@@ -210,15 +226,17 @@ export class ExploreContentComponent implements OnInit {
     }
 
     getChannelId() {
-        this.orgDetailsService.getOrgDetails(this.slug).subscribe(
-            (apiResponse: any) => {
-                this.hashTagId = apiResponse.hashTagId;
-                this.setFilters();
-            },
-            err => {
-                this.route.navigate(['']);
-            }
-        );
+        this.orgDetailsService.getOrgDetails(this.slug).pipe(
+            takeUntil(this.unsubscribe$))
+            .subscribe(
+                (apiResponse: any) => {
+                    this.hashTagId = apiResponse.hashTagId;
+                    this.setFilters();
+                },
+                err => {
+                    this.route.navigate(['']);
+                }
+            );
     }
 
     compareObjects(a, b) {
@@ -238,8 +256,7 @@ export class ExploreContentComponent implements OnInit {
         this.filters = {
             contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Story', 'Worksheet', 'Game']
         };
-        Observable
-            .combineLatest(
+        observableCombineLatest(
             this.activatedRoute.params,
             this.activatedRoute.queryParams,
             (params: any, queryParams: any) => {
@@ -247,7 +264,8 @@ export class ExploreContentComponent implements OnInit {
                     params: params,
                     queryParams: queryParams
                 };
-            })
+            }).pipe(
+                takeUntil(this.unsubscribe$))
             .subscribe(bothParams => {
                 this.isSearchable = this.compareObjects(this.queryParams, bothParams.queryParams);
                 if (bothParams.params.pageNumber) {
@@ -261,7 +279,7 @@ export class ExploreContentComponent implements OnInit {
                     _.forOwn(this.queryParams, (queryValue, queryParam) => {
                         this.filters[queryParam] = queryValue;
                     });
-                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType', 'language']);
+                    this.filters = _.omit(this.filters, ['key', 'sort_by', 'sortType']);
                 }
                 if (this.queryParams.sort_by && this.queryParams.sortType) {
                     this.queryParams.sortType = this.queryParams.sortType.toString();
@@ -292,19 +310,20 @@ export class ExploreContentComponent implements OnInit {
                 subtype: this.activatedRoute.snapshot.data.telemetry.subtype
             }
         };
+        this.cardIntractEdata = {
+            id: 'content-card',
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        };
+        this.filterIntractEdata = {
+            id: 'filter',
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        };
     }
 
     public playContent(event) {
-        this.navigationHelperService.storeResourceCloseUrl();
-        if (event.data.metaData.mimeType === this.config.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-            this.route.navigate(['play/collection', event.data.metaData.identifier], {
-                queryParams: _.pick(this.queryParams, ['language'])
-            });
-        } else {
-            this.route.navigate(['play/content', event.data.metaData.identifier], {
-                queryParams: _.pick(this.queryParams, ['language'])
-            });
-        }
+        this.publicPlayerService.playContent(event, this.queryParams);
     }
     inview(event) {
         _.forEach(event.inview, (inview, key) => {
@@ -322,5 +341,23 @@ export class ExploreContentComponent implements OnInit {
         this.telemetryImpression.edata.visits = this.inviewLogs;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+    filterData(event) {
+        this.facetArray = event;
+    }
+    processFilterData() {
+        const facetObj = {};
+        _.forEach(this.facets, (value) => {
+            if (value) {
+                let data = {};
+                data = value.values;
+                facetObj[value.name] = data;
+                this.facets = facetObj;
+            }
+        });
     }
 }

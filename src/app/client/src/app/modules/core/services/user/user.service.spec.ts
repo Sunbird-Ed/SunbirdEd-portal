@@ -1,6 +1,7 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { mockUserData } from './user.mock.spec.data';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { Observable } from 'rxjs/Observable';
 import { ConfigService, ToasterService, SharedModule} from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -16,14 +17,14 @@ describe('userService', () => {
   it('should fetch user profile details', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     expect(userService._userProfile).toBeDefined();
   }));
   it('should emit user profile data on success', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.userProfile).toBeDefined();
@@ -32,7 +33,7 @@ describe('userService', () => {
   it('should emit error on api failure', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.throw(mockUserData.error));
+    spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockUserData.error));
     userService.initialize(true);
     userService.userData$.subscribe(userData => {
       expect(userData.err).toBeDefined();
@@ -41,7 +42,7 @@ describe('userService', () => {
   it('should return userId when userId get method is called', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     const userId = userService.userid;
     expect(userId).toBeDefined();
@@ -49,7 +50,7 @@ describe('userService', () => {
   it('should return userProfile when userProfile get method is called', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     const userProfile = userService.userProfile;
     expect(userProfile).toBeDefined();
@@ -57,14 +58,14 @@ describe('userService', () => {
   it('should set rootOrgAdmin to true', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.rootOrgSuccess));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.rootOrgSuccess));
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeTruthy();
   }));
   it('should set rootOrgAdmin to false', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(Observable.of(mockUserData.success));
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));

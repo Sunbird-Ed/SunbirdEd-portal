@@ -1,0 +1,31 @@
+<div class="ui segment">
+  <div class="ui stackable grid">
+    <div class="twelve wide column" *ngIf="refresh">
+      <form class="ui form">
+        <div class="ui stackable grid">
+          <div class="nine wide column">
+            <div *ngIf="formFieldProperties" class="ui stackable grid">
+              <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
+                <div *ngIf="field.inputType==='select'" class="field">
+                  <div class="margin-bottom-10">
+                    <strong>{{field.name}}</strong>
+                  </div>
+                  <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
+                </div>
+                <div *ngIf="field.code==='concepts' && showConcepts" class="field">
+                  <form class="conceptSelector ui form">
+                    <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="three wide right floated column filter-button margin-top-30">
+            <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}</a>
+            <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

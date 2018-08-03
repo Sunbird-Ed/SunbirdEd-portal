@@ -1,0 +1,29 @@
+<div *ngIf="refresh">
+  <ng-template let-option #optionTemplate >
+    <div class="field" >
+      <div class="template-checkbox">
+        <div [ngClass]="{'blue-text-color-sunbird': checkBox[option.name] }" >
+          {{option.name | slice:0:14}}
+          <i class="ellipsis horizontal icon" *ngIf="option.name && option.name.length >= 14" suiPopup popupText="{{option.name}}" [popupPlacement]="'left'" ></i>
+        </div>
+        <div class="margin-left-auto ">
+          <i class="square outline medium icon " [ngClass]="{'check blue': checkBox[option.name] }"></i>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <sui-multi-select [(ngModel)]="inputData" [optionTemplate]="optionTemplate" id={{field.code}} name={{field.code}} defaultSelectionText={{field.name}}
+    zeroSelectionText="Select" class="ui selection multiselect-square-border margin-right-10" [options]="field.range" [hasLabels]="false"
+    valueField="name" (ngModelChange)="selectedOption($event)" #multiSelect>
+    <div class=" header template-checkbox cursor-pointer multi-select-dropdown multi-select-padding" (click)="selectAll(field.code)">
+      <div [ngClass]="{'blue-text-color-sunbird': selectAllCheckBox }">
+        Select All
+      </div>
+      <div class="margin-left-auto ">
+        <i class="square outline medium icon " [ngClass]="{'check blue': selectAllCheckBox}"></i>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" class="multi-select-dropdown multi-select-padding" (click)="checkbox(option.name)" ></sui-select-option>
+  </sui-multi-select>
+</div>

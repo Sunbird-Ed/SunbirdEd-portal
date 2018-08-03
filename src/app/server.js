@@ -32,7 +32,7 @@ const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
 const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
-const defaultTenant = envHelper.DEFAULT_TENANT
+const defaultTenant = envHelper.DEFAULT_CHANNEL
 const portal = this
 const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
@@ -136,12 +136,13 @@ function getLocals(req) {
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.ekstepEnv = envHelper.EKSTEP_ENV
-  locals.defaultTenant = envHelper.DEFAULT_TENANT
-  locals.contentChannelFilter = envHelper.CONTENT_CHANNEL_FILTER_TYPE;
+  locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
   locals.enableSignup = envHelper.ENABLE_SIGNUP;
+  locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
   locals.buildNumber = envHelper.BUILD_NUMBER
+  locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   return locals;
 }
 
@@ -476,7 +477,7 @@ exports.close = function () {
 
 // Telemetry initialization
 const telemetryConfig = {
-  pdata: { id: appId, ver: telemtryEventConfig.pdata.ver },
+  pdata: { id: appId, ver: packageObj.version },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemtryEventConfig.endpoint,

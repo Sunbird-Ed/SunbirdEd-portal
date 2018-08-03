@@ -1,4 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
@@ -8,7 +10,6 @@ import { Component, OnInit, NgZone, ChangeDetectorRef, OnDestroy } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -270,8 +271,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       objectType: ['Content']
     };
     const __self = this;
-    Observable
-      .combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {

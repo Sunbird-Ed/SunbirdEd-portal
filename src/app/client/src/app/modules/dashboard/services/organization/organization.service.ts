@@ -1,11 +1,14 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.service';
 import { DashboardParams, DashboardData } from './../../interfaces';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+
+
 import * as _ from 'lodash';
 
 /**
@@ -95,13 +98,13 @@ export class OrganisationService {
       }
     };
 
-    return this.learner.get(paramOptions)
-      .map((data: ServerResponse) => {
+    return this.learner.get(paramOptions).pipe(
+      map((data: ServerResponse) => {
         return this.parseApiResponse(data, param.dataset);
-      })
-      .catch((err) => {
-        return Observable.throw(err);
-      });
+      }),
+      catchError((err) => {
+        return observableThrowError(err);
+      }), );
   }
 
   /**

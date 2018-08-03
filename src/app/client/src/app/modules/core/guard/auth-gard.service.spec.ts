@@ -2,9 +2,9 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { AuthGuard } from './auth-gard.service';
 import { RouterModule, Router, Routes, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import 'rxjs/add/operator/map';
+
 import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { Ng2IziToastModule } from 'ng2-izitoast';
 describe('AuthGardService', () => {
@@ -21,6 +21,7 @@ describe('AuthGardService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AuthGuard, PermissionService, ToasterService, UserService, ResourceService, ConfigService, LearnerService,
+        BrowserCacheTtlService,
         { provide: Router, useValue: router },
         { provide: RouterStateSnapshot, useValue: snapshot },
         {

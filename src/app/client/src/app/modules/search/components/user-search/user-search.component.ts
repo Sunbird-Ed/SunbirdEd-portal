@@ -1,11 +1,11 @@
 import { Subscription } from 'rxjs/Subscription';
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage } from '@sunbird/shared';
 import { SearchService, UserService } from '@sunbird/core';
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -285,7 +285,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
         this.rootOrgId = this.userProfile.rootOrgId;
-        Observable.combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
+        observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
           (params: any, queryParams: any) => {
             return {
               params: params,

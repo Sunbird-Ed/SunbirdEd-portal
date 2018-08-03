@@ -1,11 +1,13 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { GeoExplorerService } from './../../services';
 import { LearnerService, UserService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { IGeoLocationDetails } from './../../interfaces/geoLocationDetails';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 /**
  * The Geo-explorer component.
@@ -144,8 +146,8 @@ export class GeoExplorerComponent implements OnInit, OnDestroy {
       const params = { rootOrgId: this.rootOrgId };
       // Make api call to get location(s)
 
-      this.geo.getLocations(params)
-      .takeUntil(this.unsubscribe)
+      this.geo.getLocations(params).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(
         (data: ServerResponse) => {
           if (data.result.response) {

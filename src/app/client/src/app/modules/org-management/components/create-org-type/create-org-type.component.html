@@ -8,10 +8,10 @@
         </div>
     </div>
     <div class="actions">
-        <div *ngIf="createForm" class="ui primary approve button" (click)="modal.deny();addOrgType()"
+        <div *ngIf="createForm" class="ui primary approve button" (click)="disableApproveBtn=true; addOrgType()" [class.disabled]="disableApproveBtn"
         appTelemetryInteract [telemetryInteractObject]="{id:'addOrgType',type:'create-org-type',ver:'1.0'}" [telemetryInteractEdata]="addOrganizationType">
          {{resourceService?.frmelmnts?.btn?.add}}</div>
-        <div *ngIf="!createForm" class="ui primary approve button" (click)="modal.deny();updateOrgType()"
+        <div *ngIf="!createForm" class="ui primary approve button" (click)="disableApproveBtn=true; updateOrgType()" [class.disabled]="disableApproveBtn"
         appTelemetryInteract [telemetryInteractObject]="{id:'updateOrgType',type:'update-org-type',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
          {{resourceService?.frmelmnts?.btn?.update}}</div>
         <div class="ui negative cancel button" (click)="modal.deny()"

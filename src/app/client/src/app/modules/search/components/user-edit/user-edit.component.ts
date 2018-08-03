@@ -31,8 +31,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
   selectedOrgName: string;
   selectedOrgId: string;
   selectedOrgUserRoles: Array<string>;
-  selectedOrgUserRolesNew: any;
   public unsubscribe = new Subject<void>();
+  selectedOrgUserRolesNew: any = [];
 
   /**
 	 * Contains announcement details returned from API or object called from
@@ -105,7 +105,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	 *
 	 */
   redirect(): void {
-    this.route.navigate(['../../'], {relativeTo: this.activatedRoute});
+    this.route.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 
   populateOrgName() {
@@ -157,7 +157,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   editRoles(role, userRoles, event) {
-    this.selectedOrgUserRolesNew = [];
     if (userRoles.includes(role) === true) {
       this.selectedOrgUserRoles = this.selectedOrgUserRoles.filter((selectedRole) => {
         return selectedRole !== role;
@@ -181,12 +180,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
       _.forEach(mainRolesCollections, (value, key) => {
         mainRole.push(value.role);
       });
-      const sendingRoles = _.clone(roles);
-      const removalRoles = _.difference(sendingRoles, mainRole);
-      _.remove(roles, (role) => {
-        return _.indexOf(removalRoles, role) !== -1;
-      });
-
       const option = { userId: this.userId, orgId: this.selectedOrgId, roles: roles };
       this.userSearchService.updateRoles(option)
       .takeUntil(this.unsubscribe)
@@ -222,6 +215,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });
     });
+    _.remove(this.allRoles, { role: 'PUBLIC' });
   }
   settelemetryData() {
     this.telemetryImpression = {
@@ -256,12 +250,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
       pageid: 'user-edit'
     };
   }
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.modal.deny();
     this.unsubscribe.next();
     this.unsubscribe.complete();
     this.permissionSubscription.unsubscribe();
   }
 }
-
-

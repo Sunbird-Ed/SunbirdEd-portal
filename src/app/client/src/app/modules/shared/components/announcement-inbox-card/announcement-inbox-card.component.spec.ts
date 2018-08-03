@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import 'rxjs/add/operator/mergeMap';
+
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // Import services
-import { ResourceService, ConfigService  } from '../../services/index';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services/index';
 import { CacheService } from 'ng2-cache-service';
 import { DateFormatPipe } from '../../pipes/index';
 import { Announcement } from '../../interfaces/index';
@@ -21,7 +21,7 @@ describe('AnnouncementInboxCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule],
       declarations: [AnnouncementInboxCardComponent, DateFormatPipe],
-      providers: [ ResourceService, ConfigService , CacheService ],
+      providers: [ ResourceService, ConfigService , CacheService, BrowserCacheTtlService ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

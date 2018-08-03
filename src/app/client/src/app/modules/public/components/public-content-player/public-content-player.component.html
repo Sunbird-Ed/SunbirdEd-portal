@@ -5,7 +5,7 @@
       <div class='content-player-body'>
         <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
           <div class="ui grid">
-            <div class="row margin-auto padding-bottom-none">
+            <div class="row margin-auto">
               <div class="twelve wide column">
                 <div class="ten wide column" id="player-auto-scroll">
                   <span class="ui HomeAccordianHeading left floated header" *ngIf="contentData.name">
@@ -19,13 +19,21 @@
                 </div>
               </div>
             </div>
-            <div class="row margin-auto padding-top-none">
-              <div class="twelve wide column"></div>
+            <div class="row padding-top-none" *ngIf="showPlayer">
+              <div  class="twelve wide column">
+                <div class="player-badge-alignment">
+                  <app-content-badge [data]="badgeData" ></app-content-badge>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid padding-top-10">
-
+          <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
+            <div class="column twelve wide">
+              <p>{{resourceService.messages.imsg.m0036}}</p>
+            </div>
+          </div>
           <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 
           <div class="twelve wide column contentMetaSection">

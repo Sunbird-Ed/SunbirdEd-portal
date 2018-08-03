@@ -1,3 +1,5 @@
+
+import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
@@ -7,7 +9,6 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -162,7 +163,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
         const metaData = this.config.appConfig.LibrarySearch.metaData;
         const dynamicFields = this.config.appConfig.LibrarySearch.dynamicFields;
         this.searchList = this.utilService.getDataForCard(apiResponse.result.content, constantData, dynamicFields, metaData);
-        } else {
+      } else {
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
@@ -202,8 +203,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.filterType = this.config.appConfig.library.filterType;
     this.redirectUrl = this.config.appConfig.library.searchPageredirectUrl;
-    Observable
-      .combineLatest(
+    observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
       (params: any, queryParams: any) => {
