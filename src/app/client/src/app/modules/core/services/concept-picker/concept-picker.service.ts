@@ -53,7 +53,8 @@ export class ConceptPickerService {
     };
     this.searchService.compositeSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {
-        if (apiResponse.result && _.isArray(apiResponse.result.concepts)) {
+        if (apiResponse.result && _.isArray(apiResponse.result.concepts) &&
+        apiResponse.result.concepts.length > 0) {
           _.forEach(apiResponse.result.concepts, (value) => {
             this._concepts.push(value);
           });
@@ -64,10 +65,12 @@ export class ConceptPickerService {
           } else {
             this.loadDomains();
           }
+        } else {
+          this._conceptData$.next({ err: 'no result' , data: null });
         }
       },
       err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0015);
+        this._conceptData$.next({ err: 'no result' , data: null });
       }
     );
   }
