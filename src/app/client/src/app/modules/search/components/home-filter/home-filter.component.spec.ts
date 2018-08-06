@@ -42,6 +42,7 @@ describe('HomeFilterComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
   it('should call resetFilters method ', inject([ConfigService, Router],
     (configService, route) => {
       component.queryParams = {key: 'text'};
@@ -60,9 +61,9 @@ describe('HomeFilterComponent', () => {
   }));
   it('should call applyFilters method ', inject([ConfigService, Router],
     (configService, route) => {
-      const queryParams = {};
+      component.queryParams = {};
       component.applyFilters();
-      expect(route.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams: queryParams});
+      expect(route.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams: component.queryParams});
       fixture.detectChanges();
   }));
   it('should call applyFilters method with querParams value ', inject([ConfigService, Router],
@@ -92,6 +93,9 @@ describe('HomeFilterComponent', () => {
      const check = typeof value;
      expect(check).toEqual('object');
   });
-
+  it('should call ngoninit ', inject([ConfigService, Router],
+    (configService, route) => {
+      component.queryParams = {key: 'text'};
+      expect(component.showConcepts).toBeFalsy();
+  }));
 });
-
