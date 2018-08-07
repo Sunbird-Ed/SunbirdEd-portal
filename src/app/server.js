@@ -30,7 +30,6 @@ const authServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const keycloakResource = envHelper.PORTAL_AUTH_SERVER_CLIENT
 const reqDataLimitOfContentEditor = '50mb'
 const reqDataLimitOfContentUpload = '50mb'
-const ekstepEnv = envHelper.EKSTEP_ENV
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
 const portal = this
@@ -131,7 +130,6 @@ function getLocals(req) {
   locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   locals.instance = process.env.sunbird_instance
   locals.appId = envHelper.APPID
-  locals.ekstepEnv = envHelper.EKSTEP_ENV
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = envHelper.EXPLORE_BUTTON_VISIBILITY;
   locals.defaultTenantIndexStatus = defaultTenantIndexStatus;
@@ -139,6 +137,7 @@ function getLocals(req) {
   locals.extContWhitelistedDomains = envHelper.SUNBIRD_EXTCONT_WHITELISTED_DOMAINS;
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
+  locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   return locals;
 }
 
@@ -164,12 +163,6 @@ function renderDefaultIndexPage(req,res){
     res.render(path.join(__dirname, 'dist', 'index.ejs'))
   }
 }
-
-app.get('/get/envData', function (req, res) {
-  res.status(200)
-  res.send({ appId: appId, ekstep_env: ekstepEnv })
-  res.end()
-})
 
 app.all('/', indexPage)
 app.all('/home', keycloak.protect(), indexPage)

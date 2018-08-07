@@ -221,9 +221,7 @@ export class ContentEditorComponent implements OnInit, AfterViewInit, OnDestroy 
       alertOnUnload: true,
       build_number: this.buildNumber,
       headerLogo: this.logo,
-      aws_s3_urls: ['https://s3.ap-south-1.amazonaws.com/ekstep-public-' +
-        this.userService.env + '/', 'https://ekstep-public-' +
-        this.userService.env + '.s3-ap-south-1.amazonaws.com/'],
+      aws_s3_urls: this.userService.cloudStorageUrls || [],
       plugins: [
         {
           id: 'org.ekstep.sunbirdcommonheader',
