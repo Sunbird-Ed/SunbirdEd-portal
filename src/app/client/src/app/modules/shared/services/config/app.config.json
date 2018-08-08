@@ -366,7 +366,6 @@
   "CONTENT_CONST": {
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
-  "APPID_EKSTEPENV": "get/envData",
   "SEARCH": {
     "PAGE_LIMIT": 20,
     "USER": {
