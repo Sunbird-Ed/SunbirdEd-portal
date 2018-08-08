@@ -3,6 +3,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const learnerURL = envHelper.LEARNER_URL
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
+const _ = require('lodash')
 
 module.exports = {
   updateLoginTime: function (req, callback) {
@@ -41,7 +42,7 @@ module.exports = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      telemetryData.statusCode = response.statusCode
+      telemetryData.statusCode = _.get(response, 'statusCode');
       if (callback) {
         if (error) {
           telemetryData.resp = body
